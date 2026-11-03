@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.metadata
+import os
 import platform
 import sys
 
@@ -57,19 +58,24 @@ def t01_2(ctx: SuiteContext, rec: Recorder) -> None:
     chosen = next((p for p in ports if p.device == ctx.target), None)
     auto = pick_port(ports)
     rec.measure(auto_pick=auto.device if auto else None)
+    exists = chosen is not None or os.path.exists(ctx.target)
     rec.check(
         "port",
         "Selected port is present",
-        chosen is not None,
-        f"{ctx.target}: " + (f"{chosen.label or chosen.description}" if chosen else "not listed"),
+        exists,
+        f"{ctx.target}: " + ("present" if exists else "not found"),
         "--lio-port names an existing serial port",
     )
-    if chosen is not None:
+    if exists:
         rec.check(
             "chip",
             "USB-serial chip recognised",
-            chosen.likely_lio,
-            f"VID:PID {chosen.vid or 0:04X}:{chosen.pid or 0:04X} ({chosen.label or 'unknown'})",
+            chosen is not None and chosen.likely_lio,
+            (
+                f"VID:PID {chosen.vid or 0:04X}:{chosen.pid or 0:04X} ({chosen.label or 'unknown'})"
+                if chosen is not None
+                else "not a USB serial adapter (e.g. a pseudo-terminal)"
+            ),
             "one of link.usb_ids",
             warn=True,
         )
