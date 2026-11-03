@@ -39,6 +39,8 @@ from . import twin
 log = logging.getLogger(__name__)
 
 LOG_LINES = 400
+STATE_FILE = "dashboard_state.json"  # in results_root: when results were last cleared
+RESTORE_RUNS = 300  # the board is rebuilt from at most this many recent runs
 KINDS = {"A": "automatic", "I": "operator", "M": "motion"}
 
 
@@ -117,7 +119,11 @@ class Session:
         self.sim: SimulatedLIO | None = None
         self.target = ""
         self.firmware: dict[str, Any] = {}
-        self.board: dict[str, TestResult] = {}  # latest result per test id, this connection
+        # Latest result per test id, rebuilt from the saved runs in results_root
+        # (hardware and simulator kept apart) so it survives restarts.
+        self.board: dict[str, TestResult] = {}
+        self.provenance: dict[str, dict[str, str]] = {}  # test id -> run_id, started
+        self.board_kind = "hardware"
         self.job: dict[str, Any] | None = None
         self.last_run: dict[str, Any] | None = None
         self.prompt: _Prompt | None = None
@@ -127,6 +133,8 @@ class Session:
         self._thread: threading.Thread | None = None
         self._stop = threading.Event()
         self.catalogue = catalogue()
+        self._state_path = results_root / STATE_FILE
+        self.restore_board("hardware")
 
     # ----------------------------------------------------------- helpers
 
@@ -208,9 +216,8 @@ class Session:
         with self._lock:
             self.dev, self.sim, self.target = dev, sim, target
             self.firmware = dict(dev.info().values)
-            self.board = {}
-            self.last_run = None
             self.manual = None
+        self.restore_board(_kind(target))
         fw = self.firmware
         ident = f"{fw.get('fw', '?')} proto {fw.get('proto', '?')}, adc_ok {fw.get('adc_ok', '?')}"
         self.log(f"connected: {ident}")
@@ -355,6 +362,7 @@ class Session:
                     record.results.append(r)
                     with self._lock:
                         self.board[tid] = r
+                        self.provenance[tid] = {"run_id": record.run_id, "started": record.started}
                         assert self.job is not None
                         self.job["done"].append(tid)
                         self.job["current"] = None
@@ -367,6 +375,10 @@ class Session:
                     record.run_id = f"{base}-{n}"
                     n += 1
                 folder = self.results_root / record.run_id
+                with self._lock:
+                    for r in record.results:
+                        if r.id in self.provenance:
+                            self.provenance[r.id]["run_id"] = record.run_id
                 out = write_run(record, folder, cfg=self.cfg, meas_log=ctx.meas_log)
                 saved = None
                 if save:
@@ -476,6 +488,22 @@ class Session:
 
         return self._manual(go)
 
+    def wake(self) -> dict[str, Any]:
+        """Hold the motor coils (no steps) to wake power bank A, then look for the ADC."""
+
+        def go(dev: LIODevice) -> dict[str, Any]:
+            ms = self.cfg.section.integer("dashboard.wake_button_ms")
+            dev.power_wake(ms)
+            dev.sleep(self.cfg.section.num("power.settle_ms") / 1000.0)
+            adc_ok = dev.info(refresh=True).as_int("adc_ok") == 1
+            self.log(
+                f"wake bank A: coils held {ms} ms; ADC "
+                + ("found" if adc_ok else "still not answering")
+            )
+            return {"action": "wake", "wake_ms": ms, "adc_ok": adc_ok}
+
+        return self._manual(go)
+
     def all_off(self) -> None:
         """LEDs off and motors stopped; during a run, stop the run (it restores the safe state)."""
         if self.running:
@@ -491,12 +519,73 @@ class Session:
         self.log("all off: LEDs off, motors stopped")
 
     def clear_results(self) -> None:
+        """Start the board afresh; earlier runs stay on disk but are no longer counted."""
         with self._lock:
             if self.running:
                 raise Busy("a run is in progress")
-            self.board = {}
+            state = self._read_state()
+            state.setdefault("cleared", {})[self.board_kind] = _now_iso()
+            self._write_state(state)
+            self.board, self.provenance = {}, {}
             self.last_run = None
-        self.log("results cleared")
+        self.log(
+            f"results cleared ({self.board_kind}); earlier reports stay in {self.results_root}"
+        )
+
+    # ------------------------------------------------------ persistence
+
+    def _read_state(self) -> dict[str, Any]:
+        try:
+            data = json.loads(self._state_path.read_text())
+        except (OSError, ValueError):
+            return {}
+        return data if isinstance(data, dict) else {}
+
+    def _write_state(self, state: dict[str, Any]) -> None:
+        self.results_root.mkdir(parents=True, exist_ok=True)
+        self._state_path.write_text(json.dumps(state, indent=2) + "\n")
+
+    def restore_board(self, kind: str) -> None:
+        """Rebuild the board from saved runs of this kind (``hardware`` or ``sim``).
+
+        Runs are applied oldest first, so each test shows its latest result.
+        Runs from before the last Clear results are ignored.
+        """
+        cleared = _parse_iso(self._read_state().get("cleared", {}).get(kind))
+        board: dict[str, TestResult] = {}
+        prov: dict[str, dict[str, str]] = {}
+        last: RunRecord | None = None
+        runs = sorted(self.results_root.glob("*/results.json"))[-RESTORE_RUNS:]
+        for f in runs if self.results_root.is_dir() else []:
+            try:
+                record = RunRecord.load(f)
+            except (OSError, ValueError, KeyError, TypeError):
+                continue
+            if _kind(record.target) != kind:
+                continue
+            started = _parse_iso(record.started)
+            if cleared is not None and (started is None or started <= cleared):
+                continue
+            for r in record.results:
+                board[r.id] = r
+                prov[r.id] = {"run_id": f.parent.name, "started": record.started}
+            last = record
+        with self._lock:
+            self.board_kind, self.board, self.provenance = kind, board, prov
+            self.last_run = (
+                {
+                    "run_id": last.run_id,
+                    "verdict": last.verdict,
+                    "report": f"/results/{last.run_id}/report.html",
+                    "folder": str(self.results_root / last.run_id),
+                }
+                if last is not None
+                else None
+            )
+        if board:
+            n_runs = len({p["run_id"] for p in prov.values()})
+            self.log(f"restored {len(board)} {kind} test results from {n_runs} earlier runs")
+        self._changed()
 
     # -------------------------------------------------------- past runs
 
@@ -531,6 +620,9 @@ class Session:
             if self.running:
                 raise Busy("a run is in progress")
             self.board = {r.id: r for r in record.results}
+            self.provenance = {
+                r.id: {"run_id": run_id, "started": record.started} for r in record.results
+            }
             self.last_run = {
                 "run_id": record.run_id,
                 "verdict": record.verdict,
@@ -572,7 +664,13 @@ class Session:
                 "error": self.error,
                 "log": list(self._log)[-120:],
                 "parts": twin.parts(results, self.cfg),
-                "subsystems": twin.subsystems(results, self._planned()),
+                "subsystems": twin.subsystems(results, self._planned(), self.provenance),
+                "board": {
+                    "kind": self.board_kind,
+                    "runs": len({p["run_id"] for p in self.provenance.values()}),
+                    "since": min((p["started"] for p in self.provenance.values()), default=""),
+                    "cleared": self._read_state().get("cleared", {}).get(self.board_kind, ""),
+                },
                 "overall": twin.overall(results, self.cfg, len(self.catalogue)),
                 "provisional": self.cfg.provisional,
             }
@@ -597,3 +695,18 @@ class Session:
             "statuses": [s.value for s in Status] + [twin.NOT_RUN],
             "baseline": str(bl.latest()) if bl.latest() is not None else None,
         }
+
+
+def _kind(target: str) -> str:
+    return "sim" if target == "sim" else "hardware"
+
+
+def _now_iso() -> str:
+    return dt.datetime.now().astimezone().isoformat(timespec="seconds")
+
+
+def _parse_iso(value: object) -> dt.datetime | None:
+    try:
+        return dt.datetime.fromisoformat(str(value)) if value else None
+    except ValueError:
+        return None

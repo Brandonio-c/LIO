@@ -8,6 +8,7 @@
   - a digital twin (Nano, shift registers, rails, the 16 holes, detectors, ADC, motors, safety) coloured by result, with the evidence behind each part, and Measure / Flash on each hole
   - the overall verdict over the latest result of every test, with its coverage; earlier runs and their reports
 - `dashboard:` settings in `lio_hw.yaml` (local address, port, poll rate, flash time).
+- The dashboard's board persists between sessions: it is rebuilt from the saved runs in `test_results/` (hardware and simulator apart; Clear results remembered), and each test shows its source run. A **⚡ Wake bank A** button.
 - `environment.yml`: the `lio` conda environment for all LIO software (`conda env create -f environment.yml`).
 
 - `POWER WAKE [ms]` (firmware) and `LIODevice.keep_awake()`: holding both motors' coils for 1 s (no steps, nothing moves) wakes power bank A; the host does it when the port opens, before each test and before Measure/Flash, at most every 20 s (`power:` in `lio_hw.yaml`). Simulator fault `bank_a_asleep`.

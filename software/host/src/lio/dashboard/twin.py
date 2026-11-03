@@ -188,7 +188,9 @@ def parts(results: Iterable[TestResult], cfg: HwConfig) -> dict[str, Any]:
 
 
 def subsystems(
-    results: Iterable[TestResult], planned: dict[str, list[str]]
+    results: Iterable[TestResult],
+    planned: dict[str, list[str]],
+    provenance: dict[str, dict[str, str]] | None = None,
 ) -> list[dict[str, Any]]:
     """One tile per catalogue module: status, counts and each test's outcome.
 
@@ -209,6 +211,8 @@ def subsystems(
                 "name": done[tid].name if tid in done else "",
                 "message": done[tid].message if tid in done else "",
                 "duration_s": round(done[tid].duration_s, 1) if tid in done else None,
+                "run_id": (provenance or {}).get(tid, {}).get("run_id", ""),
+                "started": (provenance or {}).get(tid, {}).get("started", ""),
                 "bad": [
                     {"id": x.id, "status": x.status.value, "message": x.message}
                     for x in done[tid].subs
