@@ -134,7 +134,12 @@ class SerialTransport(Transport):
             if time.monotonic() >= deadline:
                 return None
             try:
-                chunk = ser.read(256)
+                # read(1) returns as soon as a byte arrives (or after the port's
+                # 50 ms timeout); then take whatever else is already waiting.
+                # A plain read(256) would wait the full timeout on every line.
+                chunk = ser.read(1)
+                if chunk and ser.in_waiting:
+                    chunk += ser.read(ser.in_waiting)
             except serial.SerialException as e:
                 raise TransportError(f"read failed on {self.port}: {e}") from e
             if chunk:
