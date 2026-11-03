@@ -12,6 +12,7 @@ including on exceptions and Ctrl-C::
 from __future__ import annotations
 
 import logging
+import math
 import threading
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -220,6 +221,8 @@ class LIODevice:
         # sleep; one-shot, so the safe-state restore afterwards still works.
         self.cancellable = False
         self._cancel = threading.Event()
+        self._wake_supported = True
+        self._last_wake = -math.inf
         th = cfg.section
         self.duty: DutyTracker | None = (
             DutyTracker(
@@ -242,7 +245,44 @@ class LIODevice:
             self.transport.close()
             raise
         self.boot_s = self.transport.now() - t0
+        self.keep_awake(force=True)
         return banner
+
+    # ------------------------------------------------------- power bank A
+
+    def power_wake(self, ms: int | None = None) -> int:
+        """POWER WAKE: hold both motors' coils (no steps) to wake power bank A."""
+        ms = ms if ms is not None else self.cfg.section.integer("power.wake_ms")
+        reply = self.command(f"POWER WAKE {ms}", timeout=ms / 1000.0 + 1.0)
+        return reply.fields.as_int("wake_ms")
+
+    def keep_awake(self, *, force: bool = False) -> bool:
+        """Wake power bank A if it may have gone to sleep; True if a wake was sent.
+
+        Sent when the port opens (``force``) and, through the test runner and
+        the dashboard, before tests and manual measurements, at most once per
+        ``power.interval_s``. Never raises: firmware without POWER WAKE, an LED
+        that is on, or a moving motor just skip it.
+        """
+        sec = self.cfg.section
+        if not sec.raw("power.wake") or not self._wake_supported:
+            return False
+        now = self.now()
+        if not force and now - self._last_wake < sec.num("power.interval_s"):
+            return False
+        try:
+            self.power_wake()
+        except DeviceError as e:
+            if e.code == ErrCode.UNKNOWN:
+                self._wake_supported = False  # an older firmware build
+                log.info("firmware has no POWER WAKE: power bank A is not woken")
+            else:
+                log.info("POWER WAKE skipped: %s", e.msg)
+            return False
+        self._last_wake = self.now()
+        self.sleep(sec.num("power.settle_ms") / 1000.0)
+        self._info = None  # adc_ok may have changed
+        return True
 
     def close(self) -> None:
         if self.transport.is_open:

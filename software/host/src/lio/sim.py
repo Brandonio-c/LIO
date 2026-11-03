@@ -41,6 +41,7 @@ FAULT_NAMES = (
     "chain_break",  # U1 Q7' -> U2 SER open: U2 receives nothing
     "motor_stall",
     "comms_drop",  # every Nth output line is lost
+    "bank_a_asleep",  # +5 V bank switched off at low load: no ADC until POWER WAKE
 )
 
 _PARAM_FAULTS = {"stuck_on", "dead_channel", "swapped"}
@@ -71,6 +72,7 @@ class Faults:
     chain_break: bool = False
     motor_stall: bool = False
     comms_drop: bool = False
+    bank_a_asleep: bool = False
 
     @classmethod
     def parse(cls, specs: str | Iterable[str] | None) -> Faults:
@@ -244,6 +246,9 @@ class SimulatedLIO:
         self._light_since: dict[int, float] = {}
         self._powered = False
         self._boot_done = 0.0
+        # Bank A (the +5 V bus) is independent of the Nano: a reset does not wake it.
+        self.bank_awake_until = -math.inf
+        self.wakes = 0
         self._reset_state()
 
     # ------------------------------------------------------------------ state
@@ -271,7 +276,7 @@ class SimulatedLIO:
         self.busy_until = self.clock
         self._filters = {"opt101": _Filter(), "ingaas": _Filter()}
         self._end_all_light(self.clock)
-        if self.faults.no_adc:
+        if self.adc_missing(self.clock):
             self.fault_bits |= _FAULT_ADC_MISSING
 
     # ------------------------------------------------------- link (host side)
@@ -296,7 +301,7 @@ class SimulatedLIO:
         self._emit_at(
             banner_at,
             f"# BOOT name=lio fw={self.FW_VERSION} proto=1 build={self.BUILD} "
-            f"adc_ok={0 if self.faults.no_adc else 1} hw_wdt=0",
+            f"adc_ok={0 if self.adc_missing(banner_at) else 1} hw_wdt=0",
         )
 
     def receive_bytes(self, data: bytes) -> None:
@@ -539,6 +544,10 @@ class SimulatedLIO:
         self._set_ce(t, rail, True)
         return round(self.lit_for * 1000)
 
+    def adc_missing(self, t: float) -> bool:
+        """No ADS1115 on the bus at time t: absent, or bank A (its supply) asleep."""
+        return self.faults.no_adc or (self.faults.bank_a_asleep and t >= self.bank_awake_until)
+
     def lit_hole(self) -> int:
         h = self._single_hole(self.mask)
         return h if h and self.ce[self.rail_of(h)] else 0
@@ -699,7 +708,7 @@ class _Exec:
 
     def adc_read(self, ch: int) -> int:
         s = self.sim
-        if s.faults.no_adc:
+        if s.adc_missing(self.t):
             s.fault_bits |= _FAULT_I2C_ERROR
             raise _Refusal(4, "adc read failed")
         self.wait(s.conv_s + s.cfg.sim.num("i2c_overhead_s"))
@@ -729,12 +738,30 @@ class _Exec:
             "MOTOR": self.c_motor,
             "WDT": self.c_wdt,
             "RESET": self.c_reset,
+            "POWER": self.c_power,
         }
         h = handlers.get(self.word)
         if h is not None:
             h()
         elif not self.legacy():
             raise _Refusal(1, "unknown command")
+
+    def c_power(self) -> None:
+        s, lim = self.sim, self.sim.cfg.limits
+        usage = f"usage: POWER WAKE [ms<={lim['wake_ms_max']}]"
+        if len(self.tok) < 2 or self.tok[1] != "WAKE":
+            raise _Refusal(2, usage)
+        ms = lim["wake_ms_default"]
+        if len(self.tok) > 2:
+            ms = self.need(2, 1, lim["wake_ms_max"], usage)
+        if s._any_ce():
+            raise _Refusal(3, "LED on")
+        if any(m.moving and self.t < m.t_end for m in s.motors):
+            raise _Refusal(5, "motor moving")
+        self.wait(ms / 1000.0)  # coils held at their phase: no steps, no motion
+        s.wakes += 1
+        s.bank_awake_until = self.t + s.cfg.sim.num("bank_awake_s")
+        self.ok(f"wake_ms={ms}")
 
     def c_ping(self) -> None:
         self.ok(f"uptime_ms={round((self.t - self.sim._boot_done) * 1000)}")
@@ -743,12 +770,14 @@ class _Exec:
         s, lim = self.sim, self.sim.cfg.limits
         self.ok(
             f"fw={s.FW_VERSION} proto=1 build={s.BUILD} adc_addr=0x48 "
-            f"adc_ok={0 if s.faults.no_adc else 1} gain={_GAIN_NAMES[s.gain_idx]} rate={s.rate} "
+            f"adc_ok={0 if s.adc_missing(self.t) else 1} "
+            f"gain={_GAIN_NAMES[s.gain_idx]} rate={s.rate} "
             f"settle_ms={lim['settle_ms']} wdt_a_ms={s.wdt_ms[1]} wdt_b_ms={s.wdt_ms[2]} "
             f"wdt_a_cap_ms={lim['wdt_a_cap_ms']} wdt_b_cap_ms={lim['wdt_b_cap_ms']} "
             f"comms_ms={lim['comms_ms']} arm_ms={lim['arm_ms']} step_max={lim['step_max']} "
             f"jog_max={lim['jog_max']} jog_v_max={lim['jog_v_max']} "
-            f"jog_acc_max={lim['jog_acc_max']} motion_armed={int(s._armed(self.t))} "
+            f"jog_acc_max={lim['jog_acc_max']} wake_ms_max={lim['wake_ms_max']} "
+            f"motion_armed={int(s._armed(self.t))} "
             f"arm_token=0x{s.token:04X} hw_wdt=0"
         )
 
@@ -768,7 +797,7 @@ class _Exec:
         if len(self.tok) < 2 or self.tok[1] != "SCAN":
             raise _Refusal(2, "usage: I2C SCAN")
         self.wait(0.02)
-        if self.sim.faults.no_adc:
+        if self.sim.adc_missing(self.t):
             self.ok("n=0 addrs=none")
         else:
             self.ok("n=1 addrs=0x48")
@@ -781,7 +810,7 @@ class _Exec:
         if sub == "CFG":
             self.adc_cfg()
             return
-        if self.sim.faults.no_adc:
+        if self.sim.adc_missing(self.t):
             raise _Refusal(4, "ADS1115 not present")
         if sub == "READ":
             self.adc_read_cmd()
@@ -1012,7 +1041,7 @@ class _Exec:
         s._emit_at(
             boot,
             f"# BOOT name=lio fw={s.FW_VERSION} proto=1 build={s.BUILD} "
-            f"adc_ok={0 if s.faults.no_adc else 1} hw_wdt=0",
+            f"adc_ok={0 if s.adc_missing(boot) else 1} hw_wdt=0",
         )
         self.t = boot
 

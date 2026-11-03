@@ -445,6 +445,7 @@ class Session:
 
     def measure(self, hole: int) -> dict[str, Any]:
         def go(dev: LIODevice) -> dict[str, Any]:
+            dev.keep_awake()
             n = self.cfg.thresholds.integer("channel.meas_n")
             m = dev.meas(hole, n=n)
             nets = {d: m.net(d) for d in twin.DETECTORS}
@@ -464,6 +465,7 @@ class Session:
         """Light one hole for ``ms`` (clamped by the firmware watchdog), then off."""
 
         def go(dev: LIODevice) -> dict[str, Any]:
+            dev.keep_awake()
             n0 = len(dev.events)
             until = dev.ch_on(hole, ms)
             dev.drain(until / 1000.0 + 0.5)

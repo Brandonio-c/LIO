@@ -62,6 +62,11 @@ const uint16_t MOTOR_RPM_DEFAULT  = 5;
 const uint16_t MOTOR_RPM_MAX      = 15;
 const uint16_t HALF_STEPS_PER_REV = 4096;
 
+// POWER WAKE: hold both motors' coils (no steps) to draw ~0.5 A from bank A,
+// which wakes a USB power bank that switched itself off at low load.
+const uint16_t WAKE_MS_DEFAULT = 1000;
+const uint16_t WAKE_MS_MAX     = 3000;
+
 // Legacy jog (lio_motor_control.py compatibility, reviewed exception — PROTOCOL.md §7)
 const uint16_t JOG_MAX_STEPS   = 2048;  // per U/D/LU/LD/RU/RD command
 const uint16_t JOG_SPEED_MIN   = 50;    // half-steps/s

@@ -71,11 +71,11 @@ Channels are holes 1–16. RAIL A = holes 1–9 (DRV1, CE1 = A3); RAIL B = holes
 | Command | Response fields |
 |---|---|
 | `PING` | `uptime_ms` |
-| `INFO` | `fw proto build adc_addr adc_ok gain rate settle_ms wdt_a_ms wdt_b_ms wdt_a_cap_ms wdt_b_cap_ms comms_ms arm_ms step_max jog_max jog_v_max jog_acc_max motion_armed arm_token hw_wdt` |
+| `INFO` | `fw proto build adc_addr adc_ok gain rate settle_ms wdt_a_ms wdt_b_ms wdt_a_cap_ms wdt_b_cap_ms comms_ms arm_ms step_max jog_max jog_v_max jog_acc_max wake_ms_max motion_armed arm_token hw_wdt` (`wake_ms_max` since the POWER WAKE build) |
 | `STATUS` | `ch` (lit hole, 0 = none) `ce1 ce2 mask motor1 motor2` (`idle`/`run`) `pos1 pos2 armed armed_ms va vs acc faults wdt_trips failsafe_trips` |
 | `RESET` | `OK RESET`, then the device restarts and prints `# BOOT` |
 
-`faults` is a sticky bit mask, cleared only by a reset: `0x01` ADS1115 missing at boot, `0x02` I²C error seen, `0x04` an LED watchdog fired, `0x08` the comms failsafe fired.
+`faults` is a sticky bit mask, cleared only by a reset: `0x01` ADS1115 missing at boot (the firmware keeps looking for it: `adc_ok` in `INFO` and every ADC command probe again until it answers, so a power bank that wakes after the Nano boots is picked up without a reset), `0x02` I²C error seen, `0x04` an LED watchdog fired, `0x08` the comms failsafe fired.
 
 `RESET` turns everything off and jumps to address 0, which re-runs the C runtime and `setup()`. It does not use the hardware watchdog, because the old Nano bootloader loops forever after a watchdog reset.
 
@@ -130,6 +130,10 @@ Motor 1 = left (D2–D5), motor 2 = right (D6–D9), 28BYJ-48 through ULN2003. *
 | `MOTOR STOP` | Stop both immediately and release the coils | `pos1 pos2` |
 
 Moves use a trapezoidal profile with an acceleration of 250 half-steps/s². The coils are released at the end of every move. An arm that expires during a move does not stop it; the move is bounded anyway.
+
+### Power bank A: `POWER WAKE [ms]`
+
+Power bank A alone supplies the +5 V bus (ADS1115, LEDs, shift registers, motor boards), and a USB power bank switches itself off when the load is small. `POWER WAKE` holds both motors' coils at their current phase for `ms` (default 1000, 1–3000), drawing about 0.5 A from that bus, then releases them: `OK POWER wake_ms=<ms>`. **No step is issued, so nothing moves, and no arming is needed.** It is refused while an LED is on (`code=3`) or a motor is moving (`code=5`). The host sends it when the port opens, before each test and before manual measurements, at most once per `power.interval_s` (`lio_hw.yaml`). Bank B (−5 V, the TL072 only) draws nothing the Nano controls and cannot be woken this way.
 
 ## 6. Firmware safety rules
 

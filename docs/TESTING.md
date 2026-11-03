@@ -209,7 +209,7 @@ Every FAIL message says what was measured, against what, and the likely cause. T
 
 | Message | First thing to check |
 |---|---|
-| T03.1 ADS1115 not found | SDA → A4, SCL → A5, ADDR → GND, ADS VDD; both lines idle near 5 V |
+| T03.1 ADS1115 not found | **power bank A asleep** (it alone powers the +5 V bus: ADS1115, LEDs, shift registers; see §7.1); then SDA → A4, SCL → A5, ADDR → GND, ADS VDD; both lines idle near 5 V |
 | T05.1 no light with CE high | the rail's driver supply and CE wire (A3 / D10) |
 | T04.1 / T05.1 light with CE low | CE polarity, or a missing CE pull-down |
 | T05.3 U2 receives no data | U1 pin 9 → U2 pin 14, U2 power |
@@ -240,7 +240,8 @@ Do this with the user present. Motion steps only with someone at the bench.
 
 - [ ] Chamber **empty and closed**, sample nest in place (baseline sample `none-empty-chamber`)
 - [ ] Stages somewhere in mid-travel: nothing can be hit by a small move
-- [ ] Power banks charged; bank B awake (−5 V present at the TL072)
+- [ ] Power banks charged, **and kept awake**: about +5 V between the +5 V bus and GND (bank A), and about −5 V at TL072 pin 4 (bank B). USB banks switch off when the load is small, and firmware v2 draws almost nothing when idle (it releases the motor coils), so they go to sleep within a minute or so. Use each bank's always-on / low-current mode if it has one (often a double press of its button), or a dummy load across each bank (for example 47 Ω, 1 W: about 100 mA, it gets warm). The old motor sketch kept them awake only because it held the coils energised all the time
+- [ ] Bank A is woken by the software (`POWER WAKE`: the motor coils are held for 1 s, nothing moves) when the port opens, before each test and before Measure/Flash. **Bank B cannot be woken from software**: it needs its always-on mode or a dummy load. If bank A still drops out, the firmware finds the ADC again on its next use
 - [ ] Nano connected **directly** to the Mac, not through the dock/hub
 - [ ] Multimeter with mA range and leads (T05.6); phone camera for holes 8–9 (T04.4)
 - [ ] Nothing else holding the port (Arduino IDE Serial Monitor, `lio_motor_control.py`)

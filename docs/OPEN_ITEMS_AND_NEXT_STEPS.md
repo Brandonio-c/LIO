@@ -7,6 +7,7 @@ Ordered roughly by priority. Tick each item off as it's completed.
 - [ ] **Re-wire the InGaAs photodiode** if it was built to the earlier instructions: cathode → TL072 pin 2, anode → GND. Add the 10 kΩ resistor between TL072 pin 1 and ADS1115 A0.
 - [ ] **Continuity-test the InGaAs case lead.** Ground it only if it's isolated or tied to the anode.
 - [ ] **Confirm −5 V stays up** for at least 5 minutes. If bank B sleeps, use a low-current mode or a 220 Ω dummy load.
+- [ ] **Keep bank A awake too.** It alone powers the +5 V bus (ADS1115, 74HC595s, LED drivers, OPT101, TL072, motor boards). Firmware v2 releases the motor coils when idle, so the idle load is tiny and the bank sleeps: the ADS1115 then disappears from I²C (T03.1). Fix: the bank's always-on mode, a dummy load (≈47 Ω 1 W), or a mains 5 V supply in place of bank A. While bank A is off, the Nano's outputs (A0–A3, D10, SDA/SCL) can back-power the unpowered chips through their input diodes, so power the banks before connecting.
 - [ ] **Check that the Nano's 5V pin isn't connected** to the +5V rail.
 - [ ] **Flash `lio_firmware.ino`** (with the corrected order: select the MOSFET, then raise CE) and run TEST_MODE 1 → 5.
 - [ ] **Set the driver currents:** DRV1 at its minimum (≈30 mA); DRV2 at ≈45 mA or the lowest SWIR LED rating if that's lower. Measure with the meter in series.
