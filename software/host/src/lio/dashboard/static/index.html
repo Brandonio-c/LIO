@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO V3 · System dashboard</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --surface-2: #f2f1ed;
+  --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --hair: #e1e0d9; --axis: #c3c2b7; --ring: rgba(11,11,11,0.10);
+  --good: #0ca30c; --warning: #fab219; --serious: #ec835a; --critical: #d03b3b;
+  --good-text: #006300;
+  --opt101: #2a78d6; --ingaas: #eb6834;
+  --accent: #2a78d6;
+  --wash-good: rgba(12,163,12,0.10); --wash-warning: rgba(250,178,25,0.16); --wash-critical: rgba(208,59,59,0.10);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #242423;
+    --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+    --hair: #2c2c2a; --axis: #383835; --ring: rgba(255,255,255,0.10);
+    --good-text: #0ca30c;
+    --opt101: #3987e5; --ingaas: #d95926; --accent: #3987e5;
+    --wash-good: rgba(12,163,12,0.16); --wash-warning: rgba(250,178,25,0.14); --wash-critical: rgba(208,59,59,0.18);
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+button, input, select { font: inherit; color: inherit; }
+h1, h2, h3 { margin: 0; font-weight: 600; }
+h2 { font-size: 15px; }
+h3 { font-size: 14px; }
+.muted { color: var(--muted); }
+.ink2 { color: var(--ink-2); }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- layout */
+header { display: flex; align-items: center; gap: 16px; padding: 12px 20px;
+  background: var(--surface); border-bottom: 1px solid var(--hair); position: sticky; top: 0; z-index: 5; }
+header h1 { font-size: 17px; }
+header .spacer { flex: 1; }
+main { padding: 16px 20px 40px; display: grid; gap: 16px; max-width: 1500px; margin: 0 auto; }
+.card { background: var(--surface); border: 1px solid var(--hair); border-radius: 10px; padding: 14px 16px; }
+.card > h2 { margin-bottom: 10px; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.top { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(360px, 1.4fr); gap: 16px; }
+.twin-wrap { display: grid; grid-template-columns: minmax(520px, 2.2fr) minmax(300px, 1fr); gap: 16px; }
+@media (max-width: 1100px) { .top, .twin-wrap { grid-template-columns: 1fr; } }
+
+/* ---------- controls */
+.btn { border: 1px solid var(--axis); background: var(--surface); border-radius: 7px; padding: 6px 12px;
+  cursor: pointer; white-space: nowrap; }
+.btn:hover:not(:disabled) { background: var(--surface-2); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+.btn.primary:hover:not(:disabled) { filter: brightness(1.08); background: var(--accent); }
+.btn.danger { background: var(--critical); border-color: var(--critical); color: #fff; font-weight: 600; }
+.btn.danger:hover:not(:disabled) { filter: brightness(1.08); background: var(--critical); }
+.btn.small { padding: 3px 9px; font-size: 13px; }
+label.check { display: flex; gap: 7px; align-items: flex-start; cursor: pointer; }
+label.check input { margin-top: 3px; }
+input[type=text], input[type=number], select { border: 1px solid var(--axis); background: var(--surface);
+  border-radius: 6px; padding: 5px 8px; min-width: 0; }
+.field { display: grid; gap: 3px; font-size: 13px; color: var(--ink-2); }
+
+/* ---------- status badges: colour + icon + label, never colour alone */
+.badge { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; padding: 1px 9px 1px 6px;
+  font-size: 12px; font-weight: 600; border: 1px solid transparent; white-space: nowrap; }
+.badge .ic { width: 15px; height: 15px; border-radius: 50%; display: inline-grid; place-items: center;
+  font-size: 10px; line-height: 1; color: #fff; }
+.s-PASS .ic { background: var(--good); }
+.s-WARN .ic { background: var(--warning); color: #0b0b0b; }
+.s-FAIL .ic, .s-ERROR .ic { background: var(--critical); }
+.s-SKIP .ic { background: var(--muted); }
+.s-NOT_RUN .ic { background: transparent; border: 1.5px dashed var(--muted); color: var(--muted); }
+.badge.s-PASS { background: var(--wash-good); color: var(--good-text); }
+.badge.s-WARN { background: var(--wash-warning); color: var(--ink); }
+.badge.s-FAIL, .badge.s-ERROR { background: var(--wash-critical); color: var(--critical); }
+.badge.s-SKIP, .badge.s-NOT_RUN { background: var(--surface-2); color: var(--ink-2); }
+
+/* ---------- verdict hero */
+.verdict { display: grid; gap: 8px; }
+.verdict .word { font-size: 30px; font-weight: 700; display: flex; align-items: center; gap: 10px; letter-spacing: .2px; }
+.verdict .word .ic { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 18px; color: #fff; }
+.v-FUNCTIONAL .ic { background: var(--good); }
+.v-DEGRADED .ic { background: var(--warning); color: #0b0b0b !important; }
+.v-NOT_FUNCTIONAL .ic { background: var(--critical); }
+.v-NOT_RUN .ic { border: 2px dashed var(--muted); color: var(--muted) !important; }
+.coverage { height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; display: flex; gap: 2px; }
+.coverage > span { display: block; height: 100%; }
+.reasons { margin: 0; padding-left: 18px; color: var(--ink-2); }
+.note { font-size: 12px; color: var(--muted); }
+
+/* ---------- twin */
+#twin { width: 100%; height: auto; display: block; }
+#twin text { fill: var(--ink); font-size: 12px; }
+#twin .sub { fill: var(--ink-2); font-size: 11px; }
+#twin .tiny { fill: var(--muted); font-size: 10px; }
+#twin .wire { stroke: var(--axis); stroke-width: 2; fill: none; }
+#twin .part { cursor: pointer; outline: none; }
+#twin .box { fill: var(--surface); stroke: var(--axis); stroke-width: 1.5; }
+#twin .stripe { stroke: none; }
+#twin .part:hover .box, #twin .part:focus-visible .box { stroke: var(--ink-2); }
+#twin .part.sel .box, #twin .part.sel .hole { stroke: var(--accent); stroke-width: 3; }
+#twin .hole { stroke: var(--surface); stroke-width: 2; }
+#twin .hole.unfitted { stroke-dasharray: 3 3; stroke: var(--muted); stroke-width: 1.5; }
+#twin .hole-num { font-size: 12px; font-weight: 700; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+#twin .hole-ic { font-size: 9px; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+#twin .rail-arc { fill: none; stroke-width: 7; stroke-linecap: round; cursor: pointer; }
+#twin .ring { fill: none; stroke: var(--hair); stroke-width: 1.5; }
+#twin .busy { animation: pulse 1.1s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .45; } }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; font-size: 12px; color: var(--ink-2); }
+.legend .badge { font-weight: 500; }
+
+/* ---------- details */
+.details h3 { font-size: 16px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: 3px 12px; margin: 10px 0; font-size: 13px; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; }
+.ev { list-style: none; padding: 0; margin: 6px 0 0; display: grid; gap: 4px; max-height: 330px; overflow: auto; }
+.ev li { display: grid; grid-template-columns: max-content 1fr; gap: 8px; align-items: start; font-size: 13px;
+  padding: 4px 0; border-top: 1px solid var(--hair); }
+.ev .id { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; color: var(--ink-2); }
+details > summary { cursor: pointer; color: var(--ink-2); font-size: 13px; margin-top: 6px; }
+.meas { display: flex; gap: 14px; margin-top: 8px; font-size: 13px; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: baseline; }
+
+/* ---------- subsystems */
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 12px; }
+.tile { border: 1px solid var(--hair); border-radius: 9px; padding: 11px 12px; background: var(--surface);
+  display: grid; gap: 7px; border-left-width: 5px; }
+.tile.s-PASS { border-left-color: var(--good); }
+.tile.s-WARN { border-left-color: var(--warning); }
+.tile.s-FAIL, .tile.s-ERROR { border-left-color: var(--critical); }
+.tile.s-SKIP, .tile.s-NOT_RUN { border-left-color: var(--axis); }
+.tile .head { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+.tile .what { font-size: 12.5px; color: var(--ink-2); }
+.tile .tests { display: flex; gap: 3px; flex-wrap: wrap; }
+.tile .tests span { width: 16px; height: 16px; border-radius: 4px; display: grid; place-items: center; font-size: 9px; color: #fff; }
+.tile .tests .s-PASS { background: var(--good); }
+.tile .tests .s-WARN { background: var(--warning); color: #0b0b0b; }
+.tile .tests .s-FAIL, .tile .tests .s-ERROR { background: var(--critical); }
+.tile .tests .s-SKIP { background: var(--muted); }
+.tile .tests .s-NOT_RUN { border: 1.5px dashed var(--axis); color: var(--muted); }
+.tile .tests .now { outline: 2px solid var(--accent); outline-offset: 1px; animation: pulse 1.1s infinite; }
+.tile table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.tile td { padding: 3px 4px; border-top: 1px solid var(--hair); vertical-align: top; }
+.tile td.msg { color: var(--ink-2); }
+
+/* ---------- progress, log, runs */
+.progress { height: 10px; border-radius: 5px; background: var(--surface-2); overflow: hidden; }
+.progress > div { height: 100%; background: var(--accent); transition: width .3s; }
+#log { height: 220px; overflow: auto; background: var(--surface-2); border-radius: 7px; padding: 8px 10px;
+  margin: 0; white-space: pre-wrap; }
+table.runs { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.runs th { text-align: left; color: var(--muted); font-weight: 500; padding: 4px 6px; }
+table.runs td { border-top: 1px solid var(--hair); padding: 5px 6px; }
+.pill { display: inline-flex; gap: 6px; align-items: center; border: 1px solid var(--hair); border-radius: 999px;
+  padding: 3px 10px; font-size: 13px; background: var(--surface-2); }
+.pill .led { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); }
+.pill.on .led { background: var(--good); }
+
+/* ---------- modal & toast */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: none; place-items: center; z-index: 20; }
+.overlay.open { display: grid; }
+.modal { background: var(--surface); border-radius: 12px; padding: 20px 22px; width: min(560px, 92vw);
+  box-shadow: 0 10px 40px rgba(0,0,0,.35); display: grid; gap: 14px; }
+.modal .q { font-size: 16px; line-height: 1.5; }
+.modal .tag { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+#toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--page);
+  padding: 9px 16px; border-radius: 8px; font-size: 13px; display: none; z-index: 30; max-width: 80vw; }
+.connect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 800px) { .connect-grid { grid-template-columns: 1fr; } }
+.ports { display: grid; gap: 4px; margin: 8px 0; }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>LIO V3 · System dashboard</h1>
+  <span id="conn" class="pill"><span class="led"></span><span id="conn-text">not connected</span></span>
+  <span class="spacer"></span>
+  <button id="btn-disconnect" class="btn small hidden">Disconnect</button>
+  <button id="btn-off" class="btn danger hidden" title="Stops a run safely, or turns every LED off and stops the motors">■ All off / Stop</button>
+</header>
+
+<main>
+  <!-- connect -->
+  <section id="connect" class="card">
+    <h2>Connect</h2>
+    <div class="connect-grid">
+      <div>
+        <h3>LIO hardware (USB)</h3>
+        <p class="muted" style="margin:4px 0">Opening the port resets the Nano (about 2 s); it starts dark and idle. Firmware v2 must be flashed (docs/TESTING.md §7.2).</p>
+        <div id="ports" class="ports"><span class="muted">looking for serial ports…</span></div>
+        <div class="row"><button id="btn-connect" class="btn primary">Connect</button><button id="btn-refresh" class="btn small">Refresh ports</button></div>
+      </div>
+      <div>
+        <h3>Simulator (no hardware)</h3>
+        <p class="muted" style="margin:4px 0">A simulated LIO on virtual time: tests finish in seconds. Add faults to see how they show up.</p>
+        <div class="field" style="margin:8px 0">Faults (optional, comma separated)
+          <input id="faults" type="text" list="fault-names" placeholder="e.g. reversed_ingaas, dead_channel:5">
+          <datalist id="fault-names"></datalist>
+        </div>
+        <button id="btn-sim" class="btn">Connect simulator</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- verdict + run controls -->
+  <section class="top">
+    <div class="card verdict" id="verdict-card">
+      <h2>Overall system evaluation</h2>
+      <div id="verdict-word" class="word v-NOT_RUN"><span class="ic">○</span><span>NOT YET TESTED</span></div>
+      <div class="coverage" id="coverage" title="tests run"></div>
+      <div id="verdict-cover" class="ink2"></div>
+      <ul id="verdict-reasons" class="reasons"></ul>
+      <div id="provisional" class="note"></div>
+      <div id="last-run" class="row"></div>
+    </div>
+    <div class="card" id="run-card">
+      <h2>Run tests</h2>
+      <div id="progress-box" class="hidden" style="display:grid;gap:6px;margin-bottom:12px">
+        <div class="row" style="justify-content:space-between"><strong id="progress-text"></strong><button id="btn-stop" class="btn small danger">Stop</button></div>
+        <div class="progress"><div id="progress-bar" style="width:0"></div></div>
+        <div id="progress-now" class="ink2"></div>
+      </div>
+      <div class="row" style="gap:8px;margin-bottom:10px">
+        <button id="btn-all" class="btn primary">▶ Run whole system</button>
+        <span class="muted">or run one subsystem from its tile below</span>
+      </div>
+      <div style="display:grid;gap:6px;grid-template-columns:1fr 1fr">
+        <label class="check"><input type="checkbox" id="opt-operator"><span>Include operator steps<br><span class="muted">walk test, rail current with a meter, ambient light</span></span></label>
+        <label class="check"><input type="checkbox" id="opt-motion"><span>Include motor tests<br><span class="muted">someone at the bench, chamber clear</span></span></label>
+        <label class="check"><input type="checkbox" id="opt-compare"><span>Compare with latest baseline<br><span id="baseline-name" class="muted">none saved yet</span></span></label>
+        <label class="check"><input type="checkbox" id="opt-save"><span>Save as baseline<br><span class="muted">whole-system runs that are not NOT FUNCTIONAL</span></span></label>
+        <label class="check sim-only hidden"><input type="checkbox" id="opt-simop" checked><span>Simulator answers operator prompts<br><span class="muted">untick to practise answering them</span></span></label>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <label class="field">Sample id<input id="sample-id" type="text" value="none-empty-chamber"></label>
+        <label class="field">Operator<input id="operator" type="text" placeholder="your name"></label>
+        <label class="field" style="flex:1">Notes<input id="notes" type="text" placeholder="optional"></label>
+      </div>
+      <div class="row" style="margin-top:10px"><button id="btn-clear" class="btn small">Clear results</button><span class="note">The board keeps the latest result of each test until you clear it or reconnect.</span></div>
+    </div>
+  </section>
+
+  <!-- twin + details -->
+  <section class="twin-wrap">
+    <div class="card">
+      <h2>Digital twin <span class="muted" style="font-weight:400">· click any part for its evidence</span></h2>
+      <svg id="twin" viewBox="0 0 900 560" role="group" aria-label="LIO V3 instrument parts and their test status"></svg>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="card details" id="details"><p class="muted">Select a part of the twin.</p></div>
+  </section>
+
+  <!-- subsystems -->
+  <section class="card">
+    <h2>Subsystems</h2>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <!-- log + runs -->
+  <section class="top">
+    <div class="card"><h2>Log</h2><pre id="log" class="mono"></pre></div>
+    <div class="card"><div class="row" style="justify-content:space-between"><h2>Earlier runs</h2><button id="btn-runs" class="btn small">Refresh</button></div>
+      <div style="max-height:250px;overflow:auto;margin-top:8px"><table class="runs" id="runs"></table></div></div>
+  </section>
+</main>
+
+<div class="overlay" id="prompt-overlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="prompt-text">
+  <div class="tag" id="prompt-tag">Operator step</div>
+  <div class="q" id="prompt-text"></div>
+  <div id="prompt-input"></div>
+  <div class="row" id="prompt-buttons" style="justify-content:flex-end"></div>
+</div></div>
+
+<div class="overlay" id="motion-overlay"><div class="modal" role="dialog" aria-modal="true">
+  <div class="tag">Motor tests</div>
+  <div class="q">The motor tests move both stages by small amounts and back. <strong>Is someone at the bench, with the chamber clear?</strong></div>
+  <div class="note">Watch the direction of each move: + must be up. Use “All off / Stop” at any time.</div>
+  <div class="row" style="justify-content:flex-end"><button class="btn" id="motion-no">Cancel</button><button class="btn primary" id="motion-yes">Yes, start</button></div>
+</div></div>
+
+<div id="toast" role="status"></div>
+
+<script>
+"use strict";
+const TOKEN = "__LIO_TOKEN__";
+const ICON = { PASS: "✓", WARN: "!", FAIL: "✕", ERROR: "⚠", SKIP: "–", NOT_RUN: "○" };
+const LABEL = { PASS: "PASS", WARN: "WARN", FAIL: "FAIL", ERROR: "ERROR", SKIP: "SKIP", NOT_RUN: "not run" };
+const VERDICT_ICON = { FUNCTIONAL: "✓", DEGRADED: "!", "NOT FUNCTIONAL": "✕", NOT_RUN: "○" };
+const FILL = { PASS: "var(--good)", WARN: "var(--warning)", FAIL: "var(--critical)", ERROR: "var(--critical)",
+               SKIP: "var(--muted)", NOT_RUN: "var(--surface-2)" };
+const ON_FILL = { WARN: "#0b0b0b", NOT_RUN: "var(--ink-2)" };
+// which twin parts each catalogue module exercises (they pulse while it runs)
+const MODULE_PARTS = { T01: ["host"], T02: ["nano"], T03: ["adc", "det:opt101", "det:ingaas"], T04: ["sr", "holes"],
+  T05: ["holes", "rail:A", "rail:B"], T06: ["det:opt101", "det:ingaas"], T07: ["holes", "det:opt101", "det:ingaas"],
+  T08: ["holes", "det:opt101", "det:ingaas"], T09: ["motor:1", "motor:2"], T10: ["safety", "rail:A", "rail:B"], T11: ["holes"] };
+
+let S = null, STATIC = null, version = 0, selected = "nano", selectedPort = null, lastLogLen = 0, openTiles = new Set();
+let pendingRun = null, shownPrompt = null;
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const badge = (st, text) => `<span class="badge s-${st}"><span class="ic">${ICON[st] ?? "?"}</span>${esc(text ?? LABEL[st] ?? st)}</span>`;
+function toast(msg, ms = 4500) { const t = $("toast"); t.textContent = msg; t.style.display = "block"; clearTimeout(toast.h); toast.h = setTimeout(() => t.style.display = "none", ms); }
+
+async function api(path, body) {
+  const opt = { method: body === undefined ? "GET" : "POST", headers: { "X-LIO-Token": TOKEN } };
+  if (body !== undefined) { opt.headers["Content-Type"] = "application/json"; opt.body = JSON.stringify(body); }
+  const r = await fetch(path, opt);
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || `${r.status} ${r.statusText}`);
+  return data;
+}
+async function act(path, body, okMsg) {
+  try { const out = await api(path, body ?? {}); if (okMsg) toast(okMsg); await poll(true); return out; }
+  catch (e) { toast(e.message, 7000); await poll(true); return null; }
+}
+
+/* ------------------------------------------------------------------ twin */
+const SVGNS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) { const e = document.createElementNS(SVGNS, tag); for (const [k, v] of Object.entries(attrs || {})) e.setAttribute(k, v); if (parent) parent.appendChild(e); return e; }
+const RING = { cx: 640, cy: 270, r: 170 };
+function holeXY(h, r = RING.r) { const a = (h - 1) * Math.PI / 8; return [RING.cx + r * Math.sin(a), RING.cy - r * Math.cos(a)]; }
+const BOXES = [
+  { key: "host", x: 20, y: 24, w: 160, h: 54, title: "Mac (host)", sub: "Python, port, config" },
+  { key: "nano", x: 20, y: 120, w: 160, h: 60, title: "Arduino Nano", sub: "firmware v2 · USB link" },
+  { key: "sr", x: 20, y: 226, w: 160, h: 60, title: "74HC595 × 2", sub: "U1 holes 1–8 · U2 9–16" },
+  { key: "rail:A", x: 20, y: 332, w: 160, h: 54, title: "DRV1 · Rail A", sub: "CE1 · holes 1–9" },
+  { key: "rail:B", x: 20, y: 412, w: 160, h: 54, title: "DRV2 · Rail B", sub: "CE2 · holes 10–16" },
+  { key: "safety", x: 236, y: 24, w: 196, h: 54, title: "Safety interlocks", sub: "watchdogs · failsafe" },
+  { key: "adc", x: 236, y: 120, w: 196, h: 60, title: "ADS1115 ADC", sub: "I²C 0x48 · inputs A0, A1" },
+  { key: "motor:1", x: 236, y: 412, w: 196, h: 54, title: "Motor 1 · left", sub: "28BYJ-48 · D2–D5" },
+  { key: "motor:2", x: 236, y: 486, w: 196, h: 54, title: "Motor 2 · right", sub: "28BYJ-48 · D6–D9" },
+];
+const DET_W = 84;
+const DETS = [ { key: "det:opt101", det: "opt101", x: RING.cx - DET_W - 4, title: "OPT101", sub: "300–1100 nm" },
+               { key: "det:ingaas", det: "ingaas", x: RING.cx + 4, title: "InGaAs", sub: "800–1750 nm" } ];
+const partEls = {};
+
+function arcPath(h1, h2, r) {
+  const [x1, y1] = holeXY(h1 - 0.4, r), [x2, y2] = holeXY(h2 + 0.4, r);
+  const large = (h2 - h1 + 0.8) * 22.5 > 180 ? 1 : 0;
+  return `M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`;
+}
+function makePart(g, key, label) {
+  g.classList.add("part"); g.setAttribute("tabindex", "0"); g.setAttribute("role", "button"); g.setAttribute("aria-label", label);
+  g.addEventListener("click", () => select(key));
+  g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(key); } });
+  (partEls[key] = partEls[key] || []).push(g); return g;
+}
+function buildTwin() {
+  const svg = $("twin");
+  // wires
+  const w = (d, label, lx, ly) => { el("path", { d, class: "wire" }, svg); if (label) { const t = el("text", { x: lx, y: ly, class: "tiny" }, svg); t.textContent = label; } };
+  const ringLeft = RING.cx - RING.r - 56;                 // stop short of the hole labels
+  w("M100 78 V120", "USB", 106, 103);
+  w("M100 180 V226", "DATA · CLK · LATCH", 106, 207);
+  w(`M180 256 H${ringLeft}`, "selects one hole", 236, 250);
+  w(`M180 359 H${ringLeft}`, "LED current, rail A", 236, 353);
+  w(`M180 425 H194 V400 H${ringLeft}`, "", 0, 0);
+  el("text", { x: 236, y: 394, class: "tiny" }, svg).textContent = "LED current, rail B";
+  w("M180 150 H236", "I²C", 196, 144);
+  // ADC to the detectors: over the top of the ring, between holes 16 and 1
+  const gapX = RING.cx - 32;
+  w(`M432 150 H448 V56 H${gapX} V${RING.cy - 25}`, "", 0, 0);
+  el("text", { x: 442, y: 104, class: "tiny", "text-anchor": "end" }, svg).textContent = "A0 InGaAs · A1 OPT101";
+  w("M180 165 H208 V513 H236 M208 439 H236", "", 0, 0);
+  el("text", { x: 212, y: 478, class: "tiny" }, svg).textContent = "coils";
+  // ring and rail arcs
+  el("circle", { cx: RING.cx, cy: RING.cy, r: RING.r, class: "ring" }, svg);
+  for (const [rail, h1, h2, labelAt] of [["A", 1, 9, 3], ["B", 10, 16, 14.5]]) {
+    const g = makePart(el("g", {}, svg), "rail:" + rail, `Rail ${rail}`);
+    el("path", { d: arcPath(h1, h2, RING.r - 50), class: "rail-arc", "data-k": "arc" }, g);
+    const [tx, ty] = holeXY(labelAt, RING.r - 72);
+    const t = el("text", { x: tx, y: ty, class: "tiny", "text-anchor": "middle" }, g); t.textContent = `rail ${rail}`;
+  }
+  // holes
+  for (let h = 1; h <= 16; h++) {
+    const [x, y] = holeXY(h), [lx, ly] = holeXY(h, RING.r + 40);
+    const g = makePart(el("g", {}, svg), "hole:" + h, `Hole ${h}`);
+    el("circle", { cx: x, cy: y, r: 22, class: "hole" }, g);
+    el("text", { x, y: y - 4, class: "hole-num" }, g).textContent = h;
+    el("text", { x, y: y + 9, class: "hole-ic" }, g);
+    const t = el("text", { x: lx, y: ly, class: "sub", "text-anchor": "middle", "dominant-baseline": "central" }, g);
+    g.dataset.hole = h; t.dataset.k = "label";
+  }
+  // detectors at the centre
+  for (const d of DETS) {
+    const g = makePart(el("g", {}, svg), d.key, d.title);
+    el("rect", { x: d.x, y: RING.cy - 25, width: DET_W, height: 54, rx: 7, class: "box" }, g);
+    el("rect", { x: d.x, y: RING.cy - 25, width: DET_W, height: 6, rx: 3, class: "stripe", fill: `var(--${d.det})` }, g);
+    el("text", { x: d.x + DET_W / 2, y: RING.cy - 2, "text-anchor": "middle", "font-weight": 600 }, g).textContent = d.title;
+    el("text", { x: d.x + DET_W / 2, y: RING.cy + 15, "text-anchor": "middle", class: "tiny", "data-k": "state" }, g);
+  }
+  el("text", { x: RING.cx, y: RING.cy + 48, "text-anchor": "middle", class: "tiny" }, svg).textContent = "sample (centre)";
+  // boxes
+  for (const b of BOXES) {
+    const g = makePart(el("g", {}, svg), b.key, b.title);
+    el("rect", { x: b.x, y: b.y, width: b.w, height: b.h, rx: 8, class: "box" }, g);
+    el("rect", { x: b.x, y: b.y, width: 7, height: b.h, rx: 3, class: "stripe", "data-k": "stripe" }, g);
+    el("text", { x: b.x + 16, y: b.y + 21, "font-weight": 600 }, g).textContent = b.title;
+    el("text", { x: b.x + 16, y: b.y + 38, class: "sub" }, g).textContent = b.sub;
+    el("text", { x: b.x + b.w - 10, y: b.y + 21, "text-anchor": "end", "data-k": "state", "font-size": 11, "font-weight": 600 }, g);
+  }
+  $("legend").innerHTML = ["PASS", "WARN", "FAIL", "ERROR", "SKIP", "NOT_RUN"].map((s) => badge(s)).join("") +
+    `<span><span class="dot" style="background:var(--opt101)"></span>OPT101</span><span><span class="dot" style="background:var(--ingaas)"></span>InGaAs</span>` +
+    `<span>dashed hole = no emitter fitted</span>`;
+}
+
+function partInfo(key) {
+  if (!S) return null;
+  const P = S.parts, [kind, id] = key.split(":");
+  if (kind === "hole") return P.holes[id];
+  if (kind === "rail") return P.rails[id];
+  if (kind === "det") return P.detectors[id];
+  if (kind === "motor") return P.motors[id];
+  if (key === "host") { const t = S.subsystems.find((s) => s.module === "T01"); return { status: t.status, items: t.tests.map((x) => ({ test: x.id, id: x.id, status: x.status, message: x.message || x.name })) }; }
+  return P[key];
+}
+function busyParts() {
+  const cur = S && S.job && S.job.current; if (!cur) return new Set();
+  return new Set(MODULE_PARTS[cur.id.split(".")[0]] || []);
+}
+function renderTwin() {
+  const busy = busyParts();
+  for (const [key, gs] of Object.entries(partEls)) for (const g of gs) {
+    const info = partInfo(key); const st = info ? info.status : "NOT_RUN";
+    g.classList.toggle("sel", key === selected);
+    const isHole = key.startsWith("hole:");
+    g.classList.toggle("busy", busy.has(key) || (isHole && busy.has("holes")));
+    if (isHole) {
+      const c = g.querySelector("circle"), h = info;
+      c.setAttribute("fill", FILL[st]);
+      c.classList.toggle("unfitted", h && !h.fitted);
+      const fg = ON_FILL[st] || "#fff";
+      g.querySelectorAll("text.hole-num, text.hole-ic").forEach((t) => t.style.fill = fg);
+      g.querySelector("text.hole-ic").textContent = ICON[st];
+      const lab = g.querySelector('[data-k="label"]');
+      lab.textContent = h ? (h.wavelength_nm ? `${h.label}${/^\d+$/.test(h.label) ? " nm" : ""}` : "no emitter") : "";
+      g.setAttribute("aria-label", `Hole ${g.dataset.hole} ${h ? h.label : ""}: ${LABEL[st]}`);
+    } else if (g.querySelector('[data-k="arc"]')) {
+      g.querySelector('[data-k="arc"]').setAttribute("stroke", st === "NOT_RUN" ? "var(--hair)" : FILL[st]);
+    } else {
+      const stripe = g.querySelector('[data-k="stripe"]'); if (stripe) stripe.setAttribute("fill", st === "NOT_RUN" ? "var(--axis)" : FILL[st]);
+      const state = g.querySelector('[data-k="state"]'); if (state) { state.textContent = `${ICON[st]} ${LABEL[st]}`; state.style.fill = st === "NOT_RUN" || st === "SKIP" ? "var(--muted)" : (st === "PASS" ? "var(--good-text)" : st === "WARN" ? "var(--ink)" : "var(--critical)"); }
+      const box = g.querySelector("rect.box"); if (box && key.startsWith("det:")) { box.setAttribute("stroke", st === "NOT_RUN" ? "var(--axis)" : FILL[st]); box.setAttribute("stroke-width", st === "NOT_RUN" ? 1.5 : 2.5); }
+      g.setAttribute("aria-label", `${g.getAttribute("aria-label").split(":")[0]}: ${LABEL[st]}`);
+    }
+  }
+}
+function select(key) { selected = key; renderTwin(); renderDetails(); }
+
+function evidence(items) {
+  if (!items || !items.length) return `<p class="muted">No test has looked at this yet. Run the subsystems that cover it.</p>`;
+  const bad = items.filter((i) => i.status !== "PASS" && i.status !== "SKIP");
+  const rest = items.filter((i) => i.status === "PASS" || i.status === "SKIP");
+  const li = (i) => `<li>${badge(i.status)}<div><div class="id">${esc(i.id)}</div>${esc(i.message)}</div></li>`;
+  return (bad.length ? `<ul class="ev">${bad.map(li).join("")}</ul>` : `<p style="color:var(--good-text);margin:6px 0">All ${rest.length} checks passed or were skipped.</p>`) +
+    (rest.length ? `<details><summary>${rest.length} passing / skipped checks</summary><ul class="ev">${rest.map(li).join("")}</ul></details>` : "");
+}
+function renderDetails() {
+  const box = $("details"); const info = partInfo(selected);
+  if (!S || !info) { box.innerHTML = `<p class="muted">Select a part of the twin.</p>`; return; }
+  const [kind, id] = selected.split(":"); let title = "", facts = "", actions = "";
+  const canUse = S.connected && !S.running;
+  if (kind === "hole") {
+    const h = info; title = `Hole ${h.hole} · ${h.wavelength_nm ? h.label + (/^\d+$/.test(h.label) ? " nm" : "") : "no emitter fitted"}`;
+    const exp = Object.entries(h.expect).map(([d, e]) => `<span><span class="dot" style="background:var(--${d})"></span>${d === "opt101" ? "OPT101" : "InGaAs"}: ${e}</span>`).join(" &nbsp; ");
+    const net = Object.keys(h.net).length ? Object.entries(h.net).map(([d, v]) => `<span><span class="dot" style="background:var(--${d})"></span>${d === "opt101" ? "OPT101" : "InGaAs"} <strong class="num">${v > 0 ? "+" : ""}${v}</strong> counts</span>`).join(" &nbsp; ") : `<span class="muted">run LED channels (T05)</span>`;
+    facts = `<dl class="facts"><dt>Wavelength</dt><dd>${h.wavelength_nm ? h.wavelength_nm + " nm" : "—"}</dd><dt>Rail</dt><dd>${h.rail} (${h.rail === "A" ? "DRV1 · CE1" : "DRV2 · CE2"})</dd>
+      <dt>Register</dt><dd>${h.register}</dd><dt>Expected</dt><dd>${exp}</dd><dt>Net signal (T05.2)</dt><dd>${net}</dd></dl>`;
+    actions = `<div class="row"><button class="btn small" ${canUse ? "" : "disabled"} onclick="measure(${h.hole})">Measure</button>
+      <button class="btn small" ${canUse ? "" : "disabled"} onclick="flash(${h.hole})">Flash ${STATIC ? STATIC.flash_ms : ""} ms</button>
+      <span class="note">${canUse ? "one MEAS: dark, lit, net on both detectors" : S.connected ? "busy: a run is using the device" : "connect first"}</span></div>`;
+    const m = S.manual; if (m && m.action === "measure" && m.hole === h.hole)
+      actions += `<div class="meas">${["opt101", "ingaas"].map((d) => `<span><span class="dot" style="background:var(--${d})"></span>${d === "opt101" ? "OPT101" : "InGaAs"}: dark <span class="num">${m.dark[d]}</span>, lit <span class="num">${m.lit[d]}</span>, net <strong class="num">${m.net[d] > 0 ? "+" : ""}${m.net[d]}</strong> (${(m.net[d] * m.lsb_mv).toFixed(1)} mV)</span>`).join("")}</div>`;
+  } else {
+    const names = { host: "Mac (host)", nano: "Arduino Nano · USB link and firmware", sr: "Shift registers (74HC595 × 2)", adc: "ADS1115 ADC (I²C)", safety: "Safety interlocks",
+      "rail:A": "Rail A · DRV1 (CE1, holes 1–9)", "rail:B": "Rail B · DRV2 (CE2, holes 10–16)", "det:opt101": "OPT101 detector (silicon)", "det:ingaas": "InGaAs detector (TIA)",
+      "motor:1": "Motor 1 · left", "motor:2": "Motor 2 · right" };
+    title = names[selected] || selected;
+    if (selected === "nano" && S.connected) facts = `<dl class="facts">${Object.entries(S.firmware).filter(([k]) => ["fw", "proto", "build", "adc_ok", "wdt_a_ms", "wdt_b_ms", "comms_ms"].includes(k)).map(([k, v]) => `<dt>${esc(k)}</dt><dd class="mono">${esc(v)}</dd>`).join("")}</dl>`;
+  }
+  box.innerHTML = `<h3>${esc(title)} ${badge(info.status)}</h3>${facts}${actions}<h3 style="margin-top:12px">Evidence</h3>${evidence(info.items)}`;
+}
+async function measure(h) { await act("/api/measure", { hole: h }); }
+async function flash(h) { await act("/api/flash", { hole: h }, `hole ${h} flashed`); }
+
+/* ------------------------------------------------------------- verdict etc */
+function renderVerdict() {
+  const o = S.overall, key = o.verdict.replace(" ", "_");
+  const word = o.verdict === "NOT_RUN" ? "NOT YET TESTED" : o.verdict;
+  $("verdict-word").className = `word v-${key}`;
+  $("verdict-word").innerHTML = `<span class="ic">${VERDICT_ICON[o.verdict] || "?"}</span><span>${esc(word)}</span>`;
+  const c = S.subsystems.reduce((a, s) => { for (const t of s.tests) a[t.status] = (a[t.status] || 0) + 1; return a; }, {});
+  const total = o.total || 1;
+  $("coverage").innerHTML = ["PASS", "WARN", "FAIL", "ERROR", "SKIP"].filter((s) => c[s]).map((s) => `<span style="width:${100 * c[s] / total}%;background:${FILL[s]}" title="${c[s]} ${LABEL[s]}"></span>`).join("");
+  $("verdict-cover").innerHTML = o.run ? `${o.run} of ${o.total} tests run` + (o.complete ? " · complete" : ` · <strong>partial</strong>: the verdict covers only what has been run`) : "Run the subsystems, or the whole system, to build the evaluation.";
+  $("verdict-reasons").innerHTML = o.run ? o.reasons.map((r) => `<li>${esc(r)}</li>`).join("") : "";
+  $("provisional").textContent = S.provisional ? "Thresholds are provisional until calibrated from the first good hardware run (docs/TESTING.md §7.3, step 8)." : "";
+  const lr = S.last_run;
+  $("last-run").innerHTML = lr ? `<span class="ink2">${lr.loaded ? "Showing" : "Last run"} <span class="mono">${esc(lr.run_id)}</span>: ${esc(lr.verdict.verdict)}${lr.stopped ? " (stopped)" : ""}</span> <a class="btn small" href="${esc(lr.report)}" target="_blank" rel="noopener">Open report</a>${lr.baseline ? ` <span class="note">baseline saved</span>` : ""}` : "";
+}
+function renderTiles() {
+  const cur = S.job && S.job.current ? S.job.current.id : null;
+  const canRun = S.connected && !S.running;
+  $("tiles").innerHTML = S.subsystems.map((s) => {
+    const kinds = new Set(s.tests.map((t) => kindOf(t.id)));
+    const missing = new Set(s.tests.filter((t) => t.status === "NOT_RUN").map((t) => kindOf(t.id)));
+    const needs = missing.has("M") ? "motion" : missing.has("I") ? "operator" : "";
+    const holesNote = s.fail_only_holes ? `<div class="what"><strong>Failing only on hole${s.fail_holes.length > 1 ? "s" : ""} ${s.fail_holes.join(", ")}</strong>: see those LEDs on the twin</div>` : "";
+    const open = openTiles.has(s.module);
+    return `<div class="tile s-${s.status}">
+      <div class="head"><div><div class="muted mono">${s.module} · ${esc(s.key)}</div><h3>${esc(s.name)}</h3></div>${badge(s.status)}</div>
+      <div class="what">${esc(s.what)}</div>${holesNote}
+      <div class="tests">${s.tests.map((t) => `<span class="s-${t.status}${t.id === cur ? " now" : ""}" title="${esc(t.id)} ${esc(nameOf(t.id))}: ${LABEL[t.status]}${t.message ? " — " + esc(t.message) : ""}">${ICON[t.status]}</span>`).join("")}</div>
+      <div class="row" style="justify-content:space-between"><span class="muted num">${s.run}/${s.total} run${needs === "operator" ? " · operator steps: tick the option" : needs === "motion" ? " · Run asks for confirmation" : ""}</span>
+        <span class="row"><button class="btn small" onclick="toggleTile('${s.module}')">${open ? "Hide" : "Tests"}</button><button class="btn small primary" ${canRun ? "" : "disabled"} onclick="runModule('${s.module}')">Run</button></span></div>
+      ${open ? `<table>${s.tests.map((t) => `<tr><td>${badge(t.status, t.id)}</td><td>${esc(nameOf(t.id))} <span class="muted">${kindLabel(t.id)}</span>${t.message ? `<div class="msg">${esc(t.message)}</div>` : ""}${t.bad.map((b) => `<div class="msg">${ICON[b.status]} <span class="mono">${esc(b.id)}</span> ${esc(b.message)}</div>`).join("")}</td></tr>`).join("")}</table>` : ""}
+    </div>`;
+  }).join("");
+}
+const kindOf = (id) => (STATIC.catalogue.find((t) => t.id === id) || {}).kind;
+const nameOf = (id) => (STATIC.catalogue.find((t) => t.id === id) || {}).name || "";
+const kindLabel = (id) => ({ I: "· operator", M: "· motion" }[kindOf(id)] || "");
+function toggleTile(m) { openTiles.has(m) ? openTiles.delete(m) : openTiles.add(m); renderTiles(); }
+
+function renderProgress() {
+  const j = S.job, box = $("progress-box");
+  box.classList.toggle("hidden", !j);
+  if (!j) return;
+  const n = j.ids.length, d = j.done.length;
+  $("progress-text").textContent = j.stopping ? "Stopping safely…" : `Running ${d + (j.current ? 1 : 0)} of ${n}`;
+  $("progress-bar").style.width = `${100 * d / n}%`;
+  $("progress-now").innerHTML = j.current ? `${esc(j.current.id)} ${esc(j.current.name)} <span class="muted num">· ${j.current.elapsed_s.toFixed(0)} s</span>` : "";
+}
+function renderHeader() {
+  const on = S.connected;
+  $("conn").classList.toggle("on", on);
+  $("conn-text").textContent = on ? `${S.is_sim ? "simulator" : S.target} · fw ${S.firmware.fw || "?"}${S.faults.length ? " · faults: " + S.faults.join(", ") : ""}` : "not connected";
+  $("btn-disconnect").classList.toggle("hidden", !on);
+  $("btn-off").classList.toggle("hidden", !on);
+  $("btn-off").textContent = S.running ? "■ Stop run" : "■ All off";
+  $("connect").classList.toggle("hidden", on);
+  document.querySelectorAll(".sim-only").forEach((e) => e.classList.toggle("hidden", !S.is_sim));
+  $("btn-all").disabled = !on || S.running;
+  $("btn-clear").disabled = S.running;
+  $("btn-disconnect").disabled = S.running;
+  if (S.error) { toast(S.error, 8000); }
+}
+function renderLog() {
+  const box = $("log"), atEnd = box.scrollTop + box.clientHeight >= box.scrollHeight - 8;
+  box.textContent = S.log.join("\n");
+  if (atEnd || S.log.length !== lastLogLen) box.scrollTop = box.scrollHeight;
+  lastLogLen = S.log.length;
+}
+
+/* ----------------------------------------------------------------- prompt */
+function renderPrompt() {
+  const p = S.prompt, ov = $("prompt-overlay");
+  if (!p) { ov.classList.remove("open"); shownPrompt = null; return; }
+  if (shownPrompt === p.id) return;
+  shownPrompt = p.id;
+  const cur = S.job && S.job.current;
+  $("prompt-tag").textContent = `Operator step${cur ? " · " + cur.id + " " + cur.name : ""}`;
+  $("prompt-text").textContent = p.text;
+  const inp = $("prompt-input"), btns = $("prompt-buttons");
+  inp.innerHTML = ""; btns.innerHTML = "";
+  const b = (label, cls, fn) => { const x = document.createElement("button"); x.className = "btn " + cls; x.textContent = label; x.onclick = fn; btns.appendChild(x); return x; };
+  const send = (value, abort = false) => act("/api/answer", { id: p.id, value, abort });
+  b("Abort test", "", () => send(null, true));
+  if (p.kind === "act") b("Done", "primary", () => send(true)).focus();
+  else if (p.kind === "confirm") { b("No", "", () => send(false)); b("Yes", "primary", () => send(true)).focus(); }
+  else {
+    const i = document.createElement("input"); i.type = p.kind === "number" ? "number" : "text"; i.step = "any"; i.style.width = "100%";
+    i.placeholder = p.kind === "number" ? `value in ${p.unit}` : "optional"; inp.appendChild(i);
+    if (p.kind === "number") b("Skip", "", () => send(null));
+    b("Submit", "primary", () => send(p.kind === "number" ? (i.value === "" ? null : Number(i.value)) : i.value));
+    i.addEventListener("keydown", (e) => { if (e.key === "Enter") btns.lastChild.click(); });
+    setTimeout(() => i.focus(), 30);
+  }
+  ov.classList.add("open");
+}
+
+/* ------------------------------------------------------------------- runs */
+function runOptions() {
+  return { interactive: $("opt-operator").checked, allow_motion: $("opt-motion").checked, sim_operator: $("opt-simop").checked,
+    compare_baseline: $("opt-compare").checked, sample_id: $("sample-id").value.trim(), operator: $("operator").value.trim(), notes: $("notes").value.trim() };
+}
+function startRun(modules, overrides = {}) {
+  const body = { modules, ...runOptions(), ...overrides };
+  if (body.allow_motion && !S.is_sim) { pendingRun = body; $("motion-overlay").classList.add("open"); return; }
+  if (body.allow_motion) body.motion_confirmed = true;
+  act("/api/run", body);
+}
+function runModule(m) {
+  const kinds = new Set(STATIC.catalogue.filter((t) => t.module === m).map((t) => t.kind));
+  const o = {};
+  if (kinds.has("M")) o.allow_motion = true;              // the motor tile always means motion
+  if (kinds.has("I") && !kinds.has("A")) o.interactive = true;
+  startRun([m], { ...o, save_baseline: false });
+}
+$("motion-yes").onclick = () => { $("motion-overlay").classList.remove("open"); if (pendingRun) act("/api/run", { ...pendingRun, motion_confirmed: true }); pendingRun = null; };
+$("motion-no").onclick = () => { $("motion-overlay").classList.remove("open"); pendingRun = null; };
+$("btn-all").onclick = () => startRun([], { save_baseline: $("opt-save").checked });
+$("btn-stop").onclick = () => act("/api/stop", {}, "stopping after the safe point");
+$("btn-off").onclick = () => act("/api/off", {}, S && S.running ? "stopping the run safely" : "LEDs off, motors stopped");
+$("btn-clear").onclick = () => act("/api/clear", {});
+$("btn-disconnect").onclick = () => act("/api/disconnect", {});
+$("btn-sim").onclick = () => act("/api/connect", { target: "sim", faults: $("faults").value });
+$("btn-connect").onclick = () => { if (!selectedPort) return toast("choose a port first"); toast("connecting… (the Nano resets)"); act("/api/connect", { target: selectedPort }); };
+$("btn-refresh").onclick = () => loadPorts();
+$("btn-runs").onclick = () => loadRuns();
+async function loadPorts() {
+  try {
+    const { ports } = await api("/api/ports");
+    if (!selectedPort) { const c = ports.find((p) => p.chosen); selectedPort = c ? c.device : null; }
+    $("ports").innerHTML = ports.length ? ports.map((p) => `<label class="check"><input type="radio" name="port" value="${esc(p.device)}" ${p.device === selectedPort ? "checked" : ""}><span class="mono">${esc(p.device)}</span> <span class="muted">${esc(p.label)}${p.likely ? " · likely the LIO" : ""}</span></label>`).join("") : `<span class="muted">no serial ports found: is the Nano plugged in?</span>`;
+    document.querySelectorAll('input[name="port"]').forEach((r) => r.onchange = () => selectedPort = r.value);
+  } catch (e) { toast(e.message); }
+}
+async function loadRuns() {
+  try {
+    const { runs } = await api("/api/runs");
+    $("runs").innerHTML = `<tr><th>Run</th><th>Target</th><th>Verdict</th><th>Tests</th><th></th></tr>` + (runs.map((r) => `<tr><td class="mono">${esc(r.run_id)}</td><td>${esc(r.target)}</td><td>${esc(r.verdict)}</td><td class="num">${r.tests}</td>
+      <td class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn small" onclick="loadRun('${esc(r.run_id)}')">Show</button><a class="btn small" href="${esc(r.report)}" target="_blank" rel="noopener">Report</a></td></tr>`).join("") || `<tr><td colspan="5" class="muted">none yet</td></tr>`);
+  } catch (e) { toast(e.message); }
+}
+async function loadRun(id) { await act("/api/load", { run_id: id }, `showing ${id} on the twin`); }
+
+/* ------------------------------------------------------------------- poll */
+let wasRunning = false;
+async function poll(force = false) {
+  try {
+    const st = await api(`/api/state?v=${force ? 0 : version}`);
+    if (st.unchanged) return;
+    S = st; version = st.version;
+    renderHeader(); renderVerdict(); renderTwin(); renderDetails(); renderTiles(); renderProgress(); renderLog(); renderPrompt();
+    if (wasRunning && !S.running) loadRuns();
+    wasRunning = S.running;
+  } catch (e) { $("conn-text").textContent = "dashboard server not reachable"; $("conn").classList.remove("on"); }
+}
+(async function init() {
+  STATIC = await api("/api/static");
+  $("fault-names").innerHTML = STATIC.faults.map((f) => `<option value="${esc(f)}">`).join("");
+  $("baseline-name").textContent = STATIC.baseline ? STATIC.baseline.split("/").pop() : "none saved yet";
+  $("opt-compare").disabled = !STATIC.baseline;
+  buildTwin(); await loadPorts(); await poll(true); loadRuns();
+  setInterval(poll, STATIC.poll_ms);
+})();
+</script>
+</body>
+</html>

@@ -137,6 +137,13 @@ duty:
     A: 1000
     B: 5000
 
+# lio dashboard: the local web page that runs the tests (docs/TESTING.md §3).
+dashboard:
+  host: 127.0.0.1            # local only: the page can light LEDs and move motors
+  port: 8765
+  poll_ms: 700               # how often the page asks for updates
+  flash_ms: 500              # "Flash" on a hole lights it this long (the rail watchdog still clamps)
+
 run_metadata:
   required: [sample_id]
   defaults:
