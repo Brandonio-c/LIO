@@ -37,8 +37,17 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: pip install -e ".[dev]"
       - run: mypy
-      - name: Unit + simulator tests
-        run: pytest -m unit --cov=lio --cov-report=term --cov-report=xml
+      - name: Unit + simulator system tests + fault-injection matrix
+        run: >
+          pytest -m "unit or sim" --lio-sim --results-dir=${{ runner.temp }}/lio-run
+          --cov=lio --cov-report=term --cov-report=xml
+      - name: Upload the simulator run record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lio-sim-run-py${{ matrix.python }}
+          path: ${{ runner.temp }}/lio-run/results.json
+          if-no-files-found: warn
       - name: Coverage gate (>= 90 % on protocol and analysis)
         run: coverage report --include="*/lio/protocol.py,*/lio/analysis.py" --fail-under=90
 

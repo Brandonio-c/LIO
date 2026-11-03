@@ -10,6 +10,8 @@ Python package for the LIO V3 controller running firmware v2 (`docs/PROTOCOL.md`
 | `lio.config` | Loads and validates `software/config/lio_hw.yaml`, the only place hardware constants and thresholds live |
 | `lio.sim` | `SimulatedLIO`: the firmware protocol plus a simple optical model and injectable faults |
 | `lio.analysis` | Statistics, detection levels, settling fits, signature comparison (pure functions) |
+| `lio.results` | `TestResult` / `RunRecord` dataclasses, the T11 verdict, `results.json` |
+| `lio.suite` | The test catalogue T01–T10 (`lio.suite.checks`), its shared context and runner. Usable from pytest or directly |
 
 ## Setup
 
@@ -40,7 +42,26 @@ Simulator faults: `no_adc`, `stuck_on:<n>`, `dead_channel:<n>`, `swapped:<a>,<b>
 ## Tests
 
 ```bash
-.venv/bin/pytest -m unit                 # pure logic + simulator behaviour, no hardware
+.venv/bin/pytest -m unit                                   # pure logic + simulator behaviour
+.venv/bin/pytest -m "unit or sim" --lio-sim                # + catalogue T01-T10 and fault matrix
+.venv/bin/pytest -m sim --lio-sim --lio-fault stuck_on:5   # catalogue against a faulty simulator
 ```
 
-The system test catalogue (T01–T11) and the `lio` command line arrive in later milestones.
+Hardware (only with the operator's approval; opening the port resets the Nano; T10.3 and T10.5 *arm* motion for 11 s but never send a motor command):
+
+```bash
+.venv/bin/pytest -m "hw and not interactive and not motion" --lio-port /dev/cu.usbserial-1120 \
+    --lio-sample-id none-empty-chamber --lio-operator <name>
+```
+
+Each run writes `test_results/<YYYYmmdd-HHMMSS>_<sim|host>/results.json` at the repository root, or to `--results-dir=PATH` (use the `=` form: pytest otherwise mistakes an existing directory for a test path). FAIL and ERROR fail the pytest test, WARN passes with a warning, and SKIP skips with the reason.
+
+How the catalogue works:
+
+- Each entry is a function in `lio.suite.checks` registered under its plan ID. `tests/system/test_t*.py` maps each ID to one pytest function.
+- Shared measurements (dark statistics, the 16-channel matrix, the polarity gate) are taken once per run, on first use, so any test also runs on its own.
+- After every test the runner restores the safe state: LEDs off, motors stopped, default gain, rate and watchdogs.
+- A detector that is unusable (erratic or pinned output, or a reversed InGaAs on the hole-8 polarity gate) is reported once in T06. Later judgments on it are skipped instead of cascading into misleading failures.
+- `tests/system/test_fault_matrix.py` injects every simulator fault, requires its intended test to detect it, and runs the same check on a healthy simulator as a control.
+
+Reports, plots, the baseline and the `lio` command line arrive in M5; motors and interactive steps (T09, T04.4, T05.6, T06.4) in M4.
