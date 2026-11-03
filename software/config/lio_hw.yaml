@@ -236,6 +236,11 @@ thresholds:
     meter_attempts: 5
     current_warn_frac: 0.15      # T05.6: |measured - nominal| / nominal
     current_fail_frac: 0.30
+  baseline:                      # T11.1: drift against a saved baseline
+    drift_warn_frac: 0.10
+    drift_fail_frac: 0.25
+    min_counts: 100              # channels weaker than this in the baseline are not compared
+    dark_shift_sigma: 10
   verdict:
     max_channel_fails: 2
     limited_holes: [10, 11, 15, 16]

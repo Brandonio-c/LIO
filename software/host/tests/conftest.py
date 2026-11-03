@@ -23,6 +23,7 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     g.addoption("--lio-sample-id", default=None, help="run metadata: sample in the chamber")
     g.addoption("--lio-operator", default=None, help="run metadata: who ran the suite")
     g.addoption("--lio-notes", default=None, help="run metadata: free text")
+    g.addoption("--lio-baseline", default=None, help="baseline file for T11.1, or 'latest'")
 
 
 @pytest.fixture(scope="session")

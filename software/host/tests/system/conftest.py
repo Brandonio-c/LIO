@@ -8,8 +8,9 @@
 
 Each catalogue test runs through :func:`lio.suite.core.run_test`, which always
 restores the dark, idle state afterwards. FAIL/ERROR fail the pytest test,
-WARN passes with a warning, SKIP skips. The run record is written to
-``--results-dir`` (default ``test_results/<run id>/results.json`` at the repo root).
+WARN passes with a warning, SKIP skips. The run record and its report
+(results.json, meas.csv, plots/, report.md, report.html) go to ``--results-dir``
+(default ``test_results/<run id>/`` at the repo root).
 """
 
 from __future__ import annotations
@@ -20,8 +21,10 @@ from pathlib import Path
 
 import pytest
 
+from lio import baseline
 from lio.config import HwConfig
 from lio.operator import ConsoleOperator
+from lio.report import write_run
 from lio.results import RunRecord, Status, TestResult
 from lio.suite.core import REGISTRY, SuiteContext, catalogue, run_test
 from lio.suite.runner import finish, new_record, serial_context, sim_context
@@ -65,6 +68,12 @@ def suite_ctx(request: pytest.FixtureRequest, cfg: HwConfig) -> Iterator[SuiteCo
     else:
         # The simulator has a simulated operator: interactive and motion tests always run.
         ctx = sim_context(cfg, opt("--lio-fault"))
+    base = opt("--lio-baseline")
+    if base:
+        path = baseline.latest() if base == "latest" else Path(base)
+        if path is None:
+            raise pytest.UsageError("--lio-baseline latest: no baseline_*.yaml found")
+        ctx.baseline = baseline.load(path)
     meta = {
         "sample_id": opt("--lio-sample-id"),
         "operator": opt("--lio-operator"),
@@ -79,8 +88,8 @@ def suite_ctx(request: pytest.FixtureRequest, cfg: HwConfig) -> Iterator[SuiteCo
         ctx.dev.close()
         out = opt("--results-dir")
         folder = Path(out) if out else REPO_ROOT / "test_results" / record.run_id
-        path = record.write_json(folder / "results.json")
-        print(f"\nLIO run record: {path}  verdict: {record.verdict.get('verdict')}")
+        out = write_run(record, folder, cfg=cfg, meas_log=ctx.meas_log)
+        print(f"\nLIO report: {out['html']}  verdict: {record.verdict.get('verdict')}")
 
 
 @pytest.fixture

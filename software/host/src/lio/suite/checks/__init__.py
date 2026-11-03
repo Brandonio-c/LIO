@@ -9,4 +9,5 @@ from lio.suite.checks import (  # noqa: F401
     t07_t08_timing_sweep,
     t09_motors,
     t10_safety,
+    t11_baseline,
 )

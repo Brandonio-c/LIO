@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 
 from lio.analysis import Settling, recommend_settle_ms, settling, stats
+from lio.csvout import SWEEP_HEADER, sweep_csv_text
 from lio.device import Sweep
 from lio.protocol import ProtocolError
 from lio.results import Status
@@ -88,6 +89,10 @@ def t07_1(ctx: SuiteContext, rec: Recorder) -> None:
             t_settle_ms=s.t_settle_ms,
             tau_ms=s.tau_ms,
             within_first_sample=s.within_first_sample,
+            t_us=[t for t, _ in ctx.cache["step_samples"][hole]],
+            raw=[r for _, r in ctx.cache["step_samples"][hole]],
+            on_idx=ctx.th.integer("settling.pre_samples"),
+            off_idx=ctx.th.integer("settling.pre_samples") + ctx.th.integer("settling.on_samples"),
         )
 
 
@@ -198,6 +203,11 @@ def t08_2(ctx: SuiteContext, rec: Recorder) -> None:
     cv_max = ctx.th.num("repeatability.cv_max")
     min_net = ctx.th.num("repeatability.min_net_counts")
     sweeps = _sweeps(ctx, repeats)[:repeats]
+    rec.measure(
+        sweeps=[
+            {str(m.hole): {d: m.net(d) for d in DETECTORS} for m in sw.records} for sw in sweeps
+        ]
+    )
     for h, d in _judged_pairs(ctx):
         nets = [float(m.net(d)) for sw in sweeps for m in sw.records if m.hole == h]
         if len(nets) < 2:
@@ -270,4 +280,45 @@ def t08_3(ctx: SuiteContext, rec: Recorder) -> None:
 
 @register("T08.4", "CSV output format")
 def t08_4(ctx: SuiteContext, rec: Recorder) -> None:
-    raise Skip("the CLI and logger CSV output arrive in M5")
+    """The sweep CSV (logger and ``lio sweep --csv``) matches the documented format."""
+    ctx.require_adc()
+    sw = _sweeps(ctx, 1)[0]
+    text = sweep_csv_text(sw.records, ctx.cfg)
+    lines = text.split("\r\n")
+    rec.check(
+        "header", "Header", lines[0] == ",".join(SWEEP_HEADER), lines[0], ",".join(SWEEP_HEADER)
+    )
+    rows = [ln for ln in lines[1:] if ln]
+    rec.check(
+        "rows",
+        "One CRLF-terminated row per hole",
+        len(rows) == len(sw.records) and text.endswith("\r\n"),
+        f"{len(rows)} rows",
+        f"{len(sw.records)} rows, CRLF",
+    )
+    # Independent re-statement of the original logger's arithmetic (TEST_MODE 5 era).
+    vpc = ctx.cfg.lsb_mv / 1000.0
+    bad = []
+    for m, row in zip(sw.records, rows, strict=False):
+        want = ",".join(
+            str(v)
+            for v in (
+                m.hole,
+                ctx.cfg.channel(m.hole).label,
+                m.dark0,
+                m.dark1,
+                m.lit0,
+                m.lit1,
+                round((m.lit0 - m.dark0) * vpc, 5),
+                round((m.lit1 - m.dark1) * vpc, 5),
+            )
+        )
+        if row != want:
+            bad.append(f"hole {m.hole}: {row!r} != {want!r}")
+    rec.check(
+        "values",
+        "Rows byte-identical to the original logger's format",
+        not bad,
+        "; ".join(bad[:3]) or "all rows identical",
+        "same columns, rounding, labels",
+    )

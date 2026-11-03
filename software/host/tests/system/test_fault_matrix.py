@@ -137,7 +137,8 @@ def test_healthy_simulator_is_functional(cfg: HwConfig) -> None:
     bad = [r.summary() for r in record.results if r.status not in (Status.PASS, Status.SKIP)]
     assert not bad, "\n".join(bad)
     skipped = {r.id for r in record.results if r.status == Status.SKIP}
-    assert skipped == {"T04.2", "T04.3", "T08.4"}  # no jumper; covered by T05.3; M5
+    # no loopback jumper; covered by T05.3; no baseline given
+    assert skipped == {"T04.2", "T04.3", "T11.1"}
     assert record.verdict["verdict"] == Verdict.FUNCTIONAL.value
     assert not ctx.dev.duty or not ctx.dev.duty.over_budget
 

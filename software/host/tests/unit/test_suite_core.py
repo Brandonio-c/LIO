@@ -34,7 +34,7 @@ def _def(fn: object, test_id: str = "T99.1") -> TestDef:
 class TestRegistry:
     def test_catalogue_order_and_ids(self) -> None:
         ids = [t.id for t in catalogue()]
-        assert ids[0] == "T01.1" and ids[-1] == "T10.5"
+        assert ids[0] == "T01.1" and ids[-1] == "T11.1"
         assert ids == sorted(ids, key=lambda i: tuple(int(x) for x in i[1:].split(".")))
         kinds = {t.id: t.kind for t in catalogue()}
         assert {i for i, k in kinds.items() if k == "I"} == {"T04.4", "T05.6", "T06.4"}

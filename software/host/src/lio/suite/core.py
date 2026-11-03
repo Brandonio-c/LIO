@@ -193,6 +193,7 @@ class SuiteContext:
     interactive: bool = False
     allow_motion: bool = False
     operator: Operator | None = None
+    baseline: dict[str, Any] | None = None  # lio.baseline.load(), for T11.1
     cache: dict[str, Any] = field(default_factory=dict)
     meas_log: list[tuple[str, Meas]] = field(default_factory=list)  # (test id, record)
     current: str = ""

@@ -129,6 +129,7 @@ def new_record(ctx: SuiteContext, meta: dict[str, str] | None = None) -> RunReco
         metadata=metadata(ctx.cfg, meta),
         faults=ctx.sim.faults.active if ctx.sim is not None else [],
     )
+    ctx.cache["sample_id"] = rec.metadata.get("sample_id")
     if ctx.dev.banner is not None:
         rec.firmware["banner"] = ctx.dev.banner.raw
     try:

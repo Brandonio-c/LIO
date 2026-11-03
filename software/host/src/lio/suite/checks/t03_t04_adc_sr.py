@@ -190,6 +190,8 @@ def t03_5(ctx: SuiteContext, rec: Recorder) -> None:
             drift_counts_per_min=slope_per_min,
             sigma=s.std,
             samples=len(ys),
+            t_s=[round(t, 3) for t in ts],
+            raw=ys,
         )
 
 

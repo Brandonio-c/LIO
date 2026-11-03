@@ -190,6 +190,56 @@ class RunRecord:
             out[r.status.value] += 1
         return out
 
+    @classmethod
+    def from_dict(cls, d: dict[str, Any]) -> RunRecord:
+        """Rebuild a record from ``results.json`` (for ``lio report``)."""
+        results = []
+        for r in d.get("results", []):
+            subs = [
+                SubResult(
+                    s["id"],
+                    s["name"],
+                    Status(s["status"]),
+                    s.get("message", ""),
+                    s.get("criteria", ""),
+                    s.get("measured", {}),
+                )
+                for s in r.get("subs", [])
+            ]
+            results.append(
+                TestResult(
+                    r["id"],
+                    r["name"],
+                    r["module"],
+                    r["kind"],
+                    Status(r["status"]),
+                    r.get("message", ""),
+                    r.get("duration_s", 0.0),
+                    subs,
+                    r.get("measured", {}),
+                    r.get("artefacts", []),
+                )
+            )
+        fields = {
+            k: d[k]
+            for k in (
+                "environment",
+                "firmware",
+                "config",
+                "metadata",
+                "faults",
+                "duty",
+                "finished",
+                "verdict",
+            )
+            if k in d
+        }
+        return cls(d["run_id"], d["target"], d["started"], results=results, **fields)
+
+    @classmethod
+    def load(cls, path: Path) -> RunRecord:
+        return cls.from_dict(json.loads(path.read_text()))
+
     def to_dict(self) -> dict[str, Any]:
         out: dict[str, Any] = _jsonable(asdict(self))
         return out
