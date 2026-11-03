@@ -30,7 +30,9 @@ def test_info_status_ping(capsys: pytest.CaptureFixture[str]) -> None:
 
 def test_ch_meas_off(capsys: pytest.CaptureFixture[str]) -> None:
     code, out = run(capsys, "--sim", "ch", "3", "on", "--ms", "100")
-    assert code == 0 and "on for 100 ms" in out and "off" in out
+    assert code == 0 and "on for 100 ms" in out and "# OFF ch=3" in out
+    code, out = run(capsys, "--sim", "ch", "13", "on")
+    assert code == 0 and "on for 5000 ms" in out and "# WDT ch=13" in out
     code, out = run(capsys, "--sim", "meas", "8")
     assert code == 0 and "opt101" in out and "ingaas" in out
     assert run(capsys, "--sim", "off")[0] == 0

@@ -165,11 +165,13 @@ def cmd_ping(args: argparse.Namespace, cfg: HwConfig) -> int:
 
 def cmd_ch(args: argparse.Namespace, cfg: HwConfig) -> int:
     with _device(args, cfg) as dev:
+        n_events = len(dev.events)
         until = dev.ch_on(args.hole, args.ms)
         ch = cfg.channel(args.hole)
         print(f"hole {args.hole} ({ch.label}, RAIL {ch.rail}) on for {until} ms ...")
-        ev = dev.wait_event("OFF", until / 1000.0 + 1.0) or dev.wait_event("WDT", 0.5)
-        print("off" if ev else "off (by exit)")
+        dev.drain(until / 1000.0 + 0.5)  # '# OFF' (timer) or '# WDT' (watchdog limit)
+        ended = [e for _, e in dev.events[n_events:] if e.name in ("OFF", "WDT")]
+        print(ended[0].raw if ended else "off (turned off on exit)")
     return 0
 
 
