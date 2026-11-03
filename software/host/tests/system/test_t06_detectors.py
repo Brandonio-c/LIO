@@ -29,3 +29,9 @@ def test_T06_3_cross_calibration_on_the_shared_holes(
 ) -> None:
     """Cross-calibration on the shared holes."""
     run_suite("T06.3")
+
+
+@pytest.mark.interactive
+def test_T06_4_ambient_light_sensitivity_operator(run_suite: Callable[[str], TestResult]) -> None:
+    """Ambient light sensitivity (operator)."""
+    run_suite("T06.4")

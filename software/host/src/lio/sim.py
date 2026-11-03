@@ -21,6 +21,7 @@ import random
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 
+from lio.analysis import move_duration_s
 from lio.config import HwConfig
 
 FAULT_NAMES = (
@@ -593,13 +594,7 @@ class SimulatedLIO:
 
     @staticmethod
     def _move_duration(steps: int, vmax: float, acc: float) -> float:
-        n = abs(steps)
-        if n == 0:
-            return 0.0
-        s_acc = vmax * vmax / (2 * acc)
-        if 2 * s_acc >= n:
-            return 2 * math.sqrt(n / acc)
-        return 2 * vmax / acc + (n - 2 * s_acc) / vmax
+        return move_duration_s(steps, vmax, acc)
 
     def _start_move(self, t: float, i: int, steps: int, vmax: float, acc: float, jog: bool) -> None:
         m = self.motors[i]

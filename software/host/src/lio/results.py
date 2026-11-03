@@ -112,7 +112,7 @@ def overall_verdict(
 ) -> OverallVerdict:
     """T11 verdict (plan §6 T11).
 
-    - NOT FUNCTIONAL: any FAIL/ERROR in T02, T03, T04 or T10; any FAIL that is
+    - NOT FUNCTIONAL: any FAIL/ERROR in an automatic T02, T03, T04 or T10 test; any FAIL that is
       not tied to a channel (e.g. InGaAs polarity); or more than
       ``max_channel_fails`` failing channels outside ``limited_holes``.
     - DEGRADED: only WARNs, failures on the expected-limited channels, or at
@@ -122,11 +122,13 @@ def overall_verdict(
     """
     reasons: list[str] = []
     failing = [r for r in results if r.status.rank >= Status.FAIL.rank]
-    critical = [r.id for r in failing if r.module in CRITICAL_MODULES]
+    # The critical-module rule covers the automatic tests; an optional operator
+    # step (e.g. the T04.4 walk test) is judged by the channels it names.
+    critical = [r.id for r in failing if r.module in CRITICAL_MODULES and r.kind == "A"]
     holes: set[int] = set()
     unattributed: list[str] = []
     for r in failing:
-        if r.module in CRITICAL_MODULES:
+        if r.id in critical:
             continue
         bad = [hole_of(s.id) for s in r.subs if s.status.rank >= Status.FAIL.rank]
         if bad and all(h is not None for h in bad):

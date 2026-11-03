@@ -36,7 +36,9 @@ class TestRegistry:
         ids = [t.id for t in catalogue()]
         assert ids[0] == "T01.1" and ids[-1] == "T10.5"
         assert ids == sorted(ids, key=lambda i: tuple(int(x) for x in i[1:].split(".")))
-        assert {t.kind for t in catalogue()} == {"A"}  # I and M arrive in M4
+        kinds = {t.id: t.kind for t in catalogue()}
+        assert {i for i, k in kinds.items() if k == "I"} == {"T04.4", "T05.6", "T06.4"}
+        assert {i for i, k in kinds.items() if k == "M"} == {"T09.1", "T09.2", "T09.3", "T09.4"}
 
     def test_every_id_has_one_pytest_function(self) -> None:
         """Plan §6: every test ID maps to one pytest function."""

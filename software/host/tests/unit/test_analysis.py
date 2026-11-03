@@ -219,3 +219,13 @@ class TestSettling:
         t, raw = _step(4, 10, 2, 1400, 1.0, 0)
         s = A.settling(t, raw, 4, 14, fraction=0.99)
         assert s.within_first_sample and s.tau_ms is None
+
+
+class TestMoveDuration:
+    def test_shapes(self) -> None:
+        assert A.move_duration_s(0, 100, 100) == 0.0
+        assert A.move_duration_s(-64, 205, 250) == pytest.approx(2 * math.sqrt(64 / 250))
+        # trapezoid: 2 v/a ramps + cruise of the remaining steps at v
+        assert A.move_duration_s(1000, 100, 100) == pytest.approx(2 + 900 / 100)
+        with pytest.raises(ValueError):
+            A.move_duration_s(10, 0, 100)

@@ -5,11 +5,12 @@ entry on its own, and requires the intended sub-result to report the fault.
 The same sub-result must PASS on a healthy simulator (the control), so the
 detection is caused by the fault and not by the test.
 
+Interactive and motion rows use the simulated operator, which answers from
+the simulator's physical truth (what really lit, whether a motor turned).
+
 Known blind spot (documented, not a row): ``stuck_on`` on the hole with the
 highest forward voltage of its rail (e.g. hole 1) never takes the rail's
 current, so it is optically invisible, and harmless.
-
-``motor_stall`` is detected by the operator in T09.2 (M4, motion tests).
 """
 
 from __future__ import annotations
@@ -22,11 +23,9 @@ from lio.config import HwConfig
 from lio.results import Status, TestResult, Verdict
 from lio.sim import FAULT_NAMES
 from lio.suite.core import REGISTRY, catalogue, run_test
-from lio.suite.runner import new_record, run_catalogue, sim_context
+from lio.suite.runner import everything, new_record, run_catalogue, sim_context
 
 pytestmark = pytest.mark.sim
-
-MOTION_FAULTS = {"motor_stall"}  # M4 (T09)
 
 
 @dataclass(frozen=True)
@@ -65,6 +64,10 @@ MATRIX = (
     Row("chain_break", "T05.3", "T05.3/chain"),
     Row("chain_break", "T04.2", "T04.2/loop", loop_jumper=True),
     Row("comms_drop", "T02.2", "T02.2/answered"),
+    Row("motor_stall", "T09.2", "T09.2/1/up"),
+    Row("swapped:3,4", "T04.4", "T04.4/h03/visible"),  # same detector: only the eye sees it
+    Row("dead_channel:8", "T04.4", "T04.4/h08/camera"),
+    Row("rail_a_dead", "T05.6", "T05.6/A/h08"),
 )
 
 
@@ -109,7 +112,7 @@ def test_healthy_control_passes(cfg: HwConfig, row: Row) -> None:
 
 def test_every_fault_has_a_row() -> None:
     covered = {r.fault.split(":")[0] for r in MATRIX}
-    missing = set(FAULT_NAMES) - MOTION_FAULTS - covered
+    missing = set(FAULT_NAMES) - covered
     assert not missing, f"faults without a detecting test: {sorted(missing)}"
 
 
@@ -119,7 +122,7 @@ def test_every_fault_has_a_row() -> None:
 def _full_run(cfg: HwConfig, faults: str | None) -> dict[str, object]:
     ctx = sim_context(cfg, faults)
     try:
-        record = run_catalogue(ctx, new_record(ctx))
+        record = run_catalogue(ctx, new_record(ctx), everything)
     finally:
         ctx.dev.close()
     return record.verdict
@@ -128,7 +131,7 @@ def _full_run(cfg: HwConfig, faults: str | None) -> dict[str, object]:
 def test_healthy_simulator_is_functional(cfg: HwConfig) -> None:
     ctx = sim_context(cfg)
     try:
-        record = run_catalogue(ctx, new_record(ctx))
+        record = run_catalogue(ctx, new_record(ctx), everything)
     finally:
         ctx.dev.close()
     bad = [r.summary() for r in record.results if r.status not in (Status.PASS, Status.SKIP)]
@@ -148,6 +151,9 @@ def test_healthy_simulator_is_functional(cfg: HwConfig) -> None:
         ("stuck_on:13", Verdict.NOT_FUNCTIONAL),
         ("reversed_ingaas", Verdict.NOT_FUNCTIONAL),
         ("no_adc", Verdict.NOT_FUNCTIONAL),
+        ("motor_stall", Verdict.NOT_FUNCTIONAL),
+        ("dead_channel:12", Verdict.DEGRADED),
+        ("swapped:3,4", Verdict.DEGRADED),
     ],
 )
 def test_verdict(cfg: HwConfig, fault: str, verdict: Verdict) -> None:

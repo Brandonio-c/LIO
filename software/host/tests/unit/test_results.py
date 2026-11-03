@@ -61,6 +61,11 @@ class TestVerdict:
         v, reasons = _verdict(_r("T10.2", ("A/h03/off", Status.FAIL)))
         assert v == Verdict.NOT_FUNCTIONAL and "T10.2" in reasons[0]
 
+    def test_interactive_in_critical_module_is_judged_by_channel(self) -> None:
+        r = _r("T04.4", ("h03/visible", Status.FAIL))
+        r.kind = "I"
+        assert _verdict(r)[0] == Verdict.DEGRADED
+
     def test_error_counts_as_failure(self) -> None:
         r = TestResult("T03.1", "x", "T03", "A", status=Status.ERROR)
         assert _verdict(r)[0] == Verdict.NOT_FUNCTIONAL

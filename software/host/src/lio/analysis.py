@@ -305,3 +305,19 @@ def recommend_settle_ms(settle_times_ms: Sequence[float], margin: float) -> int:
     if not settle_times_ms:
         raise ValueError("no settle times")
     return max(1, math.ceil(max(settle_times_ms) * margin))
+
+
+# ------------------------------------------------------------------- motion
+
+
+def move_duration_s(steps: int, vmax: float, acc: float) -> float:
+    """Duration of a symmetric trapezoidal (or triangular) move of ``steps``."""
+    n = abs(steps)
+    if n == 0:
+        return 0.0
+    if vmax <= 0 or acc <= 0:
+        raise ValueError("vmax and acc must be positive")
+    s_acc = vmax * vmax / (2 * acc)
+    if 2 * s_acc >= n:
+        return 2 * math.sqrt(n / acc)
+    return 2 * vmax / acc + (n - 2 * s_acc) / vmax

@@ -123,6 +123,12 @@ channels:
   - {hole: 15, label: "1760",   wavelength_nm: 1760, rail: B, fitted: true,  expect: {ingaas: weak}}
   - {hole: 16, label: "1850",   wavelength_nm: 1850, rail: B, fitted: true,  expect: {}}   # beyond InGaAs: never FAIL for absence
 
+# Motors (approved M0 answer 8): +steps = the legacy sketch's U direction (up).
+motors:
+  1: {name: left, pins: [D2, D3, D4, D5]}
+  2: {name: right, pins: [D6, D7, D8, D9]}
+  positive: up
+
 # Host-side LED duty budget (plan §6 T05.5): RAIL A LEDs run above rating.
 duty:
   window_s: 60
@@ -214,7 +220,22 @@ thresholds:
     test_steps: 64
     test_rpm: 3
     stop_latency_ms: 50
+    stop_after_s: 0.5            # T09.3: let the long move run this long, then MOTOR STOP
+    done_margin_s: 2.0           # extra time allowed for a move's '# MOTOR ... done'
     emi_sigma_ratio_warn: 3.0
+    emi_samples: 48              # T09.4: dark stream during the move (buffered: <= stream_buf_n)
+    emi_steps: 256               # T09.4: ~2 s at test_rpm, longer than the streams (~22 degrees)
+    emi_interval_ms: 5
+  interactive:
+    walk_ms: 400                 # T04.4: each hole lit this long
+    visible_max_nm: 700          # T04.4: seen by eye below this
+    camera_max_nm: 1000          # T04.4: seen by a phone camera up to this; beyond: n/a
+    meter_holes: {A: 8, B: 12}   # T05.6: one hole per rail, meter in series with the driver
+    # RAIL A flashes are capped by its duty budget (1 s per minute), not the plan's 2 s
+    meter_flash_ms: {A: 1000, B: 2000}
+    meter_attempts: 5
+    current_warn_frac: 0.15      # T05.6: |measured - nominal| / nominal
+    current_fail_frac: 0.30
   verdict:
     max_channel_fails: 2
     limited_holes: [10, 11, 15, 16]

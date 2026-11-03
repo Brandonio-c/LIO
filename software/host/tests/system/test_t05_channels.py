@@ -37,3 +37,9 @@ def test_T05_4_off_state_return_after_each_meas(run_suite: Callable[[str], TestR
 def test_T05_5_repeatability_interleaved_meas(run_suite: Callable[[str], TestResult]) -> None:
     """Repeatability (interleaved MEAS)."""
     run_suite("T05.5")
+
+
+@pytest.mark.interactive
+def test_T05_6_driver_current_with_a_meter_operator(run_suite: Callable[[str], TestResult]) -> None:
+    """Driver current with a meter (operator)."""
+    run_suite("T05.6")

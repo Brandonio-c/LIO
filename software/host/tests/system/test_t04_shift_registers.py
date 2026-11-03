@@ -29,3 +29,9 @@ def test_T04_2_shift_register_loopback_optional_jumper(
 def test_T04_3_optical_address_verification(run_suite: Callable[[str], TestResult]) -> None:
     """Optical address verification."""
     run_suite("T04.3")
+
+
+@pytest.mark.interactive
+def test_T04_4_walk_test_operator(run_suite: Callable[[str], TestResult]) -> None:
+    """Walk test (operator)."""
+    run_suite("T04.4")
