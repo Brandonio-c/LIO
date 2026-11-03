@@ -20,6 +20,9 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     g.addoption("--allow-motion", action="store_true", help="allow tests that move the motors")
     g.addoption("--lio-config", default=None, help="path to lio_hw.yaml")
     g.addoption("--results-dir", default=None, help="where to write the run record")
+    g.addoption("--lio-sample-id", default=None, help="run metadata: sample in the chamber")
+    g.addoption("--lio-operator", default=None, help="run metadata: who ran the suite")
+    g.addoption("--lio-notes", default=None, help="run metadata: free text")
 
 
 @pytest.fixture(scope="session")

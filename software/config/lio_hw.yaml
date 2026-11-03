@@ -152,6 +152,10 @@ thresholds:
     stability_rate_hz: 2
     drift_warn_pct_fs_per_min: 2.0
     gain_consistency_mv: 5.0     # dark mV must agree across gains within this (plus 3 sigma)
+    # T03.4: single-shot conversions also include the I2C transactions, which
+    # add a fixed overhead per sample (a large fraction at 860 SPS).
+    conv_overhead_max_ms: 0.6
+    rate_check_duration_s: 0.25  # samples per rate = rate x this (8 to stream_buf_n)
   dark:
     opt101_counts: [0, 800]      # ≈0-100 mV
     ingaas_counts: [-100, 2000]  # small positive expected; strongly negative -> fault
@@ -169,6 +173,11 @@ thresholds:
     off_return_sigma: 5
     signature_similarity: 0.98   # cosine similarity above which two channels "look the same"
     signature_min_counts: 200    # only compare signatures with this much total signal
+    # Identical = same LED, same current: equal within noise, not just similar.
+    # With two detectors the visible holes all point the same way (OPT101 only),
+    # so only amplitude separates them and a pair can match by coincidence.
+    signature_amplitude_frac: 0.01
+    duplicate_fail_group: 3      # groups this large FAIL; a matching pair only WARNs
   saturation:
     ingaas_counts: 27000
     opt101_counts: 29000
@@ -184,13 +193,23 @@ thresholds:
     on_samples: 24
     post_samples: 12
     margin_factor: 1.5
+    meas_points: [[8, 1], [20, 4]]   # T07.3: (settle_ms, n) pairs timed on settling.holes[0]
+    meas_slack_ms: 3                 # T07.3: firmware bookkeeping on top of settle + conversions
   sweep:
     max_duration_s: 2.5
     repeats: 5
     agreement_frac: 0.10         # T08.3: sweep vs MEAS agreement (relative)
+    agreement_sigma: 5           # ... or within this many sigma of the combined noise
     agreement_min_counts: 50
   watchdog:
     tolerance_ms: 50
+    request_ms: 60000            # T10.2: asks for far longer than any rail allows
+    test_ms: 300                 # T10.2: watchdog lowered to this while timing the cut-off
+    holes: [3, 13]               # one per rail
+  safety:
+    failsafe_margin_s: 1.0       # T10.3: silence = comms timeout + this
+    # T10.4: masks with zero or several holes selected; CE must be refused on each rail
+    multi_masks: [0x0000, 0x0005, 0x0101, 0x3000, 0x1004]
   motion:
     test_steps: 64
     test_rpm: 3
@@ -221,20 +240,21 @@ sim:
   comms_drop_every: 7            # comms_drop fault: every Nth output line is lost
   motor_rate_hs: 1024            # used only for the simulated position/time model
   # Emitter optical power reaching the detector (µW) and forward voltage (V).
+  # Powers are chosen so that no two healthy channels have the same signature.
   # Vf decides how current splits when a MOSFET is stuck on (lowest Vf wins).
   emitters:
     1:  {power_uw: 0.6,  vf: 3.3}
     2:  {power_uw: 0.8,  vf: 3.2}
     3:  {power_uw: 1.0,  vf: 3.0}
     4:  {power_uw: 0.6,  vf: 3.0}
-    5:  {power_uw: 0.4,  vf: 2.0}
-    6:  {power_uw: 0.5,  vf: 2.0}
+    5:  {power_uw: 0.35, vf: 2.0}
+    6:  {power_uw: 0.6,  vf: 2.0}
     7:  {power_uw: 0.8,  vf: 1.9}
     8:  {power_uw: 1.0,  vf: 1.45}
     9:  {power_uw: 1.2,  vf: 1.3}
     12: {power_uw: 0.4,  vf: 1.0}
     13: {power_uw: 0.5,  vf: 0.95}
-    14: {power_uw: 0.4,  vf: 0.9}
+    14: {power_uw: 0.35, vf: 0.9}
     15: {power_uw: 0.05, vf: 0.85}
     16: {power_uw: 0.1,  vf: 0.85}
   # Responsivity (A/W) vs wavelength (nm), linearly interpolated, 0 outside.
