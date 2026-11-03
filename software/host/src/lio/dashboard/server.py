@@ -189,6 +189,8 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json(s.measure(_hole(b)))
             elif path == "/api/flash":
                 return self._json(s.flash(_hole(b), s.cfg.section.integer("dashboard.flash_ms")))
+            elif path == "/api/wake":
+                return self._json(s.wake())
             elif path == "/api/off":
                 s.all_off()
             elif path == "/api/clear":

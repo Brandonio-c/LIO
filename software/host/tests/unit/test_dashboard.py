@@ -389,3 +389,70 @@ def test_threads_do_not_leak(session: Session) -> None:
     session.start(["link"])
     wait_for(lambda: not session.running)
     assert not [t for t in threading.enumerate() if t.name == "lio-dashboard-run"]
+
+
+class TestPersistence:
+    def test_board_survives_a_restart(self, cfg: HwConfig, tmp_path: Path) -> None:
+        s1 = Session(cfg, tmp_path)
+        s1.connect("sim", "dead_channel:5")
+        s1.start(["T05.2"])
+        wait_for(lambda: not s1.running)
+        s1.start(["link"])
+        wait_for(lambda: not s1.running)
+        s1.shutdown()
+
+        s2 = Session(cfg, tmp_path)  # a new dashboard session
+        assert s2.snapshot()["overall"]["verdict"] == twin.NOT_RUN  # hardware board: empty
+        s2.connect("sim")
+        snap = s2.snapshot()
+        assert snap["parts"]["holes"]["5"]["status"] == "FAIL"  # from the earlier session
+        assert snap["board"]["kind"] == "sim" and snap["board"]["runs"] == 2
+        t052 = next(t for s in snap["subsystems"] for t in s["tests"] if t["id"] == "T05.2")
+        assert t052["run_id"].endswith("_sim") and t052["started"]
+        assert snap["last_run"] is not None
+        s2.shutdown()
+
+    def test_latest_result_wins_and_clear_is_remembered(
+        self, cfg: HwConfig, tmp_path: Path
+    ) -> None:
+        s1 = Session(cfg, tmp_path)
+        s1.connect("sim", "dead_channel:5")
+        s1.start(["T05.2"])
+        wait_for(lambda: not s1.running)
+        s1.connect("sim")  # healthy now
+        assert s1.board["T05.2"].status == Status.FAIL  # restored from disk
+        s1.start(["T05.2"])
+        wait_for(lambda: not s1.running)
+        s1.shutdown()
+        s2 = Session(cfg, tmp_path)
+        s2.connect("sim")
+        assert s2.board["T05.2"].status == Status.PASS
+        s2.clear_results()
+        s2.shutdown()
+        s3 = Session(cfg, tmp_path)
+        s3.connect("sim")
+        assert s3.board == {} and s3.snapshot()["board"]["cleared"]
+        s3.shutdown()
+
+    def test_hardware_and_simulator_are_kept_apart(self, cfg: HwConfig, tmp_path: Path) -> None:
+        s = Session(cfg, tmp_path, transport_factory=lambda port: SimTransport(SimulatedLIO(cfg)))
+        s.connect("/dev/cu.fake")  # counts as hardware
+        s.start(["T02.1"])
+        wait_for(lambda: not s.running)
+        s.connect("sim")
+        assert "T02.1" not in s.board
+        s.connect("/dev/cu.fake")
+        assert "T02.1" in s.board
+        s.shutdown()
+
+
+class TestWakeButton:
+    def test_wake_finds_the_adc(self, cfg: HwConfig, tmp_path: Path) -> None:
+        s = Session(cfg, tmp_path)
+        s.connect("sim", "bank_a_asleep")  # opening the port already wakes it
+        assert s.sim is not None and s.sim.wakes == 1
+        s.dev.sleep(cfg.sim.num("bank_awake_s") + 1)  # type: ignore[union-attr]
+        assert s.dev.info(refresh=True).as_int("adc_ok") == 0  # type: ignore[union-attr]
+        out = s.wake()
+        assert out["adc_ok"] and out["wake_ms"] == cfg.section.integer("dashboard.wake_button_ms")
+        s.shutdown()

@@ -156,6 +156,7 @@ dashboard:
   port: 8765
   poll_ms: 700               # how often the page asks for updates
   flash_ms: 500              # "Flash" on a hole lights it this long (the rail watchdog still clamps)
+  wake_button_ms: 3000       # "Wake bank A": hold the motor coils this long (no steps)
 
 run_metadata:
   required: [sample_id]

@@ -186,6 +186,7 @@ table.runs td { border-top: 1px solid var(--hair); padding: 5px 6px; }
   <h1>LIO V3 · System dashboard</h1>
   <span id="conn" class="pill"><span class="led"></span><span id="conn-text">not connected</span></span>
   <span class="spacer"></span>
+  <button id="btn-wake" class="btn small hidden" title="Holds both motors' coils for 3 s (no steps, nothing moves) to wake power bank A, then looks for the ADC">⚡ Wake bank A</button>
   <button id="btn-disconnect" class="btn small hidden">Disconnect</button>
   <button id="btn-off" class="btn danger hidden" title="Stops a run safely, or turns every LED off and stops the motors">■ All off / Stop</button>
 </header>
@@ -221,6 +222,7 @@ table.runs td { border-top: 1px solid var(--hair); padding: 5px 6px; }
       <div class="coverage" id="coverage" title="tests run"></div>
       <div id="verdict-cover" class="ink2"></div>
       <ul id="verdict-reasons" class="reasons"></ul>
+      <div id="board-source" class="note"></div>
       <div id="provisional" class="note"></div>
       <div id="last-run" class="row"></div>
     </div>
@@ -247,7 +249,7 @@ table.runs td { border-top: 1px solid var(--hair); padding: 5px 6px; }
         <label class="field">Operator<input id="operator" type="text" placeholder="your name"></label>
         <label class="field" style="flex:1">Notes<input id="notes" type="text" placeholder="optional"></label>
       </div>
-      <div class="row" style="margin-top:10px"><button id="btn-clear" class="btn small">Clear results</button><span class="note">The board keeps the latest result of each test until you clear it or reconnect.</span></div>
+      <div class="row" style="margin-top:10px"><button id="btn-clear" class="btn small">Clear results</button><span class="note">The board keeps the latest result of each test, across sessions, until you clear it.</span></div>
     </div>
   </section>
 
@@ -497,6 +499,11 @@ async function measure(h) { await act("/api/measure", { hole: h }); }
 async function flash(h) { await act("/api/flash", { hole: h }, `hole ${h} flashed`); }
 
 /* ------------------------------------------------------------- verdict etc */
+function fmtTime(iso) {
+  if (!iso) return "";
+  const d = new Date(iso); if (isNaN(d)) return iso;
+  return d.toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+}
 function renderVerdict() {
   const o = S.overall, key = o.verdict.replace(" ", "_");
   const word = o.verdict === "NOT_RUN" ? "NOT YET TESTED" : o.verdict;
@@ -507,6 +514,8 @@ function renderVerdict() {
   $("coverage").innerHTML = ["PASS", "WARN", "FAIL", "ERROR", "SKIP"].filter((s) => c[s]).map((s) => `<span style="width:${100 * c[s] / total}%;background:${FILL[s]}" title="${c[s]} ${LABEL[s]}"></span>`).join("");
   $("verdict-cover").innerHTML = o.run ? `${o.run} of ${o.total} tests run` + (o.complete ? " · complete" : ` · <strong>partial</strong>: the verdict covers only what has been run`) : "Run the subsystems, or the whole system, to build the evaluation.";
   $("verdict-reasons").innerHTML = o.run ? o.reasons.map((r) => `<li>${esc(r)}</li>`).join("") : "";
+  const b = S.board;
+  $("board-source").textContent = b && b.runs ? `${b.kind === "sim" ? "Simulator" : "Hardware"} results from ${b.runs} run${b.runs > 1 ? "s" : ""} since ${fmtTime(b.since)} (kept between sessions; Clear results starts afresh).` : (b && b.cleared ? `Cleared ${fmtTime(b.cleared)}.` : "");
   $("provisional").textContent = S.provisional ? "Thresholds are provisional until calibrated from the first good hardware run (docs/TESTING.md §7.3, step 8)." : "";
   const lr = S.last_run;
   $("last-run").innerHTML = lr ? `<span class="ink2">${lr.loaded ? "Showing" : "Last run"} <span class="mono">${esc(lr.run_id)}</span>: ${esc(lr.verdict.verdict)}${lr.stopped ? " (stopped)" : ""}</span> <a class="btn small" href="${esc(lr.report)}" target="_blank" rel="noopener">Open report</a>${lr.baseline ? ` <span class="note">baseline saved</span>` : ""}` : "";
@@ -526,7 +535,7 @@ function renderTiles() {
       <div class="tests">${s.tests.map((t) => `<span class="s-${t.status}${t.id === cur ? " now" : ""}" title="${esc(t.id)} ${esc(nameOf(t.id))}: ${LABEL[t.status]}${t.message ? " — " + esc(t.message) : ""}">${ICON[t.status]}</span>`).join("")}</div>
       <div class="row" style="justify-content:space-between"><span class="muted num">${s.run}/${s.total} run${needs === "operator" ? " · operator steps: tick the option" : needs === "motion" ? " · Run asks for confirmation" : ""}</span>
         <span class="row"><button class="btn small" onclick="toggleTile('${s.module}')">${open ? "Hide" : "Tests"}</button><button class="btn small primary" ${canRun ? "" : "disabled"} onclick="runModule('${s.module}')">Run</button></span></div>
-      ${open ? `<table>${s.tests.map((t) => `<tr><td>${badge(t.status, t.id)}</td><td>${esc(nameOf(t.id))} <span class="muted">${kindLabel(t.id)}</span>${t.message ? `<div class="msg">${esc(t.message)}</div>` : ""}${t.bad.map((b) => `<div class="msg">${ICON[b.status]} <span class="mono">${esc(b.id)}</span> ${esc(b.message)}</div>`).join("")}</td></tr>`).join("")}</table>` : ""}
+      ${open ? `<table>${s.tests.map((t) => `<tr><td>${badge(t.status, t.id)}</td><td>${esc(nameOf(t.id))} <span class="muted">${kindLabel(t.id)}</span>${t.run_id ? `<div class="note">run ${esc(t.run_id)} · ${esc(fmtTime(t.started))}</div>` : ""}${t.message ? `<div class="msg">${esc(t.message)}</div>` : ""}${t.bad.map((b) => `<div class="msg">${ICON[b.status]} <span class="mono">${esc(b.id)}</span> ${esc(b.message)}</div>`).join("")}</td></tr>`).join("")}</table>` : ""}
     </div>`;
   }).join("");
 }
@@ -549,6 +558,8 @@ function renderHeader() {
   $("conn").classList.toggle("on", on);
   $("conn-text").textContent = on ? `${S.is_sim ? "simulator" : S.target} · fw ${S.firmware.fw || "?"}${S.faults.length ? " · faults: " + S.faults.join(", ") : ""}` : "not connected";
   $("btn-disconnect").classList.toggle("hidden", !on);
+  $("btn-wake").classList.toggle("hidden", !on);
+  $("btn-wake").disabled = S.running;
   $("btn-off").classList.toggle("hidden", !on);
   $("btn-off").textContent = S.running ? "■ Stop run" : "■ All off";
   $("connect").classList.toggle("hidden", on);
@@ -615,7 +626,12 @@ $("motion-no").onclick = () => { $("motion-overlay").classList.remove("open"); p
 $("btn-all").onclick = () => startRun([], { save_baseline: $("opt-save").checked });
 $("btn-stop").onclick = () => act("/api/stop", {}, "stopping after the safe point");
 $("btn-off").onclick = () => act("/api/off", {}, S && S.running ? "stopping the run safely" : "LEDs off, motors stopped");
-$("btn-clear").onclick = () => act("/api/clear", {});
+$("btn-clear").onclick = () => { if (confirm("Start the board afresh? Earlier reports stay in test_results/ but no longer count.")) act("/api/clear", {}); };
+$("btn-wake").onclick = async () => {
+  toast("holding the motor coils for 3 s to wake bank A… (nothing moves)", 4000);
+  const out = await act("/api/wake", {});
+  if (out) toast(out.adc_ok ? "bank A awake: the ADC answers ✓" : "the ADC still does not answer: check bank A's 5 V with a meter, then the ADS1115 wiring", 9000);
+};
 $("btn-disconnect").onclick = () => act("/api/disconnect", {});
 $("btn-sim").onclick = () => act("/api/connect", { target: "sim", faults: $("faults").value });
 $("btn-connect").onclick = () => { if (!selectedPort) return toast("choose a port first"); toast("connecting… (the Nano resets)"); act("/api/connect", { target: selectedPort }); };
