@@ -51,6 +51,20 @@ class PtyBridge:
     def __exit__(self, *exc: object) -> None:
         self.stop()
 
+    def wait_client(self, is_open: bool, timeout: float = 5.0) -> bool:
+        """Wait until the bridge has seen a client open (or close) the port.
+
+        The close is only noticed on the bridge's next read, so a client that
+        closes and reopens at once could reopen without the simulated reset;
+        tests call this between the two, as any real gap between uses would.
+        """
+        end = time.monotonic() + timeout
+        while self.client_open != is_open:
+            if time.monotonic() > end:
+                return False
+            time.sleep(0.005)
+        return True
+
     def _sim_now(self) -> float:
         return time.monotonic() - self._t0
 
