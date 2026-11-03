@@ -43,6 +43,10 @@ bool adc_init() {
   Wire.setClock(I2C_CLOCK_HZ);
   Wire.setWireTimeout(I2C_TIMEOUT_US, true);
   present = probe() && ads.begin(ADC_ADDR);
+  // ads.begin() calls Wire.begin() again, which resets the bus to 100 kHz:
+  // re-apply the clock (and, defensively, the timeout).
+  Wire.setClock(I2C_CLOCK_HZ);
+  Wire.setWireTimeout(I2C_TIMEOUT_US, true);
   if (present) {
     ads.setGain(GAINS[gain_idx]);
     ads.setDataRate(RATE_BITS[rate_idx]);

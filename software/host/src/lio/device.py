@@ -402,7 +402,8 @@ class LIODevice:
     # ------------------------------------------------------------------- ADC
 
     def i2c_scan(self) -> list[int]:
-        f = self.command("I2C SCAN", timeout=3.0).fields
+        # A stuck bus costs the firmware's I2C timeout on each of 126 addresses.
+        f = self.command("I2C SCAN", timeout=self.cfg.section.num("link.i2c_scan_timeout_s")).fields
         addrs = f.as_str("addrs")
         return [] if addrs == "none" else [int(a, 16) for a in addrs.split(",")]
 

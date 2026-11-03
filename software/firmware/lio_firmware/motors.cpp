@@ -84,7 +84,11 @@ void motors_tick() {
     mo.remaining--;
     mo.done++;
     if (mo.remaining) {
-      mo.next_us += step_interval_us(mo);
+      uint32_t interval = step_interval_us(mo);
+      mo.next_us += interval;
+      // If the loop was held up (e.g. a long reply being printed), do not
+      // catch up with a burst of fast steps, which can stall the motor.
+      if ((long)(now - mo.next_us) > 0) mo.next_us = now + interval;
     } else {
       write_coils(m, 0);  // release coils at the end of every move
       event_begin(F("MOTOR"));

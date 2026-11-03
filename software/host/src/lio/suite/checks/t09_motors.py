@@ -79,6 +79,7 @@ def t09_1(ctx: SuiteContext, rec: Recorder) -> None:
     )
     dev.motor_arm()
     st = dev.status()
+    trips_before = st.as_int("failsafe_trips")  # counted since boot
     arm_ms = ctx.cfg.limits["arm_ms"]
     rec.check(
         "armed",
@@ -98,7 +99,7 @@ def t09_1(ctx: SuiteContext, rec: Recorder) -> None:
     rec.check(
         "expired",
         f"Arming expires after {arm_ms / 1000:g} s",
-        st.as_int("armed") == 0 and st.as_int("failsafe_trips") == 0,
+        st.as_int("armed") == 0 and st.as_int("failsafe_trips") == trips_before,
         f"armed={st.as_int('armed')} failsafe_trips={st.as_int('failsafe_trips')}",
         "armed=0 without a failsafe",
     )

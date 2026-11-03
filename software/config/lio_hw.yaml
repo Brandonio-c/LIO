@@ -45,6 +45,7 @@ link:
   baud: 115200
   boot_timeout_s: 3.0        # T02.1: banner must arrive within this after open
   response_timeout_s: 2.0    # default per-command timeout (long commands add their own)
+  i2c_scan_timeout_s: 6.0    # 126 addresses x 25 ms I2C timeout (stuck bus) + margin
   # USB-serial chips seen on Nano boards (VID, PID, label) for port discovery (T01.2)
   usb_ids:
     - [0x1A86, 0x7523, "CH340"]
@@ -160,7 +161,9 @@ thresholds:
     gain_consistency_mv: 5.0     # dark mV must agree across gains within this (plus 3 sigma)
     # T03.4: single-shot conversions also include the I2C transactions, which
     # add a fixed overhead per sample (a large fraction at 860 SPS).
-    conv_overhead_max_ms: 0.6
+    # At 400 kHz about 0.4 ms (start + poll + read). If the bus is run at 100 kHz
+    # (I2C_CLOCK_HZ, e.g. for long wires), expect about 1.4 ms and raise this.
+    conv_overhead_max_ms: 0.8
     rate_check_duration_s: 0.25  # samples per rate = rate x this (8 to stream_buf_n)
   dark:
     opt101_counts: [0, 800]      # ≈0-100 mV
