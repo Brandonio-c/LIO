@@ -38,9 +38,18 @@ jobs:
       - run: pip install -e ".[dev]"
       - run: mypy
       - name: Unit + simulator system tests + fault-injection matrix
-        run: >
-          pytest -m "unit or sim" --lio-sim --results-dir=${{ runner.temp }}/lio-run
-          --cov=lio --cov-report=term --cov-report=xml
+        shell: bash
+        run: |
+          set -o pipefail
+          pytest -m "unit or sim" --lio-sim --results-dir=${{ runner.temp }}/lio-run \
+            --cov=lio --cov-report=term --cov-report=xml 2>&1 | tee ${{ runner.temp }}/pytest.log
+      # Annotations are readable without signing in to GitHub, unlike the job log.
+      - name: Name the failing tests in annotations
+        if: failure()
+        shell: bash
+        run: |
+          grep -E "^(FAILED|ERROR) " ${{ runner.temp }}/pytest.log | sed 's/^/::error title=pytest::/' || true
+          grep -E "^E  " ${{ runner.temp }}/pytest.log | head -20 | sed 's/^/::error title=pytest detail::/' || true
       - name: Upload the simulator run record
         if: always()
         uses: actions/upload-artifact@v4

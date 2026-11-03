@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-11-03: Dashboard
+
+### Added
+- `lio dashboard`: a local web page to run the tests and see the instrument's state (`docs/TESTING.md` §3):
+  - connect to the Nano or the simulator, run any subsystem or the whole system, answer operator questions in the page, stop safely
+  - a digital twin (Nano, shift registers, rails, the 16 holes, detectors, ADC, motors, safety) coloured by result, with the evidence behind each part, and Measure / Flash on each hole
+  - the overall verdict over the latest result of every test, with its coverage; earlier runs and their reports
+- `dashboard:` settings in `lio_hw.yaml` (local address, port, poll rate, flash time).
+- `LIODevice.request_cancel()`: a stop request ends the running test at its next command or wait (the dashboard's Stop). The command line is unchanged.
+
 ## 2026-11-03: System test suite and firmware v2 (LIO-SW-TEST-001, M1–M5)
 
 ### Added

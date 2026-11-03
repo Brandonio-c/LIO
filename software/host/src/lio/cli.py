@@ -12,6 +12,7 @@
     lio report test_results/<run>/results.json
     lio shell                      # keep the port open and type protocol commands
     lio sim-serve                  # simulated LIO on a pseudo-terminal, for practice
+    lio dashboard [--sim]          # web page: run the tests, digital twin, overall verdict
 
 Opening the serial port resets the Nano (about 2 s), so each one-shot command
 starts from the safe power-up state and leaves everything off when it exits.
@@ -342,6 +343,38 @@ def cmd_selftest(args: argparse.Namespace, cfg: HwConfig) -> int:
     return EXIT_FOR_VERDICT.get(str(v["verdict"]), EXIT_ERROR)
 
 
+def cmd_dashboard(args: argparse.Namespace, cfg: HwConfig) -> int:
+    import webbrowser
+
+    from lio.dashboard.server import serve
+    from lio.dashboard.session import Session
+
+    results = Path(args.results_dir) if args.results_dir else REPO_ROOT / "test_results"
+    session = Session(cfg, results)
+    host = str(cfg.section.raw("dashboard.host"))
+    port = args.http_port if args.http_port is not None else cfg.section.integer("dashboard.port")
+    try:
+        server = serve(session, host, port)
+    except OSError as e:
+        raise CliError(f"cannot listen on {host}:{port} ({e}); try --http-port") from e
+    if args.sim:
+        session.connect("sim", args.fault or "")
+    elif args.port:
+        session.connect(str(args.port))
+    print(f"LIO dashboard: {server.url}")
+    print("Ctrl-C to quit (stops any run and turns everything off).")
+    if not args.no_browser:
+        webbrowser.open(server.url)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nshutting down: everything off")
+    finally:
+        session.shutdown()
+        server.server_close()
+    return 0
+
+
 def _outcome(r: TestResult) -> str:
     icon = {"PASS": "✓", "WARN": "!", "FAIL": "✕", "ERROR": "✕", "SKIP": "-"}[r.status.value]
     bad = [s for s in r.subs if s.status in (Status.FAIL, Status.ERROR, Status.WARN)]
@@ -492,6 +525,11 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("sim-serve", help="serve the simulator on a pseudo-terminal").set_defaults(
         fn=cmd_sim_serve
     )
+    s = sub.add_parser("dashboard", help="web dashboard: run tests, digital twin, verdict")
+    s.add_argument("--http-port", type=int, default=None, help="default: dashboard.port")
+    s.add_argument("--no-browser", action="store_true", help="do not open a browser")
+    s.add_argument("--results-dir", default=None, help="default: test_results/ in the repo")
+    s.set_defaults(fn=cmd_dashboard)
     return p
 
 

@@ -16,6 +16,7 @@ Python package for the LIO V3 controller running firmware v2 (`docs/PROTOCOL.md`
 | `lio.report`, `lio.csvout`, `lio.baseline` | HTML/Markdown reports with plots; logger-format CSV; saved baselines and T11.1 drift |
 | `lio.cli` | The `lio` command (`lio --help`) |
 | `lio.simserve` | The simulator on a pseudo-terminal, in real time (`lio sim-serve`): exercises the real serial path |
+| `lio.dashboard` | `lio dashboard`: a local web page (standard-library HTTP server) that runs the catalogue, shows a digital twin of the instrument coloured by result, and the overall verdict. `twin.py` maps results to parts, `session.py` owns the device and the run thread, `server.py` the HTTP side, `static/index.html` the page |
 
 ## Setup
 

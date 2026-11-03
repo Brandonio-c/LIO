@@ -34,7 +34,7 @@ lio = "lio.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-lio = ["py.typed", "templates/*"]
+lio = ["py.typed", "templates/*", "dashboard/static/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

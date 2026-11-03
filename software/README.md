@@ -18,6 +18,7 @@ cd software/host && python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 .venv/bin/lio ports                     # find the Nano
 .venv/bin/lio info                      # talk to it (firmware v2 must be flashed)
 .venv/bin/lio selftest                  # automatic hardware tests and a report
+.venv/bin/lio dashboard                 # or: the web dashboard (run tests, digital twin, verdict)
 ```
 
 How to test, the full catalogue and the first-hardware-session checklist: [docs/TESTING.md](../docs/TESTING.md).
