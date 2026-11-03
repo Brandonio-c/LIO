@@ -79,6 +79,7 @@ class TestShippedConfig:
             "SETTLE_MS_MAX": "settle_ms_max",
             "MEAS_N_MAX": "meas_n_max",
             "LINE_MAX": "line_max",
+            "STREAM_BUF_N": "stream_buf_n",
         }
         import re
 

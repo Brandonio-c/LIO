@@ -39,6 +39,7 @@ firmware:
     jog_vs_default: 500
     jog_acc_default: 250
     line_max: 64
+    stream_buf_n: 48           # ADC STREAM with n <= this samples at the full ADC rate
 
 link:
   baud: 115200

@@ -45,6 +45,7 @@ FAULT_NAMES = (
 _PARAM_FAULTS = {"stuck_on", "dead_channel", "swapped"}
 
 BAUD_CHAR_S = 10.0 / 115200.0  # 8N1
+TX_BUFFER_BYTES = 64  # AVR HardwareSerial transmit ring buffer
 
 
 class FaultSpecError(ValueError):
@@ -673,6 +674,12 @@ class _Exec:
         self.sim._emit_at(self.t, f"{self._prefix()}ERR {self.word} code={code} msg={msg}")
 
     def event(self, line: str) -> None:
+        # Serial.print blocks while the TX buffer is full, so a command that
+        # prints faster than the line drains is slowed down (live streams).
+        queued_s = self.sim._tx_free - self.t
+        room_s = (TX_BUFFER_BYTES - len(line) - 2) * BAUD_CHAR_S
+        if queued_s > room_s:
+            self.wait(queued_s - room_s)
         self.sim._emit_at(self.t, line)
 
     def wait(self, seconds: float) -> None:
@@ -837,6 +844,10 @@ class _Exec:
             est_ms = (off_i - on_i) * per_us // 1000 + 20
             if est_ms > s.wdt_ms[s.rail_of(hole)]:
                 raise _Refusal(3, "LED time exceeds watchdog")
+        # Short streams are captured first and printed afterwards (firmware
+        # STREAM_BUF_N); longer ones print live and are paced by the serial line.
+        buffered = n <= s.cfg.limits["stream_buf_n"]
+        captured: list[str] = []
         s._optics_off(self.t)
         t0 = self.t
         for i in range(n):
@@ -848,8 +859,14 @@ class _Exec:
                 s._optics_off(self.t)
             ts = round((self.t - t0) * 1e6)
             r = self.adc_read(ch)
-            self.event(f"# S i={i} t_us={ts} raw={r}")
+            line = f"# S i={i} t_us={ts} raw={r}"
+            if buffered:
+                captured.append(line)
+            else:
+                self.event(line)
         s._optics_off(self.t)
+        for line in captured:
+            self.event(line)
         self.ok(f"ch={ch} n={n} dur_ms={round((self.t - t0) * 1000)}")
 
     def c_sr(self) -> None:

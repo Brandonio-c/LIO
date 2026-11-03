@@ -4,6 +4,7 @@ fault matrix in M3; here we check that each fault does what it claims.)"""
 
 from __future__ import annotations
 
+import itertools
 from collections.abc import Iterator
 
 import pytest
@@ -246,6 +247,32 @@ class TestOptics:
         with pytest.raises(DeviceError):
             dev.adc_rate(100)
 
+    def test_short_stream_samples_at_the_adc_rate(self, dev: LIODevice) -> None:
+        """n <= stream_buf_n is captured first (firmware STREAM_BUF_N): no serial pacing."""
+        dev.adc_rate(860)
+        n = dev.cfg.limits["stream_buf_n"]
+        s = dev.adc_stream(1, n)
+        dts = sorted(b.t_us - a.t_us for a, b in itertools.pairwise(s))
+        conv_us = 1e6 / 860 + dev.cfg.sim.num("i2c_overhead_s") * 1e6
+        assert dts[len(dts) // 2] == pytest.approx(conv_us, rel=0.02)
+
+    def test_long_stream_is_paced_by_the_serial_line(self, dev: LIODevice) -> None:
+        """A live stream at 860 SPS cannot print a ~32-byte line per 1.36 ms at 115200."""
+        dev.adc_rate(860)
+        n = dev.cfg.limits["stream_buf_n"] + 52
+        s = dev.adc_stream(1, n)
+        assert len(s) == n
+        late = sorted(b.t_us - a.t_us for a, b in itertools.pairwise(s[60:]))
+        line_us = (len("# S i=99 t_us=123456 raw=200") + 2) * 10 / 115200 * 1e6
+        assert late[len(late) // 2] == pytest.approx(line_us, rel=0.1)
+
+    def test_send_raw_returns_unsequenced_response(self, dev: LIODevice) -> None:
+        r = dev.send_raw(b"@7 PING\n", 1.0)
+        assert r is not None and r.ok and r.seq == 7
+        r = dev.send_raw(("X" * 80 + "\n").encode(), 1.0)
+        assert r is not None and r.code == ErrCode.OVERFLOW and r.seq is None
+        assert dev.send_raw(b"", 0.1) is None
+
     def test_stream_led_schedule_checked(self, dev: LIODevice) -> None:
         with pytest.raises(DeviceError) as e:
             dev.adc_stream(1, 400, 10, led=(3, 0, 300))  # 3 s > RAIL A watchdog
@@ -467,6 +494,15 @@ class TestDuty:
             assert d.duty.over_budget and d.duty.over_budget[0][0] == 3
             d.ch_on(3, 200)  # must wait for the window to clear
             assert d.duty.cooldowns
+
+    def test_ch_on_budgets_the_clamped_time(self, cfg: HwConfig) -> None:
+        """Asking for 60 s plans only what the watchdog allows (here 100 ms)."""
+        with make(cfg) as d:
+            assert d.duty is not None
+            d.meas(3)
+            d.wdt_cfg("A", 100)
+            d.ch_on(3, 60000)
+            assert not d.duty.cooldowns
 
     def test_duty_disabled(self, cfg: HwConfig) -> None:
         d = LIODevice(SimTransport(SimulatedLIO(cfg)), cfg, duty=False)

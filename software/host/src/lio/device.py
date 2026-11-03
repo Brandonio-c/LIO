@@ -352,6 +352,25 @@ class LIODevice:
                     raise DeviceError(cmd, line.code or 0, line.msg or "")
                 return reply
 
+    def send_raw(self, data: bytes, timeout: float) -> Response | None:
+        """Write raw bytes and return the first response of any sequence number.
+
+        For robustness tests (T02.4): an over-length or garbage line is answered
+        without the ``@seq`` prefix, which :meth:`command` would discard.
+        """
+        self.transport.write_raw(data)
+        deadline = self.now() + timeout
+        while True:
+            remaining = deadline - self.now()
+            if remaining <= 0:
+                return None
+            raw = self.transport.read_line(remaining)
+            if raw is None:
+                continue
+            line = self._dispatch(raw)
+            if isinstance(line, Response):
+                return line
+
     # -------------------------------------------------------------- identity
 
     def ping(self) -> float:
@@ -448,7 +467,10 @@ class LIODevice:
 
     def ch_on(self, hole: int, ms: int | None = None) -> int:
         """Light one hole; returns the firmware's (possibly clamped) on-time in ms."""
-        planned = ms if ms is not None else self.cfg.wdt_ms(self.cfg.channel(hole).rail)
+        # Budget what the firmware will allow: the request clamped to the
+        # rail's current watchdog limit.
+        limit = self.info().as_int(f"wdt_{self.cfg.channel(hole).rail.lower()}_ms")
+        planned = min(ms, limit) if ms is not None else limit
         self._duty_gate(hole, planned)
         cmd = f"CH {hole} ON" + (f" {ms}" if ms is not None else "")
         until = self.command(cmd).fields.as_int("until_ms")
