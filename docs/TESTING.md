@@ -28,6 +28,7 @@ Hardware tests need firmware v2 on the Nano (§7.2). Close the Arduino Serial Mo
 | `lio motor 1 step 64` | Arms, moves motor 1 (left) 64 half-steps up, waits (asks first) |
 | `lio shell` | Keeps the port open; type protocol commands (`help` lists them) |
 | `lio selftest ...` | Runs tests and writes a report (§3) |
+| `lio dashboard` | The web dashboard: run tests, digital twin, overall verdict (§3) |
 | `lio report <run>/results.json` | Rebuilds a report |
 | `lio sim-serve` | A simulated LIO on a pseudo-terminal, for practice (§6) |
 
@@ -37,7 +38,28 @@ Add `--sim` to any command to use the simulator, and `--fault <name>` to break i
 
 ## 3. Running the tests
 
-### Whole system
+### The dashboard (recommended)
+
+```bash
+lio dashboard              # opens http://127.0.0.1:8765/ in the browser
+lio --sim dashboard        # the same, on the simulator (add --fault dead_channel:5 etc.)
+```
+
+A local web page that runs the same catalogue as `lio selftest`:
+
+- **Connect** to the Nano (choose the port; opening it resets the Nano) or to the simulator.
+- **Run** one subsystem from its tile, or **Run whole system**. Options: operator steps (walk test, rail current with a meter, ambient light), motor tests (asks you to confirm someone is at the bench), compare with or save a baseline.
+- **Digital twin**: the Nano, shift registers, both rails, the 16 holes, both detectors, the ADC, both motors and the safety logic, each coloured by its result (✓ PASS, ! WARN, ✕ FAIL, ⚠ ERROR, – SKIP, ○ not run). Click a part to see every check that concerns it. On a hole, **Measure** takes one MEAS and **Flash** lights it briefly.
+- **Overall system evaluation**: the T11 verdict (FUNCTIONAL / DEGRADED / NOT FUNCTIONAL) over the latest result of every test run since connecting, with how many of the 45 tests it covers. Subsystem runs add up, so you can test one part at a time and watch the verdict build.
+- **Operator questions** appear as dialogs (Done / Yes / No / a value / Abort).
+- **Stop** (or **All off**) stops the current test at its next command or wait, restores the safe state and keeps the results so far. The firmware's watchdogs and failsafe still bound everything if the computer itself fails.
+- Every run writes the usual report folder in `test_results/`; **Earlier runs** opens a report or shows an old run on the twin.
+
+How parts are judged: a hole by every check that names it; a rail, motor or detector likewise. Checks that judge a shared part through individual LEDs (the walk test for the shift registers, T06.1/T06.2 for the detectors) count against that part only when more than `verdict.max_channel_fails` holes fail, the same rule as the verdict: one dark LED is that LED, many point at the shared part. Subsystem tiles always show their tests' real results and name the holes when all their failures are on specific holes.
+
+The page is served on 127.0.0.1 only, and every request must carry a token embedded in the page, so other web sites open in the browser cannot drive the instrument. Port and poll rate: `dashboard:` in `lio_hw.yaml`; `--http-port` overrides the port.
+
+### Whole system (command line)
 
 ```bash
 lio selftest --sample-id none-empty-chamber --operator <name>                    # automatic tests only
@@ -201,6 +223,7 @@ Every FAIL message says what was measured, against what, and the likely cause. T
 ## 6. Practising without hardware
 
 ```bash
+lio --sim dashboard                                        # the dashboard on the simulator
 lio --sim selftest --interactive --allow-motion            # the whole catalogue in seconds
 lio --sim --fault reversed_ingaas selftest --modules detectors
 lio sim-serve                                              # prints a port such as /dev/ttys005
@@ -242,6 +265,8 @@ arduino-cli upload  --fqbn arduino:avr:nano:cpu=atmega328 -p /dev/cu.usbserial-1
 ### 7.3 Order of the session
 
 Stop at the first NOT FUNCTIONAL in steps 1–3 and fix the cause before going on. Each step writes its own report.
+
+With the dashboard (`lio dashboard`, §3), connect to the port and run the same steps from the tiles, in the same order: Host environment and USB link, then ADC, then Shift registers and Safety, then LED channels, Detectors, Timing and Sweep, then tick "Include operator steps" and run those tiles again for the operator steps, then Motors, then **Run whole system** with "Save as baseline". The commands below do the same from the terminal.
 
 1. **Link and identity:** `lio selftest --modules env,link`
 2. **ADC:** `lio selftest --modules adc`. If T03.1 fails, this is the earlier I²C hang: check SDA/SCL near 5 V idle, and that bank A is awake.
