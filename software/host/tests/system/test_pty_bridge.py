@@ -36,6 +36,7 @@ def test_catalogue_over_a_real_serial_port(cfg: HwConfig) -> None:
                 assert r.status == Status.PASS, r.summary()
         finally:
             ctx.dev.close()
+        assert bridge.wait_client(False), "the bridge did not see the port close"
         # reopening the port reboots the simulated Nano, like DTR on the real board
         ctx2 = serial_context(cfg, bridge.port)
         try:
