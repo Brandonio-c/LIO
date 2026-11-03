@@ -197,6 +197,9 @@ def duplicate_signatures(
 # ----------------------------------------------------------------- settling
 
 
+MIN_FIT_SAMPLES = 3  # unsettled samples needed before a first-order fit is attempted
+
+
 @dataclass(frozen=True)
 class Settling:
     baseline: float
@@ -230,8 +233,10 @@ def settling(
     If every lit sample is already within ``1 - fraction`` of the final level,
     the response settled within the first sample (the hardware case: settling
     is far faster than one conversion) and the settle time is an upper bound.
-    Otherwise a first-order model is fitted, which also estimates the plateau
-    when the stream ends before the signal has flattened.
+    If it settles within fewer than ``MIN_FIT_SAMPLES`` samples, the time of
+    the first settled sample is reported, again as an upper bound. Otherwise a
+    first-order model is fitted, which also estimates the plateau when the
+    stream ends before the signal has flattened.
     """
     if not 0 < on_idx < off_idx <= len(raw) or len(t_us) != len(raw):
         raise ValueError("need samples before the LED turns on and at least one lit sample")
@@ -252,6 +257,11 @@ def settling(
     idx = settled_index(plateau)
     if idx == on_idx:
         return Settling(base, plateau, plateau - base, first_ms, first_ms, True, None)
+    if idx is not None and idx - on_idx < MIN_FIT_SAMPLES:
+        # Too few samples on the transition for a meaningful fit: the settle
+        # time is known only to lie before sample idx (an upper bound).
+        t_settle = (t_us[idx] - t_on_us) / 1000.0
+        return Settling(base, plateau, plateau - base, t_settle, first_ms, False, None)
 
     fit = _fit_first_order(t_us[on_idx:off_idx], lit)
     if fit is not None:

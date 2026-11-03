@@ -178,6 +178,14 @@ class TestSettling:
         assert s.plateau == pytest.approx(3100, rel=0.02)  # recovered although not yet flat
         assert s.t_settle_ms == pytest.approx(15.0 * math.log(100), rel=0.15)
 
+    def test_short_transition_is_an_upper_bound_not_a_fit(self) -> None:
+        # tau 0.2 ms sampled every 1.36 ms: only the first lit sample is short
+        t, raw = _step(4, 24, 12, 1360, 0.2, 3000)
+        s = A.settling(t, raw, 4, 28, fraction=0.99)
+        assert not s.within_first_sample and s.tau_ms is None
+        assert s.t_settle_ms == pytest.approx(1.36 * 1.5, abs=0.01)  # second lit sample
+        assert s.t_settle_ms >= 0.2 * math.log(100)  # a true upper bound
+
     def test_unfittable_reports_observed(self) -> None:
         # irregular sample spacing: no model fit, fall back to the observed time
         t = [0, 1000, 2000, 3000, 9000, 9500, 20000, 21000]
