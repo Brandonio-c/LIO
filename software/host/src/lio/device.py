@@ -12,6 +12,7 @@ including on exceptions and Ctrl-C::
 from __future__ import annotations
 
 import logging
+import threading
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
@@ -47,6 +48,17 @@ class DeviceError(Exception):
 
 class NoResponse(TimeoutError):
     """No response arrived for a command within its timeout."""
+
+
+class Cancelled(Exception):
+    """A run was stopped from outside (the dashboard's Stop button).
+
+    Raised by the device's next command or sleep after :meth:`LIODevice.request_cancel`.
+    """
+
+
+# How often a cancellable sleep checks for a stop request (seconds).
+CANCEL_POLL_S = 0.1
 
 
 class BootTimeout(TimeoutError):
@@ -204,6 +216,10 @@ class LIODevice:
         self._info: Fields | None = None
         self._listeners: list[Callable[[Event], None]] = []
         self._lit: tuple[int, float, float] | None = None  # (hole, t_on, planned t_off)
+        # Set by another thread to stop the running test at its next command or
+        # sleep; one-shot, so the safe-state restore afterwards still works.
+        self.cancellable = False
+        self._cancel = threading.Event()
         th = cfg.section
         self.duty: DutyTracker | None = (
             DutyTracker(
@@ -255,7 +271,30 @@ class LIODevice:
         return self.transport.now()
 
     def sleep(self, seconds: float) -> None:
-        self.transport.sleep(seconds)
+        if not self.cancellable:
+            self.transport.sleep(seconds)
+            return
+        end = self.now() + seconds
+        while True:
+            self._check_cancel()
+            left = end - self.now()
+            if left <= 0:
+                return
+            self.transport.sleep(min(left, CANCEL_POLL_S))
+
+    # ------------------------------------------------------------ cancel
+
+    def request_cancel(self) -> None:
+        """Ask the running test to stop (thread-safe); it raises :class:`Cancelled`."""
+        self._cancel.set()
+
+    def clear_cancel(self) -> None:
+        self._cancel.clear()
+
+    def _check_cancel(self) -> None:
+        if self.cancellable and self._cancel.is_set():
+            self._cancel.clear()
+            raise Cancelled("stopped by the operator")
 
     # ----------------------------------------------------------- line I/O
 
@@ -325,6 +364,7 @@ class LIODevice:
 
     def command(self, cmd: str, *, timeout: float | None = None, check: bool = True) -> Reply:
         """Send one command and return its response plus the events seen meanwhile."""
+        self._check_cancel()
         self._seq = (self._seq + 1) % 100000
         seq = self._seq
         wire = encode(cmd, seq)

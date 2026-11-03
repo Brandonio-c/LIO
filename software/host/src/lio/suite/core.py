@@ -22,7 +22,7 @@ from typing import Any, NoReturn
 
 from lio.analysis import Stats, detect_level
 from lio.config import HwConfig, Section
-from lio.device import DeviceError, LIODevice, Meas, NoResponse
+from lio.device import Cancelled, DeviceError, LIODevice, Meas, NoResponse
 from lio.operator import Abort, Operator
 from lio.results import Status, SubResult, TestResult, worst
 from lio.sim import SimulatedLIO
@@ -396,7 +396,7 @@ def run_test(ctx: SuiteContext, t: TestDef) -> TestResult:
     except Skip as s:
         result.status = Status.SKIP
         rec.note(str(s))
-    except Abort as a:
+    except (Abort, Cancelled) as a:
         result.status = Status.SKIP
         rec.note(str(a))
     except (DeviceError, NoResponse, TimeoutError, OSError) as e:
@@ -407,6 +407,9 @@ def run_test(ctx: SuiteContext, t: TestDef) -> TestResult:
         rec.note(f"{type(e).__name__}: {e}")
         log.error("%s raised:\n%s", t.id, traceback.format_exc())
     finally:
+        # The test is over however it ended; a stop request still pending (for
+        # example from an aborted operator prompt) must not cancel the restore.
+        ctx.dev.clear_cancel()
         try:
             ctx.restore()
         except Exception as e:
