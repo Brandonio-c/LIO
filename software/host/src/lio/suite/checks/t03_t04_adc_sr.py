@@ -10,8 +10,10 @@ from lio.results import Status
 from lio.suite.core import DETECTORS, Recorder, Skip, SuiteContext, register
 
 I2C_WIRING_HINT = (
-    "check the ADS1115 wiring: SDA -> A4, SCL -> A5, ADDR -> GND (0x48), VDD 5 V and GND; "
-    "both lines should idle near 5 V"
+    "first check that power bank A is on: it alone powers the +5 V bus (ADS1115, LEDs, "
+    "shift registers), and USB banks switch off when the load is small (measure about 5 V "
+    "between +5 V and GND); then the ADS1115 wiring: SDA -> A4, SCL -> A5, ADDR -> GND "
+    "(0x48), VDD 5 V and GND; both lines should idle near 5 V"
 )
 
 

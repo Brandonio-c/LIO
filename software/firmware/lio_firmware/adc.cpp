@@ -31,17 +31,12 @@ const __FlashStringHelper *adc_gain_name() {
 uint16_t adc_rate_sps() { return RATES[rate_idx]; }
 float adc_lsb_mv() { return LSB_MV[gain_idx]; }
 uint32_t adc_conv_us() { return 1000000UL / RATES[rate_idx]; }
-bool adc_present() { return present; }
-
 static bool probe() {
   Wire.beginTransmission(ADC_ADDR);
   return Wire.endTransmission() == 0;
 }
 
-bool adc_init() {
-  Wire.begin();
-  Wire.setClock(I2C_CLOCK_HZ);
-  Wire.setWireTimeout(I2C_TIMEOUT_US, true);
+static bool attach() {
   present = probe() && ads.begin(ADC_ADDR);
   // ads.begin() calls Wire.begin() again, which resets the bus to 100 kHz:
   // re-apply the clock (and, defensively, the timeout).
@@ -50,11 +45,21 @@ bool adc_init() {
   if (present) {
     ads.setGain(GAINS[gain_idx]);
     ads.setDataRate(RATE_BITS[rate_idx]);
-  } else {
-    fault_set(F_ADC_MISSING);
   }
   return present;
 }
+
+bool adc_init() {
+  Wire.begin();
+  Wire.setClock(I2C_CLOCK_HZ);
+  Wire.setWireTimeout(I2C_TIMEOUT_US, true);
+  if (!attach()) fault_set(F_ADC_MISSING);
+  return present;
+}
+
+// The ADS1115 is powered from bank A, which may switch on after the Nano
+// (USB-powered) has booted: look for it again whenever it is needed.
+bool adc_present() { return present || attach(); }
 
 static bool i2c_failed() {
   if (Wire.getWireTimeoutFlag()) { Wire.clearWireTimeoutFlag(); return true; }
@@ -62,7 +67,7 @@ static bool i2c_failed() {
 }
 
 uint8_t adc_read(uint8_t ch, int16_t &raw) {
-  if (!present || !probe()) { fault_set(F_I2C_ERROR); return E_ADC; }
+  if (!adc_present() || !probe()) { fault_set(F_I2C_ERROR); return E_ADC; }
   ads.startADCReading(ADS1X15_REG_CONFIG_MUX_SINGLE_0 + 0x1000 * ch, false);
   // The first conversionComplete() poll may still see the previous result's
   // OS bit; one conversion period of waiting avoids that.
@@ -231,7 +236,7 @@ static void adc_cmd_stream(const Command &c) {
 void cmd_adc(const Command &c) {
   if (c.ntok < 2) { resp_err(c, E_ARG, F("usage: ADC READ|CFG|STREAM ...")); return; }
   if (tok_is(c.tok[1], F("CFG"))) { adc_cmd_cfg(c); return; }
-  if (!present) { resp_err(c, E_ADC, F("ADS1115 not present")); return; }
+  if (!adc_present()) { resp_err(c, E_ADC, F("ADS1115 not present")); return; }
   if (tok_is(c.tok[1], F("READ"))) adc_cmd_read(c);
   else if (tok_is(c.tok[1], F("STREAM"))) adc_cmd_stream(c);
   else resp_err(c, E_ARG, F("usage: ADC READ|CFG|STREAM ..."));

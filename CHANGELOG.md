@@ -11,6 +11,8 @@
 - `environment.yml`: the `lio` conda environment for all LIO software (`conda env create -f environment.yml`).
 
 ### Changed
+- Firmware: the ADS1115 is looked for again whenever it is needed (`INFO`, every ADC command) until it answers, so a power bank that switches on after the Nano has booted no longer leaves the ADC "missing" until a reset.
+- T03.1's failure message and `docs/TESTING.md` point first at power bank A being asleep.
 - When the Nano sends no firmware v2 banner, the error says what it sent instead (or that it sent nothing) and that firmware v2 needs flashing, instead of a bare timeout.
 - `LIODevice.request_cancel()`: a stop request ends the running test at its next command or wait (the dashboard's Stop). The command line is unchanged.
 

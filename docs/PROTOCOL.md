@@ -75,7 +75,7 @@ Channels are holes 1–16. RAIL A = holes 1–9 (DRV1, CE1 = A3); RAIL B = holes
 | `STATUS` | `ch` (lit hole, 0 = none) `ce1 ce2 mask motor1 motor2` (`idle`/`run`) `pos1 pos2 armed armed_ms va vs acc faults wdt_trips failsafe_trips` |
 | `RESET` | `OK RESET`, then the device restarts and prints `# BOOT` |
 
-`faults` is a sticky bit mask, cleared only by a reset: `0x01` ADS1115 missing at boot, `0x02` I²C error seen, `0x04` an LED watchdog fired, `0x08` the comms failsafe fired.
+`faults` is a sticky bit mask, cleared only by a reset: `0x01` ADS1115 missing at boot (the firmware keeps looking for it: `adc_ok` in `INFO` and every ADC command probe again until it answers, so a power bank that wakes after the Nano boots is picked up without a reset), `0x02` I²C error seen, `0x04` an LED watchdog fired, `0x08` the comms failsafe fired.
 
 `RESET` turns everything off and jumps to address 0, which re-runs the C runtime and `setup()`. It does not use the hardware watchdog, because the old Nano bootloader loops forever after a watchdog reset.
 
