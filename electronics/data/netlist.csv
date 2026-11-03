@@ -1,0 +1,22 @@
+net,connected_points
++5V,"Bank A(+); U1 p16,p10; U2 p16,p10; DRV1 V1; DRV2 V1; ADS1115 VDD; OPT101 VCC; TL072 p8; ULN2003 #1 +; ULN2003 #2 +; C1-C5"
+-5V,Bank B(-); TL072 p4; C6
+GND,"Bank A(-)/Bank B(+) junction; Nano GND; U1 p8,p13; U2 p8,p13; DRV1 G; DRV2 G; Q1-Q16 source; 16 gate pull-downs; 2 CE pull-downs; ADS1115 GND,ADDR; OPT101 GND,-V,COM; TL072 p3,p5; InGaAs anode (case if allowed); ULN2003 -; C1-C6"
+DATA,Nano A0; U1 p14
+CLOCK,Nano A1; U1 p11; U2 p11
+LATCH,Nano A2; U1 p12; U2 p12
+CHAIN,U1 p9; U2 p14
+CE1,Nano A3; DRV1 CE; 10k to GND
+CE2,Nano D10; DRV2 CE; 10k to GND
+RAIL_A,DRV1 LED; anodes holes 1-9
+RAIL_B,DRV2 LED; anodes holes 10-16
+CHn_GATE,register output (see channel_map.csv); 220R; Qn gate; 10k to GND
+LEDn_CATHODE,LEDn cathode; Qn drain
+SDA,Nano A4; ADS1115 SDA
+SCL,Nano A5; ADS1115 SCL
+OPT_OUT,OPT101 OUT; OPT101 1M; ADS1115 A1
+SUM,TL072 p2; InGaAs cathode; Rf; Cf
+TIA_OUT,TL072 p1; Rf; Cf; 10k -> ADS1115 A0
+U5B,TL072 p6; p7
+M1_IN1-4,Nano D2-D5; ULN2003 #1 IN1-IN4
+M2_IN1-4,Nano D6-D9; ULN2003 #2 IN1-IN4

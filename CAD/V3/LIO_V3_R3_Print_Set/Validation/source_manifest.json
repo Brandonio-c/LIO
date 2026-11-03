@@ -1,0 +1,26 @@
+{
+  "source_name": "LIO_V3_master.scad",
+  "source_sha256": "2a4388a8c7e11ec45d74591eaa9eb5f7c308a4fd7259641378017adbc0301f96",
+  "revision": "R3 consolidated bottom-up",
+  "base_reference": "embedded retained_v2_base from supplied R2; loose feet excluded",
+  "changes": [
+    "Merge locator+saddle with positive overlap; remove inter-part pins",
+    "Replace rectangular LED insert holes with 16 angled shoulder seats",
+    "Shared keyed flange keeper with lead holes smaller than LED flanges",
+    "Eight bottom-up print jobs; no automatic physical qualification",
+    "Increase clear rectangular port height 45 to 50 mm to permit lifting the example cup over its 4 mm nest rim"
+  ],
+  "jobs": {
+    "01_Base_Mount_and_Nest": 2,
+    "02_Motion_Interfaces": 18,
+    "03_Chamber_and_Door": 2,
+    "04_Carriage": 1,
+    "05_Shroud": 1,
+    "06_Optical_Head": 3,
+    "07_Electronics_Cover": 1,
+    "08_Upper_Guide_Tie": 1
+  },
+  "retained_base_source": "V2_01_motor_base_v16(5).scad",
+  "retained_base_sha256": "79ddd66693c41a72e14979e6c36acde32cd81c2c9d1ea673dca84d3076973cd0",
+  "base_code_exact_except_feet": true
+}

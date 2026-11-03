@@ -1,0 +1,19 @@
+ref,qty,part,spec,notes
+-,1,Arduino Nano,ATmega328P 5 V,USB to laptop
+"U1,U2",2,74HC595,SN74HC595N DIP-16,
+Q1-Q16,16,2N7000,N-MOSFET TO-92 60 V 200 mA,"pins 1 S, 2 G, 3 D"
+R1-R16,16,Resistor 220 ohm,1/4 W,gate resistors
+R17-R32,16,Resistor 10 kohm,1/4 W,gate pull-downs
+"R33,R34",2,Resistor 10 kohm,1/4 W,CE pull-downs
+R35,1,Resistor 10 kohm,1/4 W,ADC input protection
+Rf,1,Resistor 1 Mohm,1/4 W,TIA feedback (100k if saturating)
+Cf,1,Capacitor 10 pF,ceramic,TIA feedback
+C1-C6,6,Capacitor 100 nF,ceramic,decoupling
+"DRV1,DRV2",2,LD06AJSA LED driver module,"2.8-6 V, 30-1500 mA",pins V1/CE/G/LED
+U3,1,ADS1115 breakout,16-bit I2C ADC,addr 0x48
+U4,1,OPT101 module CJMCU-101,Si photodiode + TIA,1M jumpered to OUT
+D1,1,MTPD1346D-100,InGaAs PIN TO-46 ~800-1750 nm,cathode to TL072 pin 2
+U5,1,TL072CP,dual JFET op-amp DIP-8,+/-5 V
+LED1-LED16,up to 16,through-hole emitters,395-1850 nm,holes 10-11 reserved
+"M1,M2",2+2,ULN2003 board + 28BYJ-48,5 V,existing
+-,2,5 V USB power bank,separate units,series -> +/-5 V

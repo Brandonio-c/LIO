@@ -1,0 +1,66 @@
+[
+  {
+    "job": "01_Base_Mount_and_Nest",
+    "bodies": 2,
+    "min_convex_footprint_gap_mm": 10.0,
+    "max_footprint_overlap_mm2": 0.0,
+    "bed_edge_margin_mm": 6.0,
+    "all_components_start_at_z0": true
+  },
+  {
+    "job": "02_Motion_Interfaces",
+    "bodies": 18,
+    "min_convex_footprint_gap_mm": 10.0,
+    "max_footprint_overlap_mm2": 0.0,
+    "bed_edge_margin_mm": 6.0,
+    "all_components_start_at_z0": true
+  },
+  {
+    "job": "03_Chamber_and_Door",
+    "bodies": 2,
+    "min_convex_footprint_gap_mm": 16.1016,
+    "max_footprint_overlap_mm2": 0.0,
+    "bed_edge_margin_mm": 18.0,
+    "all_components_start_at_z0": true
+  },
+  {
+    "job": "04_Carriage",
+    "bodies": 1,
+    "min_convex_footprint_gap_mm": null,
+    "max_footprint_overlap_mm2": 0,
+    "bed_edge_margin_mm": 10.0,
+    "all_components_start_at_z0": true
+  },
+  {
+    "job": "05_Shroud",
+    "bodies": 1,
+    "min_convex_footprint_gap_mm": null,
+    "max_footprint_overlap_mm2": 0,
+    "bed_edge_margin_mm": 49.0,
+    "all_components_start_at_z0": true
+  },
+  {
+    "job": "06_Optical_Head",
+    "bodies": 3,
+    "min_convex_footprint_gap_mm": 6.1076,
+    "max_footprint_overlap_mm2": 0.0,
+    "bed_edge_margin_mm": 7.0,
+    "all_components_start_at_z0": true
+  },
+  {
+    "job": "07_Electronics_Cover",
+    "bodies": 1,
+    "min_convex_footprint_gap_mm": null,
+    "max_footprint_overlap_mm2": 0,
+    "bed_edge_margin_mm": 50.75,
+    "all_components_start_at_z0": true
+  },
+  {
+    "job": "08_Upper_Guide_Tie",
+    "bodies": 1,
+    "min_convex_footprint_gap_mm": null,
+    "max_footprint_overlap_mm2": 0,
+    "bed_edge_margin_mm": 10.0,
+    "all_components_start_at_z0": true
+  }
+]

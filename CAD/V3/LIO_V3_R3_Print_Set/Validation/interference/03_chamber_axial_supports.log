@@ -1,0 +1,17 @@
+ECHO: "LIO R3 CONSOLIDATED DEVELOPMENT CAD; see README and hardware register"
+ECHO: "Fixed source guide/screw XY", [[-78, 55], [78, 55], [-78, -55], [78, -55]], [[-74, 0], [74, 0]]
+ECHO: "Radial sleeve clearance", 1.5
+ECHO: "Lower/tower clearance", 4.5
+ECHO: "Lower/coupler-collar clearance", 2.5
+ECHO: "Proposed deck low / high / loading", 185, 253, 267
+ECHO: "Current deck / tube bottom / overlap", 267, 137, 26
+ECHO: "LOADING / SERVICE ONLY: below measurement-overlap target; illumination OFF"
+ECHO: "Enclosure-only travel, NOT qualified optical travel", 68
+ECHO: "LED tilt / nominal target distance", 14.2315, 138
+ECHO: "UNVERIFIED: screw, bearings, inserts, LEDs, board, cup, rod/thread Z endpoints. NO POWERED AXIS RELEASE."
+Geometries in cache: 73
+Geometry cache size in bytes: 946528
+CGAL Polyhedrons in cache: 28
+CGAL cache size in bytes: 60448912
+Total rendering time: 0:00:18.515
+Current top level object is empty.

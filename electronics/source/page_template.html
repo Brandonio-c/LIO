@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LIO V3 — Complete Circuit</title>
+<style>
+:root { color-scheme: light; }
+body { margin:0; background:#f3f4f7; color:#1b1f2a; font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height:1.55; }
+header { padding:22px 28px 8px; }
+h1 { margin:0 0 4px; font-size:24px; }
+.sub { color:#5b6475; font-size:14px; }
+.toolbar { padding:6px 28px; display:flex; gap:8px; align-items:center; font-size:13px; color:#5b6475; }
+.toolbar button { border:1px solid #c5cad4; background:#fff; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:13px; }
+.toolbar button:hover { background:#eef1f6; }
+.schwrap { margin:6px 20px 20px; background:#fff; border:1px solid #d5d9e2; border-radius:10px; overflow:auto; }
+#sch { display:block; width:100%; min-width:1000px; height:auto; }
+main { max-width:1150px; margin:0 auto; padding:0 28px 60px; }
+h2 { font-size:20px; margin:34px 0 10px; border-bottom:2px solid #e1e4ea; padding-bottom:6px; }
+h3 { font-size:16px; margin:22px 0 6px; }
+.warn { background:#fff6e5; border:1px solid #f1c27d; border-radius:10px; padding:14px 18px; }
+.warn p { margin:8px 0; }
+table { border-collapse:collapse; width:100%; font-size:13.5px; margin:8px 0 14px; background:#fff; }
+th, td { border:1px solid #d9dde5; padding:6px 9px; text-align:left; vertical-align:top; }
+th { background:#eef1f6; }
+code { background:#eef1f6; padding:1px 5px; border-radius:4px; font-size:12.5px; }
+.pill { display:inline-block; padding:0 7px; border-radius:9px; font-size:12px; font-weight:600; }
+.a { background:#fdebd3; color:#a35a00; } .b { background:#efe2fa; color:#6420a8; }
+@media print { .toolbar { display:none; } body { background:#fff; } .schwrap { border:none; overflow:visible; } #sch { min-width:0; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>LIO V3 Optical Head — Complete Circuit</h1>
+  <div class="sub">Full wiring schematic, circuit description, and net list for the as-built system: Arduino Nano, 2× 74HC595, 16× 2N7000, 2× LD06AJSA drivers, OPT101, InGaAs photodiode + TL072, ADS1115, on ±5 V from two power banks.</div>
+</header>
+<div class="toolbar">Zoom:
+  <button onclick="setZ(1)">Fit</button><button onclick="setZ(1.5)">150%</button><button onclick="setZ(2)">200%</button><button onclick="setZ(2.6)">260%</button>
+  <span>Scroll inside the drawing when zoomed.</span>
+</div>
+<div class="schwrap">%%SVG%%</div>
+
+<main>
+<h2>Read this first: corrections to earlier steps</h2>
+<div class="warn">
+<p><b>1. Flip the InGaAs photodiode, and add a 10 kΩ protection resistor.</b> Wire the photodiode's <b>cathode to TL072 pin 2</b> and its <b>anode to GND</b>. The earlier wiring (cathode to +5 V, anode to pin 2) makes the TL072 output swing <i>negative</i> when light hits the diode, down to about −3.5 V. The ADS1115's inputs are only rated to 0.3 V below ground, so that wiring could damage the ADC. The earlier claim that the ADS1115 "tolerates" negative voltage was wrong. With the corrected orientation the output rises positive with light (Vout ≈ photocurrent × 1 MΩ). The diode also runs at zero bias, which gives the lowest noise for steady light. Put a 10 kΩ resistor in series between TL072 pin 1 and ADS1115 A0. It limits current if the op-amp swings negative briefly at power-up, and it barely affects the reading.</p>
+<p><b>2. Test the photodiode's third (case) lead before you ground it.</b> Use continuity mode between the case lead and each diode lead. If the case lead is isolated, ground it as a shield. If it's connected to the anode, grounding it is harmless. If it's connected to the <i>cathode</i>, leave it unconnected, because grounding it would short the amplifier's input to ground and you'd read nothing.</p>
+<p><b>3. Driver 1 can't be set to 20 mA.</b> The LD06AJSA module is rated 30–1500 mA, so 30 mA is its minimum. Set Driver 1 to its lowest setting. 30 mA is above the 20 mA continuous rating of the 5 mm Chanzon LEDs. That's fine for the sweep, where each LED is on for only about 10 ms. Don't leave a visible or NIR LED on continuously (TEST_MODE 4) for more than a short check.</p>
+<p><b>4. How to power the Nano, and the switching order.</b> Keep the Nano on laptop USB, because the Python logger needs the serial link. Leave the Nano's 5V pin <i>disconnected</i> from the +5V rail; the Nano and the circuit share only GND. In firmware, turn the channel's MOSFET on first and raise CE second. Drop CE before turning the MOSFET off. That way the driver never dumps a charged output into an LED at switch-on. In the test sketch, swap <code>enableGroupFor(h); setHole(h);</code> to <code>setHole(h); enableGroupFor(h);</code>, and add <code>enableGroupFor(-1);</code> right after the two ADC reads.</p>
+</div>
+
+<h2>Circuit description</h2>
+
+<h3>Power</h3>
+<p>Two physically separate 5 V USB power banks are wired in series to make a split supply. Bank A's negative terminal is tied to Bank B's positive terminal, and that junction is the system's single 0 V ground (GND). Bank A's positive terminal becomes the <b>+5V rail</b> and Bank B's negative terminal becomes the <b>−5V rail</b>. Everything runs from +5V and GND except the TL072, which also uses −5V on pin 4 so its amplifier sits comfortably inside its supply range. The two banks have to be separate units. Two ports on one bank share a ground internally (you measured 2 Ω), so they can't be stacked. Bank B only supplies a few milliamps, and some power banks switch themselves off at loads that small. If −5V disappears after a minute or so, that's the cause.</p>
+
+<h3>Control (Arduino Nano)</h3>
+<p>The Nano generates all the digital control and reads both detectors over I²C. Pins A0, A1 and A2 drive the shift registers' DATA, CLOCK and LATCH lines. A3 and D10 drive the enable (CE) pins of the two LED drivers, and A4/A5 are the I²C bus to the ADS1115. D2–D9 stay on the two motor drivers as before, and D11, D12, A6 and A7 are spare. A6/A7 can only be used as analog inputs.</p>
+
+<h3>Channel selection (two 74HC595s)</h3>
+<p>The two shift registers act as one 16-bit output register. CLOCK (pin 11) and LATCH (pin 12) are shared by both chips. DATA enters only U1's SER pin (14), and U1's serial overflow output Q7′ (pin 9) feeds U2's SER pin (14). Both chips have /OE (pin 13) tied to GND so their outputs are always enabled, and /RST (pin 10) tied to +5V so they're never cleared. Each has a 100 nF decoupling capacitor across pins 16 and 8. U1's outputs Q0–Q7 select holes 1–8 and U2's outputs select holes 9–16. Note that Q0 is pin 15 and Q1–Q7 are pins 1–7. The register outputs never carry LED current; each one only charges a MOSFET gate.</p>
+
+<h3>Current sources (two LD06AJSA drivers) and the two rails</h3>
+<p>Each driver takes +5V on V1 and GND on G. It outputs a regulated current from its LED pin onto a shared anode rail. Driver 1 feeds <span class="pill a">RAIL A</span> (holes 1–9, UV through 940 nm), set to its minimum of about 30 mA. Driver 2 feeds <span class="pill b">RAIL B</span> (holes 10–16, the SWIR emitters), set to about 45 mA or the LED's datasheet rating, whichever is lower. The two rails must never touch. Each CE pin is driven by the Nano (A3 and D10) and also has a 10 kΩ pull-down to GND. That pull-down matters: when the circuit powers up, the 74HC595 outputs come up in random states and several MOSFETs may switch on. The pull-downs hold both drivers off, so no LED current flows until the firmware is running.</p>
+
+<h3>The 16 LED channels</h3>
+<p>Every channel is identical. The LED's anode (long leg) goes to its rail and its cathode goes to the drain (pin 3) of its own 2N7000, whose source (pin 1) goes to GND. The 74HC595 output drives the gate (pin 2) through a 220 Ω resistor, and a 10 kΩ resistor from gate to GND holds the MOSFET off whenever it isn't being driven. When the firmware raises one register output, that MOSFET connects that LED's cathode to ground. The rail's driver then pushes its set current through exactly that one LED. All 16 channels can technically switch on together, but the firmware only ever turns one on. Two LEDs on one constant-current rail would split the current unevenly, and the detector couldn't tell the two wavelengths apart.</p>
+
+<h3>Detector 1: OPT101 (silicon, holes 1–9)</h3>
+<p>The OPT101 module contains a photodiode and its amplifier on one chip, so it outputs a ready-to-read voltage. VCC goes to +5V. GND, −V and COM all go to GND for single-supply operation. The 1M pin is jumpered to OUT to switch in the internal 1 MΩ feedback resistor. OUT goes to ADS1115 input A1. The output rises from near 0 V up to roughly 3.7 V as light increases, which keeps it inside the ADC's ±4.096 V range. The module sits on the optical axis in the detector plate's chip pocket.</p>
+
+<h3>Detector 2: InGaAs + TL072 transimpedance amplifier (holes 8–16)</h3>
+<p>The bare InGaAs photodiode produces a tiny current, which side A of the TL072 converts to a voltage. The cathode connects to the inverting input (pin 2), called the summing node, and the anode goes to GND. A 1 MΩ feedback resistor and a 10 pF capacitor in parallel connect the output (pin 1) back to pin 2. The non-inverting input (pin 3) goes to GND. The chip is powered from +5V on pin 8 and −5V on pin 4, with a 100 nF capacitor from each supply pin to GND. Side B is unused, so tie pin 6 to pin 7 and pin 5 to GND to keep it quiet. The output passes through a 10 kΩ series resistor into ADS1115 input A0. If the output sticks near +3.5 V whenever a SWIR LED is on, the amplifier is saturating; drop the feedback resistor to 100 kΩ. Holes 15 and 16 (1760 and 1850 nm) sit at or beyond this detector's ~1750 nm cutoff, so expect weak or no signal from them.</p>
+
+<h3>Analog-to-digital conversion (ADS1115)</h3>
+<p>The ADS1115 is powered from +5V and GND. ADDR is grounded to set I²C address 0x48, ALRT is unused, and SDA/SCL go to Nano A4/A5 (the board already has pull-up resistors). Input A0 carries the InGaAs amplifier output and A1 carries the OPT101 output; A2 and A3 are spare. The firmware reads both channels at 16-bit resolution.</p>
+
+<h3>One measurement cycle</h3>
+<p>For each hole: shift out the 16-bit pattern with only that hole's bit set, raise that hole's group CE, and wait about 8 ms for things to settle. Then read ADS1115 A0 (InGaAs) and A1 (OPT101), drop CE, and move on to the next hole. A "dark" reading with both CE lines low gives the ambient baseline, which you subtract from each channel.</p>
+
+<h2>Arduino Nano pin map</h2>
+<table>
+<tr><th>Nano pin</th><th>Net</th><th>Goes to</th></tr>
+<tr><td>A0</td><td>DATA</td><td>U1 pin 14 (SER)</td></tr>
+<tr><td>A1</td><td>CLOCK</td><td>U1 pin 11 and U2 pin 11 (SRCLK)</td></tr>
+<tr><td>A2</td><td>LATCH</td><td>U1 pin 12 and U2 pin 12 (RCLK)</td></tr>
+<tr><td>A3</td><td>CE1</td><td>Driver 1 CE (+10 kΩ to GND)</td></tr>
+<tr><td>D10</td><td>CE2</td><td>Driver 2 CE (+10 kΩ to GND)</td></tr>
+<tr><td>A4</td><td>SDA</td><td>ADS1115 SDA</td></tr>
+<tr><td>A5</td><td>SCL</td><td>ADS1115 SCL</td></tr>
+<tr><td>GND</td><td>GND</td><td>Common ground junction</td></tr>
+<tr><td>5V</td><td>—</td><td>Not connected while on USB (standalone only: +5V rail)</td></tr>
+<tr><td>D2–D9</td><td>motors</td><td>Unchanged (two ULN2003 boards)</td></tr>
+<tr><td>D11, D12, A6, A7</td><td>—</td><td>Spare</td></tr>
+</table>
+
+<h2>Channel map</h2>
+<table>
+<tr><th>CH / Hole</th><th>LED</th><th>Register output (pin)</th><th>Anode rail</th><th>Read by</th></tr>
+<tr><td>1</td><td>395 nm UV</td><td>U1 Q0 (15)</td><td><span class="pill a">A</span></td><td>OPT101</td></tr>
+<tr><td>2</td><td>405 nm violet</td><td>U1 Q1 (1)</td><td><span class="pill a">A</span></td><td>OPT101</td></tr>
+<tr><td>3</td><td>blue</td><td>U1 Q2 (2)</td><td><span class="pill a">A</span></td><td>OPT101</td></tr>
+<tr><td>4</td><td>green</td><td>U1 Q3 (3)</td><td><span class="pill a">A</span></td><td>OPT101</td></tr>
+<tr><td>5</td><td>yellow</td><td>U1 Q4 (4)</td><td><span class="pill a">A</span></td><td>OPT101</td></tr>
+<tr><td>6</td><td>orange</td><td>U1 Q5 (5)</td><td><span class="pill a">A</span></td><td>OPT101</td></tr>
+<tr><td>7</td><td>red</td><td>U1 Q6 (6)</td><td><span class="pill a">A</span></td><td>OPT101</td></tr>
+<tr><td>8</td><td>850 nm IR</td><td>U1 Q7 (7)</td><td><span class="pill a">A</span></td><td>OPT101 + InGaAs</td></tr>
+<tr><td>9</td><td>940 nm IR</td><td>U2 Q0 (15)</td><td><span class="pill a">A</span></td><td>OPT101 + InGaAs</td></tr>
+<tr><td>10</td><td>reserved (was SMD 1200 nm)</td><td>U2 Q1 (1)</td><td><span class="pill b">B</span>*</td><td>InGaAs</td></tr>
+<tr><td>11</td><td>reserved (was SMD 1300 nm)</td><td>U2 Q2 (2)</td><td><span class="pill b">B</span>*</td><td>InGaAs</td></tr>
+<tr><td>12</td><td>1450 nm</td><td>U2 Q3 (3)</td><td><span class="pill b">B</span></td><td>InGaAs</td></tr>
+<tr><td>13</td><td>1550 nm</td><td>U2 Q4 (4)</td><td><span class="pill b">B</span></td><td>InGaAs</td></tr>
+<tr><td>14</td><td>1650 nm</td><td>U2 Q5 (5)</td><td><span class="pill b">B</span></td><td>InGaAs</td></tr>
+<tr><td>15</td><td>1760 nm</td><td>U2 Q6 (6)</td><td><span class="pill b">B</span></td><td>InGaAs (weak, at cutoff)</td></tr>
+<tr><td>16</td><td>1850 nm</td><td>U2 Q7 (7)</td><td><span class="pill b">B</span></td><td>beyond InGaAs range</td></tr>
+</table>
+<p style="font-size:13px;color:#5b6475">* If you put white or pink LEDs in holes 10–11, wire their anodes to RAIL A, and change <code>isRailB()</code> to <code>return hole &gt;= 11;</code> so those two channels enable Driver 1.</p>
+
+<h2>Full net list</h2>
+<table>
+<tr><th>Net</th><th>Everything connected to it</th></tr>
+<tr><td><b>+5V</b></td><td>Bank A (+) · U1 pins 16 &amp; 10 · U2 pins 16 &amp; 10 · DRV1 V1 · DRV2 V1 · ADS1115 VDD · OPT101 VCC · TL072 pin 8</td></tr>
+<tr><td><b>−5V</b></td><td>Bank B (−) · TL072 pin 4</td></tr>
+<tr><td><b>GND</b></td><td>Bank A (−) + Bank B (+) junction · Nano GND · U1 pins 8 &amp; 13 · U2 pins 8 &amp; 13 · DRV1 G · DRV2 G · all 16 MOSFET sources (pin 1) · all 16 gate 10 kΩ resistors · both CE 10 kΩ resistors · ADS1115 GND &amp; ADDR · OPT101 GND, −V, COM · TL072 pins 3 &amp; 5 · InGaAs anode (and case, if isolated) · ground side of every 100 nF capacitor · motor-driver grounds</td></tr>
+<tr><td>DATA</td><td>Nano A0 → U1 pin 14</td></tr>
+<tr><td>CLOCK</td><td>Nano A1 → U1 pin 11, U2 pin 11</td></tr>
+<tr><td>LATCH</td><td>Nano A2 → U1 pin 12, U2 pin 12</td></tr>
+<tr><td>CHAIN</td><td>U1 pin 9 (Q7′) → U2 pin 14 (SER)</td></tr>
+<tr><td>CE1</td><td>Nano A3 → DRV1 CE, 10 kΩ → GND</td></tr>
+<tr><td>CE2</td><td>Nano D10 → DRV2 CE, 10 kΩ → GND</td></tr>
+<tr><td>RAIL A</td><td>DRV1 LED pin → anodes of LEDs in holes 1–9</td></tr>
+<tr><td>RAIL B</td><td>DRV2 LED pin → anodes of LEDs in holes 10–16</td></tr>
+<tr><td>CH1 … CH16</td><td>Register output → 220 Ω → that channel's 2N7000 gate (pin 2); gate → 10 kΩ → GND</td></tr>
+<tr><td>LED n cathode</td><td>→ drain (pin 3) of 2N7000 n</td></tr>
+<tr><td>SDA / SCL</td><td>Nano A4 ↔ ADS1115 SDA · Nano A5 ↔ ADS1115 SCL</td></tr>
+<tr><td>OPT_OUT</td><td>OPT101 OUT + 1M (jumpered) → ADS1115 A1</td></tr>
+<tr><td>Summing node</td><td>TL072 pin 2 · InGaAs cathode · 1 MΩ · 10 pF</td></tr>
+<tr><td>TIA output</td><td>TL072 pin 1 · 1 MΩ · 10 pF · 10 kΩ series → ADS1115 A0 (TIA_OUT)</td></tr>
+<tr><td>TL072 side B</td><td>pin 6 ↔ pin 7; pin 5 → GND</td></tr>
+</table>
+
+<h2>Parts used</h2>
+<table>
+<tr><th>Part</th><th>Qty</th><th>Role</th></tr>
+<tr><td>Arduino Nano</td><td>1</td><td>Controller</td></tr>
+<tr><td>74HC595 (DIP-16)</td><td>2</td><td>16-channel selection</td></tr>
+<tr><td>2N7000 (TO-92)</td><td>16</td><td>One low-side switch per LED</td></tr>
+<tr><td>LD06AJSA constant-current module</td><td>2</td><td>Rail A and Rail B current sources</td></tr>
+<tr><td>220 Ω</td><td>16</td><td>Gate resistors</td></tr>
+<tr><td>10 kΩ</td><td>19</td><td>16 gate pull-downs, 2 CE pull-downs, 1 ADC-input protection</td></tr>
+<tr><td>1 MΩ</td><td>1</td><td>TIA feedback</td></tr>
+<tr><td>10 pF</td><td>1</td><td>TIA feedback capacitor</td></tr>
+<tr><td>100 nF</td><td>6</td><td>Decoupling: U1, U2, OPT101, ADS1115, TL072 pin 8, TL072 pin 4</td></tr>
+<tr><td>OPT101 module (CJMCU-101)</td><td>1</td><td>Detector 1</td></tr>
+<tr><td>MTPD1346D InGaAs + TL072</td><td>1 + 1</td><td>Detector 2 + amplifier</td></tr>
+<tr><td>ADS1115 breakout</td><td>1</td><td>16-bit ADC for both detectors</td></tr>
+<tr><td>5 V power banks (separate units)</td><td>2</td><td>±5 V split supply</td></tr>
+</table>
+</main>
+<script>
+function setZ(v){ document.getElementById('sch').style.width = (v*100) + '%'; }
+</script>
+</body>
+</html>

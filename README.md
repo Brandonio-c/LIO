@@ -663,3 +663,23 @@ R_i = normalized reflectance for wavelength i
 S_i = sample reading
 D_i = dark reading
 W_i = white
+
+<!-- LIO-ELECTRONICS-START -->
+## Electronics (LIO V3 optical head)
+
+The full schematic, technical document, BOM/net list and firmware for the 16-channel optical head live in [`electronics/`](electronics/README.md).
+
+![LIO V3 electronics schematic](images/lio_v3_electronics_schematic.png)
+
+| What | Where |
+|---|---|
+| Schematic (zoomable) | [`electronics/LIO_full_schematic.svg`](electronics/LIO_full_schematic.svg) |
+| Technical document (LIO-ELEC-001 Rev A) | [`electronics/docs/`](electronics/docs/) |
+| BOM, net list, channel map, pin map | [`electronics/data/`](electronics/data/) |
+| Arduino firmware | [`software/firmware/lio_firmware/`](software/firmware/lio_firmware/) |
+| Python logger | [`software/logger/`](software/logger/) |
+| Project log, design decisions, inventory, channel map, open items | [`docs/`](docs/README.md) |
+| Breadboard wiring checklist | [`electronics/WIRING_CHECKLIST.md`](electronics/WIRING_CHECKLIST.md) |
+| Changelog | [`CHANGELOG.md`](CHANGELOG.md) |
+| Dual-detector plate CAD | [`CAD/V3/LIO_V3_dual_detector_plate_v01.scad`](CAD/V3/LIO_V3_dual_detector_plate_v01.scad) |
+<!-- LIO-ELECTRONICS-END -->

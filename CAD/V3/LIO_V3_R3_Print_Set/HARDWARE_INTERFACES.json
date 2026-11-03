@@ -1,0 +1,118 @@
+{
+  "status": "Every hardware example is UNVERIFIED; defaults are not an inventory or purchasing specification.",
+  "profiles": [
+    {
+      "interface": "lead_screw",
+      "example": {
+        "visual_diameter_mm": 8,
+        "thread_start_z_example_mm": 55,
+        "thread_end_z_example_mm": 286.3
+      },
+      "release_requirement": "Identify diameter, thread form, pitch, starts/lead, handedness and actual usable ends.",
+      "verified": false
+    },
+    {
+      "interface": "lead_nut",
+      "example": {
+        "body_d_mm": 10,
+        "flange_d_mm": 22,
+        "flange_t_mm": 3.5,
+        "total_h_mm": 15,
+        "bolt_circle_d_mm": 16,
+        "hole_count": 4
+      },
+      "release_requirement": "Match actual nut to screw and then size carrier/flange holes; verify torque restraint.",
+      "verified": false
+    },
+    {
+      "interface": "guide_bearing",
+      "example": {
+        "rod_d_mm": 8,
+        "bearing_od_mm": 12,
+        "bearing_length_mm": 20,
+        "housing_seat_extra_d_mm": 0.3
+      },
+      "release_requirement": "Select real bearing and print fit coupon.",
+      "verified": false
+    },
+    {
+      "interface": "axial_bearing",
+      "example": {
+        "id_mm": 8,
+        "od_mm": 22,
+        "width_mm": 7,
+        "seat_extra_d_mm": 0.3
+      },
+      "release_requirement": "Select rated axial support and verify both race retention and shaft shoulders/collars.",
+      "verified": false
+    },
+    {
+      "interface": "door_screw_insert",
+      "example": {
+        "screw_d_mm": 3,
+        "under_head_length_mm": 6,
+        "head_d_example_mm": 5.7,
+        "head_h_example_mm": 1.8,
+        "insert_pilot_d_mm": 4.2,
+        "insert_depth_mm": 5
+      },
+      "release_requirement": "Use matching low-profile screw, actual insert drawing and process coupon.",
+      "verified": false
+    },
+    {
+      "interface": "led_common_profile",
+      "example": {
+        "body_d_mm": 5,
+        "flange_d_mm": 6.2,
+        "flange_t_mm": 1,
+        "body_length_mm": 7,
+        "lead_exit_d_mm": 4.2,
+        "capture_gap_mm": 0.2
+      },
+      "release_requirement": "Identify all 16 emitters. Complete led_profiles for different packages. Check led/retainer coupon and optional compliant pads.",
+      "verified": false
+    },
+    {
+      "interface": "detector_board",
+      "example": {
+        "outline_mm": [
+          28,
+          22
+        ],
+        "mounting_centers_mm": [
+          22,
+          16
+        ]
+      },
+      "release_requirement": "Identify actual board, active sensor axis, connector and components.",
+      "verified": false
+    },
+    {
+      "interface": "sample_cup",
+      "example": {
+        "od_mm": 50,
+        "height_mm": 40,
+        "nest_id_mm": 51,
+        "nest_lip_mm": 4,
+        "required_lift_example_mm": 5
+      },
+      "release_requirement": "Measure maximum rim/body/fill height and confirm hand insertion path.",
+      "verified": false
+    },
+    {
+      "interface": "guide_rods",
+      "example": {
+        "nominal_d_mm": 8,
+        "top_z_example_mm": 315
+      },
+      "release_requirement": "Measure rod ends, straightness, clamping and alignment.",
+      "verified": false
+    },
+    {
+      "interface": "motor_driver_load",
+      "example": {},
+      "release_requirement": "Identify motor variant, voltage, driver, torque/speed and payload. No powered release from CAD.",
+      "verified": false
+    }
+  ]
+}

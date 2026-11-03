@@ -1,0 +1,129 @@
+{
+  "revision": "R3",
+  "core_pieces": 28,
+  "optional_pieces": 1,
+  "retained_base_new_quantity": 0,
+  "installed_parts": [
+    {
+      "selector": "base_adapter",
+      "quantity": 1,
+      "job": 1,
+      "conditional": false
+    },
+    {
+      "selector": "sample_nest",
+      "quantity": 1,
+      "job": 1,
+      "conditional": false
+    },
+    {
+      "selector": "axial_bridge",
+      "quantity": 2,
+      "job": 2,
+      "conditional": false
+    },
+    {
+      "selector": "axial_cap",
+      "quantity": 2,
+      "job": 2,
+      "conditional": false
+    },
+    {
+      "selector": "axial_spacer",
+      "quantity": 4,
+      "job": 2,
+      "conditional": false
+    },
+    {
+      "selector": "guide_primary",
+      "quantity": 1,
+      "job": 2,
+      "conditional": false
+    },
+    {
+      "selector": "guide_secondary",
+      "quantity": 1,
+      "job": 2,
+      "conditional": false
+    },
+    {
+      "selector": "guide_float",
+      "quantity": 2,
+      "job": 2,
+      "conditional": false
+    },
+    {
+      "selector": "guide_cap",
+      "quantity": 4,
+      "job": 2,
+      "conditional": false
+    },
+    {
+      "selector": "nut_carrier",
+      "quantity": 2,
+      "job": 2,
+      "conditional": false
+    },
+    {
+      "selector": "chamber",
+      "quantity": 1,
+      "job": 3,
+      "conditional": false
+    },
+    {
+      "selector": "door",
+      "quantity": 1,
+      "job": 3,
+      "conditional": false
+    },
+    {
+      "selector": "carriage",
+      "quantity": 1,
+      "job": 4,
+      "conditional": false
+    },
+    {
+      "selector": "shroud",
+      "quantity": 1,
+      "job": 5,
+      "conditional": false
+    },
+    {
+      "selector": "optical_deck",
+      "quantity": 1,
+      "job": 6,
+      "conditional": false
+    },
+    {
+      "selector": "led_retainer",
+      "quantity": 1,
+      "job": 6,
+      "conditional": false
+    },
+    {
+      "selector": "detector_mount",
+      "quantity": 1,
+      "job": 6,
+      "conditional": false
+    },
+    {
+      "selector": "head_cover",
+      "quantity": 1,
+      "job": 7,
+      "conditional": false
+    },
+    {
+      "selector": "guide_tie",
+      "quantity": 1,
+      "job": 8,
+      "conditional": true
+    }
+  ],
+  "omitted_from_count": [
+    "purchased hardware",
+    "seals",
+    "test coupons",
+    "spares",
+    "future electronic and limit-switch mounts"
+  ]
+}

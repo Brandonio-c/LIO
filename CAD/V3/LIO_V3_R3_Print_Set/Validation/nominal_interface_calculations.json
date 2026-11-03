@@ -1,0 +1,94 @@
+{
+  "status": "Nominal CAD arithmetic only; no physical fit qualification.",
+  "fixed_base_guide_xy_mm": [
+    [
+      -78,
+      55
+    ],
+    [
+      78,
+      55
+    ],
+    [
+      -78,
+      -55
+    ],
+    [
+      78,
+      -55
+    ]
+  ],
+  "drive_xy_mm": [
+    [
+      -74,
+      0
+    ],
+    [
+      74,
+      0
+    ]
+  ],
+  "adapter_world_z_mm": [
+    9.3,
+    23
+  ],
+  "chamber_world_z_mm": [
+    23,
+    163
+  ],
+  "stationary_moving_radial_gap_mm": 1.5,
+  "fixed_chamber_to_motor_tower_gap_mm": 4.5,
+  "fixed_chamber_to_coupler_collar_gap_mm": 2.5,
+  "min_tube_edge_above_collar_mm": 2,
+  "carrier_to_tube_gap_at_inward_adjustment_limit_mm": 2.0,
+  "head_pilot_radial_gap_mm": 0.5,
+  "head_bolt_hole_ligament_mm": 4.75,
+  "sample_cup_example": {
+    "diameter": 50,
+    "height": 40,
+    "port_width": 60,
+    "port_rectangular_height": 50,
+    "nest_rim_height": 4,
+    "lift_before_removal": 5,
+    "top_clearance_after_lift": 5
+  },
+  "led_profile_example": {
+    "body_bore_radial_clearance": 0.2,
+    "flange_pocket_radial_clearance": 0.3,
+    "flange_radial_support_land": 0.4,
+    "retainer_radial_capture_overlap": 1.0,
+    "axial_capture_gap": 0.2,
+    "tilt_degrees": 14.231458315642614,
+    "minimum_keeper_roof_mm": 1.800972657454011
+  },
+  "states": [
+    {
+      "name": "low",
+      "deck_underside_z": 185,
+      "tube_bottom_z": 55,
+      "wall_overlap": 108,
+      "measurement_candidate": true
+    },
+    {
+      "name": "mid",
+      "deck_underside_z": 219,
+      "tube_bottom_z": 89,
+      "wall_overlap": 74,
+      "measurement_candidate": true
+    },
+    {
+      "name": "high",
+      "deck_underside_z": 253,
+      "tube_bottom_z": 123,
+      "wall_overlap": 40,
+      "measurement_candidate": true
+    },
+    {
+      "name": "loading",
+      "deck_underside_z": 267,
+      "tube_bottom_z": 137,
+      "wall_overlap": 26,
+      "measurement_candidate": false
+    }
+  ]
+}
