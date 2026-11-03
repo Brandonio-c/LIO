@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "ruff==0.15.4"
+      - run: ruff check .
+      - run: ruff format --check .
+
+  firmware:
+    name: Firmware compile + SRAM gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Install AVR core and libraries
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr@1.8.8
+          arduino-cli lib install "Adafruit ADS1X15@2.6.2" "Adafruit BusIO@1.17.4"
+      - name: Firmware v2 — new bootloader (atmega328)
+        run: python tools/firmware_size_gate.py software/firmware/lio_firmware --fqbn arduino:avr:nano:cpu=atmega328 --max-sram-pct 75
+      - name: Firmware v2 — old bootloader (atmega328old)
+        run: python tools/firmware_size_gate.py software/firmware/lio_firmware --fqbn arduino:avr:nano:cpu=atmega328old --max-sram-pct 75
+      - name: Firmware v2 — hardware watchdog build (new bootloader only)
+        run: >
+          python tools/firmware_size_gate.py software/firmware/lio_firmware
+          --fqbn arduino:avr:nano:cpu=atmega328 --max-sram-pct 75
+          --build-property "compiler.cpp.extra_flags=-DLIO_HW_WDT=1"
+      - name: Legacy TEST_MODE firmware still builds
+        run: python tools/firmware_size_gate.py software/firmware/legacy/lio_firmware_testmode --fqbn arduino:avr:nano:cpu=atmega328 --max-sram-pct 75
