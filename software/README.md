@@ -2,49 +2,52 @@
 
 | Folder | Contents |
 |---|---|
-| `control/` | `lio_control.py`: existing chamber control (unchanged by the electronics update) |
-| `firmware/lio_firmware/` | `lio_firmware.ino`: Arduino Nano firmware for the optical head |
-| `logger/` | `lio_logger.py`: Python serial logger and plotter, plus `requirements.txt` |
+| `firmware/lio_firmware/` | **Firmware v2** for the Arduino Nano: command protocol, safety rules in firmware ([docs/PROTOCOL.md](../docs/PROTOCOL.md)) |
+| `firmware/legacy/` | The previous TEST_MODE firmware (tag `fw-testmode-v1`) and the old motor sketch (**do not flash** on the current wiring) |
+| `host/` | The `lio` Python package and command: device API, simulator, test suite, reports ([host/README.md](host/README.md)) |
+| `config/lio_hw.yaml` | Hardware description and every test threshold (provisional until calibrated); saved baselines go here too |
+| `logger/lio_logger.py` | Sweep logger: same command line and CSV/PNG as before, now on firmware v2. The original is in `logger/legacy/` |
+| `control/` | Chamber motor control (`lio_control.py`), unchanged; works on firmware v2 through the bounded legacy jog commands |
 
-## Firmware: `firmware/lio_firmware/lio_firmware.ino`
+## Quick start
 
-You need the Arduino IDE (board: Arduino Nano) and the library **Adafruit ADS1X15**, from the Library Manager.
+```bash
+cd software/host && python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
+.venv/bin/lio --sim selftest            # try everything against the simulator
+.venv/bin/lio ports                     # find the Nano
+.venv/bin/lio info                      # talk to it (firmware v2 must be flashed)
+.venv/bin/lio selftest                  # automatic hardware tests and a report
+```
 
-Set `#define TEST_MODE` before uploading. The Serial Monitor runs at 115200 baud.
+How to test, the full catalogue and the first-hardware-session checklist: [docs/TESTING.md](../docs/TESTING.md).
 
-| Mode | What it does | Expect |
-|---|---|---|
-| 1 | I²C scan | `found 0x48` |
-| 2 | Live detector readings every 300 ms | Both numbers move with light |
-| 3 | Lights holes 1 → 16 for 0.4 s each | Visible LEDs light in order; check IR ones with a phone camera |
-| 4 | Hole 8 on 2 s / off 3 s | Use it to set driver current with a meter in series |
-| 5 | Sweep: dark reading + lit reading per hole, CSV output | `hole,dark_ingaas,dark_opt101,ingaas,opt101` … `END` |
+## Firmware
 
-**Pins:**
+Build and flash with `arduino-cli`. The board has the new (Optiboot) bootloader; use `cpu=atmega328old` for an old one.
+
+```bash
+arduino-cli lib install "Adafruit ADS1X15" "Adafruit BusIO"
+arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328 software/firmware/lio_firmware
+arduino-cli upload  --fqbn arduino:avr:nano:cpu=atmega328 -p /dev/cu.usbserial-XXXX software/firmware/lio_firmware
+```
+
+The Arduino IDE works too: board Arduino Nano, processor ATmega328P, and the same two libraries.
+
+**Pins (unchanged):**
 - A0 DATA, A1 CLOCK, A2 LATCH (74HC595 chain)
 - A3 CE1 (DRV1, RAIL A), D10 CE2 (DRV2, RAIL B)
 - A4/A5 I²C to the ADS1115 (A0 = InGaAs, A1 = OPT101)
-- D2–D9 are left for the motors
+- D2–D5 motor 1 (left), D6–D9 motor 2 (right)
+- D11 the optional loop-back input
 
-**Switching order:** `lightHole()` turns both drivers off, selects the MOSFET, and only then raises that rail's CE. Keep this order if you modify the code.
+**Switching order:** both drivers off, select the MOSFET, then raise that rail's CE. The firmware enforces this, along with one channel at a time and a per-rail on-time watchdog.
 
-**Settings to tune:**
-- `SETTLE_MS` (default 8 ms)
-- the ADS gain (`GAIN_ONE` = ±4.096 V)
-- `isRailB()`: change it to `h >= 11` if white or pink LEDs on RAIL A are fitted in holes 10–11
-
-## Logger: `logger/lio_logger.py`
+## Logger
 
 ```bash
-pip install -r software/logger/requirements.txt
-python software/logger/lio_logger.py /dev/tty.usbserial-XXXX   # macOS
-python software/logger/lio_logger.py COM3                        # Windows
+pip install -e software/host
+python software/logger/lio_logger.py /dev/cu.usbserial-XXXX   # macOS
+python software/logger/lio_logger.py COM3                       # Windows
 ```
 
-Close the Arduino Serial Monitor first. The logger captures one sweep and writes:
-- `lio_sweep.csv`: raw counts plus dark-subtracted volts
-- `lio_sweep.png`: OPT101 and InGaAs response against hole
-
-## To do
-
-The motor control in `control/lio_control.py` hasn't been reviewed against the new pin map. See `docs/OPEN_ITEMS_AND_NEXT_STEPS.md`, section D.
+It writes `lio_sweep.csv` (raw counts plus dark-subtracted volts, the same columns as before) and `lio_sweep.png`. `lio sweep --csv … --plot …` does the same.

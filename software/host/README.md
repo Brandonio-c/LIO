@@ -11,7 +11,11 @@ Python package for the LIO V3 controller running firmware v2 (`docs/PROTOCOL.md`
 | `lio.sim` | `SimulatedLIO`: the firmware protocol plus a simple optical model and injectable faults |
 | `lio.analysis` | Statistics, detection levels, settling fits, signature comparison (pure functions) |
 | `lio.results` | `TestResult` / `RunRecord` dataclasses, the T11 verdict, `results.json` |
-| `lio.suite` | The test catalogue T01–T10 (`lio.suite.checks`), its shared context and runner. Usable from pytest or directly |
+| `lio.suite` | The test catalogue T01–T11 (`lio.suite.checks`), its shared context and runner. Usable from pytest or `lio selftest` |
+| `lio.operator` | The person at the bench: `ConsoleOperator` (prompts; `a` aborts) and `SimOperator` (answers from the simulator's truth) |
+| `lio.report`, `lio.csvout`, `lio.baseline` | HTML/Markdown reports with plots; logger-format CSV; saved baselines and T11.1 drift |
+| `lio.cli` | The `lio` command (`lio --help`) |
+| `lio.simserve` | The simulator on a pseudo-terminal, in real time (`lio sim-serve`): exercises the real serial path |
 
 ## Setup
 
@@ -64,4 +68,4 @@ How the catalogue works:
 - A detector that is unusable (erratic or pinned output, or a reversed InGaAs on the hole-8 polarity gate) is reported once in T06. Later judgments on it are skipped instead of cascading into misleading failures.
 - `tests/system/test_fault_matrix.py` injects every simulator fault, requires its intended test to detect it, and runs the same check on a healthy simulator as a control.
 
-Reports, plots, the baseline and the `lio` command line arrive in M5; motors and interactive steps (T09, T04.4, T05.6, T06.4) in M4.
+The `lio` command does the same without pytest (`lio selftest`, `lio --sim selftest`); see [docs/TESTING.md](../../docs/TESTING.md) for the catalogue, the report and the hardware checklist.
