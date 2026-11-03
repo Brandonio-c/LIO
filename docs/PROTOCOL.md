@@ -91,6 +91,8 @@ Channels are holes 1–16. RAIL A = holes 1–9 (DRV1, CE1 = A3); RAIL B = holes
 
 Defaults after boot: gain `1` (±4.096 V, 0.125 mV/count), 128 SPS (≈7.8 ms per conversion).
 
+**STREAM timing.** A stream of up to 48 samples (`STREAM_BUF_N`) is captured into RAM at the full ADC rate and printed when the capture ends, so `t_us` reflects the true conversion interval even at 860 SPS. Longer streams print each sample as it is taken. Each `# S` line takes about 3 ms at 115200 baud, so above about 250 SPS a long stream is limited by the serial line, not by the ADC. While waiting for room in the transmit buffer the firmware keeps servicing the motors and watchdogs.
+
 `raw` is the rounded mean in counts. `mv = mean × lsb`. Single-ended readings can be slightly negative (an input below GND); that is how a reversed InGaAs photodiode shows up.
 
 **STREAM LED schedule (addition to plan §4.2, for T07.1).** With the three optional arguments, the firmware lights `hole` from sample `on_idx` up to, but not including, sample `off_idx`, and turns it off at the end in any case. This is needed because a stream is a blocking command: the host can't send `CH ON` in the middle of one. The schedule is refused (`code=3`) if the LED would be on longer than its rail's watchdog, and with `code=5` while a motor moves. Without the schedule, `ADC STREAM` is allowed while a motor moves (T09.4).

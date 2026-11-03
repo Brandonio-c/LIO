@@ -149,10 +149,26 @@ static void adc_cmd_cfg(const Command &c) {
   resp_err(c, E_ARG, F("bad gain or rate"));
 }
 
+// Longest line: "# S i=1999 t_us=4294967295 raw=-32768\r\n" (39 bytes).
+const uint8_t STREAM_LINE_MAX = 40;
+
+static void stream_sample(long i, uint32_t ts, int16_t r) {
+  // Wait for room in the TX buffer while servicing (motors keep stepping,
+  // watchdogs keep running) instead of blocking inside Serial.print.
+  while (Serial.availableForWrite() < STREAM_LINE_MAX) service();
+  event_begin(F("S"));
+  resp_kv(F("i"), i);
+  resp_kv_u(F("t_us"), ts);
+  resp_kv(F("raw"), r);
+  resp_end();
+}
+
 // ADC STREAM <ch> <n> <interval_ms> [hole on_idx off_idx]
-// Emits "# S i= t_us= raw=" per sample, then OK. The optional LED schedule
-// lights <hole> from sample on_idx up to (not including) off_idx, for
-// step-response tests (T07.1). The schedule is checked against the watchdog.
+// Emits "# S i= t_us= raw=" per sample, then OK. Up to STREAM_BUF_N samples
+// are captured first and printed afterwards; longer streams print live. The
+// optional LED schedule lights <hole> from sample on_idx up to (not including)
+// off_idx, for step-response tests (T07.1). The schedule is checked against
+// the watchdog.
 static void adc_cmd_stream(const Command &c) {
   long ch, n, iv, hole = 0, on_i = 0, off_i = 0;
   if (!arg_long(c, 2, 0, 3, ch) || !arg_long(c, 3, 1, STREAM_N_MAX, n) || !arg_long(c, 4, 0, 1000, iv)) {
@@ -173,6 +189,11 @@ static void adc_cmd_stream(const Command &c) {
       return;
     }
   }
+  // Short streams are captured first and printed afterwards, so that serial
+  // output cannot slow the sampling (T03.4, T07.1 at 860 SPS).
+  static int16_t buf_raw[STREAM_BUF_N];
+  static uint32_t buf_t[STREAM_BUF_N];
+  const bool buffered = n <= STREAM_BUF_N;
   optics_off();
   uint32_t t0 = micros();
   for (long i = 0; i < n; i++) {
@@ -185,13 +206,17 @@ static void adc_cmd_stream(const Command &c) {
     int16_t r;
     uint32_t ts = micros() - t0;
     if (adc_read((uint8_t)ch, r)) { optics_off(); resp_err(c, E_ADC, F("adc read failed")); return; }
-    event_begin(F("S"));
-    resp_kv(F("i"), i);
-    resp_kv_u(F("t_us"), ts);
-    resp_kv(F("raw"), r);
-    resp_end();
+    if (buffered) {
+      buf_raw[i] = r;
+      buf_t[i] = ts;
+    } else {
+      stream_sample(i, ts, r);
+    }
   }
   optics_off();
+  if (buffered) {
+    for (long i = 0; i < n; i++) stream_sample(i, buf_t[i], buf_raw[i]);
+  }
   resp_ok(c);
   resp_kv(F("ch"), ch);
   resp_kv(F("n"), n);

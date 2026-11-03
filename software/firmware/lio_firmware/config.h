@@ -43,6 +43,10 @@ const uint16_t SETTLE_MS_MAX     = 500;
 const uint8_t  MEAS_N_MAX        = 64;
 const uint16_t ADC_READ_N_MAX    = 256;
 const uint16_t STREAM_N_MAX      = 2000;
+// Streams of up to STREAM_BUF_N samples are captured into RAM at the full ADC
+// rate and printed afterwards; longer streams print live, so above ~250 SPS
+// their rate is limited by the serial line (~3 ms per "# S" line at 115200).
+const uint8_t  STREAM_BUF_N      = 48;
 
 const uint16_t WDT_A_DEFAULT_MS = 2000;   // RAIL A LEDs overdriven at 30 mA
 const uint16_t WDT_A_CAP_MS     = 5000;
