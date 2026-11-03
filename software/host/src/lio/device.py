@@ -548,6 +548,22 @@ class LIODevice:
     def _single_hole(mask: int) -> int:
         return mask.bit_length() if mask and not mask & (mask - 1) else 0
 
+    def wait_for_duty(self, holes: list[int], on_ms: float) -> float:
+        """Wait until each hole may be lit for ``on_ms``; returns the seconds waited.
+
+        For operator steps: cool down *before* asking the operator to watch, so
+        that the LEDs then light when announced. All windows age together, so
+        the longest single wait covers every hole.
+        """
+        if self.duty is None:
+            return 0.0
+        now = self.now()
+        wait = max((self.duty.wait_needed(h, on_ms, now) for h in holes), default=0.0)
+        if wait > 0:
+            self.duty.note_cooldown(holes[0], wait, f"before an operator step ({len(holes)} holes)")
+            self.sleep(wait)
+        return wait
+
     def _duty_gate(self, hole: int, on_ms: float) -> None:
         if self.duty is None:
             return

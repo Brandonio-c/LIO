@@ -76,9 +76,13 @@ class Section:
     def raw(self, path: str) -> Any:
         node: Any = self._data
         for part in path.split("."):
-            if not isinstance(node, dict) or part not in node:
+            if isinstance(node, dict) and part not in node and part.isdigit():
+                part_key: Any = int(part)  # YAML integer keys, e.g. motors.1
+            else:
+                part_key = part
+            if not isinstance(node, dict) or part_key not in node:
                 raise ConfigError(f"{self._name}.{path} missing")
-            node = node[part]
+            node = node[part_key]
         return node
 
     def num(self, path: str) -> float:

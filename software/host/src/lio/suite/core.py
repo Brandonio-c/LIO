@@ -23,6 +23,7 @@ from typing import Any, NoReturn
 from lio.analysis import Stats, detect_level
 from lio.config import HwConfig, Section
 from lio.device import DeviceError, LIODevice, Meas, NoResponse
+from lio.operator import Abort, Operator
 from lio.results import Status, SubResult, TestResult, worst
 from lio.sim import SimulatedLIO
 
@@ -191,6 +192,7 @@ class SuiteContext:
     sim: SimulatedLIO | None = None
     interactive: bool = False
     allow_motion: bool = False
+    operator: Operator | None = None
     cache: dict[str, Any] = field(default_factory=dict)
     meas_log: list[tuple[str, Meas]] = field(default_factory=list)  # (test id, record)
     current: str = ""
@@ -370,6 +372,14 @@ def new_result(t: TestDef) -> TestResult:
     return TestResult(t.id, t.name, t.module, t.kind)
 
 
+def _gate_kind(ctx: SuiteContext, t: TestDef) -> None:
+    """Interactive tests need an operator; motion tests also need --allow-motion."""
+    if t.kind in ("I", "M") and ctx.operator is None:
+        raise Skip("needs an operator at the bench (--interactive)")
+    if t.kind == "M" and not ctx.allow_motion:
+        raise Skip("moves the motors: needs --allow-motion with an operator present")
+
+
 def run_test(ctx: SuiteContext, t: TestDef) -> TestResult:
     """Run one catalogue entry; never raises (errors become ERROR results)."""
     result = new_result(t)
@@ -377,6 +387,7 @@ def run_test(ctx: SuiteContext, t: TestDef) -> TestResult:
     ctx.current = t.id
     t0 = time.monotonic()
     try:
+        _gate_kind(ctx, t)
         t.fn(ctx, rec)
         result.status = worst([s.status for s in result.subs])
         if not result.subs:
@@ -384,6 +395,9 @@ def run_test(ctx: SuiteContext, t: TestDef) -> TestResult:
     except Skip as s:
         result.status = Status.SKIP
         rec.note(str(s))
+    except Abort as a:
+        result.status = Status.SKIP
+        rec.note(str(a))
     except (DeviceError, NoResponse, TimeoutError, OSError) as e:
         result.status = Status.ERROR
         rec.note(f"{type(e).__name__}: {e}")

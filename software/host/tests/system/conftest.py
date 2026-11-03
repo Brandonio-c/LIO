@@ -3,6 +3,8 @@
     pytest -m "unit or sim" --lio-sim                         # simulator
     pytest -m "sim" --lio-sim --lio-fault reversed_ingaas     # simulator with a fault
     pytest -m "hw and not interactive and not motion" --lio-port /dev/cu.usbserial-1120
+    pytest -m "hw and interactive" --lio-port ... --interactive -s           # operator steps
+    pytest -m "hw and motion" --lio-port ... --allow-motion -s               # operator present
 
 Each catalogue test runs through :func:`lio.suite.core.run_test`, which always
 restores the dark, idle state afterwards. FAIL/ERROR fail the pytest test,
@@ -19,6 +21,7 @@ from pathlib import Path
 import pytest
 
 from lio.config import HwConfig
+from lio.operator import ConsoleOperator
 from lio.results import RunRecord, Status, TestResult
 from lio.suite.core import REGISTRY, SuiteContext, catalogue, run_test
 from lio.suite.runner import finish, new_record, serial_context, sim_context
@@ -31,6 +34,21 @@ class LIOWarning(UserWarning):
     """A catalogue test ended in WARN."""
 
 
+def _console_operator(request: pytest.FixtureRequest) -> ConsoleOperator:
+    """Prompts that work under pytest's output capture."""
+    capman = request.config.pluginmanager.getplugin("capturemanager")
+
+    def ask(prompt: str) -> str:
+        with capman.global_and_fixture_disabled():
+            return input(prompt)
+
+    def say(message: str) -> None:
+        with capman.global_and_fixture_disabled():
+            print(message)
+
+    return ConsoleOperator(ask, say)
+
+
 @pytest.fixture(scope="session")
 def suite_ctx(request: pytest.FixtureRequest, cfg: HwConfig) -> Iterator[SuiteContext]:
     opt = request.config.getoption
@@ -40,16 +58,13 @@ def suite_ctx(request: pytest.FixtureRequest, cfg: HwConfig) -> Iterator[SuiteCo
     if not port and not use_sim:
         pytest.skip("system tests need --lio-sim or --lio-port")
     if port:
-        ctx = serial_context(
-            cfg, port, interactive=opt("--interactive"), allow_motion=opt("--allow-motion")
-        )
+        # Motion always needs someone watching, so --allow-motion implies an operator.
+        wants_operator = opt("--interactive") or opt("--allow-motion")
+        operator = _console_operator(request) if wants_operator else None
+        ctx = serial_context(cfg, port, operator=operator, allow_motion=opt("--allow-motion"))
     else:
-        ctx = sim_context(
-            cfg,
-            opt("--lio-fault"),
-            interactive=opt("--interactive"),
-            allow_motion=opt("--allow-motion"),
-        )
+        # The simulator has a simulated operator: interactive and motion tests always run.
+        ctx = sim_context(cfg, opt("--lio-fault"))
     meta = {
         "sample_id": opt("--lio-sample-id"),
         "operator": opt("--lio-operator"),

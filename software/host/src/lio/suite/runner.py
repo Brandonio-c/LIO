@@ -14,6 +14,7 @@ from typing import Any
 import lio
 from lio.config import HwConfig
 from lio.device import LIODevice
+from lio.operator import Operator, SimOperator
 from lio.results import RunRecord, TestResult, overall_verdict
 from lio.sim import Faults, SimulatedLIO
 from lio.suite.core import SuiteContext, TestDef, catalogue, run_test
@@ -26,30 +27,52 @@ def sim_context(
     *,
     seed: int | None = None,
     loop_jumper: bool = False,
-    interactive: bool = False,
-    allow_motion: bool = False,
+    answers: dict[str, object] | None = None,
 ) -> SuiteContext:
-    """An opened device on a fresh simulator."""
+    """An opened device on a fresh simulator, with a simulated operator.
+
+    Nothing real can move or light, so interactive and motion tests always run;
+    ``answers`` overrides individual operator answers (by key).
+    """
     f = faults if isinstance(faults, Faults) else Faults.parse(faults)
     sim = SimulatedLIO(cfg, f, seed=seed, loop_jumper=loop_jumper)
     dev = LIODevice(SimTransport(sim), cfg)
     dev.open()
-    return SuiteContext(dev, cfg, "sim", sim, interactive=interactive, allow_motion=allow_motion)
+    return SuiteContext(
+        dev,
+        cfg,
+        "sim",
+        sim,
+        interactive=True,
+        allow_motion=True,
+        operator=SimOperator(sim, answers),
+    )
 
 
 def serial_context(
     cfg: HwConfig,
     port: str,
     *,
-    interactive: bool = False,
+    operator: Operator | None = None,
     allow_motion: bool = False,
     transport: Transport | None = None,
 ) -> SuiteContext:
-    """An opened device on real hardware (opening the port resets the Nano)."""
+    """An opened device on real hardware (opening the port resets the Nano).
+
+    Interactive tests run only with an ``operator``; motion tests also need
+    ``allow_motion``.
+    """
     t = transport or SerialTransport(port, cfg.section.integer("link.baud"))
     dev = LIODevice(t, cfg)
     dev.open()
-    return SuiteContext(dev, cfg, port, interactive=interactive, allow_motion=allow_motion)
+    return SuiteContext(
+        dev,
+        cfg,
+        port,
+        interactive=operator is not None,
+        allow_motion=allow_motion,
+        operator=operator,
+    )
 
 
 def _git(*args: str) -> str | None:
@@ -138,6 +161,10 @@ def finish(record: RunRecord, ctx: SuiteContext) -> RunRecord:
 
 def automatic(t: TestDef) -> bool:
     return t.kind == "A"
+
+
+def everything(t: TestDef) -> bool:
+    return True
 
 
 def run_catalogue(
