@@ -4,9 +4,13 @@
 // Preserved unchanged below for reference (original:
 // ~/Documents/Arduino/LIO-motor_control/LIO-motor_control.ino, Oct 2026).
 // It predates the optical head electronics and is unsafe on today's board:
-//   * D10 is configured INPUT_PULLUP as a button, but D10 is now CE2 (DRV2
-//     enable, RAIL B). The internal pull-up against the 10 k pull-down holds
-//     CE2 near 1 V, so the SWIR driver may be partly enabled.
+//   * D10 is configured INPUT_PULLUP as the UP button, but D10 is now CE2
+//     (DRV2 enable, RAIL B) with a 10 k pull-down. The pin therefore reads
+//     LOW ("pressed"): ~30 ms after EVERY reset or port open, the sketch
+//     starts an unbounded synchronized UP move with no command sent
+//     (observed 3 Nov 2026: "SYNC UP @ 500.00" right after the banner).
+//     The internal pull-up also holds CE2 near 1 V, so the SWIR driver may
+//     be partly enabled.
 //   * It never clears the 74HC595s, which power up in random states, so an
 //     arbitrary RAIL B channel may be selected while CE2 floats.
 //   * Jogs target +/-2e9 steps and only end on "S": if USB drops, the motors
