@@ -21,10 +21,11 @@ Python package for the LIO V3 controller running firmware v2 (`docs/PROTOCOL.md`
 ## Setup
 
 ```bash
-cd software/host
-python3 -m venv .venv
-.venv/bin/pip install -e ".[dev]"
+conda env create -f environment.yml    # from the repo root; defines the `lio` environment
+conda activate lio
 ```
+
+Without conda: `python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"` in this folder.
 
 ## Use
 
@@ -47,15 +48,15 @@ Simulator faults: `no_adc`, `stuck_on:<n>`, `dead_channel:<n>`, `swapped:<a>,<b>
 ## Tests
 
 ```bash
-.venv/bin/pytest -m unit                                   # pure logic + simulator behaviour
-.venv/bin/pytest -m "unit or sim" --lio-sim                # + catalogue T01-T10 and fault matrix
-.venv/bin/pytest -m sim --lio-sim --lio-fault stuck_on:5   # catalogue against a faulty simulator
+pytest -m unit                                   # pure logic + simulator behaviour
+pytest -m "unit or sim" --lio-sim                # + catalogue T01-T10 and fault matrix
+pytest -m sim --lio-sim --lio-fault stuck_on:5   # catalogue against a faulty simulator
 ```
 
 Hardware (only with the operator's approval; opening the port resets the Nano; T10.3 and T10.5 *arm* motion for 11 s but never send a motor command):
 
 ```bash
-.venv/bin/pytest -m "hw and not interactive and not motion" --lio-port /dev/cu.usbserial-1120 \
+pytest -m "hw and not interactive and not motion" --lio-port /dev/cu.usbserial-1120 \
     --lio-sample-id none-empty-chamber --lio-operator <name>
 ```
 

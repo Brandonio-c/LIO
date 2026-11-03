@@ -6,7 +6,7 @@
 #   python lio_logger.py COM3                       (Windows)
 #
 # Writes lio_sweep.csv (raw counts + dark-subtracted volts) and lio_sweep.png.
-# Needs the host package:  pip install -e software/host
+# Needs the host package: conda activate lio (environment.yml at the repo root)
 # Equivalent:  lio --port <PORT> sweep --csv lio_sweep.csv --plot lio_sweep.png
 from __future__ import annotations
 

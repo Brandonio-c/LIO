@@ -13,12 +13,13 @@ Older code is no longer in the tree but stays in git: the TEST_MODE firmware and
 ## Quick start
 
 ```bash
-cd software/host && python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
-.venv/bin/lio --sim selftest            # try everything against the simulator
-.venv/bin/lio ports                     # find the Nano
-.venv/bin/lio info                      # talk to it (firmware v2 must be flashed)
-.venv/bin/lio selftest                  # automatic hardware tests and a report
-.venv/bin/lio dashboard                 # or: the web dashboard (run tests, digital twin, verdict)
+conda env create -f environment.yml    # once, from the repo root
+conda activate lio
+lio --sim selftest            # try everything against the simulator
+lio ports                     # find the Nano
+lio info                      # talk to it (firmware v2 must be flashed)
+lio selftest                  # automatic hardware tests and a report
+lio dashboard                 # or: the web dashboard (run tests, digital twin, verdict)
 ```
 
 How to test, the full catalogue and the first-hardware-session checklist: [docs/TESTING.md](../docs/TESTING.md).
@@ -47,14 +48,14 @@ The Arduino IDE works too: board Arduino Nano, processor ATmega328P, and the sam
 ## Motor control
 
 ```bash
-pip install pyserial
+conda activate lio
 python software/control/lio_motor_control.py
 ```
 
 ## Logger
 
 ```bash
-pip install -e software/host
+conda activate lio
 python software/logger/lio_logger.py /dev/cu.usbserial-XXXX   # macOS
 python software/logger/lio_logger.py COM3                       # Windows
 ```

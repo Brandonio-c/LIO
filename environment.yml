@@ -1,0 +1,16 @@
+# Conda environment for all LIO software (host package, test suite, dashboard,
+# logger, motor control). Create or update it from the repo root:
+#
+#   conda env create -f environment.yml      # first time
+#   conda env update -f environment.yml      # after pulling changes
+#   conda activate lio
+#
+# The lio package is installed in editable mode, so code changes apply at once.
+name: lio
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - -e ./software/host[dev]

@@ -26,7 +26,7 @@ from typing import Any
 
 from lio import baseline as bl
 from lio.config import HwConfig
-from lio.device import LIODevice
+from lio.device import BootTimeout, LIODevice
 from lio.operator import Abort, Operator, SimOperator
 from lio.results import RunRecord, Status, TestResult, Verdict
 from lio.sim import FAULT_NAMES, Faults, SimulatedLIO
@@ -190,7 +190,11 @@ class Session:
             transport = SerialTransport(target, self.cfg.section.integer("link.baud"))
         dev = LIODevice(transport, self.cfg)
         self.log(f"connecting to {target}" + (f" (faults: {faults})" if faults else ""))
-        dev.open()  # raises on no banner; nothing is kept then
+        try:
+            dev.open()  # nothing is kept if there is no banner
+        except BootTimeout as e:
+            self.log(f"connect failed: {e}")
+            raise Refused(str(e)) from e
         dev.cancellable = True
         try:
             dev.check_compatible()

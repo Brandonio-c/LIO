@@ -324,10 +324,11 @@ class LIODevice:
 
     def wait_banner(self, timeout: float) -> Event:
         deadline = self.now() + timeout
+        n_noise = len(self.noise)
         while True:
             remaining = deadline - self.now()
             if remaining <= 0:
-                raise BootTimeout(f"no '# BOOT' banner within {timeout:.1f} s")
+                raise BootTimeout(self._no_banner(timeout, self.noise[n_noise:]))
             raw = self.transport.read_line(remaining)
             if raw is None:
                 continue
@@ -335,6 +336,23 @@ class LIODevice:
             if isinstance(line, Event) and line.is_boot:
                 self.banner = line
                 return line
+
+    @staticmethod
+    def _no_banner(timeout: float, seen: list[str]) -> str:
+        """Why there was no banner, with what the board did send: the usual cause is
+        other firmware on the Nano (an earlier sketch), which ``lio`` cannot talk to."""
+        msg = f"no '# BOOT' banner within {timeout:.1f} s"
+        if seen:
+            sample = " | ".join(line.strip()[:60] for line in seen[:3])
+            return (
+                f"{msg}; the board sent other text instead ({sample}): it is running "
+                "different firmware, not LIO firmware v2. Flash it (docs/TESTING.md §7.2)"
+            )
+        return (
+            f"{msg}; the board sent nothing. It is most likely running a sketch other than "
+            "LIO firmware v2 (one that prints nothing at start-up): flash firmware v2 "
+            "(docs/TESTING.md §7.2). Otherwise check that nothing else has the port open"
+        )
 
     def wait_event(self, name: str, timeout: float) -> Event | None:
         """Read lines until event ``name`` arrives (returned) or the timeout expires."""

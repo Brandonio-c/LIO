@@ -5,13 +5,13 @@ How to run the system test suite, what each test checks, how to read the report,
 ## 1. Set up once
 
 ```bash
-cd software/host
-python3 -m venv .venv
-.venv/bin/pip install -e ".[dev]"
-.venv/bin/lio --version
+cd <repo>
+conda env create -f environment.yml        # once; after pulling changes: conda env update -f environment.yml
+conda activate lio
+lio --version
 ```
 
-The `lio` command is then at `software/host/.venv/bin/lio`. Activate the venv (`source software/host/.venv/bin/activate`) to type just `lio`.
+Everything (the `lio` command, pytest, the logger, `lio_motor_control.py`) runs in the `lio` conda environment, defined by `environment.yml` at the repo root. The `lio` package is installed in editable mode, so code changes apply without reinstalling. Without conda, `python3 -m venv .venv && .venv/bin/pip install -e "software/host[dev]"` gives the same.
 
 Hardware tests need firmware v2 on the Nano (§7.2). Close the Arduino Serial Monitor and any other program holding the port: only one program can open it.
 
