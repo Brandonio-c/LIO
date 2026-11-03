@@ -407,36 +407,23 @@ Can Lio estimate the percentage of one ingredient in a controlled binary mixture
 ## Repository structure
 
 ```text
-lio/
-├── README.md
-├── cad/
-│   ├── 01_lio_fit_tests.scad
-│   ├── 02_lio_outer_tube.scad
-│   ├── 03_lio_inner_sleeve.scad
-│   ├── 04_lio_baffle_rings.scad
-│   ├── 05_lio_detector_cap.scad
-│   ├── 06_lio_led_ring.scad
-│   ├── 07_lio_led_cartridges.scad
-│   ├── 08_lio_bottom_collar.scad
-│   ├── 09_lio_motor_base.scad
-│   ├── 10_lio_top_guide_bridge.scad
-│   ├── 11_lio_moving_platform.scad
-│   ├── 12_lio_moving_telescoping_skirt.scad
-│   ├── 13_lio_sample_accessories.scad
-│   ├── 14_lio_electronics_tray.scad
-│   ├── 15_lio_fixed_tower_frame.scad
-│   └── 16_lio_assembly_preview.scad
-├── stl/
-├── gcode/
-├── firmware/
-├── electronics/
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   └── metadata/
-├── notebooks/
-├── docs/
-└── photos/
+LIO/
+├── README.md, CHANGELOG.md, LICENSE
+├── CAD/
+│   ├── 001–016 …                V1 parts (.scad / .stl / .gcode) and creality_print_files/
+│   ├── V2/                      V2 parts and print files
+│   └── V3/                      current design: LIO_V3_master.scad, R3 print set, dual-detector plate
+├── electronics/                 V3 optical-head schematic, LIO-ELEC-001 document, BOM / net list / pin map
+├── docs/                        project log, design decisions, channel map, protocol, testing guide
+├── images/                      logo, schematic image, build photos
+├── software/
+│   ├── firmware/lio_firmware/   firmware v2 for the Arduino Nano
+│   ├── host/                    the `lio` Python package and command: device API, simulator, test suite
+│   ├── config/lio_hw.yaml       hardware description and test thresholds
+│   ├── control/                 lio_motor_control.py, the Tkinter Z-axis jog window
+│   └── logger/                  lio_logger.py, the sweep logger
+├── tools/                       firmware size gate used by CI
+└── .github/workflows/ci.yml     lint, typing, unit + simulator tests, firmware build
 ```
 
 ---
@@ -678,6 +665,8 @@ The full schematic, technical document, BOM/net list and firmware for the 16-cha
 | BOM, net list, channel map, pin map | [`electronics/data/`](electronics/data/) |
 | Arduino firmware | [`software/firmware/lio_firmware/`](software/firmware/lio_firmware/) |
 | Python logger | [`software/logger/`](software/logger/) |
+| System test suite (`lio` command) | [`software/host/`](software/host/README.md), how-to in [`docs/TESTING.md`](docs/TESTING.md) |
+| Motor jog controller | [`software/control/lio_motor_control.py`](software/control/lio_motor_control.py) |
 | Project log, design decisions, inventory, channel map, open items | [`docs/`](docs/README.md) |
 | Breadboard wiring checklist | [`electronics/WIRING_CHECKLIST.md`](electronics/WIRING_CHECKLIST.md) |
 | Changelog | [`CHANGELOG.md`](CHANGELOG.md) |

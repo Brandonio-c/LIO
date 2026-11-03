@@ -1,0 +1,295 @@
+# LIO V3 hardware description for the host software and test suite.
+#
+# The ONLY place hardware constants and test thresholds live (plan §5.4).
+# Sources: electronics/data/*.csv, LIO-ELEC-001 Rev A, docs/OPTICAL_CHANNEL_MAP.md,
+# software/firmware/lio_firmware/config.h.
+#
+# Every threshold is marked `provisional: true` until it has been calibrated
+# from real data (M6) and a saved baseline.
+
+schema_version: 1
+
+firmware:
+  name: lio
+  proto: 1
+  min_version: "2.0.0"      # host accepts fw >= min_version and < next major
+  # Mirrors config.h; test T02.3 checks these against INFO.
+  limits:
+    settle_ms: 8
+    settle_ms_max: 500
+    meas_n_max: 64
+    wdt_a_ms: 2000
+    wdt_a_cap_ms: 5000
+    wdt_b_ms: 5000
+    wdt_b_cap_ms: 10000
+    wdt_min_ms: 50
+    comms_ms: 10000
+    arm_ms: 60000
+    step_max: 2048
+    rpm_default: 5
+    rpm_max: 15
+    step_acc: 250              # half-steps/s^2 for MOTOR STEP moves
+    half_steps_per_rev: 4096
+    jog_max: 2048
+    jog_v_min: 50
+    jog_v_max: 1000
+    jog_acc_min: 25
+    jog_acc_max: 1000
+    jog_va_default: 200
+    jog_vs_default: 500
+    jog_acc_default: 250
+    line_max: 64
+    stream_buf_n: 48           # ADC STREAM with n <= this samples at the full ADC rate
+
+link:
+  baud: 115200
+  boot_timeout_s: 3.0        # T02.1: banner must arrive within this after open
+  response_timeout_s: 2.0    # default per-command timeout (long commands add their own)
+  i2c_scan_timeout_s: 6.0    # 126 addresses x 25 ms I2C timeout (stuck bus) + margin
+  # USB-serial chips seen on Nano boards (VID, PID, label) for port discovery (T01.2)
+  usb_ids:
+    - [0x1A86, 0x7523, "CH340"]
+    - [0x1A86, 0x5523, "CH341"]
+    - [0x0403, 0x6001, "FTDI FT232R"]
+    - [0x2341, 0x0043, "ATmega16U2 (Uno R3)"]
+    - [0x2341, 0x0001, "ATmega16U2"]
+
+# Documentation copy of electronics/data/nano_pinmap.csv (T01.3 cross-check).
+pins:
+  DATA: A0
+  CLOCK: A1
+  LATCH: A2
+  CE1: A3
+  CE2: D10
+  SDA: A4
+  SCL: A5
+  LOOP: D11          # optional U2 pin 9 jumper (plan §6.3); not assumed fitted
+  M1: [D2, D3, D4, D5]
+  M2: [D6, D7, D8, D9]
+  spare: [D12, A6, A7]
+
+adc:
+  address: 0x48
+  gain: "1"                  # ±4.096 V
+  rate_sps: 128
+  full_scale_counts: 32767
+  lsb_mv:                    # per PGA gain setting
+    "2/3": 0.1875
+    "1": 0.125
+    "2": 0.0625
+    "4": 0.03125
+    "8": 0.015625
+    "16": 0.0078125
+  rates_sps: [8, 16, 32, 64, 128, 250, 475, 860]
+  channels:                  # ADS1115 input -> what is wired to it
+    0: ingaas
+    1: opt101
+    2: unconnected
+    3: unconnected
+
+detectors:
+  opt101:
+    adc_channel: 1
+    range_nm: [300, 1100]
+    saturation_counts: 29600   # ≈3.7 V on GAIN_ONE
+  ingaas:
+    adc_channel: 0
+    range_nm: [800, 1750]
+    saturation_counts: 28000   # TIA ≈+3.5 V on ±5 V
+    rf_ohm: 1.0e6
+
+rails:
+  A: {driver: DRV1, ce: CE1, holes: [1, 2, 3, 4, 5, 6, 7, 8, 9], current_ma: 30, led_rating_ma: 20}
+  B: {driver: DRV2, ce: CE2, holes: [10, 11, 12, 13, 14, 15, 16], current_ma: 45}
+
+# Channel map (docs/OPTICAL_CHANNEL_MAP.md). `expect` gives, per detector,
+# signal | weak | none. Detectors not listed are expected to see nothing.
+# fitted: false means no emitter is installed (holes 10-11): lighting them
+# must give no signal on any detector.
+channels:
+  - {hole: 1,  label: "395",    wavelength_nm: 395,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 2,  label: "405",    wavelength_nm: 405,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 3,  label: "blue",   wavelength_nm: 465,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 4,  label: "green",  wavelength_nm: 525,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 5,  label: "yellow", wavelength_nm: 590,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 6,  label: "orange", wavelength_nm: 605,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 7,  label: "red",    wavelength_nm: 630,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 8,  label: "850",    wavelength_nm: 850,  rail: A, fitted: true,  expect: {opt101: signal, ingaas: signal}}
+  - {hole: 9,  label: "940",    wavelength_nm: 940,  rail: A, fitted: true,  expect: {opt101: signal, ingaas: signal}}
+  - {hole: 10, label: "res.",   wavelength_nm: null, rail: B, fitted: false, expect: {}}
+  - {hole: 11, label: "res.",   wavelength_nm: null, rail: B, fitted: false, expect: {}}
+  - {hole: 12, label: "1450",   wavelength_nm: 1450, rail: B, fitted: true,  expect: {ingaas: signal}}
+  - {hole: 13, label: "1550",   wavelength_nm: 1550, rail: B, fitted: true,  expect: {ingaas: signal}}
+  - {hole: 14, label: "1650",   wavelength_nm: 1650, rail: B, fitted: true,  expect: {ingaas: signal}}
+  - {hole: 15, label: "1760",   wavelength_nm: 1760, rail: B, fitted: true,  expect: {ingaas: weak}}
+  - {hole: 16, label: "1850",   wavelength_nm: 1850, rail: B, fitted: true,  expect: {}}   # beyond InGaAs: never FAIL for absence
+
+# Motors (approved M0 answer 8): +steps = the legacy sketch's U direction (up).
+motors:
+  1: {name: left, pins: [D2, D3, D4, D5]}
+  2: {name: right, pins: [D6, D7, D8, D9]}
+  positive: up
+
+# Host-side LED duty budget (plan §6 T05.5): RAIL A LEDs run above rating.
+duty:
+  window_s: 60
+  max_on_ms_per_channel:
+    A: 1000
+    B: 5000
+
+run_metadata:
+  required: [sample_id]
+  defaults:
+    sample_id: none-empty-chamber
+    operator: unknown
+
+# Polarity gate (approved M0 #6): hole used for the first InGaAs-lit check.
+polarity_gate_hole: 8
+
+thresholds:
+  provisional: true          # all values below are provisional until M6 calibration
+  link:
+    ping_count: 100
+    ping_p99_ms: 50
+  adc:
+    dark_samples: 64
+    dark_sigma_max_counts: 20
+    rate_tolerance_frac: 0.15
+    stability_duration_s: 60
+    stability_rate_hz: 2
+    drift_warn_pct_fs_per_min: 2.0
+    gain_consistency_mv: 5.0     # dark mV must agree across gains within this (plus 3 sigma)
+    # T03.4: single-shot conversions also include the I2C transactions, which
+    # add a fixed overhead per sample (a large fraction at 860 SPS).
+    # At 400 kHz about 0.4 ms (start + poll + read). If the bus is run at 100 kHz
+    # (I2C_CLOCK_HZ, e.g. for long wires), expect about 1.4 ms and raise this.
+    conv_overhead_max_ms: 0.8
+    rate_check_duration_s: 0.25  # samples per rate = rate x this (8 to stream_buf_n)
+  dark:
+    opt101_counts: [0, 800]      # ≈0-100 mV
+    ingaas_counts: [-100, 2000]  # small positive expected; strongly negative -> fault
+    erratic_sigma_factor: 5.0    # dark sigma > factor x T03 limit -> erratic (missing -5 V?)
+    negative_rail_counts: -1500  # dark mean below this: output pinned at the negative clamp
+  channel:
+    meas_n: 4
+    detect_sigma: 10
+    detect_min_counts: 50
+    weak_sigma: 3
+    weak_min_counts: 15
+    none_max_sigma: 10           # unfitted/expected-none: net beyond this is "unexpected signal"
+    none_min_counts: 50
+    polarity_sigma: -5           # InGaAs net below this x sigma on an InGaAs hole -> reversed
+    off_return_sigma: 5
+    signature_similarity: 0.98   # cosine similarity above which two channels "look the same"
+    signature_min_counts: 200    # only compare signatures with this much total signal
+    # Identical = same LED, same current: equal within noise, not just similar.
+    # With two detectors the visible holes all point the same way (OPT101 only),
+    # so only amplitude separates them and a pair can match by coincidence.
+    signature_amplitude_frac: 0.01
+    duplicate_fail_group: 3      # groups this large FAIL; a matching pair only WARNs
+  saturation:
+    ingaas_counts: 27000
+    opt101_counts: 29000
+  repeatability:
+    repeats: 10
+    cv_max: 0.02
+    min_net_counts: 1000
+  settling:
+    fraction: 0.99
+    holes: [3, 8, 13]
+    stream_rate_sps: 860
+    pre_samples: 4
+    on_samples: 24
+    post_samples: 12
+    margin_factor: 1.5
+    meas_points: [[8, 1], [20, 4]]   # T07.3: (settle_ms, n) pairs timed on settling.holes[0]
+    meas_slack_ms: 3                 # T07.3: firmware bookkeeping on top of settle + conversions
+  sweep:
+    max_duration_s: 2.5
+    repeats: 5
+    agreement_frac: 0.10         # T08.3: sweep vs MEAS agreement (relative)
+    agreement_sigma: 5           # ... or within this many sigma of the combined noise
+    agreement_min_counts: 50
+  watchdog:
+    tolerance_ms: 50
+    request_ms: 60000            # T10.2: asks for far longer than any rail allows
+    test_ms: 300                 # T10.2: watchdog lowered to this while timing the cut-off
+    holes: [3, 13]               # one per rail
+  safety:
+    failsafe_margin_s: 1.0       # T10.3: silence = comms timeout + this
+    # T10.4: masks with zero or several holes selected; CE must be refused on each rail
+    multi_masks: [0x0000, 0x0005, 0x0101, 0x3000, 0x1004]
+  motion:
+    test_steps: 64
+    test_rpm: 3
+    stop_latency_ms: 50
+    stop_after_s: 0.5            # T09.3: let the long move run this long, then MOTOR STOP
+    done_margin_s: 2.0           # extra time allowed for a move's '# MOTOR ... done'
+    emi_sigma_ratio_warn: 3.0
+    emi_samples: 48              # T09.4: dark stream during the move (buffered: <= stream_buf_n)
+    emi_steps: 256               # T09.4: ~2 s at test_rpm, longer than the streams (~22 degrees)
+    emi_interval_ms: 5
+  interactive:
+    walk_ms: 400                 # T04.4: each hole lit this long
+    visible_max_nm: 700          # T04.4: seen by eye below this
+    camera_max_nm: 1000          # T04.4: seen by a phone camera up to this; beyond: n/a
+    meter_holes: {A: 8, B: 12}   # T05.6: one hole per rail, meter in series with the driver
+    # RAIL A flashes are capped by its duty budget (1 s per minute), not the plan's 2 s
+    meter_flash_ms: {A: 1000, B: 2000}
+    meter_attempts: 5
+    current_warn_frac: 0.15      # T05.6: |measured - nominal| / nominal
+    current_fail_frac: 0.30
+  baseline:                      # T11.1: drift against a saved baseline
+    drift_warn_frac: 0.10
+    drift_fail_frac: 0.25
+    min_counts: 100              # channels weaker than this in the baseline are not compared
+    dark_shift_sigma: 10
+  verdict:
+    max_channel_fails: 2
+    limited_holes: [10, 11, 15, 16]
+
+# Simulator physics (lio.sim). Not used against real hardware.
+sim:
+  seed: 1234
+  boot_s: 1.6                    # time from port open (DTR reset) to banner
+  link_latency_s: 0.0005         # one-way USB latency per line
+  i2c_overhead_s: 0.0002         # per ADS1115 conversion
+  ambient_counts: {opt101: 0, ingaas: 0}          # chamber closed
+  ambient_open_counts: {opt101: 1500, ingaas: 300}  # T06.4, chamber open
+  dark_offset_counts: {opt101: 200, ingaas: 40}
+  dark_sigma_counts: {opt101: 2.5, ingaas: 4.0}
+  lit_noise_frac: 0.003          # multiplicative noise on the lit signal
+  counts_per_uA: 8000            # 1 MΩ TIA = 1 V/µA; 0.125 mV/count at GAIN_ONE
+  tau_ms: {opt101: 0.2, ingaas: 0.01}
+  slow_settle_tau_ms: 15.0
+  noisy_adc_sigma_counts: 80
+  no_neg_rail: {mean_counts: 9000, sigma_counts: 2500}
+  opt101_no_feedback_counts: 29600
+  reversed_clamp_counts: -2400   # ≈ -0.3 V: ADS1115 input diode clamp behind 10 kΩ
+  comms_drop_every: 7            # comms_drop fault: every Nth output line is lost
+  motor_rate_hs: 1024            # used only for the simulated position/time model
+  # Emitter optical power reaching the detector (µW) and forward voltage (V).
+  # Powers are chosen so that no two healthy channels have the same signature.
+  # Vf decides how current splits when a MOSFET is stuck on (lowest Vf wins).
+  emitters:
+    1:  {power_uw: 0.6,  vf: 3.3}
+    2:  {power_uw: 0.8,  vf: 3.2}
+    3:  {power_uw: 1.0,  vf: 3.0}
+    4:  {power_uw: 0.6,  vf: 3.0}
+    5:  {power_uw: 0.35, vf: 2.0}
+    6:  {power_uw: 0.6,  vf: 2.0}
+    7:  {power_uw: 0.8,  vf: 1.9}
+    8:  {power_uw: 1.0,  vf: 1.45}
+    9:  {power_uw: 1.2,  vf: 1.3}
+    12: {power_uw: 0.4,  vf: 1.0}
+    13: {power_uw: 0.5,  vf: 0.95}
+    14: {power_uw: 0.35, vf: 0.9}
+    15: {power_uw: 0.05, vf: 0.85}
+    16: {power_uw: 0.1,  vf: 0.85}
+  # Responsivity (A/W) vs wavelength (nm), linearly interpolated, 0 outside.
+  responsivity:
+    opt101: [[300, 0.05], [400, 0.20], [450, 0.27], [500, 0.32], [550, 0.37], [650, 0.45],
+             [750, 0.52], [850, 0.55], [900, 0.55], [950, 0.45], [1000, 0.30], [1050, 0.12],
+             [1100, 0.02], [1150, 0.0]]
+    ingaas: [[750, 0.0], [800, 0.05], [900, 0.45], [1000, 0.65], [1300, 0.85], [1550, 0.95],
+             [1650, 0.90], [1700, 0.60], [1750, 0.15], [1800, 0.0]]

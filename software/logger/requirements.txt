@@ -1,2 +1,5 @@
+# The logger now runs on the lio host package (firmware v2):
+#   pip install -e software/host
 pyserial>=3.5
 matplotlib>=3.5
+pyyaml>=6.0

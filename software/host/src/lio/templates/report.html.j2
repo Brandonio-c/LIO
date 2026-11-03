@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report {{ r.run_id }}</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>{{ r.run_id }}</code> on <code>{{ r.target }}</code>
+{% if r.faults %} with simulated faults <code>{{ r.faults | join(", ") }}</code>{% endif %},
+{{ r.started }} to {{ r.finished }}</p>
+<div class="verdict" style="background: {{ verdict_color }}">{{ r.verdict.verdict }}</div>
+{% if r.verdict.reasons %}<ul>{% for x in r.verdict.reasons %}<li>{{ x }}</li>{% endfor %}</ul>{% endif %}
+
+<table>
+<tr><th>Sample</th><td>{{ r.metadata.sample_id }}</td><th>Operator</th><td>{{ r.metadata.operator }}</td></tr>
+<tr><th>Firmware</th><td>{{ r.firmware.fw }} (proto {{ r.firmware.proto }}, build {{ r.firmware.build }})</td>
+    <th>Config</th><td><code>{{ (r.config.sha256 or "")[:12] }}</code>{% if r.config.provisional %} (thresholds provisional){% endif %}</td></tr>
+<tr><th>Host</th><td>{{ r.environment.os }}, Python {{ r.environment.python }}</td>
+    <th>Software</th><td>lio {{ r.environment.lio_package }}, git <code>{{ (r.environment.git_commit or "")[:10] }}</code>{% if r.environment.git_dirty %} (dirty){% endif %}</td></tr>
+<tr><th>Results</th><td colspan="3">{% for k, n in r.verdict.counts.items() if n %}{{ k }} {{ n }}{% if not loop.last %}, {% endif %}{% endfor %}</td></tr>
+{% if r.duty %}<tr><th>LED duty</th><td colspan="3">{{ "%.1f" | format(r.duty.total_cooldown_s) }} s of cool-down waits; {{ r.duty.over_budget | length }} over-budget on-time(s)</td></tr>{% endif %}
+{% if r.metadata.notes %}<tr><th>Notes</th><td colspan="3">{{ r.metadata.notes }}</td></tr>{% endif %}
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+{% for t in r.results %}{% set st = status_style[t.status.value] %}
+<tr><td><a href="#{{ t.id }}">{{ t.id }}</a></td><td>{{ t.name }}</td>
+<td><span class="badge" style="border-color: {{ st[0] }}">{{ st[1] }} {{ t.status.value }}</span></td>
+<td>{{ t.message }}</td></tr>
+{% endfor %}
+</table>
+
+{% if plots %}<h2>Plots</h2>
+{% for title, rel in plots %}<h3>{{ title }}</h3><img src="{{ rel }}" alt="{{ title }}">{% endfor %}
+{% endif %}
+
+{% for module, results in modules %}
+<h2>{{ module }}</h2>
+{% for t in results %}{% set st = status_style[t.status.value] %}
+<h3 id="{{ t.id }}">{{ t.id }} {{ t.name }} <span class="badge" style="border-color: {{ st[0] }}">{{ st[1] }} {{ t.status.value }}</span></h3>
+{% if t.message %}<p class="meta">{{ t.message }}</p>{% endif %}
+{% if t.subs %}
+<details {% if t.status.value in ("FAIL", "ERROR", "WARN") %}open{% endif %}>
+<summary>{{ t.subs | length }} checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+{% for s in t.subs | sort(attribute="status.rank", reverse=True) %}{% set ss = status_style[s.status.value] %}
+<tr><td>{{ s.name }}<br><code>{{ s.id }}</code></td>
+<td><span class="badge" style="border-color: {{ ss[0] }}">{{ ss[1] }} {{ s.status.value }}</span></td>
+<td>{{ s.message }}</td><td>{{ s.criteria }}</td></tr>
+{% endfor %}
+</table>
+</details>
+{% endif %}
+{% endfor %}
+{% endfor %}
+</body>
+</html>
