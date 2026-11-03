@@ -3,7 +3,7 @@
 Every move is short (``thresholds.motion.test_steps`` half-steps at
 ``test_rpm``) and is undone before the test ends. The operator confirms the
 chamber is clear before the first move of a run. T09.5 (integration with
-``lio_control.py``) waits for the user's approval of the reconciliation.
+``lio_motor_control.py``) waits for the user's approval of the reconciliation.
 """
 
 from __future__ import annotations

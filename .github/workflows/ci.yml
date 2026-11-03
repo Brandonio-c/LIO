@@ -74,5 +74,3 @@ jobs:
           python tools/firmware_size_gate.py software/firmware/lio_firmware
           --fqbn arduino:avr:nano:cpu=atmega328 --max-sram-pct 75
           --build-property "compiler.cpp.extra_flags=-DLIO_HW_WDT=1"
-      - name: Legacy TEST_MODE firmware still builds
-        run: python tools/firmware_size_gate.py software/firmware/legacy/lio_firmware_testmode --fqbn arduino:avr:nano:cpu=atmega328 --max-sram-pct 75

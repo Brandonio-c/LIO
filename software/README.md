@@ -3,11 +3,12 @@
 | Folder | Contents |
 |---|---|
 | `firmware/lio_firmware/` | **Firmware v2** for the Arduino Nano: command protocol, safety rules in firmware ([docs/PROTOCOL.md](../docs/PROTOCOL.md)) |
-| `firmware/legacy/` | The previous TEST_MODE firmware (tag `fw-testmode-v1`) and the old motor sketch (**do not flash** on the current wiring) |
 | `host/` | The `lio` Python package and command: device API, simulator, test suite, reports ([host/README.md](host/README.md)) |
 | `config/lio_hw.yaml` | Hardware description and every test threshold (provisional until calibrated); saved baselines go here too |
-| `logger/lio_logger.py` | Sweep logger: same command line and CSV/PNG as before, now on firmware v2. The original is in `logger/legacy/` |
-| `control/` | Chamber motor control (`lio_control.py`), unchanged; works on firmware v2 through the bounded legacy jog commands |
+| `logger/lio_logger.py` | Sweep logger: same command line and CSV/PNG as before, now on firmware v2 |
+| `control/lio_motor_control.py` | The Tkinter Z-axis jog window (formerly `lio_control.py`, contents unchanged); works on firmware v2 through the bounded legacy jog commands. Close it before running `lio`: only one program can hold the port |
+
+Older code is no longer in the tree but stays in git: the TEST_MODE firmware and the original logger at tag `fw-testmode-v1`, and the old AccelStepper motor sketch (**do not flash** on the current wiring) at tag `software-legacy-v1`.
 
 ## Quick start
 
@@ -41,6 +42,13 @@ The Arduino IDE works too: board Arduino Nano, processor ATmega328P, and the sam
 - D11 the optional loop-back input
 
 **Switching order:** both drivers off, select the MOSFET, then raise that rail's CE. The firmware enforces this, along with one channel at a time and a per-rail on-time watchdog.
+
+## Motor control
+
+```bash
+pip install pyserial
+python software/control/lio_motor_control.py
+```
 
 ## Logger
 

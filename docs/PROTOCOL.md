@@ -143,7 +143,7 @@ Moves use a trapezoidal profile with an acceleration of 250 half-steps/s². The 
 
 ## 7. Legacy jog commands (reviewed exception to the arming rule)
 
-`software/control/lio_control.py` (unchanged) sends these commands and never arms. They are accepted **without** `MOTOR ARM`, as an exception approved in the M0 review, because each one is bounded:
+`software/control/lio_motor_control.py` (formerly `lio_control.py`; contents unchanged) sends these commands and never arms. They are accepted **without** `MOTOR ARM`, as an exception approved in the M0 review, because each one is bounded:
 
 | Command | Effect |
 |---|---|
@@ -157,10 +157,10 @@ Moves use a trapezoidal profile with an acceleration of 250 half-steps/s². The 
 
 Each jog ends at **whichever comes first**: `S`, **2048 half-steps** (`jog_max`), or the comms-loss failsafe (§6.5). A new jog command replaces the current move of the motors it names, and starts a new 2048-step bound. Jogs are refused while an LED is on; LED and measurement commands are refused while a jog runs.
 
-This bound also fixes `lio_control.py`'s runaway: if its window loses focus while a key is held, the key-release `S` never arrives, but the jog still stops at the bound.
+This bound also fixes `lio_motor_control.py`'s runaway: if its window loses focus while a key is held, the key-release `S` never arrives, but the jog still stops at the bound.
 
-Differences from the legacy AccelStepper sketch:
-- Replies are `OK`/`ERR` lines; `lio_control.py` ignores replies.
+Differences from the legacy AccelStepper sketch (removed from the tree; kept at git tag `software-legacy-v1`):
+- Replies are `OK`/`ERR` lines; `lio_motor_control.py` ignores replies.
 - `S` stops at once instead of decelerating.
 - The coils are released after every move.
 - The legacy speed limits (VA 50–1500, VS 100–3000, ACC 25–3000) are clamped to 1000.

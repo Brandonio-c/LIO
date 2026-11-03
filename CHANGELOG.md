@@ -7,7 +7,7 @@
   - power-up dark state and one channel at a time
   - per-rail on-time watchdog and a comms-loss failsafe
   - armed, bounded motor moves with the coils released afterwards
-  - bounded legacy jogs for `lio_control.py`
+  - bounded legacy jogs for `lio_motor_control.py`
   - flash 72 %, SRAM 51 % of the ATmega328P
 - `software/host/`, the `lio` package and command:
   - device API, protocol parser, a simulator with 16 injectable faults
@@ -24,10 +24,14 @@
 ### Changed
 - `software/logger/lio_logger.py`: rewritten on the host package for firmware v2. It keeps the same command line, the same `lio_sweep.csv` (byte-compatible) and `lio_sweep.png`.
 
-### Preserved
-- The TEST_MODE firmware: `software/firmware/legacy/lio_firmware_testmode/`, tag `fw-testmode-v1`.
-- The old motor sketch: `software/firmware/legacy/lio_motor_control/`, marked do-not-flash.
-- The original logger: `software/logger/legacy/`.
+- `software/control/lio_control.py` renamed `lio_motor_control.py` (contents unchanged).
+- The root README's repository-structure section now matches the actual tree.
+
+### Removed (kept in git)
+- The TEST_MODE firmware and the original logger: at tag `fw-testmode-v1`.
+- `software/firmware/legacy/` (TEST_MODE firmware copy and the old AccelStepper motor sketch, do-not-flash) and `software/logger/legacy/`: at tag `software-legacy-v1`.
+- CI's legacy-firmware build step.
+- A stray `CAD/creality_print_files/.DS_Store`.
 
 ## 2026-11-02: LIO V3 optical head electronics, Rev A
 

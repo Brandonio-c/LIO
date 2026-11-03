@@ -6,8 +6,6 @@ extend-exclude = [
   "CAD",
   "electronics",
   "software/control",
-  "software/firmware/legacy",
-  "software/logger/legacy",  # the original TEST_MODE 5 logger, kept unchanged
 ]
 
 [lint]

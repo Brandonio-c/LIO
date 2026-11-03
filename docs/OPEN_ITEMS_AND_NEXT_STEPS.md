@@ -29,8 +29,8 @@ Ordered roughly by priority. Tick each item off as it's completed.
 
 ## D. Firmware and software integration
 
-- [ ] Reconcile `software/control/lio_control.py` with the new pin map (D2–D9 motors; A0–A3 and D10 optics; A4/A5 I²C).
-- [ ] Combine motor control and optical sweeps in one firmware. De-energise the coils after each move, and never sweep while the motors are moving.
+- [x] Reconcile the motor control with the new pin map (D2–D9 motors; A0–A3 and D10 optics; A4/A5 I²C): firmware v2 drives the motors on D2–D9 and accepts `software/control/lio_motor_control.py`'s jog commands, bounded (`docs/PROTOCOL.md` §7). To confirm on hardware: test T09.
+- [x] Combine motor control and optical sweeps in one firmware. De-energise the coils after each move, and never sweep while the motors are moving (firmware v2, `docs/PROTOCOL.md` §6).
 - [ ] Add a "dark only" mode and a timestamped file name to the logger.
 
 ## E. Hardware upgrades (later)

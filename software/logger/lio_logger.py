@@ -1,6 +1,6 @@
 # LIO V3 sweep logger, rewritten on lio.device for firmware v2 (docs/PROTOCOL.md).
 # Same command line and the same outputs as the original
-# (legacy/lio_logger_testmode5.py, which needed the TEST_MODE 5 firmware):
+# (git tag fw-testmode-v1, which needed the TEST_MODE 5 firmware):
 #
 #   python lio_logger.py /dev/cu.usbserial-XXXX     (macOS)
 #   python lio_logger.py COM3                       (Windows)

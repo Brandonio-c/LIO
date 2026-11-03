@@ -1,7 +1,7 @@
 """Sweep and measurement CSV files.
 
 ``write_sweep_csv`` produces exactly the format of the original logger
-(``software/logger/legacy/lio_logger_testmode5.py``)::
+(TEST_MODE 5 logger, ``software/logger/lio_logger.py`` at git tag ``fw-testmode-v1``)::
 
     hole,label,dark_ingaas,dark_opt101,ingaas,opt101,net_ingaas_V,net_opt101_V
     1,395,40,200,41,1124,0.00012,0.1155

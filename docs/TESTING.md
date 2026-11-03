@@ -220,7 +220,7 @@ Do this with the user present. Motion steps only with someone at the bench.
 - [ ] Power banks charged; bank B awake (−5 V present at the TL072)
 - [ ] Nano connected **directly** to the Mac, not through the dock/hub
 - [ ] Multimeter with mA range and leads (T05.6); phone camera for holes 8–9 (T04.4)
-- [ ] Nothing else holding the port (Arduino IDE Serial Monitor, `lio_control.py`)
+- [ ] Nothing else holding the port (Arduino IDE Serial Monitor, `lio_motor_control.py`)
 - [ ] Optional, only if agreed: the U2 pin 9 → D11 loop-back jumper (T04.2)
 
 ### 7.2 Flash firmware v2
@@ -237,7 +237,7 @@ arduino-cli upload  --fqbn arduino:avr:nano:cpu=atmega328 -p /dev/cu.usbserial-1
 - Old bootloader instead (the upload fails with `not in sync`): use `cpu=atmega328old` in both commands.
 - Optional hardware watchdog (new bootloader only): add `--build-property "compiler.cpp.extra_flags=-DLIO_HW_WDT=1"` to the compile command.
 - Check: `lio --port /dev/cu.usbserial-1120 info` shows `fw 2.0.0`, `proto 1` and `adc_ok 1`.
-- Roll back: `software/firmware/legacy/lio_firmware_testmode/` (tag `fw-testmode-v1`). The old motor sketch must **not** be flashed on the current wiring (see its header).
+- Roll back: the TEST_MODE firmware is `software/firmware/lio_firmware/` at tag `fw-testmode-v1`. Check it out beside the repo with `git worktree add ../lio-testmode fw-testmode-v1` and flash `../lio-testmode/software/firmware/lio_firmware`. The old AccelStepper motor sketch (tag `software-legacy-v1`, `software/firmware/legacy/lio_motor_control/`) must **not** be flashed on the current wiring: it reads CE2 (D10) as a pressed UP button and starts moving by itself after every reset.
 
 ### 7.3 Order of the session
 
@@ -253,4 +253,4 @@ Stop at the first NOT FUNCTIONAL in steps 1–3 and fix the cause before going o
    `lio selftest --interactive --allow-motion --save-baseline --sample-id none-empty-chamber --operator <name>`
 8. **After the session:** calibrate the provisional thresholds in `lio_hw.yaml` from the report (dark ranges, noise, detection levels, CV, settle time), set `provisional: false` where calibrated, and open an issue for every FAIL and WARN.
 
-`lio_control.py` (renamed `lio_motor_control.py` in the working tree) keeps working on firmware v2 through the bounded legacy jog commands (PROTOCOL.md §7).
+`software/control/lio_motor_control.py` (the Tkinter jog window) keeps working on firmware v2 through the bounded legacy jog commands (PROTOCOL.md §7).

@@ -18,6 +18,6 @@ uint16_t jog_vs();
 uint16_t jog_acc();
 
 void cmd_motor(const Command &c);  // MOTOR ARM | <1|2> STEP | <1|2|ALL> RELEASE | STOP
-// Legacy lio_control.py commands: U D LU LD RU RD S VA<n> VS<n> ACC<n> POSL0 POSR0 ?
+// Legacy lio_motor_control.py commands: U D LU LD RU RD S VA<n> VS<n> ACC<n> POSL0 POSR0 ?
 // Returns false if c is not a legacy command.
 bool cmd_legacy(const Command &c);

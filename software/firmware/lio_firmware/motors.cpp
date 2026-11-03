@@ -154,7 +154,7 @@ void cmd_motor(const Command &c) {
 }
 
 // ---------------------------------------------------------------------------
-// Legacy jog layer for lio_control.py (reviewed exception to the arming rule,
+// Legacy jog layer for lio_motor_control.py (reviewed exception to the arming rule,
 // docs/PROTOCOL.md §7). Each jog ends at whichever comes first: S, the
 // JOG_MAX_STEPS bound, or the comms-loss failsafe. Coils release on stop.
 // ---------------------------------------------------------------------------

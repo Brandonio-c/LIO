@@ -2,7 +2,7 @@
 
 **Status: proposal for the user's approval (M0 decision 12).** No electronics file has been edited. If approved, the text below replaces the corresponding parts of `electronics/source/build_doc.js` (§13.1, §13.2, §14, §15 rows, Appendix A, Appendix B), and the DOCX/PDF are regenerated with `node build_doc.js`.
 
-Why: §13–§14 and Appendices A–B describe the TEST_MODE firmware (five compile-time modes). That firmware has been replaced by the command-driven firmware v2 (`docs/PROTOCOL.md`); the old sketch is preserved in `software/firmware/legacy/` (tag `fw-testmode-v1`).
+Why: §13–§14 and Appendices A–B describe the TEST_MODE firmware (five compile-time modes). That firmware has been replaced by the command-driven firmware v2 (`docs/PROTOCOL.md`); the old sketch is preserved at git tag `fw-testmode-v1`.
 
 ---
 
@@ -52,7 +52,7 @@ A measurement whose estimated on-time would exceed the watchdog is refused. Only
 - **Watchdog:** each lit channel turns off at its rail's limit.
 - **Comms loss:** 10 s without a command while anything is active turns everything off and disarms the motors.
 - **Motors:** a motor move needs `MOTOR ARM` with a token from `INFO` (valid for 60 s). Moves are bounded to 2048 half-steps, and the coils are released afterwards. No LED may be on during a move, and no measurement is allowed while a motor moves.
-- **Legacy jogs:** `lio_control.py` keeps working (`U`, `D`, `LU`, …), each jog bounded to 2048 half-steps (`docs/PROTOCOL.md` §7).
+- **Legacy jogs:** `software/control/lio_motor_control.py` keeps working (`U`, `D`, `LU`, …), each jog bounded to 2048 half-steps (`docs/PROTOCOL.md` §7).
 
 ### 14.3  Libraries and tools
 
