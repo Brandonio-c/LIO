@@ -20,6 +20,28 @@ jobs:
       - run: ruff check .
       - run: ruff format --check .
 
+  python:
+    name: Host package (mypy + tests, Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.12"]
+    defaults:
+      run:
+        working-directory: software/host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -e ".[dev]"
+      - run: mypy
+      - name: Unit + simulator tests
+        run: pytest -m unit --cov=lio --cov-report=term --cov-report=xml
+      - name: Coverage gate (>= 90 % on protocol and analysis)
+        run: coverage report --include="*/lio/protocol.py,*/lio/analysis.py" --fail-under=90
+
   firmware:
     name: Firmware compile + SRAM gate
     runs-on: ubuntu-latest
