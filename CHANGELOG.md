@@ -10,6 +10,8 @@
 - `dashboard:` settings in `lio_hw.yaml` (local address, port, poll rate, flash time).
 - `environment.yml`: the `lio` conda environment for all LIO software (`conda env create -f environment.yml`).
 
+- `POWER WAKE [ms]` (firmware) and `LIODevice.keep_awake()`: holding both motors' coils for 1 s (no steps, nothing moves) wakes power bank A; the host does it when the port opens, before each test and before Measure/Flash, at most every 20 s (`power:` in `lio_hw.yaml`). Simulator fault `bank_a_asleep`.
+
 ### Changed
 - Firmware: the ADS1115 is looked for again whenever it is needed (`INFO`, every ADC command) until it answers, so a power bank that switches on after the Nano has booted no longer leaves the ADC "missing" until a reset.
 - T03.1's failure message and `docs/TESTING.md` point first at power bank A being asleep.

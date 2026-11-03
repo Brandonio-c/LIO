@@ -510,3 +510,59 @@ class TestDuty:
             for _ in range(50):
                 d.meas(3)
             assert d.duty is None
+
+
+class TestPowerWake:
+    def test_wake_on_open_and_at_most_once_per_interval(self, cfg: HwConfig) -> None:
+        sim = SimulatedLIO(cfg)
+        with LIODevice(SimTransport(sim), cfg) as d:
+            assert sim.wakes == 1  # opening the port
+            assert not d.keep_awake()  # too soon
+            d.sleep(cfg.section.num("power.interval_s") + 0.1)
+            assert d.keep_awake() and sim.wakes == 2
+
+    def test_no_motion_and_coils_released(self, cfg: HwConfig) -> None:
+        sim = SimulatedLIO(cfg)
+        with LIODevice(SimTransport(sim), cfg) as d:
+            assert d.power_wake(500) == 500
+            st = d.status()
+            assert (st.as_int("pos1"), st.as_int("pos2")) == (0, 0)
+            assert st.as_str("motor1") == "idle" and st.as_str("motor2") == "idle"
+
+    def test_refused_while_lit_and_bounded(self, cfg: HwConfig) -> None:
+        sim = SimulatedLIO(cfg)
+        with LIODevice(SimTransport(sim), cfg) as d:
+            d.ch_on(3, 1000)
+            with pytest.raises(DeviceError) as e:
+                d.power_wake()
+            assert e.value.code == 3
+            d.off()
+            d.sleep(cfg.section.num("power.interval_s") + 0.1)
+            d.ch_on(3, 1000)
+            assert not d.keep_awake()  # skipped while lit, never raises
+            d.off()
+            with pytest.raises(DeviceError) as e:
+                d.power_wake(cfg.limits["wake_ms_max"] + 1)
+            assert e.value.code == 2
+
+    def test_firmware_without_power_wake(self, cfg: HwConfig) -> None:
+        d = LIODevice(SimTransport(SimulatedLIO(cfg)), cfg)
+
+        def unknown(ms: int | None = None) -> int:
+            raise DeviceError("POWER WAKE", 1, "unknown command")
+
+        d.power_wake = unknown  # type: ignore[method-assign]
+        with d:  # opening still works
+            assert not d.keep_awake(force=True)
+            assert not d._wake_supported  # never asked again
+
+    def test_bank_a_asleep_until_woken(self, cfg: HwConfig) -> None:
+        sim = SimulatedLIO(cfg, Faults.parse("bank_a_asleep"))
+        d = LIODevice(SimTransport(sim), cfg)
+        d._wake_supported = False
+        with d:
+            assert d.info().as_int("adc_ok") == 0
+            d._wake_supported = True
+            assert d.keep_awake(force=True)
+            assert d.info().as_int("adc_ok") == 1  # found again without a reset
+            assert d.adc_read(1, 4).n == 4

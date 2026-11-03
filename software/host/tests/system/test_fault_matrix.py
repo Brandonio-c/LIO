@@ -20,10 +20,12 @@ from dataclasses import dataclass
 import pytest
 
 from lio.config import HwConfig
+from lio.device import LIODevice
 from lio.results import Status, TestResult, Verdict
-from lio.sim import FAULT_NAMES
-from lio.suite.core import REGISTRY, catalogue, run_test
+from lio.sim import FAULT_NAMES, Faults, SimulatedLIO
+from lio.suite.core import REGISTRY, SuiteContext, catalogue, run_test
 from lio.suite.runner import everything, new_record, run_catalogue, sim_context
+from lio.transport import SimTransport
 
 pytestmark = pytest.mark.sim
 
@@ -110,10 +112,50 @@ def test_healthy_control_passes(cfg: HwConfig, row: Row) -> None:
     assert _find(result, row.sub) in (Status.PASS, None), result.summary()
 
 
+# Faults the host is designed to repair rather than report (tested below).
+HEALED = ("bank_a_asleep",)
+
+
 def test_every_fault_has_a_row() -> None:
-    covered = {r.fault.split(":")[0] for r in MATRIX}
+    covered = {r.fault.split(":")[0] for r in MATRIX} | set(HEALED)
     missing = set(FAULT_NAMES) - covered
     assert not missing, f"faults without a detecting test: {sorted(missing)}"
+
+
+# ------------------------------------------------- power bank A asleep (healed)
+
+
+def _asleep_context(cfg: HwConfig, *, wake: bool) -> SuiteContext:
+    sim = SimulatedLIO(cfg, Faults.parse("bank_a_asleep"))
+    dev = LIODevice(SimTransport(sim), cfg)
+    dev._wake_supported = wake  # as with firmware that has no POWER WAKE
+    dev.open()
+    return SuiteContext(dev, cfg, "sim", sim)
+
+
+def test_bank_a_asleep_is_woken_before_the_tests(cfg: HwConfig) -> None:
+    catalogue()
+    ctx = _asleep_context(cfg, wake=True)
+    try:
+        assert ctx.sim is not None and ctx.sim.wakes == 1  # on opening the port
+        assert run_test(ctx, REGISTRY["T03.1"]).status == Status.PASS
+        # the bank falls asleep again; the next test wakes it before measuring
+        ctx.dev.sleep(cfg.sim.num("bank_awake_s") + 1)
+        assert run_test(ctx, REGISTRY["T03.2"]).status == Status.PASS
+        assert ctx.sim.wakes == 2
+    finally:
+        ctx.dev.close()
+
+
+def test_bank_a_asleep_without_wake_is_reported(cfg: HwConfig) -> None:
+    catalogue()
+    ctx = _asleep_context(cfg, wake=False)
+    try:
+        r = run_test(ctx, REGISTRY["T03.1"])
+        assert _find(r, "T03.1/adc") == Status.FAIL
+        assert "power bank A" in r.sub("T03.1/adc").message
+    finally:
+        ctx.dev.close()
 
 
 # ------------------------------------------------------------- whole catalogue

@@ -220,7 +220,8 @@ class SuiteContext:
 
     def has_adc(self) -> bool:
         if "adc_ok" not in self.cache:
-            self.cache["adc_ok"] = self.dev.info().as_int("adc_ok") == 1
+            # fresh: the firmware looks for the ADS1115 again once bank A is awake
+            self.cache["adc_ok"] = self.dev.info(refresh=True).as_int("adc_ok") == 1
         ok: bool = self.cache["adc_ok"]
         return ok
 
@@ -389,6 +390,7 @@ def run_test(ctx: SuiteContext, t: TestDef) -> TestResult:
     t0 = time.monotonic()
     try:
         _gate_kind(ctx, t)
+        ctx.dev.keep_awake()  # power bank A may have switched itself off
         t.fn(ctx, rec)
         result.status = worst([s.status for s in result.subs])
         if not result.subs:

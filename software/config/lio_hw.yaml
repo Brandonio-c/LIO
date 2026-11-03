@@ -38,6 +38,8 @@ firmware:
     jog_va_default: 200
     jog_vs_default: 500
     jog_acc_default: 250
+    wake_ms_default: 1000      # POWER WAKE: coils held (no steps) to wake power bank A
+    wake_ms_max: 3000
     line_max: 64
     stream_buf_n: 48           # ADC STREAM with n <= this samples at the full ADC rate
 
@@ -136,6 +138,17 @@ duty:
   max_on_ms_per_channel:
     A: 1000
     B: 5000
+
+# Power bank A alone powers the +5 V bus (ADS1115, LEDs, shift registers, motor
+# boards) and switches itself off when the load is small. The host wakes it with
+# POWER WAKE (both motors' coils held, no steps, ~0.5 A) when the port opens,
+# before each test and before manual measurements. Bank B (-5 V, TL072 only)
+# cannot be woken from software: use its always-on mode or a dummy load.
+power:
+  wake: true                 # false: never send POWER WAKE
+  wake_ms: 1000              # how long the coils are held
+  settle_ms: 300             # then wait for the bus and the ADS1115 to come up
+  interval_s: 20             # wake again only when this long since the last wake
 
 # lio dashboard: the local web page that runs the tests (docs/TESTING.md §3).
 dashboard:
@@ -259,6 +272,7 @@ thresholds:
 sim:
   seed: 1234
   boot_s: 1.6                    # time from port open (DTR reset) to banner
+  bank_awake_s: 60               # fault bank_a_asleep: bank A stays on this long after a wake
   link_latency_s: 0.0005         # one-way USB latency per line
   i2c_overhead_s: 0.0002         # per ADS1115 conversion
   ambient_counts: {opt101: 0, ingaas: 0}          # chamber closed

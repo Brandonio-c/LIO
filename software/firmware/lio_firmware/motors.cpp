@@ -153,6 +153,28 @@ void cmd_motor(const Command &c) {
   resp_end();
 }
 
+// POWER WAKE [ms]
+// USB power banks switch off when the load is small, and bank A alone powers
+// the +5 V bus (ADS1115, LEDs, shift registers). Holding both motors' coils at
+// their current phase draws ~0.5 A from that bus without stepping, so nothing
+// moves (no arming needed); the coils are released afterwards.
+void cmd_power(const Command &c) {
+  long ms = WAKE_MS_DEFAULT;
+  if (c.ntok < 2 || !tok_is(c.tok[1], F("WAKE")) ||
+      (c.ntok > 2 && !arg_long(c, 2, 1, WAKE_MS_MAX, ms))) {
+    resp_err(c, E_ARG, F("usage: POWER WAKE [ms<=3000]"));
+    return;
+  }
+  if (optics_any_ce()) { resp_err(c, E_REFUSED, F("LED on")); return; }
+  if (motors_moving()) { resp_err(c, E_BUSY, F("motor moving")); return; }
+  for (uint8_t m = 0; m < 2; m++) write_coils(m, PHASES[mot[m].phase]);
+  service_delay((uint32_t)ms);
+  for (uint8_t m = 0; m < 2; m++) write_coils(m, 0);
+  resp_ok(c);
+  resp_kv(F("wake_ms"), ms);
+  resp_end();
+}
+
 // ---------------------------------------------------------------------------
 // Legacy jog layer for lio_motor_control.py (reviewed exception to the arming rule,
 // docs/PROTOCOL.md §7). Each jog ends at whichever comes first: S, the

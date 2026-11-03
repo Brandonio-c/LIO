@@ -205,6 +205,7 @@ INFO_LIMITS = {
     "jog_max": "jog_max",
     "jog_v_max": "jog_v_max",
     "jog_acc_max": "jog_acc_max",
+    "wake_ms_max": "wake_ms_max",  # firmware builds before POWER WAKE omit it
 }
 
 
