@@ -272,6 +272,34 @@ class TestSession:
         assert not s.connected
 
 
+class SilentBoard(SimTransport):
+    """A board running some other sketch: it prints ``lines`` (or nothing) at boot."""
+
+    def __init__(self, cfg: HwConfig, lines: list[str]) -> None:
+        super().__init__(SimulatedLIO(cfg))
+        self.lines = list(lines)
+
+    def read_line(self, timeout: float) -> str | None:
+        if self.lines:
+            return self.lines.pop(0)
+        self.sim.advance(timeout)
+        return None
+
+
+class TestOtherFirmware:
+    def test_silent_board(self, cfg: HwConfig, tmp_path: Path) -> None:
+        s = Session(cfg, tmp_path, transport_factory=lambda port: SilentBoard(cfg, []))
+        with pytest.raises(Refused, match=r"sent nothing.*flash firmware v2"):
+            s.connect("/dev/cu.fake")
+        assert not s.connected
+
+    def test_board_printing_something_else(self, cfg: HwConfig, tmp_path: Path) -> None:
+        board = SilentBoard(cfg, ["LIO Z controller ready", "POSL=0 POSR=0"])
+        s = Session(cfg, tmp_path, transport_factory=lambda port: board)
+        with pytest.raises(Refused, match=r"other text instead \(LIO Z controller ready \| POSL"):
+            s.connect("/dev/cu.fake")
+
+
 # ------------------------------------------------------------------- server
 
 

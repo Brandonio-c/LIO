@@ -8,6 +8,10 @@
   - a digital twin (Nano, shift registers, rails, the 16 holes, detectors, ADC, motors, safety) coloured by result, with the evidence behind each part, and Measure / Flash on each hole
   - the overall verdict over the latest result of every test, with its coverage; earlier runs and their reports
 - `dashboard:` settings in `lio_hw.yaml` (local address, port, poll rate, flash time).
+- `environment.yml`: the `lio` conda environment for all LIO software (`conda env create -f environment.yml`).
+
+### Changed
+- When the Nano sends no firmware v2 banner, the error says what it sent instead (or that it sent nothing) and that firmware v2 needs flashing, instead of a bare timeout.
 - `LIODevice.request_cancel()`: a stop request ends the running test at its next command or wait (the dashboard's Stop). The command line is unchanged.
 
 ## 2026-11-03: System test suite and firmware v2 (LIO-SW-TEST-001, M1–M5)

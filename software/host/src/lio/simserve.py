@@ -10,6 +10,7 @@ POSIX only (macOS, Linux).
 
 from __future__ import annotations
 
+import collections
 import errno
 import os
 import select
@@ -35,6 +36,14 @@ class PtyBridge:
         self._thread = threading.Thread(target=self._run, name="lio-sim-serve", daemon=True)
         self.client_open = False
         self.opens = 0
+        # what the bridge saw, for diagnosing timing problems: (seconds since start, what)
+        self.trace: collections.deque[tuple[float, str]] = collections.deque(maxlen=200)
+
+    def _note(self, what: str) -> None:
+        self.trace.append((round(self._sim_now(), 4), what))
+
+    def trace_text(self) -> str:
+        return "; ".join(f"{t:.3f}s {w}" for t, w in self.trace)
 
     def start(self) -> PtyBridge:
         self._thread.start()
@@ -86,17 +95,22 @@ class PtyBridge:
                 if data == b"":  # no client has the port open
                     if self.client_open:
                         self.client_open = False
+                        self._note("client closed")
                         sim.port_closed()
                     time.sleep(0.005)
                     continue
             if not self.client_open:
                 self.client_open = True
                 self.opens += 1
+                self._note(f"client opened (#{self.opens})")
                 sim.port_opened()  # the DTR reset
             if data:
                 sim.receive_bytes(data)
             while (line := sim.next_output(0.0)) is not None:
                 try:
                     os.write(self._master, (line + "\r\n").encode("latin-1"))
-                except OSError:
+                except OSError as e:
+                    self._note(f"write failed ({e.errno}): {line[:30]}")
                     break
+                if line.startswith("# BOOT"):
+                    self._note("banner sent")
