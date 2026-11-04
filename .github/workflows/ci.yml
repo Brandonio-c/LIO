@@ -69,11 +69,10 @@ jobs:
         with:
           python-version: "3.12"
       - uses: arduino/setup-arduino-cli@v2
-      - name: Install AVR core and libraries
+      - name: Install AVR core
         run: |
           arduino-cli core update-index
           arduino-cli core install arduino:avr@1.8.8
-          arduino-cli lib install "Adafruit ADS1X15@2.6.2" "Adafruit BusIO@1.17.4"
       - name: Firmware v2 — new bootloader (atmega328)
         run: python tools/firmware_size_gate.py software/firmware/lio_firmware --fqbn arduino:avr:nano:cpu=atmega328 --max-sram-pct 75
       - name: Firmware v2 — old bootloader (atmega328old)

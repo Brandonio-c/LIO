@@ -1,5 +1,5 @@
 // ===== LIO V3 firmware v2 — command-driven optics + motors (protocol 1) =====
-// Board: Arduino Nano (ATmega328P). Libraries: Adafruit ADS1X15, Adafruit BusIO.
+// Board: Arduino Nano (ATmega328P). No libraries: the ADS1115 runs over software I2C (softi2c.h).
 // Protocol: docs/PROTOCOL.md. Pin map: electronics/data/nano_pinmap.csv.
 // The previous TEST_MODE firmware is in git tag fw-testmode-v1
 // (software/firmware/lio_firmware/ at that tag).

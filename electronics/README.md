@@ -42,7 +42,7 @@ Each register output drives one 2N7000 low-side switch (220 Ω gate resistor, 10
 - **DRV1** → RAIL A, holes 1–9, ≈30 mA, enabled by **A3**.
 - **DRV2** → RAIL B, holes 10–16, ≈45 mA, enabled by **D10**.
 
-Both detectors feed an ADS1115 read over I²C (**A4/A5**):
+Both detectors feed an ADS1115 read over I²C. The bus runs in software on **D11 (SDA) and D12 (SCL)**, with 4.7 kΩ pull-ups to +5 V, because this Nano's hardware I²C pins (A4/A5) are damaged:
 
 - **ADS A0** = InGaAs amplifier output, through a 10 kΩ protection resistor.
 - **ADS A1** = OPT101 output.
@@ -52,7 +52,7 @@ Power is two separate 5 V USB banks in series, giving ±5 V for the TL072. The N
 ## Quick start
 
 1. Build and check the circuit in stages (technical document §12).
-2. Install the Arduino library **Adafruit ADS1X15**.
+2. Firmware v2 needs no extra Arduino libraries (the legacy `TEST_MODE` sketch needed **Adafruit ADS1X15**).
 3. Flash `lio_firmware.ino` and step `TEST_MODE` through 1 → 5:
    - 1 = I²C scan
    - 2 = live detector readings

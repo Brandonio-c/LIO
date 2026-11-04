@@ -69,7 +69,7 @@ void optics_init() {
   pinMode(PIN_CLOCK, OUTPUT);
   pinMode(PIN_LATCH, OUTPUT);
   latch(0);
-  pinMode(PIN_LOOP, INPUT_PULLUP);  // reads HIGH unless the §6.3 jumper drives it
+  if (PIN_LOOP) pinMode(PIN_LOOP, INPUT_PULLUP);  // HIGH unless the §6.3 jumper drives it
 }
 
 void optics_off() {
@@ -269,6 +269,16 @@ void cmd_sweep(const Command &c) {
 // but never latched, so the outputs stay dark; CE is held low throughout.
 void cmd_loop(const Command &c) {
   if (c.ntok < 2 || !tok_is(c.tok[1], F("TEST"))) { resp_err(c, E_ARG, F("usage: LOOP TEST")); return; }
+  if (!PIN_LOOP) {  // no loop-back input on this build (config.h)
+    resp_ok(c);
+    resp_kv(F("fitted"), 0);
+    resp_kv(F("pass"), 0);
+    resp_kv(F("bits_ok"), 0);
+    resp_kv(F("bits_bad"), 0);
+    resp_kv_P(F("status"), F("not_fitted"));
+    resp_end();
+    return;
+  }
   optics_off();
   uint16_t ok = 0, bad = 0;
   bool saw_low = false;

@@ -225,7 +225,7 @@ _GAIN_NAMES = ("2/3", "1", "2", "4", "8", "16")
 class SimulatedLIO:
     """A simulated LIO V3 controller (firmware v2 behaviour + optics physics)."""
 
-    FW_VERSION = "2.1.0"
+    FW_VERSION = "2.2.0"
     BUILD = "2026-11-03"
 
     def __init__(

@@ -4,10 +4,11 @@ A1,CLOCK,out,U1 pin 11 + U2 pin 11,shared
 A2,LATCH,out,U1 pin 12 + U2 pin 12,shared
 A3,CE1,out,DRV1 CE,10k pull-down to GND
 D10,CE2,out,DRV2 CE,10k pull-down to GND
-A4,SDA,i/o,ADS1115 SDA,board pull-up
-A5,SCL,out,ADS1115 SCL,board pull-up
+D11,SDA,i/o,ADS1115 SDA,software I2C; 4.7k pull-up to +5V
+D12,SCL,out,ADS1115 SCL,software I2C; 4.7k pull-up to +5V
+A4/A5,-,-,DAMAGED,read low with nothing attached; do not use
 D2-D5,M1 IN1-IN4,out,ULN2003 #1,motor 1
 D6-D9,M2 IN1-IN4,out,ULN2003 #2,motor 2
 GND,GND,-,system ground,
 5V,-,-,NOT CONNECTED,Nano powered from USB
-"D11,D12,A6,A7",-,-,spare,A6/A7 analog-in only
+"A6,A7",-,-,spare,analog-in only

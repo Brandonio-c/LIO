@@ -1,23 +1,26 @@
 #include "adc.h"
-#include <Wire.h>
-#include <Adafruit_ADS1X15.h>
 #include "motors.h"
 #include "optics.h"
 #include "safety.h"
+#include "softi2c.h"
 
-static Adafruit_ADS1115 ads;
+// A minimal ADS1115 driver over the software I2C bus (softi2c.h). Each read is
+// a single-shot conversion: write the config register (which also starts it),
+// poll its OS bit, then read the conversion register.
 static bool present = false;
-static uint32_t bus_hz = I2C_CLOCK_HZ;
-static uint8_t gain_idx = 1;  // GAIN_ONE
+static uint8_t gain_idx = 1;  // GAIN_ONE (+-4.096 V)
 static uint8_t rate_idx = 4;  // 128 SPS
 
-static const adsGain_t GAINS[6] = {GAIN_TWOTHIRDS, GAIN_ONE, GAIN_TWO,
-                                   GAIN_FOUR, GAIN_EIGHT, GAIN_SIXTEEN};
+// The ADS1115's PGA and DR codes are the indexes into these tables.
 static const float LSB_MV[6] = {0.1875f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f};
 static const uint16_t RATES[8] = {8, 16, 32, 64, 128, 250, 475, 860};
-static const uint16_t RATE_BITS[8] = {
-    RATE_ADS1115_8SPS,   RATE_ADS1115_16SPS,  RATE_ADS1115_32SPS,  RATE_ADS1115_64SPS,
-    RATE_ADS1115_128SPS, RATE_ADS1115_250SPS, RATE_ADS1115_475SPS, RATE_ADS1115_860SPS};
+
+const uint8_t REG_CONVERSION = 0x00;
+const uint8_t REG_CONFIG = 0x01;
+const uint16_t CFG_OS = 0x8000;          // write: start; read: 1 = idle (done)
+const uint16_t CFG_MUX_SINGLE_0 = 0x4000;  // AINx vs GND = 0x4000 + x * 0x1000
+const uint16_t CFG_MODE_SINGLE = 0x0100;
+const uint16_t CFG_COMP_OFF = 0x0003;
 
 const __FlashStringHelper *adc_gain_name() {
   switch (gain_idx) {
@@ -32,36 +35,28 @@ const __FlashStringHelper *adc_gain_name() {
 uint16_t adc_rate_sps() { return RATES[rate_idx]; }
 float adc_lsb_mv() { return LSB_MV[gain_idx]; }
 uint32_t adc_conv_us() { return 1000000UL / RATES[rate_idx]; }
-static bool probe() {
-  Wire.beginTransmission(ADC_ADDR);
-  return Wire.endTransmission() == 0;
+static uint8_t write_reg(uint8_t reg, uint16_t v) {
+  uint8_t b[3] = {reg, (uint8_t)(v >> 8), (uint8_t)(v & 0xFF)};
+  return si2c_write(ADC_ADDR, b, 3);
 }
 
+// Reads the register the pointer was last set to.
+static uint8_t read16(uint16_t &v) {
+  uint8_t b[2];
+  uint8_t e = si2c_read(ADC_ADDR, b, 2);
+  v = ((uint16_t)b[0] << 8) | b[1];
+  return e;
+}
+
+static bool probe() { return si2c_write(ADC_ADDR, nullptr, 0) == SI2C_OK; }
+
 static bool attach() {
-  // Slow, weakly pulled-up lines (no external pull-ups, long breadboard wires)
-  // can fail at I2C_CLOCK_HZ yet work at I2C_SLOW_HZ: fall back rather than
-  // lose the ADC. ads.begin() resets the bus to 100 kHz, so set the clock after.
-  bus_hz = I2C_CLOCK_HZ;
-  Wire.setClock(bus_hz);
-  if (!probe()) {
-    bus_hz = I2C_SLOW_HZ;
-    Wire.setClock(bus_hz);
-  }
-  present = probe() && ads.begin(ADC_ADDR);
-  if (!present) bus_hz = I2C_CLOCK_HZ;
-  Wire.setClock(bus_hz);
-  Wire.setWireTimeout(I2C_TIMEOUT_US, true);
-  if (present) {
-    ads.setGain(GAINS[gain_idx]);
-    ads.setDataRate(RATE_BITS[rate_idx]);
-  }
+  present = probe();
   return present;
 }
 
 bool adc_init() {
-  Wire.begin();
-  Wire.setClock(I2C_CLOCK_HZ);
-  Wire.setWireTimeout(I2C_TIMEOUT_US, true);
+  si2c_begin();
   if (!attach()) fault_set(F_ADC_MISSING);
   return present;
 }
@@ -70,25 +65,33 @@ bool adc_init() {
 // (USB-powered) has booted: look for it again whenever it is needed.
 bool adc_present() { return present || attach(); }
 
-static bool i2c_failed() {
-  if (Wire.getWireTimeoutFlag()) { Wire.clearWireTimeoutFlag(); return true; }
-  return false;
+static uint8_t read_failed() {
+  present = false;  // looked for again on the next read
+  fault_set(F_I2C_ERROR);
+  return E_ADC;
 }
 
 uint8_t adc_read(uint8_t ch, int16_t &raw) {
-  if (!adc_present() || !probe()) { fault_set(F_I2C_ERROR); return E_ADC; }
-  ads.startADCReading(ADS1X15_REG_CONFIG_MUX_SINGLE_0 + 0x1000 * ch, false);
-  // The first conversionComplete() poll may still see the previous result's
-  // OS bit; one conversion period of waiting avoids that.
+  if (!adc_present()) return read_failed();
+  uint16_t cfg = CFG_OS | (CFG_MUX_SINGLE_0 + 0x1000 * ch) | ((uint16_t)gain_idx << 9) |
+                 CFG_MODE_SINGLE | ((uint16_t)rate_idx << 5) | CFG_COMP_OFF;
+  if (write_reg(REG_CONFIG, cfg)) return read_failed();
+  // The first poll may still see the previous conversion's OS bit; half a
+  // conversion period of waiting avoids that.
   uint32_t t0 = micros();
   uint32_t limit = 2 * adc_conv_us() + 5000UL;
   while (micros() - t0 < adc_conv_us() / 2) service();
-  while (!ads.conversionComplete()) {
-    if (i2c_failed() || micros() - t0 > limit) { fault_set(F_I2C_ERROR); return E_ADC; }
+  for (;;) {
+    uint16_t v;
+    if (read16(v)) return read_failed();  // pointer is still at CONFIG
+    if (v & CFG_OS) break;
+    if (micros() - t0 > limit) return read_failed();
     service();
   }
-  raw = ads.getLastConversionResults();
-  if (i2c_failed()) { fault_set(F_I2C_ERROR); return E_ADC; }
+  uint8_t ptr = REG_CONVERSION;
+  uint16_t v;
+  if (si2c_write(ADC_ADDR, &ptr, 1) || read16(v)) return read_failed();
+  raw = (int16_t)v;
   return 0;
 }
 
@@ -141,7 +144,6 @@ static void adc_cmd_cfg(const Command &c) {
     for (uint8_t i = 0; i < 6; i++) {
       if (strcmp(c.tok[3], names[i]) == 0) {
         gain_idx = i;
-        if (present) ads.setGain(GAINS[i]);
         resp_ok(c);
         resp_kv_P(F("gain"), adc_gain_name());
         resp_kv_f(F("lsb_mv"), adc_lsb_mv(), 7);
@@ -155,7 +157,6 @@ static void adc_cmd_cfg(const Command &c) {
       for (uint8_t i = 0; i < 8; i++) {
         if (RATES[i] == r) {
           rate_idx = i;
-          if (present) ads.setDataRate(RATE_BITS[i]);
           resp_ok(c);
           resp_kv(F("rate"), r);
           resp_end();
@@ -251,8 +252,8 @@ void cmd_adc(const Command &c) {
   else resp_err(c, E_ARG, F("usage: ADC READ|CFG|STREAM ..."));
 }
 
-// --- I2C DIAG: line-level checks with the TWI peripheral switched off. The pins
-// are only ever driven LOW (never HIGH), so nothing on the bus is fought.
+// --- I2C DIAG: line-level checks of PIN_SDA/PIN_SCL. The pins are only ever
+// driven LOW (never HIGH), so nothing on the bus is fought.
 static uint8_t idle_high(uint8_t pin) {
   pinMode(pin, INPUT_PULLUP);
   delayMicroseconds(DIAG_SETTLE_US);
@@ -282,28 +283,15 @@ static uint8_t follows(uint8_t drive, uint8_t sense) {
   return low;
 }
 
-// Wire.endTransmission() code for an empty write to the ADS1115:
-// 0 ack, 2 no ack (address), 4 bus error, 5 timeout.
-static uint8_t ack_at(uint32_t hz) {
-  Wire.setClock(hz);
-  Wire.beginTransmission(ADC_ADDR);
-  uint8_t r = Wire.endTransmission();
-  i2c_failed();
-  return r;
-}
-
 static void i2c_diag(const Command &c) {
-  Wire.end();
-  uint8_t sda = idle_high(SDA), scl = idle_high(SCL);
-  uint8_t sda_pu = has_pullup(SDA), scl_pu = has_pullup(SCL);
+  uint8_t sda = idle_high(PIN_SDA), scl = idle_high(PIN_SCL);
+  uint8_t sda_pu = has_pullup(PIN_SDA), scl_pu = has_pullup(PIN_SCL);
   // Only meaningful when both lines idle high.
-  uint8_t bridge = sda && scl && (follows(SDA, SCL) || follows(SCL, SDA));
-  pinMode(SDA, INPUT);
-  pinMode(SCL, INPUT);
-  Wire.begin();
-  Wire.setWireTimeout(I2C_TIMEOUT_US, true);
-  uint8_t ack_slow = ack_at(I2C_SLOW_HZ), ack_fast = ack_at(I2C_CLOCK_HZ);
-  present = false;
+  uint8_t bridge = sda && scl && (follows(PIN_SDA, PIN_SCL) || follows(PIN_SCL, PIN_SDA));
+  si2c_begin();  // restores the open-drain idle state and frees a stuck bus
+  // The software bus has one speed: the "slow" and "fast" fields are kept for
+  // the protocol and carry the same result.
+  uint8_t ack = si2c_write(ADC_ADDR, nullptr, 0);
   attach();
   service();
   resp_ok(c);
@@ -312,11 +300,11 @@ static void i2c_diag(const Command &c) {
   resp_kv(F("sda_pu"), sda_pu);
   resp_kv(F("scl_pu"), scl_pu);
   resp_kv(F("bridge"), bridge);
-  resp_kv(F("ack_slow"), ack_slow);
-  resp_kv(F("ack_fast"), ack_fast);
-  resp_kv_u(F("slow_hz"), I2C_SLOW_HZ);
-  resp_kv_u(F("fast_hz"), I2C_CLOCK_HZ);
-  resp_kv_u(F("hz"), bus_hz);
+  resp_kv(F("ack_slow"), ack);
+  resp_kv(F("ack_fast"), ack);
+  resp_kv_u(F("slow_hz"), si2c_hz());
+  resp_kv_u(F("fast_hz"), si2c_hz());
+  resp_kv_u(F("hz"), si2c_hz());
   resp_kv(F("present"), present);
   resp_end();
 }
@@ -329,9 +317,7 @@ void cmd_i2c(const Command &c) {
   uint8_t found[8];
   uint8_t nf = 0;
   for (uint8_t a = 1; a < 127; a++) {
-    Wire.beginTransmission(a);
-    if (Wire.endTransmission() == 0 && nf < sizeof(found)) found[nf++] = a;
-    i2c_failed();
+    if (si2c_write(a, nullptr, 0) == SI2C_OK && nf < sizeof(found)) found[nf++] = a;
     service();
   }
   resp_ok(c);

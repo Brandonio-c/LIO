@@ -29,19 +29,17 @@ How to test, the full catalogue and the first-hardware-session checklist: [docs/
 Build and flash with `arduino-cli`. The board has the new (Optiboot) bootloader; use `cpu=atmega328old` for an old one.
 
 ```bash
-arduino-cli lib install "Adafruit ADS1X15" "Adafruit BusIO"
 arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328 software/firmware/lio_firmware
 arduino-cli upload  --fqbn arduino:avr:nano:cpu=atmega328 -p /dev/cu.usbserial-XXXX software/firmware/lio_firmware
 ```
 
-The Arduino IDE works too: board Arduino Nano, processor ATmega328P, and the same two libraries.
+The Arduino IDE works too: board Arduino Nano, processor ATmega328P. No libraries are needed.
 
-**Pins (unchanged):**
+**Pins:**
 - A0 DATA, A1 CLOCK, A2 LATCH (74HC595 chain)
 - A3 CE1 (DRV1, RAIL A), D10 CE2 (DRV2, RAIL B)
-- A4/A5 I²C to the ADS1115 (A0 = InGaAs, A1 = OPT101)
+- D11 SDA, D12 SCL: software I²C to the ADS1115 (ADS A0 = InGaAs, A1 = OPT101), 4.7 kΩ pull-ups to +5 V. This Nano's A4/A5 are damaged; do not use them
 - D2–D5 motor 1 (left), D6–D9 motor 2 (right)
-- D11 the optional loop-back input
 
 **Switching order:** both drivers off, select the MOSFET, then raise that rail's CE. The firmware enforces this, along with one channel at a time and a per-rail on-time watchdog.
 

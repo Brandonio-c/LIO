@@ -130,7 +130,7 @@ Every check compares a measurement with a threshold from `software/config/lio_hw
 | T02.4 | A | Unknown command, bad argument, over-long line, garbage bytes | parser bugs |
 | T02.5 | A | `@seq` echo; events between responses don't desynchronise | protocol bugs |
 | T02.6 | A | RESET: banner returns, safe state, defaults restored | RESET bugs |
-| T03.1 | A | I²C scan finds the ADS1115 at 0x48; `T03.1/bus` checks the SDA/SCL lines (`I2C DIAG`): stuck low, no pull-ups, SDA–SCL bridged, answers only at 100 kHz | `no_adc`, `i2c_bridged`, `i2c_slow`, wiring |
+| T03.1 | A | I²C scan finds the ADS1115 at 0x48; `T03.1/bus` checks the SDA/SCL lines (`I2C DIAG`): stuck low, no pull-ups, SDA–SCL bridged | `no_adc`, `i2c_bridged`, `i2c_slow`, wiring |
 | T03.2 | A | Dark noise on A0/A1 (64 samples); A2/A3 recorded | `noisy_adc` |
 | T03.3 | A | Every PGA gain accepted; dark mV agrees across gains | gain errors |
 | T03.4 | A | Conversion interval at every data rate | ADC timing |
@@ -189,7 +189,7 @@ The plan leaves "1–2 failing channels" unclassified; this suite calls that DEG
 
 | Where | Plan | This suite | Why |
 |---|---|---|---|
-| T03.4 | ±15 % of the nominal interval | ±15 % plus up to 0.8 ms of I²C overhead | a single-shot conversion includes the I²C transactions, which are about 0.4 ms at 400 kHz, 35 % of the 860 SPS period |
+| T03.4 | ±15 % of the nominal interval | ±15 % plus up to 1.5 ms of I²C overhead | a single-shot conversion includes the I²C transactions, about 1 ms on the software bus (D11/D12), more than the 860 SPS period itself |
 | T05.3 | near-identical signatures = possible swap | groups of 3+ identical signatures (±1 %) FAIL; a pair WARNs | visible holes are seen by the OPT101 only, so two healthy LEDs can match by coincidence |
 | T05.4 | detects `stuck_on` | detects slow decay and LEDs staying on | with CE low no current can flow, whatever the MOSFET does; T05.3 catches stuck MOSFETs |
 | T05.6 | 2 s flashes | RAIL A 1 s, RAIL B 2 s | RAIL A duty budget (1 s per minute) |
@@ -202,7 +202,7 @@ The plan leaves "1–2 failing channels" unclassified; this suite calls that DEG
 
 - A stuck-on MOSFET on the hole with the highest forward voltage of its rail (e.g. hole 1) never takes the rail's current. It is optically invisible, and harmless.
 - Two visible holes swapped with each other look identical to the detectors. The T04.4 walk test and a baseline comparison (T11.1) catch it.
-- The loop-back test (T04.2) needs the optional jumper from U2 pin 9 to D11 (plan §6.3). Without it, the shift registers are checked optically (T05.3).
+- The loop-back test (T04.2) is not available: D11, its input, now carries I²C SDA (firmware 2.2.0). The shift registers are checked optically (T05.3).
 
 ## 5. Reading a failure
 
@@ -210,7 +210,7 @@ Every FAIL message says what was measured, against what, and the likely cause. T
 
 | Message | First thing to check |
 |---|---|
-| T03.1 ADS1115 not found | read **`T03.1/bus`** first: it says whether SDA/SCL are held low, joined, missing pull-ups, or healthy (then the chip's own ADDR, VDD, GND and the Nano GND). Otherwise **power bank A asleep** (it alone powers the +5 V bus: ADS1115, LEDs, shift registers; see §7.1); then SDA → A4, SCL → A5, ADDR → GND, ADS VDD; both lines idle near 5 V |
+| T03.1 ADS1115 not found | read **`T03.1/bus`** first: it says whether SDA/SCL are held low, joined, missing pull-ups, or healthy (then the chip's own ADDR, VDD, GND and the Nano GND). Otherwise **power bank A asleep** (it alone powers the +5 V bus: ADS1115, LEDs, shift registers; see §7.1); then SDA → D11, SCL → D12, 4.7 kΩ pull-ups, ADDR → GND, ADS VDD; both lines idle near 5 V |
 | T05.1 no light with CE high | the rail's driver supply and CE wire (A3 / D10) |
 | T04.1 / T05.1 light with CE low | CE polarity, or a missing CE pull-down |
 | T05.3 U2 receives no data | U1 pin 9 → U2 pin 14, U2 power |
@@ -246,7 +246,7 @@ Do this with the user present. Motion steps only with someone at the bench.
 - [ ] Nano connected **directly** to the Mac, not through the dock/hub
 - [ ] Multimeter with mA range and leads (T05.6); phone camera for holes 8–9 (T04.4)
 - [ ] Nothing else holding the port (Arduino IDE Serial Monitor, `lio_motor_control.py`)
-- [ ] Optional, only if agreed: the U2 pin 9 → D11 loop-back jumper (T04.2)
+- [ ] **No** loop-back jumper on D11: it carries I²C SDA from firmware 2.2.0
 
 ### 7.2 Flash firmware v2
 
