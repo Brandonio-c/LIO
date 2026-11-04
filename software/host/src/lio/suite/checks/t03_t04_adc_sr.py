@@ -9,12 +9,20 @@ from lio.analysis import linear_slope, stats
 from lio.results import Status
 from lio.suite.core import DETECTORS, Recorder, Skip, SuiteContext, register
 
-I2C_WIRING_HINT = (
-    "first check that power bank A is on: it alone powers the +5 V bus (ADS1115, LEDs, "
-    "shift registers), and USB banks switch off when the load is small (measure about 5 V "
-    "between +5 V and GND); then the ADS1115 wiring: SDA -> A4, SCL -> A5, ADDR -> GND "
-    "(0x48), VDD 5 V and GND; both lines should idle near 5 V"
-)
+
+def _pins(ctx: SuiteContext) -> tuple[str, str]:
+    """The Nano pins wired to the ADS1115's SDA and SCL (``pins:`` in lio_hw.yaml)."""
+    return str(ctx.cfg.section.raw("pins.SDA")), str(ctx.cfg.section.raw("pins.SCL"))
+
+
+def i2c_wiring_hint(sda: str, scl: str) -> str:
+    return (
+        "first check that power bank A is on: it alone powers the +5 V bus (ADS1115, LEDs, "
+        "shift registers), and USB banks switch off when the load is small (measure about 5 V "
+        f"between +5 V and GND); then the ADS1115 wiring: SDA -> {sda}, SCL -> {scl}, "
+        "ADDR -> GND (0x48), VDD 5 V and GND, 4.7 kOhm pull-ups; both lines should idle "
+        "near 5 V"
+    )
 
 
 # ------------------------------------------------------------------------ T03
@@ -35,14 +43,17 @@ def _khz(hz: int) -> str:
     return f"{hz / 1000:g} kHz"
 
 
-def diagnose_i2c(d: dict[str, int], addr: int) -> tuple[bool, str]:
+def diagnose_i2c(
+    d: dict[str, int], addr: int, sda_pin: str = "SDA pin", scl_pin: str = "SCL pin"
+) -> tuple[bool, str]:
     """(lines healthy, explanation) from ``I2C DIAG`` fields."""
     stuck = [n for n in ("sda", "scl") if not d[n]]
     if stuck:
         names = " and ".join(n.upper() for n in stuck)
         return False, (
             f"{names} held low even with the Nano's pull-up on: a short to GND, a chip "
-            f"without power clamping the line, or the wrong pin (SDA = A4, SCL = A5); "
+            f"without power clamping the line, a damaged Nano pin, or the wrong pin "
+            f"(SDA = {sda_pin}, SCL = {scl_pin}); "
             f"with power on, measure each line to GND, it should idle near 5 V"
         )
     if d["bridge"]:
@@ -71,12 +82,17 @@ def diagnose_i2c(d: dict[str, int], addr: int) -> tuple[bool, str]:
         what = ACK_RESULTS.get(slow, f"result {slow}")
         hint = (
             "the lines look healthy, so check ADDR -> GND, VDD and GND measured at the "
-            "chip's own pins, SDA (A4) and SCL (A5) not swapped, and the Nano GND joined "
-            "to the bus GND"
+            f"chip's own pins, SDA ({sda_pin}) and SCL ({scl_pin}) not swapped, and the "
+            "Nano GND joined to the bus GND"
             if not no_pu and slow == 2
             else "see above"
         )
-        parts.append(f"{at}: {what} at {_khz(d['slow_hz'])} or {_khz(d['fast_hz'])}; {hint}")
+        speeds = (
+            _khz(d["slow_hz"])
+            if d["slow_hz"] == d["fast_hz"]
+            else f"{_khz(d['slow_hz'])} or {_khz(d['fast_hz'])}"
+        )
+        parts.append(f"{at}: {what} at {speeds}; {hint}")
     ok = not no_pu
     return ok, "; ".join(parts) or (
         f"lines idle high with pull-ups, not bridged; {at} answers at {_khz(d['hz'])}"
@@ -108,12 +124,12 @@ def t03_1(ctx: SuiteContext, rec: Recorder) -> None:
             f"ADS1115 at 0x{want:02X}",
             want in found,
             f"found {[f'0x{a:02X}' for a in found] or 'nothing'}"
-            + ("" if want in found else f"; {I2C_WIRING_HINT}"),
+            + ("" if want in found else f"; {i2c_wiring_hint(*_pins(ctx))}"),
             f"0x{want:02X} acknowledges",
         )
     if diag is not None:
         rec.measure(i2c_diag=diag)
-        ok, why = diagnose_i2c(diag, want)
+        ok, why = diagnose_i2c(diag, want, *_pins(ctx))
         rec.check(
             "bus",
             "I2C lines (SDA, SCL)",
@@ -335,8 +351,14 @@ def t04_2(ctx: SuiteContext, rec: Recorder) -> None:
     f = ctx.dev.loop_test()
     rec.measure(**f.values)
     if f.as_int("fitted") == 0:
+        loop = ctx.cfg.section.raw("pins.LOOP")
+        where = (
+            f"optional: U2 pin 9 Q7' -> Nano {loop}, plan §6.3"
+            if loop
+            else "this build has no loop-back input (pins.LOOP), plan §6.3"
+        )
         raise Skip(
-            "loopback jumper not fitted (optional: U2 pin 9 Q7' -> Nano D11, plan §6.3); "
+            f"loopback jumper not fitted ({where}); "
             "the shift registers are verified optically by T05.3"
         )
     bad = f.as_int("bits_bad")

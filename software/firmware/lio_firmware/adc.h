@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include "protocol.h"
 
-bool adc_init();             // Wire + ADS1115 at GAIN_ONE, 128 SPS
+bool adc_init();             // software I2C + ADS1115 at GAIN_ONE, 128 SPS
 bool adc_present();
 const __FlashStringHelper *adc_gain_name();
 uint16_t adc_rate_sps();
@@ -17,4 +17,4 @@ uint8_t adc_read(uint8_t ch, int16_t &raw);
 uint8_t adc_read_mean(uint8_t ch, uint8_t n, int16_t &mean);
 
 void cmd_adc(const Command &c);  // ADC READ | CFG | STREAM
-void cmd_i2c(const Command &c);  // I2C SCAN
+void cmd_i2c(const Command &c);  // I2C SCAN | DIAG

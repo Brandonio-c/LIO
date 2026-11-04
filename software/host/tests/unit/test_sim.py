@@ -81,7 +81,7 @@ class TestFaultSpec:
 
 class TestLink:
     def test_boot_banner_and_compat(self, dev: LIODevice) -> None:
-        assert dev.banner is not None and dev.banner.fields.as_str("fw") == "2.1.0"
+        assert dev.banner is not None and dev.banner.fields.as_str("fw") == "2.2.0"
         assert dev.boot_s is not None and dev.boot_s < 3.0
         dev.check_compatible()
 

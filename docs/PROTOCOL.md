@@ -84,18 +84,20 @@ Channels are holes 1–16. RAIL A = holes 1–9 (DRV1, CE1 = A3); RAIL B = holes
 | Command | Effect | Response fields |
 |---|---|---|
 | `I2C SCAN` | Probe addresses 1–126 | `n addrs` (`addrs=0x48` or `addrs=none`) |
-| `I2C DIAG` | Line-level checks of SDA/SCL, then re-attach the ADC (fw ≥ 2.1.0) | `sda scl sda_pu scl_pu bridge ack_slow ack_fast slow_hz fast_hz hz present` |
+| `I2C DIAG` | Line-level checks of SDA/SCL, then re-attach the ADC (fw ≥ 2.1.0; software bus from 2.2.0) | `sda scl sda_pu scl_pu bridge ack_slow ack_fast slow_hz fast_hz hz present` |
 | `ADC READ <0-3> [n]` | Single-ended read; mean of `n` (1–256) | `ch raw mv n` and, if `n > 1`, `mean std` |
 | `ADC CFG GAIN <2/3\|1\|2\|4\|8\|16>` | Set the PGA | `gain lsb_mv` |
 | `ADC CFG RATE <8\|16\|32\|64\|128\|250\|475\|860>` | Set the data rate | `rate` |
 | `ADC STREAM <ch> <n> <interval_ms> [hole on_idx off_idx]` | `n` (1–2000) samples, one `# S` line each, at `interval_ms` (0 = as fast as possible) | `ch n dur_ms` |
 
-**I2C DIAG.** With the I²C peripheral off, the firmware checks each line, only ever driving it low:
+**I²C bus (firmware ≥ 2.2.0).** The ADS1115 is driven over a software I²C bus on **D11 (SDA) and D12 (SCL)**, about 170 kHz. It moved off the hardware pins (A4/A5) while a wiring fault was being diagnosed. The lines are open-drain (driven low or released, never driven high) and need 4.7 kΩ pull-ups to +5 V. Firmware 2.0–2.1 used the hardware bus on A4/A5.
+
+**I2C DIAG.** The firmware checks each line, only ever driving it low:
 - `sda`/`scl`: the line idles high with the Nano's internal pull-up on. 0 means it is held low (a short to GND, an unpowered chip clamping it, or the wrong pin).
 - `sda_pu`/`scl_pu`: the line rises after being pulled low with the internal pull-up off. That needs an external pull-up to a powered VDD. 0 means the module has no pull-ups, or bank A is off.
 - `bridge`: pulling one line low also pulls the other low. SDA and SCL are joined.
-- `ack_slow`/`ack_fast`: the result for 0x48 at `slow_hz` (100 kHz) and `fast_hz` (400 kHz): 0 ack, 2 no answer, 4 bus error, 5 timeout.
-- `hz`/`present`: after the checks the firmware attaches the ADC again, at the fast clock or, if only that works, the slow one; `hz` is the clock now in use. (The same fallback runs at boot and whenever the ADC is looked for again.)
+- `ack_slow`/`ack_fast`: the result for 0x48 at `slow_hz` and `fast_hz`: 0 ack, 2 no answer, 4 bus error, 5 timeout. On the software bus (2.2.0) there is one speed, so both pairs are equal. On the hardware bus (2.1.0) they were 100 kHz and 400 kHz.
+- `hz`/`present`: the clock in use, and whether the ADC answers after the checks.
 
 T03.1 runs it every time and reports the result as `T03.1/bus`.
 
@@ -126,7 +128,7 @@ The bit mapping follows LIO-ELEC-001 §5.2: bit (n − 1) selects hole n, the U2
 
 #### 5.1 LOOP TEST
 
-This needs the optional jumper from U2 pin 9 (Q7′) to Nano D11 (plan §6.3), which is **not assumed**. The firmware drives both CE low and latches mask 0. It then shifts 32 patterns (0x0000, 0xFFFF, 0xAAAA, 0x5555 and 28 pseudo-random) into the chain **without latching**, so the LEDs never change, and reads each one back bit by bit from D11. D11 has its pull-up enabled, so without the jumper it never reads low, and the result is `fitted=0 pass=0 status=not_fitted`.
+**Not available from firmware 2.2.0:** D11 now carries I²C SDA, so `LOOP TEST` answers `fitted=0 pass=0 bits_ok=0 bits_bad=0 status=not_fitted` without touching any pin, and the jumper must not be fitted. On earlier builds: this needs the optional jumper from U2 pin 9 (Q7′) to Nano D11 (plan §6.3), which is **not assumed**. The firmware drives both CE low and latches mask 0. It then shifts 32 patterns (0x0000, 0xFFFF, 0xAAAA, 0x5555 and 28 pseudo-random) into the chain **without latching**, so the LEDs never change, and reads each one back bit by bit from D11. D11 has its pull-up enabled, so without the jumper it never reads low, and the result is `fitted=0 pass=0 status=not_fitted`.
 
 ### Motors
 
@@ -187,7 +189,7 @@ The limits are compile-time constants in `config.h`. They are mirrored in `softw
 
 | Operation | Approximate time |
 |---|---|
-| One ADC conversion | 7.8 ms + I²C overhead (≈0.2 ms at 400 kHz) |
+| One ADC conversion | 7.8 ms + I²C overhead (≈1 ms on the software bus) |
 | `MEAS` | ≈ 8 + 2 × 8 (dark) + 8 + 2 × 8 (lit) ≈ 50 ms; LED on ≈ 25 ms |
 | `SWEEP` | ≈ 16 × 50 ms ≈ 0.8 s |
 | `ADC STREAM` at 860 SPS | ≈ 1.4 ms per sample |
@@ -195,7 +197,6 @@ The limits are compile-time constants in `config.h`. They are mirrored in `softw
 ## 9. Building and flashing
 
 ```bash
-arduino-cli lib install "Adafruit ADS1X15" "Adafruit BusIO"
 # New (Optiboot) bootloader, 115200 baud upload:
 arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328 software/firmware/lio_firmware
 arduino-cli upload  --fqbn arduino:avr:nano:cpu=atmega328 -p /dev/cu.usbserial-XXXX software/firmware/lio_firmware
