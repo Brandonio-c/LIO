@@ -90,7 +90,7 @@ Channels are holes 1–16. RAIL A = holes 1–9 (DRV1, CE1 = A3); RAIL B = holes
 | `ADC CFG RATE <8\|16\|32\|64\|128\|250\|475\|860>` | Set the data rate | `rate` |
 | `ADC STREAM <ch> <n> <interval_ms> [hole on_idx off_idx]` | `n` (1–2000) samples, one `# S` line each, at `interval_ms` (0 = as fast as possible) | `ch n dur_ms` |
 
-**I²C bus (firmware ≥ 2.2.0).** The ADS1115 is driven over a software I²C bus on **D11 (SDA) and D12 (SCL)**, about 170 kHz, because this Nano's hardware I²C pins (A4/A5) are damaged. The lines are open-drain (driven low or released, never driven high) and need 4.7 kΩ pull-ups to +5 V. Firmware 2.0–2.1 used the hardware bus on A4/A5.
+**I²C bus (firmware ≥ 2.2.0).** The ADS1115 is driven over a software I²C bus on **D11 (SDA) and D12 (SCL)**, about 170 kHz. It moved off the hardware pins (A4/A5) while a wiring fault was being diagnosed. The lines are open-drain (driven low or released, never driven high) and need 4.7 kΩ pull-ups to +5 V. Firmware 2.0–2.1 used the hardware bus on A4/A5.
 
 **I2C DIAG.** The firmware checks each line, only ever driving it low:
 - `sda`/`scl`: the line idles high with the Nano's internal pull-up on. 0 means it is held low (a short to GND, an unpowered chip clamping it, or the wrong pin).

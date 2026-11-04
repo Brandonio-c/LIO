@@ -18,12 +18,13 @@ bool si2c_sda_high() { return *sda_in & sda_bit; }
 bool si2c_scl_high() { return *scl_in & scl_bit; }
 static inline void half() { delayMicroseconds(SI2C_HALF_US); }
 
-// Release SCL and wait for it to rise (slow edges, clock stretching).
+// Release SCL and wait for it to rise (slow edges, clock stretching). Counts
+// 1 us steps rather than calling micros(), which costs about 4 us per bit.
 static bool scl_up() {
   scl_release();
-  uint32_t t0 = micros();
-  while (!si2c_scl_high()) {
-    if (micros() - t0 > SI2C_RISE_MAX_US) return false;
+  for (uint16_t n = 0; !si2c_scl_high(); n++) {
+    if (n >= SI2C_RISE_MAX_US) return false;
+    delayMicroseconds(1);
   }
   return true;
 }

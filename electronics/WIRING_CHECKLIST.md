@@ -58,7 +58,7 @@ For every channel, wire four connections:
 ## ADS1115 (U3)
 
 - [ ] VDD → +5V; GND → GND; ADDR → GND; ALRT unconnected
-- [ ] SDA → Nano **D11**; SCL → Nano **D12** (software I²C; this Nano's A4/A5 are damaged, leave them unconnected)
+- [ ] SDA → Nano **D11**; SCL → Nano **D12** (software I²C; leave A4/A5 unconnected)
 - [ ] 4.7 kΩ SDA → +5V; 4.7 kΩ SCL → +5V
 - [ ] No loop-back jumper on D11 (it now carries SDA)
 - [ ] A0 ← 10 kΩ ← TL072 pin 1

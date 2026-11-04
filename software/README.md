@@ -38,7 +38,7 @@ The Arduino IDE works too: board Arduino Nano, processor ATmega328P. No librarie
 **Pins:**
 - A0 DATA, A1 CLOCK, A2 LATCH (74HC595 chain)
 - A3 CE1 (DRV1, RAIL A), D10 CE2 (DRV2, RAIL B)
-- D11 SDA, D12 SCL: software I²C to the ADS1115 (ADS A0 = InGaAs, A1 = OPT101), 4.7 kΩ pull-ups to +5 V. This Nano's A4/A5 are damaged; do not use them
+- D11 SDA, D12 SCL: software I²C to the ADS1115 (ADS A0 = InGaAs, A1 = OPT101), 4.7 kΩ pull-ups to +5 V. A4/A5 are unused
 - D2–D5 motor 1 (left), D6–D9 motor 2 (right)
 
 **Switching order:** both drivers off, select the MOSFET, then raise that rail's CE. The firmware enforces this, along with one channel at a time and a per-rail on-time watchdog.

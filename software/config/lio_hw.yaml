@@ -63,14 +63,14 @@ pins:
   LATCH: A2
   CE1: A3
   CE2: D10
-  # I2C runs in software on D11/D12: this Nano's hardware I2C pins (A4/A5) are
-  # damaged (they read low with nothing attached). 4.7k pull-ups to +5 V on both.
+  # I2C runs in software on D11/D12 rather than on the hardware I2C pins (A4/A5),
+  # whose condition is unconfirmed. 4.7k pull-ups to +5 V on both.
   SDA: D11
   SCL: D12
   LOOP: null         # the optional U2 pin 9 jumper (plan §6.3) had D11; not available
   M1: [D2, D3, D4, D5]
   M2: [D6, D7, D8, D9]
-  spare: [A6, A7]     # analog input only; A4/A5 damaged, do not use
+  spare: [A4, A5, A6, A7]  # A6/A7 analog input only; A4/A5 unconfirmed
 
 adc:
   address: 0x48

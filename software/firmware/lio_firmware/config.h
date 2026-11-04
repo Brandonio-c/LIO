@@ -30,9 +30,9 @@ const uint8_t N_HOLES = 16;
 const uint8_t RAIL_B_FIRST_HOLE = 10;  // holes 10-16 on RAIL B
 
 // ---- ADS1115 over software I2C (softi2c.h) ----
-// This board's Nano has damaged hardware I2C pins (A4/A5 read low with nothing
-// attached), so the bus runs on two spare digital pins instead. External 4.7k
-// pull-ups to +5 V on both lines.
+// The bus runs on two spare digital pins rather than the hardware I2C pins
+// (A4/A5), whose condition is unconfirmed (docs/OPEN_ITEMS_AND_NEXT_STEPS.md).
+// External 4.7k pull-ups to +5 V on both lines.
 const uint8_t ADC_ADDR = 0x48;
 const uint8_t PIN_SDA = 11;             // ADS1115 SDA
 const uint8_t PIN_SCL = 12;             // ADS1115 SCL

@@ -42,7 +42,7 @@ Each register output drives one 2N7000 low-side switch (220 Ω gate resistor, 10
 - **DRV1** → RAIL A, holes 1–9, ≈30 mA, enabled by **A3**.
 - **DRV2** → RAIL B, holes 10–16, ≈45 mA, enabled by **D10**.
 
-Both detectors feed an ADS1115 read over I²C. The bus runs in software on **D11 (SDA) and D12 (SCL)**, with 4.7 kΩ pull-ups to +5 V, because this Nano's hardware I²C pins (A4/A5) are damaged:
+Both detectors feed an ADS1115 read over I²C. The bus runs in software on **D11 (SDA) and D12 (SCL)**, with 4.7 kΩ pull-ups to +5 V. (A4/A5 read low while a loose supply contact on the ADS1115 module was being diagnosed; whether they are damaged is unconfirmed.)
 
 - **ADS A0** = InGaAs amplifier output, through a 10 kΩ protection resistor.
 - **ADS A1** = OPT101 output.

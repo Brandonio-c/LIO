@@ -3,10 +3,13 @@
 ## 2026-11-04: Software I²C on D11/D12 (firmware 2.2.0)
 
 ### Changed
-- This Nano's hardware I²C pins (A4/A5) are damaged: `I2C DIAG` and a meter found them low with nothing attached. The ADS1115 now runs over a software I²C bus on **D11 (SDA) and D12 (SCL)**, with 4.7 kΩ pull-ups. The bus is open-drain, never driven high. A minimal ADS1115 driver (`softi2c.cpp`, `adc.cpp`) replaces the Adafruit ADS1X15 library, so the firmware needs no libraries (flash 66 %, SRAM 39 %).
+- The ADS1115 now runs over a software I²C bus on **D11 (SDA) and D12 (SCL)**, with 4.7 kΩ pull-ups. The bus is open-drain, never driven high. A minimal ADS1115 driver (`softi2c.cpp`, `adc.cpp`) replaces the Adafruit ADS1X15 library, so the firmware needs no libraries (flash 66 %, SRAM 39 %).
 - The pin map changed in `lio_hw.yaml`, `electronics/README.md`, `electronics/WIRING_CHECKLIST.md`, `electronics/data/nano_pinmap.csv`, `docs/PROTOCOL.md` and `software/README.md`. Test hints take the pin names from `lio_hw.yaml`.
 - `LOOP TEST` reports `not_fitted` without touching any pin (D11 is now SDA). T04.2 SKIPs.
-- T03.4: the I²C overhead allowance is now 1.5 ms (provisional).
+- T03.4: the I²C overhead allowance is now 1.5 ms (provisional). Measured on the hardware: about 1.4 ms.
+
+### Found on the hardware
+- T03.1 failed because the ADS1115 module's VDD had a loose breadboard contact: its supply swung between 1.4 and 2 V, and its pull-ups dragged SDA and SCL low. Reseated, the ADC answers on D11/D12. While diagnosing, A4/A5 also read low; whether they are damaged is unconfirmed (see `docs/OPEN_ITEMS_AND_NEXT_STEPS.md`).
 
 ## 2026-11-03: I²C line diagnosis (firmware 2.1.0)
 
