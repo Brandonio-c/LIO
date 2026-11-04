@@ -84,10 +84,20 @@ Channels are holes 1–16. RAIL A = holes 1–9 (DRV1, CE1 = A3); RAIL B = holes
 | Command | Effect | Response fields |
 |---|---|---|
 | `I2C SCAN` | Probe addresses 1–126 | `n addrs` (`addrs=0x48` or `addrs=none`) |
+| `I2C DIAG` | Line-level checks of SDA/SCL, then re-attach the ADC (fw ≥ 2.1.0) | `sda scl sda_pu scl_pu bridge ack_slow ack_fast slow_hz fast_hz hz present` |
 | `ADC READ <0-3> [n]` | Single-ended read; mean of `n` (1–256) | `ch raw mv n` and, if `n > 1`, `mean std` |
 | `ADC CFG GAIN <2/3\|1\|2\|4\|8\|16>` | Set the PGA | `gain lsb_mv` |
 | `ADC CFG RATE <8\|16\|32\|64\|128\|250\|475\|860>` | Set the data rate | `rate` |
 | `ADC STREAM <ch> <n> <interval_ms> [hole on_idx off_idx]` | `n` (1–2000) samples, one `# S` line each, at `interval_ms` (0 = as fast as possible) | `ch n dur_ms` |
+
+**I2C DIAG.** With the I²C peripheral off, the firmware checks each line, only ever driving it low:
+- `sda`/`scl`: the line idles high with the Nano's internal pull-up on. 0 means it is held low (a short to GND, an unpowered chip clamping it, or the wrong pin).
+- `sda_pu`/`scl_pu`: the line rises after being pulled low with the internal pull-up off. That needs an external pull-up to a powered VDD. 0 means the module has no pull-ups, or bank A is off.
+- `bridge`: pulling one line low also pulls the other low. SDA and SCL are joined.
+- `ack_slow`/`ack_fast`: the result for 0x48 at `slow_hz` (100 kHz) and `fast_hz` (400 kHz): 0 ack, 2 no answer, 4 bus error, 5 timeout.
+- `hz`/`present`: after the checks the firmware attaches the ADC again, at the fast clock or, if only that works, the slow one; `hz` is the clock now in use. (The same fallback runs at boot and whenever the ADC is looked for again.)
+
+T03.1 runs it every time and reports the result as `T03.1/bus`.
 
 Defaults after boot: gain `1` (±4.096 V, 0.125 mV/count), 128 SPS (≈7.8 ms per conversion).
 

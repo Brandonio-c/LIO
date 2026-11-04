@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-03: I²C line diagnosis (firmware 2.1.0)
+
+### Added
+- `I2C DIAG` (firmware 2.1.0): checks SDA and SCL directly: held low, external pull-ups present, SDA–SCL bridged, and whether 0x48 answers at 100 kHz and 400 kHz (`docs/PROTOCOL.md`).
+- T03.1 runs it and reports `T03.1/bus` with a plain-language diagnosis. Simulator faults `i2c_bridged` and `i2c_slow`.
+
+### Changed
+- The firmware falls back to a 100 kHz I²C clock when the ADS1115 answers only there (slow lines, no pull-ups). T03.1 then WARNs.
+
 ## 2026-11-03: Dashboard
 
 ### Added

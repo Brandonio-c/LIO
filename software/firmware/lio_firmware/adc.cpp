@@ -7,6 +7,7 @@
 
 static Adafruit_ADS1115 ads;
 static bool present = false;
+static uint32_t bus_hz = I2C_CLOCK_HZ;
 static uint8_t gain_idx = 1;  // GAIN_ONE
 static uint8_t rate_idx = 4;  // 128 SPS
 
@@ -37,10 +38,18 @@ static bool probe() {
 }
 
 static bool attach() {
+  // Slow, weakly pulled-up lines (no external pull-ups, long breadboard wires)
+  // can fail at I2C_CLOCK_HZ yet work at I2C_SLOW_HZ: fall back rather than
+  // lose the ADC. ads.begin() resets the bus to 100 kHz, so set the clock after.
+  bus_hz = I2C_CLOCK_HZ;
+  Wire.setClock(bus_hz);
+  if (!probe()) {
+    bus_hz = I2C_SLOW_HZ;
+    Wire.setClock(bus_hz);
+  }
   present = probe() && ads.begin(ADC_ADDR);
-  // ads.begin() calls Wire.begin() again, which resets the bus to 100 kHz:
-  // re-apply the clock (and, defensively, the timeout).
-  Wire.setClock(I2C_CLOCK_HZ);
+  if (!present) bus_hz = I2C_CLOCK_HZ;
+  Wire.setClock(bus_hz);
   Wire.setWireTimeout(I2C_TIMEOUT_US, true);
   if (present) {
     ads.setGain(GAINS[gain_idx]);
@@ -242,9 +251,80 @@ void cmd_adc(const Command &c) {
   else resp_err(c, E_ARG, F("usage: ADC READ|CFG|STREAM ..."));
 }
 
-// I2C SCAN
+// --- I2C DIAG: line-level checks with the TWI peripheral switched off. The pins
+// are only ever driven LOW (never HIGH), so nothing on the bus is fought.
+static uint8_t idle_high(uint8_t pin) {
+  pinMode(pin, INPUT_PULLUP);
+  delayMicroseconds(DIAG_SETTLE_US);
+  return digitalRead(pin);
+}
+
+// 1 if the line rises on its own (an external pull-up to a powered VDD):
+// pull it low, release it with the internal pull-up off, and read.
+static uint8_t has_pullup(uint8_t pin) {
+  pinMode(pin, OUTPUT);
+  digitalWrite(pin, LOW);
+  delayMicroseconds(DIAG_SETTLE_US);
+  pinMode(pin, INPUT);
+  delayMicroseconds(DIAG_SETTLE_US);
+  return digitalRead(pin);
+}
+
+// 1 if pulling `drive` low also pulls `sense` (held up internally) low.
+static uint8_t follows(uint8_t drive, uint8_t sense) {
+  pinMode(sense, INPUT_PULLUP);
+  pinMode(drive, OUTPUT);
+  digitalWrite(drive, LOW);
+  delayMicroseconds(DIAG_SETTLE_US);
+  uint8_t low = !digitalRead(sense);
+  pinMode(drive, INPUT_PULLUP);
+  delayMicroseconds(DIAG_SETTLE_US);
+  return low;
+}
+
+// Wire.endTransmission() code for an empty write to the ADS1115:
+// 0 ack, 2 no ack (address), 4 bus error, 5 timeout.
+static uint8_t ack_at(uint32_t hz) {
+  Wire.setClock(hz);
+  Wire.beginTransmission(ADC_ADDR);
+  uint8_t r = Wire.endTransmission();
+  i2c_failed();
+  return r;
+}
+
+static void i2c_diag(const Command &c) {
+  Wire.end();
+  uint8_t sda = idle_high(SDA), scl = idle_high(SCL);
+  uint8_t sda_pu = has_pullup(SDA), scl_pu = has_pullup(SCL);
+  // Only meaningful when both lines idle high.
+  uint8_t bridge = sda && scl && (follows(SDA, SCL) || follows(SCL, SDA));
+  pinMode(SDA, INPUT);
+  pinMode(SCL, INPUT);
+  Wire.begin();
+  Wire.setWireTimeout(I2C_TIMEOUT_US, true);
+  uint8_t ack_slow = ack_at(I2C_SLOW_HZ), ack_fast = ack_at(I2C_CLOCK_HZ);
+  present = false;
+  attach();
+  service();
+  resp_ok(c);
+  resp_kv(F("sda"), sda);
+  resp_kv(F("scl"), scl);
+  resp_kv(F("sda_pu"), sda_pu);
+  resp_kv(F("scl_pu"), scl_pu);
+  resp_kv(F("bridge"), bridge);
+  resp_kv(F("ack_slow"), ack_slow);
+  resp_kv(F("ack_fast"), ack_fast);
+  resp_kv_u(F("slow_hz"), I2C_SLOW_HZ);
+  resp_kv_u(F("fast_hz"), I2C_CLOCK_HZ);
+  resp_kv_u(F("hz"), bus_hz);
+  resp_kv(F("present"), present);
+  resp_end();
+}
+
+// I2C SCAN | I2C DIAG
 void cmd_i2c(const Command &c) {
-  if (c.ntok < 2 || !tok_is(c.tok[1], F("SCAN"))) { resp_err(c, E_ARG, F("usage: I2C SCAN")); return; }
+  if (c.ntok >= 2 && tok_is(c.tok[1], F("DIAG"))) { i2c_diag(c); return; }
+  if (c.ntok < 2 || !tok_is(c.tok[1], F("SCAN"))) { resp_err(c, E_ARG, F("usage: I2C SCAN|DIAG")); return; }
   // Build the list first so the response line is never interrupted.
   uint8_t found[8];
   uint8_t nf = 0;

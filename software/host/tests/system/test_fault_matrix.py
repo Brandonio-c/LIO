@@ -45,6 +45,9 @@ class Row:
 
 MATRIX = (
     Row("no_adc", "T03.1", "T03.1/adc"),
+    Row("i2c_bridged", "T03.1", "T03.1/bus"),
+    Row("i2c_slow", "T03.1", "T03.1/adc", Status.WARN),
+    Row("i2c_slow", "T03.1", "T03.1/bus", Status.WARN),
     Row("stuck_on:5", "T05.3", "T05.3/h05/unique"),
     Row("stuck_on:8", "T05.3", "T05.3/h08/unique"),
     Row("stuck_on:13", "T05.3", "T05.3/B/stuck_via_10"),

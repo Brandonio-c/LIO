@@ -20,19 +20,108 @@ I2C_WIRING_HINT = (
 # ------------------------------------------------------------------------ T03
 
 
+# Wire.endTransmission() results reported by I2C DIAG.
+ACK_RESULTS = {
+    0: "answers",
+    1: "too long",
+    2: "no answer",
+    3: "no answer to data",
+    4: "bus error",
+    5: "bus timeout",
+}
+
+
+def _khz(hz: int) -> str:
+    return f"{hz / 1000:g} kHz"
+
+
+def diagnose_i2c(d: dict[str, int], addr: int) -> tuple[bool, str]:
+    """(lines healthy, explanation) from ``I2C DIAG`` fields."""
+    stuck = [n for n in ("sda", "scl") if not d[n]]
+    if stuck:
+        names = " and ".join(n.upper() for n in stuck)
+        return False, (
+            f"{names} held low even with the Nano's pull-up on: a short to GND, a chip "
+            f"without power clamping the line, or the wrong pin (SDA = A4, SCL = A5); "
+            f"with power on, measure each line to GND, it should idle near 5 V"
+        )
+    if d["bridge"]:
+        return False, (
+            "SDA and SCL are joined: pulling one low pulls the other low; look for a solder "
+            "bridge between the header pins, both wires in one breadboard row, or a stray "
+            "lead touching both (with power off they should not read low ohms to each other)"
+        )
+    parts = []
+    no_pu = [n.upper() for n in ("sda", "scl") if not d[f"{n}_pu"]]
+    if no_pu:
+        parts.append(
+            f"{' and '.join(no_pu)} do not rise without the Nano's weak internal pull-up: "
+            "either the ADS1115 module has no pull-ups (add 4.7 kOhm from each line to "
+            "+5 V) or its VDD is off (power bank A)"
+        )
+    slow, fast = d["ack_slow"], d["ack_fast"]
+    at = f"0x{addr:02X}"
+    if slow == 0 and fast != 0:
+        parts.append(
+            f"{at} answers at {_khz(d['slow_hz'])} but not {_khz(d['fast_hz'])}: the lines "
+            f"rise too slowly, so the firmware fell back to {_khz(d['hz'])}; add 4.7 kOhm "
+            "pull-ups to run at full speed"
+        )
+    elif slow != 0:
+        what = ACK_RESULTS.get(slow, f"result {slow}")
+        hint = (
+            "the lines look healthy, so check ADDR -> GND, VDD and GND measured at the "
+            "chip's own pins, SDA (A4) and SCL (A5) not swapped, and the Nano GND joined "
+            "to the bus GND"
+            if not no_pu and slow == 2
+            else "see above"
+        )
+        parts.append(f"{at}: {what} at {_khz(d['slow_hz'])} or {_khz(d['fast_hz'])}; {hint}")
+    ok = not no_pu
+    return ok, "; ".join(parts) or (
+        f"lines idle high with pull-ups, not bridged; {at} answers at {_khz(d['hz'])}"
+    )
+
+
 @register("T03.1", "I2C scan finds the ADS1115")
 def t03_1(ctx: SuiteContext, rec: Recorder) -> None:
     want = ctx.cfg.section.integer("adc.address")
+    # The line checks first: they also re-attach the ADC, at the slow clock if
+    # only that works, so the scan below sees it.
+    diag = ctx.dev.i2c_diag()
     found = ctx.dev.i2c_scan()
     rec.measure(addresses=[f"0x{a:02X}" for a in found])
-    rec.check(
-        "adc",
-        f"ADS1115 at 0x{want:02X}",
-        want in found,
-        f"found {[f'0x{a:02X}' for a in found] or 'nothing'}"
-        + ("" if want in found else f"; {I2C_WIRING_HINT}"),
-        f"0x{want:02X} acknowledges",
-    )
+    slow_only = diag is not None and want in found and diag["hz"] != diag["fast_hz"]
+    if want in found and slow_only:
+        assert diag is not None
+        rec.add(
+            "adc",
+            f"ADS1115 at 0x{want:02X}",
+            Status.WARN,
+            f"answers only at {_khz(diag['hz'])}, not {_khz(diag['fast_hz'])}: the lines rise "
+            "too slowly (no or weak pull-ups); add 4.7 kOhm from SDA and SCL to +5 V",
+            f"0x{want:02X} acknowledges at {_khz(diag['fast_hz'])}",
+        )
+    else:
+        rec.check(
+            "adc",
+            f"ADS1115 at 0x{want:02X}",
+            want in found,
+            f"found {[f'0x{a:02X}' for a in found] or 'nothing'}"
+            + ("" if want in found else f"; {I2C_WIRING_HINT}"),
+            f"0x{want:02X} acknowledges",
+        )
+    if diag is not None:
+        rec.measure(i2c_diag=diag)
+        ok, why = diagnose_i2c(diag, want)
+        rec.check(
+            "bus",
+            "I2C lines (SDA, SCL)",
+            ok,
+            why,
+            "both idle high, rise on external pull-ups, not joined",
+            warn=want in found,
+        )
     extra = [a for a in found if a != want]
     rec.check(
         "only",
