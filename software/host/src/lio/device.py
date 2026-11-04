@@ -60,6 +60,19 @@ class Cancelled(Exception):
 
 # How often a cancellable sleep checks for a stop request (seconds).
 CANCEL_POLL_S = 0.1
+I2C_DIAG_KEYS = (
+    "sda",
+    "scl",
+    "sda_pu",
+    "scl_pu",
+    "bridge",
+    "ack_slow",
+    "ack_fast",
+    "slow_hz",
+    "fast_hz",
+    "hz",
+    "present",
+)
 
 
 class BootTimeout(TimeoutError):
@@ -504,6 +517,25 @@ class LIODevice:
         f = self.command("I2C SCAN", timeout=self.cfg.section.num("link.i2c_scan_timeout_s")).fields
         addrs = f.as_str("addrs")
         return [] if addrs == "none" else [int(a, 16) for a in addrs.split(",")]
+
+    def i2c_diag(self) -> dict[str, int] | None:
+        """Line-level I2C checks (``I2C DIAG``); None on firmware without them.
+
+        Keys: ``sda``/``scl`` idle high with the Nano's pull-up, ``sda_pu``/
+        ``scl_pu`` rise with it off (an external pull-up to a powered VDD),
+        ``bridge`` (SDA and SCL joined), ``ack_slow``/``ack_fast`` (the Wire
+        result for 0x48 at ``slow_hz``/``fast_hz``: 0 ack, 2 no answer, 4 bus
+        error, 5 timeout), ``hz`` (the clock now in use) and ``present``.
+        """
+        try:
+            timeout = self.cfg.section.num("link.i2c_scan_timeout_s")
+            f = self.command("I2C DIAG", timeout=timeout).fields
+        except DeviceError as e:
+            if e.code == ErrCode.BAD_ARG:  # firmware before 2.1.0: "usage: I2C SCAN"
+                return None
+            raise
+        self._info = None  # adc_ok may have changed
+        return {k: f.as_int(k) for k in I2C_DIAG_KEYS}
 
     def _conv_s(self) -> float:
         rate = self.info().as_int("rate") if self._info is not None else 128

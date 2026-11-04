@@ -5,7 +5,7 @@
 #pragma once
 #include <Arduino.h>
 
-#define LIO_FW_VERSION "2.0.0"
+#define LIO_FW_VERSION "2.1.0"
 #define LIO_PROTO 1
 
 // Build with -DLIO_HW_WDT=1 only for the new (Optiboot) bootloader,
@@ -30,6 +30,8 @@ const uint8_t RAIL_B_FIRST_HOLE = 10;  // holes 10-16 on RAIL B
 const uint8_t ADC_ADDR = 0x48;
 const uint32_t I2C_CLOCK_HZ = 400000UL;
 const uint32_t I2C_TIMEOUT_US = 25000UL;
+const uint32_t I2C_SLOW_HZ = 100000UL;   // fallback when the fast clock gets no answer
+const uint16_t DIAG_SETTLE_US = 50;      // I2C DIAG: line settle time per step
 
 // ---- Motors: 28BYJ-48 via ULN2003, IN1..IN4 ----
 const uint8_t MOTOR_PINS[2][4] = {

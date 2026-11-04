@@ -42,12 +42,16 @@ FAULT_NAMES = (
     "motor_stall",
     "comms_drop",  # every Nth output line is lost
     "bank_a_asleep",  # +5 V bank switched off at low load: no ADC until POWER WAKE
+    "i2c_bridged",  # SDA and SCL joined (solder bridge, shared breadboard row): no ADC
+    "i2c_slow",  # lines rise too slowly (no external pull-ups): ADC answers at 100 kHz only
 )
 
 _PARAM_FAULTS = {"stuck_on", "dead_channel", "swapped"}
 
 BAUD_CHAR_S = 10.0 / 115200.0  # 8N1
-TX_BUFFER_BYTES = 64  # AVR HardwareSerial transmit ring buffer
+TX_BUFFER_BYTES = 64
+I2C_FAST_HZ = 400000  # firmware I2C_CLOCK_HZ
+I2C_SLOW_HZ = 100000  # firmware I2C_SLOW_HZ fallback  # AVR HardwareSerial transmit ring buffer
 
 
 class FaultSpecError(ValueError):
@@ -73,6 +77,8 @@ class Faults:
     motor_stall: bool = False
     comms_drop: bool = False
     bank_a_asleep: bool = False
+    i2c_bridged: bool = False
+    i2c_slow: bool = False
 
     @classmethod
     def parse(cls, specs: str | Iterable[str] | None) -> Faults:
@@ -219,7 +225,7 @@ _GAIN_NAMES = ("2/3", "1", "2", "4", "8", "16")
 class SimulatedLIO:
     """A simulated LIO V3 controller (firmware v2 behaviour + optics physics)."""
 
-    FW_VERSION = "2.0.0"
+    FW_VERSION = "2.1.0"
     BUILD = "2026-11-03"
 
     def __init__(
@@ -546,7 +552,11 @@ class SimulatedLIO:
 
     def adc_missing(self, t: float) -> bool:
         """No ADS1115 on the bus at time t: absent, or bank A (its supply) asleep."""
-        return self.faults.no_adc or (self.faults.bank_a_asleep and t >= self.bank_awake_until)
+        return (
+            self.faults.no_adc
+            or self.faults.i2c_bridged
+            or (self.faults.bank_a_asleep and t >= self.bank_awake_until)
+        )
 
     def lit_hole(self) -> int:
         h = self._single_hole(self.mask)
@@ -794,13 +804,31 @@ class _Exec:
         )
 
     def c_i2c(self) -> None:
+        if len(self.tok) >= 2 and self.tok[1] == "DIAG":
+            self.i2c_diag()
+            return
         if len(self.tok) < 2 or self.tok[1] != "SCAN":
-            raise _Refusal(2, "usage: I2C SCAN")
+            raise _Refusal(2, "usage: I2C SCAN|DIAG")
         self.wait(0.02)
         if self.sim.adc_missing(self.t):
             self.ok("n=0 addrs=none")
         else:
             self.ok("n=1 addrs=0x48")
+
+    def i2c_diag(self) -> None:
+        f = self.sim.faults
+        self.wait(0.01)
+        powered = not (f.bank_a_asleep and self.t >= self.sim.bank_awake_until)
+        missing = self.sim.adc_missing(self.t)
+        pu = int(powered and not f.i2c_slow)
+        ack_fast = 2 if missing or f.i2c_slow else 0
+        ack_slow = 2 if missing else 0
+        self.ok(
+            f"sda=1 scl=1 sda_pu={pu} scl_pu={pu} bridge={int(f.i2c_bridged)} "
+            f"ack_slow={ack_slow} ack_fast={ack_fast} slow_hz={I2C_SLOW_HZ} "
+            f"fast_hz={I2C_FAST_HZ} hz={I2C_SLOW_HZ if f.i2c_slow else I2C_FAST_HZ} "
+            f"present={int(not missing)}"
+        )
 
     def c_adc(self) -> None:
         usage = "usage: ADC READ|CFG|STREAM ..."

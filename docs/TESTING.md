@@ -130,7 +130,7 @@ Every check compares a measurement with a threshold from `software/config/lio_hw
 | T02.4 | A | Unknown command, bad argument, over-long line, garbage bytes | parser bugs |
 | T02.5 | A | `@seq` echo; events between responses don't desynchronise | protocol bugs |
 | T02.6 | A | RESET: banner returns, safe state, defaults restored | RESET bugs |
-| T03.1 | A | I²C scan finds the ADS1115 at 0x48 (FAIL names the wiring) | `no_adc`, wiring |
+| T03.1 | A | I²C scan finds the ADS1115 at 0x48; `T03.1/bus` checks the SDA/SCL lines (`I2C DIAG`): stuck low, no pull-ups, SDA–SCL bridged, answers only at 100 kHz | `no_adc`, `i2c_bridged`, `i2c_slow`, wiring |
 | T03.2 | A | Dark noise on A0/A1 (64 samples); A2/A3 recorded | `noisy_adc` |
 | T03.3 | A | Every PGA gain accepted; dark mV agrees across gains | gain errors |
 | T03.4 | A | Conversion interval at every data rate | ADC timing |
@@ -210,7 +210,7 @@ Every FAIL message says what was measured, against what, and the likely cause. T
 
 | Message | First thing to check |
 |---|---|
-| T03.1 ADS1115 not found | **power bank A asleep** (it alone powers the +5 V bus: ADS1115, LEDs, shift registers; see §7.1); then SDA → A4, SCL → A5, ADDR → GND, ADS VDD; both lines idle near 5 V |
+| T03.1 ADS1115 not found | read **`T03.1/bus`** first: it says whether SDA/SCL are held low, joined, missing pull-ups, or healthy (then the chip's own ADDR, VDD, GND and the Nano GND). Otherwise **power bank A asleep** (it alone powers the +5 V bus: ADS1115, LEDs, shift registers; see §7.1); then SDA → A4, SCL → A5, ADDR → GND, ADS VDD; both lines idle near 5 V |
 | T05.1 no light with CE high | the rail's driver supply and CE wire (A3 / D10) |
 | T04.1 / T05.1 light with CE low | CE polarity, or a missing CE pull-down |
 | T05.3 U2 receives no data | U1 pin 9 → U2 pin 14, U2 power |
