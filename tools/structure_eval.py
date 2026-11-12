@@ -20,7 +20,8 @@ Every table is also checked for failure signs: empty or very long names, heading
 left in a name, amounts left inside a name, and duplicate rows.
 
 Responses are cached under ``--out/cache`` (by URL hash), so a re-run is offline and
-reproducible. Writes ``results.json`` (per item) and ``summary.json``.
+reproducible. Writes ``structure_results.json`` (per item; not ``results.json``, which the
+dashboard reads as a test run) and ``summary.json``.
 """
 
 from __future__ import annotations
@@ -432,7 +433,7 @@ def main(argv: list[str] | None = None) -> int:
     items = drugs(a.drug, random.Random(a.seed))
     items += supplements(a.supplement, random.Random(a.seed + 1))
     items += foods(a.food, random.Random(a.seed + 2), key)
-    (a.out / "results.json").write_text(json.dumps(items, indent=1, ensure_ascii=False))
+    (a.out / "structure_results.json").write_text(json.dumps(items, indent=1, ensure_ascii=False))
     summary = {"seed": a.seed, **summarise(items)}
     (a.out / "summary.json").write_text(json.dumps(summary, indent=1))
     print(json.dumps(summary, indent=1))

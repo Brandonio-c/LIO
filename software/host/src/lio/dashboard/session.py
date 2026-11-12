@@ -1011,8 +1011,8 @@ class Session:
         for f in runs if self.results_root.is_dir() else []:
             try:
                 record = RunRecord.load(f)
-            except (OSError, ValueError, KeyError, TypeError):
-                continue
+            except (OSError, ValueError, KeyError, TypeError, AttributeError):
+                continue  # not a run record (e.g. another tool's results.json)
             if _kind(record.target) != kind:
                 continue
             started = _parse_iso(record.started)
