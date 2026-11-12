@@ -1,0 +1,34 @@
+{
+ "seed": 20261112,
+ "ocr_engine": "tesseract",
+ "by_kind": {
+  "drug_facts": {
+   "items": 100,
+   "scored": 100,
+   "full_panel": 17,
+   "fields": 1026,
+   "exact_match": 125,
+   "proposed": 332,
+   "needs_correction": 207
+  },
+  "supplement_facts": {
+   "items": 100,
+   "scored": 100,
+   "full_panel": 5,
+   "fields": 937,
+   "exact_match": 165,
+   "proposed": 219,
+   "needs_correction": 54
+  },
+  "nutrition_facts": {
+   "items": 50,
+   "scored": 50,
+   "full_panel": 10,
+   "fields": 453,
+   "exact_match": 82,
+   "proposed": 112,
+   "needs_correction": 30
+  }
+ },
+ "note": "drug_facts and supplement_facts from the first run; nutrition_facts from the re-run with the fixed scoring (panel_corpus.py). Tesseract OCR; Apple Vision was failing on the lab Mac."
+}

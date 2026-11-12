@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-11-12: Composition coverage M5, Drug Facts and Supplement Facts photos (plan WP4)
+
+### Added
+- **Panel parsers** (`lio.foods.panels`):
+  - **Drug Facts** (21 CFR 201.66): actives with strengths (`drug_active@1`), "each … contains" minerals (`otc_contains@1`), and the inactive list (`list_item@2`; alphabetical, so no weight order).
+  - **Supplement Facts** (21 CFR 101.36): serving size (`sfp_serving@1`), amount rows (`sfp_row@1`, a lark grammar), blend members and other ingredients.
+  - Each proposed field has an image box from the server's own OCR.
+- **Capture.** The dashboard has **Supplement Facts photo…** and **Drug Facts photo…**, and the phone has matching buttons. A checklist proposes the fields; the operator ticks and corrects them and types their name. Every ticked field must re-parse with its rule, then becomes an ATTESTED fact or ingredient in the sample's record. OTC sodium, calcium and potassium use the 21 CFR 201.64/201.70/201.72 rounding rules; other strengths and amounts are taken as stated under a named assumption.
+- **OCR fallback.** Tesseract reads the photo when Apple Vision fails, and the engine is recorded in every attestation. `LIO_OCR_ENGINE=tesseract` skips Vision.
+- **Paired test corpus** (`tools/panel_corpus.py`): 100 DailyMed OTC carton images against the SPL, 100 DSLD label PDFs against the DSLD rows, and 50 Open Food Facts nutrition photos against FDC (approximate). Accuracy is in `docs/COMPOSITION_COVERAGE.md` and `docs/reports/panel_corpus_summary_2026-11-12.json`. With Tesseract, precision is 38% for Drug Facts and 75% for Supplement Facts; most misses are images that do not show the full panel.
+
 ## 2026-11-12: Composition coverage M4, compendial chemistry rules (plan WP5)
 
 ### Changed

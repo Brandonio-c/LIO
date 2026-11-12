@@ -33,6 +33,8 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from decimal import Decimal
+from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
@@ -390,9 +392,7 @@ def nutrition_corpus(
         fields = []
         for k, v in truth.items():
             try:
-                same = k in got and textrules.parse_decimal(got[k]) == textrules.parse_decimal(
-                    v.rstrip("0").rstrip(".") or "0"
-                )
+                same = k in got and textrules.parse_decimal(got[k]) == Fraction(Decimal(v))
             except Exception:
                 same = False
             fields.append({"field": k, "ok": same, "proposed": k in got})
