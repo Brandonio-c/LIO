@@ -850,6 +850,9 @@
   }
  ],
  "physical_sample": {
+  "assumptions": [
+   "E1"
+  ],
   "attestation": null,
   "lot": "",
   "photos": [],

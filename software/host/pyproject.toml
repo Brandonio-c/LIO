@@ -43,6 +43,7 @@ dev = [
 
 [project.scripts]
 lio = "lio.cli:main"
+lio-verify = "lio_verify.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

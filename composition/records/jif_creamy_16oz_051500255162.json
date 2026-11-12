@@ -769,6 +769,9 @@
   }
  ],
  "physical_sample": {
+  "assumptions": [
+   "J1"
+  ],
   "attestation": null,
   "lot": "",
   "photos": [],

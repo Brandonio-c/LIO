@@ -49,7 +49,8 @@
     "sample_code",
     "lot",
     "photos",
-    "attestation"
+    "attestation",
+    "assumptions"
    ],
    "properties": {
     "sample_code": {
@@ -73,6 +74,12 @@
        "type": "null"
       }
      ]
+    },
+    "assumptions": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/id"
+     }
     }
    }
   },

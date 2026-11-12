@@ -46,7 +46,13 @@ class RecordBuilder:
             "gtin": gtin,
             "product_name": product_name,
             "variant_note": variant_note,
-            "physical_sample": {"sample_code": "", "lot": "", "photos": [], "attestation": None},
+            "physical_sample": {
+                "sample_code": "",
+                "lot": "",
+                "photos": [],
+                "attestation": None,
+                "assumptions": [],
+            },
             "variables": [],
         }
         self.sources: dict[str, dict[str, Any]] = {}
@@ -94,6 +100,9 @@ class RecordBuilder:
         if aid in self.assumptions and self.assumptions[aid] != a:
             raise RecordError(f"assumption {aid} stated twice differently")
         self.assumptions[aid] = a
+        ps = self.head["physical_sample"]["assumptions"]
+        if kind == "sample_identity" and aid not in ps:
+            ps.append(aid)  # identity of the physical sample: applies to the whole record
         return aid
 
     # ------------------------------------------------------------------ facts

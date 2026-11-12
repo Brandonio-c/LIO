@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-11-11: Verifiable composition, M4 (independent verifier)
+
+### Added
+- `lio-verify` (`lio_verify.verify`, `lio_verify.cli`): checks a record against its snapshots and rules only. In order: schema and no JSON floats; source hashes and manifests; every fact (locator, rule, interpretation, pinned rule version); substances and ingredients; derivations; constraints (data conflicts, weight order only on weight-ordered lists, joint feasibility); bounds (witnesses by exact substitution, z3 soundness checks, carried assumptions); attestations; every assumption cited and stated. Each field is VERIFIED, ATTESTED, UNVERIFIED (an input failed) or FAILED; exit code 1 on any FAILED. No network unless `--refetch`, which only reports whether upstream bytes changed. Imports nothing from `lio` or `lio_comp` (tested in a subprocess).
+- Mutation tests: a changed source byte, shifted locators (XPath, JSON pointer, list item), altered fact and derivation values, a removed assumption, a tampered witness, a bound narrower than proven (also with a consistent witness: z3 catches it), a JSON float, weight order on an OTC list, a rules version mismatch, a formula not from its source and a bound dropping an assumption all FAIL.
+- All four golden records pass.
+
+### Changed
+- Sample-identity assumptions are cited by `physical_sample`, so every stated assumption is used somewhere.
+
 ## 2026-11-11: Verifiable composition, M3 (deriver and bounder)
 
 ### Added
