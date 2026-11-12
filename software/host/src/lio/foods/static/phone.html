@@ -512,6 +512,7 @@ function ingrList(st) {
       <span class="st-amt">${v(r.amount)}${r.basis && r.basis !== NA ? ` <span class="na">${esc(r.basis)}</span>` : ""}${r.dv && r.dv !== NA ? ` · ${esc(r.dv)} DV` : ""}</span>
       ${(r.sub && r.sub !== NA) || (r.note && r.note !== NA) ? `<span class="st-sub">${[r.sub !== NA ? "contains " + esc(r.sub) : "", r.note !== NA ? esc(r.note) : ""].filter(Boolean).join(" · ")}</span>` : ""}</div>`).join("")).join("") +
     ((st.contains || []).length ? `<div class="note" style="margin-top:6px;font-weight:600">Per dose</div>` + st.contains.map((r) => `<div class="st-row"><span>${esc(r.name)}</span><span class="st-amt">${v(r.amount)} <span class="na">${r.basis !== NA ? esc(r.basis) : ""}</span></span></div>`).join("") : "") +
+    `<div class="note" style="margin-top:6px">Allergen statement: ${(st.allergens || []).length ? esc(st.allergens.join(", ")) : `<span class="na">N/A</span>`}</div>` +
     `<div class="note" style="margin-top:4px">Read from the source. If you correct the text below, the corrected text is saved instead of this table.</div></div>`;
 }
 let ingrStruct = null, fixStruct = null;

@@ -192,3 +192,113 @@ def test_preview_fetches_the_full_record(lib: FoodLibrary) -> None:
     (st,) = out["options"]
     assert st["source"] == "dsld" and st["ingredients"]
     assert all(set(r) == set(S.FIELDS) for r in st["ingredients"])
+
+
+def _actives(r: dict[str, Any]) -> list[dict[str, str]]:
+    (st,) = S.structure_record("openfda", parse_openfda(r), r)["options"]
+    return [x for x in st["ingredients"] if x["role"] == "active"]
+
+
+def test_purpose_column_and_percent_strengths() -> None:
+    rows = _actives({
+        "openfda": {"brand_name": ["Bunnies"]},
+        "active_ingredient": ["Glycerin 14.4%, Lidocaine 5%, Petrolatum 15%, Phenylephrine HCl 0.25%"],
+        "purpose": ["Glycerin-Protectant Lidocaine-Local anesthetic Petrolatum-Protectant "
+                    "Phenylephrine HCl Vasoconstrictor"],
+    })  # fmt: skip
+    assert [(r["name"], r["amount"], r["basis"]) for r in rows][3] == (
+        "Phenylephrine HCl", "0.25%", "of product",
+    )  # fmt: skip
+    assert [r["note"] for r in rows] == [
+        "purpose: Protectant", "purpose: Local anesthetic", "purpose: Protectant",
+        "purpose: Vasoconstrictor",
+    ]  # fmt: skip
+
+
+def test_dot_leaders_and_repeated_heading() -> None:
+    (r,) = _actives({
+        "openfda": {"brand_name": ["Kroger"]},
+        "active_ingredient": ["ACTIVE INGREDIENT Active Ingredient " + "." * 60 + "Purpose Menthol 5%"
+                              + "." * 60 + "Topical Analgesic"],
+        "purpose": ["PURPOSE Topical Analgesic"],
+    })  # fmt: skip
+    assert (r["name"], r["amount"], r["note"]) == ("Menthol", "5%", "purpose: Topical Analgesic")
+
+
+def test_inline_purposes_between_actives() -> None:
+    a, b = _actives({
+        "openfda": {"brand_name": ["X"]},
+        "active_ingredient": ["Active ingredients (in each tablet) Acetaminophen 325 mg Pain "
+                              "reliever/fever reducer Diphenhydramine HCl 25 mg Nighttime sleep aid"],
+        "purpose": ["Purposes Pain reliever/fever reducer Nighttime sleep aid"],
+    })  # fmt: skip
+    assert (a["name"], a["note"]) == ("Acetaminophen", "purpose: Pain reliever/fever reducer")
+    assert (b["name"], b["amount"], b["basis"]) == ("Diphenhydramine HCl", "25 mg", "per tablet")
+    assert b["note"] == "purpose: Nighttime sleep aid"
+
+
+def test_homeopathic_potencies() -> None:
+    rows = S.actives(
+        "Calcarea Carbonica 10X 8.33%, Ferrum Iodatum 10X, 30X 8.33%, Thyroidinum 6X, 12X, 30X 8.33%.",
+        "", "", [],
+    )  # fmt: skip
+    assert [(r["name"], r["amount"]) for r in rows] == [
+        ("Calcarea Carbonica", "10X"), ("Ferrum Iodatum", "10X, 30X"), ("Thyroidinum", "6X, 12X, 30X"),
+    ]  # fmt: skip
+    assert all(r["basis"] == "HPUS potency" for r in rows)
+    assert rows[-1]["note"] == "8.33% of the mixture"
+    (r,) = S.section("Active ingredient: (in each drop) Belladonna 12X")["ingredients"]
+    assert (r["name"], r["amount"], r["basis"]) == ("Belladonna", "12X", "per drop")
+
+
+def test_units_grains_equivalents_and_brand_named_like_the_drug() -> None:
+    rows = _actives({
+        "openfda": {"brand_name": ["B"]},
+        "active_ingredient": ["Active ingredients (in each gram) Bacitracin zinc equivalent to 400 "
+                              "units bacitracin Neomycin sulfate equivalent to 3.5 mg of neomycin "
+                              "base Polymyxin B 5,000 units as polymyxin B sulfate"],
+    })  # fmt: skip
+    assert [(r["name"], r["amount"]) for r in rows] == [
+        ("Bacitracin zinc", "400 units"), ("Neomycin sulfate", "3.5 mg"), ("Polymyxin B", "5000 units"),
+    ]  # fmt: skip
+    assert rows[1]["note"] == "equivalent to 3.5 mg of neomycin base"
+    (r,) = _actives({
+        "openfda": {"brand_name": ["Sodium Bicarbonate"], "generic_name": ["SODIUM BICARBONATE"]},
+        "active_ingredient": ["Active Ingredient (in each tablet) Sodium Bicarbonate 10 gr (650 mg)"],
+    })  # fmt: skip
+    assert (r["name"], r["amount"], r["basis"]) == ("Sodium Bicarbonate", "650 mg", "per tablet")
+    (r,) = _actives({
+        "openfda": {"brand_name": ["Loratadine"], "generic_name": ["LORATADINE"]},
+        "active_ingredient": ["Active ingredient (in each tablet) Loratadine, 10 mg USP"],
+        "purpose": ["Purpose Antihistamine"],
+    })  # fmt: skip
+    assert (r["name"], r["amount"]) == ("Loratadine", "10 mg")
+    assert r["note"] == "USP; purpose: Antihistamine"
+
+
+def test_no_label_text_uses_the_fda_listing() -> None:
+    (r,) = _actives({
+        "openfda": {"brand_name": ["Right Guard"], "substance_name": ["ALUMINUM ZIRCONIUM OCTACHLOROHYDREX GLY"]},
+        "active_ingredient": ["OTC-Active Ingredient"],
+    })  # fmt: skip
+    assert r["name"] == "Aluminum Zirconium Octachlorohydrex Gly" and r["amount"] == NA
+    assert "FDA product listing" in r["note"]
+
+
+def test_food_lead_percent_and_unbalanced_brackets() -> None:
+    (r,) = S.section("100% FRESH PICKED BLUEBERRIES")["ingredients"]
+    assert (r["name"], r["amount"]) == ("FRESH PICKED BLUEBERRIES", "100%")
+    rows = S.section("CHIPS (SUGAR, COCOA, VANILLA, SALT BROWN SUGAR, EGGS")["ingredients"]
+    assert "brackets do not balance" in rows[0]["note"]
+
+
+def test_allergen_statement_is_not_an_ingredient() -> None:
+    sec = S.section(
+        "ENRICHED FLOUR (WHEAT FLOUR, NIACIN), SUGAR, SALT. CONTAINS: WHEAT, MILK, SOY."
+    )
+    assert [r["name"] for r in sec["ingredients"]] == ["ENRICHED FLOUR", "SUGAR", "SALT"]
+    assert sec["allergens"] == ["wheat", "milk", "soy"]
+    assert S.section("WATER, CONTAINS 2% OR LESS OF: SALT")["allergens"] == []
+    table = S.clean({**S._empty("usda", "x"), **sec})
+    assert S.to_text(table).endswith("Allergens: wheat, milk, soy")
+    assert S.clean({"allergens": "milk"})["allergens"] == []

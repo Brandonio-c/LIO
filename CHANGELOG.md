@@ -17,6 +17,11 @@
   - DSLD records: rows with amount, % DV and form, blend members, other ingredients and the serving size.
   - Food lists: "x%" amounts, bracketed sub-ingredients, and "contains 2% or less of" groups.
 - **The extraction is deterministic** (`lio.foods.structure`): regular expressions, the `list_item@2` splitter and the DSLD record's own fields.
+- **Accuracy, tested on real records** (`tools/structure_eval.py`, report in `docs/reports/structure_eval_2026-11-12.md`):
+  - OTC drugs: 98% of active ingredients found, and 84% of strengths match the coded SPL data exactly. Most of the rest have no strength in the label text, or the SPL's coded data disagrees with its own label.
+  - DSLD supplements: 533 of 533 rows and amounts correct.
+  - Foods: 93% of ingredients agree with Open Food Facts' parse.
+  - The evaluation led to the fixes listed in the report, among them homeopathic potencies, the Purpose column, units, allergen statements and "100%" items.
 - **Where it is stored.** The table goes in the product's `ingredients_structured` field. Typing a new list by hand removes the old table. It is a reviewed database value, not a verified fact.
 
 ## 2026-11-12: Composition coverage M7, documentation (plan WP8)

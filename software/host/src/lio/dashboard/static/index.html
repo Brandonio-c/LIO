@@ -1739,7 +1739,10 @@ function ingrTable(st, edit) {
     : `<div class="note">No ingredients could be read.</div>`;
   const ct = cont.length ? `<div class="note" style="margin-top:8px">Amounts stated per dose (e.g. "each caplet contains")</div><div class="ingr-wrap"><table class="ingr"><tr>${cc.map(([, l]) => `<th>${l}</th>`).join("")}${edit ? "<th></th>" : ""}</tr>
       ${cont.map((r, i) => `<tr>${cc.map(([k]) => cell(r, k, i, "cr")).join("")}${edit ? `<td class="x"><button class="btn small" data-del-cr="${i}" title="remove this row">✕</button></td>` : ""}</tr>`).join("")}</table></div>` : "";
-  return `<div style="display:grid;gap:6px;margin-top:4px">${head}${it}${ct}</div>`;
+  const alg = st.allergens || [];
+  const at = edit ? `<div class="note">Allergen statement ("Contains: …"): <input type="text" id="si-allergens" value="${esc(alg.join(", ") || NA)}" style="width:320px;font-size:12.5px;padding:2px 5px"></div>`
+    : `<div class="note">Allergen statement: ${alg.length ? `<span style="color:var(--ink)">${esc(alg.join(", "))}</span>` : "N/A"}</div>`;
+  return `<div style="display:grid;gap:6px;margin-top:4px">${head}${it}${ct}${at}</div>`;
 }
 
 /* The confirm box: the structured table, editable, then save. `options` are the record's
@@ -1766,6 +1769,7 @@ function ingrConfirm(s, options, def, sourceText, refs, onSave) {
     box.querySelectorAll("[data-del-ir]").forEach((b) => b.onclick = () => { st.ingredients.splice(+b.dataset.delIr, 1); edited = true; draw(); });
     box.querySelectorAll("[data-del-cr]").forEach((b) => b.onclick = () => { st.contains.splice(+b.dataset.delCr, 1); edited = true; draw(); });
     $("si-serving").oninput = (e) => { st.serving = e.target.value.trim() || NA; edited = true; };
+    $("si-allergens").oninput = (e) => { const v = e.target.value.trim(); st.allergens = !v || v === NA ? [] : v.split(",").map((x) => x.trim().toLowerCase()).filter(Boolean); edited = true; };
     $("si-add").onclick = () => { st.ingredients.push({ name: "", role: (st.ingredients.at(-1) || {}).role || "ingredient", amount: NA, basis: NA, dv: NA, form: NA, sub: NA, variant: st.variant || NA, note: NA }); edited = true; draw(); };
     $("si-addc").onclick = () => { st.contains.push({ name: "", amount: NA, basis: NA, variant: st.variant || NA, note: NA }); edited = true; draw(); };
     if ($("si-var")) $("si-var").onchange = (e) => { idx = +e.target.value; st = JSON.parse(JSON.stringify(options[idx])); edited = idx !== (def || 0); draw(); };

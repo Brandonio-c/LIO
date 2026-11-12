@@ -1,0 +1,35 @@
+{
+ "seed": 20261113,
+ "drug": {
+  "labels": 100,
+  "with_variants": 0,
+  "spl_actives": 272,
+  "active_name_found": 158,
+  "active_amount_correct": 139,
+  "active_basis_stated": 144,
+  "active_extra_rows": 48,
+  "spl_inactives": 1125,
+  "table_inactives": 1037,
+  "inactive_found": 864,
+  "per_dose_rows": 7,
+  "labels_with_failure_signs": 10
+ },
+ "supplement": {
+  "labels": 60,
+  "rows": 533,
+  "rows_found": 533,
+  "amount_correct": 533,
+  "serving_stated": 60,
+  "labels_with_failure_signs": 4
+ },
+ "food": {
+  "lists": 80,
+  "lists_with_failure_signs": 8,
+  "matched_in_off": 63,
+  "off_top_level": 700,
+  "off_found": 654,
+  "table_rows": 625,
+  "off_percents": 5,
+  "off_percents_matched": 2
+ }
+}
