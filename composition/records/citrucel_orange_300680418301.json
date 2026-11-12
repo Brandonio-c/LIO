@@ -40,7 +40,8 @@
   {
    "id": "A6",
    "kind": "modelling",
-   "text": "Tricalcium phosphate has its UNII formula Ca3(PO4)2. (Food/USP 'tribasic calcium phosphate' is a variable mixture close to hydroxyapatite, which has more calcium per gram: the true phosphate mass could be lower than this bound.)"
+   "rule_ref": "additive_assays@1",
+   "text": "The dibasic and tricalcium phosphates meet their USP 32-NF 27 monographs (as-is assays: TCP 34.0-40.0% Ca; anhydrous DCP 98.0-103.0% CaHPO4), the legal standard for an OTC drug's ingredients (FD&C Act 501(b)); the monograph text is read from a public mirror of USP 32."
   },
   {
    "id": "A7",
@@ -173,7 +174,7 @@
         "0"
        ],
        "origin": "C4",
-       "rhs": "-32706662189/163600000000",
+       "rhs": "-31/160",
        "sense": "<="
       },
       {
@@ -186,7 +187,7 @@
         "0"
        ],
        "origin": "C4",
-       "rhs": "1496604472033/5343200000000",
+       "rhs": "1496604472033/5236336000000",
        "sense": "<="
       },
       {
@@ -325,12 +326,12 @@
       "0"
      ],
      "interior": {
-      "calcium_phosphates": "1496604472033/5343200000000",
-      "maltodextrin": "1496604472033/5343200000000",
+      "calcium_phosphates": "1496604472033/5236336000000",
+      "maltodextrin": "1496604472033/5236336000000",
       "methylcellulose": "2",
       "other_ingredients": "707945247/1563928000",
       "potassium_citrate": "465000753/1563928000",
-      "sucrose": "41916895527967/2671600000000"
+      "sucrose": "41048625527967/2618168000000"
      },
      "motzkin": [
       "0",
@@ -353,10 +354,10 @@
      ],
      "value": "65/4",
      "witness": {
-      "calcium_phosphates": "1496604472033/5343200000000",
+      "calcium_phosphates": "1496604472033/5236336000000",
       "maltodextrin": "0",
       "methylcellulose": "2",
-      "other_ingredients": "180263925629096797/1044547511200000000",
+      "other_ingredients": "170807193019670797/1023656560976000000",
       "potassium_citrate": "465000753/1563928000",
       "sucrose": "65/4"
      }
@@ -383,12 +384,12 @@
       "0"
      ],
      "interior": {
-      "calcium_phosphates": "1496604472033/5343200000000",
-      "maltodextrin": "1496604472033/5343200000000",
+      "calcium_phosphates": "1496604472033/5236336000000",
+      "maltodextrin": "1496604472033/5236336000000",
       "methylcellulose": "2",
       "other_ingredients": "707945247/1563928000",
       "potassium_citrate": "465000753/1563928000",
-      "sucrose": "41916895527967/2671600000000"
+      "sucrose": "41048625527967/2618168000000"
      },
      "motzkin": [
       "0",
@@ -411,10 +412,10 @@
      ],
      "value": "0",
      "witness": {
-      "calcium_phosphates": "1496604472033/5343200000000",
+      "calcium_phosphates": "1496604472033/5236336000000",
       "maltodextrin": "55/4",
       "methylcellulose": "2",
-      "other_ingredients": "2791632703629096797/1044547511200000000",
+      "other_ingredients": "2729948595459670797/1023656560976000000",
       "potassium_citrate": "465000753/1563928000",
       "sucrose": "0"
      }
@@ -561,7 +562,7 @@
         "0"
        ],
        "origin": "C4",
-       "rhs": "-32706662189/163600000000",
+       "rhs": "-31/160",
        "sense": "<="
       },
       {
@@ -574,7 +575,7 @@
         "0"
        ],
        "origin": "C4",
-       "rhs": "1496604472033/5343200000000",
+       "rhs": "1496604472033/5236336000000",
        "sense": "<="
       },
       {
@@ -713,12 +714,12 @@
       "0"
      ],
      "interior": {
-      "calcium_phosphates": "1496604472033/5343200000000",
-      "maltodextrin": "1496604472033/5343200000000",
+      "calcium_phosphates": "1496604472033/5236336000000",
+      "maltodextrin": "1496604472033/5236336000000",
       "methylcellulose": "2",
       "other_ingredients": "707945247/1563928000",
       "potassium_citrate": "465000753/1563928000",
-      "sucrose": "41916895527967/2671600000000"
+      "sucrose": "41048625527967/2618168000000"
      },
      "motzkin": [
       "0",
@@ -741,10 +742,10 @@
      ],
      "value": "65/4",
      "witness": {
-      "calcium_phosphates": "1496604472033/5343200000000",
+      "calcium_phosphates": "1496604472033/5236336000000",
       "maltodextrin": "65/4",
       "methylcellulose": "2",
-      "other_ingredients": "180263925629096797/1044547511200000000",
+      "other_ingredients": "170807193019670797/1023656560976000000",
       "potassium_citrate": "465000753/1563928000",
       "sucrose": "0"
      }
@@ -771,12 +772,12 @@
       "0"
      ],
      "interior": {
-      "calcium_phosphates": "1496604472033/5343200000000",
-      "maltodextrin": "1496604472033/5343200000000",
+      "calcium_phosphates": "1496604472033/5236336000000",
+      "maltodextrin": "1496604472033/5236336000000",
       "methylcellulose": "2",
       "other_ingredients": "707945247/1563928000",
       "potassium_citrate": "465000753/1563928000",
-      "sucrose": "41916895527967/2671600000000"
+      "sucrose": "41048625527967/2618168000000"
      },
      "motzkin": [
       "0",
@@ -799,10 +800,10 @@
      ],
      "value": "0",
      "witness": {
-      "calcium_phosphates": "1496604472033/5343200000000",
+      "calcium_phosphates": "1496604472033/5236336000000",
       "maltodextrin": "0",
       "methylcellulose": "2",
-      "other_ingredients": "180263925629096797/1044547511200000000",
+      "other_ingredients": "170807193019670797/1023656560976000000",
       "potassium_citrate": "465000753/1563928000",
       "sucrose": "65/4"
      }
@@ -949,7 +950,7 @@
         "0"
        ],
        "origin": "C4",
-       "rhs": "-32706662189/163600000000",
+       "rhs": "-31/160",
        "sense": "<="
       },
       {
@@ -962,7 +963,7 @@
         "0"
        ],
        "origin": "C4",
-       "rhs": "1496604472033/5343200000000",
+       "rhs": "1496604472033/5236336000000",
        "sense": "<="
       },
       {
@@ -1081,7 +1082,7 @@
     },
     "max": {
      "attained": true,
-     "bound": "-66362076373411009/23986868400000000",
+     "bound": "-406540579/146619000",
      "dual": [
       "0",
       "1",
@@ -1100,19 +1101,19 @@
       "0",
       "0"
      ],
-     "value": "66362076373411009/23986868400000000",
+     "value": "406540579/146619000",
      "witness": {
-      "calcium_phosphates": "32706662189/163600000000",
-      "maltodextrin": "32706662189/163600000000",
+      "calcium_phosphates": "31/160",
+      "maltodextrin": "31/160",
       "methylcellulose": "2",
-      "other_ingredients": "66362076373411009/23986868400000000",
+      "other_ingredients": "406540579/146619000",
       "potassium_citrate": "166254959/586476000",
-      "sucrose": "2216793337811/163600000000"
+      "sucrose": "2169/160"
      }
     },
     "min": {
      "attained": false,
-     "bound": "180263925629096797/1044547511200000000",
+     "bound": "170807193019670797/1023656560976000000",
      "dual": [
       "1",
       "0",
@@ -1132,12 +1133,12 @@
       "0"
      ],
      "interior": {
-      "calcium_phosphates": "1496604472033/5343200000000",
-      "maltodextrin": "1496604472033/5343200000000",
+      "calcium_phosphates": "1496604472033/5236336000000",
+      "maltodextrin": "1496604472033/5236336000000",
       "methylcellulose": "2",
       "other_ingredients": "707945247/1563928000",
       "potassium_citrate": "465000753/1563928000",
-      "sucrose": "41916895527967/2671600000000"
+      "sucrose": "41048625527967/2618168000000"
      },
      "motzkin": [
       "1",
@@ -1158,12 +1159,12 @@
       "0",
       "1"
      ],
-     "value": "180263925629096797/1044547511200000000",
+     "value": "170807193019670797/1023656560976000000",
      "witness": {
-      "calcium_phosphates": "1496604472033/5343200000000",
+      "calcium_phosphates": "1496604472033/5236336000000",
       "maltodextrin": "0",
       "methylcellulose": "2",
-      "other_ingredients": "180263925629096797/1044547511200000000",
+      "other_ingredients": "170807193019670797/1023656560976000000",
       "potassium_citrate": "465000753/1563928000",
       "sucrose": "65/4"
      }
@@ -1181,9 +1182,9 @@
    "objective": "V:other_ingredients",
    "quantity": "other_ingredients",
    "result": {
-    "hi": "66362076373411009/23986868400000000",
+    "hi": "406540579/146619000",
     "hi_closed": true,
-    "lo": "180263925629096797/1044547511200000000",
+    "lo": "170807193019670797/1023656560976000000",
     "lo_closed": false,
     "unit": "g"
    },
@@ -1306,20 +1307,20 @@
     [
      "div",
      "F3",
-     "M:Ca:SUB_dcp"
+     "A:additive_assays.anhydrous_dibasic_calcium_phosphate"
     ],
     [
      "div",
      "F3",
-     "M:Ca:SUB_tcp"
+     "A:additive_assays.tricalcium_phosphate"
     ]
    ],
    "id": "D2",
    "quantity": "calcium_phosphates",
    "value": {
-    "hi": "1496604472033/5343200000",
+    "hi": "1496604472033/5236336000",
     "hi_closed": true,
-    "lo": "32706662189/163600000",
+    "lo": "775/4",
     "lo_closed": true,
     "unit": "mg"
    }
@@ -1397,9 +1398,9 @@
    "id": "D6",
    "quantity": "calcium_phosphates_g",
    "value": {
-    "hi": "1496604472033/5343200000000",
+    "hi": "1496604472033/5236336000000",
     "hi_closed": true,
-    "lo": "32706662189/163600000000",
+    "lo": "31/160",
     "lo_closed": true,
     "unit": "g"
    }
@@ -1629,12 +1630,12 @@
  "feasibility": {
   "method": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
   "witness": {
-   "calcium_phosphates": "1496604472033/5343200000000",
-   "maltodextrin": "1496604472033/5343200000000",
+   "calcium_phosphates": "1496604472033/5236336000000",
+   "maltodextrin": "1496604472033/5236336000000",
    "methylcellulose": "2",
    "other_ingredients": "707945247/1563928000",
    "potassium_citrate": "465000753/1563928000",
-   "sucrose": "41916895527967/2671600000000"
+   "sucrose": "41048625527967/2618168000000"
   }
  },
  "gtin": "00300680418301",
@@ -2257,6 +2258,7 @@
   "deriver_version": "lio_comp.derive@1",
   "extractor_version": "lio_comp.extract@1",
   "rules_versions": {
+   "additive_assays": 1,
    "atomic_masses": 1,
    "atwater": 1,
    "compounds": 1,

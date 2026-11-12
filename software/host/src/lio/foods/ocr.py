@@ -100,15 +100,21 @@ def recognise(data: bytes) -> list[Line]:
         f.flush()
         # Vision sometimes fails the first run after a build while it prepares its
         # model (an "e5rt" error); a second try works.
+        err = ""
         for attempt in range(3):
-            r = subprocess.run(
-                [str(exe), f.name], capture_output=True, text=True, timeout=90, check=False
-            )
+            try:
+                r = subprocess.run(
+                    [str(exe), f.name], capture_output=True, text=True, timeout=35, check=False
+                )
+            except subprocess.TimeoutExpired:
+                err = "Apple Vision did not answer within 35 s"
+                continue
             if r.returncode == 0:
                 break
+            err = r.stderr.strip()[-300:]
             time.sleep(0.5 * (attempt + 1))
-    if r.returncode != 0:
-        raise OcrError(f"label reading failed: {r.stderr.strip()[-300:]}")
+        else:
+            raise OcrError(f"label reading failed: {err}")
     return [
         Line(**{k: d[k] for k in ("text", "conf", "x", "y", "w", "h")})
         for d in json.loads(r.stdout)

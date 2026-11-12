@@ -113,7 +113,11 @@ def citrucel(b: RecordBuilder) -> None:
         "D2",
         "calcium_phosphates",
         "per_serving",
-        ["hull", ["div", "F3", "M:Ca:SUB_dcp"], ["div", "F3", "M:Ca:SUB_tcp"]],
+        [
+            "hull",
+            ["div", "F3", "A:additive_assays.anhydrous_dibasic_calcium_phosphate"],
+            ["div", "F3", "A:additive_assays.tricalcium_phosphate"],
+        ],
         ("A5", "A6"),
     )
     derive(

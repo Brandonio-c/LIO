@@ -70,7 +70,7 @@ def test_calcium_phosphates_contain_the_spec_cross_check() -> None:
     spec_hi = 80 * F("136.06") / F("40.08")
     assert spec_lo < spec_hi
     assert iv.contains(spec_lo) and iv.contains(spec_hi)
-    assert F(199) < iv.lo < F(200) and F(280) < iv.hi < F(281)
+    assert iv.lo == F(775, 4) and F(285) < iv.hi < F(286)  # USP assay intervals (M4, plan WP5)
 
 
 def test_per_100g_rescale() -> None:
@@ -131,7 +131,9 @@ def test_citrucel_bounds() -> None:
         "g",
     )
     others, _ = Interval.from_json(bound(rec, "B3")["result"])
-    assert F("0.17") < others.lo < F("0.18") and F("2.76") < others.hi < F("2.77")
+    assert F("0.166") < others.lo < F("0.167") and F("2.772") < others.hi < F(
+        "2.773"
+    )  # USP assays (M4)
 
 
 def test_tampered_witness_fails() -> None:

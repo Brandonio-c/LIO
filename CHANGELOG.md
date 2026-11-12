@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-11-12: Composition coverage M4, compendial chemistry rules (plan WP5)
+
+### Changed
+- **Tricalcium phosphate** is no longer the formula Ca₃(PO₄)₂. A new rule table, `additive_assays@1`, gives variable-composition additives an element mass-fraction interval from their compendial assay. The rule types are `element_fraction_interval`, and `assay_times_formula` with the CIAAW mass fraction.
+  - Tricalcium phosphate: Ca ∈ [0.340, 0.400], as-is (USP 32–NF 27).
+  - Anhydrous dibasic calcium phosphate: 98.0–103.0% CaHPO₄, as-is.
+  - Dihydrate: 98.0–105.0%.
+- **Quotes are re-checked.** Each entry quotes its monograph at a character span. `lio-verify` re-parses the quote (`usp_assay_percent@1`) and fails if the table disagrees with it.
+- **The FCC is not free**, so USP–NF is cited (the legal standard for OTC drug ingredients), read from a public mirror; this is recorded in assumption A6. JECFA's ignited-basis assay gives only a lower bound and is noted, not used.
+- **Citrucel's calcium phosphates** are now [775/4, ≈285.81] mg; the old range was [≈199.9, ≈280.1]. If all calcium is from TCP: [193.75, 242.65] mg. With calcium exactly 80 mg this reproduces the plan's [200, 235.29] mg (tested). The "other ingredients" bound moves to (≈0.167, ≈2.773] g.
+
+### Fixed
+- Each Apple Vision attempt is capped at 35 s and fails with a clear error, rather than hanging the app or a test. Vision is currently failing on this Mac because `ANECompilerService` is stuck; that is a system issue.
+
 ## 2026-11-12: Composition coverage M3, structured ingredients and demoted database values (plan WP2, WP3)
 
 ### Changed

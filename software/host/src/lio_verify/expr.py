@@ -4,6 +4,8 @@ An expression is a reference or ``[op, arg, ...]``:
 
 - ``F1``, ``D2``: a fact's or derivation's interval and unit;
 - ``C:<table>.<path>``: a cited constant from a pinned rule table;
+- ``A:additive_assays.<entry>``: an additive's element mass fraction from its cited
+  assay (variable-composition materials such as tricalcium phosphate);
 - ``M:<element>:<substance>``: the element's mass fraction in the substance's
   verified formula (unit ``1``), from the pinned atomic weights;
 - ``N:<rational>[:<unit>]``: an exact literal (e.g. ``N:100:g``);
@@ -22,7 +24,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
-from lio_verify.interpret import constant, element_fraction, literal, table
+from lio_verify.interpret import additive_fraction, constant, element_fraction, literal, table
 from lio_verify.interval import Interval, IntervalError, parse_rational
 
 
@@ -101,6 +103,11 @@ def _ref(ref: str, ctx: Context) -> tuple[Interval, str]:
     if ref.startswith("N:"):
         iv, u = literal(ref)
         return iv, canonical_unit(u)
+    if ref.startswith("A:"):
+        table_name, _, entry = ref[2:].partition(".")
+        if table_name != "additive_assays":
+            raise ExprError(f"{ref}: unknown additive table")
+        return additive_fraction(entry, ctx.tables, ctx.versions), "1"
     if ref.startswith("M:"):
         _, el, sub = ref.split(":")
         if sub not in ctx.formulas:

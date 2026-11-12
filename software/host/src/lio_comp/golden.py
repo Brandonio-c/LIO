@@ -66,9 +66,8 @@ def citrucel(b: RecordBuilder) -> None:
              "All calcium comes from dibasic and tricalcium phosphate, in any proportion; no "
              "other listed ingredient contains calcium.")  # fmt: skip
     b.assume("A6", "modelling",
-             "Tricalcium phosphate has its UNII formula Ca3(PO4)2. (Food/USP 'tribasic calcium "
-             "phosphate' is a variable mixture close to hydroxyapatite, which has more calcium "
-             "per gram: the true phosphate mass could be lower than this bound.)")  # fmt: skip
+             "The dibasic and tricalcium phosphates meet their USP 32-NF 27 monographs (as-is assays: TCP 34.0-40.0% Ca; anhydrous DCP 98.0-103.0% CaHPO4), the legal standard for an OTC drug's ingredients (FD&C Act 501(b)); the monograph text is read from a public mirror of USP 32.",
+             "additive_assays@1")  # fmt: skip
     b.assume(
         "A7", "modelling", "All potassium comes from potassium citrate (as the UNII monohydrate)."
     )

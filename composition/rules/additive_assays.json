@@ -1,0 +1,94 @@
+{
+ "citation": "USP 32-NF 27 monographs (via drugfuture.com mirror); JECFA tricalcium phosphate (FAO)",
+ "effective_date": "2009-05-01",
+ "entries": {
+  "anhydrous_dibasic_calcium_phosphate": {
+   "assay": {
+    "hi": "103/100",
+    "hi_closed": true,
+    "lo": "49/50",
+    "lo_closed": true,
+    "unit": "1"
+   },
+   "basis": "as-is",
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 6280,
+      "start": 6174,
+      "text": "contains not less than 98.0 percent and not more than 103.0 percent of anhydrous dibasic calcium phosphate",
+      "type": "char_span"
+     },
+     "sha256": "c53d6f89bd5ed76a2cc38ffb7e8b03b550d1fc94c3ebc8167b16bbf0d8e947b8",
+     "source": "usp32_anhydrous_dibasic_calcium_phosphate"
+    }
+   ],
+   "element": "Ca",
+   "formula": "Ca.HO4P",
+   "rule": "usp_assay_percent@1",
+   "type": "assay_times_formula",
+   "unii": "L11K75P92J"
+  },
+  "dibasic_calcium_phosphate_dihydrate": {
+   "assay": {
+    "hi": "21/20",
+    "hi_closed": true,
+    "lo": "49/50",
+    "lo_closed": true,
+    "unit": "1"
+   },
+   "basis": "as-is",
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 5923,
+      "start": 5814,
+      "text": "It contains not less than 98.0 percent and not more than 105.0 percent of dibasic calcium phosphate dihydrate",
+      "type": "char_span"
+     },
+     "sha256": "dabfa67f611ecb97d8b709ff00afa57a566cbc543842c042079d9afcd05310be",
+     "source": "usp32_dibasic_calcium_phosphate_dihydrate"
+    }
+   ],
+   "element": "Ca",
+   "formula": "Ca.HO4P.2H2O",
+   "rule": "usp_assay_percent@1",
+   "type": "assay_times_formula"
+  },
+  "tricalcium_phosphate": {
+   "basis": "as-is",
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 2509,
+      "start": 2423,
+      "text": "It contains not less than 34.0 percent and not more than 40.0 percent of calcium (Ca).",
+      "type": "char_span"
+     },
+     "sha256": "ba7a549e18ef23659853d98db9b17dd30a13e80ebae1c88a97e2d0902504b5e2",
+     "source": "usp32_tribasic_calcium_phosphate"
+    }
+   ],
+   "element": "Ca",
+   "interval": {
+    "hi": "2/5",
+    "hi_closed": true,
+    "lo": "17/50",
+    "lo_closed": true,
+    "unit": "1"
+   },
+   "rule": "usp_assay_percent@1",
+   "type": "element_fraction_interval",
+   "unii": "K4C08XP666"
+  }
+ },
+ "id": "additive_assays",
+ "notes": [
+  "All three USP assays are on the as-is basis (no dried or ignited qualifier), so no loss-on-ignition widening applies.",
+  "JECFA tricalcium phosphate: at least 90% as Ca3(PO4)2 on the ignited basis, ignition loss at most 10% (825 C): a lower bound only (about 0.314 Ca as-is), not used."
+ ],
+ "version": 1
+}

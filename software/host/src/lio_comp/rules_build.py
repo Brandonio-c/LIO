@@ -572,6 +572,91 @@ def quid(c: Cite) -> dict[str, Any]:
     }
 
 
+def additive_assays(c: Cite) -> dict[str, Any]:
+    """Variable-composition additives (plan WP5): element mass-fraction intervals from their
+    compendial assays. The Food Chemicals Codex is not freely available; USP 32-NF 27 is cited
+    (the legal standard for an OTC drug's ingredients, FD&C Act 501(b)), read from a public
+    mirror (an assumption a record must state)."""
+    tcp = "usp32_tribasic_calcium_phosphate"
+    dcp = "usp32_anhydrous_dibasic_calcium_phosphate"
+    dih = "usp32_dibasic_calcium_phosphate_dihydrate"
+    return {
+        "id": "additive_assays",
+        "version": 1,
+        "citation": "USP 32-NF 27 monographs (via drugfuture.com mirror); JECFA tricalcium phosphate (FAO)",
+        "effective_date": "2009-05-01",
+        "notes": [
+            "All three USP assays are on the as-is basis (no dried or ignited qualifier), so no "
+            "loss-on-ignition widening applies.",
+            "JECFA tricalcium phosphate: at least 90% as Ca3(PO4)2 on the ignited basis, ignition "
+            "loss at most 10% (825 C): a lower bound only (about 0.314 Ca as-is), not used.",
+        ],
+        "entries": {
+            "tricalcium_phosphate": {
+                "type": "element_fraction_interval",
+                "rule": "usp_assay_percent@1",
+                "element": "Ca",
+                "basis": "as-is",
+                "unii": "K4C08XP666",
+                "interval": {
+                    "lo": "17/50",
+                    "hi": "2/5",
+                    "lo_closed": True,
+                    "hi_closed": True,
+                    "unit": "1",
+                },
+                "citations": [
+                    c(
+                        tcp,
+                        "It contains not less than 34.0 percent and not more than 40.0 percent of calcium (Ca).",
+                    )
+                ],
+            },
+            "anhydrous_dibasic_calcium_phosphate": {
+                "type": "assay_times_formula",
+                "rule": "usp_assay_percent@1",
+                "element": "Ca",
+                "basis": "as-is",
+                "unii": "L11K75P92J",
+                "formula": "Ca.HO4P",
+                "assay": {
+                    "lo": "49/50",
+                    "hi": "103/100",
+                    "lo_closed": True,
+                    "hi_closed": True,
+                    "unit": "1",
+                },
+                "citations": [
+                    c(
+                        dcp,
+                        "contains not less than 98.0 percent and not more than 103.0 percent of anhydrous dibasic calcium phosphate",
+                    )
+                ],
+            },
+            "dibasic_calcium_phosphate_dihydrate": {
+                "type": "assay_times_formula",
+                "rule": "usp_assay_percent@1",
+                "element": "Ca",
+                "basis": "as-is",
+                "formula": "Ca.HO4P.2H2O",
+                "assay": {
+                    "lo": "49/50",
+                    "hi": "21/20",
+                    "lo_closed": True,
+                    "hi_closed": True,
+                    "unit": "1",
+                },
+                "citations": [
+                    c(
+                        dih,
+                        "It contains not less than 98.0 percent and not more than 105.0 percent of dibasic calcium phosphate dihydrate",
+                    )
+                ],
+            },
+        },
+    }
+
+
 def build(store: Path) -> dict[str, dict[str, Any]]:
     c = Cite(store)
     tables = [
@@ -583,6 +668,7 @@ def build(store: Path) -> dict[str, dict[str, Any]]:
         units(),
         list_ordering(c),
         quid(c),
+        additive_assays(c),
     ]
     return {t["id"]: t for t in tables}
 

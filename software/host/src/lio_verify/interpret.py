@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
@@ -102,6 +103,46 @@ def element_fraction(
         return mass_fraction(element, counts, weights)
     except IntervalError as e:
         raise InterpretError(str(e)) from e
+
+
+_ASSAY = re.compile(
+    r".*?not less than (?P<lo>[0-9]+(?:\.[0-9]+)?) percent"
+    r" and not more than (?P<hi>[0-9]+(?:\.[0-9]+)?) percent.*"
+)
+
+
+def assay_percent(quote: str) -> Interval:
+    """``usp_assay_percent@1``: "not less than 98.0 percent and not more than 103.0 percent"
+    -> [0.98, 1.03] (closed)."""
+    m = _ASSAY.fullmatch(" ".join(quote.split()))
+    if not m:
+        raise InterpretError(f"not a USP assay range: {quote!r}")
+    return Interval(Fraction(m.group("lo")) / 100, Fraction(m.group("hi")) / 100)
+
+
+def additive_fraction(
+    name: str, tables: dict[str, dict[str, Any]], versions: dict[str, int]
+) -> Interval:
+    """``A:additive_assays.<entry>``: the element mass fraction of a variable-composition
+    additive, re-derived from the quoted assay (which must match the table)."""
+    t = table(tables, "additive_assays", versions.get("additive_assays", -1))
+    e = t["entries"].get(name)
+    if e is None:
+        raise InterpretError(f"no additive assay {name!r}")
+    if e.get("rule") != "usp_assay_percent@1":
+        raise InterpretError(f"{name}: unknown assay rule {e.get('rule')!r}")
+    quoted = assay_percent(e["citations"][0]["locator"]["text"])
+    if e["type"] == "element_fraction_interval":
+        iv, _ = Interval.from_json(e["interval"])
+        if iv != quoted:
+            raise InterpretError(f"{name}: table interval {iv} is not the quoted {quoted}")
+        return iv
+    if e["type"] == "assay_times_formula":
+        assay, _ = Interval.from_json(e["assay"])
+        if assay != quoted:
+            raise InterpretError(f"{name}: table assay {assay} is not the quoted {quoted}")
+        return assay * element_fraction(e["element"], e["formula"], tables, versions)
+    raise InterpretError(f"{name}: unknown rule type {e['type']!r}")
 
 
 def literal(ref: str) -> tuple[Interval, str]:

@@ -284,6 +284,7 @@
   "deriver_version": "lio_comp.derive@1",
   "extractor_version": "lio_comp.extract@1",
   "rules_versions": {
+   "additive_assays": 1,
    "atomic_masses": 1,
    "atwater": 1,
    "compounds": 1,

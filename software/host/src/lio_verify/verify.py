@@ -686,7 +686,7 @@ def effective_assumptions(rec: dict[str, Any]) -> dict[str, list[str]]:
 
 def _refs(expr: Any) -> list[str]:
     if isinstance(expr, str):
-        return [] if expr[:2] in ("C:", "N:", "U:", "V:", "M:") else [expr]
+        return [] if expr[:2] in ("C:", "N:", "U:", "V:", "M:", "A:") else [expr]
     if isinstance(expr, list):
         return [r for e in expr[1:] for r in _refs(e)]
     return []
