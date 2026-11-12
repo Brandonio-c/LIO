@@ -1,0 +1,15 @@
+{
+ "byte_length": 357,
+ "media_type": "application/json",
+ "retrievals": [
+  {
+   "identifiers": {
+    "m0": "dailymed_spls_ndc_0068-0418-30"
+   },
+   "retrieval_url": "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls.json?ndc=0068-0418-30",
+   "retrieved_at": "2026-11-12T18:11:15Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "913b56488c264930f11e445e6c4256ad0246133954a953ed7d6f17a624e8aeaf"
+}

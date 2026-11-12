@@ -1,0 +1,15 @@
+{
+ "byte_length": 103666,
+ "media_type": "application/pdf",
+ "retrievals": [
+  {
+   "identifiers": {
+    "document": "jecfa_tricalcium_phosphate"
+   },
+   "retrieval_url": "https://www.fao.org/fileadmin/user_upload/jecfa_additives/docs/Monograph1/Additive-475.pdf",
+   "retrieved_at": "2026-11-12T18:14:04Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "707d0596defcf37c53a4195a1cc356e1c6cb82399d36846b428cf7a64b214e64"
+}

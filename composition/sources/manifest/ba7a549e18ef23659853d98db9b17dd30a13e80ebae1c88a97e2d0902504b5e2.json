@@ -1,0 +1,15 @@
+{
+ "byte_length": 14552,
+ "media_type": "text/html",
+ "retrievals": [
+  {
+   "identifiers": {
+    "document": "usp32_tribasic_calcium_phosphate"
+   },
+   "retrieval_url": "https://www.drugfuture.com/pharmacopoeia/usp32/pub/data/v32270/usp32nf27s0_m12040.html",
+   "retrieved_at": "2026-11-12T18:14:00Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "ba7a549e18ef23659853d98db9b17dd30a13e80ebae1c88a97e2d0902504b5e2"
+}

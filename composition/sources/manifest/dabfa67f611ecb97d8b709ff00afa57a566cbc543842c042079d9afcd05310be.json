@@ -1,0 +1,15 @@
+{
+ "byte_length": 20344,
+ "media_type": "text/html",
+ "retrievals": [
+  {
+   "identifiers": {
+    "document": "usp32_dibasic_calcium_phosphate_dihydrate"
+   },
+   "retrieval_url": "https://www.drugfuture.com/Pharmacopoeia/USP32/pub/data/v32270/usp32nf27s0_m12000.html",
+   "retrieved_at": "2026-11-12T18:14:03Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "dabfa67f611ecb97d8b709ff00afa57a566cbc543842c042079d9afcd05310be"
+}

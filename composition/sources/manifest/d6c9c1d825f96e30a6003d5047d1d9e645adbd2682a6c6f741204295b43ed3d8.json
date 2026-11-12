@@ -1,0 +1,15 @@
+{
+ "byte_length": 7047,
+ "media_type": "application/json",
+ "retrievals": [
+  {
+   "identifiers": {
+    "m0": "rxnav_ndcproperties_0135-0089"
+   },
+   "retrieval_url": "https://rxnav.nlm.nih.gov/REST/ndcproperties.json?id=0135-0089&ndcstatus=ALL",
+   "retrieved_at": "2026-11-12T18:11:13Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "d6c9c1d825f96e30a6003d5047d1d9e645adbd2682a6c6f741204295b43ed3d8"
+}

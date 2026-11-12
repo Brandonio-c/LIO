@@ -1,0 +1,15 @@
+{
+ "byte_length": 20145,
+ "media_type": "text/html",
+ "retrievals": [
+  {
+   "identifiers": {
+    "document": "usp32_anhydrous_dibasic_calcium_phosphate"
+   },
+   "retrieval_url": "https://www.drugfuture.com/Pharmacopoeia/USP32/pub/data/v32270/usp32nf27s0_m12005.html",
+   "retrieved_at": "2026-11-12T18:14:01Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "c53d6f89bd5ed76a2cc38ffb7e8b03b550d1fc94c3ebc8167b16bbf0d8e947b8"
+}

@@ -1,0 +1,15 @@
+{
+ "byte_length": 1877,
+ "media_type": "application/json",
+ "retrievals": [
+  {
+   "identifiers": {
+    "m0": "rxnav_allhistoricalndcs_1006675"
+   },
+   "retrieval_url": "https://rxnav.nlm.nih.gov/REST/rxcui/1006675/allhistoricalndcs.json",
+   "retrieved_at": "2026-11-12T18:11:14Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "da8cd2b12603e462ba04409e0ac9527b70d3023a4e961788ef518235c3760b3e"
+}

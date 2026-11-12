@@ -1,6 +1,9 @@
 {
  "ciaaw_standard_atomic_weights": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+ "dailymed_history_9d5f2244": "a22438b764c7b6eaaac31cdb0fd841190a7f3e10b32e33f3f12aaacde381f03a",
+ "dailymed_ndcs_9d5f2244": "062808938556fac3311aca78562fa0430e8f467d5d513af127c00ad17c47bcd0",
  "dailymed_spl_citrucel_9d5f2244": "1cb7877bc970fbac0a7cefeef7b93f37c6e023810ebb8ad22f584eb02e6bdf77",
+ "dailymed_spls_ndc_0068-0418-30": "913b56488c264930f11e445e6c4256ad0246133954a953ed7d6f17a624e8aeaf",
  "dsld_label_223424_nutricost_mgo": "85c3bd12f276503cdaebb503793413b7715366c738926692079eab2c3699e047",
  "ecfr_21cfr101_4": "2956b5dfd3e0116f87358e4ae26ed83fef8c68ea463649d64d6e1b1d7c486edb",
  "ecfr_21cfr101_9": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
@@ -16,5 +19,17 @@
  "gsrs_unii_EE90ONI6FF": "2fc05f8cd7c1c954d9f3b97a0283af68df6d583b2c0dfbf2ce11fc5513508b8b",
  "gsrs_unii_K4C08XP666": "8d205dcbc06ac2e02af423dd786a50089d28d34d8ddddd36454e4f4ca93be818",
  "gsrs_unii_L11K75P92J": "af108e02552ab63900867167db75a9257f557ea7a70c321332abdbc5c2d69e92",
- "off_product_3017620422003_nutella": "93f3edfcbd89ff5902577abcb231db40c48608bf71db14ce293533ad7aab3494"
+ "jecfa_tricalcium_phosphate": "707d0596defcf37c53a4195a1cc356e1c6cb82399d36846b428cf7a64b214e64",
+ "off_product_3017620422003_nutella": "93f3edfcbd89ff5902577abcb231db40c48608bf71db14ce293533ad7aab3494",
+ "rxnav_allhistoricalndcs_1006675": "da8cd2b12603e462ba04409e0ac9527b70d3023a4e961788ef518235c3760b3e",
+ "rxnav_allhistoricalndcs_1868847": "260627fd02f87a32f34a5edb12ec8e8126be52ff6f6777f735f0cd3cf6ebdfb1",
+ "rxnav_allhistoricalndcs_204597": "e37abe7f9ebc351b13737841cff0d05ac4cd6150b8f912ef6b0d5141fe605388",
+ "rxnav_allhistoricalndcs_209712": "129c929efab3ad2f1f9167507dd24e37462ea287e5ded9c8fccfa8d38d89e048",
+ "rxnav_ndcproperties_0135-0089": "d6c9c1d825f96e30a6003d5047d1d9e645adbd2682a6c6f741204295b43ed3d8",
+ "rxnav_ndcstatus_00068041830": "2332b7a6cd8bff8eaf6d3ee8a87f75bbcda804564fa8d730a3c94385099fb4f5",
+ "rxnav_ndcstatus_41520031464": "368d28931a5b5e80cd631d3a00ba84044789dd9b0f756d751cf9f0962a422dd3",
+ "rxnav_ndcstatus_41520074540": "59f9509b868db22db924f3c2ed6c322a02c6df1ae47aa1b26ce183ae5172ae00",
+ "usp32_anhydrous_dibasic_calcium_phosphate": "c53d6f89bd5ed76a2cc38ffb7e8b03b550d1fc94c3ebc8167b16bbf0d8e947b8",
+ "usp32_dibasic_calcium_phosphate_dihydrate": "dabfa67f611ecb97d8b709ff00afa57a566cbc543842c042079d9afcd05310be",
+ "usp32_tribasic_calcium_phosphate": "ba7a549e18ef23659853d98db9b17dd30a13e80ebae1c88a97e2d0902504b5e2"
 }
