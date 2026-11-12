@@ -1,0 +1,35 @@
+{
+ "citation": "Regulation (EU) No 1169/2011, Art. 22 and Annex VIII (consolidated 2018-01-01)",
+ "citations": [
+  {
+   "locator": {
+    "encoding": "utf-8",
+    "end": 101595,
+    "start": 101557,
+    "text": "Quantitative indication of ingredients",
+    "type": "char_span"
+   },
+   "sha256": "94ff8fb0252e9eebf9a13679c7932355abe4db8015f77b523bed29998a63e8ec",
+   "source": "eu_reg_1169_2011_consolidated_20180101"
+  },
+  {
+   "locator": {
+    "encoding": "utf-8",
+    "end": 334620,
+    "start": 334582,
+    "text": "QUANTITATIVE INDICATION OF INGREDIENTS",
+    "type": "char_span"
+   },
+   "sha256": "94ff8fb0252e9eebf9a13679c7932355abe4db8015f77b523bed29998a63e8ec",
+   "source": "eu_reg_1169_2011_consolidated_20180101"
+  }
+ ],
+ "effective_date": "2018-01-01",
+ "id": "quid",
+ "semantics": {
+  "basis": "ingredient mass at the time of use, per mass of the finished product (Annex VIII 3); exceptions in Annex VIII 4 (moisture loss, volatile ingredients)",
+  "rounding": "none defined; a declared percentage is interpreted through a named assumption",
+  "unit": "percent"
+ },
+ "version": 1
+}

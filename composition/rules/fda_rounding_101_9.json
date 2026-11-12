@@ -1,0 +1,1026 @@
+{
+ "basis": "per_serving",
+ "citation": "21 CFR 101.9(c), eCFR text as of 2026-11-01",
+ "effective_date": "2026-11-01",
+ "id": "fda_rounding_101_9",
+ "notes": [
+  "Quantitative amounts of vitamins and minerals (mg, mcg), including potassium, have no increment rule in 21 CFR 101.9(c)(8); they are not in this table and are interpreted only through a named assumption.",
+  "Where a band's display is 'may', the label can use it or the default; 'shall' overrides every other display inside its range."
+ ],
+ "nutrients": {
+  "added_sugars": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "less_than",
+      "limit": "1"
+     },
+     "hi": "1",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    },
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 41467,
+      "start": 41193,
+      "text": "It shall be expressed to the nearest gram, except that if a serving contains less than 1 gram, the statement “Contains less than 1 gram” or “less than 1 gram” may be used as an alternative, and if the serving contains less than 0.5 gram, the content may be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(6)(iii)",
+   "unit": "g"
+  },
+  "calories": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "5"
+     },
+     "hi": "50",
+     "hi_closed": true,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "10"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "50",
+     "lo_closed": false,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "5",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 24935,
+      "start": 24748,
+      "text": "expressed to the nearest 5-calorie increment up to and including 50 calories, and 10-calorie increment above 50 calories, except that amounts less than 5 calories may be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(1)",
+   "unit": "kcal"
+  },
+  "calories_from_saturated_fat": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "5"
+     },
+     "hi": "50",
+     "hi_closed": true,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "10"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "50",
+     "lo_closed": false,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "5",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 27462,
+      "start": 27262,
+      "text": "expressed to the nearest 5-calorie increment, up to and including 50 calories, and the nearest 10-calorie increment above 50 calories, except that amounts less than 5 calories may be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(1)(ii)",
+   "unit": "kcal"
+  },
+  "cholesterol": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "5"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    },
+    {
+     "display": {
+      "kind": "less_than",
+      "limit": "5"
+     },
+     "hi": "5",
+     "hi_closed": true,
+     "lo": "2",
+     "lo_closed": true,
+     "mode": "may"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 31893,
+      "start": 31833,
+      "text": "expressed in milligrams to the nearest 5-milligram increment",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    },
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 32166,
+      "start": 32125,
+      "text": "may state the cholesterol content as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    },
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 32558,
+      "start": 32437,
+      "text": "If the food contains 2 to 5 milligrams of cholesterol per serving, the content may be stated as “less than 5 milligrams.”",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(3)",
+   "unit": "mg"
+  },
+  "dietary_fiber": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "less_than",
+      "limit": "1"
+     },
+     "hi": "1",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    },
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 35043,
+      "start": 34735,
+      "text": "expressed to the nearest gram, except that if a serving contains less than 1 gram, declaration of dietary fiber is not required or, alternatively, the statement “Contains less than 1 gram” or “less than 1 gram” may be used, and if the serving contains less than 0.5 gram, the content may be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(6)(i)",
+   "unit": "g"
+  },
+  "fluoride": {
+   "bands": [
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/10",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "shall"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1/10"
+     },
+     "hi": "4/5",
+     "hi_closed": true,
+     "lo": "1/10",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1/5"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "4/5",
+     "lo_closed": false,
+     "mode": "default"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 33494,
+      "start": 33171,
+      "text": "Fluoride content shall be expressed as zero when the serving contains less than 0.1 milligrams of fluoride, to the nearest 0.1-milligram increment when the serving contains less than or equal to 0.8 milligrams of fluoride, and the nearest 0.2 milligram-increment when a serving contains more than 0.8 milligrams of fluoride",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(5)",
+   "unit": "mg"
+  },
+  "insoluble_fiber": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "less_than",
+      "limit": "1"
+     },
+     "hi": "1",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    },
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 38472,
+      "start": 38210,
+      "text": "expressed to the nearest gram, except that if a serving contains less than 1 gram, the statement “Contains less than 1 gram” or “less than 1 gram” may be used as an alternative, and if the serving contains less than 0.5 gram, the content may be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(6)(i)(B)",
+   "unit": "g"
+  },
+  "monounsaturated_fat": {
+   "bands": [
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "shall"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1/2"
+     },
+     "hi": "5",
+     "hi_closed": false,
+     "lo": "1/2",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "5",
+     "lo_closed": true,
+     "mode": "default"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 31753,
+      "start": 31593,
+      "text": "gram increment below 5 grams and to the nearest gram increment above 5 grams. If the serving contains less than 0.5 gram, the content shall be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(2)(iv)",
+   "unit": "g"
+  },
+  "polyunsaturated_fat": {
+   "bands": [
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "shall"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1/2"
+     },
+     "hi": "5",
+     "hi_closed": false,
+     "lo": "1/2",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "5",
+     "lo_closed": true,
+     "mode": "default"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 30981,
+      "start": 30821,
+      "text": "gram increment below 5 grams and to the nearest gram increment above 5 grams. If the serving contains less than 0.5 gram, the content shall be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(2)(iii)",
+   "unit": "g"
+  },
+  "protein": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "less_than",
+      "limit": "1"
+     },
+     "hi": "1",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    },
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 43438,
+      "start": 43176,
+      "text": "expressed to the nearest gram, except that if a serving contains less than 1 gram, the statement “Contains less than 1 gram” or “less than 1 gram” may be used as an alternative, and if the serving contains less than 0.5 gram, the content may be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(7)",
+   "unit": "g"
+  },
+  "saturated_fat": {
+   "bands": [
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "shall"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1/2"
+     },
+     "hi": "5",
+     "hi_closed": false,
+     "lo": "1/2",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "5",
+     "lo_closed": true,
+     "mode": "default"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 29101,
+      "start": 28941,
+      "text": "gram increment below 5 grams and to the nearest gram increment above 5 grams. If the serving contains less than 0.5 gram, the content shall be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(2)(i)",
+   "unit": "g"
+  },
+  "sodium": {
+   "bands": [
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "5",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "shall"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "5"
+     },
+     "hi": "140",
+     "hi_closed": true,
+     "lo": "5",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "10"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "140",
+     "lo_closed": false,
+     "mode": "default"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 32928,
+      "start": 32661,
+      "text": "expressed as zero when the serving contains less than 5 milligrams of sodium, to the nearest 5-milligram increment when the serving contains 5 to 140 milligrams of sodium, and to the nearest 10-milligram increment when the serving contains greater than 140 milligrams",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(4)",
+   "unit": "mg"
+  },
+  "soluble_fiber": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "less_than",
+      "limit": "1"
+     },
+     "hi": "1",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    },
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 37454,
+      "start": 37192,
+      "text": "expressed to the nearest gram, except that if a serving contains less than 1 gram, the statement “Contains less than 1 gram” or “less than 1 gram” may be used as an alternative, and if the serving contains less than 0.5 gram, the content may be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(6)(i)(A)",
+   "unit": "g"
+  },
+  "sugar_alcohol": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "less_than",
+      "limit": "1"
+     },
+     "hi": "1",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    },
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 43092,
+      "start": 42830,
+      "text": "expressed to the nearest gram, except that if a serving contains less than 1 gram, the statement “Contains less than 1 gram” or “less than 1 gram” may be used as an alternative, and if the serving contains less than 0.5 gram, the content may be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(6)(iv)",
+   "unit": "g"
+  },
+  "total_carbohydrate": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "less_than",
+      "limit": "1"
+     },
+     "hi": "1",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    },
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 34097,
+      "start": 33836,
+      "text": "expressed to the nearest gram, except that if a serving contains less than 1 gram, the statement “Contains less than 1 gram” or “less than 1 gram” may be used as an alternative, or if the serving contains less than 0.5 gram, the content may be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(6)",
+   "unit": "g"
+  },
+  "total_fat": {
+   "bands": [
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "shall"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1/2"
+     },
+     "hi": "5",
+     "hi_closed": false,
+     "lo": "1/2",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "5",
+     "lo_closed": true,
+     "mode": "default"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 27925,
+      "start": 27880,
+      "text": "Amounts shall be expressed to the nearest 0.5",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    },
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 28102,
+      "start": 27942,
+      "text": "gram increment below 5 grams and to the nearest gram increment above 5 grams. If the serving contains less than 0.5 gram, the content shall be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(2)",
+   "unit": "g"
+  },
+  "total_sugars": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "less_than",
+      "limit": "1"
+     },
+     "hi": "1",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    },
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "may"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 39492,
+      "start": 39230,
+      "text": "expressed to the nearest gram, except that if a serving contains less than 1 gram, the statement “Contains less than 1 gram” or “less than 1 gram” may be used as an alternative, and if the serving contains less than 0.5 gram, the content may be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(6)(ii)",
+   "unit": "g"
+  },
+  "trans_fat": {
+   "bands": [
+    {
+     "display": {
+      "kind": "zero"
+     },
+     "hi": "1/2",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "shall"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1/2"
+     },
+     "hi": "5",
+     "hi_closed": false,
+     "lo": "1/2",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "5",
+     "lo_closed": true,
+     "mode": "default"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 29918,
+      "start": 29742,
+      "text": "gram increment below 5 grams and to the nearest gram increment above 5 grams. If the serving contains less than 0.5 gram, the content, when declared, shall be expressed as zero",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(2)(ii)",
+   "unit": "g"
+  },
+  "vitamin_mineral_percent_dv": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "2"
+     },
+     "hi": "10",
+     "hi_closed": true,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "5"
+     },
+     "hi": "50",
+     "hi_closed": true,
+     "lo": "10",
+     "lo_closed": false,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "10"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "50",
+     "lo_closed": false,
+     "mode": "default"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 51417,
+      "start": 51125,
+      "text": "percentages for vitamins and minerals shall be expressed to the nearest 2-percent increment up to and including the 10-percent level, the nearest 5-percent increment above 10 percent and up to and including the 50-percent level, and the nearest 10-percent increment above the 50-percent level",
+      "type": "char_span"
+     },
+     "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+     "source": "ecfr_21cfr101_9"
+    }
+   ],
+   "paragraph": "21 CFR 101.9(c)(8)(iii)",
+   "unit": "percent_dv"
+  }
+ },
+ "ties": "half_up",
+ "ties_citation": {
+  "locator": {
+   "page_label": "130",
+   "text": "To express nutrient values to the nearest 1 g increment, for amounts falling exactly halfway between two whole numbers or higher (e.g., 2.5 to 2.99 g), round up (e.g., 3 g).",
+   "type": "pdf_text"
+  },
+  "sha256": "47296a92eb754b24466459de0ff00f262c1915fa784df4a3af65ddfa29f57935",
+  "source": "fda_food_labeling_guide_2013"
+ },
+ "version": 1
+}

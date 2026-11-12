@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-11: Verifiable composition, M1 (rules, exact intervals, schema)
+
+### Added
+- `lio_verify` (the independent verifier's kernel): exact `Fraction` intervals with open/closed ends, canonical rational strings, label rounding rules and their exact inverse, atomic weights and element mass fractions as intervals.
+- `lio_comp`: content-addressed evidence store (`composition/sources/`), a fetcher, and the rule-table builder.
+- `composition/rules/`: FDA rounding 21 CFR 101.9(c) (ties half-up, per the FDA Food Labeling Guide), OTC mineral rounding 21 CFR 201.64/70/72(b), Atwater factors, CIAAW 2024 standard atomic weights, UNII formulas, units, ingredient-list ordering (101.4, 201.66(c)(8), EU 1169/2011 Art. 18) and QUID. Every rule cites a quote by character span in a hashed snapshot.
+- `composition/schema/record.schema.json`: values are rational strings, never JSON numbers.
+- Property tests (interval soundness and tightness, rounding inverse contains the original) and FDA's own examples. New `comp` extra (lxml, jsonschema, z3-solver, lark); `hypothesis` in `dev`.
+
 ## 2026-11-11: Food library, phone app, firmware 2.3.1
 
 ### Added

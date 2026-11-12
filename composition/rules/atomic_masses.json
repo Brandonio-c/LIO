@@ -1,0 +1,411 @@
+{
+ "citation": "IUPAC CIAAW, Standard Atomic Weights 2024 (Atomic Weights 2021 report with the 2024 revisions), ciaaw.org/atomic-weights.htm",
+ "effective_date": "2024-01-01",
+ "elements": {
+  "Al": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 6280,
+     "start": 6183,
+     "text": "<td>Al</td><td><a href=\"aluminium.htm\">aluminium</a></td><td>&nbsp;&nbsp;26.981&nbsp;5384(3)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "269815387/10000000",
+    "hi_closed": true,
+    "lo": "269815381/10000000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "C": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 5324,
+     "start": 5236,
+     "text": "<td>C</td><td><a href=\"carbon.htm\">carbon</a></td><td>&nbsp;[12.0096,&nbsp;12.0116]</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "30029/2500",
+    "hi_closed": true,
+    "lo": "7506/625",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "Ca": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 7135,
+     "start": 7052,
+     "text": "<td>Ca</td><td><a href=\"calcium.htm\">calcium</a></td><td>&nbsp;&nbsp;40.078(4)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "20041/500",
+    "hi_closed": true,
+    "lo": "20037/500",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "Cl": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 6772,
+     "start": 6681,
+     "text": "<td>Cl</td><td><a href=\"chlorine.htm\">chlorine</a></td><td>&nbsp;[35.446,&nbsp;35.457]</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "35457/1000",
+    "hi_closed": true,
+    "lo": "17723/500",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "Cu": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 8212,
+     "start": 8131,
+     "text": "<td>Cu</td><td><a href=\"copper.htm\">copper</a></td><td>&nbsp;&nbsp;63.546(3)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "63549/1000",
+    "hi_closed": true,
+    "lo": "63543/1000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "Fe": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 7856,
+     "start": 7779,
+     "text": "<td>Fe</td><td><a href=\"iron.htm\">iron</a></td><td>&nbsp;&nbsp;55.845(2)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "55847/1000",
+    "hi_closed": true,
+    "lo": "55843/1000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "H": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 4626,
+     "start": 4516,
+     "text": "<td>H</td><td><a href=\"hydrogen.htm\">hydrogen</a></td><td>&nbsp;&nbsp;[1.007&nbsp;84,&nbsp;1.008&nbsp;11]</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "100811/100000",
+    "hi_closed": true,
+    "lo": "6299/6250",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "I": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 11209,
+     "start": 11126,
+     "text": "<td>I</td><td><a href=\"iodine.htm\">iodine</a></td><td>&nbsp;126.904&nbsp;47(3)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "253809/2000",
+    "hi_closed": true,
+    "lo": "3172611/25000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "K": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 7022,
+     "start": 6935,
+     "text": "<td>K</td><td><a href=\"potassium.htm\">potassium</a></td><td>&nbsp;&nbsp;39.0983(1)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "48873/1250",
+    "hi_closed": true,
+    "lo": "195491/5000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "Mg": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 6153,
+     "start": 6060,
+     "text": "<td>Mg</td><td><a href=\"magnesium.htm\">magnesium</a></td><td>&nbsp;[24.304,&nbsp;24.307]</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "24307/1000",
+    "hi_closed": true,
+    "lo": "3038/125",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "Mn": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 7749,
+     "start": 7653,
+     "text": "<td>Mn</td><td><a href=\"manganese.htm\">manganese</a></td><td>&nbsp;&nbsp;54.938&nbsp;043(2)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "10987609/200000",
+    "hi_closed": true,
+    "lo": "54938041/1000000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "N": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 5459,
+     "start": 5353,
+     "text": "<td>N</td><td><a href=\"nitrogen.htm\">nitrogen</a></td><td>&nbsp;[14.006&nbsp;43,&nbsp;14.007&nbsp;28]</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "175091/12500",
+    "hi_closed": true,
+    "lo": "1400643/100000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "Na": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 6030,
+     "start": 5932,
+     "text": "<td>Na</td><td><a href=\"sodium.htm\">sodium</a></td><td>&nbsp;&nbsp;22.989&nbsp;769&nbsp;28(2)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "229897693/10000000",
+    "hi_closed": true,
+    "lo": "1149488463/50000000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "O": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 5608,
+     "start": 5506,
+     "text": "<td>O</td><td><a href=\"oxygen.htm\">oxygen</a></td><td>&nbsp;[15.999&nbsp;03,&nbsp;15.999&nbsp;77]</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "1599977/100000",
+    "hi_closed": true,
+    "lo": "1599903/100000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "P": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 6535,
+     "start": 6429,
+     "text": "<td>P</td><td><a href=\"phosphorus.htm\">phosphorus</a></td><td>&nbsp;&nbsp;30.973&nbsp;761&nbsp;998(5)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "30973762003/1000000000",
+    "hi_closed": true,
+    "lo": "30973761993/1000000000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "S": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 6651,
+     "start": 6565,
+     "text": "<td>S</td><td><a href=\"sulfur.htm\">sulfur</a></td><td>&nbsp;[32.059,&nbsp;32.076]</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "8019/250",
+    "hi_closed": true,
+    "lo": "32059/1000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "Se": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 8821,
+     "start": 8736,
+     "text": "<td>Se</td><td><a href=\"selenium.htm\">selenium</a></td><td>&nbsp;&nbsp;78.971(8)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "78979/1000",
+    "hi_closed": true,
+    "lo": "78963/1000",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "Ti": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 7392,
+     "start": 7307,
+     "text": "<td>Ti</td><td><a href=\"titanium.htm\">titanium</a></td><td>&nbsp;&nbsp;47.867(1)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "11967/250",
+    "hi_closed": true,
+    "lo": "23933/500",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  },
+  "Zn": {
+   "citation": {
+    "locator": {
+     "encoding": "utf-8",
+     "end": 8336,
+     "start": 8260,
+     "text": "<td>Zn</td><td><a href=\"zinc.htm\">zinc</a></td><td>&nbsp;&nbsp;65.38(2)</td>",
+     "type": "char_span"
+    },
+    "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2",
+    "source": "ciaaw_standard_atomic_weights"
+   },
+   "rule": "ciaaw_row@1",
+   "weight": {
+    "hi": "327/5",
+    "hi_closed": true,
+    "lo": "1634/25",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  }
+ },
+ "id": "atomic_masses",
+ "notes": [
+  "Weights are intervals: CIAAW's interval, or the value plus/minus its standard uncertainty. Only ratios are used (mass fractions), so the molar mass constant cancels.",
+  "Elements marked 'g' by CIAAW (e.g. Ca) can fall outside the range in exceptional geological samples; using the standard weight is an assumption."
+ ],
+ "version": 1
+}

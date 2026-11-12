@@ -1,0 +1,36 @@
+{
+ "citation": "21 CFR 101.9(c)(1)(i)(B)",
+ "citations": [
+  {
+   "locator": {
+    "encoding": "utf-8",
+    "end": 25678,
+    "start": 25555,
+    "text": "(B) Using the general factors of 4, 4, and 9 calories per gram for protein, total carbohydrate, and total fat, respectively",
+    "type": "char_span"
+   },
+   "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35",
+   "source": "ecfr_21cfr101_9"
+  }
+ ],
+ "constants": {
+  "carbohydrate": {
+   "unit": "kcal/g",
+   "value": "4"
+  },
+  "fat": {
+   "unit": "kcal/g",
+   "value": "9"
+  },
+  "protein": {
+   "unit": "kcal/g",
+   "value": "4"
+  }
+ },
+ "effective_date": "2026-11-01",
+ "id": "atwater",
+ "notes": [
+  "101.9(c)(1)(i) allows other methods (specific Atwater factors, bomb calorimetry, ...). Using the general factors for a given label is an assumption."
+ ],
+ "version": 1
+}

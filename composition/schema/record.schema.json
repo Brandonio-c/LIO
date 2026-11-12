@@ -1,0 +1,250 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://github.com/Brandonio-c/LIO/composition/schema/record.schema.json",
+ "title": "LIO verifiable composition record (LIO-SW-COMP-001 Rev A)",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "schema_version", "record_id", "gtin", "product_name", "variant_note", "physical_sample",
+  "sources", "assumptions", "facts", "derivations", "constraints", "bounds", "attestations",
+  "unverified_layer", "toolchain"
+ ],
+ "properties": {
+  "schema_version": {"const": "1"},
+  "record_id": {"$ref": "#/$defs/name"},
+  "gtin": {"type": "string", "pattern": "^[0-9]{14}$"},
+  "product_name": {"type": "string", "minLength": 1},
+  "variant_note": {"type": "string"},
+  "physical_sample": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["sample_code", "lot", "photos", "attestation"],
+   "properties": {
+    "sample_code": {"type": "string"},
+    "lot": {"type": "string"},
+    "photos": {"type": "array", "items": {"$ref": "#/$defs/sha256"}},
+    "attestation": {"oneOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]}
+   }
+  },
+  "sources": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["source_id", "sha256", "media_type"],
+    "properties": {
+     "source_id": {"$ref": "#/$defs/id"},
+     "sha256": {"$ref": "#/$defs/sha256"},
+     "media_type": {"type": "string"},
+     "identifiers": {"type": "object", "additionalProperties": {"type": "string"}}
+    }
+   }
+  },
+  "assumptions": {"type": "array", "items": {"$ref": "#/$defs/assumption"}},
+  "facts": {"type": "array", "items": {"$ref": "#/$defs/fact"}},
+  "derivations": {"type": "array", "items": {"$ref": "#/$defs/derivation"}},
+  "constraints": {"type": "array", "items": {"$ref": "#/$defs/constraint"}},
+  "bounds": {"type": "array", "items": {"$ref": "#/$defs/bound"}},
+  "attestations": {"type": "array", "items": {"$ref": "#/$defs/attestation"}},
+  "unverified_layer": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["estimates", "notes"],
+   "properties": {
+    "estimates": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quantity", "basis", "value", "unit", "method", "inputs"],
+      "properties": {
+       "quantity": {"type": "string"},
+       "basis": {"$ref": "#/$defs/basis"},
+       "value": {"$ref": "#/$defs/rational"},
+       "unit": {"type": "string"},
+       "method": {"type": "string"},
+       "inputs": {"type": "array", "items": {"type": "string"}}
+      }
+     }
+    },
+    "notes": {"type": "array", "items": {"type": "string"}}
+   }
+  },
+  "toolchain": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["extractor_version", "deriver_version", "rules_versions"],
+   "properties": {
+    "extractor_version": {"type": "string"},
+    "deriver_version": {"type": "string"},
+    "bounder_version": {"type": "string"},
+    "rules_versions": {"type": "object", "additionalProperties": {"type": "integer"}}
+   }
+  }
+ },
+ "$defs": {
+  "id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,63}$"},
+  "name": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$"},
+  "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+  "rule_ref": {"type": "string", "pattern": "^[a-z][a-z0-9_]*@[0-9]+(:[A-Za-z0-9_.]+)?$"},
+  "rational": {"type": "string", "pattern": "^-?(0|[1-9][0-9]*)(/[1-9][0-9]*)?$"},
+  "basis": {"enum": ["per_serving", "per_unit", "per_100g", "per_100ml", "per_package"]},
+  "value": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["lo", "hi", "lo_closed", "hi_closed", "unit"],
+   "properties": {
+    "lo": {"$ref": "#/$defs/rational"},
+    "hi": {"$ref": "#/$defs/rational"},
+    "lo_closed": {"type": "boolean"},
+    "hi_closed": {"type": "boolean"},
+    "unit": {"type": "string", "minLength": 1}
+   }
+  },
+  "locator": {
+   "oneOf": [
+    {
+     "type": "object", "additionalProperties": false,
+     "required": ["type", "expr", "text"],
+     "properties": {"type": {"const": "xpath"}, "expr": {"type": "string"},
+                    "attribute": {"type": "string"}, "text": {"type": "string"}}
+    },
+    {
+     "type": "object", "additionalProperties": false,
+     "required": ["type", "pointer", "text"],
+     "properties": {"type": {"const": "json_pointer"}, "pointer": {"type": "string"},
+                    "text": {"type": "string"}}
+    },
+    {
+     "type": "object", "additionalProperties": false,
+     "required": ["type", "encoding", "start", "end", "text"],
+     "properties": {"type": {"const": "char_span"}, "encoding": {"const": "utf-8"},
+                    "start": {"type": "integer", "minimum": 0},
+                    "end": {"type": "integer", "minimum": 0}, "text": {"type": "string"}}
+    },
+    {
+     "type": "object", "additionalProperties": false,
+     "required": ["type", "x", "y", "w", "h", "text", "attestation_id"],
+     "properties": {"type": {"const": "image_bbox"},
+                    "x": {"type": "integer", "minimum": 0}, "y": {"type": "integer", "minimum": 0},
+                    "w": {"type": "integer", "minimum": 1}, "h": {"type": "integer", "minimum": 1},
+                    "text": {"type": "string"}, "attestation_id": {"$ref": "#/$defs/id"}}
+    }
+   ]
+  },
+  "interpretation": {
+   "oneOf": [
+    {"type": "object", "additionalProperties": false, "required": ["kind"],
+     "properties": {"kind": {"const": "exact"}}},
+    {"type": "object", "additionalProperties": false, "required": ["kind", "rule"],
+     "properties": {"kind": {"const": "rounded"}, "rule": {"$ref": "#/$defs/rule_ref"}}},
+    {"type": "object", "additionalProperties": false, "required": ["kind", "assumption"],
+     "properties": {"kind": {"const": "as_stated"}, "assumption": {"$ref": "#/$defs/id"}}}
+   ]
+  },
+  "fact": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["id", "quantity", "value_raw", "basis", "source_id", "locator", "rule",
+                "interpretation", "value", "evidence_class", "assumptions"],
+   "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "quantity": {"type": "string"},
+    "substance": {
+     "type": "object", "additionalProperties": false, "required": ["name_verbatim"],
+     "properties": {"name_verbatim": {"type": "string"},
+                    "unii": {"type": "string", "pattern": "^[0-9A-Z]{10}$"},
+                    "unii_fact": {"$ref": "#/$defs/id"}}
+    },
+    "value_raw": {"type": "string"},
+    "basis": {"$ref": "#/$defs/basis"},
+    "source_id": {"$ref": "#/$defs/id"},
+    "locator": {"$ref": "#/$defs/locator"},
+    "rule": {"$ref": "#/$defs/rule_ref"},
+    "interpretation": {"$ref": "#/$defs/interpretation"},
+    "value": {"$ref": "#/$defs/value"},
+    "evidence_class": {"enum": ["document", "attested"]},
+    "assumptions": {"type": "array", "items": {"$ref": "#/$defs/id"}}
+   }
+  },
+  "expr": {
+   "oneOf": [
+    {"type": "string",
+     "pattern": "^([A-Za-z][A-Za-z0-9_.-]{0,63}|C:[a-z0-9_]+(\\.[A-Za-z0-9_]+)+|N:-?(0|[1-9][0-9]*)(/[1-9][0-9]*)?(:[^:]+)?)$"},
+    {"type": "array", "minItems": 2, "prefixItems": [
+      {"enum": ["add", "sub", "mul", "div", "neg", "min", "max", "sum", "hull", "convert",
+                "rescale_basis"]}],
+     "items": {"$ref": "#/$defs/expr"}}
+   ]
+  },
+  "derivation": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["id", "quantity", "basis", "expr", "assumptions", "value"],
+   "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "quantity": {"type": "string"},
+    "basis": {"$ref": "#/$defs/basis"},
+    "expr": {"$ref": "#/$defs/expr"},
+    "assumptions": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "value": {"$ref": "#/$defs/value"}
+   }
+  },
+  "constraint": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["id", "kind", "assumptions"],
+   "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "kind": {"enum": ["le", "ge", "eq_within", "sum_eq", "ordered_desc"]},
+    "lhs": {"$ref": "#/$defs/expr"},
+    "rhs": {"$ref": "#/$defs/expr"},
+    "items": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "list_rule": {"$ref": "#/$defs/rule_ref"},
+    "assumptions": {"type": "array", "items": {"$ref": "#/$defs/id"}}
+   }
+  },
+  "bound": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["id", "quantity", "basis", "solver", "variables", "constraints", "assumptions",
+                "result", "certificate"],
+   "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "quantity": {"type": "string"},
+    "basis": {"$ref": "#/$defs/basis"},
+    "solver": {"type": "string"},
+    "variables": {"type": "array", "items": {"type": "object"}},
+    "constraints": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "assumptions": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "result": {"$ref": "#/$defs/value"},
+    "certificate": {"type": "object"}
+   }
+  },
+  "assumption": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["id", "kind", "text"],
+   "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "kind": {"enum": ["interpretation", "modelling", "rounding", "sample_identity",
+                      "label_truth"]},
+    "text": {"type": "string", "minLength": 1},
+    "rule_ref": {"$ref": "#/$defs/rule_ref"}
+   }
+  },
+  "attestation": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["id", "signer", "signed_at", "statement", "subjects"],
+   "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "signer": {"type": "string", "minLength": 1},
+    "signed_at": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8}Z$"},
+    "statement": {"type": "string", "minLength": 1},
+    "subjects": {"type": "array", "items": {"type": "string"}},
+    "signature": {"type": "string"}
+   }
+  }
+ }
+}

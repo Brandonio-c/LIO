@@ -12,4 +12,4 @@ extend-exclude = [
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
 
 [lint.isort]
-known-first-party = ["lio"]
+known-first-party = ["lio", "lio_comp", "lio_verify"]

@@ -1,0 +1,68 @@
+{
+ "effective_date": "2026-11-01",
+ "id": "list_ordering",
+ "lists": {
+  "eu_food_ingredients": {
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 85757,
+      "start": 85662,
+      "text": "descending order of weight, as recorded at the time of their use in the manufacture of the food",
+      "type": "char_span"
+     },
+     "sha256": "94ff8fb0252e9eebf9a13679c7932355abe4db8015f77b523bed29998a63e8ec",
+     "source": "eu_reg_1169_2011_consolidated_20180101"
+    }
+   ],
+   "exception": "Annex VII Part A: e.g. ingredients under 2 % may be listed in a different order after the others",
+   "order": "descending_weight"
+  },
+  "us_food_ingredients": {
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 541,
+      "start": 456,
+      "text": "shall be listed by common or usual name in descending order of predominance by weight",
+      "type": "char_span"
+     },
+     "sha256": "2956b5dfd3e0116f87358e4ae26ed83fef8c68ea463649d64d6e1b1d7c486edb",
+     "source": "ecfr_21cfr101_4"
+    },
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 1208,
+      "start": 999,
+      "text": "do not apply to ingredients present in amounts of 2 percent or less by weight when a listing of these ingredients is placed at the end of the ingredient statement following an appropriate quantifying statement",
+      "type": "char_span"
+     },
+     "sha256": "2956b5dfd3e0116f87358e4ae26ed83fef8c68ea463649d64d6e1b1d7c486edb",
+     "source": "ecfr_21cfr101_4"
+    }
+   ],
+   "exception": "ingredients at <= 2 % (or the stated threshold) may follow a quantifying statement in any order",
+   "order": "descending_weight"
+  },
+  "us_otc_inactive_ingredients": {
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 12120,
+      "start": 11978,
+      "text": "If the product is an OTC drug product that is not also a cosmetic product, then the inactive ingredients shall be listed in alphabetical order",
+      "type": "char_span"
+     },
+     "sha256": "ce91dcd5e75728e3de67651635b20a513e175d03fe1ed2af2d994632e18b28e1",
+     "source": "ecfr_21cfr201_66"
+    }
+   ],
+   "order": "alphabetical"
+  }
+ },
+ "version": 1
+}

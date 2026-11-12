@@ -1,0 +1,126 @@
+{
+ "basis": "per_dosage_unit",
+ "citation": "21 CFR 201.64(b), 201.70(b), 201.72(b), eCFR text as of 2026-11-01",
+ "effective_date": "2026-11-01",
+ "id": "fda_otc_rounding_201",
+ "notes": [
+  "The regulations do not say how a value exactly halfway is rounded, so both neighbours are allowed (intervals closed at both ends).",
+  "Amounts are per dosage unit, as stated under 'Other information' (21 CFR 201.66(c)(7))."
+ ],
+ "nutrients": {
+  "calcium": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "5"
+     },
+     "hi": "1000",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "100"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "1000",
+     "lo_closed": true,
+     "mode": "default"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 1133,
+      "start": 1005,
+      "text": "The calcium content per dosage unit shall be rounded-off to the nearest 5 milligrams (or nearest tenth of a gram if over 1 gram)",
+      "type": "char_span"
+     },
+     "sha256": "7c20137737ede0ac189fd0a9b4bbf922e5cf348ad4e7724896b1375e13db5780",
+     "source": "ecfr_21cfr201_70"
+    }
+   ],
+   "paragraph": "21 CFR 201.70(b)",
+   "unit": "mg"
+  },
+  "potassium": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "5"
+     },
+     "hi": "1000",
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    },
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "100"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "1000",
+     "lo_closed": true,
+     "mode": "default"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 1130,
+      "start": 1016,
+      "text": "The potassium content shall be rounded-off to the nearest 5 milligrams (or nearest tenth of a gram if over 1 gram)",
+      "type": "char_span"
+     },
+     "sha256": "c055d4215aba5f37dd74fcdbb2024484b9c0d0d99107fbef3602783e8c312b39",
+     "source": "ecfr_21cfr201_72"
+    }
+   ],
+   "paragraph": "21 CFR 201.72(b)",
+   "unit": "mg"
+  },
+  "sodium": {
+   "bands": [
+    {
+     "display": {
+      "kind": "nearest",
+      "step": "1"
+     },
+     "hi": null,
+     "hi_closed": false,
+     "lo": "0",
+     "lo_closed": true,
+     "mode": "default"
+    }
+   ],
+   "citations": [
+    {
+     "locator": {
+      "encoding": "utf-8",
+      "end": 973,
+      "start": 906,
+      "text": "The sodium content shall be rounded-off to the nearest whole number",
+      "type": "char_span"
+     },
+     "sha256": "f2a94eec65ab044364cde8b4339e20750be0fa638a7b7250063891ddc585c885",
+     "source": "ecfr_21cfr201_64"
+    }
+   ],
+   "paragraph": "21 CFR 201.64(b)",
+   "unit": "mg"
+  }
+ },
+ "ties": "either",
+ "version": 1
+}

@@ -1,0 +1,20 @@
+{
+ "citation": "SI; thermochemical calorie (1 cal = 4.184 J exactly)",
+ "effective_date": "2019-05-20",
+ "energy_to_kcal": {
+  "kJ": "125/523",
+  "kcal": "1"
+ },
+ "id": "units",
+ "mass_to_g": {
+  "g": "1",
+  "kg": "1000",
+  "mcg": "1/1000000",
+  "mg": "1/1000",
+  "µg": "1/1000000"
+ },
+ "notes": [
+  "International Units depend on the vitamin and its form; they are not converted."
+ ],
+ "version": 1
+}

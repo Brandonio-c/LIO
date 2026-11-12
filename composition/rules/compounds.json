@@ -1,0 +1,64 @@
+{
+ "citation": "FDA UNII records (UNII_Records_4Aug2026.txt), molecular formula column",
+ "compounds": {
+  "2968PHW8QP": {
+   "counts": {
+    "C": 6,
+    "H": 10,
+    "O": 8
+   },
+   "name": "CITRIC ACID MONOHYDRATE",
+   "rule": "unii_mf@1",
+   "unii_mf": "C6H8O7.H2O"
+  },
+  "C151H8M554": {
+   "counts": {
+    "C": 12,
+    "H": 22,
+    "O": 11
+   },
+   "name": "SUCROSE",
+   "rule": "unii_mf@1",
+   "unii_mf": "C12H22O11"
+  },
+  "EE90ONI6FF": {
+   "counts": {
+    "C": 6,
+    "H": 7,
+    "K": 3,
+    "O": 8
+   },
+   "name": "POTASSIUM CITRATE",
+   "rule": "unii_mf@1",
+   "unii_mf": "C6H5O7.3K.H2O"
+  },
+  "K4C08XP666": {
+   "counts": {
+    "Ca": 3,
+    "O": 8,
+    "P": 2
+   },
+   "name": "TRICALCIUM PHOSPHATE",
+   "rule": "unii_mf@1",
+   "unii_mf": "3Ca.2O4P"
+  },
+  "L11K75P92J": {
+   "counts": {
+    "Ca": 1,
+    "H": 1,
+    "O": 4,
+    "P": 1
+   },
+   "name": "ANHYDROUS DIBASIC CALCIUM PHOSPHATE",
+   "rule": "unii_mf@1",
+   "unii_mf": "Ca.HO4P"
+  }
+ },
+ "effective_date": "2026-08-04",
+ "id": "compounds",
+ "notes": [
+  "Molar masses and element mass fractions are not stored: the verifier computes them from these formulas and the atomic_masses table.",
+  "TRICALCIUM PHOSPHATE: the UNII formula is Ca3(PO4)2. The food/USP material ('tribasic calcium phosphate') is a variable mixture close to hydroxyapatite; using Ca3(PO4)2 is an assumption."
+ ],
+ "version": 1
+}
