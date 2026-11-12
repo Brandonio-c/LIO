@@ -27,7 +27,7 @@ foods = [
 comp = [
   "lxml>=5",
   "jsonschema>=4.21",
-  "z3-solver>=4.13",
+  "z3-solver==5.4.1.0",  # pinned: bound witnesses in composition/records must rebuild byte-identically
   "lark>=1.1",
 ]
 dev = [

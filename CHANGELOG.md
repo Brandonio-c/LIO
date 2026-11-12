@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-11-11: Verifiable composition, M3 (deriver and bounder)
+
+### Added
+- `lio_verify.expr`: exact evaluation of derivation expressions with units (add, sub, mul, div, neg, min, max, sum, hull, convert, rescale_basis), cited constants (`C:`), element mass fractions from verified formulas (`M:`), literals (`N:`).
+- `lio_verify.lp`: linear constraints over unknown ingredient amounts (`eq_within`, `le`, `ge`, `sum_eq`, `ordered_desc`, `positive`), data-consistency checks, and `check_bound` (witnesses by exact substitution, then z3 "nothing beyond the end" checks).
+- `lio_comp.bound`: exact min/max with z3 over the reals; open ends get a near-witness within a stated gap. A fresh z3 context per problem keeps the output deterministic; z3-solver is pinned.
+- Golden records now carry derivations, constraints and bounds:
+  - Citrucel: sucrose + maltodextrin [55/4, 65/4) g; calcium phosphates [199.9, 280.1] mg; potassium citrate; per-100 g values; other ingredients proven in (0.173, 2.767] g per 19 g dose.
+  - Jif: peanuts (27.81, 33) g, sugar (0, 3.5) g, salt (0, 0.369) g per 33 g serving.
+  - Nutella: sugar [26.6, 56.3] %, palm oil [13, 30.9] %, whey (0, 6.6] %.
+  - Nutricost: magnesium consistent with the stated oxide mass; implied MgO purity at least 92.86 %.
+
 ## 2026-11-11: Verifiable composition, M2 (extractors, golden-record facts)
 
 ### Added

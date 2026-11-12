@@ -20,11 +20,399 @@
    "id": "E4",
    "kind": "interpretation",
    "text": "EU nutrition values per 100 g are taken as stated (no rounding rule in the regulation; EU guidance on tolerances is not law)."
+  },
+  {
+   "id": "E5",
+   "kind": "modelling",
+   "text": "'Sucre' is sucrose (all sugars); 'huile de palme' is all fat."
+  },
+  {
+   "id": "E6",
+   "kind": "modelling",
+   "text": "Every listed ingredient is present (amount > 0) and they make up the whole product (no moisture loss in manufacture)."
+  },
+  {
+   "id": "E7",
+   "kind": "interpretation",
+   "rule_ref": "list_ordering@1",
+   "text": "Ingredients are in descending order of weight (Reg. 1169/2011 Art. 18), except that ingredients under 2 % may follow in any order (Annex VII Part A); so every ingredient after milk powder (6.6 %) is at most 6.6 %."
   }
  ],
  "attestations": [],
- "bounds": [],
- "constraints": [],
+ "bounds": [
+  {
+   "assumptions": [
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7"
+   ],
+   "basis": "per_100g",
+   "certificate": {
+    "infeasibility_proofs": {
+     "above_max": "objective > max",
+     "below_min": "objective < min",
+     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    },
+    "max": {
+     "attained": true,
+     "value": "563/10",
+     "witness": {
+      "fat_reduced_cocoa": "37/5",
+      "hazelnuts": "13",
+      "lecithins": "27/10",
+      "palm_oil": "13",
+      "skimmed_milk_powder": "33/5",
+      "sugar": "563/10",
+      "vanillin": "1/2",
+      "whey_powder": "1/2"
+     }
+    },
+    "min": {
+     "attained": true,
+     "value": "133/5",
+     "witness": {
+      "fat_reduced_cocoa": "37/5",
+      "hazelnuts": "13",
+      "lecithins": "33/5",
+      "palm_oil": "133/5",
+      "skimmed_milk_powder": "33/5",
+      "sugar": "133/5",
+      "vanillin": "33/5",
+      "whey_powder": "33/5"
+     }
+    }
+   },
+   "constraints": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "C11"
+   ],
+   "id": "B1",
+   "objective": "V:sugar",
+   "quantity": "sugar",
+   "result": {
+    "hi": "563/10",
+    "hi_closed": true,
+    "lo": "133/5",
+    "lo_closed": true,
+    "unit": "%"
+   },
+   "solver": "z3@5.4.1",
+   "variables": [
+    "fat_reduced_cocoa",
+    "hazelnuts",
+    "lecithins",
+    "palm_oil",
+    "skimmed_milk_powder",
+    "sugar",
+    "vanillin",
+    "whey_powder"
+   ]
+  },
+  {
+   "assumptions": [
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7"
+   ],
+   "basis": "per_100g",
+   "certificate": {
+    "infeasibility_proofs": {
+     "above_max": "objective > max",
+     "below_min": "objective < min",
+     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    },
+    "max": {
+     "attained": true,
+     "value": "309/10",
+     "witness": {
+      "fat_reduced_cocoa": "37/5",
+      "hazelnuts": "13",
+      "lecithins": "1/2",
+      "palm_oil": "309/10",
+      "skimmed_milk_powder": "33/5",
+      "sugar": "69/2",
+      "vanillin": "1/2",
+      "whey_powder": "33/5"
+     }
+    },
+    "min": {
+     "attained": true,
+     "value": "13",
+     "witness": {
+      "fat_reduced_cocoa": "37/5",
+      "hazelnuts": "13",
+      "lecithins": "1/2",
+      "palm_oil": "13",
+      "skimmed_milk_powder": "33/5",
+      "sugar": "262/5",
+      "vanillin": "1/2",
+      "whey_powder": "33/5"
+     }
+    }
+   },
+   "constraints": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "C11"
+   ],
+   "id": "B2",
+   "objective": "V:palm_oil",
+   "quantity": "palm_oil",
+   "result": {
+    "hi": "309/10",
+    "hi_closed": true,
+    "lo": "13",
+    "lo_closed": true,
+    "unit": "%"
+   },
+   "solver": "z3@5.4.1",
+   "variables": [
+    "fat_reduced_cocoa",
+    "hazelnuts",
+    "lecithins",
+    "palm_oil",
+    "skimmed_milk_powder",
+    "sugar",
+    "vanillin",
+    "whey_powder"
+   ]
+  },
+  {
+   "assumptions": [
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7"
+   ],
+   "basis": "per_100g",
+   "certificate": {
+    "infeasibility_proofs": {
+     "above_max": "objective > max",
+     "below_min": "objective <= min",
+     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    },
+    "max": {
+     "attained": true,
+     "value": "33/5",
+     "witness": {
+      "fat_reduced_cocoa": "37/5",
+      "hazelnuts": "13",
+      "lecithins": "33/5",
+      "palm_oil": "13",
+      "skimmed_milk_powder": "33/5",
+      "sugar": "201/5",
+      "vanillin": "33/5",
+      "whey_powder": "33/5"
+     }
+    },
+    "min": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "0",
+     "witness": {
+      "fat_reduced_cocoa": "37/5",
+      "hazelnuts": "13",
+      "lecithins": "1/2000000",
+      "palm_oil": "13",
+      "skimmed_milk_powder": "33/5",
+      "sugar": "563/10",
+      "vanillin": "3699999/1000000",
+      "whey_powder": "1/2000000"
+     }
+    }
+   },
+   "constraints": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "C11"
+   ],
+   "id": "B3",
+   "objective": "V:whey_powder",
+   "quantity": "whey_powder",
+   "result": {
+    "hi": "33/5",
+    "hi_closed": true,
+    "lo": "0",
+    "lo_closed": false,
+    "unit": "%"
+   },
+   "solver": "z3@5.4.1",
+   "variables": [
+    "fat_reduced_cocoa",
+    "hazelnuts",
+    "lecithins",
+    "palm_oil",
+    "skimmed_milk_powder",
+    "sugar",
+    "vanillin",
+    "whey_powder"
+   ]
+  }
+ ],
+ "constraints": [
+  {
+   "assumptions": [
+    "E6"
+   ],
+   "id": "C1",
+   "items": [
+    "V:sugar",
+    "V:palm_oil",
+    "V:hazelnuts",
+    "V:fat_reduced_cocoa",
+    "V:skimmed_milk_powder",
+    "V:whey_powder",
+    "V:lecithins",
+    "V:vanillin"
+   ],
+   "kind": "sum_eq",
+   "rhs": "N:100:%"
+  },
+  {
+   "assumptions": [
+    "E3"
+   ],
+   "id": "C2",
+   "kind": "eq_within",
+   "lhs": "V:hazelnuts",
+   "rhs": "F_quid_hazelnuts"
+  },
+  {
+   "assumptions": [
+    "E3"
+   ],
+   "id": "C3",
+   "kind": "eq_within",
+   "lhs": "V:fat_reduced_cocoa",
+   "rhs": "F_quid_fat_reduced_cocoa"
+  },
+  {
+   "assumptions": [
+    "E3"
+   ],
+   "id": "C4",
+   "kind": "eq_within",
+   "lhs": "V:skimmed_milk_powder",
+   "rhs": "F_quid_skimmed_milk_powder"
+  },
+  {
+   "assumptions": [
+    "E7"
+   ],
+   "id": "C5",
+   "items": [
+    "V:sugar",
+    "V:palm_oil",
+    "V:hazelnuts",
+    "V:fat_reduced_cocoa",
+    "V:skimmed_milk_powder"
+   ],
+   "kind": "ordered_desc",
+   "list_rule": "list_ordering@1:eu_food_ingredients"
+  },
+  {
+   "assumptions": [
+    "E7"
+   ],
+   "id": "C6",
+   "kind": "le",
+   "lhs": "V:whey_powder",
+   "rhs": "F_quid_skimmed_milk_powder"
+  },
+  {
+   "assumptions": [
+    "E7"
+   ],
+   "id": "C7",
+   "kind": "le",
+   "lhs": "V:lecithins",
+   "rhs": "F_quid_skimmed_milk_powder"
+  },
+  {
+   "assumptions": [
+    "E7"
+   ],
+   "id": "C8",
+   "kind": "le",
+   "lhs": "V:vanillin",
+   "rhs": "F_quid_skimmed_milk_powder"
+  },
+  {
+   "assumptions": [
+    "E4",
+    "E5"
+   ],
+   "id": "C9",
+   "kind": "le",
+   "lhs": "V:sugar",
+   "rhs": [
+    "mul",
+    "F_total_sugars",
+    "N:1:%/g"
+   ]
+  },
+  {
+   "assumptions": [
+    "E4",
+    "E5"
+   ],
+   "id": "C10",
+   "kind": "le",
+   "lhs": "V:palm_oil",
+   "rhs": [
+    "mul",
+    "F_total_fat",
+    "N:1:%/g"
+   ]
+  },
+  {
+   "assumptions": [
+    "E6"
+   ],
+   "id": "C11",
+   "items": [
+    "V:sugar",
+    "V:palm_oil",
+    "V:hazelnuts",
+    "V:fat_reduced_cocoa",
+    "V:skimmed_milk_powder",
+    "V:whey_powder",
+    "V:lecithins",
+    "V:vanillin"
+   ],
+   "kind": "positive"
+  }
+ ],
  "derivations": [],
  "facts": [
   {
@@ -501,5 +889,47 @@
   "estimates": [],
   "notes": []
  },
+ "variables": [
+  {
+   "ingredient": "I1",
+   "name": "sugar",
+   "unit": "%"
+  },
+  {
+   "ingredient": "I2",
+   "name": "palm_oil",
+   "unit": "%"
+  },
+  {
+   "ingredient": "I3",
+   "name": "hazelnuts",
+   "unit": "%"
+  },
+  {
+   "ingredient": "I4",
+   "name": "fat_reduced_cocoa",
+   "unit": "%"
+  },
+  {
+   "ingredient": "I5",
+   "name": "skimmed_milk_powder",
+   "unit": "%"
+  },
+  {
+   "ingredient": "I6",
+   "name": "whey_powder",
+   "unit": "%"
+  },
+  {
+   "ingredient": "I7",
+   "name": "lecithins",
+   "unit": "%"
+  },
+  {
+   "ingredient": "I8",
+   "name": "vanillin",
+   "unit": "%"
+  }
+ ],
  "variant_note": "Open Food Facts holds different ingredient texts per language (FR, DE, IT differ in milk powder % and whey); the FR text is used for the French jar. The EN text in the record is incomplete ('sugar, palm oil')."
 }

@@ -40,13 +40,14 @@ class RecordBuilder:
         self.store = store
         self.tables = tables
         self.cat = catalog.load(store)
-        self.head = {
+        self.head: dict[str, Any] = {
             "schema_version": "1",
             "record_id": record_id,
             "gtin": gtin,
             "product_name": product_name,
             "variant_note": variant_note,
             "physical_sample": {"sample_code": "", "lot": "", "photos": [], "attestation": None},
+            "variables": [],
         }
         self.sources: dict[str, dict[str, Any]] = {}
         self._bytes: dict[str, bytes] = {}

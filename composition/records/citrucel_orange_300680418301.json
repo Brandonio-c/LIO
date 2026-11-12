@@ -6,6 +6,11 @@
    "text": "The scanned tub (UPC 3 00680 41830 1, 'Citrucel Orange', 30 oz) is SPL product NDC 0135-0089 (850 g bottle, 0135-0089-71). The SPL does not carry the UPC; the link is the product name and size on the tub."
   },
   {
+   "id": "A10",
+   "kind": "modelling",
+   "text": "The dose consists only of the listed ingredients and the flavors named in the SPL text (mass balance)."
+  },
+  {
    "id": "A2",
    "kind": "label_truth",
    "text": "The SPL (set 9d5f2244, version 17) states the formulation of the physical sample."
@@ -41,12 +46,454 @@
    "id": "A8",
    "kind": "interpretation",
    "text": "A 'heaping tablespoon' dose is the 19 g in the SPL's strength denominator."
+  },
+  {
+   "id": "A9",
+   "kind": "modelling",
+   "text": "Every listed ingredient is present (amount > 0)."
   }
  ],
  "attestations": [],
- "bounds": [],
- "constraints": [],
- "derivations": [],
+ "bounds": [
+  {
+   "assumptions": [
+    "A10",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A9"
+   ],
+   "basis": "per_serving",
+   "certificate": {
+    "infeasibility_proofs": {
+     "above_max": "objective >= max",
+     "below_min": "objective <= min",
+     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    },
+    "max": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "65/4",
+     "witness": {
+      "calcium_phosphates": "1496604472033/5343200000000",
+      "maltodextrin": "1/3000000",
+      "methylcellulose": "2",
+      "other_ingredients": "540792821434801591/3133642533600000000",
+      "potassium_citrate": "465000753/1563928000",
+      "sucrose": "24374999/1500000"
+     }
+    },
+    "min": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "0",
+     "witness": {
+      "calcium_phosphates": "1496604472033/5343200000000",
+      "maltodextrin": "27499999/2000000",
+      "methylcellulose": "2",
+      "other_ingredients": "2791632703629096797/1044547511200000000",
+      "potassium_citrate": "465000753/1563928000",
+      "sucrose": "1/2000000"
+     }
+    }
+   },
+   "constraints": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+   ],
+   "id": "B1",
+   "objective": "V:sucrose",
+   "quantity": "sucrose",
+   "result": {
+    "hi": "65/4",
+    "hi_closed": false,
+    "lo": "0",
+    "lo_closed": false,
+    "unit": "g"
+   },
+   "solver": "z3@5.4.1",
+   "variables": [
+    "calcium_phosphates",
+    "maltodextrin",
+    "methylcellulose",
+    "other_ingredients",
+    "potassium_citrate",
+    "sucrose"
+   ]
+  },
+  {
+   "assumptions": [
+    "A10",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A9"
+   ],
+   "basis": "per_serving",
+   "certificate": {
+    "infeasibility_proofs": {
+     "above_max": "objective >= max",
+     "below_min": "objective <= min",
+     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    },
+    "max": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "65/4",
+     "witness": {
+      "calcium_phosphates": "1496604472033/5343200000000",
+      "maltodextrin": "24374999/1500000",
+      "methylcellulose": "2",
+      "other_ingredients": "540792821434801591/3133642533600000000",
+      "potassium_citrate": "465000753/1563928000",
+      "sucrose": "1/3000000"
+     }
+    },
+    "min": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "0",
+     "witness": {
+      "calcium_phosphates": "1496604472033/5343200000000",
+      "maltodextrin": "1/2000000",
+      "methylcellulose": "2",
+      "other_ingredients": "2791632703629096797/1044547511200000000",
+      "potassium_citrate": "465000753/1563928000",
+      "sucrose": "27499999/2000000"
+     }
+    }
+   },
+   "constraints": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+   ],
+   "id": "B2",
+   "objective": "V:maltodextrin",
+   "quantity": "maltodextrin",
+   "result": {
+    "hi": "65/4",
+    "hi_closed": false,
+    "lo": "0",
+    "lo_closed": false,
+    "unit": "g"
+   },
+   "solver": "z3@5.4.1",
+   "variables": [
+    "calcium_phosphates",
+    "maltodextrin",
+    "methylcellulose",
+    "other_ingredients",
+    "potassium_citrate",
+    "sucrose"
+   ]
+  },
+  {
+   "assumptions": [
+    "A10",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A9"
+   ],
+   "basis": "per_serving",
+   "certificate": {
+    "infeasibility_proofs": {
+     "above_max": "objective > max",
+     "below_min": "objective <= min",
+     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    },
+    "max": {
+     "attained": true,
+     "value": "66362076373411009/23986868400000000",
+     "witness": {
+      "calcium_phosphates": "32706662189/163600000000",
+      "maltodextrin": "1/2",
+      "methylcellulose": "2",
+      "other_ingredients": "66362076373411009/23986868400000000",
+      "potassium_citrate": "166254959/586476000",
+      "sucrose": "53/4"
+     }
+    },
+    "min": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "180263925629096797/1044547511200000000",
+     "witness": {
+      "calcium_phosphates": "1496604472033/5343200000000",
+      "maltodextrin": "1/2000000",
+      "methylcellulose": "2",
+      "other_ingredients": "180264447902852397/1044547511200000000",
+      "potassium_citrate": "465000753/1563928000",
+      "sucrose": "16249999/1000000"
+     }
+    }
+   },
+   "constraints": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+   ],
+   "id": "B3",
+   "objective": "V:other_ingredients",
+   "quantity": "other_ingredients",
+   "result": {
+    "hi": "66362076373411009/23986868400000000",
+    "hi_closed": true,
+    "lo": "180263925629096797/1044547511200000000",
+    "lo_closed": false,
+    "unit": "g"
+   },
+   "solver": "z3@5.4.1",
+   "variables": [
+    "calcium_phosphates",
+    "maltodextrin",
+    "methylcellulose",
+    "other_ingredients",
+    "potassium_citrate",
+    "sucrose"
+   ]
+  }
+ ],
+ "constraints": [
+  {
+   "assumptions": [
+    "A10"
+   ],
+   "id": "C1",
+   "items": [
+    "V:methylcellulose",
+    "V:sucrose",
+    "V:maltodextrin",
+    "V:calcium_phosphates",
+    "V:potassium_citrate",
+    "V:other_ingredients"
+   ],
+   "kind": "sum_eq",
+   "rhs": "F2"
+  },
+  {
+   "assumptions": [],
+   "id": "C2",
+   "kind": "eq_within",
+   "lhs": "V:methylcellulose",
+   "rhs": "F1"
+  },
+  {
+   "assumptions": [
+    "A3",
+    "A4"
+   ],
+   "id": "C3",
+   "kind": "eq_within",
+   "lhs": [
+    "add",
+    "V:sucrose",
+    "V:maltodextrin"
+   ],
+   "rhs": "D1"
+  },
+  {
+   "assumptions": [
+    "A5",
+    "A6"
+   ],
+   "id": "C4",
+   "kind": "eq_within",
+   "lhs": "V:calcium_phosphates",
+   "rhs": "D6"
+  },
+  {
+   "assumptions": [
+    "A7"
+   ],
+   "id": "C5",
+   "kind": "eq_within",
+   "lhs": "V:potassium_citrate",
+   "rhs": "D7"
+  },
+  {
+   "assumptions": [
+    "A9"
+   ],
+   "id": "C6",
+   "items": [
+    "V:methylcellulose",
+    "V:sucrose",
+    "V:maltodextrin",
+    "V:calcium_phosphates",
+    "V:potassium_citrate",
+    "V:other_ingredients"
+   ],
+   "kind": "positive"
+  }
+ ],
+ "derivations": [
+  {
+   "assumptions": [
+    "A3",
+    "A4"
+   ],
+   "basis": "per_serving",
+   "expr": [
+    "div",
+    "F6",
+    "C:atwater.constants.carbohydrate"
+   ],
+   "id": "D1",
+   "quantity": "sucrose_plus_maltodextrin",
+   "value": {
+    "hi": "65/4",
+    "hi_closed": false,
+    "lo": "55/4",
+    "lo_closed": true,
+    "unit": "g"
+   }
+  },
+  {
+   "assumptions": [
+    "A5",
+    "A6"
+   ],
+   "basis": "per_serving",
+   "expr": [
+    "hull",
+    [
+     "div",
+     "F3",
+     "M:Ca:SUB_dcp"
+    ],
+    [
+     "div",
+     "F3",
+     "M:Ca:SUB_tcp"
+    ]
+   ],
+   "id": "D2",
+   "quantity": "calcium_phosphates",
+   "value": {
+    "hi": "1496604472033/5343200000",
+    "hi_closed": true,
+    "lo": "32706662189/163600000",
+    "lo_closed": true,
+    "unit": "mg"
+   }
+  },
+  {
+   "assumptions": [
+    "A7"
+   ],
+   "basis": "per_serving",
+   "expr": [
+    "div",
+    "F4",
+    "M:K:SUB_kcit"
+   ],
+   "id": "D3",
+   "quantity": "potassium_citrate_monohydrate",
+   "value": {
+    "hi": "465000753/1563928",
+    "hi_closed": true,
+    "lo": "166254959/586476",
+    "lo_closed": true,
+    "unit": "mg"
+   }
+  },
+  {
+   "assumptions": [
+    "A8"
+   ],
+   "basis": "per_100g",
+   "expr": [
+    "rescale_basis",
+    "F1",
+    "F2",
+    "N:100:g"
+   ],
+   "id": "D4",
+   "quantity": "methylcellulose",
+   "value": {
+    "hi": "200/19",
+    "hi_closed": true,
+    "lo": "200/19",
+    "lo_closed": true,
+    "unit": "g"
+   }
+  },
+  {
+   "assumptions": [
+    "A8"
+   ],
+   "basis": "per_100g",
+   "expr": [
+    "rescale_basis",
+    "D1",
+    "F2",
+    "N:100:g"
+   ],
+   "id": "D5",
+   "quantity": "sucrose_plus_maltodextrin",
+   "value": {
+    "hi": "1625/19",
+    "hi_closed": false,
+    "lo": "1375/19",
+    "lo_closed": true,
+    "unit": "g"
+   }
+  },
+  {
+   "assumptions": [],
+   "basis": "per_serving",
+   "expr": [
+    "convert",
+    "D2",
+    "U:g"
+   ],
+   "id": "D6",
+   "quantity": "calcium_phosphates_g",
+   "value": {
+    "hi": "1496604472033/5343200000000",
+    "hi_closed": true,
+    "lo": "32706662189/163600000000",
+    "lo_closed": true,
+    "unit": "g"
+   }
+  },
+  {
+   "assumptions": [],
+   "basis": "per_serving",
+   "expr": [
+    "convert",
+    "D3",
+    "U:g"
+   ],
+   "id": "D7",
+   "quantity": "potassium_citrate_monohydrate_g",
+   "value": {
+    "hi": "465000753/1563928000",
+    "hi_closed": true,
+    "lo": "166254959/586476000",
+    "lo_closed": true,
+    "unit": "g"
+   }
+  }
+ ],
  "facts": [
   {
    "assumptions": [
@@ -688,8 +1135,39 @@
   "estimates": [],
   "notes": [
    "CITRUCEL_ORANGE: the SPL text list of inactive ingredients also names 'orange flavors (natural and artificial)', which has no structured entry or UNII in the SPL.",
-   "CITRUCEL_ORANGE: the SPL has no Nutrition Facts, so there is no declared total carbohydrate; consistency is checked by mass balance against the 19 g dose instead."
+   "CITRUCEL_ORANGE: the SPL has no Nutrition Facts, so there is no declared total carbohydrate; consistency is checked by mass balance against the 19 g dose instead.",
+   "OTC inactive ingredients are listed alphabetically (21 CFR 201.66(c)(8)): no weight-order constraint is used."
   ]
  },
+ "variables": [
+  {
+   "ingredient": "I_active_1",
+   "name": "methylcellulose",
+   "unit": "g"
+  },
+  {
+   "ingredient": "I_sucrose",
+   "name": "sucrose",
+   "unit": "g"
+  },
+  {
+   "ingredient": "I_maltodextrin",
+   "name": "maltodextrin",
+   "unit": "g"
+  },
+  {
+   "name": "calcium_phosphates",
+   "unit": "g"
+  },
+  {
+   "ingredient": "I_potassium_citrate",
+   "name": "potassium_citrate",
+   "unit": "g"
+  },
+  {
+   "name": "other_ingredients",
+   "unit": "g"
+  }
+ ],
  "variant_note": "SPL set 9d5f2244 covers CITRUCEL Orange (NDC 0135-0089) and Sugar Free (0135-0090). Product facts use the manufacturedProduct with code 0135-0089; text facts use the sections titled '(Citrucel Orange)'."
 }

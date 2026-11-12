@@ -23,8 +23,58 @@
  ],
  "attestations": [],
  "bounds": [],
- "constraints": [],
- "derivations": [],
+ "constraints": [
+  {
+   "assumptions": [
+    "N4"
+   ],
+   "id": "C1",
+   "kind": "le",
+   "lhs": "F_mg",
+   "rhs": "D1",
+   "status": "entailed"
+  }
+ ],
+ "derivations": [
+  {
+   "assumptions": [],
+   "basis": "per_unit",
+   "expr": [
+    "mul",
+    "F_mgo",
+    "M:Mg:SUB_mgo"
+   ],
+   "id": "D1",
+   "quantity": "magnesium_in_stated_oxide_if_pure",
+   "value": {
+    "hi": "1823025000/4030603",
+    "hi_closed": true,
+    "lo": "607600000/1343459",
+    "lo_closed": true,
+    "unit": "mg"
+   }
+  },
+  {
+   "assumptions": [
+    "N4"
+   ],
+   "basis": "per_unit",
+   "expr": [
+    "div",
+    "F_mg",
+    "D1"
+   ],
+   "id": "D2",
+   "quantity": "magnesium_oxide_purity_implied",
+   "value": {
+    "hi": "4030377/4340000",
+    "hi_closed": true,
+    "lo": "28214221/30383750",
+    "lo_closed": true,
+    "unit": "1"
+   }
+  }
+ ],
  "facts": [
   {
    "assumptions": [
@@ -241,5 +291,6 @@
   "estimates": [],
   "notes": []
  },
+ "variables": [],
  "variant_note": "DSLD label 223424, the only Nutricost Magnesium Oxide label."
 }

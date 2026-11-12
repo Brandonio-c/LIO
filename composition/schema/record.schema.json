@@ -21,7 +21,8 @@
   "unverified_layer",
   "toolchain",
   "substances",
-  "ingredients"
+  "ingredients",
+  "variables"
  ],
  "properties": {
   "schema_version": {
@@ -230,6 +231,29 @@
    "type": "array",
    "items": {
     "$ref": "#/$defs/ingredient"
+   }
+  },
+  "variables": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "name",
+     "unit"
+    ],
+    "properties": {
+     "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+     },
+     "unit": {
+      "type": "string"
+     },
+     "ingredient": {
+      "$ref": "#/$defs/id"
+     }
+    }
    }
   }
  },
@@ -548,7 +572,7 @@
    "oneOf": [
     {
      "type": "string",
-     "pattern": "^([A-Za-z][A-Za-z0-9_.-]{0,63}|C:[a-z0-9_]+(\\.[A-Za-z0-9_]+)+|N:-?(0|[1-9][0-9]*)(/[1-9][0-9]*)?(:[^:]+)?)$"
+     "pattern": "^([A-Za-z][A-Za-z0-9_.-]{0,63}|C:[a-z0-9_]+(\\.[A-Za-z0-9_]+)+|N:-?(0|[1-9][0-9]*)(/[1-9][0-9]*)?(:[^:]+)?|V:[a-z][a-z0-9_]*|M:[A-Z][a-z]?:[A-Za-z][A-Za-z0-9_.-]*|U:[^:]+)$"
     },
     {
      "type": "array",
@@ -629,7 +653,8 @@
       "ge",
       "eq_within",
       "sum_eq",
-      "ordered_desc"
+      "ordered_desc",
+      "positive"
      ]
     },
     "lhs": {
@@ -641,7 +666,7 @@
     "items": {
      "type": "array",
      "items": {
-      "$ref": "#/$defs/id"
+      "type": "string"
      }
     },
     "list_rule": {
@@ -652,6 +677,13 @@
      "items": {
       "$ref": "#/$defs/id"
      }
+    },
+    "status": {
+     "enum": [
+      "entailed",
+      "consistent",
+      "violated"
+     ]
     }
    }
   },
@@ -667,7 +699,8 @@
     "constraints",
     "assumptions",
     "result",
-    "certificate"
+    "certificate",
+    "objective"
    ],
    "properties": {
     "id": {
@@ -685,7 +718,7 @@
     "variables": {
      "type": "array",
      "items": {
-      "type": "object"
+      "type": "string"
      }
     },
     "constraints": {
@@ -704,7 +737,27 @@
      "$ref": "#/$defs/value"
     },
     "certificate": {
-     "type": "object"
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "min",
+      "max",
+      "infeasibility_proofs"
+     ],
+     "properties": {
+      "min": {
+       "$ref": "#/$defs/end"
+      },
+      "max": {
+       "$ref": "#/$defs/end"
+      },
+      "infeasibility_proofs": {
+       "type": "object"
+      }
+     }
+    },
+    "objective": {
+     "$ref": "#/$defs/expr"
     }
    }
   },
@@ -863,6 +916,32 @@
     },
     "substance": {
      "$ref": "#/$defs/id"
+    }
+   }
+  },
+  "end": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "value",
+    "attained",
+    "witness"
+   ],
+   "properties": {
+    "value": {
+     "$ref": "#/$defs/rational"
+    },
+    "attained": {
+     "type": "boolean"
+    },
+    "gap": {
+     "$ref": "#/$defs/rational"
+    },
+    "witness": {
+     "type": "object",
+     "additionalProperties": {
+      "$ref": "#/$defs/rational"
+     }
     }
    }
   }

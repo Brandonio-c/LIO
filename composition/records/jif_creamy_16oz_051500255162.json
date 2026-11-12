@@ -29,12 +29,368 @@
    "id": "J6",
    "kind": "modelling",
    "text": "'Sugar' is sucrose, which is all sugars."
+  },
+  {
+   "id": "J7",
+   "kind": "modelling",
+   "text": "Every listed ingredient is present (amount > 0)."
+  },
+  {
+   "id": "J8",
+   "kind": "modelling",
+   "text": "The serving consists only of the listed ingredients (mass balance)."
+  },
+  {
+   "id": "J9",
+   "kind": "interpretation",
+   "rule_ref": "list_ordering@1",
+   "text": "Ingredients after 'Contains 2% Or Less Of:' are each at most 2 % of the food by weight (21 CFR 101.4(a)(2)); the ones before it are in descending order of weight."
   }
  ],
  "attestations": [],
- "bounds": [],
- "constraints": [],
- "derivations": [],
+ "bounds": [
+  {
+   "assumptions": [
+    "J5",
+    "J6",
+    "J7",
+    "J8",
+    "J9"
+   ],
+   "basis": "per_serving",
+   "certificate": {
+    "infeasibility_proofs": {
+     "above_max": "objective >= max",
+     "below_min": "objective <= min",
+     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    },
+    "max": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "33",
+     "witness": {
+      "hydrogenated_vegetable_oils": "1/10000000",
+      "molasses": "3/5000000",
+      "roasted_peanuts": "329999991/10000000",
+      "salt": "1/10000000",
+      "sugar": "1/10000000"
+     }
+    },
+    "min": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "2131256387347/76632564200",
+     "witness": {
+      "hydrogenated_vegetable_oils": "33/50",
+      "molasses": "33/50",
+      "roasted_peanuts": "15984423288265321/574744231500000",
+      "salt": "423738693972179/1149488463000000",
+      "sugar": "10499999/3000000"
+     }
+    }
+   },
+   "constraints": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8"
+   ],
+   "id": "B1",
+   "objective": "V:roasted_peanuts",
+   "quantity": "roasted_peanuts",
+   "result": {
+    "hi": "33",
+    "hi_closed": false,
+    "lo": "2131256387347/76632564200",
+    "lo_closed": false,
+    "unit": "g"
+   },
+   "solver": "z3@5.4.1",
+   "variables": [
+    "hydrogenated_vegetable_oils",
+    "molasses",
+    "roasted_peanuts",
+    "salt",
+    "sugar"
+   ]
+  },
+  {
+   "assumptions": [
+    "J5",
+    "J6",
+    "J7",
+    "J8",
+    "J9"
+   ],
+   "basis": "per_serving",
+   "certificate": {
+    "infeasibility_proofs": {
+     "above_max": "objective >= max",
+     "below_min": "objective <= min",
+     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    },
+    "max": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "7/2",
+     "witness": {
+      "hydrogenated_vegetable_oils": "33/50",
+      "molasses": "33/50",
+      "roasted_peanuts": "10656282319897821/383162821000000",
+      "salt": "282492334927179/766325642000000",
+      "sugar": "6999999/2000000"
+     }
+    },
+    "min": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "0",
+     "witness": {
+      "hydrogenated_vegetable_oils": "33/50",
+      "molasses": "33/50",
+      "roasted_peanuts": "2399470362047/76632564200",
+      "salt": "282492334927179/766325642000000",
+      "sugar": "1/2000000"
+     }
+    }
+   },
+   "constraints": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8"
+   ],
+   "id": "B2",
+   "objective": "V:sugar",
+   "quantity": "sugar",
+   "result": {
+    "hi": "7/2",
+    "hi_closed": false,
+    "lo": "0",
+    "lo_closed": false,
+    "unit": "g"
+   },
+   "solver": "z3@5.4.1",
+   "variables": [
+    "hydrogenated_vegetable_oils",
+    "molasses",
+    "roasted_peanuts",
+    "salt",
+    "sugar"
+   ]
+  },
+  {
+   "assumptions": [
+    "J5",
+    "J6",
+    "J7",
+    "J8",
+    "J9"
+   ],
+   "basis": "per_serving",
+   "certificate": {
+    "infeasibility_proofs": {
+     "above_max": "objective >= max",
+     "below_min": "objective <= min",
+     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    },
+    "max": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "28249271809/76632564200",
+     "witness": {
+      "hydrogenated_vegetable_oils": "33/50",
+      "molasses": "33/50",
+      "roasted_peanuts": "10656282319897821/383162821000000",
+      "salt": "282492334927179/766325642000000",
+      "sugar": "6999999/2000000"
+     }
+    },
+    "min": {
+     "attained": false,
+     "gap": "1/1000000",
+     "value": "0",
+     "witness": {
+      "hydrogenated_vegetable_oils": "33/50",
+      "molasses": "33/50",
+      "roasted_peanuts": "1409/50",
+      "salt": "1/2000000",
+      "sugar": "6999999/2000000"
+     }
+    }
+   },
+   "constraints": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8"
+   ],
+   "id": "B3",
+   "objective": "V:salt",
+   "quantity": "salt",
+   "result": {
+    "hi": "28249271809/76632564200",
+    "hi_closed": false,
+    "lo": "0",
+    "lo_closed": false,
+    "unit": "g"
+   },
+   "solver": "z3@5.4.1",
+   "variables": [
+    "hydrogenated_vegetable_oils",
+    "molasses",
+    "roasted_peanuts",
+    "salt",
+    "sugar"
+   ]
+  }
+ ],
+ "constraints": [
+  {
+   "assumptions": [
+    "J8"
+   ],
+   "id": "C1",
+   "items": [
+    "V:roasted_peanuts",
+    "V:sugar",
+    "V:hydrogenated_vegetable_oils",
+    "V:salt",
+    "V:molasses"
+   ],
+   "kind": "sum_eq",
+   "rhs": "F_serving"
+  },
+  {
+   "assumptions": [
+    "J9"
+   ],
+   "id": "C2",
+   "items": [
+    "V:roasted_peanuts",
+    "V:sugar"
+   ],
+   "kind": "ordered_desc",
+   "list_rule": "list_ordering@1:us_food_ingredients"
+  },
+  {
+   "assumptions": [
+    "J9"
+   ],
+   "id": "C3",
+   "kind": "le",
+   "lhs": "V:hydrogenated_vegetable_oils",
+   "rhs": "D2"
+  },
+  {
+   "assumptions": [
+    "J9"
+   ],
+   "id": "C4",
+   "kind": "le",
+   "lhs": "V:salt",
+   "rhs": "D2"
+  },
+  {
+   "assumptions": [
+    "J9"
+   ],
+   "id": "C5",
+   "kind": "le",
+   "lhs": "V:molasses",
+   "rhs": "D2"
+  },
+  {
+   "assumptions": [
+    "J6"
+   ],
+   "id": "C6",
+   "kind": "le",
+   "lhs": "V:sugar",
+   "rhs": "F_total_sugars"
+  },
+  {
+   "assumptions": [
+    "J5"
+   ],
+   "id": "C7",
+   "kind": "le",
+   "lhs": "V:salt",
+   "rhs": "D1"
+  },
+  {
+   "assumptions": [
+    "J7"
+   ],
+   "id": "C8",
+   "items": [
+    "V:roasted_peanuts",
+    "V:sugar",
+    "V:hydrogenated_vegetable_oils",
+    "V:salt",
+    "V:molasses"
+   ],
+   "kind": "positive"
+  }
+ ],
+ "derivations": [
+  {
+   "assumptions": [
+    "J5"
+   ],
+   "basis": "per_serving",
+   "expr": [
+    "convert",
+    [
+     "div",
+     "F_sodium",
+     "M:Na:SUB_nacl"
+    ],
+    "U:g"
+   ],
+   "id": "D1",
+   "quantity": "salt_upper",
+   "value": {
+    "hi": "28249271809/76632564200",
+    "hi_closed": false,
+    "lo": "6427934623/18391815440",
+    "lo_closed": true,
+    "unit": "g"
+   }
+  },
+  {
+   "assumptions": [
+    "J9"
+   ],
+   "basis": "per_serving",
+   "expr": [
+    "mul",
+    "F_serving",
+    "N:1/50"
+   ],
+   "id": "D2",
+   "quantity": "two_percent_of_serving",
+   "value": {
+    "hi": "33/50",
+    "hi_closed": true,
+    "lo": "33/50",
+    "lo_closed": true,
+    "unit": "g"
+   }
+  }
+ ],
  "facts": [
   {
    "assumptions": [
@@ -485,5 +841,32 @@
    "FDC labelNutrients.fiber not used: dietary_fiber: no amount is declared as Declaration(kind='eq', value=Fraction(201, 100)) (FDC-computed, not a label value)"
   ]
  },
+ "variables": [
+  {
+   "ingredient": "I1",
+   "name": "roasted_peanuts",
+   "unit": "g"
+  },
+  {
+   "ingredient": "I2",
+   "name": "sugar",
+   "unit": "g"
+  },
+  {
+   "ingredient": "I3",
+   "name": "hydrogenated_vegetable_oils",
+   "unit": "g"
+  },
+  {
+   "ingredient": "I4",
+   "name": "salt",
+   "unit": "g"
+  },
+  {
+   "ingredient": "I5",
+   "name": "molasses",
+   "unit": "g"
+  }
+ ],
  "variant_note": "FDC 2770309 is the 16 oz jar (GTIN 00051500255162). Other Jif sizes in FDC list the ingredients in a different order or with mono- and diglycerides."
 }
