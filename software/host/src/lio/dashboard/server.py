@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
+from lio.foods import structure
 from lio.foods.barcode import normalise
 from lio.foods.intake import Intake, data_url_bytes
 from lio.foods.phone import PhoneServer, qr_svg, vpn_active
@@ -303,6 +304,8 @@ class _Handler(BaseHTTPRequestHandler):
             return self._json(f.intake.composition_report(arg("code")))
         if path == "find":
             return self._json(f.intake.find_online(arg("gtin14"), arg("q")))
+        if path == "preview":
+            return self._json(f.intake.preview_record(arg("source"), arg("id"), arg("q")))
         if path == "candidates":
             if f.lib.lookup is None:
                 raise Refused("online lookup is off (foods.online_lookup)")
@@ -327,11 +330,19 @@ class _Handler(BaseHTTPRequestHandler):
             return self._json(f.intake.confirm_ingredients(str(b.get("gtin14") or ""), b))
         if path == "label/apply":
             return self._json(f.intake.apply_label(code, b))
+        if path == "structure":
+            return self._json(f.intake.structure_sections(b.get("sections")))
         if path == "adopt":
             if f.lib.lookup is None:
                 raise Refused("online lookup is off (foods.online_lookup)")
             src, ident = str(b.get("source") or ""), str(b.get("id") or "")
             picked, raw = f.lib.lookup.fetch(src, ident)
+            table = None
+            if b.get("structured"):
+                try:
+                    table = structure.clean(b["structured"])
+                except ValueError as e:
+                    raise Refused(str(e)) from e
             return self._json(
                 f.lib.adopt(
                     str(b.get("gtin14") or ""),
@@ -339,6 +350,7 @@ class _Handler(BaseHTTPRequestHandler):
                     raw,
                     source=src,
                     query=str(b.get("query") or ""),
+                    structured=table,
                 )
             )
         if path == "save":

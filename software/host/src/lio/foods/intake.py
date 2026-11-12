@@ -17,6 +17,7 @@ import urllib.parse
 from dataclasses import dataclass, field
 from typing import Any
 
+from . import structure
 from .barcode import BarcodeError, Gtin, best_code, decode_image, decoder_available, normalise
 from .ocr import OcrError, read_label
 from .store import LABEL_KINDS, FoodLibrary, LibraryError
@@ -471,14 +472,46 @@ class Intake:
         out["retailers"] = retailer_links(g.code, q)
         return out
 
+    def preview_record(self, source: str, ident: str, query: str = "") -> dict[str, Any]:
+        """A record picked by name, fetched in full and laid out as ingredient tables
+        (one per product variant). Nothing is saved."""
+        lk = self.lib.lookup
+        if lk is None:
+            raise LibraryError("online lookup is off (foods.online_lookup)")
+        try:
+            info, raw = lk.fetch(source, ident)
+        except (OSError, ValueError) as e:
+            raise LibraryError(f"could not fetch the record: {e}") from e
+        out = structure.structure_record(source, info, raw, query)
+        out["ingredients_text"] = str(info.get("ingredients_text") or "")
+        return out
+
+    @staticmethod
+    def structure_sections(sections: Any) -> dict[str, Any]:
+        """Web-page sections the user ticked, laid out as one ingredient table."""
+        if not isinstance(sections, list):
+            raise LibraryError("sections must be a list")
+        return structure.structure_sections([x for x in sections if isinstance(x, dict)])
+
     def confirm_ingredients(self, gtin14: str, fields: dict[str, Any]) -> dict[str, Any]:
-        """Save an ingredient list the user confirmed, with the links it came from."""
+        """Save an ingredient list the user confirmed, with the links it came from,
+        and the reviewed ingredient table when there is one."""
+        table = None
+        if fields.get("ingredients_structured"):
+            try:
+                table = structure.clean(fields["ingredients_structured"])
+            except ValueError as e:
+                raise LibraryError(str(e)) from e
         text = str(fields.get("ingredients_text") or "").strip()
+        if not text and table is not None:
+            text = structure.to_text(table)
         if not text:
             raise LibraryError("the ingredient list is empty")
         refs = fields.get("refs") if isinstance(fields.get("refs"), list) else []
         src = "web" if refs else "manual"
         data: dict[str, Any] = {"ingredients_text": text, "ingredients_refs": refs}
+        if table is not None:
+            data["ingredients_structured"] = table
         if str(fields.get("contains") or "").strip():
             data["contains"] = str(fields["contains"])
         return self.lib.set_product_info(gtin14, data, source=src)

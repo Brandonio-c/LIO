@@ -344,6 +344,13 @@ class FoodLibrary:
             if k in fields:
                 info[k] = str(fields[k]).strip()
                 locked.add(k)
+        if isinstance(fields.get("ingredients_structured"), dict):
+            # already checked by structure.clean (the reviewed table)
+            info["ingredients_structured"] = fields["ingredients_structured"]
+            locked.add("ingredients_structured")
+        elif "ingredients_text" in fields:
+            info.pop("ingredients_structured", None)  # a hand-typed list replaces the table
+            locked.discard("ingredients_structured")
         if "ingredients_text" in fields:
             info["ingredients_source"] = source
             # Where a confirmed list was found (web pages, label records): [{url, title}]
@@ -373,7 +380,14 @@ class FoodLibrary:
         return self._save_info(gtin14, info, source)
 
     def adopt(
-        self, gtin14: str, picked: dict[str, Any], raw: Any, *, source: str, query: str
+        self,
+        gtin14: str,
+        picked: dict[str, Any],
+        raw: Any,
+        *,
+        source: str,
+        query: str,
+        structured: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Use a record the user picked by name (e.g. a DSLD label) for this product.
 
@@ -392,6 +406,10 @@ class FoodLibrary:
                 {"url": u, "title": k} for k, u in (picked.get("links") or {}).items()
             ]
             info["ingredients_confirmed_at"] = now_iso()
+            if structured is not None:
+                info["ingredients_structured"] = structured
+            else:
+                info.pop("ingredients_structured", None)
         if picked.get("nutrition_per_100g") and "nutrition_per_100g" not in old.get("locked", []):
             info["nutrition_source"] = tag
         info["derived_per_100g"] = derived(info.get("nutrition_per_100g") or {})

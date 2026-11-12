@@ -284,6 +284,13 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json(
                     self.server.intake.find_online(q.get("gtin14", [""])[0], q.get("q", [""])[0])
                 )
+            if url.path == "/api/preview":
+                q = parse_qs(url.query)
+                return self._json(
+                    self.server.intake.preview_record(
+                        q.get("source", [""])[0], q.get("id", [""])[0], q.get("q", [""])[0]
+                    )
+                )
             if url.path == "/api/recent":
                 return self._json({"samples": self.server.lib.samples(limit=15)})
         except (BarcodeError, LibraryError, ValueError) as e:
@@ -331,6 +338,8 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json(
                     intake.read_label(data_url_bytes(b.get("photo")), str(b.get("kind") or ""))
                 )
+            if url.path == "/api/structure":
+                return self._json(intake.structure_sections(b.get("sections")))
             if url.path == "/api/ingredients":
                 return self._json(intake.confirm_ingredients(str(b.get("gtin14") or ""), b))
             if url.path == "/api/label/apply":

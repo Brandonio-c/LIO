@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-11-12: Structured ingredients from "Find the ingredients online"
+
+### Changed
+- **"Use this" lays out the label instead of pasting its text.**
+  - The full record is fetched, and each ingredient becomes a row: name, type (active, inactive, supplement fact, other, ingredient), amount, per, % DV, form, sub-ingredients, variant and notes.
+  - Per-dose statements ("each caplet contains: calcium 10 mg", "contributes 60 calories") get their own rows.
+  - **N/A means the source does not state it**; amounts are never guessed.
+  - The dashboard table is editable: change any cell, remove rows, or add them. Then save.
+  - A label covering several products (e.g. Citrucel Orange and Sugar Free) offers each as its own table, and the one matching the search is pre-selected.
+- **Ticked web-page sections** are laid out the same way.
+- **On the phone**, the table is shown under the text box.
+- **The product page** shows the saved table, with the text form underneath.
+- **What it reads, by source:**
+  - FDA drug labels: actives with strength and dose basis, the inactive list, and "each … contains" amounts.
+  - DSLD records: rows with amount, % DV and form, blend members, other ingredients and the serving size.
+  - Food lists: "x%" amounts, bracketed sub-ingredients, and "contains 2% or less of" groups.
+- **The extraction is deterministic** (`lio.foods.structure`): regular expressions, the `list_item@2` splitter and the DSLD record's own fields.
+- **Where it is stored.** The table goes in the product's `ingredients_structured` field. Typing a new list by hand removes the old table. It is a reviewed database value, not a verified fact.
+
 ## 2026-11-12: Composition coverage M7, documentation (plan WP8)
 
 ### Changed

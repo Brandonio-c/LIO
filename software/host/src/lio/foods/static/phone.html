@@ -109,6 +109,11 @@ details summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
 .found { border-top: 1px solid var(--hair); padding: 9px 0; }
 .found .src { font-size: 12.5px; color: var(--muted); }
 .found .src a { color: var(--accent); }
+.st-list { display: grid; gap: 2px; margin: 6px 0; font-size: 13.5px; }
+.st-list .st-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; border-top: 1px solid var(--hair); padding: 5px 0; }
+.st-list .st-amt { text-align: right; white-space: nowrap; }
+.st-list .na { color: var(--muted); }
+.st-list .st-sub { grid-column: 1 / -1; font-size: 12px; color: var(--muted); }
 .found .txt { font-size: 14px; margin: 3px 0 6px; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
 .found .btn { min-height: 38px; padding: 7px; font-size: 14px; }
 .ok-banner { background: var(--wash-good); border: 1px solid var(--good); color: var(--good-text); border-radius: 10px; padding: 9px 12px; font-size: 14px; font-weight: 600; margin-bottom: 10px; }
@@ -184,6 +189,7 @@ details summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
       <button class="btn" id="btn-ingr">Ingredients panel photo</button>
       <div id="ingr-review" class="hidden" style="margin-top:10px">
         <div class="ok-banner" style="margin-bottom:6px" id="ingr-review-head">Read from the label: check it and correct anything misread.</div>
+        <div id="ingr-struct"></div>
         <label class="f">Ingredients<textarea id="ingr-edit" style="min-height:120px"></textarea></label>
         <label class="f">Contains (allergens)<input type="text" id="ingr-contains"></label>
         <label class="check hidden" id="ingr-attest-wrap" style="display:flex;gap:8px;margin-top:8px"><input type="checkbox" id="ingr-attest"> The list above matches the label word for word. Sign it with my name (Entered by) as attested ingredients.</label>
@@ -231,6 +237,7 @@ details summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
     <div class="note" id="fix-name"></div>
     <div id="fix-online"></div>
     <div class="ok-banner" style="margin-top:8px" id="fix-head">Read from the label: check it and correct anything misread.</div>
+    <div id="fix-struct"></div>
     <label class="f">Ingredients<textarea id="fix-ingr" style="min-height:120px"></textarea></label>
     <label class="f">Contains (allergens)<input type="text" id="fix-contains"></label>
     <div class="row" style="margin-top:12px"><button class="btn quiet" id="fix-cancel">Cancel</button><button class="btn primary" id="fix-save">Save ingredients</button></div>
@@ -334,13 +341,14 @@ function renderProduct(r) {
   $("ingr-src").textContent = ingr ? "From " + ({ openfoodfacts: "Open Food Facts", usda: "USDA", dsld: "NIH supplement label database", "label photo": "a label photo", manual: "typed in" }[isrc] || isrc) + ". Check it matches the pack." : "";
   $("btn-ingr").textContent = ingr ? "Ingredients panel photo anyway" : "Ingredients panel photo";
   $("btn-ingr").className = ingr ? "btn quiet" : "btn primary";
-  ingredientsFound = null; $("ingr-online").innerHTML = "";
+  ingredientsFound = null; ingrStruct = null; $("ingr-online").innerHTML = ""; $("ingr-struct").innerHTML = "";
   if (!ingr) findOnline(r.gtin14, $("ingr-online"), (it) => {
     ingredientsFound = { refs: it.url ? [{ url: it.url, title: it.title }] : [] };
     labels.ingredients = null;
-    $("ingr-edit").value = it.text; $("ingr-contains").value = "";
+    $("ingr-edit").value = it.text; $("ingr-contains").value = ""; ingrStruct = null; $("ingr-struct").innerHTML = `<div class="note">Reading the full record…</div>`;
     $("ingr-review-head").textContent = `From ${it.url ? domainOf(it.url) : it.title}: check it matches your pack, correct it if needed. It is saved with this link.`;
     $("ingr-review").classList.remove("hidden"); $("ingr-review").scrollIntoView({ behavior: "smooth", block: "center" });
+    structuredFor(it).then((x) => { ingrStruct = x; $("ingr-struct").innerHTML = x ? ingrList(x.st) : ""; if (x) $("ingr-edit").value = x.text; });
   });
   const dr = info.drug_resolution || {};
   $("ndc-box").classList.toggle("hidden", !dr.needs_printed_ndc);
@@ -473,14 +481,40 @@ async function findOnline(gtin14, box, onUse) {
   try { r = await api(`/api/find?gtin14=${encodeURIComponent(gtin14)}`); }
   catch (e) { box.innerHTML = `<div class="warn">Online search failed: ${esc(e.message)}</div>`; return; }
   const items = [];
-  for (const c of r.structured || []) if ((c.ingredients || "").trim()) items.push({ text: c.ingredients, title: `${SRC_TAG[c.source] || c.source}: ${c.name}`, url: c.link || "" });
-  for (const pg of (r.web && r.web.pages) || []) for (const sc of pg.sections) items.push({ text: `${sc.heading}: ${sc.text}`, title: pg.title || pg.domain, url: pg.url });
+  for (const c of r.structured || []) if ((c.ingredients || "").trim()) items.push({ text: c.ingredients, title: `${SRC_TAG[c.source] || c.source}: ${c.name}`, url: c.link || "", rec: { source: c.source, id: c.id, q: r.query } });
+  for (const pg of (r.web && r.web.pages) || []) for (const sc of pg.sections) items.push({ text: `${sc.heading}: ${sc.text}`, title: pg.title || pg.domain, url: pg.url, sec: { heading: sc.heading, text: sc.text } });
   if (!items.length) { box.innerHTML = `<div class="warn">Nothing found online for "${esc(r.query)}". Photograph the ingredients panel instead.</div>`; return; }
   box.innerHTML = `<div class="note" style="margin:4px 0 2px">Found online for "${esc(r.query)}". Pick the one that matches your pack (flavour, sugar-free, caplets…), then check it:</div>` +
     items.slice(0, 8).map((it, i) => `<div class="found"><div class="src">${it.url ? `<a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(domainOf(it.url))}</a> · ` : ""}${esc(it.title)}</div>
       <div class="txt">${esc(it.text)}</div><button class="btn quiet" data-use="${i}">Use this</button></div>`).join("");
   box.querySelectorAll("[data-use]").forEach((b) => b.onclick = () => onUse(items[+b.dataset.use]));
 }
+
+/* A picked result laid out as ingredients (name, amount, per; N/A = not stated by the source).
+   Returns { st, text }: the table and the full source text, or null if it cannot be read. */
+const NA = "N/A", ROLE_NAME = { active: "Active", inactive: "Inactive", dietary: "Supplement facts", other: "Other ingredients", ingredient: "Ingredients" };
+async function structuredFor(it) {
+  try {
+    if (it.rec) {
+      const pv = await api(`/api/preview?source=${encodeURIComponent(it.rec.source)}&id=${encodeURIComponent(it.rec.id)}&q=${encodeURIComponent(it.rec.q)}`);
+      return { st: pv.options[pv.default], text: pv.ingredients_text || it.text };
+    }
+    if (it.sec) return { st: await api("/api/structure", { sections: [it.sec] }), text: it.text };
+  } catch (e) { /* fall back to the plain text */ }
+  return null;
+}
+function ingrList(st) {
+  if (!st) return "";
+  const groups = Object.keys(ROLE_NAME).map((k) => [k, (st.ingredients || []).filter((r) => r.role === k)]).filter(([, rs]) => rs.length);
+  const v = (x) => x && x !== NA ? esc(x) : `<span class="na">N/A</span>`;
+  return `<div class="st-list"><div class="note">${st.variant && st.variant !== NA ? "Variant: " + esc(st.variant) + " · " : ""}Serving: ${v(st.serving)}</div>` +
+    groups.map(([k, rs]) => `<div class="note" style="margin-top:6px;font-weight:600">${ROLE_NAME[k]}</div>` + rs.map((r) => `<div class="st-row"><span>${esc(r.name)}${r.form && r.form !== NA ? ` <span class="na">(${esc(r.form)})</span>` : ""}</span>
+      <span class="st-amt">${v(r.amount)}${r.basis && r.basis !== NA ? ` <span class="na">${esc(r.basis)}</span>` : ""}${r.dv && r.dv !== NA ? ` · ${esc(r.dv)} DV` : ""}</span>
+      ${(r.sub && r.sub !== NA) || (r.note && r.note !== NA) ? `<span class="st-sub">${[r.sub !== NA ? "contains " + esc(r.sub) : "", r.note !== NA ? esc(r.note) : ""].filter(Boolean).join(" · ")}</span>` : ""}</div>`).join("")).join("") +
+    ((st.contains || []).length ? `<div class="note" style="margin-top:6px;font-weight:600">Per dose</div>` + st.contains.map((r) => `<div class="st-row"><span>${esc(r.name)}</span><span class="st-amt">${v(r.amount)} <span class="na">${r.basis !== NA ? esc(r.basis) : ""}</span></span></div>`).join("") : "") +
+    `<div class="note" style="margin-top:4px">Read from the source. If you correct the text below, the corrected text is saved instead of this table.</div></div>`;
+}
+let ingrStruct = null, fixStruct = null;
 
 /* label photos: read on the Mac, reviewed here, saved with the sample */
 let labels = {}, labelKind = "ingredients";
@@ -578,7 +612,8 @@ $("btn-save").onclick = async () => {
       lab.push(labels.nutrition);
     }
     const found = !labels.ingredients && ingredientsFound && $("ingr-edit").value.trim()
-      ? { ingredients_text: $("ingr-edit").value, contains: $("ingr-contains").value, refs: ingredientsFound.refs } : null;
+      ? { ingredients_text: $("ingr-edit").value, contains: $("ingr-contains").value, refs: ingredientsFound.refs,
+          ingredients_structured: ingrStruct && $("ingr-edit").value === ingrStruct.text ? ingrStruct.st : null } : null;
     const s = await api("/api/save", { draft, labels: lab, ingredients_found: found, product_photo: productPhoto, lot: $("lot").value, best_before: $("bb").value,
       notes: $("notes").value, entered_by: $("by").value });
     lastSaved = s; draft = null;
@@ -603,7 +638,7 @@ $("file-fix").onchange = async (e) => {
   error(""); busy("Reading the ingredients…");
   try {
     const r = await api("/api/label", { photo: await shrink(f, 3000, 0.92), kind: "ingredients" });
-    fixDraft = r.label_draft; fixRefs = null; $("fix-online").innerHTML = ""; $("fix-head").textContent = "Read from the label: check it and correct anything misread.";
+    fixDraft = r.label_draft; fixRefs = null; fixStruct = null; $("fix-struct").innerHTML = ""; $("fix-online").innerHTML = ""; $("fix-head").textContent = "Read from the label: check it and correct anything misread.";
     $("fix-code").textContent = fixTarget.code; $("fix-name").textContent = fixTarget.name;
     $("fix-ingr").value = r.ingredients || r.text; $("fix-contains").value = r.contains || "";
     $("fix-card").classList.remove("hidden"); $("fix-card").scrollIntoView({ behavior: "smooth" });
@@ -611,11 +646,12 @@ $("file-fix").onchange = async (e) => {
   } catch (err) { error(err.message); }
   finally { busy(""); }
 };
-$("fix-cancel").onclick = () => { $("fix-card").classList.add("hidden"); fixTarget = fixDraft = fixRefs = null; $("fix-online").innerHTML = ""; };
+$("fix-cancel").onclick = () => { $("fix-card").classList.add("hidden"); fixTarget = fixDraft = fixRefs = fixStruct = null; $("fix-online").innerHTML = ""; $("fix-struct").innerHTML = ""; };
 $("fix-save").onclick = async () => {
   try {
     if (fixDraft) await api("/api/label/apply", { sample_code: fixTarget.code, label_draft: fixDraft, ingredients_text: $("fix-ingr").value, contains: $("fix-contains").value });
-    else await api("/api/ingredients", { gtin14: fixTarget.gtin14, ingredients_text: $("fix-ingr").value, contains: $("fix-contains").value, refs: fixRefs || [] });
+    else await api("/api/ingredients", { gtin14: fixTarget.gtin14, ingredients_text: $("fix-ingr").value, contains: $("fix-contains").value, refs: fixRefs || [],
+      ingredients_structured: fixStruct && $("fix-ingr").value === fixStruct.text ? fixStruct.st : null });
     $("fix-card").classList.add("hidden"); error(""); fixTarget = fixDraft = null; loadRecent();
   } catch (err) { error(err.message); }
 };
@@ -626,13 +662,15 @@ async function loadRecent() {
     $("recent").innerHTML = samples.length ? samples.map((s) => `<li><span class="c">${esc(s.sample_code)}</span><span class="t">${esc(new Date(s.created_at).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }))}</span><span class="n">${esc(s.name || "Unknown product")}${s.brand ? " · " + esc(s.brand) : ""}</span>${s.has_ingredients ? "" : `<div class="row" style="grid-column:1/-1;margin-top:4px"><button class="btn quiet" style="min-height:40px;padding:8px" data-fix="${esc(s.sample_code)}" data-name="${esc(s.name || "")}">Photograph ingredients</button><button class="btn quiet" style="min-height:40px;padding:8px" data-online="${esc(s.sample_code)}" data-gtin="${esc(s.gtin14)}" data-name="${esc(s.name || "")}">Find online</button></div>`}</li>`).join("") : `<li class="muted">Nothing yet: scan the first item.</li>`;
     document.querySelectorAll("[data-fix]").forEach((b) => b.onclick = () => { fixTarget = { code: b.dataset.fix, name: b.dataset.name }; $("file-fix").click(); });
     document.querySelectorAll("[data-online]").forEach((b) => b.onclick = () => {
-      fixTarget = { code: b.dataset.online, name: b.dataset.name, gtin14: b.dataset.gtin }; fixDraft = null; fixRefs = null;
+      fixTarget = { code: b.dataset.online, name: b.dataset.name, gtin14: b.dataset.gtin }; fixDraft = null; fixRefs = null; fixStruct = null; $("fix-struct").innerHTML = "";
       $("fix-code").textContent = fixTarget.code; $("fix-name").textContent = fixTarget.name;
       $("fix-ingr").value = ""; $("fix-contains").value = ""; $("fix-head").textContent = "Pick a result above, then check the list here.";
       $("fix-card").classList.remove("hidden"); $("fix-card").scrollIntoView({ behavior: "smooth" });
       findOnline(fixTarget.gtin14, $("fix-online"), (it) => {
         fixRefs = it.url ? [{ url: it.url, title: it.title }] : []; fixDraft = null;
         $("fix-ingr").value = it.text; $("fix-head").textContent = `From ${it.url ? domainOf(it.url) : it.title}: check it matches your pack. It is saved with this link.`;
+        fixStruct = null; $("fix-struct").innerHTML = `<div class="note">Reading the full record…</div>`;
+        structuredFor(it).then((x) => { fixStruct = x; $("fix-struct").innerHTML = x ? ingrList(x.st) : ""; if (x) $("fix-ingr").value = x.text; });
       });
     });
   } catch (e) { $("recent").innerHTML = `<li class="muted">${esc(e.message)}</li>`; }
