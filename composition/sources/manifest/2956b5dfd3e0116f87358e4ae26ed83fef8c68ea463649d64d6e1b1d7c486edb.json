@@ -1,0 +1,16 @@
+{
+ "byte_length": 19869,
+ "media_type": "application/xml",
+ "retrievals": [
+  {
+   "identifiers": {
+    "cfr": "21 CFR 101.4",
+    "ecfr_date": "2026-11-01"
+   },
+   "retrieval_url": "https://www.ecfr.gov/api/versioner/v1/full/2026-11-01/title-21.xml?part=101&section=101.4",
+   "retrieved_at": "2026-11-12T00:56:01Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "2956b5dfd3e0116f87358e4ae26ed83fef8c68ea463649d64d6e1b1d7c486edb"
+}

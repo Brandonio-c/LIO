@@ -1,0 +1,16 @@
+{
+ "byte_length": 26245,
+ "media_type": "application/xml",
+ "retrievals": [
+  {
+   "identifiers": {
+    "cfr": "21 CFR 201.66",
+    "ecfr_date": "2026-11-01"
+   },
+   "retrieval_url": "https://www.ecfr.gov/api/versioner/v1/full/2026-11-01/title-21.xml?part=201&section=201.66",
+   "retrieved_at": "2026-11-12T00:56:06Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "ce91dcd5e75728e3de67651635b20a513e175d03fe1ed2af2d994632e18b28e1"
+}

@@ -234,3 +234,5 @@ data/foods/
 # Composition evidence store: blobs too large for git (manifests and catalog stay tracked).
 # FDA Food Labeling Guide (2013) PDF, 8.9 MB, cited by fda_rounding_101_9 for the tie rule.
 composition/sources/sha256/47/47296a92eb754b24466459de0ff00f262c1915fa784df4a3af65ddfa29f57935
+!composition/sources/manifest/
+!composition/sources/manifest/*.json

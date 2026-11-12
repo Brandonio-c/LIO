@@ -1,0 +1,16 @@
+{
+ "byte_length": 137066,
+ "media_type": "application/xml",
+ "retrievals": [
+  {
+   "identifiers": {
+    "cfr": "21 CFR 101.9",
+    "ecfr_date": "2026-11-01"
+   },
+   "retrieval_url": "https://www.ecfr.gov/api/versioner/v1/full/2026-11-01/title-21.xml?part=101&section=101.9",
+   "retrieved_at": "2026-11-12T00:56:01Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "fe7c26d546fb886db2f67908e1033cf1dd42169c13bbf5862585440bce4d8c35"
+}

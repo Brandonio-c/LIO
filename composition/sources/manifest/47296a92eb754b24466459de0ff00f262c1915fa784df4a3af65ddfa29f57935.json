@@ -1,0 +1,15 @@
+{
+ "byte_length": 8945276,
+ "media_type": "application/pdf",
+ "retrievals": [
+  {
+   "identifiers": {
+    "title": "Guidance for Industry: A Food Labeling Guide (January 2013)"
+   },
+   "retrieval_url": "https://www.fda.gov/media/81606/download",
+   "retrieved_at": "2026-11-12T00:56:13Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "47296a92eb754b24466459de0ff00f262c1915fa784df4a3af65ddfa29f57935"
+}

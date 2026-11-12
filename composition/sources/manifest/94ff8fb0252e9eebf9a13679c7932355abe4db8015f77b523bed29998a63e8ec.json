@@ -1,0 +1,15 @@
+{
+ "byte_length": 400621,
+ "media_type": "text/html",
+ "retrievals": [
+  {
+   "identifiers": {
+    "celex": "02011R1169-20180101"
+   },
+   "retrieval_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02011R1169-20180101",
+   "retrieved_at": "2026-11-12T00:56:12Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "94ff8fb0252e9eebf9a13679c7932355abe4db8015f77b523bed29998a63e8ec"
+}

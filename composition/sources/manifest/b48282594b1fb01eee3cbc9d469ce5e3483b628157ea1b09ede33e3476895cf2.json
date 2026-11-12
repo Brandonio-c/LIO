@@ -1,0 +1,16 @@
+{
+ "byte_length": 21501,
+ "media_type": "text/html",
+ "retrievals": [
+  {
+   "identifiers": {
+    "publisher": "IUPAC CIAAW",
+    "table": "standard atomic weights"
+   },
+   "retrieval_url": "https://www.ciaaw.org/atomic-weights.htm",
+   "retrieved_at": "2026-11-12T00:56:11Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "b48282594b1fb01eee3cbc9d469ce5e3483b628157ea1b09ede33e3476895cf2"
+}
