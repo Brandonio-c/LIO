@@ -227,3 +227,6 @@ software/host/.venv/
 .coverage
 coverage.xml
 htmlcov/
+
+# LIO food library (SQLite + photos): research data, kept out of git
+data/foods/

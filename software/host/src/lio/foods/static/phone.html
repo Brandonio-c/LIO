@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2a78d6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="LIO intake">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="manifest" id="manifest">
+<title>LIO intake</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --surface-2: #f2f1ed;
+  --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781; --hair: #e1e0d9; --axis: #c3c2b7;
+  --accent: #2a78d6; --good: #0ca30c; --good-text: #006300; --critical: #d03b3b; --warning: #fab219;
+  --wash-good: rgba(12,163,12,0.10); --wash-critical: rgba(208,59,59,0.10); --wash-warning: rgba(250,178,25,0.16);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #242423;
+    --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781; --hair: #2c2c2a; --axis: #383835;
+    --accent: #3987e5; --good-text: #0ca30c;
+    --wash-good: rgba(12,163,12,0.16); --wash-critical: rgba(208,59,59,0.18); --wash-warning: rgba(250,178,25,0.14);
+  }
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; background: var(--page); color: var(--ink); }
+body { font: 16px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  padding: env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom)); max-width: 560px; margin: 0 auto; }
+button, input, textarea { font: inherit; color: inherit; }
+header { display: flex; align-items: center; gap: 10px; padding: 14px 0 10px; }
+header img { width: 32px; height: 32px; border-radius: 8px; }
+header h1 { font-size: 19px; margin: 0; flex: 1; }
+.pill { font-size: 12.5px; border: 1px solid var(--hair); border-radius: 999px; padding: 2px 10px; color: var(--ink-2); white-space: nowrap; }
+.pill.ok { color: var(--good-text); border-color: var(--good); }
+.pill.bad { color: var(--critical); border-color: var(--critical); }
+.card { background: var(--surface); border: 1px solid var(--hair); border-radius: 14px; padding: 16px; margin: 12px 0; }
+.card h2 { font-size: 16px; margin: 0 0 8px; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: 1px solid var(--axis);
+  background: var(--surface); border-radius: 12px; padding: 14px; font-weight: 600; cursor: pointer; min-height: 50px; }
+.btn:disabled { opacity: .5; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.big { font-size: 19px; min-height: 76px; }
+.btn.quiet { border-color: var(--hair); font-weight: 500; }
+.row { display: flex; gap: 10px; }
+.row > * { flex: 1; }
+label.f { display: grid; gap: 4px; font-size: 13.5px; color: var(--ink-2); margin-top: 10px; }
+input[type=text], input[type=date], input[type=tel], textarea { width: 100%; border: 1px solid var(--axis); background: var(--surface);
+  border-radius: 10px; padding: 11px 12px; font-size: 16px; }
+textarea { min-height: 70px; resize: vertical; }
+.muted { color: var(--muted); }
+.note { font-size: 13px; color: var(--muted); }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.hidden { display: none !important; }
+.err { background: var(--wash-critical); border: 1px solid var(--critical); border-radius: 12px; padding: 12px 14px; margin: 12px 0; }
+.warn { background: var(--wash-warning); border-radius: 10px; padding: 10px 12px; margin-top: 10px; font-size: 14px; }
+.prod { display: grid; grid-template-columns: 88px 1fr; gap: 12px; align-items: start; }
+.prod img, .thumb { width: 88px; height: 88px; object-fit: contain; background: var(--surface-2); border-radius: 10px; }
+.prod .name { font-weight: 700; font-size: 17px; }
+.nut { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+.nut td { padding: 4px 0; border-top: 1px solid var(--hair); }
+.nut td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.done { text-align: center; }
+.done .code { font-size: 34px; font-weight: 800; letter-spacing: .5px; margin: 6px 0; font-variant-numeric: tabular-nums; }
+.done .tick { width: 44px; height: 44px; border-radius: 50%; background: var(--good); margin: 0 auto 6px; position: relative; }
+.done .tick::after { content: ""; position: absolute; left: 15px; top: 9px; width: 10px; height: 20px; border: solid #fff; border-width: 0 4px 4px 0; transform: rotate(45deg); }
+.spin { width: 22px; height: 22px; border: 3px solid var(--hair); border-top-color: var(--accent); border-radius: 50%; animation: s 0.8s linear infinite; }
+@keyframes s { to { transform: rotate(360deg); } }
+.busy { display: flex; gap: 12px; align-items: center; justify-content: center; padding: 18px; color: var(--ink-2); }
+.preview { width: 100%; max-height: 220px; object-fit: contain; border-radius: 10px; background: var(--surface-2); }
+.recent { list-style: none; padding: 0; margin: 0; }
+.recent li { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 9px 0; border-top: 1px solid var(--hair); }
+.recent li:first-child { border-top: 0; }
+.recent .c { font-weight: 700; font-variant-numeric: tabular-nums; }
+.recent .t { color: var(--muted); font-size: 13px; text-align: right; }
+.recent .n { grid-column: 1 / -1; color: var(--ink-2); font-size: 14px; }
+details summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
+/* live viewfinder (HTTPS only) */
+#live { position: fixed; inset: 0; background: #000; z-index: 50; display: none; flex-direction: column; }
+#live.open { display: flex; }
+#live .stage { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+#live video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#live .frame { position: absolute; left: 7%; right: 7%; top: 32%; height: 24%; border: 3px solid rgba(255,255,255,.95); border-radius: 14px;
+  box-shadow: 0 0 0 9999px rgba(0,0,0,.4); pointer-events: none; overflow: hidden; transition: border-color .15s; }
+#live .frame .line { position: absolute; left: 4%; right: 4%; height: 2px; background: #ff4d4d; box-shadow: 0 0 8px #ff4d4d; top: 10%; animation: sweep 1.6s ease-in-out infinite alternate; }
+@keyframes sweep { to { top: 88%; } }
+#live .frame.hit { border-color: #19c219; box-shadow: 0 0 0 9999px rgba(0,0,0,.55); }
+#live .frame.hit .line { display: none; }
+#live .top { position: absolute; left: 0; right: 0; top: 0; padding: calc(env(safe-area-inset-top) + 14px) 16px 12px; text-align: center; color: #fff;
+  background: linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,0)); }
+#live .top .h { font-weight: 700; font-size: 18px; }
+#live .top .s { font-size: 13.5px; opacity: .85; margin-top: 2px; min-height: 1.2em; }
+#live .status { position: absolute; left: 50%; transform: translateX(-50%); top: calc(56% + 16px); display: flex; gap: 8px; align-items: center;
+  background: rgba(0,0,0,.7); color: #fff; border-radius: 999px; padding: 7px 14px; font-size: 14px; font-weight: 600; white-space: nowrap; }
+#live .status .dot { width: 10px; height: 10px; border-radius: 50%; background: #fab219; }
+#live .status .dot.pulse { animation: pulse 0.9s ease-in-out infinite; }
+#live .status.ok .dot { background: #19c219; animation: none; }
+#live .status.bad .dot { background: #ff4d4d; animation: none; }
+@keyframes pulse { 50% { opacity: .25; } }
+#live .hint { position: absolute; left: 16px; right: 16px; bottom: 14px; color: #fff; text-align: center; font-size: 13.5px; background: rgba(0,0,0,.6); border-radius: 10px; padding: 8px 10px; display: none; }
+#live .bar { display: flex; gap: 10px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: #000; }
+#live .bar .btn { background: #1d1d1c; color: #fff; border-color: #3a3a38; }
+.found { border-top: 1px solid var(--hair); padding: 9px 0; }
+.found .src { font-size: 12.5px; color: var(--muted); }
+.found .src a { color: var(--accent); }
+.found .txt { font-size: 14px; margin: 3px 0 6px; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+.found .btn { min-height: 38px; padding: 7px; font-size: 14px; }
+.ok-banner { background: var(--wash-good); border: 1px solid var(--good); color: var(--good-text); border-radius: 10px; padding: 9px 12px; font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<header>
+  <img src="/icon.svg" alt="">
+  <h1>LIO food intake</h1>
+  <span id="status" class="pill">…</span>
+</header>
+
+<div id="unpaired" class="card hidden">
+  <h2>Not paired yet</h2>
+  <p>Open the LIO dashboard on the lab Mac, go to the <strong>Database</strong> tab, and scan the QR code with this phone's camera.</p>
+</div>
+
+<main id="app" class="hidden">
+  <!-- step 1: scan -->
+  <section id="step-scan">
+    <div class="card">
+      <h2>1 · Barcode</h2>
+      <p class="note" style="margin:0 0 12px">Point the camera at the barcode on the pack. The picture it reads from is kept as the sample's barcode photo.</p>
+      <button class="btn primary big" id="btn-camera">Scan barcode</button>
+      <div class="row" style="margin-top:10px">
+        <button class="btn quiet" id="btn-library">From photos</button>
+        <button class="btn quiet" id="btn-type">Type digits</button>
+      </div>
+      <div id="type-box" class="hidden">
+        <label class="f">Barcode digits (8, 12 or 13)
+          <input type="tel" id="typed" inputmode="numeric" autocomplete="off" placeholder="e.g. 016000275287"></label>
+        <button class="btn" id="btn-lookup" style="margin-top:10px">Look up</button>
+      </div>
+      <input type="file" id="file-camera" accept="image/*" capture="environment" class="hidden">
+      <input type="file" id="file-library" accept="image/*" class="hidden">
+    </div>
+  </section>
+
+  <div id="busy" class="busy hidden"><div class="spin"></div><span id="busy-text">Reading the barcode…</span></div>
+  <div id="error" class="err hidden"></div>
+
+  <!-- step 2: confirm -->
+  <section id="step-confirm" class="hidden">
+    <div class="card">
+      <div class="ok-banner" id="read-ok"></div>
+      <h2>2 · Product</h2>
+      <img id="bc-preview" class="preview hidden" alt="Barcode photo">
+      <div class="prod" style="margin-top:10px">
+        <img id="p-img" alt="">
+        <div>
+          <div class="name" id="p-name"></div>
+          <div class="ink2" id="p-brand"></div>
+          <div class="note mono" id="p-code"></div>
+          <div class="note" id="p-source"></div>
+        </div>
+      </div>
+      <table class="nut" id="p-nut"></table>
+      <div id="p-allergens" class="note" style="margin-top:8px"></div>
+      <div id="p-existing" class="warn hidden"></div>
+      <div id="p-missing" class="warn hidden">No manufacturer data found online. The sample is still saved with its barcode; fill in the label details later on the dashboard.</div>
+    </div>
+    <div class="card" id="ingr-card">
+      <h2>3 · Ingredients</h2>
+      <div id="ingr-have" class="hidden">
+        <div class="note" id="ingr-src"></div>
+        <div id="ingr-text" style="font-size:14.5px;line-height:1.5;margin-top:4px"></div>
+      </div>
+      <div id="ingr-missing" class="warn hidden" style="margin:0 0 10px"><strong>No ingredient list online for this product.</strong> Photograph the ingredients panel on the pack and it will be read for you.</div>
+      <div id="ingr-online"></div>
+      <button class="btn" id="btn-ingr">Photograph the ingredients</button>
+      <div id="ingr-review" class="hidden" style="margin-top:10px">
+        <div class="ok-banner" style="margin-bottom:6px" id="ingr-review-head">Read from the label: check it and correct anything misread.</div>
+        <label class="f">Ingredients<textarea id="ingr-edit" style="min-height:120px"></textarea></label>
+        <label class="f">Contains (allergens)<input type="text" id="ingr-contains"></label>
+      </div>
+      <button class="btn quiet" id="btn-nut" style="margin-top:10px">Photograph the nutrition facts (optional)</button>
+      <div id="nut-review" class="hidden" style="margin-top:10px"></div>
+      <input type="file" id="file-label" accept="image/*" capture="environment" class="hidden">
+      <input type="file" id="file-fix" accept="image/*" capture="environment" class="hidden">
+    </div>
+    <div class="card">
+      <h2>4 · This item</h2>
+      <button class="btn quiet" id="btn-pphoto">Add a photo of the pack (optional)</button>
+      <img id="pp-preview" class="preview hidden" style="margin-top:10px" alt="Product photo">
+      <input type="file" id="file-pphoto" accept="image/*" capture="environment" class="hidden">
+      <div class="row">
+        <label class="f">Lot / batch<input type="text" id="lot" autocomplete="off"></label>
+        <label class="f">Best before<input type="date" id="bb"></label>
+      </div>
+      <label class="f">Notes<textarea id="notes" placeholder="condition, where bought, storage…"></textarea></label>
+      <label class="f">Entered by<input type="text" id="by" autocomplete="name"></label>
+      <div class="row" style="margin-top:14px">
+        <button class="btn quiet" id="btn-cancel">Cancel</button>
+        <button class="btn primary" id="btn-save">Save sample</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- step 3: saved -->
+  <section id="step-done" class="card done hidden">
+    <div class="tick" aria-hidden="true"></div>
+    <div>Saved as</div>
+    <div class="code" id="d-code"></div>
+    <div class="ink2" id="d-name"></div>
+    <p class="note">Write this code on the item (or stick a label on it), so its LIO scans go to the right record.</p>
+    <button class="btn primary big" id="btn-next">Scan the next item</button>
+    <button class="btn quiet" id="btn-undo" style="margin-top:10px">Undo: remove this sample</button>
+  </section>
+
+  <section class="card hidden" id="fix-card">
+    <h2>Ingredients for <span id="fix-code"></span></h2>
+    <div class="note" id="fix-name"></div>
+    <div id="fix-online"></div>
+    <div class="ok-banner" style="margin-top:8px" id="fix-head">Read from the label: check it and correct anything misread.</div>
+    <label class="f">Ingredients<textarea id="fix-ingr" style="min-height:120px"></textarea></label>
+    <label class="f">Contains (allergens)<input type="text" id="fix-contains"></label>
+    <div class="row" style="margin-top:12px"><button class="btn quiet" id="fix-cancel">Cancel</button><button class="btn primary" id="fix-save">Save ingredients</button></div>
+  </section>
+
+  <section class="card">
+    <h2>Recently added <span class="note" id="count"></span></h2>
+    <ul class="recent" id="recent"><li class="muted">…</li></ul>
+  </section>
+
+  <details class="note" style="margin-top:6px">
+    <summary>Tips</summary>
+    <p>Add to the home screen to use it like an app: Safari → Share → <em>Add to Home Screen</em>; Chrome → ⋮ → <em>Add to Home screen</em>.</p>
+    <p>The dashboard must be running on the lab Mac. Opened from the secure (https) link it works on any network, including cellular and with the Mac's VPN on; the plain local link needs the same Wi-Fi and no VPN.</p>
+    <p>If a barcode will not read, try more light, hold the phone parallel to the pack, or type the digits under the bars.</p>
+  </details>
+</main>
+
+<div id="live" role="dialog" aria-label="Barcode viewfinder">
+  <div class="stage">
+    <video id="live-video" playsinline muted autoplay></video>
+    <div class="frame" id="live-frame"><div class="line"></div></div>
+    <div class="top"><div class="h" id="live-h">Scanning</div><div class="s" id="live-s">Hold the barcode flat inside the frame, about a hand's width away</div></div>
+    <div class="status" id="live-status" role="status" aria-live="polite"><span class="dot pulse"></span><span id="live-status-text">Starting the camera…</span></div>
+    <div class="hint" id="live-hint">Not reading yet: move a little closer or further, add light, keep it still. Or take a photo instead.</div>
+  </div>
+  <div class="bar"><button class="btn" id="live-cancel">Cancel</button><button class="btn" id="live-photo">Take a photo instead</button></div>
+</div>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+                set(k, v) { try { localStorage.setItem(k, v); } catch { /* private mode */ } } };
+
+let KEY = new URLSearchParams(location.search).get("k") || store.get("lio-phone-key") || "";
+if (new URLSearchParams(location.search).get("k")) store.set("lio-phone-key", KEY);
+let draft = null, lastSaved = null, productPhoto = null, barcodePhotoUrl = null;
+
+async function api(path, body) {
+  const opt = { method: body === undefined ? "GET" : "POST", headers: { "X-LIO-Phone-Key": KEY } };
+  if (body !== undefined) { opt.headers["Content-Type"] = "application/json"; opt.body = JSON.stringify(body); }
+  const r = await fetch(path, opt);
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || `${r.status} ${r.statusText}`);
+  return data;
+}
+const fileUrl = (rel) => `/files/${rel.split("/").map(encodeURIComponent).join("/")}?k=${encodeURIComponent(KEY)}`;
+
+function show(step) {
+  for (const s of ["scan", "confirm", "done"]) $("step-" + s).classList.toggle("hidden", s !== step);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function busy(text) { $("busy").classList.toggle("hidden", !text); if (text) $("busy-text").textContent = text; }
+function error(msg) { $("error").classList.toggle("hidden", !msg); $("error").textContent = msg || ""; }
+
+// Downscale a photo to a JPEG data URL (upright: browsers apply the EXIF rotation when drawing).
+function shrink(file, maxPx = 1800, quality = 0.9) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, maxPx / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL("image/jpeg", quality));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("could not open that photo")); };
+    img.src = url;
+  });
+}
+
+const NUT_ROWS = [["energy_kcal", "Energy", "kcal"], ["fat_g", "Fat", "g"], ["carbohydrates_g", "Carbohydrate", "g"],
+  ["sugars_g", "  sugars", "g"], ["fiber_g", "Fibre", "g"], ["protein_g", "Protein", "g"], ["salt_g", "Salt", "g"]];
+
+function renderProduct(r) {
+  const p = r.product || {}, info = p.info || {};
+  $("bc-preview").classList.toggle("hidden", !barcodePhotoUrl);
+  if (barcodePhotoUrl) $("bc-preview").src = barcodePhotoUrl;
+  $("p-img").src = p.image_file ? fileUrl(p.image_file) : "/icon.svg";
+  $("p-name").textContent = p.name || "Unknown product";
+  $("p-brand").textContent = [p.brand, p.quantity].filter(Boolean).join(" · ");
+  $("p-code").textContent = `${r.kind} ${r.code}` + (r.format && r.format !== "typed" ? ` · read as ${r.format}` : " · typed");
+  $("p-source").textContent = p.found ? "from " + p.sources.map((s) => ({ openfoodfacts: "Open Food Facts", usda: "USDA FoodData Central", manual: "manual entry" }[s] || s)).join(" + ") : "";
+  const per = info.nutrition_per_100g || {};
+  const rows = NUT_ROWS.filter(([k]) => per[k] !== undefined);
+  $("p-nut").innerHTML = rows.length ? `<tr><td class="muted">per 100 g</td><td></td></tr>` + rows.map(([k, l, u]) => `<tr><td>${esc(l)}</td><td>${esc(+per[k].toFixed(2))} ${u}</td></tr>`).join("") : "";
+  $("p-allergens").textContent = (info.allergens || []).length ? "Allergens: " + info.allergens.join(", ") : "";
+  const ex = r.existing_samples || [];
+  $("p-existing").classList.toggle("hidden", !ex.length);
+  $("p-existing").textContent = ex.length ? `Already in the library as ${ex.map((e) => e.sample_code).join(", ")}. Saving adds another physical item of the same product.` : "";
+  $("p-missing").classList.toggle("hidden", !!p.found);
+  const ingr = (info.ingredients_text || "").trim();
+  $("ingr-have").classList.toggle("hidden", !ingr);
+  $("ingr-missing").classList.toggle("hidden", !!ingr);
+  $("ingr-text").textContent = ingr;
+  const isrc = info.ingredients_source || (p.sources || [])[0] || "";
+  $("ingr-src").textContent = ingr ? "From " + ({ openfoodfacts: "Open Food Facts", usda: "USDA", dsld: "NIH supplement label database", "label photo": "a label photo", manual: "typed in" }[isrc] || isrc) + ". Check it matches the pack." : "";
+  $("btn-ingr").textContent = ingr ? "Photograph the ingredients anyway" : "Photograph the ingredients";
+  $("btn-ingr").className = ingr ? "btn quiet" : "btn primary";
+  ingredientsFound = null; $("ingr-online").innerHTML = "";
+  if (!ingr) findOnline(r.gtin14, $("ingr-online"), (it) => {
+    ingredientsFound = { refs: it.url ? [{ url: it.url, title: it.title }] : [] };
+    labels.ingredients = null;
+    $("ingr-edit").value = it.text; $("ingr-contains").value = "";
+    $("ingr-review-head").textContent = `From ${it.url ? domainOf(it.url) : it.title}: check it matches your pack, correct it if needed. It is saved with this link.`;
+    $("ingr-review").classList.remove("hidden"); $("ingr-review").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+  $("read-ok").textContent = `${r.format === "typed" ? "Looked up" : "Barcode read"}: ${r.kind} ${r.code}` + (p.found ? " · product found" : " · no product data online");
+}
+
+function showIdentified(r) {
+  draft = r.draft; productPhoto = null; $("pp-preview").classList.add("hidden");
+  labels = {}; $("ingr-review").classList.add("hidden"); $("nut-review").classList.add("hidden"); $("nut-review").innerHTML = "";
+  $("lot").value = ""; $("bb").value = ""; $("notes").value = "";
+  renderProduct(r); show("confirm");
+}
+
+async function identify(body) {
+  error(""); busy(body.photo ? "Reading the barcode and looking up the product…" : "Looking up the product…");
+  try {
+    showIdentified(await api("/api/identify", body));
+  } catch (e) {
+    error(e.message); show("scan");
+    if (/barcode|digits/i.test(e.message)) { $("type-box").classList.remove("hidden"); }
+  } finally { busy(""); }
+}
+
+async function onBarcodeFile(input) {
+  const f = input.files && input.files[0]; input.value = "";
+  if (!f) return;
+  try { barcodePhotoUrl = await shrink(f, 3000, 0.92); } catch (e) { return error(e.message); }   // keep bar detail
+  identify({ photo: barcodePhotoUrl });
+}
+
+const LIVE = { stream: null, timer: null, busy: false, frames: 0, t0: 0, done: false, n: 0 };
+const canLive = () => window.isSecureContext && navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+function startScan() { if (canLive()) liveOpen(); else $("file-camera").click(); }
+
+function liveStatus(text, kind = "") {
+  const st = $("live-status"); st.className = "status " + kind;
+  st.querySelector(".dot").classList.toggle("pulse", kind === "");
+  $("live-status-text").textContent = text;
+}
+
+async function liveOpen() {
+  error("");
+  Object.assign(LIVE, { frames: 0, done: false, busy: false, n: 0 });
+  $("live").classList.add("open"); $("live-frame").classList.remove("hit"); $("live-hint").style.display = "none";
+  $("live-h").textContent = "Scanning"; $("live-s").textContent = "Hold the barcode flat inside the frame, about a hand's width away";
+  liveStatus("Starting the camera…");
+  try {
+    LIVE.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
+  } catch (e) { liveClose(); error("Camera not available (" + e.name + "): taking a photo instead."); $("file-camera").click(); return; }
+  const v = $("live-video"); v.srcObject = LIVE.stream; await v.play().catch(() => {});
+  LIVE.t0 = Date.now();
+  liveStatus("Scanning…");
+  LIVE.timer = setInterval(liveTick, 300);
+}
+function liveClose() {
+  clearInterval(LIVE.timer); LIVE.timer = null; LIVE.done = true;
+  if (LIVE.stream) LIVE.stream.getTracks().forEach((t) => t.stop());
+  LIVE.stream = null; $("live").classList.remove("open");
+}
+
+// The part of the video under the guide frame (with margin), in video pixels.
+function frameCrop(v) {
+  const vr = v.getBoundingClientRect(), fr = $("live-frame").getBoundingClientRect();
+  const s = Math.max(vr.width / v.videoWidth, vr.height / v.videoHeight);       // object-fit: cover
+  const ox = (vr.width - v.videoWidth * s) / 2, oy = (vr.height - v.videoHeight * s) / 2;
+  const mx = fr.width * 0.08, my = fr.height * 0.6;
+  let x = (fr.left - vr.left - mx - ox) / s, y = (fr.top - vr.top - my - oy) / s;
+  let w = (fr.width + 2 * mx) / s, h = (fr.height + 2 * my) / s;
+  x = Math.max(0, x); y = Math.max(0, y); w = Math.min(v.videoWidth - x, w); h = Math.min(v.videoHeight - y, h);
+  return [x, y, w, h];
+}
+function grab(v, crop) {
+  const [x, y, w, h] = crop ? frameCrop(v) : [0, 0, v.videoWidth, v.videoHeight];
+  const k = Math.min(1, 1400 / Math.max(w, h));
+  const c = document.createElement("canvas"); c.width = Math.round(w * k); c.height = Math.round(h * k);
+  c.getContext("2d").drawImage(v, x, y, w, h, 0, 0, c.width, c.height);
+  return c.toDataURL("image/jpeg", 0.88);
+}
+
+async function liveTick() {
+  const v = $("live-video");
+  if (LIVE.busy || LIVE.done || !v.videoWidth) return;
+  LIVE.busy = true;
+  const secs = (Date.now() - LIVE.t0) / 1000;
+  if (secs > 7) $("live-hint").style.display = "block";
+  try {
+    LIVE.n++;
+    const frame = grab(v, LIVE.n % 4 !== 0);   // mostly the framed area; every 4th frame the whole picture
+    const r = await api("/api/decode", { photo: frame });
+    if (LIVE.done) return;
+    LIVE.frames++;
+    if (!r.found) {
+      liveStatus(r.seen ? `Seeing a code, not a retail barcode… (${LIVE.frames})` : `Scanning… ${LIVE.frames} frame${LIVE.frames === 1 ? "" : "s"} checked`);
+      return;
+    }
+    // 1 · got it
+    LIVE.done = true; clearInterval(LIVE.timer);
+    $("live-frame").classList.add("hit"); $("live-hint").style.display = "none";
+    $("live-h").textContent = "Barcode read";
+    $("live-s").textContent = `${r.kind} ${r.code}`;
+    liveStatus("Looking up the product…", "ok");
+    if (navigator.vibrate) navigator.vibrate(80);
+    // 2 · look it up, then show the product
+    try {
+      const res = await api("/api/identify", { photo: frame });
+      barcodePhotoUrl = frame; liveClose(); showIdentified(res);
+    } catch (e) { liveStatus(e.message, "bad"); setTimeout(() => { if ($("live").classList.contains("open")) liveClose(); show("scan"); error(e.message); }, 2500); }
+  } catch (e) {
+    liveStatus(/fetch|network|load/i.test(e.message) ? "Cannot reach the Mac: is the dashboard running?" : e.message, "bad");
+  } finally { LIVE.busy = false; }
+}
+$("live-cancel").onclick = liveClose;
+$("live-photo").onclick = () => { liveClose(); $("file-camera").click(); };
+
+$("btn-camera").onclick = startScan;
+$("btn-library").onclick = () => $("file-library").click();
+$("btn-type").onclick = () => { $("type-box").classList.toggle("hidden"); $("typed").focus(); };
+$("file-camera").onchange = (e) => onBarcodeFile(e.target);
+$("file-library").onchange = (e) => onBarcodeFile(e.target);
+$("btn-lookup").onclick = () => { const v = $("typed").value.trim(); if (!v) return; barcodePhotoUrl = null; identify({ code: v }); };
+$("typed").addEventListener("keydown", (e) => { if (e.key === "Enter") $("btn-lookup").click(); });
+/* ingredients online: label databases, then web pages; every result shows its link */
+let ingredientsFound = null;
+const SRC_TAG = { usda: "USDA", dsld: "NIH supplement labels", openfda: "FDA drug label" };
+const domainOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return u; } };
+async function findOnline(gtin14, box, onUse) {
+  box.innerHTML = `<div class="busy" style="justify-content:flex-start;padding:8px 0"><div class="spin"></div><span>Searching label databases and the web…</span></div>`;
+  let r;
+  try { r = await api(`/api/find?gtin14=${encodeURIComponent(gtin14)}`); }
+  catch (e) { box.innerHTML = `<div class="warn">Online search failed: ${esc(e.message)}</div>`; return; }
+  const items = [];
+  for (const c of r.structured || []) if ((c.ingredients || "").trim()) items.push({ text: c.ingredients, title: `${SRC_TAG[c.source] || c.source}: ${c.name}`, url: c.link || "" });
+  for (const pg of (r.web && r.web.pages) || []) for (const sc of pg.sections) items.push({ text: `${sc.heading}: ${sc.text}`, title: pg.title || pg.domain, url: pg.url });
+  if (!items.length) { box.innerHTML = `<div class="warn">Nothing found online for "${esc(r.query)}". Photograph the ingredients panel instead.</div>`; return; }
+  box.innerHTML = `<div class="note" style="margin:4px 0 2px">Found online for "${esc(r.query)}". Pick the one that matches your pack (flavour, sugar-free, caplets…), then check it:</div>` +
+    items.slice(0, 8).map((it, i) => `<div class="found"><div class="src">${it.url ? `<a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(domainOf(it.url))}</a> · ` : ""}${esc(it.title)}</div>
+      <div class="txt">${esc(it.text)}</div><button class="btn quiet" data-use="${i}">Use this</button></div>`).join("");
+  box.querySelectorAll("[data-use]").forEach((b) => b.onclick = () => onUse(items[+b.dataset.use]));
+}
+
+/* label photos: read on the Mac, reviewed here, saved with the sample */
+let labels = {}, labelKind = "ingredients";
+const NUT_NAMES = { energy_kcal: ["Energy", "kcal"], fat_g: ["Fat", "g"], saturated_fat_g: ["  saturated", "g"], trans_fat_g: ["  trans", "g"],
+  cholesterol_mg: ["Cholesterol", "mg"], sodium_mg: ["Sodium", "mg"], carbohydrates_g: ["Carbohydrate", "g"], fiber_g: ["  fibre", "g"],
+  sugars_g: ["  sugars", "g"], added_sugars_g: ["  added sugars", "g"], protein_g: ["Protein", "g"], salt_g: ["Salt", "g"] };
+$("btn-ingr").onclick = () => { labelKind = "ingredients"; $("file-label").click(); };
+$("btn-nut").onclick = () => { labelKind = "nutrition"; $("file-label").click(); };
+$("file-label").onchange = async (e) => {
+  const f = e.target.files && e.target.files[0]; e.target.value = ""; if (!f) return;
+  const kind = labelKind; error(""); busy(kind === "ingredients" ? "Reading the ingredients…" : "Reading the nutrition facts…");
+  try {
+    const r = await api("/api/label", { photo: await shrink(f, 3000, 0.92), kind });
+    if (kind === "ingredients") {
+      labels.ingredients = { label_draft: r.label_draft, kind }; ingredientsFound = null;
+      $("ingr-review-head").textContent = "Read from the label: check it and correct anything misread.";
+      $("ingr-edit").value = r.ingredients || r.text; $("ingr-contains").value = r.contains || "";
+      $("ingr-review").classList.remove("hidden"); $("ingr-missing").classList.add("hidden");
+      if (!r.ingredients) error('No "Ingredients:" heading was found: the whole text is shown, trim it to the ingredient list.');
+    } else {
+      const n = r.nutrition || {}, per = n.per_100g || {};
+      labels.nutrition = { label_draft: r.label_draft, kind, nutrition_per_100g: per, serving_size: n.serving || "" };
+      const rows = Object.keys(NUT_NAMES).filter((k) => per[k] !== undefined);
+      $("nut-review").innerHTML = rows.length
+        ? `<div class="ok-banner">Read: ${rows.length} values, serving ${esc(n.serving || "?")}. Per 100 g:</div><table class="nut">${rows.map((k) => `<tr><td>${esc(NUT_NAMES[k][0])}</td><td>${+per[k].toFixed(2)} ${NUT_NAMES[k][1]}</td></tr>`).join("")}</table><div class="note" style="margin-top:6px">Correct any value on the dashboard after saving.</div>`
+        : `<div class="warn">${n.serving_g ? "No nutrition values could be read" : "The serving size in grams was not found, so per-100 g values cannot be worked out"}. The photo is still saved; enter the values on the dashboard.</div>`;
+      $("nut-review").classList.remove("hidden");
+    }
+  } catch (err) { error(err.message); }
+  finally { busy(""); }
+};
+
+$("btn-pphoto").onclick = () => $("file-pphoto").click();
+$("file-pphoto").onchange = async (e) => {
+  const f = e.target.files && e.target.files[0]; e.target.value = "";
+  if (!f) return;
+  try { productPhoto = await shrink(f); $("pp-preview").src = productPhoto; $("pp-preview").classList.remove("hidden"); }
+  catch (err) { error(err.message); }
+};
+$("btn-cancel").onclick = () => { draft = null; error(""); show("scan"); };
+$("by").value = store.get("lio-entered-by") || "";
+$("btn-save").onclick = async () => {
+  if (!draft) return;
+  $("btn-save").disabled = true; busy("Saving…"); error("");
+  try {
+    store.set("lio-entered-by", $("by").value.trim());
+    const lab = [];
+    if (labels.ingredients) lab.push({ ...labels.ingredients, ingredients_text: $("ingr-edit").value, contains: $("ingr-contains").value });
+    if (labels.nutrition) lab.push(labels.nutrition);
+    const found = !labels.ingredients && ingredientsFound && $("ingr-edit").value.trim()
+      ? { ingredients_text: $("ingr-edit").value, contains: $("ingr-contains").value, refs: ingredientsFound.refs } : null;
+    const s = await api("/api/save", { draft, labels: lab, ingredients_found: found, product_photo: productPhoto, lot: $("lot").value, best_before: $("bb").value,
+      notes: $("notes").value, entered_by: $("by").value });
+    lastSaved = s; draft = null;
+    $("d-code").textContent = s.sample_code;
+    $("d-name").textContent = (s.product && s.product.name) || s.scanned_text;
+    $("btn-undo").disabled = false; $("btn-undo").textContent = "Undo: remove this sample";
+    show("done"); loadRecent();
+  } catch (e) { error(e.message); }
+  finally { busy(""); $("btn-save").disabled = false; }
+};
+$("btn-next").onclick = () => { show("scan"); startScan(); };
+$("btn-undo").onclick = async () => {
+  if (!lastSaved) return;
+  try { await api("/api/archive", { sample_code: lastSaved.sample_code });
+        $("btn-undo").disabled = true; $("btn-undo").textContent = `${lastSaved.sample_code} removed (archived on the dashboard)`; loadRecent(); }
+  catch (e) { error(e.message); }
+};
+
+let fixTarget = null, fixDraft = null, fixRefs = null;
+$("file-fix").onchange = async (e) => {
+  const f = e.target.files && e.target.files[0]; e.target.value = ""; if (!f || !fixTarget) return;
+  error(""); busy("Reading the ingredients…");
+  try {
+    const r = await api("/api/label", { photo: await shrink(f, 3000, 0.92), kind: "ingredients" });
+    fixDraft = r.label_draft; fixRefs = null; $("fix-online").innerHTML = ""; $("fix-head").textContent = "Read from the label: check it and correct anything misread.";
+    $("fix-code").textContent = fixTarget.code; $("fix-name").textContent = fixTarget.name;
+    $("fix-ingr").value = r.ingredients || r.text; $("fix-contains").value = r.contains || "";
+    $("fix-card").classList.remove("hidden"); $("fix-card").scrollIntoView({ behavior: "smooth" });
+    if (!r.ingredients) error('No "Ingredients:" heading was found: the whole text is shown, trim it to the ingredient list.');
+  } catch (err) { error(err.message); }
+  finally { busy(""); }
+};
+$("fix-cancel").onclick = () => { $("fix-card").classList.add("hidden"); fixTarget = fixDraft = fixRefs = null; $("fix-online").innerHTML = ""; };
+$("fix-save").onclick = async () => {
+  try {
+    if (fixDraft) await api("/api/label/apply", { sample_code: fixTarget.code, label_draft: fixDraft, ingredients_text: $("fix-ingr").value, contains: $("fix-contains").value });
+    else await api("/api/ingredients", { gtin14: fixTarget.gtin14, ingredients_text: $("fix-ingr").value, contains: $("fix-contains").value, refs: fixRefs || [] });
+    $("fix-card").classList.add("hidden"); error(""); fixTarget = fixDraft = null; loadRecent();
+  } catch (err) { error(err.message); }
+};
+
+async function loadRecent() {
+  try {
+    const { samples } = await api("/api/recent");
+    $("recent").innerHTML = samples.length ? samples.map((s) => `<li><span class="c">${esc(s.sample_code)}</span><span class="t">${esc(new Date(s.created_at).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }))}</span><span class="n">${esc(s.name || "Unknown product")}${s.brand ? " · " + esc(s.brand) : ""}</span>${s.has_ingredients ? "" : `<div class="row" style="grid-column:1/-1;margin-top:4px"><button class="btn quiet" style="min-height:40px;padding:8px" data-fix="${esc(s.sample_code)}" data-name="${esc(s.name || "")}">Photograph ingredients</button><button class="btn quiet" style="min-height:40px;padding:8px" data-online="${esc(s.sample_code)}" data-gtin="${esc(s.gtin14)}" data-name="${esc(s.name || "")}">Find online</button></div>`}</li>`).join("") : `<li class="muted">Nothing yet: scan the first item.</li>`;
+    document.querySelectorAll("[data-fix]").forEach((b) => b.onclick = () => { fixTarget = { code: b.dataset.fix, name: b.dataset.name }; $("file-fix").click(); });
+    document.querySelectorAll("[data-online]").forEach((b) => b.onclick = () => {
+      fixTarget = { code: b.dataset.online, name: b.dataset.name, gtin14: b.dataset.gtin }; fixDraft = null; fixRefs = null;
+      $("fix-code").textContent = fixTarget.code; $("fix-name").textContent = fixTarget.name;
+      $("fix-ingr").value = ""; $("fix-contains").value = ""; $("fix-head").textContent = "Pick a result above, then check the list here.";
+      $("fix-card").classList.remove("hidden"); $("fix-card").scrollIntoView({ behavior: "smooth" });
+      findOnline(fixTarget.gtin14, $("fix-online"), (it) => {
+        fixRefs = it.url ? [{ url: it.url, title: it.title }] : []; fixDraft = null;
+        $("fix-ingr").value = it.text; $("fix-head").textContent = `From ${it.url ? domainOf(it.url) : it.title}: check it matches your pack. It is saved with this link.`;
+      });
+    });
+  } catch (e) { $("recent").innerHTML = `<li class="muted">${esc(e.message)}</li>`; }
+}
+
+async function checkStatus() {
+  try {
+    const s = await api("/api/status");
+    $("status").textContent = "connected"; $("status").className = "pill ok";
+    $("count").textContent = `· ${s.counts.samples} in the library`;
+    if (!s.decoder) $("btn-camera").textContent = "Photo (decoder not installed: type digits too)";
+    return true;
+  } catch (e) {
+    $("status").textContent = /paired/.test(e.message) ? "not paired" : "offline"; $("status").className = "pill bad";
+    if (/paired/.test(e.message)) { $("unpaired").classList.remove("hidden"); $("app").classList.add("hidden"); }
+    return false;
+  }
+}
+
+(async function init() {
+  if (!KEY) { $("unpaired").classList.remove("hidden"); $("status").textContent = "not paired"; $("status").className = "pill bad"; return; }
+  $("manifest").href = `/manifest.webmanifest?k=${encodeURIComponent(KEY)}`;
+  $("app").classList.remove("hidden");
+  if (await checkStatus()) loadRecent();
+  setInterval(checkStatus, 15000);
+})();
+</script>
+</body>
+</html>

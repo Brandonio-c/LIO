@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 import threading
 import time
@@ -13,14 +14,14 @@ from typing import Any
 
 import pytest
 
-from lio.config import HwConfig
+from lio.config import HwConfig, parse_config
 from lio.dashboard import twin
 from lio.dashboard.server import DashboardServer
 from lio.dashboard.session import Busy, Refused, Session
 from lio.device import Cancelled, LIODevice
 from lio.results import Status, SubResult, TestResult
 from lio.sim import Faults, SimulatedLIO
-from lio.transport import SimTransport
+from lio.transport import SimTransport, TransportError
 
 pytestmark = pytest.mark.unit
 
@@ -125,7 +126,7 @@ class TestTwin:
         h8 = twin.parts([r], cfg)["holes"]["8"]
         assert h8["net"] == {"ingaas": 1998} and h8["register"] == "U1 Q7" and h8["rail"] == "A"
         assert twin.parts([], cfg)["holes"]["9"]["register"] == "U2 Q0"
-        assert not twin.parts([], cfg)["holes"]["10"]["fitted"]
+        assert twin.parts([], cfg)["holes"]["10"]["fitted"]  # LED fitted, wavelength TBD
 
 
 # -------------------------------------------------------------- cancel hook
@@ -153,6 +154,16 @@ class TestCancel:
 @pytest.fixture
 def session(cfg: HwConfig, tmp_path: Path) -> Iterator[Session]:
     s = Session(cfg, tmp_path / "results")
+    yield s
+    s.shutdown(timeout_s=30)
+
+
+@pytest.fixture
+def budget_session(cfg: HwConfig, tmp_path: Path) -> Iterator[Session]:
+    """A session whose LEDs tab keeps the duty budget (dashboard.ring_duty_budget)."""
+    data = copy.deepcopy(cfg.data)
+    data["dashboard"]["ring_duty_budget"] = True
+    s = Session(parse_config(data, cfg.path), tmp_path / "results")
     yield s
     s.shutdown(timeout_s=30)
 
@@ -456,3 +467,331 @@ class TestWakeButton:
         out = s.wake()
         assert out["adc_ok"] and out["wake_ms"] == cfg.section.integer("dashboard.wake_button_ms")
         s.shutdown()
+
+
+# ------------------------------------------------------------- motors tab
+
+
+class TestMotorsTab:
+    def test_status_before_connecting(self, session: Session) -> None:
+        assert session.motor_status() == {"connected": False}
+
+    def test_moves_need_arming_then_move_both_up(self, session: Session) -> None:
+        session.connect("sim")
+        st = session.motor_status()
+        assert st["connected"] and not st["armed"]
+        assert st["motors"]["1"] == {"state": "idle", "pos": 0}
+        with pytest.raises(Refused, match="not armed"):
+            session.motor_move("both", "up", 64, 5)
+        assert session.motor_arm()["armed_ms"] > 0
+        session.motor_move("both", "up", 64, 5)
+        wait_for(
+            lambda: all(m["state"] == "idle" for m in session.motor_status()["motors"].values())
+        )
+        st = session.motor_status()
+        assert st["motors"]["1"]["pos"] == 64 and st["motors"]["2"]["pos"] == 64  # + is up
+        session.motor_move("1", "down", 32, 5)
+        wait_for(lambda: session.motor_status()["motors"]["1"]["state"] == "idle")
+        st = session.motor_status()
+        assert st["motors"]["1"]["pos"] == 32 and st["motors"]["2"]["pos"] == 64
+
+    def test_stop_and_release(self, session: Session) -> None:
+        session.connect("sim")
+        session.motor_arm()
+        session.motor_move("2", "up", 2048, 1)
+        assert session.motor_status()["motors"]["2"]["state"] == "run"
+        assert session.motor_stop() == {"stopped": "motors"}
+        assert session.motor_status()["motors"]["2"]["state"] == "idle"
+        assert session.motor_release() == {"released": True}
+
+    def test_arguments_are_checked(self, session: Session) -> None:
+        session.connect("sim")
+        session.motor_arm()
+        for args in (
+            ("3", "up", 64, 5),
+            ("1", "sideways", 64, 5),
+            ("1", "up", 0, 5),
+            ("1", "up", 4096, 5),
+            ("1", "up", 64, 99),
+        ):
+            with pytest.raises(Refused):
+                session.motor_move(*args)
+
+    def test_refused_while_an_led_is_on(self, session: Session) -> None:
+        session.connect("sim")
+        session.motor_arm()
+        assert session.dev is not None
+        session.dev.ch_on(3, 2000)
+        with pytest.raises(Refused, match="refused"):
+            session.motor_move("1", "up", 64, 5)
+        session.all_off()
+
+    def test_over_http(self, server: DashboardServer) -> None:
+        assert call(server, "/api/motor")[1] == {"connected": False}
+        assert call(server, "/api/connect", {"target": "sim"})[0] == 200
+        assert (
+            call(
+                server, "/api/motor/move", {"motor": "1", "direction": "up", "steps": 64, "rpm": 5}
+            )[0]
+            == 400
+        )
+        assert call(server, "/api/motor/arm", {})[0] == 200
+        code, out = call(
+            server, "/api/motor/move", {"motor": "both", "direction": "up", "steps": 64, "rpm": 5}
+        )
+        assert code == 200 and out["motor"] == "both"
+        assert call(server, "/api/motor/stop", {})[0] == 200
+        assert call(server, "/api/motor")[1]["connected"] is True
+
+
+def test_wake_button_refused_when_wake_is_disabled(
+    cfg: HwConfig, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setitem(cfg.section._data["power"], "wake", False)
+    s = Session(cfg, tmp_path / "results")
+    try:
+        assert s.static_info()["wake"] is False
+        s.connect("sim")
+        with pytest.raises(Refused, match="disabled"):
+            s.wake()
+    finally:
+        s.shutdown(timeout_s=30)
+
+
+class TestContinuousJog:
+    def test_runs_past_the_firmware_bound_until_stopped(self, session: Session) -> None:
+        session.connect("sim")
+        out = session.jog_start("both", "up", 1000)
+        assert out == {"jog": "both", "direction": "up", "speed": 1000}
+        jog_max = session.cfg.limits["jog_max"]
+
+        def far() -> bool:
+            st = session.motor_status()  # also the page's heartbeat
+            return st["motors"]["1"]["pos"] > jog_max + 200
+
+        wait_for(far, timeout=30)
+        st = session.motor_status()
+        assert st["jog"] == {"motor": "both", "direction": "up", "speed": 1000}
+        assert st["motors"]["1"]["state"] == "run" and st["motors"]["2"]["state"] == "run"
+        assert session.jog_stop()["stopped"] is True
+        st = session.motor_status()
+        assert st["jog"] is None
+        assert {m["state"] for m in st["motors"].values()} == {"idle"}
+
+    def test_single_motor_down_and_no_arming_needed(self, session: Session) -> None:
+        session.connect("sim")
+        session.jog_start("2", "down", 400)
+        wait_for(lambda: session.motor_status()["motors"]["2"]["pos"] < -50)
+        st = session.motor_status()
+        assert st["motors"]["1"]["state"] == "idle" and st["motors"]["2"]["state"] == "run"
+        session.motor_stop()  # the big STOP ends a continuous move too
+        st = session.motor_status()
+        assert st["jog"] is None and st["motors"]["2"]["state"] == "idle"
+
+    def test_dead_man_stops_it_when_the_page_goes_quiet(
+        self, session: Session, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setitem(session.cfg.section._data["dashboard"], "jog_deadman_s", 0.5)
+        session.connect("sim")
+        session.jog_start("both", "down", 500)
+        assert session.sim is not None
+        wait_for(lambda: session._jog is None, timeout=10)  # no status polls: dead-man
+        st = session.motor_status()
+        assert {m["state"] for m in st["motors"].values()} == {"idle"}
+        assert any("stopped checking in" in line for line in session._log)
+
+    def test_without_dead_man_it_runs_until_stop(
+        self, session: Session, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setitem(session.cfg.section._data["dashboard"], "jog_deadman_s", 0)
+        session.connect("sim")
+        session.jog_start("both", "up", 1000)
+        jog_max = session.cfg.limits["jog_max"]
+        assert session.sim is not None
+        assert session._jog is not None
+        session._jog["heartbeat"] = -1e9  # the page went away long ago
+
+        def renewed() -> bool:  # plain device reads move the simulator's clock on
+            with session._dev_lock:
+                assert session.dev is not None
+                session.dev.ping()
+            return session.sim is not None and session.sim.motors[0].renewals >= 3
+
+        wait_for(renewed)
+        assert session._jog is not None
+        st = session.motor_status()
+        assert st["motors"]["1"]["state"] == "run" and st["motors"]["1"]["pos"] > jog_max
+        session.jog_stop()
+        assert session.motor_status()["jog"] is None
+
+    def test_refused_while_an_led_is_on_and_runs_refused_while_jogging(
+        self, session: Session
+    ) -> None:
+        session.connect("sim")
+        assert session.dev is not None
+        session.dev.ch_on(3, 2000)
+        with pytest.raises(Refused, match="LED on"):
+            session.jog_start("both", "up", 500)
+        session.all_off()
+        session.jog_start("both", "up", 500)
+        with pytest.raises(Busy, match="continuously"):
+            session.start(["T03.1"], interactive=False)
+        session.all_off()
+        assert session.motor_status()["jog"] is None
+
+    def test_arguments_are_checked(self, session: Session) -> None:
+        session.connect("sim")
+        for args in (("3", "up", 500), ("1", "left", 500), ("1", "up", 10), ("1", "up", 5000)):
+            with pytest.raises(Refused):
+                session.jog_start(*args)
+
+    def test_over_http(self, server: DashboardServer) -> None:
+        assert call(server, "/api/connect", {"target": "sim"})[0] == 200
+        code, out = call(server, "/api/motor/jog", {"motor": "1", "direction": "up", "speed": 300})
+        assert code == 200 and out["jog"] == "1"
+        assert call(server, "/api/motor")[1]["jog"]["motor"] == "1"
+        assert call(server, "/api/motor/jog_stop", {})[1] == {"stopped": True}
+
+
+class TestLedRing:
+    def test_minimum_step_keeps_rail_a_within_budget(self, budget_session: Session) -> None:
+        session = budget_session
+        holes = session.ring_holes(include_unfitted=False)
+        assert holes == list(range(1, 17))  # holes 10-11 are fitted too
+        step = session.ring_min_step_ms(100, holes)
+        # per hole: 100 ms on once per lap, at most 1000 ms per 60 s on RAIL A
+        assert 100 * 60_000 / (step * len(holes)) <= 1000
+        assert session.ring_min_step_ms(10, holes) >= 10 + 20  # never shorter than on + gap
+
+    def test_ring_goes_round_one_hole_at_a_time_until_stop(self, session: Session) -> None:
+        session.connect("sim")
+        out = session.ring_start(50, 0, include_unfitted=False)
+        assert out["active"] and out["step_ms"] == out["min_step_ms"]  # raised to the minimum
+
+        def offs() -> list[int]:
+            assert session.dev is not None
+            return [e.fields.as_int("ch") for _, e in session.dev.events if e.name == "OFF"]
+
+        def lapped() -> bool:
+            assert session.sim is not None and len(session.sim._light_since) <= 1
+            return len(offs()) >= 16  # the lap's last hole has turned off again
+
+        wait_for(lapped, timeout=60)
+        lit = offs()
+        assert lit[:16] == list(range(1, 17))  # in order, one each
+        assert session.ring_stop() == {"stopped": True}
+        assert session.ring_status() == {"active": False}
+        assert session.sim is not None and not session.sim._light_since
+
+    def test_timing_changes_while_running_and_tools_are_locked(self, session: Session) -> None:
+        session.connect("sim")
+        session.ring_start(50, 0, include_unfitted=False)
+        out = session.ring_start(100, 5000, include_unfitted=True)
+        assert out["on_ms"] == 100 and out["step_ms"] == 5000 and 10 in out["holes"]
+        with pytest.raises(Busy, match="ring"):
+            session.measure(8)
+        with pytest.raises(Busy, match="ring"):
+            session.jog_start("both", "up", 500)
+        with pytest.raises(Busy, match="ring"):
+            session.start(["T03.1"], interactive=False)
+        session.all_off()
+        assert session.ring_status() == {"active": False}
+
+    def test_on_time_is_checked(self, session: Session) -> None:
+        session.connect("sim")
+        for on in (0, 5, 5000):
+            with pytest.raises(Refused):
+                session.ring_start(on, 0, include_unfitted=False)
+
+    def test_over_http(self, server: DashboardServer) -> None:
+        assert call(server, "/api/connect", {"target": "sim"})[0] == 200
+        code, out = call(server, "/api/ring/min_step?on_ms=100&unfitted=0")
+        assert code == 200 and out["min_step_ms"] > 100
+        code, out = call(server, "/api/ring/start", {"on_ms": 100, "step_ms": 0})
+        assert code == 200 and out["active"]
+        assert call(server, "/api/ring")[1]["active"] is True
+        assert call(server, "/api/ring/stop", {})[1] == {"stopped": True}
+
+
+class UnpluggedBoard(SimTransport):
+    """A board whose USB link dies (Errno 6) once ``pull()`` is called."""
+
+    def __init__(self, cfg: HwConfig) -> None:
+        super().__init__(SimulatedLIO(cfg))
+        self.dead = False
+
+    def write_line(self, line: str) -> None:
+        if self.dead:
+            raise TransportError("write failed: [Errno 6] Device not configured")
+        super().write_line(line)
+
+
+class TestHoldOneHole:
+    def test_click_a_hole_holds_it_within_its_duty_budget(self, budget_session: Session) -> None:
+        session = budget_session
+        session.connect("sim")
+        out = session.ring_start(100, 0, include_unfitted=False, holes=[7])
+        assert out["holes"] == [7]
+        # RAIL A: 1000 ms per 60 s -> a 100 ms flash at most every 6 s
+        assert out["step_ms"] == out["min_step_ms"] == 6000
+
+        def flashed_twice() -> bool:
+            return bool(session.ring_status().get("laps", 0) >= 2)
+
+        wait_for(flashed_twice, timeout=60)
+        assert session.dev is not None
+        lit = {e.fields.as_int("ch") for _, e in session.dev.events if e.name == "OFF"}
+        assert lit == {7}  # only the held hole ever lights
+        out = session.ring_start(100, 0, include_unfitted=False, holes=[13])  # switch
+        assert out["holes"] == [13] and out["min_step_ms"] == 1200  # RAIL B: 5000 ms / 60 s
+        session.ring_stop()
+        assert session.sim is not None and not session.sim._light_since
+
+    def test_without_budget_a_held_hole_is_relit_straight_away(self, session: Session) -> None:
+        assert not session.cfg.section.raw("dashboard.ring_duty_budget")
+        session.connect("sim")
+        out = session.ring_start(1000, 0, include_unfitted=False, holes=[7])
+        gap = session.cfg.section.integer("dashboard.ring_gap_ms")
+        assert out["step_ms"] == out["min_step_ms"] == 1000 + gap  # no cool-down
+
+        def relit() -> bool:
+            assert session.sim is not None and len(session.sim._light_since) <= 1
+            return bool(session.ring_status().get("laps", 0) >= 3)
+
+        wait_for(relit, timeout=60)
+        assert session.ring_status()["state"] != "cooling"
+        session.ring_stop()
+        assert session.sim is not None and not session.sim._light_since
+
+    def test_bad_hole_is_refused(self, session: Session) -> None:
+        session.connect("sim")
+        with pytest.raises(Refused, match="1-16"):
+            session.ring_start(100, 0, include_unfitted=False, holes=[17])
+
+
+class TestUsbLinkLost:
+    def test_ring_drops_the_stale_port_and_page_says_reconnect(
+        self, cfg: HwConfig, tmp_path: Path
+    ) -> None:
+        boards = [UnpluggedBoard(cfg), UnpluggedBoard(cfg)]
+        board = boards[0]
+        s = Session(cfg, tmp_path, transport_factory=lambda port: boards.pop(0))
+        s.connect("/dev/cu.fake")
+        board.dead = True
+        s.ring_start(50, 0, include_unfitted=False)
+        wait_for(lambda: not s.connected, timeout=10)
+        assert s.ring_status() == {"active": False}
+        assert "USB link lost" in s.error
+        assert s.ring_stop() == {"stopped": False}  # no traceback on a dead link
+        s.connect("/dev/cu.fake")  # the re-enumerated port: reconnect works
+        assert s.connected
+
+    def test_server_answers_503_and_disconnects(self, cfg: HwConfig, tmp_path: Path) -> None:
+        board = UnpluggedBoard(cfg)
+        s = Session(cfg, tmp_path, transport_factory=lambda port: board)
+        s.connect("/dev/cu.fake")
+        board.dead = True
+        with pytest.raises(TransportError):
+            s.measure(1)
+        s.link_lost(TransportError("gone"))
+        assert not s.connected

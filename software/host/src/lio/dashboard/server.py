@@ -11,17 +11,26 @@ Safety of the HTTP side: the page can light LEDs and move motors, so
 
 from __future__ import annotations
 
+import datetime as dt
 import json
 import logging
 import mimetypes
 import secrets
 import threading
+from dataclasses import dataclass
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib import resources
 from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
+
+from lio.foods.barcode import normalise
+from lio.foods.intake import Intake, data_url_bytes
+from lio.foods.phone import PhoneServer, qr_svg, vpn_active
+from lio.foods.scans import build_scan
+from lio.foods.store import FoodLibrary, LibraryError
+from lio.transport import TransportError
 
 from .session import Busy, Refused, Session
 
@@ -30,6 +39,20 @@ log = logging.getLogger(__name__)
 LOCAL_HOSTS = ("127.0.0.1", "localhost", "[::1]")
 RESULT_TYPES = {".html", ".png", ".csv", ".json", ".md", ".svg"}
 MAX_BODY = 64 * 1024
+MAX_PHOTO_BODY = 24 * 1024 * 1024  # food photos (base64)
+PHOTO_PATHS = ("/api/foods/identify", "/api/foods/save", "/api/foods/photo", "/api/foods/label")
+
+
+@dataclass
+class Foods:
+    """The food library as the dashboard sees it (Database tab)."""
+
+    lib: FoodLibrary
+    intake: Intake
+    repeats_default: int = 3
+    repeats_max: int = 10
+    phone: PhoneServer | None = None
+    phone_error: str = ""
 
 
 def page_html(token: str) -> str:
@@ -40,8 +63,9 @@ def page_html(token: str) -> str:
 class DashboardServer(ThreadingHTTPServer):
     daemon_threads = True
 
-    def __init__(self, session: Session, host: str, port: int) -> None:
+    def __init__(self, session: Session, host: str, port: int, foods: Foods | None = None) -> None:
         self.session = session
+        self.foods = foods
         self.token = secrets.token_urlsafe(24)
         super().__init__((host, port), _Handler)
 
@@ -92,9 +116,9 @@ class _Handler(BaseHTTPRequestHandler):
         given = self.headers.get("X-LIO-Token") or ""
         return secrets.compare_digest(given, self.server.token)
 
-    def _body(self) -> dict[str, Any]:
+    def _body(self, limit: int = MAX_BODY) -> dict[str, Any]:
         n = int(self.headers.get("Content-Length") or 0)
-        if n > MAX_BODY:
+        if n > limit:
             raise Refused("request too large")
         if n == 0:
             return {}
@@ -121,6 +145,8 @@ class _Handler(BaseHTTPRequestHandler):
             )
         if url.path.startswith("/results/"):
             return self._result_file(url.path[len("/results/") :])
+        if url.path.startswith("/foods/"):
+            return self._foods_file(url.path[len("/foods/") :])
         if not url.path.startswith("/api/"):
             return self._error(HTTPStatus.NOT_FOUND, "not found")
         if not self._token_ok():
@@ -137,6 +163,23 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json({"ports": s.ports()})
             if url.path == "/api/runs":
                 return self._json({"runs": s.past_runs()})
+            if url.path == "/api/motor":
+                return self._json(s.motor_status())
+            if url.path == "/api/ring":
+                return self._json(s.ring_status())
+            if url.path.startswith("/api/foods/"):
+                return self._foods_get(url.path[len("/api/foods/") :], parse_qs(url.query))
+            if url.path == "/api/ring/min_step":
+                q = parse_qs(url.query)
+                on_ms = int(q.get("on_ms", ["0"])[0])
+                hole = int(q.get("hole", ["0"])[0])
+                holes = [hole] if hole else s.ring_holes(q.get("unfitted", ["0"])[0] == "1")
+                return self._json({"min_step_ms": s.ring_min_step_ms(on_ms, holes)})
+        except TransportError as e:
+            s.link_lost(e)
+            return self._error(HTTPStatus.SERVICE_UNAVAILABLE, f"USB link lost: {e}. Reconnect.")
+        except (Refused, ValueError) as e:  # LibraryError, BarcodeError: shown to the user
+            return self._error(HTTPStatus.BAD_REQUEST, str(e))
         except Exception as e:
             log.exception("GET %s", url.path)
             return self._error(HTTPStatus.INTERNAL_SERVER_ERROR, f"{type(e).__name__}: {e}")
@@ -152,6 +195,179 @@ class _Handler(BaseHTTPRequestHandler):
             ctype += "; charset=utf-8"
         self._send(HTTPStatus.OK, path.read_bytes(), ctype)
 
+    # -------------------------------------------------------------- foods
+
+    def _foods(self) -> Foods:
+        if self.server.foods is None:
+            raise Refused("the food library is not enabled")
+        return self.server.foods
+
+    def _foods_file(self, rel: str) -> None:
+        """Photos (``/foods/files/...``) and downloads (``/foods/export/...``)."""
+        f = self.server.foods
+        if f is None:
+            return self._error(HTTPStatus.NOT_FOUND, "not found")
+        try:
+            if rel.startswith("files/"):
+                p = f.lib.file_path(rel[len("files/") :])
+                if p is None:
+                    return self._error(HTTPStatus.NOT_FOUND, "not found")
+                ctype = mimetypes.guess_type(p.name)[0] or "application/octet-stream"
+                return self._send(HTTPStatus.OK, p.read_bytes(), ctype)
+            stamp = dt.datetime.now().strftime("%Y%m%d-%H%M%S")
+            if rel == "export/samples.csv":
+                body, ctype, name = f.lib.samples_csv(), "text/csv", f"lio_samples_{stamp}.csv"
+            elif rel == "export/library.json":
+                body = json.dumps(f.lib.export(), indent=1)
+                ctype, name = "application/json", f"lio_food_library_{stamp}.json"
+            elif rel.startswith("export/scan/") and rel.endswith(".csv"):
+                uid = rel[len("export/scan/") : -len(".csv")]
+                sc = f.lib.scan(uid)
+                body, ctype = f.lib.scan_csv(uid), "text/csv"
+                name = f"{sc['sample_code']}_scan_{sc['created_at'][:19].replace(':', '')}.csv"
+            else:
+                return self._error(HTTPStatus.NOT_FOUND, "not found")
+        except LibraryError as e:
+            return self._error(HTTPStatus.NOT_FOUND, str(e))
+        self._send(
+            HTTPStatus.OK,
+            body.encode(),
+            ctype + "; charset=utf-8",
+            {"Content-Disposition": f'attachment; filename="{name}"'},
+        )
+
+    def _foods_get(self, path: str, q: dict[str, list[str]]) -> None:
+        f = self._foods()
+
+        def arg(k: str) -> str:
+            return q.get(k, [""])[0]
+
+        if path == "status":
+            phone: dict[str, Any] = {"enabled": f.phone is not None, "error": f.phone_error}
+            if f.phone is not None:
+                urls = f.phone.urls()
+                tun = f.phone.tunnel
+                phone.update(
+                    urls=urls,
+                    qr_svg=qr_svg(urls[0]) if urls else "",
+                    vpn=vpn_active(),
+                    tunnel=tun.status() if tun is not None else {"state": "off"},
+                )
+            return self._json(
+                {
+                    "counts": f.lib.counts(),
+                    "decoder": f.intake.can_decode(),
+                    "online_lookup": f.lib.lookup is not None,
+                    "usda_key": (
+                        "none"
+                        if f.lib.lookup is None or not f.lib.lookup.s.usda_api_key
+                        else "demo"
+                        if f.lib.lookup.s.usda_api_key == "DEMO_KEY"
+                        else "personal"
+                    ),
+                    "db_path": str(f.lib.db_path),
+                    "repeats_default": f.repeats_default,
+                    "repeats_max": f.repeats_max,
+                    "phone": phone,
+                }
+            )
+        if path == "samples":
+            return self._json(
+                {
+                    "samples": f.lib.samples(
+                        arg("q"),
+                        archived=arg("archived") == "1",
+                        scanned=arg("scanned"),
+                        found=arg("found"),
+                        ingredients=arg("ingredients"),
+                        source=arg("source"),
+                        sort=arg("sort") or "newest",
+                    )
+                }
+            )
+        if path == "sample":
+            return self._json(f.lib.sample(arg("code"), raw=arg("raw") == "1"))
+        if path == "scan":
+            return self._json(f.lib.scan(arg("uuid")))
+        if path == "find":
+            return self._json(f.intake.find_online(arg("gtin14"), arg("q")))
+        if path == "candidates":
+            if f.lib.lookup is None:
+                raise Refused("online lookup is off (foods.online_lookup)")
+            name = arg("q").strip()
+            if len(name) < 2:
+                raise Refused("type a product name to search for")
+            return self._json({"candidates": f.lib.lookup.search_by_name(name)})
+        return self._error(HTTPStatus.NOT_FOUND, "not found")
+
+    def _foods_post(self, path: str, b: dict[str, Any]) -> None:
+        f = self._foods()
+        code = str(b.get("sample_code") or "")
+        if path == "identify":
+            return self._json(
+                f.intake.identify(data_url_bytes(b.get("photo")), str(b.get("code") or ""))
+            )
+        if path == "label":
+            return self._json(
+                f.intake.read_label(data_url_bytes(b.get("photo")), str(b.get("kind") or ""))
+            )
+        if path == "ingredients":
+            return self._json(f.intake.confirm_ingredients(str(b.get("gtin14") or ""), b))
+        if path == "label/apply":
+            return self._json(f.intake.apply_label(code, b))
+        if path == "adopt":
+            if f.lib.lookup is None:
+                raise Refused("online lookup is off (foods.online_lookup)")
+            src, ident = str(b.get("source") or ""), str(b.get("id") or "")
+            picked, raw = f.lib.lookup.fetch(src, ident)
+            return self._json(
+                f.lib.adopt(
+                    str(b.get("gtin14") or ""),
+                    picked,
+                    raw,
+                    source=src,
+                    query=str(b.get("query") or ""),
+                )
+            )
+        if path == "save":
+            return self._json(f.intake.commit(str(b.get("draft") or ""), b, source="dashboard"))
+        if path == "update":
+            return self._json(f.lib.update_sample(code, b))
+        if path == "photo":
+            photo = data_url_bytes(b.get("photo"))
+            if not photo:
+                raise Refused("no photo")
+            return self._json(f.lib.set_photo(code, str(b.get("kind") or ""), photo))
+        if path == "product":
+            return self._json(
+                f.lib.set_product_info(str(b.get("gtin14") or ""), dict(b.get("fields") or {}))
+            )
+        if path == "refresh":
+            return self._json(f.lib.product(normalise(str(b.get("gtin14") or "")), refresh=True))
+        if path == "scan":
+            repeats = int(b.get("repeats") or f.repeats_default)
+            if not 1 <= repeats <= f.repeats_max:
+                raise Refused(f"repeats must be 1-{f.repeats_max}")
+            f.lib.sample(code)  # the sample must exist before the LEDs are used
+            s = self.server.session
+            sweeps, meta = s.sample_sweeps(repeats)
+            scan = build_scan(s.cfg, sweeps, notes=str(b.get("notes") or ""), **meta)
+            return self._json(f.lib.add_scan(code, scan))
+        if path in ("tunnel/start", "tunnel/stop"):
+            if f.phone is None or f.phone.tunnel is None:
+                raise Refused("the phone app is off (foods.phone_enabled)")
+            if path == "tunnel/start":
+                f.phone.tunnel.start()
+            else:
+                f.phone.tunnel.stop()
+            return self._json(f.phone.tunnel.status())
+        if path == "phone/rekey":
+            if f.phone is None:
+                raise Refused("the phone app is off (foods.phone_enabled)")
+            f.phone.key.renew()
+            return self._json({"ok": True})
+        return self._error(HTTPStatus.NOT_FOUND, "not found")
+
     # --------------------------------------------------------------- POST
 
     def do_POST(self) -> None:
@@ -162,7 +378,9 @@ class _Handler(BaseHTTPRequestHandler):
         path = urlparse(self.path).path
         s = self.server.session
         try:
-            b = self._body()
+            b = self._body(MAX_PHOTO_BODY if path in PHOTO_PATHS else MAX_BODY)
+            if path.startswith("/api/foods/"):
+                return self._foods_post(path[len("/api/foods/") :], b)
             if path == "/api/connect":
                 s.connect(str(b.get("target") or ""), str(b.get("faults") or ""))
             elif path == "/api/disconnect":
@@ -191,6 +409,42 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json(s.flash(_hole(b), s.cfg.section.integer("dashboard.flash_ms")))
             elif path == "/api/wake":
                 return self._json(s.wake())
+            elif path == "/api/motor/arm":
+                return self._json(s.motor_arm())
+            elif path == "/api/motor/move":
+                return self._json(
+                    s.motor_move(
+                        str(b.get("motor") or ""),
+                        str(b.get("direction") or ""),
+                        int(b.get("steps", 0)),
+                        int(b.get("rpm", 0)),
+                    )
+                )
+            elif path == "/api/motor/jog":
+                return self._json(
+                    s.jog_start(
+                        str(b.get("motor") or ""),
+                        str(b.get("direction") or ""),
+                        int(b.get("speed", 0)),
+                    )
+                )
+            elif path == "/api/motor/jog_stop":
+                return self._json(s.jog_stop())
+            elif path == "/api/ring/start":
+                return self._json(
+                    s.ring_start(
+                        int(b.get("on_ms", 0)),
+                        int(b.get("step_ms", 0)),
+                        bool(b.get("include_unfitted")),
+                        [int(h) for h in b.get("holes") or []],
+                    )
+                )
+            elif path == "/api/ring/stop":
+                return self._json(s.ring_stop())
+            elif path == "/api/motor/stop":
+                return self._json(s.motor_stop())
+            elif path == "/api/motor/release":
+                return self._json(s.motor_release())
             elif path == "/api/off":
                 s.all_off()
             elif path == "/api/clear":
@@ -203,7 +457,10 @@ class _Handler(BaseHTTPRequestHandler):
             return self._error(HTTPStatus.CONFLICT, str(e))
         except (Refused, KeyError, ValueError) as e:
             return self._error(HTTPStatus.BAD_REQUEST, str(e))
-        except Exception as e:  # device / transport errors: tell the page why
+        except TransportError as e:
+            s.link_lost(e)
+            return self._error(HTTPStatus.SERVICE_UNAVAILABLE, f"USB link lost: {e}. Reconnect.")
+        except Exception as e:  # device errors: tell the page why
             log.exception("POST %s", path)
             return self._error(HTTPStatus.INTERNAL_SERVER_ERROR, f"{type(e).__name__}: {e}")
         self._json({"ok": True})
@@ -216,9 +473,9 @@ def _hole(b: dict[str, Any]) -> int:
     return hole
 
 
-def serve(session: Session, host: str, port: int) -> DashboardServer:
+def serve(session: Session, host: str, port: int, foods: Foods | None = None) -> DashboardServer:
     """Create the server (not yet serving); raises OSError if the port is taken."""
-    return DashboardServer(session, host, port)
+    return DashboardServer(session, host, port, foods)
 
 
 def results_root_default(repo_root: Path) -> Path:

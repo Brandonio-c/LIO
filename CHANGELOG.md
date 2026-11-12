@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-11-11: Food library, phone app, firmware 2.3.1
+
+### Added
+- **Food library** (`lio.foods`, `docs/FOOD_LIBRARY.md`): a phone app (iPhone and Android, served by `lio dashboard`, reachable through a Cloudflare quick tunnel with the VPN on) scans a product's barcode, looks it up and adds a sample. Sources: USDA FoodData Central, NIH DSLD, openFDA, Open Food Facts, a web search fallback with links, and label photos read on the Mac (Apple Vision). Nothing found online is saved without confirmation.
+- Dashboard **Database** tab: admin and exports, add a sample, and a library viewer with search, filters, an inspector (overview, manufacturer data, LIO scans, raw data) and side-by-side comparison of spectra.
+- `foods` optional dependencies (zxing-cpp, pillow, segno). Library data lives in `data/foods/` (gitignored, with any API keys).
+- `docs/COMPOSITION_VERIFICATION_SPEC.md` (LIO-SW-COMP-001 Rev A): the specification for verifiable composition records.
+
+### Changed
+- Firmware 2.3.1: runs on the Arduino Nano R4 (Renesas RA4M1) as well as the ATmega328P Nano. The R4 has no DTR reset, so the firmware re-applies the dark state and prints `# BOOT` when the host opens the port. A repeated same-direction jog renews its bound without restarting the speed ramp (2.2.1).
+
 ## 2026-11-04: Software I²C on D11/D12 (firmware 2.2.0)
 
 ### Changed

@@ -179,14 +179,225 @@ table.runs td { border-top: 1px solid var(--hair); padding: 5px 6px; }
 @media (max-width: 800px) { .connect-grid { grid-template-columns: 1fr; } }
 .ports { display: grid; gap: 4px; margin: 8px 0; }
 .hidden { display: none !important; }
+
+/* ---------- tabs */
+.tabs { display: flex; gap: 4px; }
+.tab { border: 1px solid transparent; background: none; border-radius: 7px; padding: 5px 12px; cursor: pointer; color: var(--ink-2); }
+.tab:hover { background: var(--surface-2); }
+.tab.on { background: var(--surface-2); border-color: var(--hair); color: var(--ink); font-weight: 600; }
+
+/* ---------- motors */
+.motor-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+@media (max-width: 800px) { .motor-grid { grid-template-columns: 1fr; } }
+.mcard { border: 1px solid var(--hair); border-radius: 9px; padding: 12px; display: grid; gap: 8px; justify-items: center; text-align: center; }
+.mcard .pos { font-size: 24px; font-weight: 700; }
+.mcard .jog { display: grid; gap: 6px; width: 100%; }
+.mcard .jog .btn { padding: 12px; font-size: 16px; }
+.mstate { font-size: 12px; font-weight: 600; border-radius: 999px; padding: 1px 9px; background: var(--surface-2); color: var(--ink-2); }
+.mstate.run { background: var(--wash-warning); color: var(--ink); }
+.btn.stop-big { font-size: 18px; padding: 12px 28px; }
+.mcard .cont { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; border-top: 1px solid var(--hair); padding-top: 8px; }
+.mcard .cont .lbl { grid-column: 1 / -1; font-size: 12px; color: var(--muted); }
+.btn.jogging { background: var(--warning); border-color: var(--warning); color: #0b0b0b; font-weight: 700; animation: pulse 1.1s ease-in-out infinite; }
+.ring-wrap { display: grid; grid-template-columns: minmax(300px, 520px) 1fr; gap: 20px; align-items: start; margin-top: 12px; }
+@media (max-width: 900px) { .ring-wrap { grid-template-columns: 1fr; } }
+#ring-svg { width: 100%; height: auto; }
+#ring-svg circle.h { fill: var(--surface-2); stroke: var(--axis); stroke-width: 2; }
+#ring-svg circle.h.unfitted { stroke-dasharray: 3 3; fill: none; }
+#ring-svg circle.h.inring { stroke: var(--ink-2); }
+#ring-svg circle.h { cursor: pointer; }
+#ring-svg circle.h:hover { stroke: var(--ink); }
+#ring-svg circle.h.held { stroke: var(--ink); stroke-width: 4; }
+#ring-svg circle.h.lit { fill: var(--warning); stroke: var(--ink); stroke-width: 3; }
+#ring-svg text { fill: var(--ink); font-size: 13px; font-weight: 700; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+#ring-svg text.nm { font-size: 10px; font-weight: 400; fill: var(--ink-2); }
+#ring-svg .center { font-size: 22px; font-weight: 700; }
+#ring-svg .center2 { font-size: 12px; font-weight: 400; fill: var(--ink-2); }
+.seehint { font-size: 12.5px; color: var(--ink-2); display: grid; gap: 4px; }
+#mot-log { height: 140px; overflow: auto; background: var(--surface-2); border-radius: 7px; padding: 8px 10px; margin: 0; white-space: pre-wrap; }
+
+/* ---------- database (food library) */
+/* sample series in comparisons: fixed order, never cycled (Okabe–Ito based, CVD-safe) */
+:root { --s1: #2a78d6; --s2: #e08a00; --s3: #0f9e74; --s4: #c75b9b; --s5: #7f67d6; --s6: #c9581e; --s-other: #9a9890; }
+@media (prefers-color-scheme: dark) { :root { --s1: #4b93ec; --s2: #f0a020; --s3: #2bbf90; --s4: #dd7db5; --s5: #9b87ec; --s6: #e8743a; --s-other: #6f6e69; } }
+body[data-view="database"] #connect { display: none !important; }
+.db-sec-title { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.db-sec-title h2 { font-size: 16px; }
+.db-sec-title .sub { font-size: 13px; color: var(--muted); }
+.db-sec-title .sp { flex: 1; }
+
+/* 1 · library admin strip */
+.db-admin { display: grid; grid-template-columns: 1.05fr 1fr 1.5fr; gap: 0; padding: 0; }
+.db-admin > div { padding: 16px 20px; min-width: 0; }
+.db-admin > div + div { border-left: 1px solid var(--hair); }
+@media (max-width: 1150px) { .db-admin { grid-template-columns: 1fr 1fr; } .db-admin > div:nth-child(3) { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--hair); } }
+@media (max-width: 700px) { .db-admin { grid-template-columns: 1fr; } .db-admin > div + div { border-left: 0; border-top: 1px solid var(--hair); } }
+.db-admin h3 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin-bottom: 10px; }
+.stat-row { display: flex; gap: 24px; flex-wrap: wrap; }
+.stat .v { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.stat .l { font-size: 12px; color: var(--muted); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.chip { font-size: 12px; border-radius: 999px; padding: 2px 9px; background: var(--surface-2); color: var(--ink-2); display: inline-flex; gap: 5px; align-items: center; }
+.chip .d { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+.chip.ok .d { background: var(--good); }
+.chip.warn .d { background: var(--warning); }
+.dl-list { display: grid; gap: 8px; }
+.dl { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: center; border: 1px solid var(--hair); border-radius: 9px; padding: 8px 10px; text-decoration: none; color: inherit; }
+.dl:hover { background: var(--surface-2); border-color: var(--axis); }
+.dl { grid-template-columns: 44px 1fr; }
+.dl .ic { width: 44px; height: 30px; border-radius: 7px; background: var(--surface-2); display: grid; place-items: center; font-size: 10.5px; font-weight: 700; letter-spacing: .4px; color: var(--ink-2); }
+.dl b { display: block; font-weight: 600; font-size: 13.5px; }
+.dl .note { display: block; }
+.db-path { margin-top: 10px; word-break: break-all; }
+.qr { display: grid; grid-template-columns: 132px 1fr; gap: 16px; align-items: start; }
+@media (max-width: 480px) { .qr { grid-template-columns: 1fr; } }
+.qr .code { background: #fff; border-radius: 8px; padding: 4px; line-height: 0; width: 132px; }
+.qr .code svg { width: 124px; height: 124px; }
+.qr ol { margin: 0 0 8px; padding-left: 18px; font-size: 13px; color: var(--ink-2); display: grid; gap: 2px; }
+.qr .url { font-size: 12px; word-break: break-all; }
+.tun { display: flex; gap: 8px; align-items: center; font-size: 12.5px; color: var(--ink-2); margin-top: 8px; }
+.tun .d { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
+.tun.ok .d { background: var(--good); }
+.tun.bad { color: var(--critical); }
+.tun.bad .d { background: var(--critical); }
+.tun span:nth-child(2) { flex: 1; }
+.vpn { display: flex; gap: 8px; align-items: flex-start; background: var(--wash-warning); border-radius: 8px; padding: 7px 10px; font-size: 12.5px; margin-top: 8px; }
+
+/* 2 · add a sample */
+.db-add-grid { display: grid; grid-template-columns: minmax(280px, 380px) 1fr; gap: 20px; align-items: stretch; }
+@media (max-width: 900px) { .db-add-grid { grid-template-columns: 1fr; } }
+.add-how { display: grid; gap: 12px; align-content: start; }
+.add-how .row input { flex: 1; min-width: 140px; }
+.or { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 12px; }
+.or::before, .or::after { content: ""; flex: 1; border-top: 1px solid var(--hair); }
+.add-result { border: 1.5px dashed var(--axis); border-radius: 10px; padding: 14px 16px; min-height: 120px; display: grid; align-content: center; }
+.add-result.filled { border-style: solid; border-color: var(--hair); background: var(--surface-2); align-content: start; }
+.add-result .empty { color: var(--muted); text-align: center; font-size: 13px; }
+.add-prod { display: grid; grid-template-columns: 72px 1fr; gap: 14px; align-items: center; }
+.add-prod img, .add-prod .ph { width: 72px; height: 72px; object-fit: contain; border-radius: 8px; background: var(--surface); }
+.add-fields { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.add-fields .wide { grid-column: span 2; }
+@media (max-width: 700px) { .add-fields { grid-template-columns: 1fr 1fr; } }
+.add-fields input { width: 100%; }
+
+/* 3 · library viewer */
+.db-query { display: grid; grid-template-columns: minmax(220px, 2fr) repeat(5, minmax(110px, 1fr)) auto; gap: 8px; align-items: end; padding-bottom: 12px; border-bottom: 1px solid var(--hair); }
+@media (max-width: 1100px) { .db-query { grid-template-columns: 1fr 1fr 1fr; } }
+.db-query input[type=text], .db-query select { width: 100%; }
+.db-split { display: grid; grid-template-columns: minmax(340px, 0.85fr) minmax(0, 1.75fr); gap: 0; margin: 0 -16px -14px; }
+@media (max-width: 1050px) { .db-split { grid-template-columns: 1fr; } }
+.db-list-pane { border-right: 1px solid var(--hair); min-width: 0; }
+@media (max-width: 1050px) { .db-list-pane { border-right: 0; border-bottom: 1px solid var(--hair); } }
+.list-bar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; font-size: 12.5px; color: var(--muted); border-bottom: 1px solid var(--hair); min-height: 41px; }
+.list-bar .sp { flex: 1; }
+#db-list-wrap { max-height: 72vh; overflow: auto; }
+.srow { display: grid; grid-template-columns: 22px 44px 1fr auto; gap: 10px; align-items: center; padding: 9px 16px; border-bottom: 1px solid var(--hair); cursor: pointer; }
+.srow:hover { background: var(--surface-2); }
+.srow.sel { background: var(--surface-2); box-shadow: inset 3px 0 0 var(--accent); }
+.srow img, .srow .ph { width: 44px; height: 44px; object-fit: contain; border-radius: 7px; background: var(--surface-2); display: block; }
+.srow.sel img, .srow.sel .ph { background: var(--surface); }
+.srow .t1 { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.srow .t2 { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.srow .code { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--ink-2); font-weight: 600; }
+.srow .meta { text-align: right; font-size: 12px; color: var(--muted); white-space: nowrap; }
+.srow .meta .n { font-size: 13px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.srow input { margin: 0; }
+.srow .cmp-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-left: 4px; }
+.list-empty { padding: 28px 16px; text-align: center; color: var(--muted); }
+.db-inspect { min-width: 0; padding: 0 0 14px; }
+.inspect-empty { display: grid; place-items: center; text-align: center; color: var(--muted); min-height: 320px; padding: 20px; }
+
+/* inspector */
+.ins-head { display: grid; grid-template-columns: 76px 1fr auto; gap: 14px; align-items: center; padding: 14px 18px 0; }
+.ins-head img, .ins-head .ph { width: 76px; height: 76px; object-fit: contain; border-radius: 10px; background: var(--surface-2); }
+.ins-head .code { font-size: 12.5px; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: .3px; }
+.ins-head .name { font-size: 20px; font-weight: 700; line-height: 1.2; }
+.ins-head .brand { color: var(--ink-2); }
+.subtabs { display: flex; gap: 2px; padding: 12px 18px 0; border-bottom: 1px solid var(--hair); overflow-x: auto; }
+.subtab { border: 0; background: none; padding: 8px 12px; cursor: pointer; color: var(--ink-2); border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+.subtab:hover { color: var(--ink); }
+.subtab.on { color: var(--ink); font-weight: 600; border-bottom-color: var(--accent); }
+.subtab .cnt { font-size: 11px; background: var(--surface-2); border-radius: 999px; padding: 0 6px; margin-left: 4px; color: var(--ink-2); }
+.ins-body { padding: 16px 18px 0; display: grid; gap: 18px; }
+.ins-sec h3 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin-bottom: 8px; display: flex; gap: 8px; align-items: center; }
+.ins-sec h3 .sp { flex: 1; }
+.ins-sec h3 .btn { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--ink); }
+.two-col { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 22px; }
+@media (max-width: 800px) { .two-col { grid-template-columns: 1fr; } }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; font-size: 13px; margin: 0; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; overflow-wrap: anywhere; }
+.pics { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
+.pic { display: grid; gap: 5px; font-size: 12px; color: var(--muted); justify-items: start; }
+.pic img { height: 120px; max-width: 200px; object-fit: contain; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--hair); cursor: zoom-in; }
+.pic .empty { height: 120px; width: 120px; border: 1.5px dashed var(--axis); border-radius: 8px; display: grid; place-items: center; text-align: center; padding: 8px; }
+.barcode-svg { background: #fff; border-radius: 8px; padding: 8px 10px 4px; border: 1px solid var(--hair); height: 120px; display: grid; place-items: center; }
+.barcode-svg svg { height: 102px; width: auto; display: block; }
+.edit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.edit-grid input { width: 100%; }
+textarea.full { width: 100%; min-height: 56px; border: 1px solid var(--axis); background: var(--surface); border-radius: 6px; padding: 5px 8px; font: inherit; color: inherit; resize: vertical; }
+table.nut { border-collapse: collapse; font-size: 13px; width: 100%; }
+table.nut td { padding: 4px 0; border-top: 1px solid var(--hair); }
+table.nut td.v { text-align: right; font-variant-numeric: tabular-nums; }
+table.nut tr.sub td:first-child { padding-left: 14px; color: var(--ink-2); }
+table.nut tr.derived td { color: var(--ink-2); font-style: italic; }
+.tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.tag { font-size: 12px; border-radius: 999px; padding: 1px 8px; background: var(--surface-2); color: var(--ink-2); }
+.tag.warn { background: var(--wash-warning); color: var(--ink); }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.banner { border-radius: 8px; padding: 8px 12px; font-size: 13px; }
+.banner.warn { background: var(--wash-warning); }
+.banner.bad { background: var(--wash-critical); }
+.banner.soft { background: var(--surface-2); }
+/* composition bar (per 100 g) */
+.comp { display: flex; height: 22px; border-radius: 5px; overflow: hidden; gap: 2px; background: var(--surface); }
+.comp > span { display: block; height: 100%; min-width: 2px; }
+.comp-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-2); margin-top: 6px; }
+.comp-legend .sw, .legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+.comp-legend b { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 600; }
+/* scans */
+.scan-list { display: flex; gap: 6px; flex-wrap: wrap; }
+.scan-chip { border: 1px solid var(--hair); background: var(--surface); border-radius: 8px; padding: 5px 10px; cursor: pointer; font-size: 12.5px; text-align: left; }
+.scan-chip.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.k { font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 0 5px; margin-left: 5px; letter-spacing: .3px; }
+.k-sim { background: var(--wash-warning); color: var(--ink); }
+.k-hardware { background: var(--wash-good); color: var(--good-text); }
+.legend { display: flex; gap: 14px; font-size: 12.5px; color: var(--ink-2); align-items: center; flex-wrap: wrap; }
+.chart-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart-svg .grid line { stroke: var(--hair); stroke-width: 1; }
+.chart-svg .zero { stroke: var(--axis); stroke-width: 1.5; }
+.chart-svg text { fill: var(--muted); font-size: 11px; }
+.chart-svg text.xl { fill: var(--ink-2); }
+.chart-svg .err { stroke: var(--ink-2); stroke-width: 1; }
+.chart-svg rect.hit { fill: transparent; cursor: crosshair; }
+.chart-svg rect.hit:hover { fill: var(--ring); }
+.chart-svg .cross { stroke: var(--axis); stroke-width: 1; stroke-dasharray: 3 3; }
+.chart-wrap { position: relative; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--hair); border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15); padding: 8px 10px; font-size: 12.5px; display: none; min-width: 190px; z-index: 3; }
+.tip .t { font-weight: 600; margin-bottom: 4px; }
+.tip .r { display: grid; grid-template-columns: 12px 1fr auto; gap: 6px; align-items: center; }
+.tip .r .v { text-align: right; font-variant-numeric: tabular-nums; padding-left: 10px; }
+pre.raw { background: var(--surface-2); border-radius: 8px; padding: 10px 12px; max-height: 60vh; overflow: auto; font-size: 11.5px; margin: 0; white-space: pre-wrap; word-break: break-word; }
+table.db { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.db th { text-align: left; color: var(--muted); font-weight: 500; padding: 4px 6px; }
+table.db td { border-top: 1px solid var(--hair); padding: 5px 6px; }
+#img-overlay .modal { width: min(900px, 94vw); }
+#img-overlay img { max-width: 100%; max-height: 78vh; object-fit: contain; border-radius: 8px; background: #fff; }
 </style>
 </head>
 <body>
 <header>
   <h1>LIO V3 · System dashboard</h1>
+  <nav class="tabs" aria-label="Views">
+    <button class="tab on" data-tab="system">System</button>
+    <button class="tab" data-tab="motors">Motors</button>
+    <button class="tab" data-tab="leds">LEDs</button>
+    <button class="tab" data-tab="database">Database</button>
+  </nav>
   <span id="conn" class="pill"><span class="led"></span><span id="conn-text">not connected</span></span>
   <span class="spacer"></span>
-  <button id="btn-wake" class="btn small hidden" title="Holds both motors' coils for 3 s (no steps, nothing moves) to wake power bank A, then looks for the ADC">⚡ Wake bank A</button>
+  <button id="btn-wake" class="btn small hidden" title="Holds both motors' coils for 3 s (no steps, nothing moves) to wake power bank A, then looks for the ADC">Wake bank A</button>
   <button id="btn-disconnect" class="btn small hidden">Disconnect</button>
   <button id="btn-off" class="btn danger hidden" title="Stops a run safely, or turns every LED off and stops the motors">■ All off / Stop</button>
 </header>
@@ -215,7 +426,7 @@ table.runs td { border-top: 1px solid var(--hair); padding: 5px 6px; }
   </section>
 
   <!-- verdict + run controls -->
-  <section class="top">
+  <section class="top" data-view="system">
     <div class="card verdict" id="verdict-card">
       <h2>Overall system evaluation</h2>
       <div id="verdict-word" class="word v-NOT_RUN"><span class="ic">○</span><span>NOT YET TESTED</span></div>
@@ -234,7 +445,7 @@ table.runs td { border-top: 1px solid var(--hair); padding: 5px 6px; }
         <div id="progress-now" class="ink2"></div>
       </div>
       <div class="row" style="gap:8px;margin-bottom:10px">
-        <button id="btn-all" class="btn primary">▶ Run whole system</button>
+        <button id="btn-all" class="btn primary">Run whole system</button>
         <span class="muted">or run one subsystem from its tile below</span>
       </div>
       <div style="display:grid;gap:6px;grid-template-columns:1fr 1fr">
@@ -254,7 +465,7 @@ table.runs td { border-top: 1px solid var(--hair); padding: 5px 6px; }
   </section>
 
   <!-- twin + details -->
-  <section class="twin-wrap">
+  <section class="twin-wrap" data-view="system">
     <div class="card">
       <h2>Digital twin <span class="muted" style="font-weight:400">· click any part for its evidence</span></h2>
       <svg id="twin" viewBox="0 0 900 560" role="group" aria-label="LIO V3 instrument parts and their test status"></svg>
@@ -264,16 +475,148 @@ table.runs td { border-top: 1px solid var(--hair); padding: 5px 6px; }
   </section>
 
   <!-- subsystems -->
-  <section class="card">
+  <section class="card" data-view="system">
     <h2>Subsystems</h2>
     <div class="tiles" id="tiles"></div>
   </section>
 
   <!-- log + runs -->
-  <section class="top">
+  <section class="top" data-view="system">
     <div class="card"><h2>Log</h2><pre id="log" class="mono"></pre></div>
     <div class="card"><div class="row" style="justify-content:space-between"><h2>Earlier runs</h2><button id="btn-runs" class="btn small">Refresh</button></div>
       <div style="max-height:250px;overflow:auto;margin-top:8px"><table class="runs" id="runs"></table></div></div>
+  </section>
+  <!-- motors -->
+  <section class="card hidden" data-view="motors" id="motors-view">
+    <div class="row" style="justify-content:space-between">
+      <h2>Motors</h2>
+      <span id="mot-arm" class="badge s-SKIP"><span class="ic">–</span>not armed</span>
+    </div>
+    <p class="note" style="margin:6px 0 0">No limit switches. <strong>Step</strong> buttons move at most the step size below, then the coils release; they need arming (it lasts <span id="mot-arm-s">60</span> s).
+      <strong>Run</strong> buttons keep moving until you press STOP (no arming, like the old motor control); they keep going even if this page is closed: reopen it, or use All off, to stop. Nothing moves while an LED is on. Watch the chamber.</p>
+    <div class="row" style="margin-top:12px">
+      <label class="field">Step size (half-steps)
+        <select id="mot-steps"></select></label>
+      <label class="field">Step speed (rpm)
+        <input id="mot-rpm" type="number" min="1" step="1" style="width:90px"></label>
+      <label class="field">Run speed (half-steps/s)
+        <input id="mot-jog-v" type="number" step="10" style="width:110px"></label>
+      <span class="spacer" style="flex:1"></span>
+      <button id="mot-arm-btn" class="btn primary">Arm motors</button>
+      <button id="mot-release" class="btn">Release coils</button>
+      <button id="mot-stop" class="btn danger stop-big">■ STOP</button>
+    </div>
+    <div class="motor-grid">
+      <div class="mcard" data-motor="1">
+        <h3 class="mname">Left (M1)</h3><span class="mstate" data-state>idle</span>
+        <div class="pos num" data-pos>–</div><div class="note" data-rev></div>
+        <div class="jog"><button class="btn" data-dir="up">▲ Up</button><button class="btn" data-dir="down">▼ Down</button></div>
+        <div class="cont"><span class="lbl">continuous, until STOP</span><button class="btn" data-jog="up">Run up</button><button class="btn" data-jog="down">Run down</button></div>
+      </div>
+      <div class="mcard" data-motor="both">
+        <h3>Both together</h3><span class="note">raise or lower the chamber level</span>
+        <div class="jog" style="margin-top:auto"><button class="btn primary" data-dir="up">▲ Both up</button><button class="btn primary" data-dir="down">▼ Both down</button></div>
+        <div class="cont"><span class="lbl">continuous, until STOP</span><button class="btn" data-jog="up">Run up</button><button class="btn" data-jog="down">Run down</button></div>
+      </div>
+      <div class="mcard" data-motor="2">
+        <h3 class="mname">Right (M2)</h3><span class="mstate" data-state>idle</span>
+        <div class="pos num" data-pos>–</div><div class="note" data-rev></div>
+        <div class="jog"><button class="btn" data-dir="up">▲ Up</button><button class="btn" data-dir="down">▼ Down</button></div>
+        <div class="cont"><span class="lbl">continuous, until STOP</span><button class="btn" data-jog="up">Run up</button><button class="btn" data-jog="down">Run down</button></div>
+      </div>
+    </div>
+    <div id="mot-msg" class="note" style="margin-top:10px"></div>
+    <h3 style="margin-top:14px">Motor log</h3>
+    <pre id="mot-log" class="mono"></pre>
+  </section>
+  <!-- LEDs: diagnostic ring -->
+  <section class="card hidden" data-view="leds" id="leds-view">
+    <h2>LED ring (diagnostic)</h2>
+    <p class="note" style="margin:6px 0 0">Lights the holes one at a time, clockwise from hole 1, round and round until you press Stop. Use it to check from the chamber which LEDs really light.
+      One hole at a time, always<span id="ring-budget"></span>. Motors and the other LED tools are locked while it runs.<br>
+      <strong>Click a hole</strong> to hold just that one: it is re-lit again and again. Click it again (or Stop) to end; click another hole to switch.</p>
+    <div class="row" style="margin-top:12px">
+      <label class="field">On-time per hole (ms)
+        <input id="ring-on" type="number" step="10" style="width:110px"></label>
+      <label class="field">Step: one hole every (ms)
+        <input id="ring-step" type="number" step="10" style="width:120px"></label>
+      <label class="check" style="align-self:end"><input type="checkbox" id="ring-unfitted"><span>Include unfitted holes</span></label>
+      <span style="flex:1"></span>
+      <button id="ring-start" class="btn primary">Start ring</button>
+      <button id="ring-stop" class="btn danger stop-big">■ Stop</button>
+    </div>
+    <div id="ring-min" class="note" style="margin-top:6px"></div>
+    <div class="ring-wrap">
+      <svg id="ring-svg" viewBox="0 0 400 400" role="img" aria-label="The 16 holes; the lit one is highlighted"></svg>
+      <div>
+        <div id="ring-state" style="font-size:16px;font-weight:600">Stopped</div>
+        <div id="ring-detail" class="ink2" style="margin:4px 0 12px"></div>
+        <h3>How to see each LED</h3>
+        <div class="seehint" id="ring-hints"></div>
+      </div>
+    </div>
+  </section>
+  <!-- Database: the food library -->
+  <!-- 1 · admin: status, exports, phone app -->
+  <section class="card db-admin hidden" data-view="database" aria-label="Food library status and exports">
+    <div>
+      <h3>Food library</h3>
+      <div class="stat-row">
+        <div class="stat"><div class="v" id="db-n-samples">–</div><div class="l">samples</div></div>
+        <div class="stat"><div class="v" id="db-n-products">–</div><div class="l">products</div></div>
+        <div class="stat"><div class="v" id="db-n-scans">–</div><div class="l">LIO scans</div></div>
+        <div class="stat"><div class="v" id="db-n-archived">–</div><div class="l">archived</div></div>
+      </div>
+      <div class="chips" id="db-chips"></div>
+    </div>
+    <div>
+      <h3>Export</h3>
+      <div class="dl-list">
+        <a class="dl" href="/foods/export/samples.csv"><span class="ic">CSV</span><span><b>Samples table</b><span class="note">one row per item, with nutrition per 100 g</span></span></a>
+        <a class="dl" href="/foods/export/library.json"><span class="ic">JSON</span><span><b>Full library</b><span class="note">everything, including every scan reading</span></span></a>
+      </div>
+      <div class="note mono db-path" id="db-path"></div>
+    </div>
+    <div>
+      <h3>Phone app · iPhone &amp; Android</h3>
+      <div id="db-phone"><span class="muted">…</span></div>
+    </div>
+  </section>
+
+  <!-- 2 · add a sample -->
+  <section class="card hidden" data-view="database">
+    <div class="db-sec-title"><h2>Add a sample</h2><span class="sub">or use the phone app above</span></div>
+    <div class="db-add-grid">
+      <div class="add-how">
+        <label class="field">Barcode digits
+          <div class="row" style="flex-wrap:nowrap"><input type="text" id="db-add-code" inputmode="numeric" autocomplete="off" placeholder="e.g. 016000275287"><button class="btn" id="db-add-lookup">Look up</button></div></label>
+        <div class="or">or</div>
+        <button class="btn" id="db-add-photo">Choose a photo of the barcode…</button>
+        <input type="file" id="db-add-file" accept="image/*" class="hidden">
+      </div>
+      <div class="add-result" id="db-add-result"><div class="empty">The product appears here: check it, add the item's details, then save.</div></div>
+    </div>
+  </section>
+
+  <!-- 3 · viewer -->
+  <section class="card hidden" data-view="database" id="db-viewer">
+    <div class="db-sec-title"><h2>Library</h2><span class="sub">search, filter and inspect every record</span></div>
+    <div class="db-query">
+      <label class="field search">Search<input type="text" id="db-q" placeholder="name, brand, sample code, barcode, lot, notes…"></label>
+      <label class="field">LIO scans<select id="db-f-scanned"><option value="">any</option><option value="yes">scanned</option><option value="no">not scanned yet</option></select></label>
+      <label class="field">Product data<select id="db-f-found"><option value="">any</option><option value="yes">found online</option><option value="no">missing</option></select></label>
+      <label class="field">Ingredients<select id="db-f-ingr"><option value="">any</option><option value="yes">listed</option><option value="no">missing</option></select></label>
+      <label class="field">Added from<select id="db-f-source"><option value="">anywhere</option><option value="phone">phone</option><option value="dashboard">dashboard</option></select></label>
+      <label class="field">Sort<select id="db-f-sort"><option value="newest">newest first</option><option value="oldest">oldest first</option><option value="name">name A–Z</option><option value="scans">most scans</option><option value="last_scan">recently scanned</option></select></label>
+      <label class="check" style="padding-bottom:6px"><input type="checkbox" id="db-archived"><span>Archived</span></label>
+    </div>
+    <div class="db-split">
+      <div class="db-list-pane">
+        <div class="list-bar"><span id="db-count"></span><span class="sp"></span><span id="db-cmp-bar"></span></div>
+        <div id="db-list-wrap"><div id="db-list"></div></div>
+      </div>
+      <div class="db-inspect" id="db-detail"></div>
+    </div>
   </section>
 </main>
 
@@ -291,12 +634,17 @@ table.runs td { border-top: 1px solid var(--hair); padding: 5px 6px; }
   <div class="row" style="justify-content:flex-end"><button class="btn" id="motion-no">Cancel</button><button class="btn primary" id="motion-yes">Yes, start</button></div>
 </div></div>
 
+<div class="overlay" id="img-overlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="img-overlay-title">
+  <div class="row"><div class="tag" id="img-overlay-title" style="flex:1"></div><button class="btn small" id="img-overlay-close">Close</button></div>
+  <img id="img-overlay-img" alt="">
+</div></div>
+
 <div id="toast" role="status"></div>
 
 <script>
 "use strict";
 const TOKEN = "__LIO_TOKEN__";
-const ICON = { PASS: "✓", WARN: "!", FAIL: "✕", ERROR: "⚠", SKIP: "–", NOT_RUN: "○" };
+const ICON = { PASS: "✓", WARN: "!", FAIL: "✕", ERROR: "×", SKIP: "–", NOT_RUN: "○" };
 const LABEL = { PASS: "PASS", WARN: "WARN", FAIL: "FAIL", ERROR: "ERROR", SKIP: "SKIP", NOT_RUN: "not run" };
 const VERDICT_ICON = { FUNCTIONAL: "✓", DEGRADED: "!", "NOT FUNCTIONAL": "✕", NOT_RUN: "○" };
 const FILL = { PASS: "var(--good)", WARN: "var(--warning)", FAIL: "var(--critical)", ERROR: "var(--critical)",
@@ -558,7 +906,7 @@ function renderHeader() {
   $("conn").classList.toggle("on", on);
   $("conn-text").textContent = on ? `${S.is_sim ? "simulator" : S.target} · fw ${S.firmware.fw || "?"}${S.faults.length ? " · faults: " + S.faults.join(", ") : ""}` : "not connected";
   $("btn-disconnect").classList.toggle("hidden", !on);
-  $("btn-wake").classList.toggle("hidden", !on);
+  $("btn-wake").classList.toggle("hidden", !on || !STATIC.wake);
   $("btn-wake").disabled = S.running;
   $("btn-off").classList.toggle("hidden", !on);
   $("btn-off").textContent = S.running ? "■ Stop run" : "■ All off";
@@ -654,6 +1002,200 @@ async function loadRuns() {
 }
 async function loadRun(id) { await act("/api/load", { run_id: id }, `showing ${id} on the twin`); }
 
+/* ----------------------------------------------------------------- tabs */
+let view = "system", M = null;
+function showView(v) {
+  // "database/LIO-F-00012[/product]" opens a sample (and a sub-tab); "database/compare/A,B" compares
+  const [base, arg, sub] = String(v || "").split("/");
+  view = ["motors", "leds", "database"].includes(base) ? base : "system";
+  document.body.dataset.view = view;
+  document.querySelectorAll("[data-view]").forEach((e) => e.classList.toggle("hidden", e.dataset.view !== view));
+  document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("on", t.dataset.tab === view));
+  const want = view === "database" && arg ? `#database/${arg}${sub ? "/" + sub : ""}` : "#" + view;
+  if (location.hash !== want) history.replaceState(null, "", view === "system" ? "#" : want);
+  if (view === "motors") motorPoll();
+  if (view === "leds") ringPoll();
+  if (view === "database") {
+    if (arg === "compare" && sub) {
+      DB.cmp = []; DB.cmpSlot = {};
+      decodeURIComponent(sub).split(",").filter(Boolean).slice(0, CMP_MAX).forEach((c, i) => { DB.cmp.push(c); DB.cmpSlot[c] = i; });
+      DB.cmpMode = DB.cmp.length > 0;
+    } else if (arg) { DB.sel = decodeURIComponent(arg); DB.cmpMode = false; if (["overview", "product", "scans", "raw"].includes(sub)) DB.tab = sub; }
+    dbShow();
+  }
+}
+document.querySelectorAll(".tab").forEach((t) => t.onclick = () => showView(t.dataset.tab));
+window.addEventListener("hashchange", () => showView(location.hash.slice(1)));
+
+/* ---------------------------------------------------------------- motors */
+function motorSetup() {
+  const mo = STATIC.motors;
+  $("mot-steps").innerHTML = [64, 256, 512, 1024, mo.step_max].filter((v, i, a) => v <= mo.step_max && a.indexOf(v) === i)
+    .map((v) => `<option value="${v}" ${v === 256 ? "selected" : ""}>${v} (${(360 * v / mo.half_steps_per_rev).toFixed(0)}°)</option>`).join("");
+  $("mot-rpm").max = mo.rpm_max; $("mot-rpm").value = mo.rpm_default;
+  $("mot-jog-v").min = mo.jog_v_min; $("mot-jog-v").max = mo.jog_v_max; $("mot-jog-v").value = mo.jog_vs_default;
+  $("mot-arm-s").textContent = (mo.arm_ms / 1000).toFixed(0);
+  document.querySelectorAll(".mcard[data-motor]").forEach((c) => {
+    const m = c.dataset.motor;
+    if (mo.names[m]) c.querySelector(".mname").textContent = `${mo.names[m][0].toUpperCase()}${mo.names[m].slice(1)} (M${m})`;
+    c.querySelectorAll("[data-dir]").forEach((b) => b.onclick = () => motorMove(m, b.dataset.dir));
+    c.querySelectorAll("[data-jog]").forEach((b) => b.onclick = () => motorJog(m, b.dataset.jog));
+  });
+}
+async function motorAct(path, body) {
+  try { const out = await api(path, body ?? {}); await motorPoll(); poll(true); return out; }
+  catch (e) { $("mot-msg").textContent = e.message; toast(e.message, 7000); await motorPoll(); return null; }
+}
+function motorMove(m, dir) {
+  const rpm = Math.round(Number($("mot-rpm").value));
+  if (!(rpm >= 1 && rpm <= STATIC.motors.rpm_max)) return toast(`speed must be 1–${STATIC.motors.rpm_max} rpm`);
+  $("mot-msg").textContent = "";
+  motorAct("/api/motor/move", { motor: m, direction: dir, steps: Number($("mot-steps").value), rpm });
+}
+function motorJog(m, dir) {
+  const v = Math.round(Number($("mot-jog-v").value)), mo = STATIC.motors;
+  if (!(v >= mo.jog_v_min && v <= mo.jog_v_max)) return toast(`run speed must be ${mo.jog_v_min}–${mo.jog_v_max} half-steps/s`);
+  $("mot-msg").textContent = "";
+  motorAct("/api/motor/jog", { motor: m, direction: dir, speed: v });
+}
+$("mot-arm-btn").onclick = () => motorAct("/api/motor/arm");
+$("mot-stop").onclick = () => motorAct("/api/motor/stop");
+$("mot-release").onclick = () => motorAct("/api/motor/release");
+async function motorPoll() {
+  // While a continuous move runs, keep checking in from any tab: the server stops it if we go quiet.
+  if ((view !== "motors" && !(M && M.jog)) || !STATIC) return;
+  try { M = await api("/api/motor"); } catch (e) { M = null; }
+  renderMotors();
+}
+function renderMotors() {
+  const on = !!(M && M.connected && M.motors), running = !!(S && S.running);
+  const armed = on && M.armed, lit = on && M.lit > 0;
+  const arm = $("mot-arm");
+  arm.className = "badge " + (armed ? "s-PASS" : "s-SKIP");
+  arm.innerHTML = `<span class="ic">${armed ? "✓" : "–"}</span>` + esc(!on ? "not connected" : armed ? `armed · ${Math.ceil(M.armed_ms / 1000)} s left` : "not armed");
+  $("mot-arm-btn").disabled = !on || running;
+  $("mot-release").disabled = !on || running;
+  $("mot-stop").disabled = !(S && S.connected);
+  let anyRun = false;
+  document.querySelectorAll(".mcard[data-motor]").forEach((c) => {
+    const m = c.dataset.motor, st = on && M.motors[m];
+    if (st) {
+      anyRun = anyRun || st.state === "run";
+      c.querySelector("[data-state]").textContent = st.state === "run" ? "moving" : "idle";
+      c.querySelector("[data-state]").classList.toggle("run", st.state === "run");
+      c.querySelector("[data-pos]").textContent = `${st.pos > 0 ? "+" : ""}${st.pos}`;
+      c.querySelector("[data-rev]").textContent = `half-steps · ${(st.pos / STATIC.motors.half_steps_per_rev).toFixed(2)} turns`;
+    }
+  });
+  const jog = on ? M.jog : null;
+  document.querySelectorAll(".mcard[data-motor] [data-jog]").forEach((b) => {
+    const m = b.closest(".mcard").dataset.motor;
+    const active = !!(jog && jog.motor === m && jog.direction === b.dataset.jog);
+    b.classList.toggle("jogging", active);
+    b.textContent = (active ? "Running…" : b.dataset.jog === "up" ? "Run up" : "Run down");
+    b.disabled = !on || running || lit;
+    b.title = !on ? "not connected" : running ? "a test run is using the device" : lit ? "an LED is on" : active ? "press STOP to stop" : "";
+  });
+  if (!jog && $("mot-msg").textContent.startsWith("Running ")) $("mot-msg").textContent = "";
+  if (jog) $("mot-msg").textContent = `Running ${jog.motor === "both" ? "both motors" : STATIC.motors.names[jog.motor] + " motor"} ${jog.direction} at ${jog.speed} half-steps/s — press STOP to stop.`;
+  document.querySelectorAll(".mcard[data-motor] [data-dir]").forEach((b) => {
+    const m = b.closest(".mcard").dataset.motor;
+    const busy = on && (m === "both" ? Object.values(M.motors).some((x) => x.state === "run") : M.motors[m] && M.motors[m].state === "run");
+    b.disabled = !armed || running || lit || busy;
+    b.title = !on ? "not connected" : running ? "a test run is using the device" : !armed ? "arm the motors first" : lit ? "an LED is on" : busy ? "already moving" : "";
+  });
+  if (!on && !jog) $("mot-msg").textContent = running ? "A test run is using the device." : (S && S.connected) ? "" : "Connect the LIO on the System tab first.";
+  if (S) $("mot-log").textContent = S.log.filter((l) => /motor|armed|coils|FAILSAFE/i.test(l)).slice(-40).join("\n");
+  const box = $("mot-log"); box.scrollTop = box.scrollHeight;
+}
+setInterval(motorPoll, 400);
+
+/* ------------------------------------------------------------- LED ring */
+let R = null;
+const ringCh = () => STATIC.ring.channels;
+function seeHow(nm) {
+  if (nm == null) return "wavelength unknown: try eye and phone camera";
+  return nm <= STATIC.ring.visible_max_nm ? "by eye" : nm <= STATIC.ring.camera_max_nm ? "phone camera (faint purple)" : "not visible, even to a camera";
+}
+function ringSetup() {
+  const r = STATIC.ring;
+  $("ring-on").min = r.on_ms_min; $("ring-on").max = r.on_ms_max; $("ring-on").value = r.on_ms;
+  $("ring-budget").textContent = r.duty_budget ? "; the step is raised automatically so no LED exceeds its duty budget (RAIL A: 1 s per LED per minute)" : "";
+  const cx = 200, cy = 200, rad = 150;
+  let svg = `<circle cx="${cx}" cy="${cy}" r="${rad}" fill="none" stroke="var(--hair)" stroke-width="1.5"/>`;
+  ringCh().forEach((c, i) => {
+    const a = -Math.PI / 2 + 2 * Math.PI * i / ringCh().length, x = cx + rad * Math.cos(a), y = cy + rad * Math.sin(a);
+    svg += `<g><circle class="h${c.fitted ? "" : " unfitted"}" id="rh-${c.hole}" data-hole="${c.hole}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="22"/>`
+      + `<text x="${x.toFixed(1)}" y="${(y - 5).toFixed(1)}">${c.hole}</text><text class="nm" x="${x.toFixed(1)}" y="${(y + 9).toFixed(1)}">${esc(c.label)}</text></g>`;
+  });
+  svg += `<text class="center" id="ring-c1" x="${cx}" y="${cy - 8}">–</text><text class="center2" id="ring-c2" x="${cx}" y="${cy + 16}"></text>`;
+  $("ring-svg").innerHTML = svg;
+  $("ring-svg").querySelectorAll("circle.h").forEach((el) => {
+    el.onclick = () => ringHold(Number(el.dataset.hole));
+    el.innerHTML = `<title>Click to hold hole ${el.dataset.hole} lit</title>`;
+  });
+  const groups = {};
+  ringCh().forEach((c) => { const k = seeHow(c.nm); (groups[k] = groups[k] || []).push(c.label === "res." ? `${c.hole}` : `${c.hole} (${c.label})`); });
+  $("ring-hints").innerHTML = Object.entries(groups).map(([k, v]) => `<div><strong>${esc(k)}:</strong> holes ${esc(v.join(", "))}</div>`).join("");
+  $("ring-on").oninput = $("ring-unfitted").onchange = ringMinUpdate;
+  ringMinUpdate();
+}
+async function ringMinUpdate() {
+  const on = Math.round(Number($("ring-on").value));
+  if (!(on >= STATIC.ring.on_ms_min && on <= STATIC.ring.on_ms_max)) return;
+  try {
+    const { min_step_ms } = await api(`/api/ring/min_step?on_ms=${on}&unfitted=${$("ring-unfitted").checked ? 1 : 0}&hole=${ringHeld() || 0}`);
+    $("ring-step").min = min_step_ms;
+    if (Number($("ring-step").value) < min_step_ms) $("ring-step").value = min_step_ms;
+    const n = ringCh().filter((c) => c.fitted || $("ring-unfitted").checked).length;
+    $("ring-min").textContent = ringHeld()
+      ? (STATIC.ring.duty_budget ? `Holding hole ${ringHeld()}: at ${on} ms on it can flash at most once every ${(min_step_ms / 1000).toFixed(1)} s (duty budget).` : `Holding hole ${ringHeld()}: ${on} ms on, re-lit every ${min_step_ms} ms (on almost all the time with a long on-time).`)
+      : `Fastest allowed at ${on} ms on: one hole every ${min_step_ms} ms (a full lap in ${(n * min_step_ms / 1000).toFixed(1)} s).`;
+  } catch (e) { /* not connected yet */ }
+}
+async function ringAct(path, body) {
+  try { await api(path, body ?? {}); } catch (e) { toast(e.message, 7000); }
+  await ringPoll(); poll(true);
+}
+const ringHeld = () => (R && R.active && R.holes.length === 1 ? R.holes[0] : 0);
+function ringGo(holes) {
+  const on = Math.round(Number($("ring-on").value)), step = Math.round(Number($("ring-step").value));
+  if (!(on >= STATIC.ring.on_ms_min && on <= STATIC.ring.on_ms_max)) return toast(`on-time must be ${STATIC.ring.on_ms_min}–${STATIC.ring.on_ms_max} ms`);
+  if (!(S && S.connected)) return toast("Not connected: connect on the System tab first");
+  ringAct("/api/ring/start", { on_ms: on, step_ms: holes ? 0 : step, include_unfitted: $("ring-unfitted").checked, holes: holes || [] })
+    .then(ringMinUpdate);
+}
+function ringHold(hole) {
+  if (ringHeld() === hole) return ringAct("/api/ring/stop").then(ringMinUpdate);
+  ringGo([hole]);
+}
+$("ring-start").onclick = () => ringGo(ringHeld() ? [ringHeld()] : null);
+$("ring-stop").onclick = () => ringAct("/api/ring/stop");
+async function ringPoll() {
+  if ((view !== "leds" && !(R && R.active)) || !STATIC) return;
+  try { R = await api("/api/ring"); } catch (e) { R = null; }
+  renderRing();
+}
+function renderRing() {
+  const on = !!(S && S.connected), active = !!(R && R.active), running = !!(S && S.running);
+  $("ring-start").disabled = !on || running;
+  const held = ringHeld();
+  $("ring-start").textContent = active ? "Apply timing" : "Start ring";
+  $("ring-stop").disabled = !on;
+  ringCh().forEach((c) => {
+    const el = $("rh-" + c.hole); if (!el) return;
+    el.classList.toggle("inring", active && R.holes.includes(c.hole));
+    el.classList.toggle("lit", active && R.state === "lit" && R.hole === c.hole);
+    el.classList.toggle("held", held === c.hole);
+  });
+  const ch = active && ringCh().find((c) => c.hole === R.hole);
+  $("ring-c1").textContent = active && ch ? `Hole ${ch.hole}` : "–";
+  $("ring-c2").textContent = active && ch ? `${ch.label}${ch.nm ? "" : ""} · ${seeHow(ch.nm)}` : "";
+  $("ring-state").textContent = !on ? ((S && S.error) ? `Not connected: ${S.error} (System tab → Connect)` : "Not connected: connect on the System tab") : !active ? "Stopped" : R.state === "cooling" ? `${held ? "Holding" : "Cooling"} hole ${R.hole}: dark for ${R.cooling_s} s more (duty budget)` : held ? `Holding hole ${held}: lit` : `Running: hole ${R.hole} lit`;
+  $("ring-detail").textContent = held ? `${R.on_ms} ms flash, every ${(R.step_ms / 1000).toFixed(1)} s · flash ${R.laps + 1}. Click it again to stop.` : active ? `${R.on_ms} ms on, one hole every ${R.step_ms} ms · lap ${R.laps + 1}` + (R.step_ms > Number($("ring-step").value) ? ` (step raised to the duty-safe ${R.min_step_ms} ms)` : "") : "";
+}
+setInterval(ringPoll, 250);
+
 /* ------------------------------------------------------------------- poll */
 let wasRunning = false;
 async function poll(force = false) {
@@ -662,16 +1204,766 @@ async function poll(force = false) {
     if (st.unchanged) return;
     S = st; version = st.version;
     renderHeader(); renderVerdict(); renderTwin(); renderDetails(); renderTiles(); renderProgress(); renderLog(); renderPrompt();
+    if (view === "motors") renderMotors();
+    if (view === "leds") renderRing();
+    if (view === "database") dbBanner();
     if (wasRunning && !S.running) loadRuns();
     wasRunning = S.running;
   } catch (e) { $("conn-text").textContent = "dashboard server not reachable"; $("conn").classList.remove("on"); }
 }
+/* -------------------------------------------------------------- database */
+const DB = { status: null, phoneKey: "", counts: "", list: [], sel: null, sample: null, scan: null, raw: null,
+             unit: "counts", tab: "overview", addDraft: null, timer: null, editLabel: false, scanning: false,
+             cmp: [], cmpSlot: {}, cmpMode: false, cmpDet: "opt101", cmpNorm: false, cmpData: {} };
+const DB_DETS = [["opt101", "OPT101", "var(--opt101)"], ["ingaas", "InGaAs", "var(--ingaas)"]];
+const SERIES = ["var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)", "var(--s5)", "var(--s6)"];
+const CMP_MAX = SERIES.length;
+const DB_NUTS = [["energy_kcal", "Energy", "kcal"], ["energy_kj", "Energy", "kJ"], ["fat_g", "Fat", "g"],
+  ["saturated_fat_g", "saturated", "g", 1], ["trans_fat_g", "trans", "g", 1], ["cholesterol_mg", "Cholesterol", "mg"],
+  ["carbohydrates_g", "Carbohydrate", "g"], ["sugars_g", "sugars", "g", 1], ["added_sugars_g", "added sugars", "g", 1],
+  ["fiber_g", "Fibre", "g"], ["protein_g", "Protein", "g"], ["salt_g", "Salt", "g"], ["sodium_mg", "Sodium", "mg"],
+  ["alcohol_g", "Alcohol", "g"]];
+// label composition per 100 g; the remainder (mostly water) is neutral grey
+const COMP = [["fat_g", "Fat", "#d9a521"], ["carbohydrates_g", "Carbohydrate", "#5f93d0"], ["protein_g", "Protein", "#c0605f"],
+  ["salt_g", "Salt", "#7aa66a"], ["remainder", "Water + ash (derived)", "var(--axis)"]];
+const DB_SRC = { openfoodfacts: "Open Food Facts", usda: "USDA FoodData Central", dsld: "NIH Dietary Supplement Label Database",
+  manual: "typed in by hand", "label photo": "read from a label photo", "usda (picked)": "USDA (picked by name)", "dsld (picked)": "DSLD (picked by name)" };
+const srcName = (x) => DB_SRC[x] || x;
+const foodSrc = (rel) => "/foods/files/" + rel.split("/").map(encodeURIComponent).join("/");
+const fmtDate = (iso) => iso ? new Date(iso).toLocaleString([], { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "";
+const fmtDay = (iso) => iso ? new Date(iso).toLocaleDateString([], { month: "short", day: "numeric" }) : "";
+const fmtNum = (v, d = 2) => v === null || v === undefined || v === "" || Number.isNaN(+v) ? "–" : (+(+v).toFixed(d)).toLocaleString();
+
+function shrinkPhoto(file, maxPx = 2000) {   // upright JPEG data URL (the browser applies EXIF rotation)
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, maxPx / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); resolve(c.toDataURL("image/jpeg", 0.9));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("could not open that image")); };
+    img.src = url;
+  });
+}
+
+/* EAN-13 / UPC-A / EAN-8 as SVG, drawn from the digits (black on white in both themes). */
+function barcodeSvg(code) {
+  const L = ["0001101", "0011001", "0010011", "0111101", "0100011", "0110001", "0101111", "0111011", "0110111", "0001011"];
+  const R = L.map((p) => p.replace(/./g, (c) => (c === "0" ? "1" : "0")));
+  const G = R.map((p) => p.split("").reverse().join(""));
+  const PAR = ["LLLLLL", "LLGLGG", "LLGGLG", "LLGGGL", "LGLLGG", "LGGLLG", "LGGGLL", "LGLGLG", "LGLGGL", "LGGLGL"];
+  let digits = code, bits = "", guards = [], text = [];
+  if (code.length === 12) digits = "0" + code;
+  if (digits.length === 13) {
+    const par = PAR[+digits[0]];
+    bits = "101"; for (let i = 1; i <= 6; i++) bits += (par[i - 1] === "L" ? L : G)[+digits[i]];
+    bits += "01010"; for (let i = 7; i <= 12; i++) bits += R[+digits[i]];
+    bits += "101"; guards = [[0, 3], [45, 50], [92, 95]];
+    text = code.length === 12 ? [[-6, code[0]], [24, code.slice(1, 6)], [70, code.slice(6, 11)], [101, code[11]]]
+                              : [[-6, digits[0]], [24, digits.slice(1, 7)], [70, digits.slice(7)]];
+  } else if (digits.length === 8) {
+    bits = "101"; for (let i = 0; i < 4; i++) bits += L[+digits[i]];
+    bits += "01010"; for (let i = 4; i < 8; i++) bits += R[+digits[i]];
+    bits += "101"; guards = [[0, 3], [31, 36], [64, 67]];
+    text = [[17, digits.slice(0, 4)], [50, digits.slice(4)]];
+  } else return `<span class="mono" style="color:#0b0b0b">${esc(code)}</span>`;
+  const m = 2, h = 70, gh = 80, pad = 24, W = bits.length * m + 2 * pad;
+  let rects = "";
+  for (let i = 0; i < bits.length; i++) if (bits[i] === "1") {
+    const isG = guards.some(([a, b]) => i >= a && i < b);
+    rects += `<rect x="${pad + i * m}" y="4" width="${m}" height="${isG ? gh : h}"/>`;
+  }
+  const tx = text.map(([x, t]) => `<text x="${pad + x * m}" y="${gh + 18}" text-anchor="middle">${esc(t)}</text>`).join("");
+  return `<svg viewBox="0 0 ${W} ${gh + 24}" role="img" aria-label="Barcode ${esc(code)}" fill="#0b0b0b" font-family="ui-monospace, Menlo, monospace" font-size="15">${rects}${tx}</svg>`;
+}
+
+function niceTicks(lo, hi, n = 5) {
+  if (lo === hi) { lo -= 1; hi += 1; }
+  const raw = (hi - lo) / n, mag = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / mag;
+  const step = (f < 1.5 ? 1 : f < 3 ? 2 : f < 7 ? 5 : 10) * mag;
+  const a = Math.floor(lo / step) * step, b = Math.ceil(hi / step) * step, out = [];
+  for (let v = a; v <= b + step / 2; v += step) out.push(+v.toFixed(10));
+  return out;
+}
+function yRange(vals) {
+  let lo = Math.min(0, ...vals), hi = Math.max(0, ...vals);
+  if (lo > -0.03 * hi) lo = 0;    // tiny negative whiskers do not earn a whole negative tick
+  if (hi < -0.03 * lo) hi = 0;
+  return niceTicks(lo, hi);
+}
+
+/* --- 1 · admin strip */
+async function dbStatus() {
+  const st = await api("/api/foods/status");
+  DB.status = st;
+  const c = st.counts;
+  $("db-n-samples").textContent = c.samples; $("db-n-products").textContent = c.products;
+  $("db-n-scans").textContent = c.scans; $("db-n-archived").textContent = c.archived;
+  $("db-path").textContent = st.db_path;
+  const chip = (ok, text, title = "") => `<span class="chip ${ok === true ? "ok" : ok === false ? "warn" : ""}" title="${esc(title)}"><span class="d"></span>${esc(text)}</span>`;
+  $("db-chips").innerHTML = [
+    chip(st.online_lookup, st.online_lookup ? "Online lookup on" : "Online lookup off"),
+    chip(st.usda_key === "personal", st.usda_key === "personal" ? "USDA key: personal" : st.usda_key === "demo" ? "USDA key: DEMO (rate-limited)" : "USDA: no key",
+         "data/foods/usda_api_key.txt or $LIO_USDA_API_KEY"),
+    chip(st.decoder, st.decoder ? "Barcode photos decoded" : "Photo decoding not installed"),
+  ].join("");
+  const p = st.phone, key = JSON.stringify(p);
+  if (key !== DB.phoneKey) {
+    DB.phoneKey = key;
+    const t = p.tunnel || { state: "off" }, urls = p.urls || [];
+    const pub = urls.find((u) => u.startsWith("https://")), lan = urls.filter((u) => !u.startsWith("https://"));
+    const tunnelLine = {
+      up: `<div class="tun ok"><span class="d"></span><span><strong>Secure link on</strong> (Cloudflare tunnel): works on any network, with the VPN on, and over cellular.</span><button class="btn small" data-tun="stop">Stop</button></div>`,
+      starting: `<div class="tun"><span class="d"></span><span>Opening the secure link…</span></div>`,
+      error: `<div class="tun bad"><span class="d"></span><span>Secure link failed: ${esc(t.error || "")}</span><button class="btn small" data-tun="start">Retry</button></div>`,
+      off: `<div class="tun"><span class="d"></span><span>Secure link off: phones must be on this Wi-Fi${p.vpn ? ", and the VPN blocks that" : ""}.</span><button class="btn small" data-tun="start">Start</button></div>`,
+    }[t.state] || "";
+    $("db-phone").innerHTML = !p.enabled
+      ? `<p class="muted" style="margin:0">The phone app is off${p.error ? ": " + esc(p.error) : " (foods.phone_enabled, or --no-phone)"}.</p>`
+      : `<div class="qr"><div class="code">${p.qr_svg || ""}</div><div>
+          <ol><li>Scan this code with the phone's camera</li><li>Allow camera access when asked</li><li>Add it to the home screen</li></ol>
+          ${pub ? `<div class="url mono"><a href="${esc(pub)}" target="_blank" rel="noopener">${esc(pub)}</a></div>` : lan.map((u) => `<div class="url mono"><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a></div>`).join("") || `<div class="muted">No address yet.</div>`}
+          ${tunnelLine}
+          ${p.vpn && t.state !== "up" ? `<div class="vpn"><span><strong>VPN connected.</strong> It blocks the local network: start the secure link, or disconnect the VPN.</span></div>` : ""}
+          <div class="row" style="margin-top:8px"><button class="btn small" id="db-rekey">New pairing key</button><span class="note">${t.state === "up" ? "The secure link is public but needs the pairing key; it changes when the dashboard restarts (scan again)." : "The phone can only add samples, not run the instrument."}</span></div>
+        </div></div>`;
+    $("db-phone").querySelectorAll("[data-tun]").forEach((b) => b.onclick = async () => {
+      b.disabled = true;
+      try { await api(`/api/foods/tunnel/${b.dataset.tun}`, {}); } catch (e) { toast(e.message, 7000); }
+      DB.phoneKey = ""; await dbStatus();
+    });
+    const rk = $("db-rekey");
+    if (rk) rk.onclick = async () => {
+      if (!confirm("Make a new pairing key? Every paired phone must scan the new QR code.")) return;
+      try { await api("/api/foods/phone/rekey", {}); DB.phoneKey = ""; await dbStatus(); toast("New key: scan the QR code again on each phone"); } catch (e) { toast(e.message, 7000); }
+    };
+  }
+  return st;
+}
+
+/* --- 2 · add a sample */
+async function dbIdentify(body) {
+  const box = $("db-add-result");
+  box.className = "add-result"; box.innerHTML = `<div class="empty">${body.photo ? "Reading the barcode and looking it up…" : "Looking it up…"}</div>`;
+  try {
+    const r = await api("/api/foods/identify", body); DB.addDraft = r.draft;
+    const p = r.product || {};
+    box.className = "add-result filled";
+    box.innerHTML = `<div class="add-prod">${p.image_file ? `<img src="${foodSrc(p.image_file)}" alt="">` : `<div class="ph"></div>`}
+        <div><div style="font-weight:700;font-size:16px">${esc(p.name || "Unknown product")}</div><div class="ink2">${esc([p.brand, p.quantity].filter(Boolean).join(" · "))}</div>
+        <div class="note mono">${esc(r.kind)} ${esc(r.code)} · ${p.found ? "from " + esc(p.sources.map((x) => DB_SRC[x] || x).join(" + ")) : "no data found online"}</div></div></div>
+      ${r.existing_samples.length ? `<div class="banner warn" style="margin-top:10px">Already in the library as ${r.existing_samples.map((e) => esc(e.sample_code)).join(", ")}. Saving adds another physical item of the same product.</div>` : ""}
+      <div class="add-fields">
+        <label class="field">Lot / batch<input type="text" id="db-add-lot"></label>
+        <label class="field">Best before<input type="text" id="db-add-bb" placeholder="YYYY-MM-DD"></label>
+        <label class="field wide">Entered by<input type="text" id="db-add-by"></label>
+        <label class="field" style="grid-column:1/-1">Notes<input type="text" id="db-add-notes"></label>
+      </div>
+      <div class="row" style="margin-top:12px;justify-content:flex-end"><button class="btn" id="db-add-cancel">Cancel</button><button class="btn primary" id="db-add-save">Save sample</button></div>`;
+    try { $("db-add-by").value = localStorage.getItem("lio-entered-by") || ""; } catch { /* storage off */ }
+    $("db-add-cancel").onclick = dbAddReset;
+    $("db-add-save").onclick = async () => {
+      try {
+        try { localStorage.setItem("lio-entered-by", $("db-add-by").value.trim()); } catch { /* storage off */ }
+        const s = await api("/api/foods/save", { draft: DB.addDraft, lot: $("db-add-lot").value, best_before: $("db-add-bb").value,
+          entered_by: $("db-add-by").value, notes: $("db-add-notes").value });
+        dbAddReset(); $("db-add-code").value = ""; toast(`saved as ${s.sample_code}: write it on the item`, 6000);
+        DB.cmpMode = false; await dbRefresh(s.sample_code);
+      } catch (e) { toast(e.message, 7000); }
+    };
+  } catch (e) { box.className = "add-result"; box.innerHTML = `<div class="banner bad">${esc(e.message)}</div>`; }
+}
+function dbAddReset() { DB.addDraft = null; $("db-add-result").className = "add-result"; $("db-add-result").innerHTML = `<div class="empty">The product appears here: check it, add the item's details, then save.</div>`; }
+
+/* --- 3 · viewer: list */
+function dbQuery() {
+  const q = new URLSearchParams({ q: $("db-q").value.trim(), archived: $("db-archived").checked ? "1" : "0",
+    scanned: $("db-f-scanned").value, found: $("db-f-found").value, ingredients: $("db-f-ingr").value, source: $("db-f-source").value, sort: $("db-f-sort").value });
+  return q.toString();
+}
+function dbFiltered() { return $("db-q").value.trim() || $("db-f-scanned").value || $("db-f-found").value || $("db-f-ingr").value || $("db-f-source").value || $("db-archived").checked; }
+async function dbLoadList() {
+  try { DB.list = (await api("/api/foods/samples?" + dbQuery())).samples; } catch (e) { toast(e.message); return; }
+  dbRenderList();
+}
+function dbRenderList() {
+  const total = DB.status ? DB.status.counts.samples : DB.list.length;
+  $("db-count").textContent = dbFiltered() ? `${DB.list.length} matching` : `${DB.list.length} of ${total} sample${total === 1 ? "" : "s"}`;
+  $("db-cmp-bar").innerHTML = DB.cmp.length
+    ? `<button class="btn small ${DB.cmpMode ? "" : "primary"}" id="db-cmp-go">${DB.cmpMode ? "Comparing" : "Compare"} ${DB.cmp.length}</button> <button class="btn small" id="db-cmp-clear">Clear</button>`
+    : `<span class="note">tick items to compare</span>`;
+  if ($("db-cmp-go")) $("db-cmp-go").onclick = () => { DB.cmpMode = true; dbRenderInspector(); dbRenderList(); };
+  if ($("db-cmp-clear")) $("db-cmp-clear").onclick = () => { DB.cmp = []; DB.cmpSlot = {}; DB.cmpMode = false; dbRenderList(); dbRenderInspector(); };
+  $("db-list").innerHTML = DB.list.length ? DB.list.map((s) => {
+    const inCmp = DB.cmp.includes(s.sample_code), img = s.product_image || s.barcode_photo;
+    return `<div class="srow ${s.sample_code === DB.sel && !DB.cmpMode ? "sel" : ""}" data-code="${esc(s.sample_code)}">
+      <input type="checkbox" aria-label="compare ${esc(s.sample_code)}" ${inCmp ? "checked" : ""} ${!inCmp && DB.cmp.length >= CMP_MAX ? "disabled" : ""}>
+      ${img ? `<img src="${foodSrc(img)}" alt="">` : `<div class="ph"></div>`}
+      <div style="min-width:0"><div class="t1">${esc(s.name || "Unknown product")}</div>
+        <div class="t2"><span class="code">${esc(s.sample_code)}</span>${inCmp ? `<span class="cmp-dot" style="background:${SERIES[DB.cmpSlot[s.sample_code]]}"></span>` : ""} · ${esc(s.brand || s.scanned_text)}${s.found ? "" : " · no data"}${s.has_ingredients ? "" : ` · <span style="color:var(--critical)">no ingredients</span>`}</div></div>
+      <div class="meta"><div><span class="n">${s.n_scans}</span> scan${s.n_scans === 1 ? "" : "s"}</div><div>${esc(fmtDay(s.created_at))}</div></div></div>`;
+  }).join("") : `<div class="list-empty">${dbFiltered() ? "Nothing matches." : "No samples yet.<br>Add one above, or scan with the phone app."}</div>`;
+  document.querySelectorAll("#db-list .srow").forEach((row) => {
+    const code = row.dataset.code, cb = row.querySelector("input");
+    cb.onclick = (e) => { e.stopPropagation(); dbToggleCmp(code, cb.checked); };
+    row.onclick = () => { DB.cmpMode = false; dbSelect(code); };
+  });
+}
+function dbToggleCmp(code, on) {
+  if (on && !DB.cmp.includes(code) && DB.cmp.length < CMP_MAX) {
+    const used = new Set(Object.values(DB.cmpSlot));
+    DB.cmpSlot[code] = [...SERIES.keys()].find((i) => !used.has(i));   // colour follows the sample
+    DB.cmp.push(code);
+  } else if (!on) { DB.cmp = DB.cmp.filter((c) => c !== code); delete DB.cmpSlot[code]; }
+  if (!DB.cmp.length) DB.cmpMode = false;
+  dbRenderList();
+  if (DB.cmpMode) dbRenderInspector();
+}
+
+async function dbSelect(code, scanUuid) {
+  DB.sel = code; dbRenderList();
+  dbHash();
+  try { DB.sample = await api(`/api/foods/sample?code=${encodeURIComponent(code)}`); }
+  catch (e) { toast(e.message); return; }
+  const scans = DB.sample.scans;
+  const want = scanUuid || (DB.scan && scans.some((c) => c.uuid === DB.scan.uuid) ? DB.scan.uuid : scans[0] && scans[0].uuid);
+  DB.scan = null; DB.raw = null; DB.editLabel = false;
+  if (want) { try { DB.scan = await api(`/api/foods/scan?uuid=${encodeURIComponent(want)}`); } catch (e) { toast(e.message); } }
+  dbRenderInspector();
+}
+async function dbRefresh(code) { await Promise.all([dbStatus(), dbLoadList()]); if (code) await dbSelect(code); }
+
+function dbHash() {
+  if (view !== "database") return;
+  const h = DB.cmpMode && DB.cmp.length ? `#database/compare/${DB.cmp.map(encodeURIComponent).join(",")}`
+    : DB.sel ? `#database/${encodeURIComponent(DB.sel)}${DB.tab !== "overview" ? "/" + DB.tab : ""}` : "#database";
+  if (location.hash !== h) history.replaceState(null, "", h);
+}
+
+/* --- 3 · viewer: inspector */
+function dbRenderInspector() {
+  const box = $("db-detail");
+  dbHash();
+  if (DB.cmpMode && DB.cmp.length) return dbRenderCompare();
+  const s = DB.sample;
+  if (!s) { box.innerHTML = `<div class="inspect-empty"><div>Select a sample on the left to inspect everything recorded for it,<br>or tick several to compare their spectra and composition.</div></div>`; return; }
+  const p = s.product || { info: {}, sources: [], errors: {} };
+  const img = p.image_file || s.product_photo || s.barcode_photo;
+  const tabs = [["overview", "Overview"], ["product", "Manufacturer data"], ["scans", "LIO scans", s.scans.length], ["raw", "Raw data"]];
+  box.innerHTML = `
+    <div class="ins-head">
+      ${img ? `<img src="${foodSrc(img)}" alt="">` : `<div class="ph"></div>`}
+      <div style="min-width:0"><div class="code">${esc(s.sample_code)}${s.archived ? ` · <span class="tag warn">archived</span>` : ""}</div>
+        <div class="name">${esc(p.name || "Unknown product")}</div><div class="brand">${esc([p.brand, p.quantity].filter(Boolean).join(" · "))}</div></div>
+      <button class="btn small" id="db-archive" title="${s.archived ? "Show it in the library again" : "Hide it from the library (nothing is deleted)"}">${s.archived ? "Restore" : "Archive"}</button>
+    </div>
+    <nav class="subtabs" role="tablist">${tabs.map(([k, l, n]) => `<button class="subtab ${DB.tab === k ? "on" : ""}" role="tab" data-tab2="${k}">${l}${n !== undefined ? `<span class="cnt">${n}</span>` : ""}</button>`).join("")}</nav>
+    <div class="ins-body" id="ins-body"></div>`;
+  box.querySelectorAll("[data-tab2]").forEach((b) => b.onclick = () => { DB.tab = b.dataset.tab2; dbRenderInspector(); });
+  $("db-archive").onclick = async () => {
+    try { await api("/api/foods/update", { sample_code: s.sample_code, archived: !s.archived });
+          toast(s.archived ? "restored" : "archived: hidden from the library (tick Archived to see it)"); await dbRefresh(s.sample_code); }
+    catch (e) { toast(e.message, 7000); }
+  };
+  ({ overview: dbTabOverview, product: dbTabProduct, scans: dbTabScans, raw: dbTabRaw }[DB.tab] || dbTabOverview)(s, p);
+}
+
+function dbPic(label, rel, kind) {
+  const im = rel ? `<img src="${foodSrc(rel)}" alt="${esc(label)}" data-zoom="${esc(label)}">` : `<div class="empty">no photo</div>`;
+  return `<div class="pic">${im}<span>${esc(label)}</span>${kind ? `<button class="btn small" data-photo="${kind}">${rel ? "Replace…" : "Add photo…"}</button>` : ""}</div>`;
+}
+function dbWireZoom(root, code) {
+  root.querySelectorAll("img[data-zoom]").forEach((im) => im.onclick = () => {
+    $("img-overlay-title").textContent = `${code} · ${im.dataset.zoom}`; $("img-overlay-img").src = im.src; $("img-overlay").classList.add("open"); });
+}
+
+function dbTabOverview(s, p) {
+  const info = p.info || {}, body = $("ins-body");
+  const read = s.barcode_format === "typed" ? "typed in" : s.barcode_format ? `read from the photo as ${s.barcode_format}` : "";
+  body.innerHTML = `
+    <div class="ins-sec"><h3>Pictures</h3>
+      <div class="pics">
+        <div class="pic"><div class="barcode-svg">${barcodeSvg(p.code || s.scanned_text)}</div><span>Barcode, drawn from the digits</span></div>
+        ${dbPic("Barcode photo", s.barcode_photo, "barcode")}
+        ${dbPic("Product photo", s.product_photo, "product")}
+        ${p.image_file ? dbPic("Manufacturer image", p.image_file, "") : ""}
+        ${(s.label_photos || []).map((l) => dbPic(l.kind === "ingredients" ? "Ingredients label" : "Nutrition label", l.file, "")).join("")}
+      </div><input type="file" id="db-photo-file" accept="image/*" class="hidden"></div>
+    <div class="two-col">
+      <div class="ins-sec"><h3>Identifiers</h3>
+        <dl class="kv">
+          <dt>Sample code</dt><dd class="mono">${esc(s.sample_code)}</dd>
+          <dt>Sample UUID</dt><dd class="mono">${esc(s.uuid)}</dd>
+          <dt>Barcode</dt><dd class="mono">${esc(p.kind || "")} ${esc(p.code || s.scanned_text)}</dd>
+          <dt></dt><dd class="note" style="margin-top:-4px">${esc(read)}</dd>
+          <dt>GTIN-14</dt><dd class="mono">${esc(s.gtin14)}</dd>
+          ${info.usda_fdc_id ? `<dt>USDA FDC ID</dt><dd class="mono">${esc(info.usda_fdc_id)}</dd>` : ""}
+          <dt>Added</dt><dd>${esc(fmtDate(s.created_at))}<br><span class="note">from the ${esc(s.source)}${s.entered_by ? " · by " + esc(s.entered_by) : ""}</span></dd>
+          <dt>Last changed</dt><dd>${esc(fmtDate(s.updated_at))}</dd>
+        </dl></div>
+      <div class="ins-sec"><h3>This item<span class="sp"></span><button class="btn small" id="db-item-save">Save</button></h3>
+        <div class="edit-grid">
+          <label class="field">Lot / batch<input type="text" id="db-lot" value="${esc(s.lot)}"></label>
+          <label class="field">Best before<input type="text" id="db-bb" value="${esc(s.best_before)}" placeholder="YYYY-MM-DD"></label>
+          <label class="field">Entered by<input type="text" id="db-by" value="${esc(s.entered_by)}"></label>
+        </div>
+        <label class="field" style="margin-top:8px">Notes<textarea class="full" id="db-notes">${esc(s.notes)}</textarea></label></div>
+    </div>`;
+  $("db-item-save").onclick = async () => {
+    try { await api("/api/foods/update", { sample_code: s.sample_code, lot: $("db-lot").value, best_before: $("db-bb").value, entered_by: $("db-by").value, notes: $("db-notes").value });
+          toast("saved"); await dbRefresh(s.sample_code); } catch (e) { toast(e.message, 7000); }
+  };
+  let kind = "";
+  body.querySelectorAll("[data-photo]").forEach((b) => b.onclick = () => { kind = b.dataset.photo; $("db-photo-file").click(); });
+  $("db-photo-file").onchange = async (e) => {
+    const f = e.target.files && e.target.files[0]; e.target.value = ""; if (!f) return;
+    try { await api("/api/foods/photo", { sample_code: s.sample_code, kind, photo: await shrinkPhoto(f) }); toast("photo saved"); await dbRefresh(s.sample_code); }
+    catch (err) { toast(err.message, 7000); }
+  };
+  dbWireZoom(body, s.sample_code);
+}
+
+function compParts(info) {
+  const per = info.nutrition_per_100g || {}, der = info.derived_per_100g || {};
+  if (der.remainder_g === undefined) return null;
+  return COMP.map(([k, l, c]) => [l, c, k === "remainder" ? der.remainder_g : (per[k] || 0)]);
+}
+function compBar(parts) {
+  return `<div class="comp" role="img" aria-label="${esc(parts.map(([l, , v]) => `${l} ${fmtNum(v, 1)} g`).join(", "))}">${parts.filter(([, , v]) => v > 0).map(([l, c, v]) => `<span style="width:${Math.max(0.6, v)}%;background:${c}" title="${esc(l)}: ${fmtNum(v, 1)} g"></span>`).join("")}</div>`;
+}
+
+function dbTabProduct(s, p) {
+  const info = p.info || {}, per = info.nutrition_per_100g || {}, der = info.derived_per_100g || {}, body = $("ins-body");
+  const errs = Object.entries(p.errors || {}).map(([k, v]) => `${DB_SRC[k] || k}: ${v}`).join("; ");
+  const links = Object.entries(info.links || {}).map(([k, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(DB_SRC[k] || k)} ↗</a>`).join(" · ");
+  const tagList = (arr, cls = "") => (arr || []).length ? `<div class="tags">${arr.map((t) => `<span class="tag ${cls}">${esc(t)}</span>`).join("")}</div>` : `<span class="muted">none listed</span>`;
+  const nutRows = DB_NUTS.filter(([k]) => per[k] !== undefined).map(([k, l, u, sub]) => `<tr class="${sub ? "sub" : ""}"><td>${esc(l)}</td><td class="v">${fmtNum(per[k])} ${u}</td></tr>`).join("");
+  const parts = compParts(info);
+  body.innerHTML = `
+    <div class="row" style="justify-content:space-between">
+      <span class="note">${p.sources.length ? "From " + p.sources.map((x) => DB_SRC[x] || x).join(" + ") : "No online source"}${p.looked_up_at ? " · looked up " + esc(fmtDate(p.looked_up_at)) : ""}${links ? " · " + links : ""}</span>
+      <span class="row"><button class="btn small" id="db-refresh">Look up again</button><button class="btn small" id="db-edit-label">${DB.editLabel ? "Close editor" : "Edit label data"}</button></span>
+    </div>
+    ${p.found ? "" : `<div class="banner warn">No manufacturer data found online${errs ? ` (${esc(errs)})` : ""}. Use <strong>Edit label data</strong> to type it in from the pack.</div>`}
+    <div id="db-label-editor" class="${DB.editLabel ? "" : "hidden"}"></div>
+    ${parts ? `<div class="ins-sec"><h3>Composition per 100 g (from the label)</h3>${compBar(parts)}
+      <div class="comp-legend">${parts.map(([l, c, v]) => `<span><span class="sw" style="background:${c}"></span>${esc(l)} <b>${fmtNum(v, 1)} g</b></span>`).join("")}</div></div>` : ""}
+    <div class="two-col">
+      <div class="ins-sec"><h3>Product</h3><dl class="kv">
+        <dt>Name</dt><dd>${esc(p.name || "–")}</dd>
+        ${info.generic_name ? `<dt>Description</dt><dd>${esc(info.generic_name)}</dd>` : ""}
+        <dt>Brand</dt><dd>${esc(p.brand || "–")}${info.brand_owner && info.brand_owner !== p.brand ? ` <span class="note">(${esc(info.brand_owner)})</span>` : ""}</dd>
+        <dt>Quantity</dt><dd>${esc(p.quantity || "–")}</dd>
+        <dt>Serving size</dt><dd>${esc(info.serving_size || "–")}</dd>
+        <dt>Category</dt><dd>${esc((info.categories || []).slice(-3).join(" › ") || "–")}</dd>
+        ${info.nutriscore ? `<dt>Nutri-Score</dt><dd>${esc(info.nutriscore.toUpperCase())}</dd>` : ""}
+        ${info.nova_group ? `<dt>NOVA group</dt><dd>${esc(info.nova_group)} <span class="note">(1 unprocessed … 4 ultra-processed)</span></dd>` : ""}
+        ${info.origins ? `<dt>Origin</dt><dd>${esc(info.origins)}</dd>` : ""}
+        ${info.countries ? `<dt>Sold in</dt><dd>${esc(info.countries)}</dd>` : ""}
+        ${info.packaging ? `<dt>Packaging</dt><dd>${esc(info.packaging)}</dd>` : ""}
+      </dl></div>
+      <div class="ins-sec"><h3>Nutrition per ${esc(info.nutrition_basis || "100 g")}</h3>${nutRows ? `<table class="nut">${nutRows}${der.remainder_g !== undefined ? `<tr class="derived"><td title="100 g minus fat, carbohydrate, protein, salt and alcohol: mostly water, plus ash. An estimate from the label, not a measurement.">Water + ash (derived)</td><td class="v">${fmtNum(der.remainder_g)} g</td></tr>` : ""}</table>` : `<p class="muted">No nutrition data.</p>`}</div>
+    </div>
+    <div class="ins-sec" id="db-ingr"></div>
+    <div class="facts">
+      <div class="ins-sec"><h3>Allergens</h3>${tagList(info.allergens, "warn")}</div>
+      <div class="ins-sec"><h3>May contain</h3>${tagList(info.traces)}</div>
+      <div class="ins-sec"><h3>Labels</h3>${tagList(info.labels)}</div>
+      <div class="ins-sec"><h3>Additives</h3>${tagList(info.additives)}</div>
+    </div>`;
+  $("db-refresh").onclick = async () => { toast("looking it up online…"); try { const pr = await api("/api/foods/refresh", { gtin14: s.gtin14 }); toast(pr.found ? "product information updated" : "still not found online", 6000); await dbRefresh(s.sample_code); } catch (e) { toast(e.message, 7000); } };
+  $("db-edit-label").onclick = () => { DB.editLabel = !DB.editLabel; dbRenderInspector(); };
+  if (DB.editLabel) dbLabelEditor(p);
+  dbIngredients(s, p);
+}
+
+/* ingredients: where they came from, read them from a label photo, or find the label by name */
+function dbIngredients(s, p) {
+  const info = p.info || {}, box = $("db-ingr"), has = !!(info.ingredients_text || "").trim();
+  const src = info.ingredients_source || (has && p.sources[0]) || "";
+  box.innerHTML = `<h3>Ingredients ${has ? `<span class="tag">${esc(srcName(src))}</span>` : ""}<span class="sp"></span>
+      <button class="btn small" data-label="ingredients">Read from a label photo…</button>
+      <button class="btn small" data-label="nutrition">Nutrition label photo…</button>
+      <button class="btn small${has ? "" : " primary"}" id="db-find">Find ingredients online…</button></h3>
+    ${has ? `<div style="font-size:14px;line-height:1.55">${esc(info.ingredients_text)}</div>${info.contains ? `<div style="margin-top:6px"><span class="note">Contains:</span> ${esc(info.contains)}</div>` : ""}`
+          : `<div class="banner warn"><strong>No ingredient list yet.</strong> The online databases do not have it for this barcode. Photograph the ingredients panel on the pack (most reliable: it is this exact item), or find the product's label by name.</div>`}
+    ${has && (info.ingredients_refs || []).length ? `<div class="note" style="margin-top:6px">Sources: ${info.ingredients_refs.map((r) => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(dbDomain(r.url))} ↗</a>`).join(" · ")}${info.ingredients_confirmed_at ? " · confirmed " + esc(fmtDate(info.ingredients_confirmed_at)) : ""}</div>` : ""}
+    ${info.matched ? `<div class="note" style="margin-top:6px">Label picked by name from ${esc(srcName(info.matched.source))} (search "${esc(info.matched.query)}"): check that it is the same product and formula as the item.</div>` : ""}
+    ${(info.supplement_facts || []).length ? `<div style="margin-top:10px"><div class="note">Supplement facts (per serving${info.serving_size ? ", " + esc(info.serving_size) : ""})</div><table class="nut">${info.supplement_facts.map((f) => `<tr><td>${esc(f.name)}</td><td class="v">${esc(f.amount)}</td></tr>`).join("")}</table></div>` : ""}
+    <input type="file" id="db-label-file" accept="image/*" class="hidden">
+    <div id="db-label-review"></div><div id="db-find-panel"></div>`;
+  let kind = "ingredients";
+  box.querySelectorAll("[data-label]").forEach((b) => b.onclick = () => { kind = b.dataset.label; $("db-label-file").click(); });
+  $("db-label-file").onchange = async (e) => {
+    const f = e.target.files && e.target.files[0]; e.target.value = ""; if (!f) return;
+    $("db-label-review").innerHTML = `<div class="banner soft" style="margin-top:10px">Reading the label…</div>`;
+    try { dbLabelReview(s, kind, await api("/api/foods/label", { photo: await shrinkPhoto(f, 3000), kind })); }
+    catch (err) { $("db-label-review").innerHTML = `<div class="banner bad" style="margin-top:10px">${esc(err.message)}</div>`; }
+  };
+  $("db-find").onclick = () => dbFindOnline(s, p);
+  if (!has && DB.autoFound !== s.gtin14) { DB.autoFound = s.gtin14; dbFindOnline(s, p); }   // no list: look online at once
+}
+const dbDomain = (u) => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return u; } };
+
+function dbLabelReview(s, kind, r) {
+  const box = $("db-label-review"), n = r.nutrition || {};
+  const nutInputs = DB_NUTS.map(([k, l, u]) => `<label class="field">${esc(l)} (${u}/100 g)<input type="number" step="any" data-lnut="${k}" value="${n.per_100g && n.per_100g[k] !== undefined ? n.per_100g[k] : ""}"></label>`).join("");
+  box.innerHTML = `<div class="banner soft" style="margin-top:10px;display:grid;gap:8px">
+      <div><strong>Read from the ${kind === "ingredients" ? "ingredients" : "nutrition"} label.</strong> <span class="note">Check it against the pack and correct anything misread, then save.</span></div>
+      ${kind === "ingredients" ? `
+        <label class="field">Ingredients<textarea class="full" id="lr-ingr" style="min-height:90px">${esc(r.ingredients || "")}</textarea></label>
+        ${r.ingredients ? "" : `<div class="note">No "Ingredients:" heading was found: copy the list from the text below.</div>`}
+        <label class="field">Contains (allergen statement)<input type="text" id="lr-contains" value="${esc(r.contains || "")}"></label>`
+      : `<div class="note">Per serving as printed: ${esc(n.serving || "serving size not found")}. Values below are per 100 g${n.serving_g ? ` (× 100 ÷ ${n.serving_g} g)` : ": type the serving size in grams to convert"}.</div>
+        <label class="field" style="max-width:220px">Serving size<input type="text" id="lr-serving" value="${esc(n.serving || "")}"></label>
+        <div class="edit-grid">${nutInputs}</div>`}
+      <details><summary class="note">All the text read from the photo</summary><pre class="raw">${esc(r.text)}</pre></details>
+      <div class="row" style="justify-content:flex-end"><button class="btn small" id="lr-cancel">Discard</button><button class="btn small primary" id="lr-save">Save to this product</button></div></div>`;
+  $("lr-cancel").onclick = () => box.innerHTML = "";
+  $("lr-save").onclick = async () => {
+    const body = { sample_code: s.sample_code, label_draft: r.label_draft };
+    if (kind === "ingredients") { body.ingredients_text = $("lr-ingr").value; body.contains = $("lr-contains").value; }
+    else { body.serving_size = $("lr-serving").value; body.nutrition_per_100g = {}; document.querySelectorAll("[data-lnut]").forEach((i) => { if (i.value !== "") body.nutrition_per_100g[i.dataset.lnut] = +i.value; }); }
+    try { await api("/api/foods/label/apply", body); toast("saved from the label photo"); await dbRefresh(s.sample_code); }
+    catch (e) { toast(e.message, 7000); }
+  };
+}
+
+/* Find ingredients online: label databases by name, then web pages. Every result has its link;
+   nothing is saved until the user confirms the list in the box at the bottom. */
+const SRC_TAG = { usda: "USDA", dsld: "NIH DSLD", openfda: "FDA label" };
+async function dbFindOnline(s, p, query) {
+  const box = $("db-find-panel");
+  const q0 = query ?? [p.brand, p.name].filter(Boolean).join(" ");
+  box.innerHTML = `<div class="banner soft" style="margin-top:10px;display:grid;gap:10px">
+      <div class="row"><strong style="flex:1">Find the ingredients online</strong><button class="btn small" id="fo-close">Close</button></div>
+      <div class="row"><input type="text" id="fo-q" value="${esc(q0)}" style="flex:1" placeholder="product name, brand"><button class="btn small" id="fo-go">Search again</button></div>
+      <div id="fo-results"><div class="note">Searching the label databases (USDA, NIH DSLD, FDA) and the web… this takes a few seconds.</div></div>
+      <div id="fo-confirm"></div></div>`;
+  $("fo-close").onclick = () => box.innerHTML = "";
+  $("fo-go").onclick = () => dbFindOnline(s, p, $("fo-q").value);
+  $("fo-q").addEventListener("keydown", (e) => { if (e.key === "Enter") $("fo-go").click(); });
+  let r;
+  try { r = await api(`/api/foods/find?gtin14=${encodeURIComponent(s.gtin14)}&q=${encodeURIComponent(q0)}`); }
+  catch (e) { $("fo-results").innerHTML = `<div style="color:var(--critical)">${esc(e.message)}</div>`; return; }
+  if (!$("fo-results")) return;
+  const web = r.web || { pages: [], errors: [] }, withList = web.pages.filter((pg) => pg.sections.length), without = web.pages.filter((pg) => !pg.sections.length);
+  const recs = (r.structured || []).filter((c) => (c.ingredients || "").trim());
+  $("fo-results").innerHTML = `
+    <div class="note" style="text-transform:uppercase;letter-spacing:.5px;font-weight:600">Label databases · search "${esc(r.query)}"</div>
+    ${recs.length ? `<table class="db">${recs.map((c, i) => `<tr>
+        <td style="width:80px"><span class="tag">${esc(SRC_TAG[c.source] || c.source)}</span></td>
+        <td><div style="font-weight:600;color:var(--ink)">${esc(c.name)}</div>
+            <div class="note">${esc([c.brand, c.detail].filter(Boolean).join(" · "))}${c.link ? ` · <a href="${esc(c.link)}" target="_blank" rel="noopener">open the record ↗</a>` : ""}</div>
+            <div style="color:var(--ink-2);margin-top:3px">${esc(c.ingredients)}</div></td>
+        <td style="width:90px"><button class="btn small" data-rec="${i}">Use this</button></td></tr>`).join("")}</table>`
+      : `<div class="note">No label record with an ingredient list matched this name.</div>`}
+    <div class="note" style="text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-top:6px">Web pages${web.engine ? " · via " + esc(web.engine) : ""}</div>
+    ${withList.length ? withList.map((pg, pi) => `<div style="border-top:1px solid var(--hair);padding-top:8px">
+        <div><a href="${esc(pg.url)}" target="_blank" rel="noopener" style="font-weight:600">${esc(pg.title || pg.domain)} ↗</a> <span class="note">${esc(pg.domain)}</span></div>
+        ${pg.sections.map((sc, si) => `<label class="check" style="margin-top:5px"><input type="checkbox" data-sec="${pi}:${si}"><span><span class="note">${esc(sc.heading)}:</span> ${esc(sc.text)}</span></label>`).join("")}</div>`).join("")
+      : `<div class="note">No ingredient list found on the web pages${(web.errors || []).length ? " (" + esc(web.errors.join("; ")) + ")" : ""}.</div>`}
+    ${without.length ? `<div class="note" style="margin-top:6px">Also looked at, no list could be read: ${without.map((pg) => `<a href="${esc(pg.url)}" target="_blank" rel="noopener">${esc(pg.domain)}</a>${pg.error ? " (" + esc(pg.error) + ")" : ""}`).join(" · ")}. Open them to check by eye.</div>` : ""}
+    <div class="note" style="margin-top:4px">Pages often list several versions of a product (flavours, sugar-free, caplets): pick the one that matches the pack you have.</div>`;
+  const confirmBox = (text, refs, onSave) => {
+    $("fo-confirm").innerHTML = `<div style="border-top:2px solid var(--accent);padding-top:10px;display:grid;gap:8px">
+        <strong>Confirm the ingredient list for ${esc(s.sample_code)}</strong>
+        <textarea class="full" id="fo-text" style="min-height:110px">${esc(text)}</textarea>
+        <div class="note">Sources: ${refs.map((rf) => `<a href="${esc(rf.url)}" target="_blank" rel="noopener">${esc(rf.title || dbDomain(rf.url))} ↗</a>`).join(" · ") || "none"}</div>
+        <div class="row" style="justify-content:flex-end"><button class="btn small" id="fo-cancel">Cancel</button><button class="btn small primary" id="fo-save">Confirm and save</button></div></div>`;
+    $("fo-cancel").onclick = () => { $("fo-confirm").innerHTML = ""; document.querySelectorAll("[data-sec]").forEach((c) => c.checked = false); };
+    $("fo-save").onclick = () => onSave($("fo-text").value.trim());
+    $("fo-confirm").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
+  const saveText = async (text, refs) => {
+    if (!text) return toast("the ingredient list is empty");
+    try { await api("/api/foods/ingredients", { gtin14: s.gtin14, ingredients_text: text, refs }); toast("ingredients saved, with their sources"); await dbRefresh(s.sample_code); }
+    catch (e) { toast(e.message, 7000); }
+  };
+  $("fo-results").querySelectorAll("[data-rec]").forEach((b) => b.onclick = () => {
+    const c = recs[+b.dataset.rec], refs = c.link ? [{ url: c.link, title: `${SRC_TAG[c.source] || c.source}: ${c.name}` }] : [];
+    confirmBox(c.ingredients, refs, async (text) => {
+      try {
+        await api("/api/foods/adopt", { gtin14: s.gtin14, source: c.source, id: c.id, query: r.query });   // the full record (all fields)
+        if (text !== c.ingredients.trim()) await api("/api/foods/ingredients", { gtin14: s.gtin14, ingredients_text: text, refs });
+        toast("ingredients saved from " + (SRC_TAG[c.source] || c.source)); await dbRefresh(s.sample_code);
+      } catch (e) { toast(e.message, 7000); }
+    });
+  });
+  const onTick = () => {
+    const picked = [...document.querySelectorAll("[data-sec]:checked")].map((c) => { const [pi, si] = c.dataset.sec.split(":").map(Number); return [withList[pi], withList[pi].sections[si]]; });
+    if (!picked.length) { $("fo-confirm").innerHTML = ""; return; }
+    const text = picked.map(([, sc]) => `${sc.heading}: ${sc.text}`).join("\n");
+    const refs = [...new Map(picked.map(([pg]) => [pg.url, { url: pg.url, title: pg.title || pg.domain }])).values()];
+    confirmBox(text, refs, (t) => saveText(t, refs));
+  };
+  $("fo-results").querySelectorAll("[data-sec]").forEach((c) => c.onchange = onTick);
+}
+
+function dbLabelEditor(p) {
+  const info = p.info || {}, per = info.nutrition_per_100g || {};
+  $("db-label-editor").innerHTML = `<div class="banner soft">
+      <div class="edit-grid">
+        <label class="field">Name<input type="text" id="ed-name" value="${esc(p.name)}"></label>
+        <label class="field">Brand<input type="text" id="ed-brand" value="${esc(p.brand)}"></label>
+        <label class="field">Quantity<input type="text" id="ed-qty" value="${esc(p.quantity)}" placeholder="e.g. 340 g"></label>
+        <label class="field">Serving size<input type="text" id="ed-serv" value="${esc(info.serving_size || "")}"></label>
+      </div>
+      <label class="field" style="margin-top:8px">Ingredients<textarea class="full" id="ed-ingr">${esc(info.ingredients_text || "")}</textarea></label>
+      <div class="note" style="margin:10px 0 4px">Nutrition per 100 g. From a per-serving label: value × 100 ÷ serving grams. Leave blank to remove.</div>
+      <div class="edit-grid">${DB_NUTS.map(([k, l, u]) => `<label class="field">${esc(l)} (${u})<input type="number" step="any" data-nut="${k}" value="${per[k] ?? ""}"></label>`).join("")}</div>
+      <div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn small primary" id="ed-save">Save label data</button></div></div>`;
+  $("ed-save").onclick = async () => {
+    const nut = {}; document.querySelectorAll("[data-nut]").forEach((i) => nut[i.dataset.nut] = i.value === "" ? null : +i.value);
+    try {
+      await api("/api/foods/product", { gtin14: p.gtin14, fields: { name: $("ed-name").value, brand: $("ed-brand").value, quantity: $("ed-qty").value,
+        serving_size: $("ed-serv").value, ingredients_text: $("ed-ingr").value, nutrition_per_100g: nut } });
+      DB.editLabel = false; toast("label data saved (marked as edited by hand)"); await dbRefresh(DB.sample.sample_code);
+    } catch (e) { toast(e.message, 7000); }
+  };
+}
+
+function dbTabScans(s) {
+  const body = $("ins-body");
+  body.innerHTML = `
+    <div class="row">
+      <div id="db-scan-banner" style="flex:1;display:grid;gap:6px"></div>
+      <label class="field" style="grid-auto-flow:column;align-items:center;gap:6px">Sweeps
+        <input type="number" id="db-repeats" min="1" max="${DB.status ? DB.status.repeats_max : 10}" value="${DB.status ? DB.status.repeats_default : 3}" style="width:60px"></label>
+      <button class="btn primary" id="db-scan">${DB.scanning ? "Scanning…" : "Run LIO scan"}</button>
+    </div>
+    ${s.scans.length ? `<div class="scan-list">${s.scans.map((c) => `<button class="scan-chip ${DB.scan && DB.scan.uuid === c.uuid ? "on" : ""}" data-scan="${esc(c.uuid)}">${esc(fmtDate(c.created_at))}<span class="k k-${esc(c.kind)}">${c.kind === "sim" ? "SIM" : "HW"}</span><div class="note">${c.repeats} sweep${c.repeats > 1 ? "s" : ""} · fw ${esc(c.firmware || "?")}</div></button>`).join("")}</div>`
+      : `<div class="inspect-empty" style="min-height:160px">Not scanned yet. Put the item in the chamber, close it, then press Run LIO scan.</div>`}
+    <div id="db-scan-view"></div>`;
+  body.querySelectorAll("[data-scan]").forEach((b) => b.onclick = () => dbSelect(s.sample_code, b.dataset.scan));
+  $("db-scan").onclick = dbRunScan;
+  dbBanner(); dbRenderScan();
+}
+
+function dbBanner() {
+  const b = $("db-scan-banner"); if (!b) return;
+  const msgs = [];
+  if (!(S && S.connected)) msgs.push(["bad", "Not connected: connect the LIO (or the simulator) on the System tab to scan."]);
+  else if (S.is_sim) msgs.push(["warn", "Connected to the <strong>simulator</strong>: scans are stored marked SIM."]);
+  if (S && S.connected && !S.is_sim && S.overall && S.overall.verdict !== "FUNCTIONAL")
+    msgs.push(["warn", `System verdict <strong>${esc(S.overall.verdict === "NOT_RUN" ? "not tested yet" : S.overall.verdict)}</strong>: scans are stored, but treat them as provisional.`]);
+  if (S && S.running) msgs.push(["warn", "A test run is using the device: scan when it finishes."]);
+  b.innerHTML = msgs.map(([k, m]) => `<div class="banner ${k}">${m}</div>`).join("");
+  const btn = $("db-scan"); if (btn) btn.disabled = DB.scanning || !(S && S.connected) || (S && S.running);
+}
+
+async function dbRunScan() {
+  const s = DB.sample; if (!s) return;
+  const repeats = +$("db-repeats").value;
+  DB.scanning = true; dbBanner(); $("db-scan").textContent = "Scanning…";
+  toast(`scanning ${s.sample_code}: ${repeats} sweep(s) of all 16 holes…`, 8000);
+  try {
+    const sc = await api("/api/foods/scan", { sample_code: s.sample_code, repeats });
+    DB.scanning = false; toast(`scan saved for ${s.sample_code}`);
+    await Promise.all([dbStatus(), dbLoadList()]); await dbSelect(s.sample_code, sc.uuid);
+  } catch (e) { DB.scanning = false; toast(e.message, 8000); dbRenderInspector(); }
+}
+
+function chartTip(svg, tip, html, ev) {
+  tip.innerHTML = html; tip.style.display = "block";
+  const wrap = svg.parentElement.getBoundingClientRect(), x = ev.clientX - wrap.left, y = ev.clientY - wrap.top;
+  tip.style.left = Math.max(0, Math.min(x + 14, wrap.width - tip.offsetWidth - 4)) + "px";
+  tip.style.top = Math.max(0, y - tip.offsetHeight - 10) + "px";
+}
+
+function dbRenderScan() {
+  const v = $("db-scan-view"), sc = DB.scan; if (!v) return;
+  if (!sc) { v.innerHTML = ""; return; }
+  const k = DB.unit === "mV" ? sc.lsb_mv : 1, u = DB.unit, dp = DB.unit === "mV" ? 2 : 0, rows = sc.spectrum;
+  const W = 820, H = 310, m = { l: 58, r: 12, t: 14, b: 50 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
+  const ticks = yRange(rows.flatMap((r) => DB_DETS.flatMap(([d]) => r[d].net === null ? [0] : [(r[d].net - r[d].sd) * k, (r[d].net + r[d].sd) * k])));
+  const y0 = ticks[0], y1 = ticks[ticks.length - 1], Y = (val) => m.t + ph - (val - y0) / (y1 - y0) * ph;
+  const gw = pw / rows.length, bw = Math.max(4, Math.min(16, (gw - 8) / 2));
+  let g = `<g class="grid">${ticks.map((t) => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(t)}" y2="${Y(t)}"/>`).join("")}</g>`;
+  g += ticks.map((t) => `<text x="${m.l - 8}" y="${Y(t) + 4}" text-anchor="end">${t.toLocaleString()}</text>`).join("");
+  g += `<text x="14" y="${m.t + ph / 2}" transform="rotate(-90 14 ${m.t + ph / 2})" text-anchor="middle">net signal (${u})</text>`;
+  rows.forEach((r, i) => {
+    const cx = m.l + i * gw + gw / 2;
+    DB_DETS.forEach(([d, , col], j) => {
+      if (r[d].net === null) return;
+      const val = r[d].net * k, x = cx - bw - 1 + j * (bw + 2), ya = Y(Math.max(val, 0)), yb = Y(Math.min(val, 0)), h = Math.max(0.5, yb - ya);
+      const rad = Math.min(4, bw / 2, h);
+      const path = val >= 0
+        ? `M${x},${yb} V${ya + rad} Q${x},${ya} ${x + rad},${ya} H${x + bw - rad} Q${x + bw},${ya} ${x + bw},${ya + rad} V${yb} Z`
+        : `M${x},${ya} V${yb - rad} Q${x},${yb} ${x + rad},${yb} H${x + bw - rad} Q${x + bw},${yb} ${x + bw},${yb - rad} V${ya} Z`;
+      g += `<path d="${path}" fill="${col}" opacity="${r.fitted ? 1 : 0.45}"/>`;
+      if (r[d].sd > 0) { const ex = x + bw / 2, e1 = Y((r[d].net - r[d].sd) * k), e2 = Y((r[d].net + r[d].sd) * k);
+        g += `<path class="err" d="M${ex},${e1} V${e2} M${ex - 3},${e1} H${ex + 3} M${ex - 3},${e2} H${ex + 3}"/>`; }
+    });
+    g += `<text class="xl" x="${cx}" y="${H - m.b + 16}" text-anchor="middle">${r.nm}</text><text x="${cx}" y="${H - m.b + 30}" text-anchor="middle">h${r.hole}</text>`;
+    g += `<rect class="hit" data-i="${i}" x="${m.l + i * gw}" y="${m.t}" width="${gw}" height="${ph}"/>`;
+  });
+  g += `<line class="zero" x1="${m.l}" x2="${W - m.r}" y1="${Y(0)}" y2="${Y(0)}"/>`;
+  g += `<text x="${m.l + pw / 2}" y="${H - 4}" text-anchor="middle">LED wavelength (nm) · hole</text>`;
+  const tableRows = rows.map((r) => `<tr><td class="num">${r.hole}</td><td>${esc(r.label)}</td><td class="num">${r.nm}</td><td>${r.rail}</td><td>${r.fitted ? "yes" : "no"}</td>${DB_DETS.map(([d]) => `<td class="num">${fmtNum(r[d].net === null ? null : r[d].net * k, dp)}</td><td class="num">${fmtNum(r[d].sd * k, dp)}</td><td class="num">${fmtNum(r[d].dark === null ? null : r[d].dark * k, dp)}</td>`).join("")}</tr>`).join("");
+  v.innerHTML = `
+    <dl class="kv" style="margin-bottom:12px">
+      <dt>Scan</dt><dd class="mono">${esc(sc.uuid)}</dd>
+      <dt>Taken</dt><dd>${esc(fmtDate(sc.created_at))} · ${sc.kind === "sim" ? `<span class="k k-sim">SIMULATED</span>` : "hardware"} · ${esc(sc.target)} · firmware ${esc(sc.firmware || "?")}</dd>
+      <dt>Settings</dt><dd>${sc.repeats} sweep${sc.repeats > 1 ? "s" : ""} × 16 holes · settle ${sc.settle_ms} ms · ${sc.n} ADC reading${sc.n > 1 ? "s" : ""} per point · ${sc.lsb_mv} mV/count</dd>
+      ${sc.notes ? `<dt>Notes</dt><dd>${esc(sc.notes)}</dd>` : ""}
+    </dl>
+    <div class="row" style="margin-bottom:6px">
+      <div class="legend" style="flex:1">${DB_DETS.map(([, n, c]) => `<span><span class="sw" style="background:${c}"></span>${n}</span>`).join("")}<span class="note">mean net (lit − dark) · whiskers ±1 SD across sweeps · faded: unfitted hole</span></div>
+      <select id="db-unit"><option value="counts" ${u === "counts" ? "selected" : ""}>counts</option><option value="mV" ${u === "mV" ? "selected" : ""}>mV</option></select>
+      <a class="btn small" href="/foods/export/scan/${encodeURIComponent(sc.uuid)}.csv">Download CSV (every reading)</a>
+    </div>
+    <div class="chart-wrap"><svg class="chart-svg" id="spec-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Spectral scan: net signal per LED for both detectors">${g}</svg><div class="tip" id="spec-tip"></div></div>
+    <details style="margin-top:8px"><summary class="note">Table</summary>
+      <div style="overflow:auto"><table class="db"><tr><th>Hole</th><th>LED</th><th>nm</th><th>Rail</th><th>Fitted</th>${DB_DETS.map(([, n]) => `<th>${n} net</th><th>SD</th><th>dark</th>`).join("")}</tr>${tableRows}</table></div></details>`;
+  $("db-unit").onchange = (e) => { DB.unit = e.target.value; dbRenderScan(); };
+  const tip = $("spec-tip"), svg = $("spec-svg");
+  svg.querySelectorAll("rect.hit").forEach((h) => {
+    h.onmouseenter = h.onmousemove = (ev) => {
+      const r = rows[+h.dataset.i];
+      chartTip(svg, tip, `<div class="t">Hole ${r.hole} · ${esc(r.label)} · ${r.nm} nm${r.fitted ? "" : " (unfitted)"}</div>` +
+        DB_DETS.map(([d, n, c]) => `<div class="r"><span class="sw" style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${c}"></span><span>${n}${r.expected.includes(d) ? "" : ` <span class="note">(not expected)</span>`}</span><span class="v">${fmtNum(r[d].net === null ? null : r[d].net * k, dp)} ± ${fmtNum(r[d].sd * k, dp)}</span></div>`).join("") +
+        `<div class="note" style="margin-top:4px">rail ${r.rail} · ${r.n_sweeps} sweep${r.n_sweeps > 1 ? "s" : ""}</div>`, ev);
+    };
+    h.onmouseleave = () => tip.style.display = "none";
+  });
+}
+
+async function dbTabRaw(s) {
+  const body = $("ins-body");
+  body.innerHTML = `<div class="note">Loading…</div>`;
+  if (!DB.raw || DB.raw.sample_code !== s.sample_code) {
+    try { DB.raw = await api(`/api/foods/sample?code=${encodeURIComponent(s.sample_code)}&raw=1`); } catch (e) { body.innerHTML = `<div class="banner bad">${esc(e.message)}</div>`; return; }
+  }
+  if (DB.tab !== "raw" || !$("ins-body")) return;
+  const rec = { ...DB.raw, product: { ...DB.raw.product, raw: undefined } }, apis = (DB.raw.product || {}).raw || {};
+  body.innerHTML = `
+    <div class="ins-sec"><h3>Database record<span class="sp"></span><button class="btn small" id="raw-copy">Copy</button></h3><pre class="raw" id="raw-rec">${esc(JSON.stringify(rec, null, 2))}</pre></div>
+    ${Object.entries(apis).map(([k, v]) => `<details class="ins-sec"><summary class="note">Raw answer from ${esc(DB_SRC[k] || k)}</summary><pre class="raw">${esc(JSON.stringify(v, null, 2))}</pre></details>`).join("")}
+    ${DB.scan ? `<details class="ins-sec"><summary class="note">Selected scan, every reading (${esc(DB.scan.uuid)})</summary><pre class="raw">${esc(JSON.stringify(DB.scan, null, 2))}</pre></details>` : ""}`;
+  $("raw-copy").onclick = async () => { try { await navigator.clipboard.writeText($("raw-rec").textContent); toast("copied"); } catch { toast("copy is not allowed here: select the text instead"); } };
+}
+
+/* --- compare: spectra and composition of several samples */
+async function dbRenderCompare() {
+  const box = $("db-detail");
+  for (const code of DB.cmp) if (!DB.cmpData[code]) {
+    try {
+      const smp = await api(`/api/foods/sample?code=${encodeURIComponent(code)}`);
+      const sc = smp.scans[0] ? await api(`/api/foods/scan?uuid=${encodeURIComponent(smp.scans[0].uuid)}`) : null;
+      DB.cmpData[code] = { sample: smp, scan: sc };
+    } catch (e) { toast(e.message); }
+  }
+  if (!DB.cmpMode) return;
+  const items = DB.cmp.filter((c) => DB.cmpData[c]).map((c) => ({ code: c, color: SERIES[DB.cmpSlot[c]], ...DB.cmpData[c] }));
+  const det = DB.cmpDet, withScan = items.filter((i) => i.scan);
+  const holes = withScan.length ? withScan[0].scan.spectrum.map((r) => ({ hole: r.hole, nm: r.nm, label: r.label })) : [];
+  const val = (it, hole) => { const r = it.scan.spectrum.find((x) => x.hole === hole); if (!r || r[det].net === null) return null;
+    let v = r[det].net * (DB.unit === "mV" ? it.scan.lsb_mv : 1);
+    if (DB.cmpNorm) { const mx = Math.max(...it.scan.spectrum.map((x) => Math.abs(x[det].net || 0))); v = mx ? (r[det].net / mx) : 0; }
+    return v; };
+  const unit = DB.cmpNorm ? "fraction of each sample's peak" : DB.unit;
+  const W = 820, H = 320, m = { l: 58, r: 14, t: 14, b: 50 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
+  let svg = "";
+  if (holes.length) {
+    const ticks = yRange(withScan.flatMap((it) => holes.map((h) => val(it, h.hole) ?? 0)));
+    const y0 = ticks[0], y1 = ticks[ticks.length - 1], Y = (v) => m.t + ph - (v - y0) / (y1 - y0) * ph, gw = pw / holes.length, X = (i) => m.l + i * gw + gw / 2;
+    svg += `<g class="grid">${ticks.map((t) => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(t)}" y2="${Y(t)}"/>`).join("")}</g>`;
+    svg += ticks.map((t) => `<text x="${m.l - 8}" y="${Y(t) + 4}" text-anchor="end">${t.toLocaleString()}</text>`).join("");
+    svg += `<text x="14" y="${m.t + ph / 2}" transform="rotate(-90 14 ${m.t + ph / 2})" text-anchor="middle">${esc(det === "opt101" ? "OPT101" : "InGaAs")} net (${esc(unit)})</text>`;
+    svg += `<line class="zero" x1="${m.l}" x2="${W - m.r}" y1="${Y(0)}" y2="${Y(0)}"/>`;
+    holes.forEach((h, i) => { svg += `<text class="xl" x="${X(i)}" y="${H - m.b + 16}" text-anchor="middle">${h.nm}</text><text x="${X(i)}" y="${H - m.b + 30}" text-anchor="middle">h${h.hole}</text>`; });
+    svg += `<line class="cross" id="cmp-cross" x1="0" x2="0" y1="${m.t}" y2="${m.t + ph}" style="display:none"/>`;
+    withScan.forEach((it) => {
+      const pts = holes.map((h, i) => [X(i), val(it, h.hole)]).filter(([, v]) => v !== null).map(([x, v]) => [x, Y(v)]);
+      svg += `<path d="M${pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" L")}" fill="none" stroke="${it.color}" stroke-width="2" stroke-linejoin="round"/>`;
+      svg += pts.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4" fill="${it.color}" stroke="var(--surface)" stroke-width="2"/>`).join("");
+    });
+    holes.forEach((h, i) => { svg += `<rect class="hit" data-i="${i}" x="${m.l + i * gw}" y="${m.t}" width="${gw}" height="${ph}"/>`; });
+    svg += `<text x="${m.l + pw / 2}" y="${H - 4}" text-anchor="middle">LED wavelength (nm) · hole</text>`;
+  }
+  const compRows = items.map((it) => {
+    const p = it.sample.product || { info: {} }, parts = compParts(p.info || {});
+    return `<div style="display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:12px;align-items:center">
+      <div style="min-width:0"><span class="sw" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${it.color};margin-right:6px"></span><b>${esc(it.code)}</b><div class="note" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.name || "Unknown")}</div></div>
+      <div>${parts ? compBar(parts) + `<div class="note" style="margin-top:3px">${parts.map(([l, , v]) => `${esc(l.split(" ")[0].toLowerCase())} ${fmtNum(v, 1)}`).join(" · ")} g</div>` : `<span class="muted">no label composition</span>`}</div></div>`;
+  }).join("");
+  box.innerHTML = `
+    <div class="ins-head" style="grid-template-columns:1fr auto">
+      <div><div class="code">COMPARISON</div><div class="name">${items.length} sample${items.length === 1 ? "" : "s"}</div><div class="brand">latest LIO scan of each, and the label composition</div></div>
+      <button class="btn small" id="cmp-back">Close comparison</button>
+    </div>
+    <div class="ins-body">
+      <div class="row">
+        <label class="field">Detector<select id="cmp-det"><option value="opt101" ${det === "opt101" ? "selected" : ""}>OPT101 (300–1100 nm)</option><option value="ingaas" ${det === "ingaas" ? "selected" : ""}>InGaAs (800–1750 nm)</option></select></label>
+        <label class="field">Units<select id="cmp-unit" ${DB.cmpNorm ? "disabled" : ""}><option value="counts" ${DB.unit === "counts" ? "selected" : ""}>counts</option><option value="mV" ${DB.unit === "mV" ? "selected" : ""}>mV</option></select></label>
+        <label class="check" style="align-self:end;padding-bottom:6px"><input type="checkbox" id="cmp-norm" ${DB.cmpNorm ? "checked" : ""}><span>Normalise each to its peak (compare shapes)</span></label>
+      </div>
+      <div class="legend">${items.map((it) => `<span><span class="sw" style="background:${it.color};border-radius:50%"></span>${esc(it.code)} · ${esc((it.sample.product || {}).name || "Unknown")}${it.scan ? (it.scan.kind === "sim" ? ` <span class="k k-sim">SIM</span>` : "") : ` <span class="note">(not scanned yet)</span>`}</span>`).join("")}</div>
+      ${holes.length ? `<div class="chart-wrap"><svg class="chart-svg" id="cmp-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Spectra of the compared samples">${svg}</svg><div class="tip" id="cmp-tip"></div></div>`
+        : `<div class="inspect-empty" style="min-height:160px">None of these samples has a LIO scan yet.</div>`}
+      <div class="ins-sec"><h3>Label composition per 100 g</h3>
+        <div class="comp-legend" style="margin:0 0 10px">${COMP.map(([, l, c]) => `<span><span class="sw" style="background:${c}"></span>${esc(l)}</span>`).join("")}</div>
+        <div style="display:grid;gap:10px">${compRows}</div></div>
+    </div>`;
+  $("cmp-back").onclick = () => { DB.cmpMode = false; dbRenderList(); dbRenderInspector(); };
+  $("cmp-det").onchange = (e) => { DB.cmpDet = e.target.value; dbRenderCompare(); };
+  $("cmp-unit").onchange = (e) => { DB.unit = e.target.value; dbRenderCompare(); };
+  $("cmp-norm").onchange = (e) => { DB.cmpNorm = e.target.checked; dbRenderCompare(); };
+  const csvg = $("cmp-svg");
+  if (csvg) {
+    const tip = $("cmp-tip"), cross = $("cmp-cross"), dp = DB.cmpNorm ? 2 : DB.unit === "mV" ? 2 : 0;
+    csvg.querySelectorAll("rect.hit").forEach((h) => {
+      h.onmouseenter = h.onmousemove = (ev) => {
+        const i = +h.dataset.i, hl = holes[i], x = +h.getAttribute("x") + +h.getAttribute("width") / 2;
+        cross.setAttribute("x1", x); cross.setAttribute("x2", x); cross.style.display = "";
+        chartTip(csvg, tip, `<div class="t">Hole ${hl.hole} · ${esc(hl.label)} · ${hl.nm} nm</div>` + withScan.map((it) =>
+          `<div class="r"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${it.color}"></span><span>${esc(it.code)}</span><span class="v">${fmtNum(val(it, hl.hole), dp)}</span></div>`).join(""), ev);
+      };
+      h.onmouseleave = () => { tip.style.display = "none"; cross.style.display = "none"; };
+    });
+  }
+}
+
+/* --- wiring */
+function dbSetup() {
+  $("db-add-lookup").onclick = () => { const c = $("db-add-code").value.trim(); if (c) dbIdentify({ code: c }); };
+  $("db-add-code").addEventListener("keydown", (e) => { if (e.key === "Enter") $("db-add-lookup").click(); });
+  $("db-add-photo").onclick = () => $("db-add-file").click();
+  $("db-add-file").onchange = async (e) => { const f = e.target.files && e.target.files[0]; e.target.value = ""; if (!f) return;
+    try { dbIdentify({ photo: await shrinkPhoto(f) }); } catch (err) { toast(err.message); } };
+  let t = null;
+  $("db-q").oninput = () => { clearTimeout(t); t = setTimeout(dbLoadList, 250); };
+  ["db-archived", "db-f-scanned", "db-f-found", "db-f-ingr", "db-f-source", "db-f-sort"].forEach((id) => $(id).onchange = dbLoadList);
+  $("img-overlay-close").onclick = () => $("img-overlay").classList.remove("open");
+  $("img-overlay").onclick = (e) => { if (e.target.id === "img-overlay") $("img-overlay").classList.remove("open"); };
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") $("img-overlay").classList.remove("open"); });
+}
+
+async function dbShow() {
+  try { await dbStatus(); } catch (e) { $("db-detail").innerHTML = `<div class="banner bad" style="margin:16px">${esc(e.message)}</div>`; return; }
+  DB.counts = JSON.stringify(DB.status.counts);
+  await dbLoadList();
+  if (DB.sel && !DB.cmpMode) await dbSelect(DB.sel); else dbRenderInspector();
+  clearInterval(DB.timer);
+  DB.timer = setInterval(async () => {   // pick up samples added from the phones
+    if (view !== "database") { clearInterval(DB.timer); return; }
+    try { await dbStatus(); } catch { return; }
+    const c = JSON.stringify(DB.status.counts);
+    if (c !== DB.counts) { DB.counts = c; DB.cmpData = {}; await dbLoadList(); }
+  }, 5000);
+}
+
 (async function init() {
   STATIC = await api("/api/static");
   $("fault-names").innerHTML = STATIC.faults.map((f) => `<option value="${esc(f)}">`).join("");
   $("baseline-name").textContent = STATIC.baseline ? STATIC.baseline.split("/").pop() : "none saved yet";
   $("opt-compare").disabled = !STATIC.baseline;
-  buildTwin(); await loadPorts(); await poll(true); loadRuns();
+  buildTwin(); motorSetup(); ringSetup(); dbSetup(); await loadPorts(); await poll(true); loadRuns();
+  showView(location.hash.slice(1));
   setInterval(poll, STATIC.poll_ms);
 })();
 </script>

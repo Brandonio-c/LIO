@@ -13,4 +13,4 @@ dependencies:
   - python=3.12
   - pip
   - pip:
-      - -e ./software/host[dev]
+      - -e ./software/host[dev,foods]

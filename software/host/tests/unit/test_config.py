@@ -37,7 +37,9 @@ class TestShippedConfig:
         assert cfg.channel(13).expected_detectors == ("ingaas",)
         assert cfg.channel(15).expect_for("ingaas") == "weak"
         assert cfg.channel(16).expected_detectors == ()
-        assert not cfg.channel(10).fitted and not cfg.channel(11).fitted
+        assert cfg.channel(10).fitted and cfg.channel(11).fitted  # white, pink (broadband)
+        assert cfg.channel(10).label == "white" and cfg.channel(11).label == "pink"
+        assert cfg.channel(10).expected_detectors == ("opt101",)
 
     def test_adc_mapping(self, cfg: HwConfig) -> None:
         assert cfg.detector_for_adc(0) == "ingaas"
@@ -200,6 +202,7 @@ class TestValidation:
 
     def test_unfitted_cannot_expect(self, raw: dict[str, Any]) -> None:
         d = copy.deepcopy(raw)
+        d["channels"][9]["fitted"] = False
         d["channels"][9]["expect"] = {"ingaas": "signal"}
         with pytest.raises(ConfigError, match="unfitted"):
             _parse(d)

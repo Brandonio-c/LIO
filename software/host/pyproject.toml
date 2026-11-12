@@ -17,6 +17,12 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# Food library: decode barcode photos, store photos, QR code for pairing phones
+foods = [
+  "zxing-cpp>=2.2",
+  "pillow>=10",
+  "segno>=1.6",
+]
 dev = [
   "pytest>=8",
   "pytest-timeout>=2.2",
@@ -34,7 +40,7 @@ lio = "lio.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-lio = ["py.typed", "templates/*", "dashboard/static/*"]
+lio = ["py.typed", "templates/*", "dashboard/static/*", "foods/static/*", "foods/swift/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -54,5 +60,5 @@ strict = true
 files = ["src/lio"]
 
 [[tool.mypy.overrides]]
-module = ["matplotlib.*"]
+module = ["matplotlib.*", "zxingcpp.*", "segno.*"]
 ignore_missing_imports = true

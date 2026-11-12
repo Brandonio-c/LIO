@@ -18,6 +18,7 @@ import datetime as dt
 import itertools
 import json
 import logging
+import math
 import threading
 import time
 from collections.abc import Callable, Iterable
@@ -26,13 +27,20 @@ from typing import Any
 
 from lio import baseline as bl
 from lio.config import HwConfig
-from lio.device import BootTimeout, LIODevice
+from lio.device import BootTimeout, DeviceError, LIODevice, Sweep
 from lio.operator import Abort, Operator, SimOperator
 from lio.results import RunRecord, Status, TestResult, Verdict
 from lio.sim import FAULT_NAMES, Faults, SimulatedLIO
 from lio.suite.core import REGISTRY, SuiteContext, TestDef, catalogue, run_test
 from lio.suite.runner import finish, new_record
-from lio.transport import SerialTransport, SimTransport, Transport, list_ports, pick_port
+from lio.transport import (
+    SerialTransport,
+    SimTransport,
+    Transport,
+    TransportError,
+    list_ports,
+    pick_port,
+)
 
 from . import twin
 
@@ -128,6 +136,10 @@ class Session:
         self.last_run: dict[str, Any] | None = None
         self.prompt: _Prompt | None = None
         self.manual: dict[str, Any] | None = None
+        self._jog: dict[str, Any] | None = None  # continuous jog in progress (Motors tab)
+        self._jog_thread: threading.Thread | None = None
+        self._ring: dict[str, Any] | None = None  # LED ring in progress (LEDs tab)
+        self._ring_thread: threading.Thread | None = None
         self.error = ""
         self._log: collections.deque[str] = collections.deque(maxlen=LOG_LINES)
         self._thread: threading.Thread | None = None
@@ -236,9 +248,31 @@ class Session:
                 raise Busy("stop the run first")
             dev, self.dev, self.sim = self.dev, None, None
             self.target, self.firmware = "", {}
+            self._jog = None
+            self._ring = None
         if dev is not None:
             dev.close()  # LEDs off, motors stopped and released
             self.log("disconnected (everything off)")
+        self._changed()
+
+    def link_lost(self, err: Exception) -> None:
+        """The USB link died (unplugged, Nano reset, re-enumerated): drop the stale port.
+
+        Nothing can be sent to the Nano any more; its own watchdogs turn the LEDs
+        off and a reset releases the coils. The page shows "not connected" so the
+        operator reconnects (which re-opens the port and resets the Nano).
+        """
+        with self._lock:
+            dev, self.dev, self.sim = self.dev, None, None
+            self.target, self.firmware = "", {}
+            self._jog = None
+            self._ring = None
+            self.error = f"USB link lost: {err}. Reconnect."
+        if dev is not None:
+            with contextlib.suppress(Exception):
+                dev.transport.close()
+            log.warning("USB link lost: %s", err)
+            self.log(f"USB link to the Nano lost ({err}); reconnect to continue")
         self._changed()
 
     def _device(self) -> LIODevice:
@@ -275,6 +309,10 @@ class Session:
             dev = self._device()
             if self.running:
                 raise Busy("a run is already in progress")
+            if self._jog is not None:
+                raise Busy("the motors are running continuously: stop them first")
+            if self._ring is not None:
+                raise Busy("the LED ring is running: stop it first")
             if allow_motion and not motion_confirmed:
                 raise Refused("motion tests need confirmation that someone is at the bench")
             ids = self.select(modules, interactive=interactive, allow_motion=allow_motion)
@@ -444,6 +482,8 @@ class Session:
 
     def _manual(self, fn: Callable[[LIODevice], dict[str, Any]]) -> dict[str, Any]:
         dev = self._device()
+        if self._ring is not None:
+            raise Busy("the LED ring is running: stop it first")
         if self.running or not self._dev_lock.acquire(blocking=False):
             raise Busy("a run is using the device")
         try:
@@ -473,6 +513,37 @@ class Session:
 
         return self._manual(go)
 
+    def sample_sweeps(self, repeats: int) -> tuple[list[Sweep], dict[str, Any]]:
+        """``repeats`` full sweeps for a food sample (Database tab), with their context.
+
+        The same rules as the manual tools: refused while a run or the LED ring
+        uses the device. SWEEP lights one hole at a time and leaves all dark.
+        """
+        dev = self._device()
+        if self._ring is not None:
+            raise Busy("the LED ring is running: stop it first")
+        if self.running or not self._dev_lock.acquire(blocking=False):
+            raise Busy("a run is using the device")
+        settle = self.cfg.limits["settle_ms"]
+        n = self.cfg.thresholds.integer("channel.meas_n")
+        t0 = time.monotonic()
+        try:
+            dev.keep_awake()
+            sweeps = [dev.sweep(settle, n) for _ in range(repeats)]
+        finally:
+            self._dev_lock.release()
+        meta = {
+            "target": self.target,
+            "kind": _kind(self.target),
+            "firmware": str(self.firmware.get("fw", "")),
+            "settle_ms": settle,
+            "n": n,
+            "duration_s": time.monotonic() - t0,
+        }
+        self.log(f"food scan: {repeats} sweep(s) on {self.target}")
+        self._changed()
+        return sweeps, meta
+
     def flash(self, hole: int, ms: int) -> dict[str, Any]:
         """Light one hole for ``ms`` (clamped by the firmware watchdog), then off."""
 
@@ -490,6 +561,9 @@ class Session:
 
     def wake(self) -> dict[str, Any]:
         """Hold the motor coils (no steps) to wake power bank A, then look for the ADC."""
+
+        if not self.cfg.section.raw("power.wake"):
+            raise Refused("power wake is disabled (power.wake: false)")
 
         def go(dev: LIODevice) -> dict[str, Any]:
             ms = self.cfg.section.integer("dashboard.wake_button_ms")
@@ -510,13 +584,391 @@ class Session:
             self.stop()
             return
 
+        with self._lock:
+            self._jog = None
+        if self._ring is not None:
+            self.ring_stop()
+
         def go(dev: LIODevice) -> dict[str, Any]:
             dev.off()
             dev.motor_stop()
             return {"action": "off"}
 
-        self._manual(go)
+        self._motor_call(go, wait_s=2.0)
         self.log("all off: LEDs off, motors stopped")
+
+    # ----------------------------------------------------- motors tab
+
+    def _motor_call(
+        self, fn: Callable[[LIODevice], dict[str, Any]], wait_s: float = 0.0
+    ) -> dict[str, Any]:
+        """Run ``fn`` on the device outside a test run (like the manual tools)."""
+        dev = self._device()
+        if self.running:
+            raise Busy("a run is using the device")
+        got = (
+            self._dev_lock.acquire(timeout=wait_s)
+            if wait_s > 0
+            else self._dev_lock.acquire(blocking=False)
+        )
+        if not got:
+            raise Busy("the device is busy")
+        try:
+            return fn(dev)
+        except DeviceError as e:
+            raise Refused(f"the Nano refused: {e.msg}") from e
+        finally:
+            self._dev_lock.release()
+
+    def motor_status(self) -> dict[str, Any]:
+        """Position, run state and arming of both motors (polled by the Motors tab)."""
+        if self.dev is None:
+            return {"connected": False}
+
+        def go(dev: LIODevice) -> dict[str, Any]:
+            st = dev.status()
+            return {
+                "connected": True,
+                "armed": st.as_int("armed") == 1,
+                "armed_ms": st.as_int("armed_ms"),
+                "lit": st.as_int("ch"),
+                "motors": {
+                    str(m): {"state": st.as_str(f"motor{m}"), "pos": st.as_int(f"pos{m}")}
+                    for m in (1, 2)
+                },
+            }
+
+        with self._lock:
+            jog = self._jog
+            if jog is not None:
+                jog["heartbeat"] = time.monotonic()
+        jog_info = {k: jog[k] for k in ("motor", "direction", "speed")} if jog is not None else None
+        try:
+            out = {**self._motor_call(go), "jog": jog_info}
+        except Busy:
+            last = getattr(self, "_motor_last", None)
+            return {**last, "stale": True} if last else {"connected": True, "busy": True}
+        self._motor_last = out
+        return out
+
+    # Continuous jog: the legacy jog commands (docs/PROTOCOL.md §7) each stop after
+    # jog_max half-steps, so a jog is re-sent while the page keeps it latched. If the
+    # page goes quiet for jog_deadman_s the motors are stopped.
+
+    def jog_start(self, motor: str, direction: str, speed: int) -> dict[str, Any]:
+        """Run one motor, or both, up or down until ``jog_stop`` (or the dead-man)."""
+        lim = self.cfg.limits
+        if motor not in ("1", "2", "both"):
+            raise Refused("motor must be 1, 2 or both")
+        if direction not in ("up", "down"):
+            raise Refused("direction must be up or down")
+        if not lim["jog_v_min"] <= speed <= lim["jog_v_max"]:
+            raise Refused(f"speed must be {lim['jog_v_min']}-{lim['jog_v_max']} half-steps/s")
+        positive = str(self.cfg.section.raw("motors.positive"))
+        sign = 1 if direction == positive else -1  # firmware U/LU/RU step in +
+        if self._ring is not None:
+            raise Busy("the LED ring is running: stop it first")
+        cmd = JOG_CMDS[(motor, sign)]
+        targets = [1, 2] if motor == "both" else [int(motor)]
+
+        def go(dev: LIODevice) -> dict[str, Any]:
+            dev.command(f"{'VS' if motor == 'both' else 'VA'}{speed}")
+            dev.command(cmd)
+            st = dev.status()
+            now = time.monotonic()
+            with self._lock:
+                self._jog = {
+                    "motor": motor, "direction": direction, "speed": speed, "cmd": cmd,
+                    "targets": targets, "pos0": {m: st.as_int(f"pos{m}") for m in targets},
+                    "heartbeat": now, "started": now,
+                }  # fmt: skip
+            who = {"both": "both", "1": "left", "2": "right"}[motor]
+            self.log(f"motor {who} running {direction} at {speed} half-steps/s (continuous)")
+            return {"jog": motor, "direction": direction, "speed": speed}
+
+        out = self._motor_call(go, wait_s=1.0)
+        if self._jog_thread is None or not self._jog_thread.is_alive():
+            self._jog_thread = threading.Thread(target=self._jog_loop, name="lio-jog", daemon=True)
+            self._jog_thread.start()
+        return out
+
+    def jog_stop(self, reason: str = "stop pressed") -> dict[str, Any]:
+        with self._lock:
+            was, self._jog = self._jog, None
+        if self.dev is None:
+            return {"stopped": False}
+
+        def go(dev: LIODevice) -> dict[str, Any]:
+            dev.command("S")  # stop both at once, coils released
+            return {"stopped": True}
+
+        out = self._motor_call(go, wait_s=2.0)
+        if was is not None:
+            self.log(f"motors stopped ({reason})")
+        return out
+
+    def _jog_loop(self) -> None:
+        sec = self.cfg.section
+        check_s = sec.integer("dashboard.jog_check_ms") / 1000.0
+        refresh = sec.integer("dashboard.jog_refresh_steps")
+        deadman = sec.num("dashboard.jog_deadman_s")
+        while True:
+            time.sleep(check_s)
+            with self._lock:
+                jog = self._jog
+            if jog is None or self.dev is None:
+                return
+            if deadman > 0 and time.monotonic() - jog["heartbeat"] > deadman:
+                with contextlib.suppress(Exception):
+                    self.jog_stop("the page stopped checking in")
+                return
+            if not self._dev_lock.acquire(timeout=1.0):
+                continue
+            try:
+                st = self.dev.status()
+                states = {m: st.as_str(f"motor{m}") for m in jog["targets"]}
+                pos = {m: st.as_int(f"pos{m}") for m in jog["targets"]}
+                if all(v == "idle" for v in states.values()):
+                    with self._lock:
+                        if self._jog is jog:
+                            self._jog = None
+                    self.log("continuous move ended by the Nano (bound, failsafe or stop)")
+                    return
+                if max(abs(pos[m] - jog["pos0"][m]) for m in jog["targets"]) >= refresh:
+                    self.dev.command(jog["cmd"])  # a fresh bound of jog_max half-steps
+                    jog["pos0"] = pos
+            except Exception as e:  # the device went away or refused: stop trying
+                log.warning("continuous jog: %s", e)
+                with self._lock:
+                    if self._jog is jog:
+                        self._jog = None
+                return
+            finally:
+                self._dev_lock.release()
+
+    # ------------------------------------------------------- LEDs tab: ring
+
+    @property
+    def _ring_budget(self) -> bool:
+        return bool(self.cfg.section.raw("dashboard.ring_duty_budget"))
+
+    def ring_holes(self, include_unfitted: bool) -> list[int]:
+        return [c.hole for c in self.cfg.channels if c.fitted or include_unfitted]
+
+    def ring_min_step_ms(self, on_ms: int, holes: list[int]) -> int:
+        """Shortest step that keeps every hole in the ring within its duty budget.
+
+        With ``dashboard.ring_duty_budget: false`` only the dark gap is kept.
+        """
+        sec = self.cfg.section
+        gap = on_ms + sec.integer("dashboard.ring_gap_ms")
+        if not self._ring_budget:
+            return gap
+        window_ms = sec.num("duty.window_s") * 1000.0
+        rails = {self.cfg.channel(h).rail for h in holes}
+        budget = min(sec.num(f"duty.max_on_ms_per_channel.{r}") for r in rails)
+        by_duty = on_ms * window_ms / (budget * len(holes))
+        return math.ceil(max(by_duty, gap))
+
+    def ring_start(
+        self,
+        on_ms: int,
+        step_ms: int,
+        include_unfitted: bool,
+        holes: list[int] | None = None,
+    ) -> dict[str, Any]:
+        """Light the holes one at a time around the ring until ``ring_stop``.
+
+        ``holes`` limits the ring to those holes; one hole "holds" it: that LED is
+        pulsed again and again (as often as its duty budget allows, if enabled). While running, a
+        new call changes the holes and timing in place. The step is raised to the
+        duty-safe minimum when needed (the result says what was used).
+        """
+        sec = self.cfg.section
+        lo, hi = sec.integer("dashboard.ring_on_ms_min"), sec.integer("dashboard.ring_on_ms_max")
+        if not lo <= on_ms <= hi:
+            raise Refused(f"on-time must be {lo}-{hi} ms")
+        if holes:
+            bad = [h for h in holes if not 1 <= h <= 16]
+            if bad:
+                raise Refused(f"holes must be 1-16, got {bad}")
+            holes = list(dict.fromkeys(holes))
+        else:
+            holes = self.ring_holes(include_unfitted)
+        min_step = self.ring_min_step_ms(on_ms, holes)
+        step = max(step_ms, min_step)
+        self._device()
+        if self.running:
+            raise Busy("a run is using the device")
+        if self._jog is not None:
+            raise Busy("the motors are running continuously: stop them first")
+        with self._lock:
+            if self._ring is not None:
+                self._ring.update(on_ms=on_ms, step_ms=step, min_step_ms=min_step, holes=holes)
+                self.log(f"LED ring: {on_ms} ms on, one hole every {step} ms, holes {holes}")
+                return self._ring_view()
+            self._ring = {
+                "on_ms": on_ms, "step_ms": step, "min_step_ms": min_step, "holes": holes,
+                "hole": 0, "state": "starting", "cooling_s": 0.0, "laps": 0,
+            }  # fmt: skip
+            ring = self._ring
+        self.log(f"LED ring started: {on_ms} ms on, one hole every {step} ms, holes {holes}")
+        self._ring_thread = threading.Thread(
+            target=self._ring_loop, args=(ring,), name="lio-ring", daemon=True
+        )
+        self._ring_thread.start()
+        return self.ring_status()
+
+    def ring_stop(self) -> dict[str, Any]:
+        with self._lock:
+            was, self._ring = self._ring, None
+        if was is not None and self._ring_thread is not None:
+            self._ring_thread.join(timeout=5.0)
+        if self.dev is not None and self._dev_lock.acquire(timeout=2.0):
+            try:
+                self.dev.off()
+            except TransportError as e:
+                self.link_lost(e)
+            finally:
+                self._dev_lock.release()
+        if was is not None:
+            self.log(f"LED ring stopped after {was['laps']} laps (everything off)")
+        return {"stopped": was is not None}
+
+    def _ring_view(self) -> dict[str, Any]:
+        r = self._ring
+        if r is None:
+            return {"active": False}
+        keys = ("on_ms", "step_ms", "min_step_ms", "holes", "hole", "state", "cooling_s", "laps")
+        return {"active": True, **{k: r[k] for k in keys}}
+
+    def ring_status(self) -> dict[str, Any]:
+        with self._lock:
+            return self._ring_view()
+
+    def _ring_wait(self, dev: LIODevice, seconds: float) -> None:
+        """Wait on the device's clock (real time on hardware, virtual on the simulator)."""
+        with self._dev_lock:
+            dev.sleep(seconds)
+
+    def _ring_loop(self, ring: dict[str, Any]) -> None:
+        i = 0
+        try:
+            while True:
+                with self._lock:
+                    if self._ring is not ring:
+                        return
+                    holes, on_ms, step_ms = ring["holes"], ring["on_ms"], ring["step_ms"]
+                hole = holes[i % len(holes)]
+                dev = self.dev
+                if dev is None:
+                    return
+                t0 = dev.now()
+                # Cool down here, in short sleeps, so Stop is never held up.
+                while self._ring_budget and dev.duty is not None:
+                    wait = dev.duty.wait_needed(hole, on_ms, dev.now())
+                    if wait <= 0:
+                        break
+                    with self._lock:
+                        if self._ring is not ring:
+                            return
+                        ring.update(state="cooling", cooling_s=round(wait, 1), hole=hole)
+                    self._ring_wait(dev, min(wait, 0.2))
+                with self._dev_lock:
+                    with self._lock:
+                        if self._ring is not ring:
+                            return
+                    # firmware turns it off after on_ms (and at its watchdog limit)
+                    dev.ch_on(hole, on_ms, budget=self._ring_budget)
+                with self._lock:
+                    ring.update(state="lit", cooling_s=0.0, hole=hole)
+                    if (i + 1) % len(holes) == 0:
+                        ring["laps"] += 1
+                i += 1
+                end = t0 + step_ms / 1000.0
+                while (left := end - dev.now()) > 0:
+                    with self._lock:
+                        if self._ring is not ring:
+                            return
+                    self._ring_wait(dev, min(0.02, left))
+        except TransportError as e:
+            self.link_lost(e)
+        except Exception as e:  # refused by the firmware: stop and say why
+            log.warning("LED ring: %s", e)
+            self.log(f"LED ring stopped: {e}")
+            with self._lock:
+                if self._ring is ring:
+                    self._ring = None
+            if self.dev is not None and self._dev_lock.acquire(timeout=2.0):
+                try:
+                    with contextlib.suppress(Exception):
+                        self.dev.off()
+                finally:
+                    self._dev_lock.release()
+
+    def motor_arm(self) -> dict[str, Any]:
+        def go(dev: LIODevice) -> dict[str, Any]:
+            ms = dev.motor_arm().as_int("armed_ms")
+            self.log(f"motors armed for {ms / 1000:g} s")
+            return {"armed_ms": ms}
+
+        return self._motor_call(go, wait_s=1.0)
+
+    def motor_move(self, motor: str, direction: str, steps: int, rpm: int) -> dict[str, Any]:
+        """Move one motor, or both together, by ``steps`` half-steps up or down."""
+        lim = self.cfg.limits
+        targets = {"1": [1], "2": [2], "both": [1, 2]}.get(motor)
+        if targets is None:
+            raise Refused("motor must be 1, 2 or both")
+        if direction not in ("up", "down"):
+            raise Refused("direction must be up or down")
+        if not 1 <= steps <= lim["step_max"]:
+            raise Refused(f"steps must be 1-{lim['step_max']}")
+        if not 1 <= rpm <= lim["rpm_max"]:
+            raise Refused(f"rpm must be 1-{lim['rpm_max']}")
+        positive = str(self.cfg.section.raw("motors.positive"))
+        sign = 1 if (direction == positive) else -1
+
+        def go(dev: LIODevice) -> dict[str, Any]:
+            started: list[int] = []
+            try:
+                for m in targets:
+                    dev.motor_step(m, sign * steps, rpm)
+                    started.append(m)
+            except DeviceError:
+                if started:
+                    dev.motor_stop()  # never leave one side of the chamber moving alone
+                raise
+            names = {1: "left", 2: "right"}
+            who = "both" if len(targets) == 2 else names[targets[0]]
+            self.log(f"motor {who} {direction} {steps} half-steps at {rpm} rpm")
+            return {"motor": motor, "direction": direction, "steps": steps, "rpm": rpm}
+
+        return self._motor_call(go, wait_s=1.0)
+
+    def motor_stop(self) -> dict[str, Any]:
+        """Stop both motors and release the coils; during a run, stop the run."""
+        if self.running:
+            self.stop()
+            return {"stopped": "run"}
+
+        with self._lock:
+            self._jog = None
+
+        def go(dev: LIODevice) -> dict[str, Any]:
+            f = dev.motor_stop()
+            self.log(f"motors stopped at pos1={f.as_int('pos1')} pos2={f.as_int('pos2')}")
+            return {"stopped": "motors"}
+
+        return self._motor_call(go, wait_s=2.0)
+
+    def motor_release(self) -> dict[str, Any]:
+        def go(dev: LIODevice) -> dict[str, Any]:
+            dev.motor_release("ALL")
+            self.log("motor coils released")
+            return {"released": True}
+
+        return self._motor_call(go, wait_s=1.0)
 
     def clear_results(self) -> None:
         """Start the board afresh; earlier runs stay on disk but are no longer counted."""
@@ -690,11 +1142,49 @@ class Session:
             ],
             "faults": list(FAULT_NAMES),
             "flash_ms": cfg.section.integer("dashboard.flash_ms"),
+            "wake": bool(cfg.section.raw("power.wake")),
             "poll_ms": cfg.section.integer("dashboard.poll_ms"),
             "rails": {r: {"holes": list(cfg.rail_holes(r))} for r in ("A", "B")},
             "statuses": [s.value for s in Status] + [twin.NOT_RUN],
             "baseline": str(bl.latest()) if bl.latest() is not None else None,
+            "ring": {
+                "on_ms": cfg.section.integer("dashboard.ring_on_ms"),
+                "on_ms_min": cfg.section.integer("dashboard.ring_on_ms_min"),
+                "on_ms_max": cfg.section.integer("dashboard.ring_on_ms_max"),
+                "duty_budget": bool(cfg.section.raw("dashboard.ring_duty_budget")),
+                "visible_max_nm": cfg.thresholds.num("interactive.visible_max_nm"),
+                "camera_max_nm": cfg.thresholds.num("interactive.camera_max_nm"),
+                "channels": [
+                    {
+                        "hole": c.hole,
+                        "label": c.label,
+                        "nm": c.wavelength_nm,
+                        "rail": c.rail,
+                        "fitted": c.fitted,
+                    }
+                    for c in cfg.channels
+                ],
+            },
+            "motors": {
+                "names": {str(m): str(cfg.section.raw(f"motors.{m}.name")) for m in (1, 2)},
+                "step_max": cfg.limits["step_max"],
+                "rpm_max": cfg.limits["rpm_max"],
+                "rpm_default": cfg.limits["rpm_default"],
+                "half_steps_per_rev": cfg.limits["half_steps_per_rev"],
+                "arm_ms": cfg.limits["arm_ms"],
+                "jog_v_min": cfg.limits["jog_v_min"],
+                "jog_v_max": cfg.limits["jog_v_max"],
+                "jog_vs_default": cfg.limits["jog_vs_default"],
+                "jog_va_default": cfg.limits["jog_va_default"],
+            },
         }
+
+
+# Legacy jog commands by (motor, step sign); the firmware's U/LU/RU step in +.
+JOG_CMDS = {
+    ("both", 1): "U", ("both", -1): "D", ("1", 1): "LU", ("1", -1): "LD",
+    ("2", 1): "RU", ("2", -1): "RD",
+}  # fmt: skip
 
 
 def _kind(target: str) -> str:
