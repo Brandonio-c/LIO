@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-11-11: Verifiable composition, M5 (attestation, badges, training export, docs)
+
+### Added
+- Photo attestation flow for food-library samples (`lio_comp.samples`). When a Nutrition Facts photo is saved, the dashboard and the phone show the rows the Mac read. The operator ticks the rows that match the pack (correcting misreads) and signs with their name. The photo is stored by SHA-256, the confirmation is appended to the sample's evidence log, and the sample's record is rebuilt:
+  - one ATTESTED fact per row (`image_bbox`, re-parsed by `nfp_row@1`, interpreted with the 101.9(c) rounding rules);
+  - per-100 g derivations;
+  - the library's database and OCR values in the unverified layer.
+  Row boxes come from the server's own OCR, never from the client.
+- `ocr.read_label` returns `panel_rows` (Nutrition Facts rows a row rule can read, with pixel boxes) and `image_size`; split OCR lines on one printed row are joined.
+- Dashboard: a **Composition** tab in the inspector, verified by `lio-verify` each time it opens, with VERIFIED / ATTESTED / UNVERIFIED / FAILED badges (always with their word), attestations, assumptions, and the unverified estimates kept apart. Also a **Composition for training** export.
+- Training export (`lio_comp.export`, `/foods/export/composition.csv`): one row per value with its exact interval, its badge from the verifier, and every assumption it rests on.
+- `docs/COMPOSITION_VERIFICATION.md`: record format, running `lio-verify`, reading its report, the attestation flow, the export, rebuilding, and where the implementation departs from the specification.
+
 ## 2026-11-11: Verifiable composition, M4 (independent verifier)
 
 ### Added

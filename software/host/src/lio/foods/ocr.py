@@ -266,6 +266,94 @@ def parse_nutrition(lines: list[str]) -> dict[str, Any]:
     return out
 
 
+ROW_GAP = 0.6  # a wider horizontal gap (fraction of the photo) starts a new row segment
+
+
+def visual_rows(lines: list[Line]) -> list[Line]:
+    """Vision lines on the same printed row, joined left to right.
+
+    A Nutrition Facts row ("Total Fat 16g 21%", or "Serving size ... 2 Tbsp (32g)")
+    is often split into separate lines. Lines whose vertical centres are within
+    0.6 line heights are one row; a horizontal gap wider than ``ROW_GAP`` splits
+    it (panels side by side). These are only candidates: the operator confirms
+    each row's text before it becomes an attested fact.
+    """
+    rows: list[list[Line]] = []
+    for ln in sorted(lines, key=lambda ln: -(ln.y + ln.h / 2)):  # top to bottom
+        mid = ln.y + ln.h / 2
+        for row in rows:
+            r0 = row[0]
+            if abs((r0.y + r0.h / 2) - mid) <= 0.6 * max(r0.h, ln.h):
+                row.append(ln)
+                break
+        else:
+            rows.append([ln])
+    out: list[Line] = []
+    for row in rows:
+        row.sort(key=lambda ln: ln.x)
+        seg = [row[0]]
+        for ln in row[1:]:
+            prev = seg[-1]
+            if ln.x - (prev.x + prev.w) > ROW_GAP:
+                out.append(_join(seg))
+                seg = [ln]
+            else:
+                seg.append(ln)
+        out.append(_join(seg))
+    return out
+
+
+def _join(group: list[Line]) -> Line:
+    g = sorted(group, key=lambda ln: ln.x)
+    x0, y0 = min(ln.x for ln in g), min(ln.y for ln in g)
+    x1, y1 = max(ln.x + ln.w for ln in g), max(ln.y + ln.h for ln in g)
+    return Line(" ".join(ln.text for ln in g), min(ln.conf for ln in g), x0, y0, x1 - x0, y1 - y0)
+
+
+def panel_rows(lines: list[Line], size: tuple[int, int]) -> list[dict[str, Any]]:
+    """Nutrition Facts rows that a deterministic row rule can read, with pixel boxes.
+
+    Boxes are in pixels of the upright photo (origin top-left). Needs the
+    composition extra (``lio_verify``); without it no rows are offered.
+    """
+    try:
+        from lio_verify import textrules
+    except ImportError:
+        return []
+    w, h = size
+    nutrients = ["calories", *textrules.NFP_ROWS, "added_sugars"]
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for ln in visual_rows(lines):
+        box = {
+            "x": max(0, round(ln.x * w)),
+            "y": max(0, round((1 - ln.y - ln.h) * h)),
+            "w": max(1, round(ln.w * w)),
+            "h": max(1, round(ln.h * h)),
+        }
+        candidates = [("serving", "nfp_serving@1")] + [(n, f"nfp_row@1:{n}") for n in nutrients]
+        for key, rule in candidates:
+            if key in seen:
+                continue
+            try:
+                raw = textrules.apply(rule, ln.text)
+            except textrules.RuleError:
+                continue
+            seen.add(key)
+            rows.append(
+                {"nutrient": key, "rule": rule, "text": ln.text, "value_raw": raw, "box": box}
+            )
+            break
+    return rows
+
+
+def upright_size(data: bytes) -> tuple[int, int]:
+    from PIL import Image, ImageOps
+
+    img = ImageOps.exif_transpose(Image.open(io.BytesIO(data)))
+    return int(img.size[0]), int(img.size[1])
+
+
 def read_label(data: bytes) -> dict[str, Any]:
     """Everything the phone app and the dashboard need from one label photo."""
     found = recognise(data)
@@ -274,9 +362,12 @@ def read_label(data: bytes) -> dict[str, Any]:
     ingr = extract_ingredients(lines)
     # Nutrition rows: Vision's own lines, each column on its own (values sit on their row).
     nutrition = parse_nutrition(lines)
+    size = upright_size(data)
     return {
         "lines": lines,
         "text": "\n\n".join("\n".join(ln.text for ln in col) for col in cols),
         **ingr,
         "nutrition": nutrition,
+        "image_size": list(size),
+        "panel_rows": panel_rows(found, size),
     }

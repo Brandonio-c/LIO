@@ -88,3 +88,7 @@ pip install -e software/host[foods]
 ```
 
 This installs zxing-cpp, Pillow and segno. Without them, type the digits instead.
+
+## Verified composition
+
+Values that can be proven, as exact intervals with VERIFIED / ATTESTED / UNVERIFIED badges, are kept apart from the library's database values. See [COMPOSITION_VERIFICATION.md](COMPOSITION_VERIFICATION.md). To create them for a sample, save a Nutrition Facts photo, tick the rows that match the pack, and sign with your name. The inspector's **Composition** tab shows the result, checked by `lio-verify`.

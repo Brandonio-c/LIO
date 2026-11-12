@@ -8,6 +8,7 @@ and the dashboard both use this.
 from __future__ import annotations
 
 import base64
+import json
 import secrets
 import threading
 import time
@@ -45,10 +46,13 @@ class _Draft:
 
 
 class Intake:
-    def __init__(self, lib: FoodLibrary) -> None:
+    def __init__(self, lib: FoodLibrary, composition: Any = None) -> None:
         self.lib = lib
+        # lio_comp.samples.SampleComposition, or None without the composition extra / rules
+        self.composition = composition
         self._drafts: dict[str, _Draft] = {}
-        self._labels: dict[str, tuple[float, str, bytes, str]] = {}  # id -> (at, kind, photo, text)
+        # id -> (at, kind, photo, text, OCR result: panel rows with boxes, image size)
+        self._labels: dict[str, tuple[float, str, bytes, str, dict[str, Any]]] = {}
         self._lock = threading.Lock()
 
     def _put(self, d: _Draft) -> str:
@@ -127,19 +131,26 @@ class Intake:
                 del self._labels[k]
             while len(self._labels) >= MAX_DRAFTS:
                 del self._labels[next(iter(self._labels))]
-            self._labels[key] = (now, kind, photo, res["text"])
-        return {"label_draft": key, "kind": kind, **res}
+            self._labels[key] = (now, kind, photo, res["text"], res)
+        rows = [{"index": i, **r} for i, r in enumerate(res.get("panel_rows") or [])]
+        can_attest = kind == "nutrition" and self.composition is not None and bool(rows)
+        return {"label_draft": key, "kind": kind, **res, "panel_rows": rows,
+                "can_attest": can_attest}  # fmt: skip
 
     def apply_label(self, code: str, label: dict[str, Any]) -> dict[str, Any]:
         """Store a reviewed label photo with its sample and put its data on the product.
 
-        ``label``: {label_draft, ingredients_text?, contains?, nutrition_per_100g?, serving_size?}
+        ``label``: {label_draft, ingredients_text?, contains?, nutrition_per_100g?, serving_size?,
+        attest?: {signer, rows: [{index, text}]}}. With ``attest``, the confirmed Nutrition
+        Facts rows become ATTESTED facts in the sample's composition record; each row's box
+        comes from this server's OCR of the photo, only the confirmed text from the client.
         """
         with self._lock:
             d = self._labels.pop(str(label.get("label_draft") or ""), None)
         if d is None:
             raise LibraryError("this label photo expired or was already saved: take it again")
-        _, kind, photo, text = d
+        _, kind, photo, text, res = d
+        attest = self._attested_rows(kind, res, label.get("attest"))
         sample = self.lib.add_label_photo(code, kind, photo, text)
         fields: dict[str, Any] = {}
         if kind == "ingredients" and str(label.get("ingredients_text") or "").strip():
@@ -158,7 +169,56 @@ class Intake:
                 fields["serving_size"] = str(label["serving_size"])
         if fields:
             self.lib.set_product_info(sample["gtin14"], fields, source="label photo")
-        return self.lib.sample(code)
+        out = self.lib.sample(code)
+        if attest is not None:
+            signer, rows = attest
+            from lio_comp.samples import CompositionError
+
+            product = self.lib.product(normalise(out["gtin14"]))
+            try:
+                out["composition"] = self.composition.attest_panel(
+                    out, product, photo, res["image_size"], rows, signer
+                )
+            except CompositionError as e:
+                raise LibraryError(f"the label was saved, but not attested: {e}") from e
+        return out
+
+    def _attested_rows(
+        self, kind: str, res: dict[str, Any], attest: Any
+    ) -> tuple[str, list[dict[str, Any]]] | None:
+        """Validate an attestation request before anything is saved."""
+        if not attest:
+            return None
+        if kind != "nutrition" or self.composition is None:
+            raise LibraryError("only Nutrition Facts photos can be attested here")
+        signer = " ".join(str(attest.get("signer") or "").split())
+        if not signer:
+            raise LibraryError("type your name to attest the values")
+        ocr_rows = res.get("panel_rows") or []
+        rows: list[dict[str, Any]] = []
+        for item in attest.get("rows") or []:
+            i = int(item.get("index", -1))
+            if not 0 <= i < len(ocr_rows):
+                raise LibraryError("an attested row is not in this photo")
+            rows.append({**ocr_rows[i], "text": " ".join(str(item.get("text") or "").split())})
+        if not rows:
+            raise LibraryError("tick at least one row that matches the label")
+        from lio_verify import textrules
+
+        for r in rows:
+            try:
+                textrules.apply(r["rule"], r["text"])
+            except textrules.RuleError as e:
+                raise LibraryError(f"{r['nutrient']}: {e}") from e
+        return signer, rows
+
+    def composition_report(self, code: str) -> dict[str, Any]:
+        """The sample's composition record, verified now (badges come from the verifier)."""
+        if self.composition is None:
+            return {"available": False, "record": None, "report": None}
+        p = self.composition.record_path(code)
+        rec = json.loads(p.read_text()) if p.exists() else None
+        return {"available": True, "record": rec, "report": self.composition.report(code)}
 
     # ------------------------------------------------------ ingredients online
 

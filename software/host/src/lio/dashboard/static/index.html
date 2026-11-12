@@ -83,6 +83,18 @@ input[type=text], input[type=number], select { border: 1px solid var(--axis); ba
 .badge.s-FAIL, .badge.s-ERROR { background: var(--wash-critical); color: var(--critical); }
 .badge.s-SKIP, .badge.s-NOT_RUN { background: var(--surface-2); color: var(--ink-2); }
 
+/* ---------- composition badges (always with their word, never colour alone) */
+.vb { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .4px; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.vb.VERIFIED { background: var(--wash-good); color: var(--good-text); }
+.vb.ATTESTED { background: rgba(42,120,214,0.12); color: var(--accent); }
+.vb.UNVERIFIED { background: var(--surface-2); color: var(--ink-2); }
+.vb.FAILED { background: var(--wash-critical); color: var(--critical); }
+table.comptab { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.comptab th { text-align: left; font-weight: 600; color: var(--ink-2); border-bottom: 1px solid var(--hair); padding: 4px 6px; }
+table.comptab td { border-bottom: 1px solid var(--hair); padding: 5px 6px; vertical-align: top; }
+table.comptab td.v { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.attest-row { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; }
+
 /* ---------- verdict hero */
 .verdict { display: grid; gap: 8px; }
 .verdict .word { font-size: 30px; font-weight: 700; display: flex; align-items: center; gap: 10px; letter-spacing: .2px; }
@@ -348,6 +360,7 @@ table.nut tr.derived td { color: var(--ink-2); font-style: italic; }
 .banner { border-radius: 8px; padding: 8px 12px; font-size: 13px; }
 .banner.warn { background: var(--wash-warning); }
 .banner.bad { background: var(--wash-critical); }
+.banner.good { background: var(--wash-good); }
 .banner.soft { background: var(--surface-2); }
 /* composition bar (per 100 g) */
 .comp { display: flex; height: 22px; border-radius: 5px; overflow: hidden; gap: 2px; background: var(--surface); }
@@ -574,6 +587,7 @@ table.db td { border-top: 1px solid var(--hair); padding: 5px 6px; }
       <div class="dl-list">
         <a class="dl" href="/foods/export/samples.csv"><span class="ic">CSV</span><span><b>Samples table</b><span class="note">one row per item, with nutrition per 100 g</span></span></a>
         <a class="dl" href="/foods/export/library.json"><span class="ic">JSON</span><span><b>Full library</b><span class="note">everything, including every scan reading</span></span></a>
+        <a class="dl" href="/foods/export/composition.csv"><span class="ic">CSV</span><span><b>Composition for training</b><span class="note">every value as an interval, with its badge and assumptions</span></span></a>
       </div>
       <div class="note mono db-path" id="db-path"></div>
     </div>
@@ -1452,7 +1466,7 @@ function dbRenderInspector() {
   if (!s) { box.innerHTML = `<div class="inspect-empty"><div>Select a sample on the left to inspect everything recorded for it,<br>or tick several to compare their spectra and composition.</div></div>`; return; }
   const p = s.product || { info: {}, sources: [], errors: {} };
   const img = p.image_file || s.product_photo || s.barcode_photo;
-  const tabs = [["overview", "Overview"], ["product", "Manufacturer data"], ["scans", "LIO scans", s.scans.length], ["raw", "Raw data"]];
+  const tabs = [["overview", "Overview"], ["product", "Manufacturer data"], ["comp", "Composition"], ["scans", "LIO scans", s.scans.length], ["raw", "Raw data"]];
   box.innerHTML = `
     <div class="ins-head">
       ${img ? `<img src="${foodSrc(img)}" alt="">` : `<div class="ph"></div>`}
@@ -1468,7 +1482,7 @@ function dbRenderInspector() {
           toast(s.archived ? "restored" : "archived: hidden from the library (tick Archived to see it)"); await dbRefresh(s.sample_code); }
     catch (e) { toast(e.message, 7000); }
   };
-  ({ overview: dbTabOverview, product: dbTabProduct, scans: dbTabScans, raw: dbTabRaw }[DB.tab] || dbTabOverview)(s, p);
+  ({ overview: dbTabOverview, product: dbTabProduct, comp: dbTabComp, scans: dbTabScans, raw: dbTabRaw }[DB.tab] || dbTabOverview)(s, p);
 }
 
 function dbPic(label, rel, kind) {
@@ -1619,14 +1633,25 @@ function dbLabelReview(s, kind, r) {
         <label class="field">Contains (allergen statement)<input type="text" id="lr-contains" value="${esc(r.contains || "")}"></label>`
       : `<div class="note">Per serving as printed: ${esc(n.serving || "serving size not found")}. Values below are per 100 g${n.serving_g ? ` (× 100 ÷ ${n.serving_g} g)` : ": type the serving size in grams to convert"}.</div>
         <label class="field" style="max-width:220px">Serving size<input type="text" id="lr-serving" value="${esc(n.serving || "")}"></label>
-        <div class="edit-grid">${nutInputs}</div>`}
+        <div class="edit-grid">${nutInputs}</div>
+        ${r.can_attest ? `<div class="ins-sec" style="margin:4px 0 0"><h3 style="margin-bottom:4px">Attest the panel <span class="vb ATTESTED">ATTESTED</span></h3>
+          <div class="note">Tick each row whose text matches the printed label exactly (correct it if the photo was misread). Ticked rows become attested values in this sample's verified composition record, signed with your name.</div>
+          ${r.panel_rows.map((row) => `<label class="attest-row"><input type="checkbox" data-att="${row.index}" checked><input type="text" data-att-text="${row.index}" value="${esc(row.text)}"><span class="note">${esc(row.nutrient.replace(/_/g, " "))}</span></label>`).join("")}
+          <label class="field" style="max-width:260px">Your name (signs the attestation)<input type="text" id="lr-signer" value="${esc(localStorage.getItem("lio-attest-name") || "")}"></label></div>` : ""}`}
       <details><summary class="note">All the text read from the photo</summary><pre class="raw">${esc(r.text)}</pre></details>
       <div class="row" style="justify-content:flex-end"><button class="btn small" id="lr-cancel">Discard</button><button class="btn small primary" id="lr-save">Save to this product</button></div></div>`;
   $("lr-cancel").onclick = () => box.innerHTML = "";
   $("lr-save").onclick = async () => {
     const body = { sample_code: s.sample_code, label_draft: r.label_draft };
     if (kind === "ingredients") { body.ingredients_text = $("lr-ingr").value; body.contains = $("lr-contains").value; }
-    else { body.serving_size = $("lr-serving").value; body.nutrition_per_100g = {}; document.querySelectorAll("[data-lnut]").forEach((i) => { if (i.value !== "") body.nutrition_per_100g[i.dataset.lnut] = +i.value; }); }
+    else { body.serving_size = $("lr-serving").value; body.nutrition_per_100g = {}; document.querySelectorAll("[data-lnut]").forEach((i) => { if (i.value !== "") body.nutrition_per_100g[i.dataset.lnut] = +i.value; });
+      const ticked = [...document.querySelectorAll("[data-att]")].filter((c) => c.checked);
+      if (r.can_attest && ticked.length) {
+        const signer = ($("lr-signer").value || "").trim();
+        if (!signer) { toast("type your name to attest the ticked rows (or untick them)", 7000); return; }
+        try { localStorage.setItem("lio-attest-name", signer); } catch {}
+        body.attest = { signer, rows: ticked.map((c) => ({ index: +c.dataset.att, text: document.querySelector(`[data-att-text="${c.dataset.att}"]`).value })) };
+      } }
     try { await api("/api/foods/label/apply", body); toast("saved from the label photo"); await dbRefresh(s.sample_code); }
     catch (e) { toast(e.message, 7000); }
   };
@@ -1830,6 +1855,41 @@ function dbRenderScan() {
     };
     h.onmouseleave = () => tip.style.display = "none";
   });
+}
+
+/* Composition: the sample's verified record, checked by lio-verify every time it is shown */
+const ratNum = (r) => { const [a, b] = String(r).split("/"); return Number(a) / (b ? Number(b) : 1); };
+const sig = (x) => (Math.abs(x) >= 100 ? x.toFixed(1) : Math.abs(x) >= 1 ? x.toPrecision(4) : x.toPrecision(3)).replace(/\.?0+$/, "");
+function ivText(v) {
+  if (!v) return "";
+  const lo = ratNum(v.lo), hi = ratNum(v.hi), u = v.unit === "1" ? "" : ` ${v.unit}`;
+  if (v.lo === v.hi) return `${sig(lo)}${u}`;
+  return `${v.lo_closed ? "[" : "("}${sig(lo)}, ${sig(hi)}${v.hi_closed ? "]" : ")"}${u}`;
+}
+async function dbTabComp(s) {
+  const body = $("ins-body");
+  body.innerHTML = `<div class="note">Checking the composition record…</div>`;
+  let c;
+  try { c = await api(`/api/foods/composition?code=${encodeURIComponent(s.sample_code)}`); }
+  catch (e) { body.innerHTML = `<div class="banner bad">${esc(e.message)}</div>`; return; }
+  if (DB.tab !== "comp" || !$("ins-body")) return;
+  if (!c.available) { body.innerHTML = `<div class="banner soft">The verified composition layer is off: install the <code>comp</code> extra (<code>pip install -e ".[comp]"</code>) and restart the dashboard.</div>`; return; }
+  if (!c.record) { body.innerHTML = `<div class="ins-sec"><h3>No verified composition yet</h3><div class="note">Open <b>Manufacturer data</b>, choose <b>Nutrition label photo…</b>, photograph the Nutrition Facts panel of this item, and tick the rows that match the label. Each ticked row becomes an <span class="vb ATTESTED">ATTESTED</span> value (an interval from the FDA rounding rules), with per-100 g values derived from it.</div></div>`; return; }
+  const rep = c.report, rec = c.record, st = Object.fromEntries(rep.fields.map((f) => [f.id, f]));
+  const meta = Object.fromEntries([...rec.facts, ...rec.derivations, ...rec.bounds].map((x) => [x.id, x]));
+  const rowOf = (f) => { const m = meta[f.id] || {}; return `<tr><td>${esc((m.quantity || "").replace(/_/g, " "))}</td><td class="note">${esc((m.basis || "").replace("per_", "per ").replace("100g", "100 g"))}</td>
+    <td class="v" title="exact: ${esc(f.value ? `${f.value.lo} .. ${f.value.hi} ${f.value.unit}` : "")}">${esc(ivText(f.value))}</td><td><span class="vb ${f.status}">${f.status}</span></td>
+    <td class="note">${esc((f.assumptions || []).join(", "))}${f.problems ? `<div style="color:var(--critical)">${esc(f.problems.join("; "))}</div>` : ""}</td></tr>`; };
+  const vals = rep.fields.filter((f) => ["fact", "derivation", "bound"].includes(f.kind) && f.value);
+  const est = rec.unverified_layer.estimates || [];
+  body.innerHTML = `
+    <div class="banner ${rep.result === "PASS" ? "good" : "bad"}"><b>lio-verify: ${rep.result}</b> · ${Object.entries(rep.counts).filter(([, n]) => n).map(([k, n]) => `${n} ${k.toLowerCase()}`).join(" · ")}${rep.errors.length ? `<div>${rep.errors.map(esc).join("<br>")}</div>` : ""}</div>
+    <div class="ins-sec"><h3>Values</h3><table class="comptab"><tr><th>Quantity</th><th>Basis</th><th>Value</th><th>Status</th><th>Assumptions</th></tr>${vals.map(rowOf).join("")}</table>
+      <div class="note" style="margin-top:6px">Ranges are exact: a rounded label value stands for every amount that rounds to it. Hover a value for its exact fractions.</div></div>
+    <div class="ins-sec"><h3>Attestations</h3>${(rec.attestations || []).map((a) => `<div class="note"><b>${esc(a.signer)}</b>, ${esc(a.signed_at)}: ${esc(a.statement)}</div>`).join("") || `<div class="note">none</div>`}</div>
+    <div class="ins-sec"><h3>Assumptions</h3>${(rep.assumptions || []).map((a) => `<div class="note"><b>${esc(a.id)}</b> (${esc(a.kind)}): ${esc(a.text)}</div>`).join("")}</div>
+    ${est.length ? `<div class="ins-sec"><h3>Not verified <span class="vb UNVERIFIED">UNVERIFIED</span></h3><div class="note">Values the library holds from databases or unchecked photo reading. Kept apart from the verified values; never use them as training labels.</div>
+      <table class="comptab"><tr><th>Quantity</th><th>Basis</th><th>Value</th><th>Method</th></tr>${est.map((e) => `<tr><td>${esc(e.quantity.replace(/_/g, " "))}</td><td class="note">per 100 g</td><td class="v">${esc(sig(ratNum(e.value)))} ${esc(e.unit)}</td><td class="note">${esc(e.method)}</td></tr>`).join("")}</table></div>` : ""}`;
 }
 
 async function dbTabRaw(s) {

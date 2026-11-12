@@ -82,6 +82,21 @@ class RecordBuilder:
         self._bytes[source_id] = data
         return data
 
+    def source_sha(
+        self, source_id: str, sha: str, identifiers: dict[str, str] | None = None
+    ) -> bytes:
+        """A source by hash (photos and other documents that have no catalog name)."""
+        data = get(self.store, sha)
+        media = json.loads((self.store / "manifest" / f"{sha}.json").read_text())["media_type"]
+        self.sources[source_id] = {
+            "source_id": source_id,
+            "sha256": sha,
+            "media_type": media,
+            "identifiers": dict(identifiers or {}),
+        }
+        self._bytes[source_id] = data
+        return data
+
     def data(self, source_id: str) -> bytes:
         return self._bytes[source_id]
 

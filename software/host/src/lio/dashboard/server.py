@@ -220,6 +220,16 @@ class _Handler(BaseHTTPRequestHandler):
             elif rel == "export/library.json":
                 body = json.dumps(f.lib.export(), indent=1)
                 ctype, name = "application/json", f"lio_food_library_{stamp}.json"
+            elif rel == "export/composition.csv":
+                comp = f.intake.composition
+                if comp is None:
+                    return self._error(HTTPStatus.NOT_FOUND, "the composition layer is not enabled")
+                from lio_comp.export import rows, to_csv
+                from lio_verify.verify import Verifier
+
+                paths = sorted(comp.records.glob("*.json")) if comp.records.exists() else []
+                body = to_csv(rows(paths, Verifier(comp.store, comp.rules, comp.schema)))
+                ctype, name = "text/csv", f"lio_composition_{stamp}.csv"
             elif rel.startswith("export/scan/") and rel.endswith(".csv"):
                 uid = rel[len("export/scan/") : -len(".csv")]
                 sc = f.lib.scan(uid)
@@ -289,6 +299,8 @@ class _Handler(BaseHTTPRequestHandler):
             return self._json(f.lib.sample(arg("code"), raw=arg("raw") == "1"))
         if path == "scan":
             return self._json(f.lib.scan(arg("uuid")))
+        if path == "composition":
+            return self._json(f.intake.composition_report(arg("code")))
         if path == "find":
             return self._json(f.intake.find_online(arg("gtin14"), arg("q")))
         if path == "candidates":

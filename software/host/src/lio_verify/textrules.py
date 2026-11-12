@@ -13,6 +13,8 @@ Rules (all pure functions of the located text):
 - ``otc_calories_from@1``: "each <dose> contributes 60 calories from ...".
 - ``fdc_label_nutrient@1:<nutrient>``: a bare number from FoodData Central
   ``labelNutrients``; the unit is fixed per nutrient (assumption A-FDC-UNITS).
+- ``nfp_row@1:<nutrient>``: a row of a US Nutrition Facts panel ("Total Fat 16g 21%").
+- ``nfp_serving@1``: the panel's serving size in grams ("Serving size 2 Tbsp (32g)").
 - ``fdc_serving@1``: FoodData Central ``servingSize servingSizeUnit`` ("33.0 GRM").
 - ``line_amount@1:<n>``: the amount opening line ``n`` (from 1) of a multi-line
   statement ("750 mg per serving" -> "750 mg").
@@ -60,6 +62,53 @@ _CAL = re.compile(
 )
 _QTY = re.compile(r"(?P<n>[0-9]+(?:\.[0-9]+)?) (?P<u>[A-Za-z%]+)")
 _PCT = re.compile(r"(?P<n>[0-9]+(?:[.,][0-9]+)?)\s?%")
+
+_AMT = r"(?P<lt><\s*|less than\s+)?(?P<n>[0-9]+(?:\.[0-9]+)?)\s*(?P<u>{u})\b"
+NFP_ROWS: dict[str, tuple[str, str]] = {  # 21 CFR 101.9(c) nutrient -> (row label, unit)
+    "total_fat": (r"total\s+fat", "g"),
+    "saturated_fat": (r"sat(?:urated|\.)?\s+fat", "g"),
+    "trans_fat": (r"trans\s+fat", "g"),
+    "polyunsaturated_fat": (r"polyunsat(?:urated|\.)?\s+fat", "g"),
+    "monounsaturated_fat": (r"monounsat(?:urated|\.)?\s+fat", "g"),
+    "cholesterol": (r"cholest(?:erol|\.)?", "mg"),
+    "sodium": (r"sodium", "mg"),
+    "total_carbohydrate": (r"total\s+carb(?:ohydrate|s|\.)?", "g"),
+    "dietary_fiber": (r"dietary\s+fib(?:er|re)", "g"),
+    "total_sugars": (r"total\s+sugars", "g"),
+    "protein": (r"protein", "g"),
+}
+
+
+def nfp_row(nutrient: str, text: str) -> str:
+    """``nfp_row@1``: one row of a US Nutrition Facts panel -> its declared amount."""
+    t = " ".join(text.split())
+    if nutrient == "calories":
+        m = re.fullmatch(r"calories\s+(?P<n>[0-9]+)(\s.*)?", t, re.I)
+        if not m:
+            raise RuleError(f"not a Calories row: {text!r}")
+        return f"{m.group('n')} kcal"
+    if nutrient == "added_sugars":
+        m = re.fullmatch(
+            r"incl(?:udes|\.)?\s+" + _AMT.format(u="g") + r"\s+added\s+sugars(\s.*)?", t, re.I
+        )
+    elif nutrient in NFP_ROWS:
+        label, unit = NFP_ROWS[nutrient]
+        m = re.fullmatch(label + r"\s+" + _AMT.format(u=unit) + r"(\s.*)?", t, re.I)
+    else:
+        raise RuleError(f"no Nutrition Facts row rule for {nutrient!r}")
+    if not m:
+        raise RuleError(f"not a {nutrient} row: {text!r}")
+    return f"{'<' if m.group('lt') else ''}{m.group('n')} {m.group('u').lower()}"
+
+
+def nfp_serving(text: str) -> str:
+    """``nfp_serving@1``: "Serving size 2 Tbsp (32g)" -> "32 g"."""
+    t = " ".join(text.split())
+    m = re.fullmatch(r"serving\s+size\b.*?(?P<n>[0-9]+(?:\.[0-9]+)?)\s*(?P<u>g|ml)\s*\)?", t, re.I)
+    if not m:
+        raise RuleError(f"not a serving-size row with grams: {text!r}")
+    return f"{m.group('n')} {m.group('u').lower()}"
+
 
 FDC_LABEL_UNITS = {
     "calories": "kcal",
@@ -170,6 +219,10 @@ def apply(rule: str, text: str) -> str:
             raise RuleError(f"no unit known for FDC label nutrient {sel!r}")
         parse_decimal(text)
         return f"{text} {FDC_LABEL_UNITS[sel]}"
+    if base == "nfp_row@1":
+        return nfp_row(sel, text)
+    if base == "nfp_serving@1":
+        return nfp_serving(text)
     if base == "fdc_serving@1":
         m = re.fullmatch(r"(?P<n>[0-9]+(?:\.[0-9]+)?) (?P<u>GRM|MLT)", text)
         if not m:

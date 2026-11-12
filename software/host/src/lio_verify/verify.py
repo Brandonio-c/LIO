@@ -425,6 +425,31 @@ class Verifier:
             rep.fields.append(fld)
 
 
+def effective_assumptions(rec: dict[str, Any]) -> dict[str, list[str]]:
+    """Every assumption a value rests on: its own, its inputs' (recursively), and the
+    physical sample's identity assumptions."""
+    base = set(rec["physical_sample"].get("assumptions", []))
+    eff: dict[str, set[str]] = {}
+    for f in rec["facts"]:
+        own = set(f["assumptions"])
+        if f["interpretation"]["kind"] == "as_stated":
+            own.add(f["interpretation"]["assumption"])
+        eff[f["id"]] = base | own
+    for d in rec["derivations"]:
+        eff[d["id"]] = base | set(d["assumptions"])
+        for r in _refs(d["expr"]):
+            eff[d["id"]] |= eff.get(r, set())
+    for c in rec["constraints"]:
+        eff[c["id"]] = base | set(c["assumptions"])
+        for r in _refs(c.get("lhs")) + _refs(c.get("rhs")):
+            eff[c["id"]] |= eff.get(r, set())
+    for bd in rec["bounds"]:
+        eff[bd["id"]] = base | set(bd["assumptions"])
+        for cid in bd["constraints"]:
+            eff[bd["id"]] |= eff.get(cid, set())
+    return {k: sorted(v) for k, v in eff.items()}
+
+
 def _refs(expr: Any) -> list[str]:
     if isinstance(expr, str):
         return [] if expr[:2] in ("C:", "N:", "U:", "V:", "M:") else [expr]
@@ -454,4 +479,12 @@ def _refetch(sid: str, sha: str, url: str) -> dict[str, Any]:
         return {"source_id": sid, "error": str(e)}
 
 
-__all__ = ["ATTESTED", "FAILED", "UNVERIFIED", "VERIFIED", "Report", "Verifier", "_no_floats"]
+__all__ = [
+    "ATTESTED",
+    "FAILED",
+    "UNVERIFIED",
+    "VERIFIED",
+    "Report",
+    "Verifier",
+    "effective_assumptions",
+]

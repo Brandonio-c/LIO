@@ -112,6 +112,9 @@ details summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
 .found .txt { font-size: 14px; margin: 3px 0 6px; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
 .found .btn { min-height: 38px; padding: 7px; font-size: 14px; }
 .ok-banner { background: var(--wash-good); border: 1px solid var(--good); color: var(--good-text); border-radius: 10px; padding: 9px 12px; font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+.attest { margin-top: 10px; display: grid; gap: 6px; }
+.attest ul { margin: 0; padding-left: 18px; font-size: 13px; }
+.attest .check { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -492,10 +495,13 @@ $("file-label").onchange = async (e) => {
     } else {
       const n = r.nutrition || {}, per = n.per_100g || {};
       labels.nutrition = { label_draft: r.label_draft, kind, nutrition_per_100g: per, serving_size: n.serving || "" };
+      labels.nutritionRows = r.can_attest ? r.panel_rows : [];
       const rows = Object.keys(NUT_NAMES).filter((k) => per[k] !== undefined);
       $("nut-review").innerHTML = rows.length
         ? `<div class="ok-banner">Read: ${rows.length} values, serving ${esc(n.serving || "?")}. Per 100 g:</div><table class="nut">${rows.map((k) => `<tr><td>${esc(NUT_NAMES[k][0])}</td><td>${+per[k].toFixed(2)} ${NUT_NAMES[k][1]}</td></tr>`).join("")}</table><div class="note" style="margin-top:6px">Correct any value on the dashboard after saving.</div>`
         : `<div class="warn">${n.serving_g ? "No nutrition values could be read" : "The serving size in grams was not found, so per-100 g values cannot be worked out"}. The photo is still saved; enter the values on the dashboard.</div>`;
+      if (labels.nutritionRows.length) $("nut-review").innerHTML += `<div class="attest"><div class="note">Rows read from the panel:</div><ul>${labels.nutritionRows.map((x) => `<li>${esc(x.text)}</li>`).join("")}</ul>
+        <label class="check"><input type="checkbox" id="nut-attest"> I checked these rows against the pack: they match. Sign them with my name (below) as attested values.</label></div>`;
       $("nut-review").classList.remove("hidden");
     }
   } catch (err) { error(err.message); }
@@ -518,7 +524,14 @@ $("btn-save").onclick = async () => {
     store.set("lio-entered-by", $("by").value.trim());
     const lab = [];
     if (labels.ingredients) lab.push({ ...labels.ingredients, ingredients_text: $("ingr-edit").value, contains: $("ingr-contains").value });
-    if (labels.nutrition) lab.push(labels.nutrition);
+    if (labels.nutrition) {
+      const att = $("nut-attest");
+      if (att && att.checked) {
+        if (!$("by").value.trim()) throw new Error("Type your name in 'Entered by' to sign the attested rows (or untick the box).");
+        labels.nutrition.attest = { signer: $("by").value.trim(), rows: labels.nutritionRows.map((x) => ({ index: x.index, text: x.text })) };
+      }
+      lab.push(labels.nutrition);
+    }
     const found = !labels.ingredients && ingredientsFound && $("ingr-edit").value.trim()
       ? { ingredients_text: $("ingr-edit").value, contains: $("ingr-contains").value, refs: ingredientsFound.refs } : null;
     const s = await api("/api/save", { draft, labels: lab, ingredients_found: found, product_photo: productPhoto, lot: $("lot").value, best_before: $("bb").value,

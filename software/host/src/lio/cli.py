@@ -343,6 +343,17 @@ def cmd_selftest(args: argparse.Namespace, cfg: HwConfig) -> int:
     return EXIT_FOR_VERDICT.get(str(v["verdict"]), EXIT_ERROR)
 
 
+def _composition(foods_dir: Path) -> object | None:
+    """Verified composition records for samples (docs/COMPOSITION_VERIFICATION.md), when the
+    ``comp`` extra is installed and the repository's rule tables are present."""
+    try:
+        from lio_comp.samples import SampleComposition
+    except ImportError:
+        return None
+    comp = SampleComposition(foods_dir / "composition", REPO_ROOT / "composition" / "rules")
+    return comp if comp.available() else None
+
+
 def cmd_dashboard(args: argparse.Namespace, cfg: HwConfig) -> int:
     import webbrowser
 
@@ -361,7 +372,7 @@ def cmd_dashboard(args: argparse.Namespace, cfg: HwConfig) -> int:
     if args.foods_dir:
         fs.dir = Path(args.foods_dir)
     lib = food_lib.open_library(fs)
-    foods = Foods(lib, Intake(lib), fs.scan_repeats, fs.scan_repeats_max)
+    foods = Foods(lib, Intake(lib, _composition(fs.dir)), fs.scan_repeats, fs.scan_repeats_max)
     if fs.phone_enabled and not args.no_phone:
         try:
             foods.phone = PhoneServer(
