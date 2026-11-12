@@ -205,16 +205,30 @@ def truncation_flags(text: str, others: list[str] | None = None) -> list[str]:
 
 
 def flag_truncation(info: dict[str, Any]) -> None:
-    """Add ``truncation_flags`` to every ingredient part (compared with the others)."""
+    """Add ``truncation_flags`` to free-text ingredient strings (FDC, Open Food Facts,
+    SmartLabel). Structured lists (DSLD rows, SPL sections) are joined or sectioned by
+    construction and are not checked. Lengths are compared within one language only."""
     parts = info.get("ingredient_parts") or []
-    texts = [p["text"] for p in parts if p.get("role") == "food"]
+
+    def lang(p: dict[str, Any]) -> str:
+        return str(p.get("lang") or ("en" if p.get("source") in ("usda", "smartlabel") else ""))
+
+    text_parts = [
+        p
+        for p in parts
+        if p.get("role") == "food" and p.get("source") in ("usda", "openfoodfacts", "smartlabel")
+    ]
     for p in parts:
-        others = [x for x in texts if x is not p["text"]] if p.get("role") == "food" else []
+        p.pop("truncation_flags", None)
+    for p in text_parts:
+        others = [x["text"] for x in text_parts if x is not p and lang(x) and lang(x) == lang(p)]
         flags = truncation_flags(p["text"], others)
+        if (
+            p.get("source") == "openfoodfacts"
+        ):  # typed by contributors: an unpunctuated end is normal
+            flags = [f for f in flags if not f.startswith("ends without")]
         if flags:
             p["truncation_flags"] = flags
-        else:
-            p.pop("truncation_flags", None)
     info["truncation_flags"] = sorted(
         {f"{p['origin']}: {f}" for p in parts for f in p.get("truncation_flags", [])}
     )

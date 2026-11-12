@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import json
 import logging
 import sys
 import time
@@ -582,7 +583,71 @@ def build_parser() -> argparse.ArgumentParser:
         "--no-tunnel", action="store_true", help="do not open the Cloudflare tunnel (foods.tunnel)"
     )
     s.set_defaults(fn=cmd_dashboard)
+
+    s = sub.add_parser("bench", help="coverage benchmark: plan / ingest / report")
+    bsub = s.add_subparsers(dest="bench_command", required=True)
+    b = bsub.add_parser("plan", help="seeded store-shelf sampling sheet for one visit")
+    b.add_argument("--store", required=True)
+    b.add_argument(
+        "--format", default="grocery", help="store format (grocery, pharmacy, club, ...)"
+    )
+    b.add_argument("--n", type=int, default=40)
+    b.add_argument("--seed", type=int, required=True)
+    b.add_argument("--aisles-foods", default="1-20")
+    b.add_argument("--aisles-supplements", default="21-22")
+    b.add_argument("--aisles-otc", default="23-24")
+    b.add_argument("--shelves", default="1-6")
+    b.add_argument("--facings", default="1-30")
+    b.add_argument("--out", required=True)
+    b.set_defaults(fn=cmd_bench)
+    b = bsub.add_parser("ingest", help="run the pipeline on a filled sheet and its photos")
+    b.add_argument("--sheet", required=True)
+    b.add_argument("--photos", default=".")
+    b.add_argument("--out", required=True)
+    b.set_defaults(fn=cmd_bench)
+    b = bsub.add_parser("report", help="metrics with Wilson 95% intervals")
+    b.add_argument("--ingest", required=True, nargs="+")
+    b.add_argument("--title", default="Coverage benchmark")
+    b.add_argument("--out", required=True)
+    b.set_defaults(fn=cmd_bench)
     return p
+
+
+def cmd_bench(args: argparse.Namespace, cfg: HwConfig) -> int:
+    from lio import bench
+    from lio import foods as food_lib
+
+    if args.bench_command == "plan":
+        layout = bench.Layout(
+            aisles={
+                "foods": bench.parse_range(args.aisles_foods),
+                "supplements": bench.parse_range(args.aisles_supplements),
+                "otc": bench.parse_range(args.aisles_otc),
+            },
+            shelves=bench.parse_range(args.shelves),
+            facings=bench.parse_range(args.facings),
+        )
+        rows, meta = bench.plan(args.store, args.format, args.n, args.seed, layout)
+        bench.write_sheet(rows, meta, Path(args.out))
+        print(
+            f"{len(rows)} slots -> {args.out} (seed {args.seed}; "
+            f"plan in {Path(args.out).with_suffix('.plan.json')})"
+        )
+        return 0
+    if args.bench_command == "ingest":
+        fs = food_lib.settings(cfg, REPO_ROOT)
+        lib = food_lib.open_library(fs)
+        if lib.lookup is None:
+            raise CliError("online lookup is off (foods.online_lookup)")
+        items = bench.ingest(Path(args.sheet), Path(args.photos), Path(args.out), lib.lookup)
+        print(f"{len(items)} items -> {args.out}")
+        return 0
+    items = [
+        json.loads(ln) for p in args.ingest for ln in Path(p).read_text().splitlines() if ln.strip()
+    ]
+    Path(args.out).write_text(bench.report(items, args.title))
+    print(f"report -> {args.out}")
+    return 0
 
 
 def _motor_args(args: argparse.Namespace) -> None:

@@ -173,10 +173,15 @@ def test_list_item_v2_keeps_abbreviation_dots() -> None:
 
 def test_truncation_flags_reach_the_operator() -> None:
     info: dict[str, Any] = {"ingredient_parts": [
-        {"role": "food", "text": "WATER, SUGAR, MODIFIED CORN STA", "origin": "usda.ingredients"},
-        {"role": "food", "text": "WATER, SUGAR, MODIFIED CORN STARCH, SALT, CITRIC ACID.", "origin": "openfoodfacts.ingredients_text"},
+        {"role": "food", "text": "WATER, SUGAR, MODIFIED CORN STA", "origin": "usda.ingredients", "source": "usda"},
+        {"role": "food", "text": "WATER, SUGAR, MODIFIED CORN STARCH, SALT, CITRIC ACID.", "origin": "openfoodfacts.ingredients_text_en",
+         "source": "openfoodfacts", "lang": "en"},
+        {"role": "food", "text": "水", "origin": "openfoodfacts.ingredients_text_zh", "source": "openfoodfacts", "lang": "zh"},
+        {"role": "other", "text": "Gelatin, Rice Flour", "origin": "dsld.otheringredients.ingredients", "source": "dsld"},
     ]}  # fmt: skip
     flag_truncation(info)
     assert len(info["ingredient_parts"][0]["truncation_flags"]) == 2
     assert "truncation_flags" not in info["ingredient_parts"][1]
+    assert "truncation_flags" not in info["ingredient_parts"][2]  # shorter, but another language
+    assert "truncation_flags" not in info["ingredient_parts"][3]  # a structured list
     assert truncation_flags("A" * 1024) and any("1024" in f for f in truncation_flags("A" * 1024))

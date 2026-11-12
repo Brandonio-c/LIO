@@ -19,6 +19,7 @@ from __future__ import annotations
 import io
 import itertools
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -172,7 +173,10 @@ def recognise_tesseract(data: bytes) -> list[Line]:
 
 
 def recognise_any(data: bytes) -> tuple[list[Line], str]:
-    """Apple Vision, or Tesseract when Vision fails; with the engine's name."""
+    """Apple Vision, or Tesseract when Vision fails; with the engine's name.
+    ``LIO_OCR_ENGINE=tesseract`` skips Vision (e.g. while the Neural Engine is wedged)."""
+    if os.environ.get("LIO_OCR_ENGINE", "").lower() == "tesseract":
+        return recognise_tesseract(data), "tesseract (LIO_OCR_ENGINE)"
     try:
         return recognise(data), "apple-vision"
     except OcrError as vision_error:
