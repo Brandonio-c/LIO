@@ -64,6 +64,8 @@ class RecordBuilder:
         self.derivations: list[dict[str, Any]] = []
         self.constraints: list[dict[str, Any]] = []
         self.bounds: list[dict[str, Any]] = []
+        self.links: list[dict[str, Any]] = []
+        self.selections: list[dict[str, Any]] = []
         self.attestations: list[dict[str, Any]] = []
         self.estimates: list[dict[str, Any]] = []
         self.notes: list[str] = []
@@ -222,6 +224,51 @@ class RecordBuilder:
         self.ingredients.append(ing)
         return ing
 
+    # ---------------------------------------------------- identity (plan WP1)
+    def link(
+        self,
+        lid: str,
+        *,
+        method: str,
+        ndc11: str,
+        attestation_id: str,
+        source_id: str | None = None,
+        box: dict[str, int] | None = None,
+        span: str | None = None,
+    ) -> dict[str, Any]:
+        """``gtin_ndc_link``: the operator's attested statement that this barcode's product
+        carries this NDC. With ``printed_ndc`` the evidence is a photo region whose text,
+        re-parsed by ``printed_ndc@1``, must give ``ndc11``."""
+        lk: dict[str, Any] = {"id": lid, "kind": "gtin_ndc_link", "gtin": self.head["gtin"],
+                              "ndc11": ndc11, "method": method, "attestation_id": attestation_id}  # fmt: skip
+        if method == "printed_ndc":
+            if source_id is None or box is None or span is None:
+                raise RecordError("a printed-NDC link needs the photo, its box and the span")
+            if textrules.apply("printed_ndc@1", span) != ndc11:
+                raise RecordError(f"{span!r} does not read as NDC {ndc11}")
+            lk.update(source_id=source_id, rule="printed_ndc@1",
+                      locator={"type": "image_bbox", **box, "text": span, "attestation_id": attestation_id})  # fmt: skip
+        self.links.append(lk)
+        return lk
+
+    def select(self, sid: str, link: str, source_id: str, package_ndc: str, product_code: str | None,
+               namespaces: dict[str, str]) -> dict[str, Any]:  # fmt: skip
+        """``spl_product_select``: the one manufacturedProduct of the SPL whose package
+        NDC is the linked NDC (XPath must find exactly one)."""
+        loc = self.located(source_id, {
+            "type": "xpath", "namespaces": namespaces, "fields": ["code"],
+            "expr": ("//v:manufacturedProduct/v:manufacturedProduct"
+                     f"[.//v:containerPackagedProduct/v:code/@code='{package_ndc}']/v:code"),
+        })  # fmt: skip
+        if product_code is None:
+            product_code = loc["text"]
+        if loc["text"] != product_code:
+            raise RecordError(f"package {package_ndc} belongs to {loc['text']}, not {product_code}")
+        sel = {"id": sid, "kind": "spl_product_select", "link": link, "source_id": source_id,
+               "package_ndc": package_ndc, "product_code": product_code, "locator": loc}  # fmt: skip
+        self.selections.append(sel)
+        return sel
+
     def note(self, text: str) -> None:
         self.notes.append(text)
 
@@ -234,6 +281,8 @@ class RecordBuilder:
             "assumptions": [self.assumptions[k] for k in sorted(self.assumptions)],
             "substances": self.substances,
             "ingredients": self.ingredients,
+            "links": self.links,
+            "selections": self.selections,
             "facts": self.facts,
             "derivations": self.derivations,
             "constraints": self.constraints,

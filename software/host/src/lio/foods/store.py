@@ -39,7 +39,7 @@ log = logging.getLogger(__name__)
 SCHEMA_VERSION = 1
 CODE_PREFIX = "LIO-F-"
 PHOTO_KINDS = ("barcode", "product")
-LABEL_KINDS = ("ingredients", "nutrition")
+LABEL_KINDS = ("ingredients", "nutrition", "ndc", "drug_facts", "supplement_facts")
 # Fields set by hand, from a label photo or from a picked record survive "look up again".
 META_KEYS = (
     "locked",

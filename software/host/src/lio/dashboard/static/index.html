@@ -1601,8 +1601,10 @@ function dbIngredients(s, p) {
   box.innerHTML = `<h3>Ingredients ${has ? `<span class="tag">${esc(srcName(src))}</span>` : ""}<span class="sp"></span>
       <button class="btn small" data-label="ingredients">Ingredients panel photo…</button>
       <button class="btn small" data-label="nutrition">Nutrition label photo…</button>
+      ${(info.categories || []).some((c) => /drug/i.test(c)) || (info.drug_resolution || {}).embedded ? `<button class="btn small${(info.drug_resolution || {}).needs_printed_ndc ? " primary" : ""}" data-label="ndc">NDC photo…</button>` : ""}
       <button class="btn small${has ? "" : " primary"}" id="db-find">Find ingredients online…</button></h3>
     ${has ? `<div style="font-size:14px;line-height:1.55">${esc(info.ingredients_text)}</div>${info.contains ? `<div style="margin-top:6px"><span class="note">Contains:</span> ${esc(info.contains)}</div>` : ""}`
+          : (info.drug_resolution || {}).needs_printed_ndc ? `<div class="banner warn"><strong>The barcode's NDC is in no current drug label</strong> (${esc(((info.drug_resolution.embedded || []).map((e) => `${e.ndc}: ${e.status}`)).join(", "))}). Photograph the NDC printed on the carton with <b>NDC photo…</b> to find the exact label.</div>`
           : `<div class="banner warn"><strong>No ingredient list yet.</strong> The online databases do not have it for this barcode. Photograph the ingredients panel on the pack (most reliable: it is this exact item), or find the product's label by name.</div>`}
     ${has && (info.ingredients_refs || []).length ? `<div class="note" style="margin-top:6px">Sources: ${info.ingredients_refs.map((r) => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(dbDomain(r.url))} ↗</a>`).join(" · ")}${info.ingredients_confirmed_at ? " · confirmed " + esc(fmtDate(info.ingredients_confirmed_at)) : ""}</div>` : ""}
     ${info.matched ? `<div class="note" style="margin-top:6px">Label picked by name from ${esc(srcName(info.matched.source))} (search "${esc(info.matched.query)}"): check that it is the same product and formula as the item.</div>` : ""}
@@ -1624,6 +1626,24 @@ const dbDomain = (u) => { try { return new URL(u).hostname.replace(/^www\./, "")
 
 function dbLabelReview(s, kind, r) {
   const box = $("db-label-review"), n = r.nutrition || {};
+  if (kind === "ndc") {
+    const cs = r.ndc_candidates || [];
+    box.innerHTML = `<div class="banner soft" style="margin-top:10px;display:grid;gap:8px">
+      <div><strong>NDC read from the photo.</strong> <span class="note">Tick the one printed on this item's carton, digit by digit. Your name signs the link from this barcode to that NDC's label.</span></div>
+      ${cs.length ? cs.map((c, i) => `<label class="check"><input type="radio" name="lr-ndc" value="${i}"><span>${esc(c.text)}</span></label>`).join("") : `<div class="note">No "NDC 1234-5678-90" was found. Photograph the NDC closer.</div>`}
+      <label class="field" style="max-width:260px">Your name<input type="text" id="lr-ndc-signer" value="${esc(localStorage.getItem("lio-attest-name") || "")}"></label>
+      <div class="row" style="justify-content:flex-end"><button class="btn small" id="lr-cancel">Discard</button><button class="btn small primary" id="lr-save">Confirm and link</button></div></div>`;
+    $("lr-cancel").onclick = () => box.innerHTML = "";
+    $("lr-save").onclick = async () => {
+      const pick = document.querySelector('input[name="lr-ndc"]:checked'), signer = ($("lr-ndc-signer").value || "").trim();
+      if (!pick || !signer) return toast("tick the printed NDC and type your name", 7000);
+      try { localStorage.setItem("lio-attest-name", signer); } catch {}
+      try { const out = await api("/api/foods/label/apply", { sample_code: s.sample_code, label_draft: r.label_draft, attest: { signer, index: +pick.value } });
+            toast(`linked to DailyMed set ${out.ndc_link.setid.slice(0, 8)}… (v${out.ndc_link.spl_version})`); await dbRefresh(s.sample_code); }
+      catch (e) { toast(e.message, 9000); }
+    };
+    return;
+  }
   const nutInputs = DB_NUTS.map(([k, l, u]) => `<label class="field">${esc(l)} (${u}/100 g)<input type="number" step="any" data-lnut="${k}" value="${n.per_100g && n.per_100g[k] !== undefined ? n.per_100g[k] : ""}"></label>`).join("");
   box.innerHTML = `<div class="banner soft" style="margin-top:10px;display:grid;gap:8px">
       <div><strong>Read from the ${kind === "ingredients" ? "ingredients" : "nutrition"} label.</strong> <span class="note">Check it against the pack and correct anything misread, then save.</span></div>

@@ -1940,6 +1940,7 @@
    }
   }
  ],
+ "links": [],
  "physical_sample": {
   "assumptions": [
    "A1"
@@ -1952,6 +1953,7 @@
  "product_name": "CITRUCEL Orange (methylcellulose) powder",
  "record_id": "citrucel_orange_300680418301",
  "schema_version": "1",
+ "selections": [],
  "sources": [
   {
    "identifiers": {

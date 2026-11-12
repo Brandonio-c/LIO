@@ -221,6 +221,7 @@
    "source_id": "S1"
   }
  ],
+ "links": [],
  "physical_sample": {
   "assumptions": [
    "N1"
@@ -233,6 +234,7 @@
  "product_name": "Nutricost Magnesium Oxide 420 mg capsules",
  "record_id": "nutricost_magnesium_oxide_702669934398",
  "schema_version": "1",
+ "selections": [],
  "sources": [
   {
    "identifiers": {

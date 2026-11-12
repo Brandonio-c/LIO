@@ -683,6 +683,35 @@ class Lookup:
         self._matched(info, "ndc", gtin, f"NDC {c.pattern}", c.ndc, c.ndc)
         return info
 
+    def crosswalk(self, gtin: Gtin) -> tuple[dict[str, Any] | None, Any]:
+        """An operator-attested barcode -> NDC -> SPL link (plan WP1): the exact label."""
+        from .drugid import DrugResolver
+
+        link = DrugResolver(self).link_for(gtin.gtin14)
+        if link is None:
+            return None, "no attested link"
+        r = self._openfda_label(f'set_id:"{link["setid"]}"')
+        info = parse_openfda(r) if r is not None else empty_info()
+        info["drug_link"] = {k: link[k] for k in ("ndc", "ndc11", "setid", "spl_version", "method")}
+        info["drug_link"]["operator"] = link["attestation"]["operator"]
+        info["links"] = {**info.get("links", {}),
+                         "dailymed": f"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid={link['setid']}"}  # fmt: skip
+        self._matched(
+            info, "crosswalk", gtin, f"printed NDC {link['ndc']}", link["ndc"], link["ndc"]
+        )
+        return info, link
+
+    def get_bytes(self, url: str) -> bytes:
+        """Raw bytes (e.g. an SPL XML), stored as evidence like every JSON answer."""
+        headers = {"User-Agent": self.s.user_agent}
+        if self._fetch is not None:
+            got = self._fetch(url, headers, self.s.timeout_s)
+            return got if isinstance(got, bytes) else str(got).encode()
+        data, ctype = _http_bytes(url, headers, self.s.timeout_s)
+        if self.evidence is not None:
+            self.evidence(redact(url), data, ctype)
+        return data
+
     def smartlabel(self, gtin: Gtin) -> tuple[dict[str, Any] | None, Any]:
         """SmartLabel (Label Insight) API, only with a key (it has no public access)."""
         if not self.s.smartlabel_key:
@@ -888,6 +917,7 @@ class Lookup:
         infos: list[tuple[str, dict[str, Any]]] = []
         self._tl.evidence = []
         for name, fn in (
+            ("crosswalk", self.crosswalk),
             ("usda", self.usda),
             ("dsld", self.dsld),
             ("openfda", self.openfda),
@@ -895,6 +925,8 @@ class Lookup:
             ("smartlabel", self.smartlabel),
             ("openfoodfacts", self.openfoodfacts),
         ):
+            if name in ("openfda", "ndc") and any(n == "crosswalk" for n, _ in infos):
+                continue  # an operator-attested link already names the exact label
             if name == "ndc" and any(n == "openfda" for n, _ in infos):
                 continue  # the drug label was already found by its UPC
             try:
@@ -911,6 +943,13 @@ class Lookup:
             merged = infos[0][1]
             for _, info in infos[1:]:
                 merged = merge(merged, info)
+        if ndc_candidates(gtin) and not any(n == "crosswalk" for n, _ in infos):
+            try:
+                from .drugid import DrugResolver
+
+                merged["drug_resolution"] = DrugResolver(self).resolve(gtin)
+            except (urllib.error.URLError, TimeoutError, OSError, ValueError) as e:
+                errors["drug_resolution"] = f"{type(e).__name__}: {e}"
         merged["evidence"] = list(self._tl.evidence)
         self._tl.evidence = None
         merged["derived_per_100g"] = derived(merged.get("nutrition_per_100g", {}))

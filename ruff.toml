@@ -13,3 +13,11 @@ select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
 
 [lint.isort]
 known-first-party = ["lio", "lio_comp", "lio_verify"]
+
+[lint.per-file-ignores]
+# Long regulatory quotes, assumption texts and test fixtures are kept whole; the
+# formatter still wraps code. lio_verify (the independent checker) keeps E501.
+"software/host/src/lio_comp/**" = ["E501"]
+"software/host/tests/**" = ["E501"]
+"tools/**" = ["E501"]
+"software/host/src/lio/foods/lookup.py" = ["E501"]

@@ -35,6 +35,8 @@ def render(rep: Report) -> str:
         line = f"  {f.status:<10} {f.kind:<11} {f.id}{val}"
         if f.assumptions:
             line += f"  assumes {','.join(f.assumptions)}"
+        if f.rests_on:
+            line += f"  via {' -> '.join(f.rests_on)}"
         lines.append(line)
         if f.status == FAILED or (f.problems and f.kind == "attestation"):
             lines.extend(f"      - {p}" for p in f.problems)

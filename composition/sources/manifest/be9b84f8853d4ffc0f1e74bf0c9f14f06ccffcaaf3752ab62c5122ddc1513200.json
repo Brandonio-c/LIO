@@ -1,0 +1,16 @@
+{
+ "byte_length": 272660,
+ "media_type": "image/jpeg",
+ "retrievals": [
+  {
+   "identifiers": {
+    "image": "ibuprofen-200-mg-softgels-pur-1.jpg",
+    "spl_setid": "016299ef-ad40-46fd-acfc-e74ffee3d9b4"
+   },
+   "retrieval_url": "https://dailymed.nlm.nih.gov/dailymed/image.cfm?setid=016299ef-ad40-46fd-acfc-e74ffee3d9b4&name=ibuprofen-200-mg-softgels-pur-1.jpg",
+   "retrieved_at": "2026-11-12T18:24:56Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "be9b84f8853d4ffc0f1e74bf0c9f14f06ccffcaaf3752ab62c5122ddc1513200"
+}

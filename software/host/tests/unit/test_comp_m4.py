@@ -1,4 +1,3 @@
-# ruff: noqa: E501  (mutation one-liners are kept on one line)
 """M4: the independent verifier, mutation tests (spec §8), determinism, independence."""
 
 from __future__ import annotations

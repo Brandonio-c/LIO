@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -41,9 +42,12 @@ class Field:
     problems: list[str] = field(default_factory=list)
     assumptions: list[str] = field(default_factory=list)
     value: dict[str, Any] | None = None
+    rests_on: list[str] = field(default_factory=list)  # identity links this value depends on
 
     def to_json(self) -> dict[str, Any]:
         d: dict[str, Any] = {"kind": self.kind, "id": self.id, "status": self.status}
+        if self.rests_on:
+            d["rests_on"] = self.rests_on
         if self.problems:
             d["problems"] = self.problems
         if self.assumptions:
@@ -155,6 +159,7 @@ class Verifier:
         self._assumptions(rec, rep)
         attested = {a["id"] for a in rec["attestations"]}
         self._facts(rec, rep, data, status, attested)
+        self._links(rec, rep, data, status, attested)
         self._identities(rec, rep, data, status)
         ctx = self._derivations(rec, rep, status)
         self._constraints(rec, rep, ctx, status)
@@ -281,6 +286,88 @@ class Verifier:
                 fld.status, fld.problems = FAILED, [str(e)]
             status[f["id"]] = fld.status
             rep.fields.append(fld)
+
+    def _links(
+        self,
+        rec: dict[str, Any],
+        rep: Report,
+        data: dict[str, bytes],
+        status: dict[str, str],
+        attested: set[str],
+    ) -> None:
+        """Barcode -> NDC links (ATTESTED) and the SPL product they select (VERIFIED,
+        relative to the link). Facts read from that SPL must use the selected product."""
+        links = {lk["id"]: lk for lk in rec.get("links", [])}
+        for lk in links.values():
+            fld = Field("link", lk["id"], ATTESTED)
+            try:
+                if lk["attestation_id"] not in attested:
+                    raise ValueError("a barcode-NDC link needs the operator's attestation")
+                if lk["gtin"] != rec["gtin"]:
+                    raise ValueError("link is for another barcode")
+                if lk["method"] == "printed_ndc":
+                    if lk["source_id"] not in data:
+                        raise ValueError("the NDC photo is missing or does not match its hash")
+                    loc = lk["locator"]
+                    if (
+                        loc.get("type") != "image_bbox"
+                        or loc.get("attestation_id") != lk["attestation_id"]
+                    ):
+                        raise ValueError(
+                            "a printed NDC is read from a photo region its attestation signs"
+                        )
+                    text = resolve(loc, data[lk["source_id"]])
+                    if (
+                        lk.get("rule") != "printed_ndc@1"
+                        or textrules.apply("printed_ndc@1", text) != lk["ndc11"]
+                    ):
+                        raise ValueError(f"{text!r} does not read as NDC {lk['ndc11']}")
+            except (LocatorError, textrules.RuleError, KeyError, ValueError) as e:
+                fld.status, fld.problems = FAILED, [str(e)]
+            status[lk["id"]] = fld.status
+            rep.fields.append(fld)
+        for sel in rec.get("selections", []):
+            fld = Field("selection", sel["id"], VERIFIED, rests_on=[sel.get("link", "")])
+            try:
+                lk = links.get(sel["link"])
+                if lk is None:
+                    raise ValueError(f"selection cites unknown link {sel['link']}")
+                pkg = sel["package_ndc"]
+                parts = pkg.split("-")
+                n11 = f"{parts[0].zfill(5)}{parts[1].zfill(4)}{parts[2].zfill(2)}"
+                if n11 != lk["ndc11"]:
+                    raise ValueError(f"package {pkg} is not the linked NDC {lk['ndc11']}")
+                want = ("//v:manufacturedProduct/v:manufacturedProduct"
+                        f"[.//v:containerPackagedProduct/v:code/@code='{pkg}']/v:code")  # fmt: skip
+                loc = sel["locator"]
+                if (
+                    loc.get("type") != "xpath"
+                    or loc.get("expr") != want
+                    or loc.get("fields") != ["code"]
+                ):
+                    raise ValueError("selection locator is not the package-NDC product query")
+                if resolve(loc, data[sel["source_id"]]) != sel["product_code"]:
+                    raise ValueError("the SPL does not list that package under the stated product")
+                fld.status = VERIFIED if status.get(sel["link"]) == ATTESTED else UNVERIFIED
+                for f in rec["facts"]:
+                    if f["source_id"] != sel["source_id"] or f["locator"].get("type") != "xpath":
+                        continue
+                    m = re.search(r"v:code/@code='([0-9-]+)'\]", f["locator"]["expr"])
+                    if m and m.group(1) != sel["product_code"]:
+                        raise ValueError(
+                            f"fact {f['id']} reads product {m.group(1)}, not the selected one"
+                        )
+            except (LocatorError, KeyError, ValueError, IndexError) as e:
+                fld.status, fld.problems = FAILED, [str(e)]
+            status[sel["id"]] = fld.status
+            rep.fields.append(fld)
+            for f in rep.fields:  # show the chain on every value read from the selected SPL
+                if f.kind == "fact" and any(
+                    x["id"] == f.id and x["source_id"] == sel["source_id"] for x in rec["facts"]
+                ):
+                    f.rests_on = [sel["link"], sel["id"]]
+                    if fld.status == FAILED and f.status == VERIFIED:
+                        f.status = UNVERIFIED
 
     def _identities(
         self, rec: dict[str, Any], rep: Report, data: dict[str, bytes], status: dict[str, str]

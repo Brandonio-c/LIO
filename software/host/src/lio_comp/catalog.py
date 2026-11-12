@@ -108,6 +108,47 @@ GOLDEN: tuple[Doc, ...] = (
         {"gtin": "3017620422003"},
         "application/json",
     ),
+    Doc(
+        "dailymed_spl_careone_ibuprofen_016299ef",
+        "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/"
+        "016299ef-ad40-46fd-acfc-e74ffee3d9b4.xml",
+        {"spl_setid": "016299ef-ad40-46fd-acfc-e74ffee3d9b4"},
+        "application/xml",
+    ),
+    Doc(
+        "dailymed_image_careone_ibuprofen_carton",
+        "https://dailymed.nlm.nih.gov/dailymed/image.cfm?setid=016299ef-ad40-46fd-acfc-e74ffee3d9b4"
+        "&name=ibuprofen-200-mg-softgels-pur-1.jpg",
+        {
+            "spl_setid": "016299ef-ad40-46fd-acfc-e74ffee3d9b4",
+            "image": "ibuprofen-200-mg-softgels-pur-1.jpg",
+        },
+        "image/jpeg",
+    ),
+    Doc(
+        "dailymed_ndcs_careone_016299ef",
+        "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/016299ef-ad40-46fd-acfc-e74ffee3d9b4/ndcs.json",
+        {"spl_setid": "016299ef-ad40-46fd-acfc-e74ffee3d9b4"},
+        "application/json",
+    ),
+    Doc(
+        "dailymed_spls_ndc_41520-745-18",
+        "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls.json?ndc=41520-745-18",
+        {"ndc": "41520-745-18"},
+        "application/json",
+    ),
+    Doc(
+        "dailymed_spls_ndc_0135-0089-71",
+        "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls.json?ndc=0135-0089-71",
+        {"ndc": "0135-0089-71"},
+        "application/json",
+    ),
+    Doc(
+        "dailymed_history_careone_016299ef",
+        "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/016299ef-ad40-46fd-acfc-e74ffee3d9b4/history.json",
+        {"spl_setid": "016299ef-ad40-46fd-acfc-e74ffee3d9b4"},
+        "application/json",
+    ),
     _gsrs("L11K75P92J", "ANHYDROUS DIBASIC CALCIUM PHOSPHATE"),
     _gsrs("K4C08XP666", "TRICALCIUM PHOSPHATE"),
     _gsrs("EE90ONI6FF", "POTASSIUM CITRATE"),

@@ -1,4 +1,3 @@
-# ruff: noqa: E501  (regulatory quotes are kept whole)
 """Build the versioned rule tables in ``composition/rules/`` (spec §3.2).
 
 Every rule cites the regulation or reference it encodes: a quote located by

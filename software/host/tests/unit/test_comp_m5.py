@@ -1,4 +1,3 @@
-# ruff: noqa: E501  (fixtures and one-line calls are kept whole)
 """M5: photo attestation flow, badges, training export."""
 
 from __future__ import annotations

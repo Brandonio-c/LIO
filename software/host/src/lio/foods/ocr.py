@@ -372,6 +372,23 @@ def ingredient_region(lines: list[Line], size: tuple[int, int]) -> dict[str, int
     }
 
 
+def ndc_candidates(lines: list[Line], size: tuple[int, int]) -> list[dict[str, Any]]:
+    """Printed NDCs ("NDC 41520-745-18") Vision read, each with its line's pixel box.
+    Only proposals: the operator picks and confirms one."""
+    from .barcode import ndc11, printed_ndcs
+
+    w, h = size
+    out: list[dict[str, Any]] = []
+    for ln in lines:
+        for ndc, a, b in printed_ndcs(ln.text):
+            out.append({
+                "text": ln.text[a:b], "ndc": ndc, "ndc11": ndc11(ndc),
+                "box": {"x": max(0, round(ln.x * w)), "y": max(0, round((1 - ln.y - ln.h) * h)),
+                        "w": max(1, round(ln.w * w)), "h": max(1, round(ln.h * h))},
+            })  # fmt: skip
+    return out
+
+
 def upright_size(data: bytes) -> tuple[int, int]:
     from PIL import Image, ImageOps
 
@@ -396,4 +413,5 @@ def read_label(data: bytes) -> dict[str, Any]:
         "image_size": list(size),
         "panel_rows": panel_rows(found, size),
         "ingredient_box": ingredient_region(found, size),
+        "ndc_candidates": ndc_candidates(found, size),
     }

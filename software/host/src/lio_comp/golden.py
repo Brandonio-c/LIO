@@ -1,4 +1,3 @@
-# ruff: noqa: E501  (assumption texts are kept whole)
 """The golden records of spec §8, built from the snapshots in ``composition/sources``.
 
     python -m lio_comp.golden --store composition/sources --rules composition/rules \\
@@ -12,7 +11,9 @@ from __future__ import annotations
 import argparse
 from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
+from lio_comp import crosswalk
 from lio_comp import extract as X
 from lio_comp.derive import add_derivations
 from lio_comp.record import RecordBuilder
@@ -76,6 +77,10 @@ def citrucel(b: RecordBuilder) -> None:
         "A 'heaping tablespoon' dose is the 19 g in the SPL's strength denominator.",
     )
 
+    row = crosswalk.link_for("00300680418301", CROSSWALK_PATH[0])
+    if row is not None:
+        apply_link(b, row, "S1", row["ndc"], CITRUCEL_ORANGE)
+        b.head["variant_note"] = ""  # set below; the link selects the product
     v = "CITRUCEL_ORANGE"
     b.head["variant_note"] = (
         "SPL set 9d5f2244 covers CITRUCEL Orange (NDC 0135-0089) and Sugar Free (0135-0090). "
@@ -249,13 +254,81 @@ def nutella(b: RecordBuilder) -> None:
                      list_rule=f"list_item@1:{n}")  # fmt: skip
 
 
+# ---------------------------------------------------------- crosswalk links
+class NeedsSignature(RuntimeError):
+    """A golden record that rests on an operator's attestation not yet signed."""
+
+
+def apply_link(b: RecordBuilder, row: dict[str, Any], spl_source: str, package_ndc: str,
+               product_code: str) -> None:  # fmt: skip
+    """The attested barcode -> NDC link of a crosswalk row, and the SPL product it selects."""
+    ev = row["evidence"]
+    b.source_sha("P_ndc", ev["photo_sha256"], {"role": "printed NDC evidence"})
+    att = row["attestation"]
+    b.attestations.append({
+        "id": "AT_ndc", "signer": att["operator"], "signed_at": att["timestamp"],
+        "statement": att["statement"], "subjects": ["L1"],
+    })  # fmt: skip
+    b.link("L1", method=row["method"], ndc11=row["ndc11"], attestation_id="AT_ndc",
+           source_id="P_ndc", box=ev["bbox"], span=ev["ndc_text"])  # fmt: skip
+    b.select("SEL1", "L1", spl_source, package_ndc, product_code, X.HL7)
+
+
+# ------------------------------------------------------------- Care One
+CAREONE = "41520-745"
+CAREONE_INACTIVE = 8
+
+
+def careone(b: RecordBuilder) -> None:
+    row = crosswalk.link_for("00341520314643", CROSSWALK_PATH[0])
+    if row is None:
+        raise NeedsSignature("Care One ibuprofen: sign the crosswalk proposal "
+                             "(python -m lio_comp.crosswalk sign 00341520314643 --operator NAME)")  # fmt: skip
+    b.source("S1", "dailymed_spl_careone_ibuprofen_016299ef", {"spl_setid": row["setid"]})
+    b.assume("K1", "sample_identity", "The sample carries barcode 3 41520 31464 3.")
+    b.assume(
+        "K2", "label_truth", "The SPL (set 016299ef, version 3) states the product's formulation."
+    )
+    b.assume(
+        "K3",
+        "interpretation",
+        "The 'Other information' section applies to product 41520-745, the only product in this SPL (text_variant_attribution).",
+    )
+    b.head["variant_note"] = (
+        "The barcode carries NDC 41520-314-64, which is in no current SPL (RxNav: UNKNOWN). The "
+        "carton prints NDC 41520-745-18; the attested link L1 selects SPL product 41520-745."
+    )
+    apply_link(b, row, "S1", row["ndc"], CAREONE)
+    b.ingredient("I_active_1", "spl_active", 1, "active", "S1",
+                 X.spl_ingredient(CAREONE, "ACTIB", 1, "name"),
+                 unii_locator=X.spl_ingredient(CAREONE, "ACTIB", 1, "unii"))  # fmt: skip
+    for n in range(1, CAREONE_INACTIVE + 1):
+        b.ingredient(f"I_inactive_{n}", "spl_inactive", n, "inactive", "S1",
+                     X.spl_ingredient(CAREONE, "IACT", n, "name"),
+                     unii_locator=X.spl_ingredient(CAREONE, "IACT", n, "unii"))  # fmt: skip
+    b.fact("F1", "ibuprofen", "per_unit", "S1", X.spl_active_quantity(CAREONE, "numerator"),
+           "quantity@1", EXACT, substance={"ingredient": "I_active_1"}, assumptions=("K2",))  # fmt: skip
+    b.fact("F2", "potassium", "per_unit", "S1",
+           {"type": "xpath", "namespaces": X.HL7,
+            "expr": "//v:section[normalize-space(v:title)='Other information']/v:text/v:list/v:item[starts-with(normalize-space(.), 'each capsule contains')]"},
+           "otc_contains@1:potassium", _rounded("fda_otc_rounding_201@1:potassium"),
+           assumptions=("K2", "K3"))  # fmt: skip
+    b.note(
+        "OTC inactive ingredients are listed alphabetically (21 CFR 201.66(c)(8)): no weight-order constraint."
+    )
+
+
 GOLDEN: dict[str, Callable[[RecordBuilder], None]] = {
+    "careone_ibuprofen_341520314643": careone,
     "citrucel_orange_300680418301": citrucel,
     "jif_creamy_16oz_051500255162": jif,
     "nutricost_magnesium_oxide_702669934398": nutricost,
     "nutella_fr_3017620422003": nutella,
 }
+CROSSWALK_PATH = [crosswalk.LINKS]  # tests point this at a fixture crosswalk
+
 HEADS = {
+    "careone_ibuprofen_341520314643": ("00341520314643", "Care One Ibuprofen 200 mg softgels"),
     "citrucel_orange_300680418301": ("00300680418301", "CITRUCEL Orange (methylcellulose) powder"),
     "jif_creamy_16oz_051500255162": ("00051500255162", "Jif Creamy Peanut Butter 16 oz"),
     "nutricost_magnesium_oxide_702669934398": (
@@ -284,7 +357,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("names", nargs="*")
     a = ap.parse_args(argv)
     for name in a.names or sorted(GOLDEN):
-        print(build(a.store, a.rules, name).write(a.out))
+        try:
+            print(build(a.store, a.rules, name).write(a.out))
+        except NeedsSignature as e:
+            print(f"skipped {name}: {e}")
     return 0
 
 

@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-11-12: Composition coverage M2, attested barcode → NDC → SPL resolution (plan WP1)
+
+### Added
+- **`lio.foods.drugid`.** For each NDC a drug UPC can carry:
+  - its RxNav status (ACTIVE / OBSOLETE / ALIEN / UNKNOWN, with history), recorded as concept-level evidence only and throttled to RxNav's limit;
+  - DailyMed by NDC.
+  When no embedded NDC is in a current SPL, the product asks for a **photo of the printed NDC**.
+- **Printed-NDC capture** (phone and dashboard, "NDC photo"). Apple Vision proposes "NDC 41520-745-18" spans with their boxes; the operator ticks the one on the carton and signs. The printed NDC is resolved through DailyMed (`spls.json?ndc=`, `ndcs.json`, `history.json`) to exactly one SPL.
+- **Crosswalk** `software/host/data/crosswalk/gtin_links.jsonl`. Attested rows, append-only; a re-scan resolves from it, and stale SPL versions are flagged. Proposals wait in `proposals.jsonl` until signed: `python -m lio_comp.crosswalk list|sign`.
+- **Records gain `links` and `selections`.**
+  - `gtin_ndc_link` is ATTESTED: photo hash, box, printed span, operator.
+  - `spl_product_select` is VERIFIED relative to the link: an XPath shows that the hashed SPL lists the NDC under exactly one product.
+  - `lio-verify` re-parses the span with its own grammar, checks that every SPL fact uses the selected product, and shows the chain ("via L1 -> SEL1").
+- **Care One ibuprofen golden record** (SPL 016299ef v3, product 41520-745), built once its proposed link is signed.
+
+### Found
+- Citrucel's UPC NDC 00068041830 is **ACTIVE** in RxNav (compendia only), but in the same concept as both Orange and Sugar Free, and it is in no current SPL.
+- Care One's UPC NDC 41520-314-64 is UNKNOWN; its carton prints 41520-745-18 (see `docs/COMPOSITION_COVERAGE_M0.md`).
+
 ## 2026-11-12: Composition coverage M1, solver-independent bound certificates (plan WP6)
 
 ### Changed

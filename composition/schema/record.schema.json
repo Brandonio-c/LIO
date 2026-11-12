@@ -281,6 +281,18 @@
      "type": "string"
     }
    }
+  },
+  "links": {
+   "type": "array",
+   "items": {
+    "$ref": "#/$defs/link"
+   }
+  },
+  "selections": {
+   "type": "array",
+   "items": {
+    "$ref": "#/$defs/selection"
+   }
   }
  },
  "$defs": {
@@ -1054,6 +1066,88 @@
      "items": {
       "$ref": "#/$defs/rational"
      }
+    }
+   }
+  },
+  "link": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "id",
+    "kind",
+    "gtin",
+    "ndc11",
+    "method",
+    "attestation_id"
+   ],
+   "properties": {
+    "id": {
+     "$ref": "#/$defs/id"
+    },
+    "kind": {
+     "const": "gtin_ndc_link"
+    },
+    "gtin": {
+     "type": "string",
+     "pattern": "^[0-9]{14}$"
+    },
+    "ndc11": {
+     "type": "string",
+     "pattern": "^[0-9]{11}$"
+    },
+    "method": {
+     "enum": [
+      "printed_ndc",
+      "name_search_confirmed"
+     ]
+    },
+    "attestation_id": {
+     "$ref": "#/$defs/id"
+    },
+    "source_id": {
+     "$ref": "#/$defs/id"
+    },
+    "rule": {
+     "$ref": "#/$defs/rule_ref"
+    },
+    "locator": {
+     "$ref": "#/$defs/locator"
+    }
+   }
+  },
+  "selection": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "id",
+    "kind",
+    "link",
+    "source_id",
+    "package_ndc",
+    "product_code",
+    "locator"
+   ],
+   "properties": {
+    "id": {
+     "$ref": "#/$defs/id"
+    },
+    "kind": {
+     "const": "spl_product_select"
+    },
+    "link": {
+     "$ref": "#/$defs/id"
+    },
+    "source_id": {
+     "$ref": "#/$defs/id"
+    },
+    "package_ndc": {
+     "type": "string"
+    },
+    "product_code": {
+     "type": "string"
+    },
+    "locator": {
+     "$ref": "#/$defs/locator"
     }
    }
   }

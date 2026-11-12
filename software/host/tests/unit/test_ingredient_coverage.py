@@ -1,4 +1,3 @@
-# ruff: noqa: E501  (fixture JSON and one-line calls are kept whole)
 """Ingredient coverage: barcode forms, NDC decoding, field merging, fallbacks, ingredient photos."""
 
 from __future__ import annotations

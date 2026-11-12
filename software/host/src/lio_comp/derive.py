@@ -1,4 +1,3 @@
-# ruff: noqa: E501  (assumption texts are kept whole)
 """Derivations, constraints and bounds for the golden records (spec §5).
 
 Each derivation is evaluated exactly with :mod:`lio_verify.expr`; each bound is
@@ -270,6 +269,7 @@ def nutella(b: RecordBuilder) -> None:
 
 
 DERIVE = {
+    "careone_ibuprofen_341520314643": lambda b: None,
     "citrucel_orange_300680418301": citrucel,
     "jif_creamy_16oz_051500255162": jif,
     "nutricost_magnesium_oxide_702669934398": nutricost,

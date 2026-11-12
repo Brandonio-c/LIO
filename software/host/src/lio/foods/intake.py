@@ -151,6 +151,13 @@ class Intake:
                 del self._labels[next(iter(self._labels))]
             self._labels[key] = (now, kind, photo, res["text"], res)
         rows = [{"index": i, **r} for i, r in enumerate(res.get("panel_rows") or [])]
+        if kind == "ndc":
+            return {
+                "label_draft": key,
+                "kind": kind,
+                **res,
+                "can_attest": bool(res.get("ndc_candidates")),
+            }
         can_attest = self.composition is not None and (
             (kind == "nutrition" and bool(rows))
             or (kind == "ingredients" and res.get("ingredient_box") is not None)
@@ -171,6 +178,8 @@ class Intake:
         if d is None:
             raise LibraryError("this label photo expired or was already saved: take it again")
         _, kind, photo, text, res = d
+        if kind == "ndc":
+            return self._apply_ndc(code, photo, res, label)
         attest = None
         if kind == "ingredients" and label.get("attest"):
             attest_ingr = self._attested_list(res, label)
@@ -218,6 +227,69 @@ class Intake:
                 )
             except CompositionError as e:
                 raise LibraryError(f"the label was saved, but not attested: {e}") from e
+        return out
+
+    def _apply_ndc(
+        self, code: str, photo: bytes, res: dict[str, Any], label: dict[str, Any]
+    ) -> dict[str, Any]:
+        """The operator picked the printed NDC on the carton: resolve it to exactly one SPL,
+        record the attested link, and append it to the crosswalk."""
+        from .drugid import DrugResolver
+
+        if self.lib.lookup is None:
+            raise LibraryError("online lookup is off: the NDC cannot be resolved")
+        cands = res.get("ndc_candidates") or []
+        att = label.get("attest") or {}
+        i = int(att.get("index", -1))
+        if not 0 <= i < len(cands):
+            raise LibraryError("pick the NDC printed on the carton")
+        signer = " ".join(str(att.get("signer") or "").split())
+        if not signer:
+            raise LibraryError("type your name to attest the NDC")
+        cand = cands[i]
+        resolver = DrugResolver(self.lib.lookup)
+        spl = resolver.resolve_printed(cand["ndc"])
+        if spl is None:
+            raise LibraryError(
+                f"NDC {cand['ndc']} is not listed in exactly one current DailyMed label; "
+                "use Find online and confirm the label by name instead"
+            )
+        sample = self.lib.add_label_photo(code, "ndc", photo, cand["text"])
+        product = self.lib.product(normalise(sample["gtin14"]))
+        row: dict[str, Any]
+        if self.composition is not None:
+            xml = self.lib.lookup.get_bytes(
+                f"{self.lib.lookup.s.dailymed_url}/spls/{spl['setid']}.xml"
+            )
+            row = self.composition.link_ndc(
+                sample, product, photo, res["image_size"], cand, signer, spl, xml
+            )
+        else:
+            import datetime as _dt
+            import hashlib
+
+            now = _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds")
+            row = {
+                "gtin": sample["gtin14"],
+                "ndc": cand["ndc"],
+                "ndc11": cand["ndc11"],
+                "setid": spl["setid"],
+                "spl_version": spl["version"],
+                "method": "printed_ndc",
+                "evidence": {
+                    "photo_sha256": hashlib.sha256(photo).hexdigest(),
+                    "bbox": cand["box"],
+                    "ndc_text": cand["text"],
+                    "sample_code": code,
+                },
+                "attestation": {"operator": signer, "signature": "", "timestamp": now},
+            }
+        resolver.add_link(row)
+        self.lib.product(
+            normalise(sample["gtin14"]), refresh=True
+        )  # re-resolve through the crosswalk
+        out = self.lib.sample(code)
+        out["ndc_link"] = {"ndc": cand["ndc"], "setid": spl["setid"], "spl_version": spl["version"]}
         return out
 
     def _attested_list(self, res: dict[str, Any], label: dict[str, Any]) -> tuple[str, str]:

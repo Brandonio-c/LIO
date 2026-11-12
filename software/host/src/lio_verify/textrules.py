@@ -13,6 +13,7 @@ Rules (all pure functions of the located text):
 - ``otc_calories_from@1``: "each <dose> contributes 60 calories from ...".
 - ``fdc_label_nutrient@1:<nutrient>``: a bare number from FoodData Central
   ``labelNutrients``; the unit is fixed per nutrient (assumption A-FDC-UNITS).
+- ``printed_ndc@1``: an NDC printed on a carton ("NDC 41520-745-18") -> 11 digits.
 - ``nfp_row@1:<nutrient>``: a row of a US Nutrition Facts panel ("Total Fat 16g 21%").
 - ``nfp_serving@1``: the panel's serving size in grams ("Serving size 2 Tbsp (32g)").
 - ``fdc_serving@1``: FoodData Central ``servingSize servingSizeUnit`` ("33.0 GRM").
@@ -77,6 +78,19 @@ NFP_ROWS: dict[str, tuple[str, str]] = {  # 21 CFR 101.9(c) nutrient -> (row lab
     "total_sugars": (r"total\s+sugars", "g"),
     "protein": (r"protein", "g"),
 }
+
+
+_PRINTED_NDC = re.compile(r"NDC\s*(\d{4}-\d{4}-\d{2}|\d{5}-\d{3}-\d{2}|\d{5}-\d{4}-\d{1})")
+
+
+def printed_ndc(text: str) -> str:
+    """``printed_ndc@1``: the attested span must be exactly one printed NDC ("NDC 41520-745-18");
+    returns it in 11-digit 5-4-2 form. The verifier's own copy of the grammar."""
+    m = _PRINTED_NDC.fullmatch(" ".join(text.split()))
+    if not m:
+        raise RuleError(f"not a printed NDC: {text!r}")
+    lab, prod, pkg = m.group(1).split("-")
+    return f"{lab.zfill(5)}{prod.zfill(4)}{pkg.zfill(2)}"
 
 
 def nfp_row(nutrient: str, text: str) -> str:
@@ -219,6 +233,8 @@ def apply(rule: str, text: str) -> str:
             raise RuleError(f"no unit known for FDC label nutrient {sel!r}")
         parse_decimal(text)
         return f"{text} {FDC_LABEL_UNITS[sel]}"
+    if base == "printed_ndc@1":
+        return printed_ndc(text)
     if base == "nfp_row@1":
         return nfp_row(sel, text)
     if base == "nfp_serving@1":

@@ -1522,6 +1522,7 @@
    "source_id": "S1"
   }
  ],
+ "links": [],
  "physical_sample": {
   "assumptions": [
    "J1"
@@ -1534,6 +1535,7 @@
  "product_name": "Jif Creamy Peanut Butter 16 oz",
  "record_id": "jif_creamy_16oz_051500255162",
  "schema_version": "1",
+ "selections": [],
  "sources": [
   {
    "identifiers": {

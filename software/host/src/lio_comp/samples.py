@@ -1,4 +1,3 @@
-# ruff: noqa: E501  (statement and method texts are kept whole)
 """Composition records for food-library samples: the photo attestation flow (spec §9).
 
 When the operator saves a Nutrition Facts photo and confirms its rows:
@@ -183,6 +182,53 @@ class SampleComposition:
             (self.evidence / f"{code}.json").write_bytes(canonical_json(log))
         return self.rebuild(sample, product)
 
+    def link_ndc(
+        self,
+        sample: dict[str, Any],
+        product: dict[str, Any],
+        photo: bytes,
+        image_size: list[int],
+        candidate: dict[str, Any],
+        signer: str,
+        spl: dict[str, Any],
+        spl_xml: bytes,
+    ) -> dict[str, Any]:
+        """Record the operator-confirmed printed NDC (photo, box, span) and the exact SPL it
+        resolves to; returns the crosswalk row to append."""
+        signer = " ".join(signer.split())
+        if not signer:
+            raise CompositionError("type your name to attest the NDC")
+        if textrules.apply("printed_ndc@1", candidate["text"]) != candidate["ndc11"]:
+            raise CompositionError(f"{candidate['text']!r} is not a printed NDC")
+        code = sample["sample_code"]
+        signed_at = now_utc()
+        with self._lock:
+            sha = put(self.store, photo, _media_type(photo),
+                      Retrieval(f"lio://samples/{code}/label-ndc", signed_at,
+                                {"sample_code": code, "gtin14": sample.get("gtin14", "")}, PHOTO_RETRIEVER))  # fmt: skip
+            spl_sha = put(self.store, spl_xml, "application/xml",
+                          Retrieval(f"https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/{spl['setid']}.xml",
+                                    signed_at, {"spl_setid": spl["setid"], "spl_version": str(spl["version"])}))  # fmt: skip
+            entry = {
+                "kind": "ndc_link", "photo_sha256": sha, "image_size": [int(image_size[0]), int(image_size[1])],
+                "box": {k: int(candidate["box"][k]) for k in ("x", "y", "w", "h")},
+                "text": candidate["text"], "ndc": candidate["ndc"], "ndc11": candidate["ndc11"],
+                "setid": spl["setid"], "spl_version": spl["version"], "spl_sha256": spl_sha,
+                "signer": signer, "signed_at": signed_at,
+            }  # fmt: skip
+            log = [*self.log(code), entry]
+            self.evidence.mkdir(parents=True, exist_ok=True)
+            (self.evidence / f"{code}.json").write_bytes(canonical_json(log))
+        self.rebuild(sample, product)
+        return {
+            "gtin": sample["gtin14"], "ndc": candidate["ndc"], "ndc11": candidate["ndc11"],
+            "setid": spl["setid"], "spl_version": spl["version"], "method": "printed_ndc",
+            "evidence": {"photo_sha256": sha, "bbox": entry["box"], "ndc_text": candidate["text"],
+                         "sample_code": code},
+            "attestation": {"operator": signer, "timestamp": signed_at, "signature": "",
+                            "statement": f"I confirmed that {candidate['text']} is printed on the carton of sample {code}."},
+        }  # fmt: skip
+
     # ---------------------------------------------------------------- build
     def rebuild(self, sample: dict[str, Any], product: dict[str, Any]) -> dict[str, Any]:
         code = sample["sample_code"]
@@ -209,6 +255,20 @@ class SampleComposition:
             b.source_sha(sid, entry["photo_sha256"], {"sample_code": code})
             b.head["physical_sample"]["photos"].append(entry["photo_sha256"])
             att = f"AT{n}"
+            if entry.get("kind") == "ndc_link":
+                b.attestations.append({
+                    "id": att, "signer": entry["signer"], "signed_at": entry["signed_at"],
+                    "statement": f"I confirmed that {entry['text']} is printed on the carton of sample {code} (photo {entry['photo_sha256'][:12]}).",
+                    "subjects": [f"L{n}"],
+                })  # fmt: skip
+                b.link(f"L{n}", method="printed_ndc", ndc11=entry["ndc11"], attestation_id=att,
+                       source_id=sid, box=entry["box"], span=entry["text"])  # fmt: skip
+                b.source_sha(f"S_spl{n}", entry["spl_sha256"], {"spl_setid": entry["setid"]})
+                b.select(f"SEL{n}", f"L{n}", f"S_spl{n}", entry["ndc"], None,
+                         {"v": "urn:hl7-org:v3"})  # fmt: skip
+                if b.head["physical_sample"]["attestation"] is None:
+                    b.head["physical_sample"]["attestation"] = att
+                continue
             if entry.get("kind") == "ingredients_panel":
                 loc = {
                     "type": "image_bbox",

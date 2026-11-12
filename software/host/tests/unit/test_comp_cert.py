@@ -1,4 +1,3 @@
-# ruff: noqa: E501  (test one-liners are kept whole)
 """M1 (plan WP6): exact simplex, LP dual / Motzkin certificates, no solver in lio_verify."""
 
 from __future__ import annotations

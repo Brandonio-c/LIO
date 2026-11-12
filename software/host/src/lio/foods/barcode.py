@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import io
 import logging
+import re
 from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import Any
@@ -138,6 +139,22 @@ class Ndc:
     @property
     def product(self) -> str:
         return self.ndc.rsplit("-", 1)[0]
+
+
+PRINTED_NDC = re.compile(r"NDC\s*(\d{4}-\d{4}-\d{2}|\d{5}-\d{3}-\d{2}|\d{5}-\d{4}-\d{1})(?!\d)")
+
+
+def ndc11(ndc: str) -> str:
+    """A dashed 10-digit NDC (4-4-2, 5-3-2 or 5-4-1) as the 11-digit 5-4-2 form."""
+    lab, prod, pkg = ndc.split("-")
+    if (len(lab), len(prod), len(pkg)) not in ((4, 4, 2), (5, 3, 2), (5, 4, 1)):
+        raise BarcodeError(f"{ndc!r} is not a 10-digit NDC")
+    return f"{lab.zfill(5)}{prod.zfill(4)}{pkg.zfill(2)}"
+
+
+def printed_ndcs(text: str) -> list[tuple[str, int, int]]:
+    """NDCs printed as "NDC 41520-745-18" in label text: (ndc, start, end of the whole span)."""
+    return [(m.group(1), m.start(), m.end()) for m in PRINTED_NDC.finditer(text)]
 
 
 def ndc_candidates(gtin: Gtin) -> list[Ndc]:

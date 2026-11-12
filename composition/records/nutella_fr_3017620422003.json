@@ -2258,6 +2258,7 @@
    "source_id": "S1"
   }
  ],
+ "links": [],
  "physical_sample": {
   "assumptions": [
    "E1"
@@ -2270,6 +2271,7 @@
  "product_name": "Nutella 400 g (France)",
  "record_id": "nutella_fr_3017620422003",
  "schema_version": "1",
+ "selections": [],
  "sources": [
   {
    "identifiers": {

@@ -1,4 +1,4 @@
-# ruff: noqa: E501, RUF059, RUF001  (a report tool: long report strings)
+# ruff: noqa: RUF059, RUF001  (a report tool: long report strings)
 """Ingredient-list coverage report for barcode lookups.
 
 For every barcode in the panel (the food library's recent scans, plus a fixed
