@@ -134,6 +134,55 @@ class SampleComposition:
             (self.evidence / f"{code}.json").write_bytes(canonical_json(log))
         return self.rebuild(sample, product)
 
+    def attest_ingredients(
+        self,
+        sample: dict[str, Any],
+        product: dict[str, Any],
+        photo: bytes,
+        image_size: list[int],
+        box: dict[str, int],
+        text: str,
+        signer: str,
+    ) -> dict[str, Any]:
+        """Record an ingredient-panel photo whose list the operator confirmed word for word."""
+        signer = " ".join(signer.split())
+        text = " ".join(text.split())
+        if not signer:
+            raise CompositionError("type your name to attest the ingredient list")
+        try:
+            items = textrules.split_list(text)
+        except textrules.RuleError as e:
+            raise CompositionError(str(e)) from e
+        if not items:
+            raise CompositionError("the ingredient list is empty")
+        code = sample["sample_code"]
+        signed_at = now_utc()
+        with self._lock:
+            sha = put(
+                self.store,
+                photo,
+                _media_type(photo),
+                Retrieval(
+                    f"lio://samples/{code}/label-ingredients",
+                    signed_at,
+                    {"sample_code": code, "gtin14": sample.get("gtin14", "")},
+                    PHOTO_RETRIEVER,
+                ),
+            )
+            entry = {
+                "kind": "ingredients_panel",
+                "photo_sha256": sha,
+                "image_size": [int(image_size[0]), int(image_size[1])],
+                "box": {k: int(box[k]) for k in ("x", "y", "w", "h")},
+                "text": text,
+                "signer": signer,
+                "signed_at": signed_at,
+            }
+            log = [*self.log(code), entry]
+            self.evidence.mkdir(parents=True, exist_ok=True)
+            (self.evidence / f"{code}.json").write_bytes(canonical_json(log))
+        return self.rebuild(sample, product)
+
     # ---------------------------------------------------------------- build
     def rebuild(self, sample: dict[str, Any], product: dict[str, Any]) -> dict[str, Any]:
         code = sample["sample_code"]
@@ -151,13 +200,37 @@ class SampleComposition:
         )
         b.head["physical_sample"]["sample_code"] = code
         b.assume("S1", "sample_identity", f"Every label photo in this record is of sample {code}.")
-        b.assume("S2", "label_truth", "The label states the sample's composition.")
-        b.assume("S3", "interpretation", "The serving size in grams is taken as printed.")
+        if any(e.get("kind", "nutrition_panel") == "nutrition_panel" for e in log):
+            # only cited by Nutrition Facts values (the verifier refuses uncited assumptions)
+            b.assume("S2", "label_truth", "The label states the sample's composition.")
+            b.assume("S3", "interpretation", "The serving size in grams is taken as printed.")
         for n, entry in enumerate(log, start=1):
             sid = f"P{n}"
             b.source_sha(sid, entry["photo_sha256"], {"sample_code": code})
             b.head["physical_sample"]["photos"].append(entry["photo_sha256"])
             att = f"AT{n}"
+            if entry.get("kind") == "ingredients_panel":
+                loc = {
+                    "type": "image_bbox",
+                    **entry["box"],
+                    "text": entry["text"],
+                    "attestation_id": att,
+                }
+                ids = []
+                for k in range(1, len(textrules.split_list(entry["text"])) + 1):
+                    ing = b.ingredient(f"{sid}_I{k}", f"label_photo_{n}", k, "food", sid, loc,
+                                       list_rule=f"list_item@1:{k}")  # fmt: skip
+                    ids.append(ing["id"])
+                b.attestations.append({
+                    "id": att, "signer": entry["signer"], "signed_at": entry["signed_at"],
+                    "statement": (f"I compared the ingredient list below, word for word, with the "
+                                  f"ingredient panel in photo {entry['photo_sha256'][:12]} of "
+                                  f"sample {code}; it matches the label."),
+                    "subjects": ids,
+                })  # fmt: skip
+                if b.head["physical_sample"]["attestation"] is None:
+                    b.head["physical_sample"]["attestation"] = att
+                continue
             subjects: list[str] = []
             serving = None
             for r in entry["rows"]:

@@ -101,7 +101,7 @@ class FakeWeb:
             if f"/{EAN}.json" in url:
                 return {"status": 1, "code": EAN, "product": OFF_PRODUCT}
             raise urllib.error.HTTPError(url, 404, "not found", {}, None)  # type: ignore[arg-type]
-        if "api.fda.gov" in url:
+        if "api.fda.gov" in url or "dailymed.nlm.nih.gov" in url or "id.gs1.org" in url:
             raise urllib.error.HTTPError(url, 404, "not found", {}, None)  # type: ignore[arg-type]
         if "ods.od.nih.gov" in url:
             if "search-filter" in url and "780994812130" not in url and "7%2080994" in url:

@@ -300,11 +300,17 @@ class Verifier:
             status[s["id"]] = fld.status
             rep.fields.append(fld)
         subs = {s["id"] for s in rec["substances"]}
+        attested = {a["id"] for a in rec["attestations"]}
         for i in rec["ingredients"]:
             fld = Field("ingredient", i["id"], VERIFIED)
             try:
                 b = data[i["source_id"]]
-                text = resolve(i["name_locator"], b)
+                loc = i["name_locator"]
+                if loc["type"] == "image_bbox":
+                    if loc["attestation_id"] not in attested:
+                        raise ValueError("an ingredient read from a photo needs its attestation")
+                    fld.status = ATTESTED
+                text = resolve(loc, b)
                 if "list_rule" in i:
                     text = textrules.apply(i["list_rule"], text)
                 if text != i["name_verbatim"]:

@@ -1599,7 +1599,7 @@ function dbIngredients(s, p) {
   const info = p.info || {}, box = $("db-ingr"), has = !!(info.ingredients_text || "").trim();
   const src = info.ingredients_source || (has && p.sources[0]) || "";
   box.innerHTML = `<h3>Ingredients ${has ? `<span class="tag">${esc(srcName(src))}</span>` : ""}<span class="sp"></span>
-      <button class="btn small" data-label="ingredients">Read from a label photo…</button>
+      <button class="btn small" data-label="ingredients">Ingredients panel photo…</button>
       <button class="btn small" data-label="nutrition">Nutrition label photo…</button>
       <button class="btn small${has ? "" : " primary"}" id="db-find">Find ingredients online…</button></h3>
     ${has ? `<div style="font-size:14px;line-height:1.55">${esc(info.ingredients_text)}</div>${info.contains ? `<div style="margin-top:6px"><span class="note">Contains:</span> ${esc(info.contains)}</div>` : ""}`
@@ -1630,7 +1630,9 @@ function dbLabelReview(s, kind, r) {
       ${kind === "ingredients" ? `
         <label class="field">Ingredients<textarea class="full" id="lr-ingr" style="min-height:90px">${esc(r.ingredients || "")}</textarea></label>
         ${r.ingredients ? "" : `<div class="note">No "Ingredients:" heading was found: copy the list from the text below.</div>`}
-        <label class="field">Contains (allergen statement)<input type="text" id="lr-contains" value="${esc(r.contains || "")}"></label>`
+        <label class="field">Contains (allergen statement)<input type="text" id="lr-contains" value="${esc(r.contains || "")}"></label>
+        ${r.can_attest ? `<label class="check"><input type="checkbox" id="lr-attest-i"><span>The list above matches the label <b>word for word</b>: sign it as <span class="vb ATTESTED">ATTESTED</span> ingredients in this sample's verified record.</span></label>
+          <label class="field" style="max-width:260px">Your name<input type="text" id="lr-signer-i" value="${esc(localStorage.getItem("lio-attest-name") || "")}"></label>` : ""}`
       : `<div class="note">Per serving as printed: ${esc(n.serving || "serving size not found")}. Values below are per 100 g${n.serving_g ? ` (× 100 ÷ ${n.serving_g} g)` : ": type the serving size in grams to convert"}.</div>
         <label class="field" style="max-width:220px">Serving size<input type="text" id="lr-serving" value="${esc(n.serving || "")}"></label>
         <div class="edit-grid">${nutInputs}</div>
@@ -1643,7 +1645,13 @@ function dbLabelReview(s, kind, r) {
   $("lr-cancel").onclick = () => box.innerHTML = "";
   $("lr-save").onclick = async () => {
     const body = { sample_code: s.sample_code, label_draft: r.label_draft };
-    if (kind === "ingredients") { body.ingredients_text = $("lr-ingr").value; body.contains = $("lr-contains").value; }
+    if (kind === "ingredients") { body.ingredients_text = $("lr-ingr").value; body.contains = $("lr-contains").value;
+      if ($("lr-attest-i") && $("lr-attest-i").checked) {
+        const signer = ($("lr-signer-i").value || "").trim();
+        if (!signer) { toast("type your name to attest the list (or untick the box)", 7000); return; }
+        try { localStorage.setItem("lio-attest-name", signer); } catch {}
+        body.attest = { signer };
+      } }
     else { body.serving_size = $("lr-serving").value; body.nutrition_per_100g = {}; document.querySelectorAll("[data-lnut]").forEach((i) => { if (i.value !== "") body.nutrition_per_100g[i.dataset.lnut] = +i.value; });
       const ticked = [...document.querySelectorAll("[data-att]")].filter((c) => c.checked);
       if (r.can_attest && ticked.length) {
@@ -1676,7 +1684,7 @@ async function dbFindOnline(s, p, query) {
   catch (e) { $("fo-results").innerHTML = `<div style="color:var(--critical)">${esc(e.message)}</div>`; return; }
   if (!$("fo-results")) return;
   const web = r.web || { pages: [], errors: [] }, withList = web.pages.filter((pg) => pg.sections.length), without = web.pages.filter((pg) => !pg.sections.length);
-  const recs = (r.structured || []).filter((c) => (c.ingredients || "").trim());
+  const recs = (r.structured || []).filter((c) => (c.ingredients || "").trim() || c.source === "openfda");
   $("fo-results").innerHTML = `
     <div class="note" style="text-transform:uppercase;letter-spacing:.5px;font-weight:600">Label databases · search "${esc(r.query)}"</div>
     ${recs.length ? `<table class="db">${recs.map((c, i) => `<tr>
@@ -1688,11 +1696,16 @@ async function dbFindOnline(s, p, query) {
       : `<div class="note">No label record with an ingredient list matched this name.</div>`}
     <div class="note" style="text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-top:6px">Web pages${web.engine ? " · via " + esc(web.engine) : ""}</div>
     ${withList.length ? withList.map((pg, pi) => `<div style="border-top:1px solid var(--hair);padding-top:8px">
-        <div><a href="${esc(pg.url)}" target="_blank" rel="noopener" style="font-weight:600">${esc(pg.title || pg.domain)} ↗</a> <span class="note">${esc(pg.domain)}</span></div>
+        <div><a href="${esc(pg.url)}" target="_blank" rel="noopener" style="font-weight:600">${esc(pg.title || pg.domain)} ↗</a> <span class="note">${esc(pg.domain)}</span>${pg.manufacturer ? ` <span class="tag">manufacturer</span>` : ""}${pg.sha256 ? ` <span class="note" title="stored copy, SHA-256 ${esc(pg.sha256)}">· copy kept</span>` : ""}</div>
         ${pg.sections.map((sc, si) => `<label class="check" style="margin-top:5px"><input type="checkbox" data-sec="${pi}:${si}"><span><span class="note">${esc(sc.heading)}:</span> ${esc(sc.text)}</span></label>`).join("")}</div>`).join("")
       : `<div class="note">No ingredient list found on the web pages${(web.errors || []).length ? " (" + esc(web.errors.join("; ")) + ")" : ""}.</div>`}
     ${without.length ? `<div class="note" style="margin-top:6px">Also looked at, no list could be read: ${without.map((pg) => `<a href="${esc(pg.url)}" target="_blank" rel="noopener">${esc(pg.domain)}</a>${pg.error ? " (" + esc(pg.error) + ")" : ""}`).join(" · ")}. Open them to check by eye.</div>` : ""}
-    <div class="note" style="margin-top:4px">Pages often list several versions of a product (flavours, sugar-free, caplets): pick the one that matches the pack you have.</div>`;
+    <div class="note" style="margin-top:4px">Pages often list several versions of a product (flavours, sugar-free, caplets): pick the one that matches the pack you have.</div>
+    <div class="note" style="text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-top:6px">SmartLabel</div>
+    ${r.smartlabel && r.smartlabel.result ? `<div><b>${esc(r.smartlabel.result.name)}</b>: ${esc(r.smartlabel.result.ingredients_text)}</div>`
+      : `<div class="note">${r.smartlabel && r.smartlabel.configured ? "No SmartLabel record for this barcode." : "SmartLabel's data needs a Label Insight API key (none configured)."} Search it yourself: <a href="${esc((r.smartlabel || {}).link || "https://www.smartlabel.org/")}" target="_blank" rel="noopener">smartlabel.org ↗</a>${((r.smartlabel || {}).gs1_links || []).length ? " · pages the brand registered with GS1: " + r.smartlabel.gs1_links.map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.title)} ↗</a>`).join(" · ") : ""}</div>`}
+    <div class="note" style="text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-top:6px">Retailers (open yourself)</div>
+    <div class="note">${(r.retailers || []).map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)} ↗</a>`).join(" · ")}. These are never fetched by this program (retailers' terms); copy a list here only after checking it against the pack.</div>`;
   const confirmBox = (text, refs, onSave) => {
     $("fo-confirm").innerHTML = `<div style="border-top:2px solid var(--accent);padding-top:10px;display:grid;gap:8px">
         <strong>Confirm the ingredient list for ${esc(s.sample_code)}</strong>
@@ -1722,7 +1735,7 @@ async function dbFindOnline(s, p, query) {
     const picked = [...document.querySelectorAll("[data-sec]:checked")].map((c) => { const [pi, si] = c.dataset.sec.split(":").map(Number); return [withList[pi], withList[pi].sections[si]]; });
     if (!picked.length) { $("fo-confirm").innerHTML = ""; return; }
     const text = picked.map(([, sc]) => `${sc.heading}: ${sc.text}`).join("\n");
-    const refs = [...new Map(picked.map(([pg]) => [pg.url, { url: pg.url, title: pg.title || pg.domain }])).values()];
+    const refs = [...new Map(picked.map(([pg]) => [pg.url, { url: pg.url, title: pg.title || pg.domain, sha256: pg.sha256 || "" }])).values()];
     confirmBox(text, refs, (t) => saveText(t, refs));
   };
   $("fo-results").querySelectorAll("[data-sec]").forEach((c) => c.onchange = onTick);

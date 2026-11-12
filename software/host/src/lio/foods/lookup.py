@@ -12,6 +12,13 @@ Both answers are kept raw, and merged into one normalised record. USDA wins
 where it knows the product (its data comes from the manufacturers, while Open
 Food Facts names are crowd-sourced and sometimes wrong); Open Food Facts fills
 the gaps (allergen tags, pack photo, Nutri-Score, NOVA group).
+
+Also NIH DSLD (supplements), openFDA drug labels (by UPC, and by the NDC a
+UPC starting with 3 can carry) and DailyMed. Every source is tried with every
+barcode form (UPC-A, EAN-13, GTIN-14, UPC-E) and the matching form is logged
+and kept in ``matched_forms``. Ingredient information is kept as ordered
+``ingredient_parts``, each with the source field it came from. When an
+evidence store is configured, every raw answer is stored by SHA-256.
 """
 
 from __future__ import annotations
@@ -20,6 +27,7 @@ import datetime as dt
 import json
 import logging
 import re
+import threading
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -27,7 +35,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
-from .barcode import Gtin
+from .barcode import Gtin, Ndc, ndc_candidates
 
 log = logging.getLogger(__name__)
 
@@ -100,6 +108,11 @@ class LookupSettings:
     usda_api_key: str = "DEMO_KEY"
     dsld_url: str = "https://api.ods.od.nih.gov/dsld/v9"
     openfda_url: str = "https://api.fda.gov/drug/label.json"
+    openfda_ndc_url: str = "https://api.fda.gov/drug/ndc.json"
+    dailymed_url: str = "https://dailymed.nlm.nih.gov/dailymed/services/v2"
+    # SmartLabel (Label Insight) API: needs a key from Label Insight; empty = not used
+    smartlabel_url: str = "https://enterprise-li-api.labelinsight.com/api/v4/{key}/data/upc/{upc}"
+    smartlabel_key: str = ""
     user_agent: str = "LIO-V3-food-library/0.1"
     timeout_s: float = 10.0
 
@@ -138,10 +151,46 @@ def empty_info() -> dict[str, Any]:
         "nutrition_basis": "100 g",
         "nutrition_per_100g": {},
         "links": {},
+        "ingredient_parts": [],
+        "matched_forms": {},
     }
 
 
 Fetch = Callable[[str, dict[str, str], float], Any]
+# (url as recorded, bytes as received, media type) -> SHA-256, or None if not stored
+Evidence = Callable[[str, bytes, str], "str | None"]
+
+
+def part(role: str, text: str, source: str, origin: str, **extra: Any) -> dict[str, Any]:
+    """One piece of a product's ingredient information, with the field it came from.
+
+    Roles: active, inactive, other_information (drugs); dietary, other (supplements);
+    food (a food's ingredient list); contains (allergen statement).
+    """
+    return {"role": role, "text": " ".join(str(text).split()), "source": source,
+            "origin": origin, **extra}  # fmt: skip
+
+
+def possibly_truncated(text: str) -> bool:
+    """A list that stops without closing punctuation (and not on an allergen statement)."""
+    t = text.strip()
+    if not t:
+        return False
+    if re.search(r"[.)\]]\s*$", t):
+        return False
+    return not re.search(r"contains:?\s+[\w ,&/-]+$", t, re.I)
+
+
+def _http_bytes(url: str, headers: dict[str, str], timeout: float) -> tuple[bytes, str]:
+    req = urllib.request.Request(url, headers=headers)
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        ctype = (r.headers.get("Content-Type") or "application/json").split(";")[0].strip()
+        return r.read(), ctype
+
+
+def redact(url: str) -> str:
+    """The URL without API keys (as recorded in evidence and in the library)."""
+    return re.sub(r"(api_key|key|token)=[^&]+", r"\1=REDACTED", url)
 
 
 def _http_json(url: str, headers: dict[str, str], timeout: float) -> Any:
@@ -177,9 +226,25 @@ def parse_off(product: dict[str, Any], code: str) -> dict[str, Any]:
     info["serving_size"] = str(product.get("serving_size") or "")
     cats = str(product.get("categories") or "")
     info["categories"] = [c.strip() for c in cats.split(",") if c.strip()]
-    info["ingredients_text"] = str(
-        product.get("ingredients_text_en") or product.get("ingredients_text") or ""
-    )
+    parts: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    main = str(product.get("ingredients_text") or "").strip()
+    if main:
+        parts.append(part("food", main, "openfoodfacts", "openfoodfacts.ingredients_text",
+                          lang=str(product.get("lang") or "")))  # fmt: skip
+        seen.add(" ".join(main.split()).lower())
+    for k in sorted(product):
+        m = re.fullmatch(r"ingredients_text_([a-z]{2})", k)
+        txt = str(product.get(k) or "").strip()
+        if m and txt and " ".join(txt.split()).lower() not in seen:
+            seen.add(" ".join(txt.split()).lower())
+            parts.append(part("food", txt, "openfoodfacts", f"openfoodfacts.{k}", lang=m.group(1)))
+    # The longest list: languages are often filled unevenly (one may be only
+    # "sugar, palm oil"); the others stay in ingredient_parts with their origin.
+    best = max(parts, key=lambda x: len(x["text"]), default=None)
+    info["ingredients_text"] = best["text"] if best else ""
+    info["ingredients_text_origin"] = best["origin"] if best else ""
+    info["ingredient_parts"] = parts
     info["allergens"] = _tags(product.get("allergens_tags"))
     info["traces"] = _tags(product.get("traces_tags"))
     info["labels"] = [s.strip() for s in str(product.get("labels") or "").split(",") if s.strip()]
@@ -221,6 +286,17 @@ def parse_usda(food: dict[str, Any]) -> dict[str, Any]:
     cat = str(food.get("brandedFoodCategory") or food.get("foodCategory") or "")
     info["categories"] = [cat] if cat else []
     info["ingredients_text"] = str(food.get("ingredients") or "")
+    if info["ingredients_text"].strip():
+        info["ingredients_text_origin"] = "usda.ingredients"
+        info["ingredient_parts"] = [
+            part(
+                "food",
+                info["ingredients_text"],
+                "usda",
+                "usda.ingredients",
+                possibly_truncated=possibly_truncated(info["ingredients_text"]),
+            )
+        ]
     info["countries"] = str(food.get("marketCountry") or "")
     per: dict[str, float] = {}
     for nut in food.get("foodNutrients") or []:
@@ -284,6 +360,20 @@ def parse_dsld(label: dict[str, Any]) -> dict[str, Any]:
     if other or other_text:
         parts.append("Other ingredients: " + (other_text or ", ".join(o for o in other if o)))
     info["ingredients_text"] = ". ".join(parts)
+    info["ingredients_text_origin"] = "dsld.ingredientRows + dsld.otheringredients"
+    ip = []
+    if parts and facts:
+        ip.append(part("dietary", parts[0], "dsld", "dsld.ingredientRows"))
+    if other or other_text:
+        ip.append(
+            part(
+                "other",
+                other_text or ", ".join(o for o in other if o),
+                "dsld",
+                "dsld.otheringredients.text" if other_text else "dsld.otheringredients.ingredients",
+            )
+        )
+    info["ingredient_parts"] = ip
     info["supplement_facts"] = facts
     info["other_ingredients"] = other
     info["statements"] = [
@@ -329,9 +419,32 @@ def parse_openfda(r: dict[str, Any]) -> dict[str, Any]:
     )
     info["brand"] = ", ".join(o.get("manufacturer_name") or [])
     info["categories"] = ["Over-the-counter drug"] + [str(x) for x in o.get("product_type") or []]
-    active, inactive = _first(r, "active_ingredient"), _first(r, "inactive_ingredient")
-    parts = [p for p in (active, inactive) if p]
-    info["ingredients_text"] = " | ".join(parts)
+    # Every entry of every field is a part (an SPL can cover several variants, e.g.
+    # "Inactive ingredients (Citrucel Orange)" and "(Citrucel Sugar Free)"). The summary
+    # text uses the first variant only; the rest stay in ingredient_parts to choose from.
+    ip: list[dict[str, Any]] = []
+    for role, key in (("active", "active_ingredient"), ("inactive", "inactive_ingredient")):
+        for i, x in enumerate(r.get(key) or []):
+            if str(x).strip():
+                ip.append(
+                    part(role, str(x), "openfda", f"openfda.{key}[{i}]", variant=_variant(str(x)))
+                )
+    # "Other information": per-dose minerals ("each tablespoon contains: calcium 80 mg").
+    # openFDA files it as other_information or spl_unclassified_section.
+    for key in ("other_information", "spl_unclassified_section", "storage_and_handling"):
+        for i, x in enumerate(r.get(key) or []):
+            if re.search(r"\bcontains?\b|\bcontributes\b", str(x), re.I):
+                ip.append(part("other_information", str(x), "openfda", f"openfda.{key}[{i}]",
+                               variant=_variant(str(x))))  # fmt: skip
+    variants = list(dict.fromkeys(p["variant"] for p in ip if p["variant"]))
+    first = variants[0] if variants else ""
+    summary = [p for p in ip if not p["variant"] or p["variant"] == first]
+    summary = [p for p in summary if p["role"] != "active" or p["origin"].endswith("[0]")]
+    info["ingredient_parts"] = ip
+    info["ingredients_text"] = " | ".join(p["text"] for p in summary)
+    info["ingredients_text_origin"] = " + ".join(p["origin"] for p in summary)
+    if len(variants) > 1:
+        info["variants"] = variants
     info["drug_facts"] = {
         k: _first(r, k)
         for k in ("active_ingredient", "inactive_ingredient", "purpose", "warnings",
@@ -347,6 +460,15 @@ def parse_openfda(r: dict[str, Any]) -> dict[str, Any]:
     return info
 
 
+def _variant(text: str) -> str:
+    """The product variant a Drug Facts section names, e.g. "Citrucel Orange" in
+    "Inactive ingredients (Citrucel Orange) ..." ("" when none is named)."""
+    m = re.match(r"\s*(?:active|inactive|other)\s+\w+(?:\s+\w+)?\s*\(([^()]{3,60})\)", text, re.I)
+    if m and not re.match(r"in each|per ", m.group(1), re.I):
+        return m.group(1).strip()
+    return ""
+
+
 def upc_spaced(gtin: Gtin) -> str:
     """UPC-A as printed under the bars, "3 00680 41830 1" (how DSLD stores it)."""
     c = gtin.gtin14[2:]
@@ -357,8 +479,13 @@ def merge(primary: dict[str, Any], other: dict[str, Any]) -> dict[str, Any]:
     """Fill the empty fields of ``primary`` from ``other`` (nutrients one by one)."""
     out = dict(primary)
     for k, v in other.items():
-        if k in ("nutrition_per_100g", "links"):
+        if k in ("nutrition_per_100g", "links", "matched_forms"):
             out[k] = {**v, **primary.get(k, {})}
+        elif k in ("ingredient_parts", "evidence"):
+            have = {(x.get("origin"), x.get("text"), x.get("url")) for x in out.get(k) or []}
+            out[k] = list(out.get(k) or []) + [
+                x for x in v if (x.get("origin"), x.get("text"), x.get("url")) not in have
+            ]
         elif out.get(k) in (None, "", [], {}):
             out[k] = v
     return out
@@ -378,17 +505,44 @@ def derived(per: dict[str, float]) -> dict[str, float]:
 
 
 class Lookup:
-    def __init__(self, settings: LookupSettings, fetch: Fetch | None = None) -> None:
+    def __init__(
+        self, settings: LookupSettings, fetch: Fetch | None = None, evidence: Evidence | None = None
+    ) -> None:
         self.s = settings
-        self._fetch = fetch or _http_json
+        self._fetch = fetch
+        self.evidence = evidence
+        self._tl = threading.local()
 
     def _get(self, url: str) -> Any:
-        return self._fetch(url, {"User-Agent": self.s.user_agent}, self.s.timeout_s)
+        """GET a JSON answer; with an evidence store, keep its exact bytes by SHA-256."""
+        headers = {"User-Agent": self.s.user_agent}
+        if self._fetch is not None:
+            return self._fetch(url, headers, self.s.timeout_s)
+        data, ctype = _http_bytes(url, headers, self.s.timeout_s)
+        if self.evidence is not None:
+            try:
+                sha = self.evidence(redact(url), data, ctype)
+            except OSError as e:
+                log.warning("evidence store: %s", e)
+                sha = None
+            if sha:
+                ev = getattr(self._tl, "evidence", None)
+                if ev is not None:
+                    ev.append({"url": redact(url), "sha256": sha, "media_type": ctype})
+        return json.loads(data)
 
+    def _matched(self, info: dict[str, Any], source: str, gtin: Gtin, form: str, code: str,
+                 stored: str = "") -> None:  # fmt: skip
+        info["matched_forms"] = {source: {"form": form, "code": code, "stored": stored}}
+        log.info(
+            "lookup %s %s: matched as %s %s (stored %r)", source, gtin.gtin14, form, code, stored
+        )
+
+    # ------------------------------------------------------------------ sources
     def openfoodfacts(self, gtin: Gtin) -> tuple[dict[str, Any] | None, Any]:
         last: Any = None
         for code in gtin.lookup_codes:
-            url = self.s.off_url.format(code=urllib.parse.quote(code)) + "?fields=" + _OFF_FIELDS
+            url = self.s.off_url.format(code=urllib.parse.quote(code))
             try:
                 data = self._get(url)
             except urllib.error.HTTPError as e:
@@ -397,44 +551,69 @@ class Lookup:
                 data = {"status": 0, "code": code, "status_verbose": "product not found"}
             last = data
             if isinstance(data, dict) and data.get("status") == 1 and data.get("product"):
-                return parse_off(data["product"], code), data
+                info = parse_off(data["product"], code)
+                self._matched(info, "openfoodfacts", gtin, gtin.form_of(code) or "as scanned",
+                              code, str(data.get("code") or ""))  # fmt: skip
+                return info, data
         return None, last
 
     def usda(self, gtin: Gtin) -> tuple[dict[str, Any] | None, Any]:
+        """FDC Branded Foods files gtinUpc in whatever form the brand sent (12, 13 or 14
+        digits), and its search matches the text: try every form."""
         if not self.s.usda_api_key:
             return None, "no API key configured"
-        q = urllib.parse.urlencode(
-            {
-                "query": gtin.gtin14,
-                "dataType": "Branded",
-                "pageSize": 5,
-                "api_key": self.s.usda_api_key,
-            }
-        )
-        data = self._get(f"{self.s.usda_url}?{q}")
-        foods = data.get("foods") if isinstance(data, dict) else None
-        for food in foods or []:
-            if str(food.get("gtinUpc") or "").zfill(14) == gtin.gtin14:
-                return parse_usda(food), food
-        return None, {"totalHits": data.get("totalHits") if isinstance(data, dict) else None}
+        tried: dict[str, Any] = {}
+        for form in ("GTIN-14", "UPC-A", "EAN-13", "UPC-E", "EAN-8"):
+            code = gtin.forms.get(form)
+            if not code:
+                continue
+            q = urllib.parse.urlencode(
+                {
+                    "query": code,
+                    "dataType": "Branded",
+                    "pageSize": 10,
+                    "api_key": self.s.usda_api_key,
+                }
+            )
+            data = self._get(f"{self.s.usda_url}?{q}")
+            foods = data.get("foods") if isinstance(data, dict) else None
+            tried[form] = data.get("totalHits") if isinstance(data, dict) else None
+            for food in foods or []:
+                if gtin.matches(str(food.get("gtinUpc") or "")):
+                    info = parse_usda(food)
+                    self._matched(info, "usda", gtin, form, code, str(food.get("gtinUpc") or ""))
+                    return info, food
+        return None, {"totalHits_by_form": tried}
 
     def dsld(self, gtin: Gtin) -> tuple[dict[str, Any] | None, Any]:
-        if not gtin.gtin14.startswith("00"):
-            return None, "not a US/Canada UPC"
-        q = urllib.parse.quote(f'"{upc_spaced(gtin)}"')
-        data = self._get(f"{self.s.dsld_url}/search-filter?q={q}&size=5")
-        hits = data.get("hits") if isinstance(data, dict) else None
-        if not hits:
-            return None, {"count": 0}
-        label = self._get(f"{self.s.dsld_url}/label/{urllib.parse.quote(str(hits[0]['_id']))}")
-        if not isinstance(label, dict):
-            return None, label
-        return parse_dsld(label), label
+        """DSLD keeps upcSku as printed ("7 02669 93439 8", "5 453003 821090"): search the
+        spaced forms, then the plain digits; confirm each hit by its stored UPC."""
+        queries: list[tuple[str, str]] = []
+        if "UPC-A" in gtin.forms:
+            queries.append(("UPC-A spaced", f'"{upc_spaced(gtin)}"'))
+        e = gtin.forms["EAN-13"]
+        queries.append(("EAN-13 spaced", f'"{e[0]} {e[1:7]} {e[7:]}"'))
+        queries += [(f, gtin.forms[f]) for f in ("UPC-A", "EAN-13") if f in gtin.forms]
+        checked: set[str] = set()
+        for form, q in queries:
+            data = self._get(f"{self.s.dsld_url}/search-filter?q={urllib.parse.quote(q)}&size=5")
+            hits = data.get("hits") if isinstance(data, dict) else None
+            for h in (hits or [])[:3]:
+                lid = str(h.get("_id"))
+                if lid in checked:
+                    continue
+                checked.add(lid)
+                label = self._get(f"{self.s.dsld_url}/label/{urllib.parse.quote(lid)}")
+                if isinstance(label, dict) and gtin.matches(str(label.get("upcSku") or "")):
+                    info = parse_dsld(label)
+                    self._matched(
+                        info, "dsld", gtin, form, q.strip('"'), str(label.get("upcSku") or "")
+                    )
+                    return info, label
+        return None, {"count": 0, "labels_checked": sorted(checked)}
 
     def openfda(self, gtin: Gtin) -> tuple[dict[str, Any] | None, Any]:
-        codes = " ".join(
-            f'"{c}"' for c in dict.fromkeys([gtin.code, gtin.gtin14[1:], gtin.gtin14.lstrip("0")])
-        )
+        codes = " ".join(f'"{c}"' for c in dict.fromkeys([*gtin.forms.values(), gtin.code]))
         q = urllib.parse.quote(f"openfda.upc:({codes})")
         try:
             data = self._get(f"{self.s.openfda_url}?search={q}&limit=1")
@@ -445,7 +624,104 @@ class Lookup:
         res = data.get("results") if isinstance(data, dict) else None
         if not res:
             return None, data
-        return parse_openfda(res[0]), res[0]
+        info = parse_openfda(res[0])
+        stored = [u for u in (res[0].get("openfda") or {}).get("upc") or [] if gtin.matches(u)]
+        st = stored[0] if stored else ""
+        self._matched(info, "openfda", gtin, gtin.form_of(st) or "?", st, st)
+        return info, res[0]
+
+    def _openfda_label(self, search: str) -> dict[str, Any] | None:
+        try:
+            data = self._get(f"{self.s.openfda_url}?search={urllib.parse.quote(search)}&limit=1")
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                return None
+            raise
+        res = data.get("results") if isinstance(data, dict) else None
+        return res[0] if res else None
+
+    def ndc(self, gtin: Gtin) -> tuple[dict[str, Any] | None, Any]:
+        """A UPC starting with 3 can carry the drug's NDC. Try each 10-digit split (4-4-2,
+        5-3-2, 5-4-1): an openFDA label by package NDC, then by product NDC, then DailyMed
+        by NDC. The NDC in a barcode can be out of date (relabelled products keep their
+        UPC), so the result is marked as a lead for the user to confirm."""
+        cands = ndc_candidates(gtin)
+        if not cands:
+            return None, "not an NDC barcode (UPC-A does not start with 3)"
+        tried: list[str] = []
+        for c in cands:
+            for field_, value in (
+                ("openfda.package_ndc", c.ndc),
+                ("openfda.product_ndc", c.product),
+            ):
+                tried.append(f"{field_}:{value}")
+                r = self._openfda_label(f'{field_}:"{value}"')
+                if r is not None:
+                    return self._ndc_hit(gtin, c, r, f"openFDA label by {field_}"), r
+            tried.append(f"dailymed ndc={c.ndc}")
+            try:
+                d = self._get(f"{self.s.dailymed_url}/spls.json?ndc={urllib.parse.quote(c.ndc)}")
+            except urllib.error.HTTPError as e:
+                if e.code == 404:
+                    continue
+                raise
+            for spl in (d.get("data") if isinstance(d, dict) else None) or []:
+                r = self._openfda_label(f'set_id:"{spl.get("setid")}"')
+                if r is not None:
+                    return self._ndc_hit(gtin, c, r, "DailyMed by NDC"), r
+        return None, {"ndc_tried": tried}
+
+    def _ndc_hit(self, gtin: Gtin, c: Ndc, r: dict[str, Any], via: str) -> dict[str, Any]:
+        info = parse_openfda(r)
+        info["ndc_match"] = {
+            "pattern": c.pattern,
+            "ndc": c.ndc,
+            "ndc11": c.ndc11,
+            "via": via,
+            "note": "NDC decoded from the barcode; confirm it is this product",
+        }
+        self._matched(info, "ndc", gtin, f"NDC {c.pattern}", c.ndc, c.ndc)
+        return info
+
+    def smartlabel(self, gtin: Gtin) -> tuple[dict[str, Any] | None, Any]:
+        """SmartLabel (Label Insight) API, only with a key (it has no public access)."""
+        if not self.s.smartlabel_key:
+            return None, "no SmartLabel API key configured"
+        upc = gtin.forms.get("UPC-A") or gtin.forms["EAN-13"]
+        url = self.s.smartlabel_url.format(key=urllib.parse.quote(self.s.smartlabel_key), upc=upc)
+        data = self._get(url)
+        content = data.get("content") if isinstance(data, dict) else None
+        items = content if isinstance(content, list) else ([data] if isinstance(data, dict) else [])
+        for it in items:
+            text = str(it.get("ingredients") or it.get("ingredientStatement") or "")
+            if text.strip():
+                info = empty_info()
+                info["name"] = str(it.get("productName") or it.get("name") or "")
+                info["brand"] = str(it.get("brandName") or "")
+                info["ingredients_text"] = text
+                info["ingredients_text_origin"] = "smartlabel.ingredients"
+                info["ingredient_parts"] = [
+                    part("food", text, "smartlabel", "smartlabel.ingredients")
+                ]
+                self._matched(
+                    info, "smartlabel", gtin, "UPC-A" if "UPC-A" in gtin.forms else "EAN-13", upc
+                )
+                return info, data
+        return None, data
+
+    def gs1_resolver(self, gtin: Gtin) -> list[dict[str, str]]:
+        """Pages the brand registered with GS1 Digital Link (id.gs1.org), if any."""
+        try:
+            data = self._get(f"https://id.gs1.org/01/{gtin.gtin14}?linkType=all")
+        except (urllib.error.URLError, TimeoutError, OSError, ValueError):
+            return []
+        links: list[dict[str, str]] = []
+        for ls in (data.get("linkset") if isinstance(data, dict) else None) or []:
+            for k, v in ls.items():
+                if isinstance(v, list):
+                    links += [{"url": str(x.get("href")), "title": str(x.get("title") or k)}
+                              for x in v if isinstance(x, dict) and x.get("href")]  # fmt: skip
+        return links
 
     def _openfda_by_name(self, query: str, limit: int) -> list[dict[str, Any]]:
         words = sorted(
@@ -480,6 +756,27 @@ class Lookup:
                     )
                 return out
         return []
+
+    def _dailymed_by_name(self, query: str, limit: int, have: set[str]) -> list[dict[str, Any]]:
+        """DailyMed SPLs by drug name (e.g. a product whose UPC carries a retired NDC)."""
+        words = sorted({w for w in re.findall(r"[a-z0-9]+", query.lower()) if len(w) > 3},
+                       key=len, reverse=True)  # fmt: skip
+        if not words:
+            return []
+        q = urllib.parse.urlencode({"drug_name": words[0], "pagesize": limit})
+        d = self._get(f"{self.s.dailymed_url}/spls.json?{q}")
+        out = []
+        for spl in (d.get("data") if isinstance(d, dict) else None) or []:
+            sid = str(spl.get("setid") or "")
+            if not sid or sid in have:
+                continue
+            out.append({
+                "source": "openfda", "id": sid, "name": str(spl.get("title") or ""), "brand": "",
+                "detail": f"DailyMed SPL, published {spl.get('published_date', '')}",
+                "barcode": "", "ingredients": "",
+                "link": f"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid={sid}",
+            })  # fmt: skip
+        return out
 
     def search_by_name(self, query: str, limit: int = 8) -> list[dict[str, Any]]:
         """Candidate labels by name (USDA Branded Foods and DSLD), for the user to pick."""
@@ -540,6 +837,10 @@ class Lookup:
             out.extend(self._openfda_by_name(query, limit))
         except (urllib.error.URLError, TimeoutError, OSError, ValueError) as e:
             errors.append(f"openFDA: {e}")
+        try:
+            out.extend(self._dailymed_by_name(query, limit, {c["id"] for c in out}))
+        except (urllib.error.URLError, TimeoutError, OSError, ValueError) as e:
+            errors.append(f"DailyMed: {e}")
         if not out and errors:
             raise ValueError("; ".join(errors))
         words = [w for w in re.findall(r"[a-z0-9]+", query.lower()) if len(w) > 1]
@@ -585,12 +886,17 @@ class Lookup:
         raw: dict[str, Any] = {}
         errors: dict[str, str] = {}
         infos: list[tuple[str, dict[str, Any]]] = []
+        self._tl.evidence = []
         for name, fn in (
             ("usda", self.usda),
             ("dsld", self.dsld),
             ("openfda", self.openfda),
+            ("ndc", self.ndc),
+            ("smartlabel", self.smartlabel),
             ("openfoodfacts", self.openfoodfacts),
         ):
+            if name == "ndc" and any(n == "openfda" for n, _ in infos):
+                continue  # the drug label was already found by its UPC
             try:
                 info, answer = fn(gtin)
             except (urllib.error.URLError, TimeoutError, OSError, ValueError) as e:
@@ -605,6 +911,8 @@ class Lookup:
             merged = infos[0][1]
             for _, info in infos[1:]:
                 merged = merge(merged, info)
+        merged["evidence"] = list(self._tl.evidence)
+        self._tl.evidence = None
         merged["derived_per_100g"] = derived(merged.get("nutrition_per_100g", {}))
         merged["looked_up_at"] = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
         return LookupResult(bool(infos), merged, raw, [n for n, _ in infos], errors)

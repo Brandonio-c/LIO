@@ -120,13 +120,27 @@ def parse_brave_html(page: str) -> list[dict[str, str]]:
 
 
 class WebSearch:
-    def __init__(self, settings: WebSettings, get: Get | None = None) -> None:
+    def __init__(self, settings: WebSettings, get: Get | None = None, evidence: Any = None) -> None:
         self.s = settings
         self._get = get or _http_get
+        # (url, bytes, media type) -> SHA-256: every page read for ingredients is stored
+        self.evidence = evidence
 
     def _page(self, url: str, accept: str = "text/html") -> str:
+        """A page that is not evidence (search-engine result pages)."""
         headers = {"User-Agent": BROWSER_UA, "Accept": accept, "Accept-Language": "en-US,en;q=0.8"}
         return self._get(url, headers, self.s.timeout_s).decode("utf-8", "replace")
+
+    def _page_bytes(self, url: str, accept: str = "text/html") -> tuple[str, str | None]:
+        headers = {"User-Agent": BROWSER_UA, "Accept": accept, "Accept-Language": "en-US,en;q=0.8"}
+        data = self._get(url, headers, self.s.timeout_s)
+        sha = None
+        if self.evidence is not None:
+            try:
+                sha = self.evidence(url, data, "text/html")
+            except OSError:
+                sha = None
+        return data.decode("utf-8", "replace"), sha
 
     def search(self, query: str) -> tuple[str, list[dict[str, str]], list[str]]:
         """(engine used, results [{url, title}], errors of the engines tried before it)."""
@@ -186,7 +200,8 @@ class WebSearch:
             "error": "",
         }
         try:
-            page = self._page(url)
+            page, sha = self._page_bytes(url)
+            out["sha256"] = sha or ""
         except urllib.error.HTTPError as e:
             out["error"] = f"the site refused automated access ({e.code})"
             return out

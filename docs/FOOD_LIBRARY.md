@@ -92,3 +92,37 @@ This installs zxing-cpp, Pillow and segno. Without them, type the digits instead
 ## Verified composition
 
 Values that can be proven, as exact intervals with VERIFIED / ATTESTED / UNVERIFIED badges, are kept apart from the library's database values. See [COMPOSITION_VERIFICATION.md](COMPOSITION_VERIFICATION.md). To create them for a sample, save a Nutrition Facts photo, tick the rows that match the pack, and sign with your name. The inspector's **Composition** tab shows the result, checked by `lio-verify`.
+
+## Where ingredient lists come from
+
+A scan is looked up in this order. Each source is tried with **every barcode form**: UPC-A, EAN-13, GTIN-14 and, where one exists, UPC-E. One check digit serves all of them, and it is verified first. A hit is confirmed by comparing the source's stored barcode digit for digit. The matching form is logged and kept in the product's `matched_forms`.
+
+1. **USDA FoodData Central.** FDC stores the barcode in the form the brand sent: 12, 13 or 14 digits.
+2. **NIH DSLD.** DSLD stores it as printed ("7 02669 93439 8", "5 453003 821090"), so spaced and plain forms are searched. EAN-13 supplements are included.
+3. **openFDA drug labels by UPC.**
+4. **The NDC in the barcode.** A UPC that starts with 3 can carry a drug's 10-digit NDC. The 4-4-2, 5-3-2 and 5-4-1 readings are all tried: openFDA labels by package NDC, then by product NDC, then DailyMed by NDC. The NDC in a barcode can be out of date, so a match is a lead to confirm. Citrucel Orange's UPC, for example, carries a retired Merrell Dow NDC, `0068-0418-30`.
+5. **SmartLabel API.** Used only with a Label Insight key, from `$LIO_SMARTLABEL_KEY` or `data/foods/smartlabel_key.txt`. There is no public access.
+6. **Open Food Facts.** The ingredient list in every language present is kept.
+
+Every source's ingredient information is kept as ordered **`ingredient_parts`**, each with the field it came from:
+
+| Product type | Parts kept |
+|---|---|
+| Drugs | Active and inactive ingredients, and the "Other information" minerals. Each variant an SPL covers is kept apart. |
+| Supplements | Dietary ingredients and other ingredients. |
+| Open Food Facts | Every `ingredients_text_<language>`. |
+| FDC | The ingredient list, flagged `possibly_truncated` when it stops without closing punctuation. |
+
+The summary `ingredients_text` names its origin in `ingredients_text_origin`. When the comp extra is installed, every raw answer and every web page read for ingredients is stored by SHA-256 in `data/foods/composition/sources`.
+
+**Find online**, when the barcode gives no list:
+- label databases by name, plus DailyMed SPLs by name (this offers Citrucel's set `9d5f2244`);
+- web pages, with the manufacturer's own pages flagged, and each page read kept by hash;
+- SmartLabel and GS1 Digital Link pages;
+- retailer searches as links you open yourself. Retailer pages are never fetched automatically, under their terms of service.
+
+Nothing found online is saved until you confirm it.
+
+**Ingredients panel photo.** Apple Vision reads the photo in its accurate mode, and the deterministic parser cuts out the list. You correct the text if needed and tick "matches the label word for word" to sign it. The photo's hash, the list's bounding box and your signed confirmation then become ATTESTED ingredients in the sample's verified record ([COMPOSITION_VERIFICATION.md](COMPOSITION_VERIFICATION.md)).
+
+To measure coverage, run `python tools/ingredient_coverage.py --out test_results/coverage/<name> [--compare <earlier>]`. The before and after reports for this change are in [`docs/reports/`](reports/).

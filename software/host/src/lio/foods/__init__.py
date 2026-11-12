@@ -59,6 +59,7 @@ def settings(cfg: HwConfig, repo_root: Path) -> FoodSettings:
             usda_api_key=usda_key(d, str(f.get("usda_api_key", ls.usda_api_key) or "")),
             user_agent=str(f.get("user_agent", ls.user_agent)),
             timeout_s=float(f.get("lookup_timeout_s", ls.timeout_s)),
+            smartlabel_key=secret_key(d, "LIO_SMARTLABEL_KEY", "smartlabel_key.txt"),
         ),
     )
 
@@ -76,12 +77,44 @@ def usda_key(foods_dir: Path, configured: str) -> str:
     return key or configured
 
 
+def secret_key(foods_dir: Path, env: str, filename: str) -> str:
+    """A key from $<env>, else <foods dir>/<filename> (gitignored). Never from lio_hw.yaml."""
+    v = os.environ.get(env, "").strip()
+    if v:
+        return v
+    try:
+        return (foods_dir / filename).read_text().strip()
+    except OSError:
+        return ""
+
+
+def evidence_store(foods_dir: Path) -> Any:
+    """Store every raw answer from the product databases and web pages by SHA-256 in
+    <foods dir>/composition/sources (needs the ``comp`` extra; otherwise nothing is
+    stored and lookups work as before)."""
+    try:
+        from lio_comp.evidence import Retrieval, put
+        from lio_comp.fetch import now_utc
+    except ImportError:
+        return None
+    root = foods_dir / "composition" / "sources"
+
+    def store(url: str, data: bytes, media_type: str) -> str:
+        return put(root, data, media_type or "application/octet-stream",
+                   Retrieval(url, now_utc(), {}, "lio.foods.lookup@2"))  # fmt: skip
+
+    return store
+
+
 def open_library(s: FoodSettings) -> FoodLibrary:
+    ev = evidence_store(s.dir)
     lib = FoodLibrary(
-        s.dir, Lookup(s.lookup) if s.online_lookup else None, photo_max_px=s.photo_max_px
+        s.dir,
+        Lookup(s.lookup, evidence=ev) if s.online_lookup else None,
+        photo_max_px=s.photo_max_px,
     )
     if s.online_lookup:
-        lib.web = WebSearch(s.web)
+        lib.web = WebSearch(s.web, evidence=ev)
     return lib
 
 

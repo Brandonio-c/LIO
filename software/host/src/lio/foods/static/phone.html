@@ -181,13 +181,14 @@ details summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
       </div>
       <div id="ingr-missing" class="warn hidden" style="margin:0 0 10px"><strong>No ingredient list online for this product.</strong> Photograph the ingredients panel on the pack and it will be read for you.</div>
       <div id="ingr-online"></div>
-      <button class="btn" id="btn-ingr">Photograph the ingredients</button>
+      <button class="btn" id="btn-ingr">Ingredients panel photo</button>
       <div id="ingr-review" class="hidden" style="margin-top:10px">
         <div class="ok-banner" style="margin-bottom:6px" id="ingr-review-head">Read from the label: check it and correct anything misread.</div>
         <label class="f">Ingredients<textarea id="ingr-edit" style="min-height:120px"></textarea></label>
         <label class="f">Contains (allergens)<input type="text" id="ingr-contains"></label>
+        <label class="check hidden" id="ingr-attest-wrap" style="display:flex;gap:8px;margin-top:8px"><input type="checkbox" id="ingr-attest"> The list above matches the label word for word. Sign it with my name (Entered by) as attested ingredients.</label>
       </div>
-      <button class="btn quiet" id="btn-nut" style="margin-top:10px">Photograph the nutrition facts (optional)</button>
+      <button class="btn quiet" id="btn-nut" style="margin-top:10px">Nutrition panel photo (optional)</button>
       <div id="nut-review" class="hidden" style="margin-top:10px"></div>
       <input type="file" id="file-label" accept="image/*" capture="environment" class="hidden">
       <input type="file" id="file-fix" accept="image/*" capture="environment" class="hidden">
@@ -327,7 +328,7 @@ function renderProduct(r) {
   $("ingr-text").textContent = ingr;
   const isrc = info.ingredients_source || (p.sources || [])[0] || "";
   $("ingr-src").textContent = ingr ? "From " + ({ openfoodfacts: "Open Food Facts", usda: "USDA", dsld: "NIH supplement label database", "label photo": "a label photo", manual: "typed in" }[isrc] || isrc) + ". Check it matches the pack." : "";
-  $("btn-ingr").textContent = ingr ? "Photograph the ingredients anyway" : "Photograph the ingredients";
+  $("btn-ingr").textContent = ingr ? "Ingredients panel photo anyway" : "Ingredients panel photo";
   $("btn-ingr").className = ingr ? "btn quiet" : "btn primary";
   ingredientsFound = null; $("ingr-online").innerHTML = "";
   if (!ingr) findOnline(r.gtin14, $("ingr-online"), (it) => {
@@ -487,7 +488,8 @@ $("file-label").onchange = async (e) => {
   try {
     const r = await api("/api/label", { photo: await shrink(f, 3000, 0.92), kind });
     if (kind === "ingredients") {
-      labels.ingredients = { label_draft: r.label_draft, kind }; ingredientsFound = null;
+      labels.ingredients = { label_draft: r.label_draft, kind, can_attest: !!r.can_attest }; ingredientsFound = null;
+      $("ingr-attest-wrap").classList.toggle("hidden", !r.can_attest); $("ingr-attest").checked = false;
       $("ingr-review-head").textContent = "Read from the label: check it and correct anything misread.";
       $("ingr-edit").value = r.ingredients || r.text; $("ingr-contains").value = r.contains || "";
       $("ingr-review").classList.remove("hidden"); $("ingr-missing").classList.add("hidden");
@@ -523,7 +525,14 @@ $("btn-save").onclick = async () => {
   try {
     store.set("lio-entered-by", $("by").value.trim());
     const lab = [];
-    if (labels.ingredients) lab.push({ ...labels.ingredients, ingredients_text: $("ingr-edit").value, contains: $("ingr-contains").value });
+    if (labels.ingredients) {
+      const li = { label_draft: labels.ingredients.label_draft, kind: "ingredients", ingredients_text: $("ingr-edit").value, contains: $("ingr-contains").value };
+      if (labels.ingredients.can_attest && $("ingr-attest").checked) {
+        if (!$("by").value.trim()) throw new Error("Type your name in 'Entered by' to sign the ingredient list (or untick the box).");
+        li.attest = { signer: $("by").value.trim() };
+      }
+      lab.push(li);
+    }
     if (labels.nutrition) {
       const att = $("nut-attest");
       if (att && att.checked) {

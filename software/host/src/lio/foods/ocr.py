@@ -347,6 +347,31 @@ def panel_rows(lines: list[Line], size: tuple[int, int]) -> list[dict[str, Any]]
     return rows
 
 
+def ingredient_region(lines: list[Line], size: tuple[int, int]) -> dict[str, int] | None:
+    """Pixel box (upright photo, origin top-left) around the ingredient list: from the
+    line with the "Ingredients:" heading to the line before the next section, in
+    reading order. Deterministic; the operator confirms the list text itself."""
+    order = [ln for col in columns(lines) for ln in col]
+    start = next((i for i, ln in enumerate(order) if _START.search(ln.text)), None)
+    if start is None:
+        return None
+    end = len(order)
+    for j in range(start + 1, len(order)):
+        if _STOP.search(order[j].text):
+            end = j
+            break
+    sel = order[start:end]
+    w, h = size
+    x0, x1 = min(ln.x for ln in sel), max(ln.x + ln.w for ln in sel)
+    y0, y1 = min(ln.y for ln in sel), max(ln.y + ln.h for ln in sel)
+    return {
+        "x": max(0, round(x0 * w)),
+        "y": max(0, round((1 - y1) * h)),
+        "w": max(1, round((x1 - x0) * w)),
+        "h": max(1, round((y1 - y0) * h)),
+    }
+
+
 def upright_size(data: bytes) -> tuple[int, int]:
     from PIL import Image, ImageOps
 
@@ -370,4 +395,5 @@ def read_label(data: bytes) -> dict[str, Any]:
         "nutrition": nutrition,
         "image_size": list(size),
         "panel_rows": panel_rows(found, size),
+        "ingredient_box": ingredient_region(found, size),
     }

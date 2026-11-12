@@ -9,9 +9,11 @@ from __future__ import annotations
 
 import base64
 import json
+import re
 import secrets
 import threading
 import time
+import urllib.parse
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -43,6 +45,22 @@ class _Draft:
     fmt: str
     photo: bytes | None
     at: float = field(default_factory=time.monotonic)
+
+
+def retailer_links(code: str, query: str) -> list[dict[str, str]]:
+    """Retailer searches for the user to open themselves. They are never fetched by
+    this program (retailers' terms forbid automated access)."""
+    q = urllib.parse.quote_plus(code)
+    return [
+        {"name": "Walmart", "url": f"https://www.walmart.com/search?q={q}"},
+        {"name": "Target", "url": f"https://www.target.com/s?searchTerm={q}"},
+        {"name": "Amazon", "url": f"https://www.amazon.com/s?k={q}"},
+        {"name": "Kroger", "url": f"https://www.kroger.com/search?query={q}"},
+        {
+            "name": "Google Shopping",
+            "url": f"https://www.google.com/search?tbm=shop&q={urllib.parse.quote_plus(query)}",
+        },
+    ]
 
 
 class Intake:
@@ -133,7 +151,10 @@ class Intake:
                 del self._labels[next(iter(self._labels))]
             self._labels[key] = (now, kind, photo, res["text"], res)
         rows = [{"index": i, **r} for i, r in enumerate(res.get("panel_rows") or [])]
-        can_attest = kind == "nutrition" and self.composition is not None and bool(rows)
+        can_attest = self.composition is not None and (
+            (kind == "nutrition" and bool(rows))
+            or (kind == "ingredients" and res.get("ingredient_box") is not None)
+        )
         return {"label_draft": key, "kind": kind, **res, "panel_rows": rows,
                 "can_attest": can_attest}  # fmt: skip
 
@@ -150,7 +171,12 @@ class Intake:
         if d is None:
             raise LibraryError("this label photo expired or was already saved: take it again")
         _, kind, photo, text, res = d
-        attest = self._attested_rows(kind, res, label.get("attest"))
+        attest = None
+        if kind == "ingredients" and label.get("attest"):
+            attest_ingr = self._attested_list(res, label)
+        else:
+            attest_ingr = None
+            attest = self._attested_rows(kind, res, label.get("attest"))
         sample = self.lib.add_label_photo(code, kind, photo, text)
         fields: dict[str, Any] = {}
         if kind == "ingredients" and str(label.get("ingredients_text") or "").strip():
@@ -170,6 +196,17 @@ class Intake:
         if fields:
             self.lib.set_product_info(sample["gtin14"], fields, source="label photo")
         out = self.lib.sample(code)
+        if attest_ingr is not None:
+            from lio_comp.samples import CompositionError
+
+            signer, list_text = attest_ingr
+            product = self.lib.product(normalise(out["gtin14"]))
+            try:
+                out["composition"] = self.composition.attest_ingredients(
+                    out, product, photo, res["image_size"], res["ingredient_box"], list_text, signer
+                )
+            except CompositionError as e:
+                raise LibraryError(f"the label was saved, but not attested: {e}") from e
         if attest is not None:
             signer, rows = attest
             from lio_comp.samples import CompositionError
@@ -182,6 +219,24 @@ class Intake:
             except CompositionError as e:
                 raise LibraryError(f"the label was saved, but not attested: {e}") from e
         return out
+
+    def _attested_list(self, res: dict[str, Any], label: dict[str, Any]) -> tuple[str, str]:
+        """An ingredient list the operator confirmed word for word (checked before saving)."""
+        if self.composition is None or res.get("ingredient_box") is None:
+            raise LibraryError("this photo's ingredient list cannot be attested (no list found)")
+        signer = " ".join(str((label.get("attest") or {}).get("signer") or "").split())
+        text = " ".join(str(label.get("ingredients_text") or "").split())
+        if not signer:
+            raise LibraryError("type your name to attest the ingredient list")
+        if not text:
+            raise LibraryError("the ingredient list is empty")
+        from lio_verify import textrules
+
+        try:
+            textrules.split_list(text)
+        except textrules.RuleError as e:
+            raise LibraryError(str(e)) from e
+        return signer, text
 
     def _attested_rows(
         self, kind: str, res: dict[str, Any], attest: Any
@@ -247,12 +302,38 @@ class Intake:
         def web() -> None:
             if lib.web is not None:
                 out["web"] = lib.web.find(f"{q} ingredients", brand_hint=p["brand"] or q)
+                brand = [
+                    w for w in re.findall(r"[a-z0-9]+", (p["brand"] or "").lower()) if len(w) > 2
+                ]
+                for page in out["web"].get("pages") or []:
+                    dom = str(page.get("domain") or "").replace("-", "")
+                    page["manufacturer"] = bool(brand) and any(w in dom for w in brand)
 
-        threads = [threading.Thread(target=structured), threading.Thread(target=web)]
+        def smartlabel() -> None:
+            lk = lib.lookup
+            assert lk is not None
+            sl: dict[str, Any] = {
+                "configured": bool(lk.s.smartlabel_key),
+                "result": None,
+                "link": "https://www.smartlabel.org/",
+                "gs1_links": [],
+            }
+            try:
+                info, _ = lk.smartlabel(g)
+                if info is not None:
+                    sl["result"] = {"ingredients_text": info["ingredients_text"],
+                                    "name": info["name"], "brand": info["brand"]}  # fmt: skip
+                sl["gs1_links"] = lk.gs1_resolver(g)
+            except (OSError, ValueError) as e:
+                out["errors"].append(f"SmartLabel: {e}")
+            out["smartlabel"] = sl
+
+        threads = [threading.Thread(target=f) for f in (structured, web, smartlabel)]
         for t in threads:
             t.start()
         for t in threads:
             t.join(timeout=60)
+        out["retailers"] = retailer_links(g.code, q)
         return out
 
     def confirm_ingredients(self, gtin14: str, fields: dict[str, Any]) -> dict[str, Any]:

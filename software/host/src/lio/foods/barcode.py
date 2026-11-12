@@ -54,6 +54,30 @@ def expand_upce(code: str) -> str:
     return upca
 
 
+def compress_upce(upca: str) -> str | None:
+    """The 8-digit UPC-E form of a UPC-A, if it has one (checked by expanding it back)."""
+    if len(upca) != 12 or upca[0] not in "01":
+        return None
+    ns, m, chk = upca[0], upca[1:11], upca[11]
+    cands = []
+    if m[2] in "012" and m[3:7] == "0000":
+        cands.append(m[0:2] + m[7:10] + m[2])
+    if m[3:8] == "00000":
+        cands.append(m[0:3] + m[8:10] + "3")
+    if m[4:9] == "00000":
+        cands.append(m[0:4] + m[9] + "4")
+    if m[5:9] == "0000" and m[9] in "56789":
+        cands.append(m[0:5] + m[9])
+    for d in cands:
+        code = ns + d + chk
+        try:
+            if expand_upce(code) == upca:
+                return code
+        except BarcodeError:
+            continue
+    return None
+
+
 @dataclass(frozen=True)
 class Gtin:
     gtin14: str  # the key: 14 digits
@@ -61,13 +85,79 @@ class Gtin:
     kind: str  # EAN-8 | UPC-A | EAN-13 | GTIN-14
 
     @property
+    def forms(self) -> dict[str, str]:
+        """Every form a source may file this product under, most common first.
+
+        The check digit was verified by :func:`normalise`; every form here
+        shares it (UPC-E carries the UPC-A check digit).
+        """
+        out: dict[str, str] = {}
+        if self.gtin14.startswith("00") and not self.gtin14.startswith("000000"):
+            out["UPC-A"] = self.gtin14[2:]
+        out["EAN-13"] = self.gtin14[1:]
+        out["GTIN-14"] = self.gtin14
+        if self.kind == "EAN-8":
+            out["EAN-8"] = self.gtin14[6:]
+        upce = compress_upce(out.get("UPC-A", ""))
+        if upce:
+            out["UPC-E"] = upce
+        return out
+
+    @property
     def lookup_codes(self) -> list[str]:
         """Forms to try against product databases, most likely first."""
-        out = [self.code]
-        for form in (self.gtin14[1:], self.gtin14):  # EAN-13, GTIN-14
-            if form not in out:
-                out.append(form)
-        return out
+        return list(dict.fromkeys([self.code, *self.forms.values()]))
+
+    def form_of(self, stored: str) -> str:
+        """Which form a source's stored barcode is (``"UPC-A"``...), or ``""``."""
+        digits = "".join(ch for ch in str(stored) if ch.isdigit())
+        for name, code in self.forms.items():
+            if digits == code:
+                return name
+        if digits and digits.zfill(14) == self.gtin14:
+            return f"{len(digits)} digits"
+        return ""
+
+    def matches(self, stored: str) -> bool:
+        digits = "".join(ch for ch in str(stored) if ch.isdigit())
+        if len(digits) == 8 and digits[0] in "01":
+            try:
+                if expand_upce(digits).zfill(14) == self.gtin14:
+                    return True
+            except BarcodeError:
+                pass
+        return bool(digits) and digits.zfill(14) == self.gtin14
+
+
+@dataclass(frozen=True)
+class Ndc:
+    pattern: str  # "4-4-2" | "5-3-2" | "5-4-1"
+    ndc: str  # dashed, as in the NDC directory
+    ndc11: str  # 5-4-2, zero-padded (billing form)
+
+    @property
+    def product(self) -> str:
+        return self.ndc.rsplit("-", 1)[0]
+
+
+def ndc_candidates(gtin: Gtin) -> list[Ndc]:
+    """A UPC-A starting with 3 can carry a 10-digit NDC (number system 3). Which split
+    of the 10 digits is meant (4-4-2, 5-3-2, 5-4-1) is not encoded, so all three are
+    returned; each must be confirmed against the NDC directory or DailyMed.
+
+    The NDC in a barcode can be stale (a product relabelled under a new NDC keeps
+    its UPC), so a match is a lead, not proof of identity.
+    """
+    upca = gtin.forms.get("UPC-A", "")
+    if not upca.startswith("3"):
+        return []
+    n = upca[1:11]
+    out = []
+    for pat, (a, b) in (("4-4-2", (4, 8)), ("5-3-2", (5, 8)), ("5-4-1", (5, 9))):
+        lab, prod, pkg = n[:a], n[a:b], n[b:]
+        ndc11 = f"{lab.zfill(5)}-{prod.zfill(4)}-{pkg.zfill(2)}"
+        out.append(Ndc(pat, f"{lab}-{prod}-{pkg}", ndc11))
+    return out
 
 
 def normalise(text: str, fmt: str = "") -> Gtin:

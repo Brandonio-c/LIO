@@ -1,5 +1,30 @@
 # Changelog
 
+## 2026-11-12: Ingredient coverage for barcode lookups
+
+### Fixed
+- **Barcode forms.** Every source is tried with every barcode form (UPC-A, EAN-13, GTIN-14, UPC-E), sharing one verified check digit. A hit is confirmed against the stored barcode, and the form that matched is logged and kept (`matched_forms`).
+  - FDC products stored as 12-digit UPCs were missed (Kraft Mac & Cheese).
+  - EAN-13 supplements were skipped by DSLD (SuperSmart: no list before, full label now).
+- **Open Food Facts.** The longest ingredient list among the languages present is used, and every language is kept. Nutella France went from "sugar, palm oil" to the full French list with its QUID percentages.
+
+### Added
+- **NDC from drug UPCs.** A UPC starting with 3 is decoded to its NDC (4-4-2, 5-3-2 and 5-4-1 readings) and looked up in openFDA (by package, then product NDC) and DailyMed. The match is marked as a lead to confirm.
+- **DailyMed in name search.** Citrucel Orange's UPC carries a retired NDC (`0068-0418-30`), so name search is what finds its SPL, set `9d5f2244`, for the user to confirm.
+- **`ingredient_parts`.** Ingredient information is kept in order, each part with its origin field:
+  - drugs: active, inactive and "Other information", with the variants of a multi-product SPL kept apart;
+  - DSLD: dietary and other ingredients;
+  - Open Food Facts: every language;
+  - FDC: the list, with a possible-truncation flag.
+- **Evidence.** Raw database answers and web pages read for ingredients are stored by SHA-256 when the comp extra is installed. API keys are removed from recorded URLs.
+- **Find online.**
+  - The SmartLabel API is used when a Label Insight key is configured; otherwise SmartLabel is a link.
+  - GS1 Digital Link pages.
+  - Manufacturer pages are flagged.
+  - Retailer searches are links only, never fetched.
+- **Ingredients panel photo.** The confirmed list is signed by the operator and becomes ATTESTED ingredients in the sample's composition record: photo hash, bounding box, one ingredient per list item. The verifier marks ingredients read from a photo as ATTESTED.
+- `tools/ingredient_coverage.py`: a per-source, per-barcode-form coverage report, with before/after comparison (reports in `docs/reports/`).
+
 ## 2026-11-11: Verifiable composition, M5 (attestation, badges, training export, docs)
 
 ### Added
