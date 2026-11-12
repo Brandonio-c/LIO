@@ -121,6 +121,67 @@ def recognise(data: bytes) -> list[Line]:
     ]
 
 
+def recognise_tesseract(data: bytes) -> list[Line]:
+    """Fallback OCR when Apple Vision fails: Tesseract (open source, if installed), one
+    Line per Tesseract text line, in Vision's coordinates (normalised, origin bottom-left).
+    Only proposes text, like Vision; the operator confirms."""
+    exe = shutil.which("tesseract") or next(
+        (
+            p
+            for p in ("/opt/homebrew/bin/tesseract", "/usr/local/bin/tesseract")
+            if Path(p).is_file()
+        ),
+        None,
+    )
+    if exe is None:
+        raise OcrError("Apple Vision failed and Tesseract is not installed")
+    from PIL import Image
+
+    img = _upright_jpeg(data)
+    w, h = Image.open(io.BytesIO(img)).size
+    with tempfile.NamedTemporaryFile(suffix=".jpg") as f:
+        f.write(img)
+        f.flush()
+        r = subprocess.run([exe, f.name, "stdout", "--psm", "3", "tsv"], capture_output=True,
+                           text=True, timeout=120, check=False)  # fmt: skip
+    if r.returncode != 0:
+        raise OcrError(f"Tesseract failed: {r.stderr.strip()[-200:]}")
+    groups: dict[tuple[str, ...], list[list[str]]] = {}
+    for row in r.stdout.splitlines()[1:]:
+        c = row.split("\t")
+        if len(c) == 12 and c[0] == "5" and c[11].strip():
+            groups.setdefault((c[2], c[3], c[4]), []).append(c)
+    out = []
+    for words in groups.values():
+        x0 = min(int(c[6]) for c in words)
+        y0 = min(int(c[7]) for c in words)
+        x1 = max(int(c[6]) + int(c[8]) for c in words)
+        y1 = max(int(c[7]) + int(c[9]) for c in words)
+        conf = min(float(c[10]) for c in words) / 100.0
+        out.append(
+            Line(
+                " ".join(c[11] for c in words),
+                conf,
+                x0 / w,
+                1 - y1 / h,
+                (x1 - x0) / w,
+                (y1 - y0) / h,
+            )
+        )
+    return out
+
+
+def recognise_any(data: bytes) -> tuple[list[Line], str]:
+    """Apple Vision, or Tesseract when Vision fails; with the engine's name."""
+    try:
+        return recognise(data), "apple-vision"
+    except OcrError as vision_error:
+        try:
+            return recognise_tesseract(data), "tesseract (Apple Vision failed)"
+        except OcrError as e:
+            raise OcrError(f"{vision_error}; {e}") from e
+
+
 def columns(lines: list[Line]) -> list[list[Line]]:
     """Group lines into text columns (overlapping horizontally), each top to bottom.
 
@@ -422,9 +483,9 @@ def upright_size(data: bytes) -> tuple[int, int]:
     return int(img.size[0]), int(img.size[1])
 
 
-def read_label(data: bytes) -> dict[str, Any]:
+def read_label(data: bytes, kind: str = "") -> dict[str, Any]:
     """Everything the phone app and the dashboard need from one label photo."""
-    found = recognise(data)
+    found, engine = recognise_any(data)
     cols = columns(found)
     lines = [ln.text for col in cols for ln in col]
     ingr = extract_ingredients(lines)
@@ -440,4 +501,14 @@ def read_label(data: bytes) -> dict[str, Any]:
         "panel_rows": panel_rows(found, size),
         "ingredient_box": ingredient_region(found, size),
         "ndc_candidates": ndc_candidates(found, size),
+        "panel": _panel(kind, found, size),
+        "ocr_engine": engine,
     }
+
+
+def _panel(kind: str, found: list[Line], size: tuple[int, int]) -> dict[str, Any] | None:
+    if kind not in ("drug_facts", "supplement_facts"):
+        return None
+    from . import panels
+
+    return panels.parse(kind, found, size)

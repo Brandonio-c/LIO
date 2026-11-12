@@ -669,7 +669,7 @@ class TestSupplementsAndPicking:
         monkeypatch.setattr(
             intake_mod,
             "read_label",
-            lambda data: {
+            lambda data, kind="": {
                 "lines": ["INGREDIENTS: OATS, SALT."], "text": "INGREDIENTS: OATS, SALT.",
                 "ingredients": "OATS, SALT", "contains": "", "heading": "INGREDIENTS",
                 "nutrition": {"per_100g": {}, "serving": "", "serving_g": None},

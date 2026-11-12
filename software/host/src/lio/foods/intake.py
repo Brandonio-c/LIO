@@ -137,7 +137,7 @@ class Intake:
         if not photo:
             raise LibraryError("no photo")
         try:
-            res = read_label(photo)
+            res = read_label(photo, kind)
         except OcrError as e:
             raise LibraryError(str(e)) from e
         if not res["lines"]:
@@ -157,6 +157,17 @@ class Intake:
                 "kind": kind,
                 **res,
                 "can_attest": bool(res.get("ndc_candidates")),
+            }
+        if kind in ("drug_facts", "supplement_facts"):
+            from .panels import flatten
+
+            fields = flatten(kind, res.get("panel"))
+            res["panel_fields"] = fields
+            return {
+                "label_draft": key,
+                "kind": kind,
+                **res,
+                "can_attest": self.composition is not None and bool(fields),
             }
         can_attest = self.composition is not None and (
             (kind == "nutrition" and bool(rows))
@@ -180,6 +191,8 @@ class Intake:
         _, kind, photo, text, res = d
         if kind == "ndc":
             return self._apply_ndc(code, photo, res, label)
+        if kind in ("drug_facts", "supplement_facts"):
+            return self._apply_panel(code, kind, photo, text, res, label)
         attest = None
         if kind == "ingredients" and label.get("attest"):
             attest_ingr = self._attested_list(res, label)
@@ -227,6 +240,56 @@ class Intake:
                 )
             except CompositionError as e:
                 raise LibraryError(f"the label was saved, but not attested: {e}") from e
+        return out
+
+    def _apply_panel(
+        self,
+        code: str,
+        kind: str,
+        photo: bytes,
+        text: str,
+        res: dict[str, Any],
+        label: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Drug Facts / Supplement Facts fields the operator ticked (texts may be corrected;
+        boxes are this server's) become ATTESTED facts in the sample's record."""
+        att = label.get("attest") or {}
+        signer = " ".join(str(att.get("signer") or "").split())
+        fields = res.get("panel_fields") or []
+        picked = []
+        for item in att.get("fields") or []:
+            i = int(item.get("index", -1))
+            if not 0 <= i < len(fields):
+                raise LibraryError("a ticked field is not in this photo")
+            corrected = " ".join(str(item.get("text") or fields[i]["text"]).split())
+            picked.append({**fields[i], "text": corrected})
+        if picked and (self.composition is None or not signer):
+            raise LibraryError("type your name to attest the ticked fields")
+        from lio_verify import textrules
+
+        for f in picked:
+            try:
+                if f["rule"] == "list_item@2":
+                    if not textrules.split_list2(f["text"]):
+                        raise textrules.RuleError("the list is empty")
+                elif f["rule"]:
+                    textrules.apply(f["rule"], f["text"])
+            except textrules.RuleError as e:
+                raise LibraryError(f"{f['field']}: {e}") from e
+        sample = self.lib.add_label_photo(code, kind, photo, text)
+        out = self.lib.sample(code)
+        if picked and self.composition is not None:
+            product = self.lib.product(normalise(sample["gtin14"]))
+            out["composition"] = self.composition.attest_fields(
+                out,
+                product,
+                photo,
+                res["image_size"],
+                kind,
+                picked,
+                signer,
+                res.get("ocr_engine", ""),
+            )
         return out
 
     def _apply_ndc(

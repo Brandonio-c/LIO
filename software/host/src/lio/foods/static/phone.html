@@ -191,6 +191,8 @@ details summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
       <div id="ndc-box" class="hidden" style="margin-top:10px"><div class="warn" id="ndc-why">This is a drug whose barcode does not name its current label. Photograph the <b>NDC</b> printed on the carton (e.g. "NDC 41520-745-18") so the exact label can be found.</div>
         <button class="btn primary" id="btn-ndc" style="margin-top:8px">NDC panel photo</button><div id="ndc-review" class="hidden" style="margin-top:8px"></div></div>
       <button class="btn quiet" id="btn-nut" style="margin-top:10px">Nutrition panel photo (optional)</button>
+      <div class="row" style="margin-top:8px;gap:8px"><button class="btn quiet" id="btn-sfp">Supplement Facts photo</button><button class="btn quiet" id="btn-dfp">Drug Facts photo</button></div>
+      <div id="pf-review" class="hidden" style="margin-top:8px"></div>
       <div id="nut-review" class="hidden" style="margin-top:10px"></div>
       <input type="file" id="file-label" accept="image/*" capture="environment" class="hidden">
       <input type="file" id="file-fix" accept="image/*" capture="environment" class="hidden">
@@ -488,12 +490,21 @@ const NUT_NAMES = { energy_kcal: ["Energy", "kcal"], fat_g: ["Fat", "g"], satura
 $("btn-ingr").onclick = () => { labelKind = "ingredients"; $("file-label").click(); };
 $("btn-nut").onclick = () => { labelKind = "nutrition"; $("file-label").click(); };
 $("btn-ndc").onclick = () => { labelKind = "ndc"; $("file-label").click(); };
+$("btn-sfp").onclick = () => { labelKind = "supplement_facts"; $("file-label").click(); };
+$("btn-dfp").onclick = () => { labelKind = "drug_facts"; $("file-label").click(); };
 $("file-label").onchange = async (e) => {
   const f = e.target.files && e.target.files[0]; e.target.value = ""; if (!f) return;
   const kind = labelKind; error(""); busy(kind === "ingredients" ? "Reading the ingredients…" : "Reading the nutrition facts…");
   try {
     const r = await api("/api/label", { photo: await shrink(f, 3000, 0.92), kind });
-    if (kind === "ndc") {
+    if (kind === "drug_facts" || kind === "supplement_facts") {
+      const fs = r.panel_fields || [];
+      labels.panel = { label_draft: r.label_draft, kind, fields: fs };
+      $("pf-review").innerHTML = fs.length
+        ? `<div class="note">Read (${esc(r.ocr_engine || "OCR")}). Tick each field that matches the pack:</div>${fs.map((f) => `<label class="check" style="display:flex;gap:8px;margin-top:6px"><input type="checkbox" data-pf="${f.index}"> ${esc(f.text)}</label>`).join("")}<div class="note" style="margin-top:6px">Ticked fields are saved with your name (Entered by) as attested values.</div>`
+        : `<div class="warn">No fields could be read: photograph the whole panel, flat and well lit.</div>`;
+      $("pf-review").classList.remove("hidden");
+    } else if (kind === "ndc") {
       const cs = r.ndc_candidates || [];
       labels.ndc = { label_draft: r.label_draft, kind, cands: cs };
       $("ndc-review").innerHTML = cs.length
@@ -545,6 +556,11 @@ $("btn-save").onclick = async () => {
         li.attest = { signer: $("by").value.trim() };
       }
       lab.push(li);
+    }
+    if (labels.panel) {
+      const ticked = [...document.querySelectorAll("[data-pf]")].filter((c) => c.checked).map((c) => ({ index: +c.dataset.pf }));
+      if (ticked.length && !$("by").value.trim()) throw new Error("Type your name in 'Entered by' to sign the ticked fields.");
+      lab.push({ label_draft: labels.panel.label_draft, kind: labels.panel.kind, attest: { signer: $("by").value.trim(), fields: ticked } });
     }
     if (labels.ndc) {
       const pick = document.querySelector('input[name="ndc-pick"]:checked');

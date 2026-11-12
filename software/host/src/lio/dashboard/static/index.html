@@ -1601,6 +1601,8 @@ function dbIngredients(s, p) {
   box.innerHTML = `<h3>Ingredients ${has ? `<span class="tag">${esc(srcName(src))}</span>` : ""}<span class="sp"></span>
       <button class="btn small" data-label="ingredients">Ingredients panel photo…</button>
       <button class="btn small" data-label="nutrition">Nutrition label photo…</button>
+      <button class="btn small" data-label="supplement_facts">Supplement Facts photo…</button>
+      <button class="btn small" data-label="drug_facts">Drug Facts photo…</button>
       ${(info.categories || []).some((c) => /drug/i.test(c)) || (info.drug_resolution || {}).embedded ? `<button class="btn small${(info.drug_resolution || {}).needs_printed_ndc ? " primary" : ""}" data-label="ndc">NDC photo…</button>` : ""}
       <button class="btn small${has ? "" : " primary"}" id="db-find">Find ingredients online…</button></h3>
     ${has ? `<div style="font-size:14px;line-height:1.55">${esc(info.ingredients_text)}</div>${info.contains ? `<div style="margin-top:6px"><span class="note">Contains:</span> ${esc(info.contains)}</div>` : ""}`
@@ -1627,6 +1629,26 @@ const dbDomain = (u) => { try { return new URL(u).hostname.replace(/^www\./, "")
 
 function dbLabelReview(s, kind, r) {
   const box = $("db-label-review"), n = r.nutrition || {};
+  if (kind === "drug_facts" || kind === "supplement_facts") {
+    const fs = r.panel_fields || [], name = kind === "drug_facts" ? "Drug Facts" : "Supplement Facts";
+    box.innerHTML = `<div class="banner soft" style="margin-top:10px;display:grid;gap:8px">
+      <div><strong>${name} read from the photo</strong> <span class="note">(${esc(r.ocr_engine || "OCR")}). Tick each field that matches the label, correcting the text if it was misread. Ticked fields become <span class="vb ATTESTED">ATTESTED</span> values signed with your name.</span></div>
+      ${fs.length ? fs.map((f) => `<label class="attest-row"><input type="checkbox" data-pf="${f.index}" checked><input type="text" data-pf-text="${f.index}" value="${esc(f.text)}"><span class="note">${esc(f.field.replace(/_/g, " "))}${f.element ? " · " + esc(f.element) : ""}</span></label>`).join("")
+                  : `<div class="note">No ${name} fields could be read: photograph the whole panel, flat and well lit.</div>`}
+      ${(r.panel || {}).inactive ? `<div class="note">Inactive ingredients are listed alphabetically (21 CFR 201.66(c)(8)): no weight order is inferred.</div>` : ""}
+      <label class="field" style="max-width:260px">Your name<input type="text" id="lr-pf-signer" value="${esc(localStorage.getItem("lio-attest-name") || "")}"></label>
+      <div class="row" style="justify-content:flex-end"><button class="btn small" id="lr-cancel">Discard</button><button class="btn small primary" id="lr-save">Save and attest</button></div></div>`;
+    $("lr-cancel").onclick = () => box.innerHTML = "";
+    $("lr-save").onclick = async () => {
+      const signer = ($("lr-pf-signer").value || "").trim();
+      const fields = [...document.querySelectorAll("[data-pf]")].filter((c) => c.checked).map((c) => ({ index: +c.dataset.pf, text: document.querySelector(`[data-pf-text="${c.dataset.pf}"]`).value }));
+      if (fields.length && !signer) return toast("type your name to attest the ticked fields", 7000);
+      try { localStorage.setItem("lio-attest-name", signer); } catch {}
+      try { await api("/api/foods/label/apply", { sample_code: s.sample_code, label_draft: r.label_draft, attest: { signer, fields } }); toast(`${name} saved`); await dbRefresh(s.sample_code); }
+      catch (e) { toast(e.message, 9000); }
+    };
+    return;
+  }
   if (kind === "ndc") {
     const cs = r.ndc_candidates || [];
     box.innerHTML = `<div class="banner soft" style="margin-top:10px;display:grid;gap:8px">

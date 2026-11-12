@@ -20,6 +20,9 @@ Rules (all pure functions of the located text):
   "Cholest.", "Total Carb.", "Fiber", "Serv. size", "Calories per serving 190").
 - ``dsld_quantity@1``: a DSLD row's "quantity unit" in g, mg, mcg or kcal (IU and
   "NP", not present, are refused).
+- ``sfp_row@1``: a Supplement Facts row ("Vitamin C 500 mg 556%") -> "500 mg" (lark grammar).
+- ``sfp_serving@1``: "Serving Size 2 Capsules" -> "2 capsules".
+- ``drug_active@1``: a Drug Facts active-ingredient line -> its strength ("200 mg").
 - ``fdc_per100g@1``: an FDC foodNutrient "amount unitName" (per 100 g; corroboration only).
 - ``fdc_serving@1``: FoodData Central ``servingSize servingSizeUnit`` ("33.0 GRM").
 - ``line_amount@1:<n>``: the amount opening line ``n`` (from 1) of a multi-line
@@ -61,6 +64,61 @@ _OTC = Lark(
     """,
     parser="lalr",
 )
+
+# Supplement Facts row (21 CFR 101.36(b)): "Vitamin C (as ascorbic acid) 500 mg 556%",
+# "Proprietary Blend 300 mg †", "Magnesium (from Magnesium Oxide) 420 mg 100%".
+_SFP = Lark(
+    r"""
+    start: name amount unit dv? mark* tail?
+    name: NAMEPART+
+    amount: NUMBER
+    unit: UNIT
+    dv: PCT
+    mark: MARK
+    tail: TAILWORD+
+    NAMEPART: /(?![0-9]+(\.[0-9]+)?\s*(mg|mcg|g|kcal|IU)\b)[^\s]+/
+    NUMBER: /[0-9]+(\.[0-9]+)?/
+    UNIT: /(mg|mcg|µg|g|kcal|IU)\b/
+    PCT: /<?[0-9]+(\.[0-9]+)?%/
+    MARK: /[*†‡]+/
+    TAILWORD: /\S+/
+    %import common.WS
+    %ignore WS
+    """,
+    parser="earley",
+)
+
+
+def sfp_row(text: str) -> tuple[str, str, str]:
+    """``sfp_row@1``: a Supplement Facts row -> (name, "amount unit", %DV or "")."""
+    t = " ".join(text.split())
+    try:
+        tree = _SFP.parse(t)
+    except LarkError as e:
+        raise RuleError(f"not a Supplement Facts row: {text!r}") from e
+    parts: dict[str, str] = {}
+    for ch in tree.children:
+        if isinstance(ch, Tree):
+            parts[str(ch.data)] = " ".join(str(x) for x in ch.children)
+    unit = parts["unit"].replace("µg", "mcg")
+    if unit == "IU":
+        raise RuleError("International Units depend on the form: not converted")
+    return parts["name"], f"{parts['amount']} {unit}", parts.get("dv", "")
+
+
+_ACTIVE = re.compile(
+    r"(?P<name>.*?)\b(?P<n>[0-9]+(?:\.[0-9]+)?)\s*(?P<u>mg|mcg|g)\b(?P<rest>.*)", re.I
+)
+
+
+def drug_active(text: str) -> str:
+    """``drug_active@1``: a Drug Facts active-ingredient line ("Ibuprofen 200 mg (NSAID)*",
+    "Solubilized ibuprofen equal to 200 mg ibuprofen") -> its first strength."""
+    m = _ACTIVE.fullmatch(" ".join(text.split()))
+    if not m or not m.group("name").strip():
+        raise RuleError(f"not an active ingredient with a strength: {text!r}")
+    return f"{m.group('n')} {m.group('u').lower()}"
+
 
 _CAL = re.compile(
     r"each (?P<dose>[a-z ]+?) contributes (?P<n>[0-9]+(?:\.[0-9]+)?) calories from "
@@ -334,6 +392,19 @@ def apply(rule: str, text: str) -> str:
         return f"{text} {FDC_LABEL_UNITS[sel]}"
     if base == "printed_ndc@1":
         return printed_ndc(text)
+    if base == "sfp_row@1":
+        return sfp_row(text)[1]
+    if base == "sfp_serving@1":
+        m = re.fullmatch(
+            r"serving size\s+(?P<n>[0-9]+(?:\.[0-9]+)?)\s+(?P<u>[A-Za-z][A-Za-z ]*?)\s*(?:\(.*)?",
+            " ".join(text.split()),
+            re.I,
+        )
+        if not m:
+            raise RuleError(f"not a Supplement Facts serving size: {text!r}")
+        return f"{m.group('n')} {m.group('u').lower()}"
+    if base == "drug_active@1":
+        return drug_active(text)
     if base == "nfp_row@2":
         return nfp_row2(sel, text)
     if base == "nfp_serving@2":

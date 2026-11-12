@@ -182,6 +182,50 @@ class SampleComposition:
             (self.evidence / f"{code}.json").write_bytes(canonical_json(log))
         return self.rebuild(sample, product)
 
+    def attest_fields(
+        self,
+        sample: dict[str, Any],
+        product: dict[str, Any],
+        photo: bytes,
+        image_size: list[int],
+        kind: str,
+        fields: list[dict[str, Any]],
+        signer: str,
+        engine: str,
+    ) -> dict[str, Any]:
+        """Record confirmed Drug Facts / Supplement Facts fields of a panel photo."""
+        signer = " ".join(signer.split())
+        if not signer:
+            raise CompositionError("type your name to attest the fields")
+        code = sample["sample_code"]
+        signed_at = now_utc()
+        keep = ("field", "rule", "text", "box", "element", "name")
+        with self._lock:
+            sha = put(
+                self.store,
+                photo,
+                _media_type(photo),
+                Retrieval(
+                    f"lio://samples/{code}/label-{kind}",
+                    signed_at,
+                    {"sample_code": code, "gtin14": sample.get("gtin14", "")},
+                    PHOTO_RETRIEVER,
+                ),
+            )
+            entry = {
+                "kind": f"{kind}_panel",
+                "photo_sha256": sha,
+                "image_size": [int(v) for v in image_size],
+                "fields": [{k: f[k] for k in keep if k in f} for f in fields],
+                "ocr_engine": engine,
+                "signer": signer,
+                "signed_at": signed_at,
+            }
+            log = [*self.log(code), entry]
+            self.evidence.mkdir(parents=True, exist_ok=True)
+            (self.evidence / f"{code}.json").write_bytes(canonical_json(log))
+        return self.rebuild(sample, product)
+
     def link_ndc(
         self,
         sample: dict[str, Any],
@@ -255,6 +299,9 @@ class SampleComposition:
             b.source_sha(sid, entry["photo_sha256"], {"sample_code": code})
             b.head["physical_sample"]["photos"].append(entry["photo_sha256"])
             att = f"AT{n}"
+            if entry.get("kind") in ("drug_facts_panel", "supplement_facts_panel"):
+                self._panel_entry(b, n, sid, att, entry, code)
+                continue
             if entry.get("kind") == "ndc_link":
                 b.attestations.append({
                     "id": att, "signer": entry["signer"], "signed_at": entry["signed_at"],
@@ -330,6 +377,99 @@ class SampleComposition:
                 })  # fmt: skip
         path = b.write(self.records)
         return {"record": str(path), "report": self.report(code)}
+
+    def _panel_entry(
+        self, b: RecordBuilder, n: int, sid: str, att: str, entry: dict[str, Any], code: str
+    ) -> None:
+        drug = entry["kind"] == "drug_facts_panel"
+        lt = b.assume("S2", "label_truth", "The label states the sample's composition.")
+        otc = {"sodium", "calcium", "potassium"}
+        needs_as_stated = any(
+            f["field"] in ("active", "row")
+            or (f["field"] == "contains" and f.get("element") not in otc)
+            for f in entry["fields"]
+        )
+        st = ""
+        if needs_as_stated:
+            st = b.assume(
+                "S6",
+                "interpretation",
+                "Drug Facts strengths and Supplement Facts amounts are taken as stated "
+                "(no rounding rule applies).",
+            )
+        subjects: list[str] = []
+        for k, f in enumerate(entry["fields"], start=1):
+            loc = {"type": "image_bbox", **f["box"], "text": f["text"], "attestation_id": att}
+            fid = f"{sid}_{k}"
+            if f["field"] in ("active", "row"):
+                b.fact(
+                    fid,
+                    f.get("name") or "active_ingredient",
+                    "per_unit",
+                    sid,
+                    loc,
+                    f["rule"],
+                    {"kind": "as_stated", "assumption": st},
+                    assumptions=(lt, st),
+                    evidence_class="attested",
+                )
+            elif f["field"] == "contains":
+                el = f["element"]
+                if el in otc:
+                    interp: dict[str, Any] = {
+                        "kind": "rounded",
+                        "rule": f"fda_otc_rounding_201@1:{el}",
+                    }
+                    asm: tuple[str, ...] = (lt,)
+                else:
+                    interp, asm = {"kind": "as_stated", "assumption": st}, (lt, st)
+                b.fact(
+                    fid,
+                    el,
+                    "per_unit",
+                    sid,
+                    loc,
+                    f["rule"],
+                    interp,
+                    assumptions=asm,
+                    evidence_class="attested",
+                )
+            elif f["field"] in ("inactive_list", "other_list"):
+                items = textrules.split_list2(f["text"])
+                role = "inactive" if drug else "other"
+                for j in range(1, len(items) + 1):
+                    b.ingredient(
+                        f"{fid}_{j}",
+                        f"{entry['kind']}_{f['field']}_{n}",
+                        j,
+                        role,
+                        sid,
+                        loc,
+                        list_rule=f"list_item@2:{j}",
+                    )
+                    subjects.append(f"{fid}_{j}")
+                continue
+            elif f["field"] == "blend_member":
+                b.ingredient(fid, f"blend_{n}", k, "dietary", sid, loc)
+            else:
+                continue
+            subjects.append(fid)
+        panel = "Drug" if drug else "Supplement"
+        b.attestations.append(
+            {
+                "id": att,
+                "signer": entry["signer"],
+                "signed_at": entry["signed_at"],
+                "statement": (
+                    f"I compared each field below with the {panel} Facts panel in photo "
+                    f"{entry['photo_sha256'][:12]} of sample {code}; they match "
+                    f"(text read by {entry.get('ocr_engine') or 'OCR'})."
+                ),
+                "subjects": subjects,
+            }
+        )
+        if b.head["physical_sample"]["attestation"] is None:
+            b.head["physical_sample"]["attestation"] = att
 
     # --------------------------------------------------------------- verify
     def report(self, code: str) -> dict[str, Any] | None:

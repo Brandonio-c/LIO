@@ -282,7 +282,7 @@ def test_attested_ingredient_panel(tmp_path: Path, monkeypatch: pytest.MonkeyPat
     from lio.foods.store import FoodLibrary, LibraryError
     from lio_comp.samples import SampleComposition
 
-    monkeypatch.setattr(intake_mod, "read_label", lambda data: {
+    monkeypatch.setattr(intake_mod, "read_label", lambda data, kind="": {
         "lines": ["INGREDIENTS: OATS, SUGAR, SALT."], "text": "INGREDIENTS: OATS, SUGAR, SALT.", "ingredients": "OATS, SUGAR, SALT", "contains": "",
         "heading": "INGREDIENTS", "nutrition": {"per_100g": {}, "serving": "", "serving_g": None},
         "image_size": [800, 600], "panel_rows": [], "ingredient_box": {"x": 40, "y": 50, "w": 500, "h": 60}})  # fmt: skip

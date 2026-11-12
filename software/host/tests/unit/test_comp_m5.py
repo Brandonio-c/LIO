@@ -74,7 +74,7 @@ class _NoWeb:
 def setup(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[tuple[FoodLibrary, Intake]]:
     import lio.foods.intake as intake_mod
 
-    monkeypatch.setattr(intake_mod, "read_label", lambda data: ocr_result())
+    monkeypatch.setattr(intake_mod, "read_label", lambda data, kind="": ocr_result())
     lib = FoodLibrary(tmp_path / "foods", Lookup(LookupSettings(), fetch=_NoWeb()))
     lib._download_image = lambda gtin14, url: ""  # type: ignore[method-assign]
     comp = SampleComposition(tmp_path / "foods" / "composition", RULES)

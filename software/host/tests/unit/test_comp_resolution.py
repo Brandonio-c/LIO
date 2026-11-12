@@ -197,7 +197,7 @@ def test_operator_ndc_photo_links_the_sample(
     from lio_comp.samples import SampleComposition
 
     monkeypatch.setattr(drugid, "CROSSWALK", tmp_path / "gtin_links.jsonl")
-    monkeypatch.setattr(intake_mod, "read_label", lambda data: {
+    monkeypatch.setattr(intake_mod, "read_label", lambda data, kind="": {
         "lines": ["NDC 41520-745-18"], "text": "NDC 41520-745-18", "ingredients": "", "contains": "", "heading": "",
         "nutrition": {"per_100g": {}, "serving": "", "serving_g": None}, "image_size": [800, 600], "panel_rows": [],
         "ingredient_box": None,
