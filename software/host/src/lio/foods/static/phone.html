@@ -327,7 +327,7 @@ function renderProduct(r) {
   const ingr = (info.ingredients_text || "").trim();
   $("ingr-have").classList.toggle("hidden", !ingr);
   $("ingr-missing").classList.toggle("hidden", !!ingr);
-  $("ingr-text").textContent = ingr;
+  $("ingr-text").textContent = ingr + ((info.truncation_flags || []).length ? `  [may be cut short: ${info.truncation_flags.join("; ")}: check the pack]` : "");
   const isrc = info.ingredients_source || (p.sources || [])[0] || "";
   $("ingr-src").textContent = ingr ? "From " + ({ openfoodfacts: "Open Food Facts", usda: "USDA", dsld: "NIH supplement label database", "label photo": "a label photo", manual: "typed in" }[isrc] || isrc) + ". Check it matches the pack." : "";
   $("btn-ingr").textContent = ingr ? "Ingredients panel photo anyway" : "Ingredients panel photo";

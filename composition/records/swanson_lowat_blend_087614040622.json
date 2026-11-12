@@ -1,0 +1,495 @@
+{
+ "assumptions": [
+  {
+   "id": "W1",
+   "kind": "sample_identity",
+   "text": "The sample is DSLD label 78540 (UPC 0 87614 04062 2)."
+  },
+  {
+   "id": "W2",
+   "kind": "label_truth",
+   "text": "The DSLD record reproduces the sample's Supplement Facts."
+  },
+  {
+   "id": "W3",
+   "kind": "interpretation",
+   "text": "Dietary-ingredient amounts are taken as stated (21 CFR 101.36: proprietary blends declare the blend's total weight only)."
+  },
+  {
+   "id": "W4",
+   "kind": "modelling",
+   "text": "Each named member of the blend is present (amount > 0) and the members make up the whole blend."
+  }
+ ],
+ "attestations": [],
+ "bounds": [
+  {
+   "assumptions": [
+    "W2",
+    "W3",
+    "W4"
+   ],
+   "basis": "per_unit",
+   "certificate": {
+    "lp": {
+     "objective": {
+      "c": [
+       "1",
+       "0"
+      ],
+      "const": "0"
+     },
+     "rows": [
+      {
+       "a": [
+        "-1",
+        "-1"
+       ],
+       "origin": "C1",
+       "rhs": "-300",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "1"
+       ],
+       "origin": "C1",
+       "rhs": "300",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "-1",
+        "0"
+       ],
+       "origin": "C2",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "-1"
+       ],
+       "origin": "C2",
+       "rhs": "0",
+       "sense": "<"
+      }
+     ],
+     "variables": [
+      "member_2",
+      "member_3"
+     ]
+    },
+    "max": {
+     "attained": false,
+     "bound": "-300",
+     "dual": [
+      "0",
+      "1",
+      "0",
+      "1"
+     ],
+     "interior": {
+      "member_2": "299",
+      "member_3": "1"
+     },
+     "motzkin": [
+      "0",
+      "1",
+      "0",
+      "1",
+      "1"
+     ],
+     "value": "300",
+     "witness": {
+      "member_2": "300",
+      "member_3": "0"
+     }
+    },
+    "min": {
+     "attained": false,
+     "bound": "0",
+     "dual": [
+      "0",
+      "0",
+      "1",
+      "0"
+     ],
+     "interior": {
+      "member_2": "299",
+      "member_3": "1"
+     },
+     "motzkin": [
+      "0",
+      "0",
+      "1",
+      "0",
+      "1"
+     ],
+     "value": "0",
+     "witness": {
+      "member_2": "0",
+      "member_3": "300"
+     }
+    }
+   },
+   "constraints": [
+    "C1",
+    "C2"
+   ],
+   "id": "B1",
+   "objective": "V:member_2",
+   "quantity": "member_2",
+   "result": {
+    "hi": "300",
+    "hi_closed": false,
+    "lo": "0",
+    "lo_closed": false,
+    "unit": "mg"
+   },
+   "solver": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
+   "variables": [
+    "member_2",
+    "member_3"
+   ]
+  },
+  {
+   "assumptions": [
+    "W2",
+    "W3",
+    "W4"
+   ],
+   "basis": "per_unit",
+   "certificate": {
+    "lp": {
+     "objective": {
+      "c": [
+       "0",
+       "1"
+      ],
+      "const": "0"
+     },
+     "rows": [
+      {
+       "a": [
+        "-1",
+        "-1"
+       ],
+       "origin": "C1",
+       "rhs": "-300",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "1"
+       ],
+       "origin": "C1",
+       "rhs": "300",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "-1",
+        "0"
+       ],
+       "origin": "C2",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "-1"
+       ],
+       "origin": "C2",
+       "rhs": "0",
+       "sense": "<"
+      }
+     ],
+     "variables": [
+      "member_2",
+      "member_3"
+     ]
+    },
+    "max": {
+     "attained": false,
+     "bound": "-300",
+     "dual": [
+      "0",
+      "1",
+      "1",
+      "0"
+     ],
+     "interior": {
+      "member_2": "299",
+      "member_3": "1"
+     },
+     "motzkin": [
+      "0",
+      "1",
+      "1",
+      "0",
+      "1"
+     ],
+     "value": "300",
+     "witness": {
+      "member_2": "0",
+      "member_3": "300"
+     }
+    },
+    "min": {
+     "attained": false,
+     "bound": "0",
+     "dual": [
+      "0",
+      "0",
+      "0",
+      "1"
+     ],
+     "interior": {
+      "member_2": "299",
+      "member_3": "1"
+     },
+     "motzkin": [
+      "0",
+      "0",
+      "0",
+      "1",
+      "1"
+     ],
+     "value": "0",
+     "witness": {
+      "member_2": "300",
+      "member_3": "0"
+     }
+    }
+   },
+   "constraints": [
+    "C1",
+    "C2"
+   ],
+   "id": "B2",
+   "objective": "V:member_3",
+   "quantity": "member_3",
+   "result": {
+    "hi": "300",
+    "hi_closed": false,
+    "lo": "0",
+    "lo_closed": false,
+    "unit": "mg"
+   },
+   "solver": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
+   "variables": [
+    "member_2",
+    "member_3"
+   ]
+  }
+ ],
+ "candidates": [],
+ "constraints": [
+  {
+   "assumptions": [
+    "W2",
+    "W3",
+    "W4"
+   ],
+   "id": "C1",
+   "items": [
+    "V:member_2",
+    "V:member_3"
+   ],
+   "kind": "sum_eq",
+   "rhs": "F1"
+  },
+  {
+   "assumptions": [
+    "W4"
+   ],
+   "id": "C2",
+   "items": [
+    "V:member_2",
+    "V:member_3"
+   ],
+   "kind": "positive"
+  }
+ ],
+ "corroboration": [],
+ "derivations": [],
+ "facts": [
+  {
+   "assumptions": [
+    "W2",
+    "W3"
+   ],
+   "basis": "per_unit",
+   "evidence_class": "document",
+   "id": "F1",
+   "interpretation": {
+    "assumption": "W3",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "fields": [
+     "quantity",
+     "unit"
+    ],
+    "pointer": "/ingredientRows/0/quantity/0",
+    "text": "300 mg",
+    "type": "json_pointer"
+   },
+   "quantity": "row_1",
+   "rule": "dsld_quantity@1",
+   "source_id": "S1",
+   "substance": {
+    "ingredient": "I1"
+   },
+   "value": {
+    "hi": "300",
+    "hi_closed": true,
+    "lo": "300",
+    "lo_closed": true,
+    "unit": "mg"
+   },
+   "value_raw": "300 mg"
+  }
+ ],
+ "feasibility": {
+  "method": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
+  "witness": {
+   "member_2": "299",
+   "member_3": "1"
+  }
+ },
+ "gtin": "00087614040622",
+ "ingredients": [
+  {
+   "id": "I1",
+   "list_id": "dsld_dietary",
+   "name_locator": {
+    "pointer": "/ingredientRows/0/name",
+    "text": "LOWAT Proprietary Blend",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "LOWAT Proprietary Blend",
+   "position": 1,
+   "role": "dietary",
+   "source_id": "S1"
+  },
+  {
+   "id": "I2",
+   "list_id": "dsld_dietary",
+   "name_locator": {
+    "pointer": "/ingredientRows/0/nestedRows/0/name",
+    "text": "Dolichos biflorus (seed) extract",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Dolichos biflorus (seed) extract",
+   "position": 2,
+   "role": "dietary",
+   "source_id": "S1"
+  },
+  {
+   "id": "I3",
+   "list_id": "dsld_dietary",
+   "name_locator": {
+    "pointer": "/ingredientRows/0/nestedRows/1/name",
+    "text": "Piper betle (leaf) extract",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Piper betle (leaf) extract",
+   "position": 3,
+   "role": "dietary",
+   "source_id": "S1"
+  },
+  {
+   "id": "O1",
+   "list_id": "dsld_other",
+   "name_locator": {
+    "pointer": "/otheringredients/ingredients/0/name",
+    "text": "Hypromellose",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Hypromellose",
+   "position": 1,
+   "role": "other",
+   "source_id": "S1"
+  },
+  {
+   "id": "O2",
+   "list_id": "dsld_other",
+   "name_locator": {
+    "pointer": "/otheringredients/ingredients/1/name",
+    "text": "May contain one or more of the following",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "May contain one or more of the following",
+   "position": 2,
+   "role": "other",
+   "source_id": "S1"
+  }
+ ],
+ "links": [],
+ "physical_sample": {
+  "assumptions": [
+   "W1"
+  ],
+  "attestation": null,
+  "lot": "",
+  "photos": [],
+  "sample_code": ""
+ },
+ "product_name": "Swanson LOWAT Proprietary Blend capsules",
+ "record_id": "swanson_lowat_blend_087614040622",
+ "schema_version": "1",
+ "selections": [],
+ "sources": [
+  {
+   "identifiers": {
+    "catalog_name": "dsld_label_78540_swanson_lowat",
+    "dsld_id": "78540"
+   },
+   "media_type": "application/json",
+   "sha256": "c48e3797307e4469445d83453e4dede448d1d370f43e01a3e4f0e3f53913dd4f",
+   "source_id": "S1"
+  }
+ ],
+ "substances": [],
+ "toolchain": {
+  "bounder_version": "lio_comp.bound@1",
+  "deriver_version": "lio_comp.derive@1",
+  "extractor_version": "lio_comp.extract@1",
+  "rules_versions": {
+   "atomic_masses": 1,
+   "atwater": 1,
+   "compounds": 1,
+   "fda_otc_rounding_201": 1,
+   "fda_rounding_101_9": 1,
+   "list_ordering": 1,
+   "quid": 1,
+   "units": 1
+  }
+ },
+ "unverified_layer": {
+  "estimates": [],
+  "notes": [
+   "row 2 (Dolichos biflorus (seed) extract): amount not on the label (0 NP) - a member of a proprietary blend",
+   "row 3 (Piper betle (leaf) extract): amount not on the label (0 NP) - a member of a proprietary blend"
+  ]
+ },
+ "variables": [
+  {
+   "ingredient": "I2",
+   "name": "member_2",
+   "unit": "mg"
+  },
+  {
+   "ingredient": "I3",
+   "name": "member_3",
+   "unit": "mg"
+  }
+ ],
+ "variant_note": "DSLD label 78540, the only LOWAT Proprietary Blend label."
+}

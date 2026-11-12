@@ -1,0 +1,16 @@
+{
+ "byte_length": 4665,
+ "media_type": "application/json",
+ "retrievals": [
+  {
+   "identifiers": {
+    "dsld_id": "78540",
+    "upc": "0 87614 04062 2"
+   },
+   "retrieval_url": "https://api.ods.od.nih.gov/dsld/v9/label/78540",
+   "retrieved_at": "2026-11-12T18:39:57Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "c48e3797307e4469445d83453e4dede448d1d370f43e01a3e4f0e3f53913dd4f"
+}

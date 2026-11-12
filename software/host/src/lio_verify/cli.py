@@ -40,6 +40,12 @@ def render(rep: Report) -> str:
         lines.append(line)
         if f.status == FAILED or (f.problems and f.kind == "attestation"):
             lines.extend(f"      - {p}" for p in f.problems)
+    for c in rep.corroboration:
+        lines.append(
+            f"  CORROBORATION {c['id']} {c['quantity']}: {c['result']} ({c.get('detail', '')})"
+        )
+    for msg in rep.conflicts:
+        lines.append(f"  CONFLICT {msg}")
     lines.append("  Assumptions:")
     for a in rep.assumptions:
         ref = f" [{a['rule_ref']}]" if a.get("rule_ref") else ""

@@ -11,6 +11,11 @@
    "text": "The dose consists only of the listed ingredients and the flavors named in the SPL text (mass balance)."
   },
   {
+   "id": "A11",
+   "kind": "interpretation",
+   "text": "text_variant_attribution: the sections titled '(Citrucel Orange)' apply to manufacturedProduct 0135-0089. An SPL ties text sections to products only by their titles."
+  },
+  {
    "id": "A2",
    "kind": "label_truth",
    "text": "The SPL (set 9d5f2244, version 17) states the formulation of the physical sample."
@@ -1193,6 +1198,7 @@
    ]
   }
  ],
+ "candidates": [],
  "constraints": [
   {
    "assumptions": [
@@ -1266,6 +1272,7 @@
    "kind": "positive"
   }
  ],
+ "corroboration": [],
  "derivations": [
   {
    "assumptions": [
@@ -1491,7 +1498,8 @@
   },
   {
    "assumptions": [
-    "A2"
+    "A2",
+    "A11"
    ],
    "basis": "per_serving",
    "evidence_class": "document",
@@ -1522,7 +1530,8 @@
   },
   {
    "assumptions": [
-    "A2"
+    "A2",
+    "A11"
    ],
    "basis": "per_serving",
    "evidence_class": "document",
@@ -1553,7 +1562,8 @@
   },
   {
    "assumptions": [
-    "A2"
+    "A2",
+    "A11"
    ],
    "basis": "per_serving",
    "evidence_class": "document",
@@ -1585,7 +1595,8 @@
   {
    "assumptions": [
     "A2",
-    "A3"
+    "A3",
+    "A11"
    ],
    "basis": "per_serving",
    "evidence_class": "document",
@@ -1938,6 +1949,193 @@
     "text": "K4C08XP666",
     "type": "xpath"
    }
+  },
+  {
+   "id": "T1",
+   "list_id": "spl_text_inactive",
+   "list_rule": "list_item@2:1",
+   "name_locator": {
+    "expr": "//v:section[normalize-space(v:title)='Inactive ingredients (Citrucel Orange)']/v:text/v:paragraph",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "citric acid, dibasic calcium phosphate, FD&C yellow no. 6 lake, maltodextrin, orange flavors (natural and artificial), potassium citrate, riboflavin, soy lecithin, sucrose, titanium dioxide, tricalcium phosphate",
+    "type": "xpath"
+   },
+   "name_verbatim": "citric acid",
+   "position": 1,
+   "role": "inactive",
+   "source_id": "S1"
+  },
+  {
+   "id": "T2",
+   "list_id": "spl_text_inactive",
+   "list_rule": "list_item@2:2",
+   "name_locator": {
+    "expr": "//v:section[normalize-space(v:title)='Inactive ingredients (Citrucel Orange)']/v:text/v:paragraph",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "citric acid, dibasic calcium phosphate, FD&C yellow no. 6 lake, maltodextrin, orange flavors (natural and artificial), potassium citrate, riboflavin, soy lecithin, sucrose, titanium dioxide, tricalcium phosphate",
+    "type": "xpath"
+   },
+   "name_verbatim": "dibasic calcium phosphate",
+   "position": 2,
+   "role": "inactive",
+   "source_id": "S1"
+  },
+  {
+   "id": "T3",
+   "list_id": "spl_text_inactive",
+   "list_rule": "list_item@2:3",
+   "name_locator": {
+    "expr": "//v:section[normalize-space(v:title)='Inactive ingredients (Citrucel Orange)']/v:text/v:paragraph",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "citric acid, dibasic calcium phosphate, FD&C yellow no. 6 lake, maltodextrin, orange flavors (natural and artificial), potassium citrate, riboflavin, soy lecithin, sucrose, titanium dioxide, tricalcium phosphate",
+    "type": "xpath"
+   },
+   "name_verbatim": "FD&C yellow no. 6 lake",
+   "position": 3,
+   "role": "inactive",
+   "source_id": "S1"
+  },
+  {
+   "id": "T4",
+   "list_id": "spl_text_inactive",
+   "list_rule": "list_item@2:4",
+   "name_locator": {
+    "expr": "//v:section[normalize-space(v:title)='Inactive ingredients (Citrucel Orange)']/v:text/v:paragraph",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "citric acid, dibasic calcium phosphate, FD&C yellow no. 6 lake, maltodextrin, orange flavors (natural and artificial), potassium citrate, riboflavin, soy lecithin, sucrose, titanium dioxide, tricalcium phosphate",
+    "type": "xpath"
+   },
+   "name_verbatim": "maltodextrin",
+   "position": 4,
+   "role": "inactive",
+   "source_id": "S1"
+  },
+  {
+   "id": "T5",
+   "list_id": "spl_text_inactive",
+   "list_rule": "list_item@2:5",
+   "name_locator": {
+    "expr": "//v:section[normalize-space(v:title)='Inactive ingredients (Citrucel Orange)']/v:text/v:paragraph",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "citric acid, dibasic calcium phosphate, FD&C yellow no. 6 lake, maltodextrin, orange flavors (natural and artificial), potassium citrate, riboflavin, soy lecithin, sucrose, titanium dioxide, tricalcium phosphate",
+    "type": "xpath"
+   },
+   "name_verbatim": "orange flavors (natural and artificial)",
+   "position": 5,
+   "role": "inactive",
+   "source_id": "S1"
+  },
+  {
+   "id": "T6",
+   "list_id": "spl_text_inactive",
+   "list_rule": "list_item@2:6",
+   "name_locator": {
+    "expr": "//v:section[normalize-space(v:title)='Inactive ingredients (Citrucel Orange)']/v:text/v:paragraph",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "citric acid, dibasic calcium phosphate, FD&C yellow no. 6 lake, maltodextrin, orange flavors (natural and artificial), potassium citrate, riboflavin, soy lecithin, sucrose, titanium dioxide, tricalcium phosphate",
+    "type": "xpath"
+   },
+   "name_verbatim": "potassium citrate",
+   "position": 6,
+   "role": "inactive",
+   "source_id": "S1"
+  },
+  {
+   "id": "T7",
+   "list_id": "spl_text_inactive",
+   "list_rule": "list_item@2:7",
+   "name_locator": {
+    "expr": "//v:section[normalize-space(v:title)='Inactive ingredients (Citrucel Orange)']/v:text/v:paragraph",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "citric acid, dibasic calcium phosphate, FD&C yellow no. 6 lake, maltodextrin, orange flavors (natural and artificial), potassium citrate, riboflavin, soy lecithin, sucrose, titanium dioxide, tricalcium phosphate",
+    "type": "xpath"
+   },
+   "name_verbatim": "riboflavin",
+   "position": 7,
+   "role": "inactive",
+   "source_id": "S1"
+  },
+  {
+   "id": "T8",
+   "list_id": "spl_text_inactive",
+   "list_rule": "list_item@2:8",
+   "name_locator": {
+    "expr": "//v:section[normalize-space(v:title)='Inactive ingredients (Citrucel Orange)']/v:text/v:paragraph",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "citric acid, dibasic calcium phosphate, FD&C yellow no. 6 lake, maltodextrin, orange flavors (natural and artificial), potassium citrate, riboflavin, soy lecithin, sucrose, titanium dioxide, tricalcium phosphate",
+    "type": "xpath"
+   },
+   "name_verbatim": "soy lecithin",
+   "position": 8,
+   "role": "inactive",
+   "source_id": "S1"
+  },
+  {
+   "id": "T9",
+   "list_id": "spl_text_inactive",
+   "list_rule": "list_item@2:9",
+   "name_locator": {
+    "expr": "//v:section[normalize-space(v:title)='Inactive ingredients (Citrucel Orange)']/v:text/v:paragraph",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "citric acid, dibasic calcium phosphate, FD&C yellow no. 6 lake, maltodextrin, orange flavors (natural and artificial), potassium citrate, riboflavin, soy lecithin, sucrose, titanium dioxide, tricalcium phosphate",
+    "type": "xpath"
+   },
+   "name_verbatim": "sucrose",
+   "position": 9,
+   "role": "inactive",
+   "source_id": "S1"
+  },
+  {
+   "id": "T10",
+   "list_id": "spl_text_inactive",
+   "list_rule": "list_item@2:10",
+   "name_locator": {
+    "expr": "//v:section[normalize-space(v:title)='Inactive ingredients (Citrucel Orange)']/v:text/v:paragraph",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "citric acid, dibasic calcium phosphate, FD&C yellow no. 6 lake, maltodextrin, orange flavors (natural and artificial), potassium citrate, riboflavin, soy lecithin, sucrose, titanium dioxide, tricalcium phosphate",
+    "type": "xpath"
+   },
+   "name_verbatim": "titanium dioxide",
+   "position": 10,
+   "role": "inactive",
+   "source_id": "S1"
+  },
+  {
+   "id": "T11",
+   "list_id": "spl_text_inactive",
+   "list_rule": "list_item@2:11",
+   "name_locator": {
+    "expr": "//v:section[normalize-space(v:title)='Inactive ingredients (Citrucel Orange)']/v:text/v:paragraph",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "citric acid, dibasic calcium phosphate, FD&C yellow no. 6 lake, maltodextrin, orange flavors (natural and artificial), potassium citrate, riboflavin, soy lecithin, sucrose, titanium dioxide, tricalcium phosphate",
+    "type": "xpath"
+   },
+   "name_verbatim": "tricalcium phosphate",
+   "position": 11,
+   "role": "inactive",
+   "source_id": "S1"
   }
  ],
  "links": [],

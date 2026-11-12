@@ -4,1149 +4,18 @@
    "id": "J1",
    "kind": "sample_identity",
    "text": "The sample is GTIN 00051500255162 (Jif Creamy, 16 oz)."
-  },
-  {
-   "id": "J2",
-   "kind": "label_truth",
-   "text": "The FDC Branded record (manufacturer data via GDSN) reproduces the sample's label."
-  },
-  {
-   "id": "J3",
-   "kind": "interpretation",
-   "text": "An FDC labelNutrients value that is a valid 21 CFR 101.9(c) declaration is the label's declared value; FDC computes the others from per-100 g data, so they are not used (spec §7)."
-  },
-  {
-   "id": "J4",
-   "kind": "interpretation",
-   "text": "FDC labelNutrients units: g, mg for cholesterol and sodium, kcal for calories."
-  },
-  {
-   "id": "J5",
-   "kind": "modelling",
-   "text": "'Salt' is sodium chloride."
-  },
-  {
-   "id": "J6",
-   "kind": "modelling",
-   "text": "'Sugar' is sucrose, which is all sugars."
-  },
-  {
-   "id": "J7",
-   "kind": "modelling",
-   "text": "Every listed ingredient is present (amount > 0)."
-  },
-  {
-   "id": "J8",
-   "kind": "modelling",
-   "text": "The serving consists only of the listed ingredients (mass balance)."
-  },
-  {
-   "id": "J9",
-   "kind": "interpretation",
-   "rule_ref": "list_ordering@1",
-   "text": "Ingredients after 'Contains 2% Or Less Of:' are each at most 2 % of the food by weight (21 CFR 101.4(a)(2)); the ones before it are in descending order of weight."
   }
  ],
  "attestations": [],
- "bounds": [
+ "bounds": [],
+ "candidates": [],
+ "constraints": [],
+ "corroboration": [
   {
-   "assumptions": [
-    "J5",
-    "J6",
-    "J7",
-    "J8",
-    "J9"
-   ],
    "basis": "per_serving",
-   "certificate": {
-    "lp": {
-     "objective": {
-      "c": [
-       "0",
-       "0",
-       "1",
-       "0",
-       "0"
-      ],
-      "const": "0"
-     },
-     "rows": [
-      {
-       "a": [
-        "-1",
-        "-1",
-        "-1",
-        "-1",
-        "-1"
-       ],
-       "origin": "C1",
-       "rhs": "-33",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "1",
-        "1",
-        "1",
-        "1",
-        "1"
-       ],
-       "origin": "C1",
-       "rhs": "33",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "-1",
-        "0",
-        "1"
-       ],
-       "origin": "C2",
-       "rhs": "0",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "1",
-        "0",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C3",
-       "rhs": "33/50",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "1",
-        "0"
-       ],
-       "origin": "C4",
-       "rhs": "33/50",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "1",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C5",
-       "rhs": "33/50",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "1"
-       ],
-       "origin": "C6",
-       "rhs": "7/2",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "1",
-        "0"
-       ],
-       "origin": "C7",
-       "rhs": "28249271809/76632564200",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "-1",
-        "0",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "-1"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "-1",
-        "0",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "-1",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "-1",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      }
-     ],
-     "variables": [
-      "hydrogenated_vegetable_oils",
-      "molasses",
-      "roasted_peanuts",
-      "salt",
-      "sugar"
-     ]
-    },
-    "max": {
-     "attained": false,
-     "bound": "-33",
-     "dual": [
-      "0",
-      "1",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1",
-      "1",
-      "1",
-      "1"
-     ],
-     "interior": {
-      "hydrogenated_vegetable_oils": "28249271809/153265128400",
-      "molasses": "28249271809/153265128400",
-      "roasted_peanuts": "1236188037491/38316282100",
-      "salt": "28249271809/153265128400",
-      "sugar": "28249271809/153265128400"
-     },
-     "motzkin": [
-      "0",
-      "1/4",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1/4",
-      "1/4",
-      "1/4",
-      "1/4",
-      "1/4"
-     ],
-     "value": "33",
-     "witness": {
-      "hydrogenated_vegetable_oils": "0",
-      "molasses": "0",
-      "roasted_peanuts": "33",
-      "salt": "0",
-      "sugar": "0"
-     }
-    },
-    "min": {
-     "attained": false,
-     "bound": "2131256387347/76632564200",
-     "dual": [
-      "1",
-      "0",
-      "0",
-      "1",
-      "0",
-      "1",
-      "1",
-      "1",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0"
-     ],
-     "interior": {
-      "hydrogenated_vegetable_oils": "28249271809/153265128400",
-      "molasses": "28249271809/153265128400",
-      "roasted_peanuts": "1236188037491/38316282100",
-      "salt": "28249271809/153265128400",
-      "sugar": "28249271809/153265128400"
-     },
-     "motzkin": [
-      "1/2",
-      "0",
-      "0",
-      "1/2",
-      "0",
-      "1/2",
-      "1/2",
-      "1/2",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1/2"
-     ],
-     "value": "2131256387347/76632564200",
-     "witness": {
-      "hydrogenated_vegetable_oils": "33/50",
-      "molasses": "33/50",
-      "roasted_peanuts": "2131256387347/76632564200",
-      "salt": "28249271809/76632564200",
-      "sugar": "7/2"
-     }
-    }
-   },
-   "constraints": [
-    "C1",
-    "C2",
-    "C3",
-    "C4",
-    "C5",
-    "C6",
-    "C7",
-    "C8"
-   ],
-   "id": "B1",
-   "objective": "V:roasted_peanuts",
-   "quantity": "roasted_peanuts",
-   "result": {
-    "hi": "33",
-    "hi_closed": false,
-    "lo": "2131256387347/76632564200",
-    "lo_closed": false,
-    "unit": "g"
-   },
-   "solver": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
-   "variables": [
-    "hydrogenated_vegetable_oils",
-    "molasses",
-    "roasted_peanuts",
-    "salt",
-    "sugar"
-   ]
-  },
-  {
-   "assumptions": [
-    "J5",
-    "J6",
-    "J7",
-    "J8",
-    "J9"
-   ],
-   "basis": "per_serving",
-   "certificate": {
-    "lp": {
-     "objective": {
-      "c": [
-       "0",
-       "0",
-       "0",
-       "0",
-       "1"
-      ],
-      "const": "0"
-     },
-     "rows": [
-      {
-       "a": [
-        "-1",
-        "-1",
-        "-1",
-        "-1",
-        "-1"
-       ],
-       "origin": "C1",
-       "rhs": "-33",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "1",
-        "1",
-        "1",
-        "1",
-        "1"
-       ],
-       "origin": "C1",
-       "rhs": "33",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "-1",
-        "0",
-        "1"
-       ],
-       "origin": "C2",
-       "rhs": "0",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "1",
-        "0",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C3",
-       "rhs": "33/50",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "1",
-        "0"
-       ],
-       "origin": "C4",
-       "rhs": "33/50",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "1",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C5",
-       "rhs": "33/50",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "1"
-       ],
-       "origin": "C6",
-       "rhs": "7/2",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "1",
-        "0"
-       ],
-       "origin": "C7",
-       "rhs": "28249271809/76632564200",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "-1",
-        "0",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "-1"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "-1",
-        "0",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "-1",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "-1",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      }
-     ],
-     "variables": [
-      "hydrogenated_vegetable_oils",
-      "molasses",
-      "roasted_peanuts",
-      "salt",
-      "sugar"
-     ]
-    },
-    "max": {
-     "attained": false,
-     "bound": "-7/2",
-     "dual": [
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0"
-     ],
-     "interior": {
-      "hydrogenated_vegetable_oils": "28249271809/153265128400",
-      "molasses": "28249271809/153265128400",
-      "roasted_peanuts": "1236188037491/38316282100",
-      "salt": "28249271809/153265128400",
-      "sugar": "28249271809/153265128400"
-     },
-     "motzkin": [
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1"
-     ],
-     "value": "7/2",
-     "witness": {
-      "hydrogenated_vegetable_oils": "0",
-      "molasses": "0",
-      "roasted_peanuts": "59/2",
-      "salt": "0",
-      "sugar": "7/2"
-     }
-    },
-    "min": {
-     "attained": false,
-     "bound": "0",
-     "dual": [
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1",
-      "0",
-      "0",
-      "0"
-     ],
-     "interior": {
-      "hydrogenated_vegetable_oils": "28249271809/153265128400",
-      "molasses": "28249271809/153265128400",
-      "roasted_peanuts": "1236188037491/38316282100",
-      "salt": "28249271809/153265128400",
-      "sugar": "28249271809/153265128400"
-     },
-     "motzkin": [
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1",
-      "0",
-      "0",
-      "0",
-      "1"
-     ],
-     "value": "0",
-     "witness": {
-      "hydrogenated_vegetable_oils": "0",
-      "molasses": "0",
-      "roasted_peanuts": "33",
-      "salt": "0",
-      "sugar": "0"
-     }
-    }
-   },
-   "constraints": [
-    "C1",
-    "C2",
-    "C3",
-    "C4",
-    "C5",
-    "C6",
-    "C7",
-    "C8"
-   ],
-   "id": "B2",
-   "objective": "V:sugar",
-   "quantity": "sugar",
-   "result": {
-    "hi": "7/2",
-    "hi_closed": false,
-    "lo": "0",
-    "lo_closed": false,
-    "unit": "g"
-   },
-   "solver": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
-   "variables": [
-    "hydrogenated_vegetable_oils",
-    "molasses",
-    "roasted_peanuts",
-    "salt",
-    "sugar"
-   ]
-  },
-  {
-   "assumptions": [
-    "J5",
-    "J6",
-    "J7",
-    "J8",
-    "J9"
-   ],
-   "basis": "per_serving",
-   "certificate": {
-    "lp": {
-     "objective": {
-      "c": [
-       "0",
-       "0",
-       "0",
-       "1",
-       "0"
-      ],
-      "const": "0"
-     },
-     "rows": [
-      {
-       "a": [
-        "-1",
-        "-1",
-        "-1",
-        "-1",
-        "-1"
-       ],
-       "origin": "C1",
-       "rhs": "-33",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "1",
-        "1",
-        "1",
-        "1",
-        "1"
-       ],
-       "origin": "C1",
-       "rhs": "33",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "-1",
-        "0",
-        "1"
-       ],
-       "origin": "C2",
-       "rhs": "0",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "1",
-        "0",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C3",
-       "rhs": "33/50",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "1",
-        "0"
-       ],
-       "origin": "C4",
-       "rhs": "33/50",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "1",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C5",
-       "rhs": "33/50",
-       "sense": "<="
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "1"
-       ],
-       "origin": "C6",
-       "rhs": "7/2",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "1",
-        "0"
-       ],
-       "origin": "C7",
-       "rhs": "28249271809/76632564200",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "-1",
-        "0",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "0",
-        "-1"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "-1",
-        "0",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "0",
-        "0",
-        "-1",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      },
-      {
-       "a": [
-        "0",
-        "-1",
-        "0",
-        "0",
-        "0"
-       ],
-       "origin": "C8",
-       "rhs": "0",
-       "sense": "<"
-      }
-     ],
-     "variables": [
-      "hydrogenated_vegetable_oils",
-      "molasses",
-      "roasted_peanuts",
-      "salt",
-      "sugar"
-     ]
-    },
-    "max": {
-     "attained": false,
-     "bound": "-28249271809/76632564200",
-     "dual": [
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0"
-     ],
-     "interior": {
-      "hydrogenated_vegetable_oils": "28249271809/153265128400",
-      "molasses": "28249271809/153265128400",
-      "roasted_peanuts": "1236188037491/38316282100",
-      "salt": "28249271809/153265128400",
-      "sugar": "28249271809/153265128400"
-     },
-     "motzkin": [
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1"
-     ],
-     "value": "28249271809/76632564200",
-     "witness": {
-      "hydrogenated_vegetable_oils": "0",
-      "molasses": "0",
-      "roasted_peanuts": "2500625346791/76632564200",
-      "salt": "28249271809/76632564200",
-      "sugar": "0"
-     }
-    },
-    "min": {
-     "attained": false,
-     "bound": "0",
-     "dual": [
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1",
-      "0"
-     ],
-     "interior": {
-      "hydrogenated_vegetable_oils": "28249271809/153265128400",
-      "molasses": "28249271809/153265128400",
-      "roasted_peanuts": "1236188037491/38316282100",
-      "salt": "28249271809/153265128400",
-      "sugar": "28249271809/153265128400"
-     },
-     "motzkin": [
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "0",
-      "1",
-      "0",
-      "1"
-     ],
-     "value": "0",
-     "witness": {
-      "hydrogenated_vegetable_oils": "0",
-      "molasses": "0",
-      "roasted_peanuts": "33",
-      "salt": "0",
-      "sugar": "0"
-     }
-    }
-   },
-   "constraints": [
-    "C1",
-    "C2",
-    "C3",
-    "C4",
-    "C5",
-    "C6",
-    "C7",
-    "C8"
-   ],
-   "id": "B3",
-   "objective": "V:salt",
-   "quantity": "salt",
-   "result": {
-    "hi": "28249271809/76632564200",
-    "hi_closed": false,
-    "lo": "0",
-    "lo_closed": false,
-    "unit": "g"
-   },
-   "solver": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
-   "variables": [
-    "hydrogenated_vegetable_oils",
-    "molasses",
-    "roasted_peanuts",
-    "salt",
-    "sugar"
-   ]
-  }
- ],
- "constraints": [
-  {
-   "assumptions": [
-    "J8"
-   ],
-   "id": "C1",
-   "items": [
-    "V:roasted_peanuts",
-    "V:sugar",
-    "V:hydrogenated_vegetable_oils",
-    "V:salt",
-    "V:molasses"
-   ],
-   "kind": "sum_eq",
-   "rhs": "F_serving"
-  },
-  {
-   "assumptions": [
-    "J9"
-   ],
-   "id": "C2",
-   "items": [
-    "V:roasted_peanuts",
-    "V:sugar"
-   ],
-   "kind": "ordered_desc",
-   "list_rule": "list_ordering@1:us_food_ingredients"
-  },
-  {
-   "assumptions": [
-    "J9"
-   ],
-   "id": "C3",
-   "kind": "le",
-   "lhs": "V:hydrogenated_vegetable_oils",
-   "rhs": "D2"
-  },
-  {
-   "assumptions": [
-    "J9"
-   ],
-   "id": "C4",
-   "kind": "le",
-   "lhs": "V:salt",
-   "rhs": "D2"
-  },
-  {
-   "assumptions": [
-    "J9"
-   ],
-   "id": "C5",
-   "kind": "le",
-   "lhs": "V:molasses",
-   "rhs": "D2"
-  },
-  {
-   "assumptions": [
-    "J6"
-   ],
-   "id": "C6",
-   "kind": "le",
-   "lhs": "V:sugar",
-   "rhs": "F_total_sugars"
-  },
-  {
-   "assumptions": [
-    "J5"
-   ],
-   "id": "C7",
-   "kind": "le",
-   "lhs": "V:salt",
-   "rhs": "D1"
-  },
-  {
-   "assumptions": [
-    "J7"
-   ],
-   "id": "C8",
-   "items": [
-    "V:roasted_peanuts",
-    "V:sugar",
-    "V:hydrogenated_vegetable_oils",
-    "V:salt",
-    "V:molasses"
-   ],
-   "kind": "positive"
-  }
- ],
- "derivations": [
-  {
-   "assumptions": [
-    "J5"
-   ],
-   "basis": "per_serving",
-   "expr": [
-    "convert",
-    [
-     "div",
-     "F_sodium",
-     "M:Na:SUB_nacl"
-    ],
-    "U:g"
-   ],
-   "id": "D1",
-   "quantity": "salt_upper",
-   "value": {
-    "hi": "28249271809/76632564200",
-    "hi_closed": false,
-    "lo": "6427934623/18391815440",
-    "lo_closed": true,
-    "unit": "g"
-   }
-  },
-  {
-   "assumptions": [
-    "J9"
-   ],
-   "basis": "per_serving",
-   "expr": [
-    "mul",
-    "F_serving",
-    "N:1/50"
-   ],
-   "id": "D2",
-   "quantity": "two_percent_of_serving",
-   "value": {
-    "hi": "33/50",
-    "hi_closed": true,
-    "lo": "33/50",
-    "lo_closed": true,
-    "unit": "g"
-   }
-  }
- ],
- "facts": [
-  {
-   "assumptions": [
-    "J2"
-   ],
-   "basis": "per_serving",
-   "evidence_class": "document",
-   "id": "F_serving",
-   "interpretation": {
-    "assumption": "J2",
-    "kind": "as_stated"
-   },
+   "data_source": "GDSN",
+   "id": "CR_serving",
+   "kind": "derived_corroboration",
    "locator": {
     "fields": [
      "servingSize",
@@ -1159,28 +28,28 @@
    "quantity": "serving_mass",
    "rule": "fdc_serving@1",
    "source_id": "S1",
-   "value": {
-    "hi": "33",
-    "hi_closed": true,
-    "lo": "33",
-    "lo_closed": true,
-    "unit": "g"
-   },
    "value_raw": "33.00000000 g"
   },
   {
-   "assumptions": [
-    "J2",
-    "J3",
-    "J4"
-   ],
    "basis": "per_serving",
-   "evidence_class": "document",
-   "id": "F_calories",
-   "interpretation": {
-    "kind": "rounded",
-    "rule": "fda_rounding_101_9@1:calories"
+   "data_source": "GDSN labelNutrients (partly computed by FDC)",
+   "id": "CR_label_added_sugars",
+   "kind": "derived_corroboration",
+   "locator": {
+    "pointer": "/labelNutrients/addedSugar/value",
+    "text": "2.01",
+    "type": "json_pointer"
    },
+   "quantity": "added_sugars",
+   "rule": "fdc_label_nutrient@1:addedSugar",
+   "source_id": "S1",
+   "value_raw": "2.01 g"
+  },
+  {
+   "basis": "per_serving",
+   "data_source": "GDSN labelNutrients (partly computed by FDC)",
+   "id": "CR_label_calories",
+   "kind": "derived_corroboration",
    "locator": {
     "pointer": "/labelNutrients/calories/value",
     "text": "190",
@@ -1189,28 +58,13 @@
    "quantity": "calories",
    "rule": "fdc_label_nutrient@1:calories",
    "source_id": "S1",
-   "value": {
-    "hi": "195",
-    "hi_closed": false,
-    "lo": "185",
-    "lo_closed": true,
-    "unit": "kcal"
-   },
    "value_raw": "190 kcal"
   },
   {
-   "assumptions": [
-    "J2",
-    "J3",
-    "J4"
-   ],
    "basis": "per_serving",
-   "evidence_class": "document",
-   "id": "F_total_carbohydrate",
-   "interpretation": {
-    "kind": "rounded",
-    "rule": "fda_rounding_101_9@1:total_carbohydrate"
-   },
+   "data_source": "GDSN labelNutrients (partly computed by FDC)",
+   "id": "CR_label_total_carbohydrate",
+   "kind": "derived_corroboration",
    "locator": {
     "pointer": "/labelNutrients/carbohydrates/value",
     "text": "8.00",
@@ -1219,28 +73,13 @@
    "quantity": "total_carbohydrate",
    "rule": "fdc_label_nutrient@1:carbohydrates",
    "source_id": "S1",
-   "value": {
-    "hi": "17/2",
-    "hi_closed": false,
-    "lo": "15/2",
-    "lo_closed": true,
-    "unit": "g"
-   },
    "value_raw": "8.00 g"
   },
   {
-   "assumptions": [
-    "J2",
-    "J3",
-    "J4"
-   ],
    "basis": "per_serving",
-   "evidence_class": "document",
-   "id": "F_cholesterol",
-   "interpretation": {
-    "kind": "rounded",
-    "rule": "fda_rounding_101_9@1:cholesterol"
-   },
+   "data_source": "GDSN labelNutrients (partly computed by FDC)",
+   "id": "CR_label_cholesterol",
+   "kind": "derived_corroboration",
    "locator": {
     "pointer": "/labelNutrients/cholesterol/value",
     "text": "0.000",
@@ -1249,28 +88,13 @@
    "quantity": "cholesterol",
    "rule": "fdc_label_nutrient@1:cholesterol",
    "source_id": "S1",
-   "value": {
-    "hi": "5/2",
-    "hi_closed": false,
-    "lo": "0",
-    "lo_closed": true,
-    "unit": "mg"
-   },
    "value_raw": "0.000 mg"
   },
   {
-   "assumptions": [
-    "J2",
-    "J3",
-    "J4"
-   ],
    "basis": "per_serving",
-   "evidence_class": "document",
-   "id": "F_total_fat",
-   "interpretation": {
-    "kind": "rounded",
-    "rule": "fda_rounding_101_9@1:total_fat"
-   },
+   "data_source": "GDSN labelNutrients (partly computed by FDC)",
+   "id": "CR_label_total_fat",
+   "kind": "derived_corroboration",
    "locator": {
     "pointer": "/labelNutrients/fat/value",
     "text": "16.0",
@@ -1279,28 +103,28 @@
    "quantity": "total_fat",
    "rule": "fdc_label_nutrient@1:fat",
    "source_id": "S1",
-   "value": {
-    "hi": "33/2",
-    "hi_closed": false,
-    "lo": "31/2",
-    "lo_closed": true,
-    "unit": "g"
-   },
    "value_raw": "16.0 g"
   },
   {
-   "assumptions": [
-    "J2",
-    "J3",
-    "J4"
-   ],
    "basis": "per_serving",
-   "evidence_class": "document",
-   "id": "F_protein",
-   "interpretation": {
-    "kind": "rounded",
-    "rule": "fda_rounding_101_9@1:protein"
+   "data_source": "GDSN labelNutrients (partly computed by FDC)",
+   "id": "CR_label_dietary_fiber",
+   "kind": "derived_corroboration",
+   "locator": {
+    "pointer": "/labelNutrients/fiber/value",
+    "text": "2.01",
+    "type": "json_pointer"
    },
+   "quantity": "dietary_fiber",
+   "rule": "fdc_label_nutrient@1:fiber",
+   "source_id": "S1",
+   "value_raw": "2.01 g"
+  },
+  {
+   "basis": "per_serving",
+   "data_source": "GDSN labelNutrients (partly computed by FDC)",
+   "id": "CR_label_protein",
+   "kind": "derived_corroboration",
    "locator": {
     "pointer": "/labelNutrients/protein/value",
     "text": "7.00",
@@ -1309,28 +133,13 @@
    "quantity": "protein",
    "rule": "fdc_label_nutrient@1:protein",
    "source_id": "S1",
-   "value": {
-    "hi": "15/2",
-    "hi_closed": false,
-    "lo": "13/2",
-    "lo_closed": true,
-    "unit": "g"
-   },
    "value_raw": "7.00 g"
   },
   {
-   "assumptions": [
-    "J2",
-    "J3",
-    "J4"
-   ],
    "basis": "per_serving",
-   "evidence_class": "document",
-   "id": "F_saturated_fat",
-   "interpretation": {
-    "kind": "rounded",
-    "rule": "fda_rounding_101_9@1:saturated_fat"
-   },
+   "data_source": "GDSN labelNutrients (partly computed by FDC)",
+   "id": "CR_label_saturated_fat",
+   "kind": "derived_corroboration",
    "locator": {
     "pointer": "/labelNutrients/saturatedFat/value",
     "text": "3.50",
@@ -1339,28 +148,13 @@
    "quantity": "saturated_fat",
    "rule": "fdc_label_nutrient@1:saturatedFat",
    "source_id": "S1",
-   "value": {
-    "hi": "15/4",
-    "hi_closed": false,
-    "lo": "13/4",
-    "lo_closed": true,
-    "unit": "g"
-   },
    "value_raw": "3.50 g"
   },
   {
-   "assumptions": [
-    "J2",
-    "J3",
-    "J4"
-   ],
    "basis": "per_serving",
-   "evidence_class": "document",
-   "id": "F_sodium",
-   "interpretation": {
-    "kind": "rounded",
-    "rule": "fda_rounding_101_9@1:sodium"
-   },
+   "data_source": "GDSN labelNutrients (partly computed by FDC)",
+   "id": "CR_label_sodium",
+   "kind": "derived_corroboration",
    "locator": {
     "pointer": "/labelNutrients/sodium/value",
     "text": "140",
@@ -1369,28 +163,13 @@
    "quantity": "sodium",
    "rule": "fdc_label_nutrient@1:sodium",
    "source_id": "S1",
-   "value": {
-    "hi": "145",
-    "hi_closed": false,
-    "lo": "275/2",
-    "lo_closed": true,
-    "unit": "mg"
-   },
    "value_raw": "140 mg"
   },
   {
-   "assumptions": [
-    "J2",
-    "J3",
-    "J4"
-   ],
    "basis": "per_serving",
-   "evidence_class": "document",
-   "id": "F_total_sugars",
-   "interpretation": {
-    "kind": "rounded",
-    "rule": "fda_rounding_101_9@1:total_sugars"
-   },
+   "data_source": "GDSN labelNutrients (partly computed by FDC)",
+   "id": "CR_label_total_sugars",
+   "kind": "derived_corroboration",
    "locator": {
     "pointer": "/labelNutrients/sugars/value",
     "text": "3.00",
@@ -1399,28 +178,13 @@
    "quantity": "total_sugars",
    "rule": "fdc_label_nutrient@1:sugars",
    "source_id": "S1",
-   "value": {
-    "hi": "7/2",
-    "hi_closed": false,
-    "lo": "5/2",
-    "lo_closed": true,
-    "unit": "g"
-   },
    "value_raw": "3.00 g"
   },
   {
-   "assumptions": [
-    "J2",
-    "J3",
-    "J4"
-   ],
    "basis": "per_serving",
-   "evidence_class": "document",
-   "id": "F_trans_fat",
-   "interpretation": {
-    "kind": "rounded",
-    "rule": "fda_rounding_101_9@1:trans_fat"
-   },
+   "data_source": "GDSN labelNutrients (partly computed by FDC)",
+   "id": "CR_label_trans_fat",
+   "kind": "derived_corroboration",
    "locator": {
     "pointer": "/labelNutrients/transFat/value",
     "text": "0.000",
@@ -1429,26 +193,264 @@
    "quantity": "trans_fat",
    "rule": "fdc_label_nutrient@1:transFat",
    "source_id": "S1",
-   "value": {
-    "hi": "1/2",
-    "hi_closed": false,
-    "lo": "0",
-    "lo_closed": true,
-    "unit": "g"
-   },
    "value_raw": "0.000 g"
+  },
+  {
+   "basis": "per_100g",
+   "data_source": "GDSN",
+   "derivation": {
+    "code": "LCSA",
+    "description": "Calculated from an approximate value per serving size measure"
+   },
+   "id": "CR_100g_total_carbohydrate",
+   "kind": "derived_corroboration",
+   "locator": {
+    "fields": [
+     "amount",
+     "nutrient/unitName"
+    ],
+    "pointer": "/foodNutrients/2",
+    "text": "24.24000000 g",
+    "type": "json_pointer"
+   },
+   "quantity": "total_carbohydrate",
+   "rule": "fdc_per100g@1",
+   "source_id": "S1",
+   "value_raw": "24.24000000 g"
+  },
+  {
+   "basis": "per_100g",
+   "data_source": "GDSN",
+   "derivation": {
+    "code": "LCSA",
+    "description": "Calculated from an approximate value per serving size measure"
+   },
+   "id": "CR_100g_calories",
+   "kind": "derived_corroboration",
+   "locator": {
+    "fields": [
+     "amount",
+     "nutrient/unitName"
+    ],
+    "pointer": "/foodNutrients/3",
+    "text": "576.00000000 kcal",
+    "type": "json_pointer"
+   },
+   "quantity": "calories",
+   "rule": "fdc_per100g@1",
+   "source_id": "S1",
+   "value_raw": "576.00000000 kcal"
+  },
+  {
+   "basis": "per_100g",
+   "data_source": "GDSN",
+   "derivation": {
+    "code": "LCSA",
+    "description": "Calculated from an approximate value per serving size measure"
+   },
+   "id": "CR_100g_saturated_fat",
+   "kind": "derived_corroboration",
+   "locator": {
+    "fields": [
+     "amount",
+     "nutrient/unitName"
+    ],
+    "pointer": "/foodNutrients/5",
+    "text": "10.61000000 g",
+    "type": "json_pointer"
+   },
+   "quantity": "saturated_fat",
+   "rule": "fdc_per100g@1",
+   "source_id": "S1",
+   "value_raw": "10.61000000 g"
+  },
+  {
+   "basis": "per_100g",
+   "data_source": "GDSN",
+   "derivation": {
+    "code": "LCSA",
+    "description": "Calculated from an approximate value per serving size measure"
+   },
+   "id": "CR_100g_total_sugars",
+   "kind": "derived_corroboration",
+   "locator": {
+    "fields": [
+     "amount",
+     "nutrient/unitName"
+    ],
+    "pointer": "/foodNutrients/6",
+    "text": "9.09000000 g",
+    "type": "json_pointer"
+   },
+   "quantity": "total_sugars",
+   "rule": "fdc_per100g@1",
+   "source_id": "S1",
+   "value_raw": "9.09000000 g"
+  },
+  {
+   "basis": "per_100g",
+   "data_source": "GDSN",
+   "derivation": {
+    "code": "LCSA",
+    "description": "Calculated from an approximate value per serving size measure"
+   },
+   "id": "CR_100g_dietary_fiber",
+   "kind": "derived_corroboration",
+   "locator": {
+    "fields": [
+     "amount",
+     "nutrient/unitName"
+    ],
+    "pointer": "/foodNutrients/8",
+    "text": "6.10000000 g",
+    "type": "json_pointer"
+   },
+   "quantity": "dietary_fiber",
+   "rule": "fdc_per100g@1",
+   "source_id": "S1",
+   "value_raw": "6.10000000 g"
+  },
+  {
+   "basis": "per_100g",
+   "data_source": "GDSN",
+   "derivation": {
+    "code": "LCSA",
+    "description": "Calculated from an approximate value per serving size measure"
+   },
+   "id": "CR_100g_trans_fat",
+   "kind": "derived_corroboration",
+   "locator": {
+    "fields": [
+     "amount",
+     "nutrient/unitName"
+    ],
+    "pointer": "/foodNutrients/9",
+    "text": "0E-8 g",
+    "type": "json_pointer"
+   },
+   "quantity": "trans_fat",
+   "rule": "fdc_per100g@1",
+   "source_id": "S1",
+   "value_raw": "0.00000000 g"
+  },
+  {
+   "basis": "per_100g",
+   "data_source": "GDSN",
+   "derivation": {
+    "code": "LCSA",
+    "description": "Calculated from an approximate value per serving size measure"
+   },
+   "id": "CR_100g_added_sugars",
+   "kind": "derived_corroboration",
+   "locator": {
+    "fields": [
+     "amount",
+     "nutrient/unitName"
+    ],
+    "pointer": "/foodNutrients/10",
+    "text": "6.10000000 g",
+    "type": "json_pointer"
+   },
+   "quantity": "added_sugars",
+   "rule": "fdc_per100g@1",
+   "source_id": "S1",
+   "value_raw": "6.10000000 g"
+  },
+  {
+   "basis": "per_100g",
+   "data_source": "GDSN",
+   "derivation": {
+    "code": "LCSA",
+    "description": "Calculated from an approximate value per serving size measure"
+   },
+   "id": "CR_100g_total_fat",
+   "kind": "derived_corroboration",
+   "locator": {
+    "fields": [
+     "amount",
+     "nutrient/unitName"
+    ],
+    "pointer": "/foodNutrients/11",
+    "text": "48.48000000 g",
+    "type": "json_pointer"
+   },
+   "quantity": "total_fat",
+   "rule": "fdc_per100g@1",
+   "source_id": "S1",
+   "value_raw": "48.48000000 g"
+  },
+  {
+   "basis": "per_100g",
+   "data_source": "GDSN",
+   "derivation": {
+    "code": "LCSA",
+    "description": "Calculated from an approximate value per serving size measure"
+   },
+   "id": "CR_100g_protein",
+   "kind": "derived_corroboration",
+   "locator": {
+    "fields": [
+     "amount",
+     "nutrient/unitName"
+    ],
+    "pointer": "/foodNutrients/14",
+    "text": "21.21000000 g",
+    "type": "json_pointer"
+   },
+   "quantity": "protein",
+   "rule": "fdc_per100g@1",
+   "source_id": "S1",
+   "value_raw": "21.21000000 g"
+  },
+  {
+   "basis": "per_100g",
+   "data_source": "GDSN",
+   "derivation": {
+    "code": "LCSA",
+    "description": "Calculated from an approximate value per serving size measure"
+   },
+   "id": "CR_100g_sodium",
+   "kind": "derived_corroboration",
+   "locator": {
+    "fields": [
+     "amount",
+     "nutrient/unitName"
+    ],
+    "pointer": "/foodNutrients/15",
+    "text": "424.00000000 mg",
+    "type": "json_pointer"
+   },
+   "quantity": "sodium",
+   "rule": "fdc_per100g@1",
+   "source_id": "S1",
+   "value_raw": "424.00000000 mg"
+  },
+  {
+   "basis": "per_100g",
+   "data_source": "GDSN",
+   "derivation": {
+    "code": "LCSA",
+    "description": "Calculated from an approximate value per serving size measure"
+   },
+   "id": "CR_100g_cholesterol",
+   "kind": "derived_corroboration",
+   "locator": {
+    "fields": [
+     "amount",
+     "nutrient/unitName"
+    ],
+    "pointer": "/foodNutrients/16",
+    "text": "0E-8 mg",
+    "type": "json_pointer"
+   },
+   "quantity": "cholesterol",
+   "rule": "fdc_per100g@1",
+   "source_id": "S1",
+   "value_raw": "0.00000000 mg"
   }
  ],
- "feasibility": {
-  "method": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
-  "witness": {
-   "hydrogenated_vegetable_oils": "28249271809/153265128400",
-   "molasses": "28249271809/153265128400",
-   "roasted_peanuts": "1236188037491/38316282100",
-   "salt": "28249271809/153265128400",
-   "sugar": "28249271809/153265128400"
-  }
- },
+ "derivations": [],
+ "facts": [],
  "gtin": "00051500255162",
  "ingredients": [
   {
@@ -1545,39 +547,9 @@
    "media_type": "application/json",
    "sha256": "dbcd41948d7c83c333b6bbb386ca57c2c0d3177c4aaacf2c9ee539004e69a086",
    "source_id": "S1"
-  },
-  {
-   "identifiers": {
-    "catalog_name": "gsrs_unii_451W47IQ8X"
-   },
-   "media_type": "application/json",
-   "sha256": "fed7426cb0212e1d71a3ec0451b2a37ac20119b2ea92ee8523c6507fc19920ef",
-   "source_id": "S2"
   }
  ],
- "substances": [
-  {
-   "formula": "Cl.Na",
-   "formula_locator": {
-    "pointer": "/content/0/structure/formula",
-    "text": "Cl.Na",
-    "type": "json_pointer"
-   },
-   "id": "SUB_nacl",
-   "name_locator": {
-    "pointer": "/content/0/_name",
-    "text": "Sodium Chloride",
-    "type": "json_pointer"
-   },
-   "source_id": "S2",
-   "unii": "451W47IQ8X",
-   "unii_locator": {
-    "pointer": "/content/0/approvalID",
-    "text": "451W47IQ8X",
-    "type": "json_pointer"
-   }
-  }
- ],
+ "substances": [],
  "toolchain": {
   "bounder_version": "lio_comp.bound@1",
   "deriver_version": "lio_comp.derive@1",
@@ -1596,36 +568,9 @@
  "unverified_layer": {
   "estimates": [],
   "notes": [
-   "FDC labelNutrients.addedSugar not used: added_sugars: no amount is declared as Declaration(kind='eq', value=Fraction(201, 100)) (FDC-computed, not a label value)",
-   "FDC labelNutrients.fiber not used: dietary_fiber: no amount is declared as Declaration(kind='eq', value=Fraction(201, 100)) (FDC-computed, not a label value)"
+   "No attested label photo yet: sign the proposal with python -m lio_comp.attest sign jif_nutrition_en_209 --operator NAME"
   ]
  },
- "variables": [
-  {
-   "ingredient": "I1",
-   "name": "roasted_peanuts",
-   "unit": "g"
-  },
-  {
-   "ingredient": "I2",
-   "name": "sugar",
-   "unit": "g"
-  },
-  {
-   "ingredient": "I3",
-   "name": "hydrogenated_vegetable_oils",
-   "unit": "g"
-  },
-  {
-   "ingredient": "I4",
-   "name": "salt",
-   "unit": "g"
-  },
-  {
-   "ingredient": "I5",
-   "name": "molasses",
-   "unit": "g"
-  }
- ],
- "variant_note": "FDC 2770309 is the 16 oz jar (GTIN 00051500255162). Other Jif sizes in FDC list the ingredients in a different order or with mono- and diglycerides."
+ "variables": [],
+ "variant_note": "FDC 2770309 is the 16 oz jar (GTIN 00051500255162). Label facts come only from the attested Open Food Facts nutrition photo (rev 209), whose ingredient line matches this FDC version; another OFF photo (rev 84) shows a different formula and is not used."
 }

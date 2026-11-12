@@ -13,10 +13,11 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
-from lio_comp import crosswalk
+from lio_comp import attest, crosswalk
 from lio_comp import extract as X
 from lio_comp.derive import add_derivations
 from lio_comp.record import RecordBuilder
+from lio_verify import textrules
 from lio_verify.interpret import load_tables
 
 EXACT = {"kind": "exact"}
@@ -96,21 +97,37 @@ def citrucel(b: RecordBuilder) -> None:
     b.fact("F2", "serving_mass", "per_serving", "S1",
            X.spl_active_quantity(CITRUCEL_ORANGE, "denominator"), "quantity@1", EXACT,
            assumptions=("A2", "A8"))  # fmt: skip
+    b.assume(
+        "A11",
+        "interpretation",
+        "text_variant_attribution: the sections titled '(Citrucel Orange)' apply to manufacturedProduct 0135-0089. An SPL ties text sections to products only by their titles.",
+    )
     other = "Other information (Citrucel Orange)"
     contains = X.spl_section_item(other, "each heaping tablespoon contains")
     for fid, el in (("F3", "calcium"), ("F4", "potassium"), ("F5", "sodium")):
         b.fact(fid, el, "per_serving", "S1", contains, f"otc_contains@1:{el}",
-               _rounded(f"fda_otc_rounding_201@1:{el}"), assumptions=("A2",))  # fmt: skip
+               _rounded(f"fda_otc_rounding_201@1:{el}"), assumptions=("A2", "A11"))  # fmt: skip
     b.fact("F6", "energy_from_sucrose_and_maltodextrin", "per_serving", "S1",
            X.spl_section_item(other, "each heaping tablespoon contributes"),
            "otc_calories_from@1", _rounded("fda_rounding_101_9@1:calories"),
-           assumptions=("A2", "A3"))  # fmt: skip
+           assumptions=("A2", "A3", "A11"))  # fmt: skip
 
     # Identity: every inactive ingredient of product 0135-0089 with the UNII the SPL gives it.
     for n, key in enumerate(CITRUCEL_INACTIVE, start=1):
         b.ingredient(f"I_{key}", "spl_inactive", n, "inactive", "S1",
                      X.spl_ingredient(CITRUCEL_ORANGE, "IACT", n, "name"),
                      unii_locator=X.spl_ingredient(CITRUCEL_ORANGE, "IACT", n, "unii"))  # fmt: skip
+    text_list = X.spl_section_paragraph("Inactive ingredients (Citrucel Orange)")
+    for n in range(1, 12):
+        b.ingredient(
+            f"T{n}",
+            "spl_text_inactive",
+            n,
+            "inactive",
+            "S1",
+            text_list,
+            list_rule=f"list_item@2:{n}",
+        )
     for sid, src, unii in (("SUB_dcp", "S2", "L11K75P92J"), ("SUB_tcp", "S3", "K4C08XP666"),
                            ("SUB_kcit", "S4", "EE90ONI6FF")):  # fmt: skip
         b.substance(sid, unii, src, X.gsrs_first("approvalID"),
@@ -142,49 +159,79 @@ FDC_TO_101_9 = {
 }  # fmt: skip
 
 
-def jif(b: RecordBuilder) -> None:
-    from lio_verify.interpret import InterpretError
+FDC_NUMBERS = {
+    "208": "calories", "204": "total_fat", "606": "saturated_fat", "605": "trans_fat",
+    "601": "cholesterol", "307": "sodium", "205": "total_carbohydrate", "291": "dietary_fiber",
+    "269": "total_sugars", "539": "added_sugars", "203": "protein",
+}  # fmt: skip
 
-    b.source("S1", "fdc_food_2770309_jif_creamy_16oz", {"fdc_id": "2770309"})
-    b.source("S2", "gsrs_unii_451W47IQ8X")
+
+def attested_panels(b: RecordBuilder, record: str, assumptions: tuple[str, ...]) -> list[str]:
+    """ATTESTED facts from every signed panel proposal for this record (photo + box + rows)."""
+    made: list[str] = []
+    for n, row in enumerate(attest.signed_for(record), start=1):
+        sid, att = f"P{n}", f"AT{n}"
+        b.source_sha(sid, row["photo_sha256"], {"photo_source": row["photo_source"],
+                                                **({"license": row["license"]} if row.get("license") else {})})  # fmt: skip
+        subjects = []
+        for r in row.get("rows", []):
+            fid = f"{sid}_{r['nutrient']}"
+            loc = {"type": "image_bbox", **r["box"], "text": r["text"], "attestation_id": att}
+            if r["nutrient"] == "serving":
+                b.fact(fid, "serving_mass", "per_serving", sid, loc, r["rule"], _as_stated(assumptions[-1]),
+                       assumptions=assumptions, evidence_class="attested")  # fmt: skip
+            else:
+                b.fact(fid, r["nutrient"], "per_serving", sid, loc, r["rule"],
+                       _rounded(f"fda_rounding_101_9@1:{r['nutrient']}"), assumptions=assumptions[:1],
+                       evidence_class="attested")  # fmt: skip
+            subjects.append(fid)
+        b.attestations.append({"id": att, "signer": row["operator"], "signed_at": row["signed_at"],
+                               "statement": row["statement"], "subjects": subjects})  # fmt: skip
+        made += subjects
+    return made
+
+
+def jif(b: RecordBuilder) -> None:
+    fdc = b.source("S1", "fdc_food_2770309_jif_creamy_16oz", {"fdc_id": "2770309"})
     b.assume("J1", "sample_identity", "The sample is GTIN 00051500255162 (Jif Creamy, 16 oz).")
-    b.assume("J2", "label_truth",
-             "The FDC Branded record (manufacturer data via GDSN) reproduces the sample's "
-             "label.")  # fmt: skip
-    b.assume("J3", "interpretation",
-             "An FDC labelNutrients value that is a valid 21 CFR 101.9(c) declaration is the "
-             "label's declared value; FDC computes the others from per-100 g data, so they are "
-             "not used (spec §7).")  # fmt: skip
-    b.assume(
-        "J4",
-        "interpretation",
-        "FDC labelNutrients units: g, mg for cholesterol and sodium, kcal for calories.",
-    )
-    b.assume("J5", "modelling", "'Salt' is sodium chloride.")
-    b.assume("J6", "modelling", "'Sugar' is sucrose, which is all sugars.")
     b.head["variant_note"] = (
-        "FDC 2770309 is the 16 oz jar (GTIN 00051500255162). Other Jif sizes in FDC list "
-        "the ingredients in a different order or with mono- and diglycerides."
+        "FDC 2770309 is the 16 oz jar (GTIN 00051500255162). Label facts come only from the "
+        "attested Open Food Facts nutrition photo (rev 209), whose ingredient line matches this "
+        "FDC version; another OFF photo (rev 84) shows a different formula and is not used."
     )
-    b.fact("F_serving", "serving_mass", "per_serving", "S1",
-           X.pointer("", ["servingSize", "servingSizeUnit"]), "fdc_serving@1",
-           _as_stated("J2"), assumptions=("J2",))  # fmt: skip
-    data_keys = sorted(FDC_TO_101_9)
-    for key in data_keys:
-        nutrient = FDC_TO_101_9[key]
-        try:
-            b.fact(f"F_{nutrient}", nutrient, "per_serving", "S1", X.fdc_label(key),
-                   f"fdc_label_nutrient@1:{key}",
-                   _rounded(f"fda_rounding_101_9@1:{nutrient}"),
-                   assumptions=("J2", "J3", "J4"))  # fmt: skip
-        except InterpretError as e:
-            b.note(f"FDC labelNutrients.{key} not used: {e} (FDC-computed, not a label value)")
+    # Label facts: only attested photo rows (FDC numbers are corroboration, plan WP3).
+    signed = attest.signed_for(b.head["record_id"])
+    if signed:
+        b.assume("J2", "label_truth", "The photographed label states the sample's composition.")
+        if any(r["nutrient"] == "serving" for row in signed for r in row.get("rows", [])):
+            b.assume("J3", "interpretation", "The serving size in grams is taken as printed.")
+        attested_panels(b, b.head["record_id"], ("J2", "J3"))
     for n in range(1, 6):
         b.ingredient(f"I{n}", "fdc_ingredients", n, "food", "S1", X.pointer("/ingredients"),
                      list_rule=f"list_item@1:{n}")  # fmt: skip
-    b.substance("SUB_nacl", "451W47IQ8X", "S2", X.gsrs_first("approvalID"),
-                name_locator=X.gsrs_first("_name"),
-                formula_locator=X.gsrs_first("structure/formula"))  # fmt: skip
+    # Corroboration: FDC's own values, with where they came from.
+    import json as _json
+
+    doc = _json.loads(fdc)
+    src = str(doc.get("dataSource") or "")
+    b.corroborate("CR_serving", "serving_mass", "per_serving", "S1",
+                  X.pointer("", ["servingSize", "servingSizeUnit"]), "fdc_serving@1", data_source=src)  # fmt: skip
+    for key in sorted(FDC_TO_101_9):
+        b.corroborate(f"CR_label_{FDC_TO_101_9[key]}", FDC_TO_101_9[key], "per_serving", "S1",
+                      X.fdc_label(key), f"fdc_label_nutrient@1:{key}",
+                      data_source=f"{src} labelNutrients (partly computed by FDC)")  # fmt: skip
+    for i, fn in enumerate(doc.get("foodNutrients") or []):
+        q = FDC_NUMBERS.get(str((fn.get("nutrient") or {}).get("number")))
+        if q is None:
+            continue
+        der = fn.get("foodNutrientDerivation") or {}
+        b.corroborate(f"CR_100g_{q}", q, "per_100g", "S1",
+                      X.pointer(f"/foodNutrients/{i}", ["amount", "nutrient/unitName"]), "fdc_per100g@1",
+                      data_source=src, derivation={"code": str(der.get("code") or ""),
+                                                   "description": str(der.get("description") or "")})  # fmt: skip
+    if not signed:
+        b.note("No attested label photo yet: sign the proposal with "
+               "python -m lio_comp.attest sign jif_nutrition_en_209 --operator NAME")  # fmt: skip
 
 
 # ----------------------------------------------------------------- Nutricost
@@ -213,6 +260,43 @@ def nutricost(b: RecordBuilder) -> None:
                 formula_locator=X.gsrs_first("structure/formula"))  # fmt: skip
 
 
+# ------------------------------------------------------- Swanson LOWAT blend
+def swanson_blend(b: RecordBuilder) -> None:
+    import json as _json
+
+    raw = b.source("S1", "dsld_label_78540_swanson_lowat", {"dsld_id": "78540"})
+    label = _json.loads(raw)
+    b.assume("W1", "sample_identity", "The sample is DSLD label 78540 (UPC 0 87614 04062 2).")
+    b.assume("W2", "label_truth", "The DSLD record reproduces the sample's Supplement Facts.")
+    b.assume(
+        "W3",
+        "interpretation",
+        "Dietary-ingredient amounts are taken as stated (21 CFR 101.36: proprietary blends declare the blend's total weight only).",
+    )
+    b.head["variant_note"] = "DSLD label 78540, the only LOWAT Proprietary Blend label."
+    for n, (ptr, _name, depth, row) in enumerate(X.dsld_rows(label), start=1):
+        b.ingredient(f"I{n}", "dsld_dietary", n, "dietary", "S1", X.pointer(f"{ptr}/name"))
+        q = (row.get("quantity") or [{}])[0]
+        try:
+            b.fact(f"F{n}", f"row_{n}", "per_unit", "S1", X.pointer(f"{ptr}/quantity/0", ["quantity", "unit"]),
+                   "dsld_quantity@1", _as_stated("W3"), substance={"ingredient": f"I{n}"},
+                   assumptions=("W2", "W3"))  # fmt: skip
+        except textrules.RuleError:
+            b.note(f"row {n} ({row.get('name')}): amount not on the label ({q.get('quantity')} {q.get('unit')})"
+                   + (" - a member of a proprietary blend" if depth else ""))  # fmt: skip
+    for n, _ing in enumerate(
+        (label.get("otheringredients") or {}).get("ingredients") or [], start=1
+    ):
+        b.ingredient(
+            f"O{n}",
+            "dsld_other",
+            n,
+            "other",
+            "S1",
+            X.pointer(f"/otheringredients/ingredients/{n - 1}/name"),
+        )
+
+
 # -------------------------------------------------------------------- Nutella
 OFF_NUTRIENTS = {
     "energy-kcal": "energy", "fat": "total_fat", "saturated-fat": "saturated_fat",
@@ -223,35 +307,27 @@ OFF_NUTRIENTS = {
 
 def nutella(b: RecordBuilder) -> None:
     b.source("S1", "off_product_3017620422003_nutella", {"gtin": "3017620422003"})
-    b.assume("E1", "sample_identity",
-             "The sample is the French-market 400 g jar (GTIN 3017620422003); its label is the "
-             "French ingredient text.")  # fmt: skip
     b.assume(
-        "E2",
-        "label_truth",
-        "The Open Food Facts record (crowd-sourced) transcribes the French label.",
+        "E1", "sample_identity", "The sample is the French-market 400 g jar (GTIN 3017620422003)."
     )
-    b.assume("E3", "interpretation",
-             "QUID percentages (Reg. 1169/2011 Art. 22) have no rounding rule; taken as stated, "
-             "as percent of the finished product at the time of use (Annex VIII 3).", "quid@1")  # fmt: skip
-    b.assume("E4", "interpretation",
-             "EU nutrition values per 100 g are taken as stated (no rounding rule in the "
-             "regulation; EU guidance on tolerances is not law).")  # fmt: skip
     b.head["variant_note"] = (
-        "Open Food Facts holds different ingredient texts per language (FR, DE, IT differ in "
-        "milk powder % and whey); the FR text is used for the French jar. The EN text in the "
-        "record is incomplete ('sugar, palm oil')."
+        "Open Food Facts text and numbers are crowd-sourced: candidates and corroboration only "
+        "(plan WP3). Its FR, DE and IT ingredient texts differ (milk powder %, whey). The image OFF "
+        "selects as 'ingredients' is a photo of the jar's front, so no QUID value can be attested "
+        "from it: photograph the French jar's ingredient panel to make the QUID percentages facts."
     )
-    text = X.pointer("/product/ingredients_text_fr")
-    for n, q in ((3, "hazelnuts"), (4, "fat_reduced_cocoa"), (5, "skimmed_milk_powder")):
-        b.fact(f"F_quid_{q}", q, "per_100g", "S1", text, f"ingredient_list@1:{n}",
-               _as_stated("E3"), assumptions=("E2", "E3"))  # fmt: skip
+    b.candidate(
+        "CAND_ingredients_fr",
+        "ingredients_text_fr",
+        "S1",
+        X.pointer("/product/ingredients_text_fr"),
+    )
     for key, q in OFF_NUTRIENTS.items():
-        b.fact(f"F_{q}", q, "per_100g", "S1", X.off_nutrient(key), "quantity@1",
-               _as_stated("E4"), assumptions=("E2", "E4"))  # fmt: skip
-    for n in range(1, 9):
-        b.ingredient(f"I{n}", "off_ingredients_fr", n, "food", "S1", text,
-                     list_rule=f"list_item@1:{n}")  # fmt: skip
+        b.corroborate(f"CR_{q}", q, "per_100g", "S1", X.off_nutrient(key), "quantity@1",
+                      data_source="Open Food Facts (crowd-sourced)")  # fmt: skip
+    b.note(
+        "Ingredient identities are not taken from Open Food Facts text (candidates only, plan WP3)."
+    )
 
 
 # ---------------------------------------------------------- crosswalk links
@@ -319,6 +395,7 @@ def careone(b: RecordBuilder) -> None:
 
 
 GOLDEN: dict[str, Callable[[RecordBuilder], None]] = {
+    "swanson_lowat_blend_087614040622": swanson_blend,
     "careone_ibuprofen_341520314643": careone,
     "citrucel_orange_300680418301": citrucel,
     "jif_creamy_16oz_051500255162": jif,
@@ -328,6 +405,10 @@ GOLDEN: dict[str, Callable[[RecordBuilder], None]] = {
 CROSSWALK_PATH = [crosswalk.LINKS]  # tests point this at a fixture crosswalk
 
 HEADS = {
+    "swanson_lowat_blend_087614040622": (
+        "00087614040622",
+        "Swanson LOWAT Proprietary Blend capsules",
+    ),
     "careone_ibuprofen_341520314643": ("00341520314643", "Care One Ibuprofen 200 mg softgels"),
     "citrucel_orange_300680418301": ("00300680418301", "CITRUCEL Orange (methylcellulose) powder"),
     "jif_creamy_16oz_051500255162": ("00051500255162", "Jif Creamy Peanut Butter 16 oz"),

@@ -65,6 +65,8 @@ class RecordBuilder:
         self.constraints: list[dict[str, Any]] = []
         self.bounds: list[dict[str, Any]] = []
         self.links: list[dict[str, Any]] = []
+        self.corroboration: list[dict[str, Any]] = []
+        self.candidates: list[dict[str, Any]] = []
         self.selections: list[dict[str, Any]] = []
         self.attestations: list[dict[str, Any]] = []
         self.estimates: list[dict[str, Any]] = []
@@ -224,6 +226,31 @@ class RecordBuilder:
         self.ingredients.append(ing)
         return ing
 
+    # -------------------------------------- derived and crowd-sourced (plan WP3)
+    def corroborate(
+        self, cid: str, quantity: str, basis: str, source_id: str, locator: dict[str, Any],
+        rule: str, *, data_source: str, derivation: dict[str, str] | None = None,
+    ) -> dict[str, Any]:  # fmt: skip
+        """A database value that is not a label value (FDC labelNutrients, per-100 g):
+        kept, located and checked against label facts, but never a fact."""
+        loc = self.located(source_id, locator)
+        c: dict[str, Any] = {"id": cid, "kind": "derived_corroboration", "quantity": quantity,
+                             "basis": basis, "source_id": source_id, "locator": loc, "rule": rule,
+                             "value_raw": textrules.apply(rule, loc["text"]), "data_source": data_source}  # fmt: skip
+        if derivation:
+            c["derivation"] = derivation
+        self.corroboration.append(c)
+        return c
+
+    def candidate(
+        self, cid: str, what: str, source_id: str, locator: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Crowd-sourced text (Open Food Facts): a candidate for the operator, never evidence."""
+        c = {"id": cid, "kind": "off_text", "what": what, "source_id": source_id,
+             "locator": self.located(source_id, locator)}  # fmt: skip
+        self.candidates.append(c)
+        return c
+
     # ---------------------------------------------------- identity (plan WP1)
     def link(
         self,
@@ -282,6 +309,8 @@ class RecordBuilder:
             "substances": self.substances,
             "ingredients": self.ingredients,
             "links": self.links,
+            "corroboration": self.corroboration,
+            "candidates": self.candidates,
             "selections": self.selections,
             "facts": self.facts,
             "derivations": self.derivations,

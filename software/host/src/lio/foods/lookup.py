@@ -181,6 +181,45 @@ def possibly_truncated(text: str) -> bool:
     return not re.search(r"contains:?\s+[\w ,&/-]+$", t, re.I)
 
 
+SUSPICIOUS_LENGTHS = (255, 256, 1000, 1024, 2000, 4000, 4096)
+
+
+def truncation_flags(text: str, others: list[str] | None = None) -> list[str]:
+    """Reasons an ingredient string may be cut short (plan WP3); shown to the operator."""
+    t = text.strip()
+    if not t:
+        return []
+    flags = []
+    if possibly_truncated(t):
+        flags.append("ends without closing punctuation (mid-word?)")
+    if t.count("(") != t.count(")") or t.count("[") != t.count("]"):
+        flags.append("unbalanced brackets")
+    if len(text) in SUSPICIOUS_LENGTHS:
+        flags.append(f"length is exactly {len(text)} characters (a common field limit)")
+    longer = [o for o in others or [] if len(o.strip()) > len(t) * 1.1]
+    if longer:
+        flags.append(
+            f"shorter than another transcription ({len(t)} vs {max(len(o) for o in longer)} characters)"
+        )
+    return flags
+
+
+def flag_truncation(info: dict[str, Any]) -> None:
+    """Add ``truncation_flags`` to every ingredient part (compared with the others)."""
+    parts = info.get("ingredient_parts") or []
+    texts = [p["text"] for p in parts if p.get("role") == "food"]
+    for p in parts:
+        others = [x for x in texts if x is not p["text"]] if p.get("role") == "food" else []
+        flags = truncation_flags(p["text"], others)
+        if flags:
+            p["truncation_flags"] = flags
+        else:
+            p.pop("truncation_flags", None)
+    info["truncation_flags"] = sorted(
+        {f"{p['origin']}: {f}" for p in parts for f in p.get("truncation_flags", [])}
+    )
+
+
 def _http_bytes(url: str, headers: dict[str, str], timeout: float) -> tuple[bytes, str]:
     req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=timeout) as r:
@@ -950,6 +989,7 @@ class Lookup:
                 merged["drug_resolution"] = DrugResolver(self).resolve(gtin)
             except (urllib.error.URLError, TimeoutError, OSError, ValueError) as e:
                 errors["drug_resolution"] = f"{type(e).__name__}: {e}"
+        flag_truncation(merged)
         merged["evidence"] = list(self._tl.evidence)
         self._tl.evidence = None
         merged["derived_per_100g"] = derived(merged.get("nutrition_per_100g", {}))

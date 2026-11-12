@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-11-12: Composition coverage M3, structured ingredients and demoted database values (plan WP2, WP3)
+
+### Changed
+- **FDC and Open Food Facts numbers are never facts.**
+  - Records keep FDC values as `derived_corroboration`, with the data source (GDSN) and FDC's per-nutrient derivation (e.g. LCSA, "calculated from an approximate value per serving size measure").
+  - Open Food Facts text becomes `candidates`.
+  - `lio-verify` fails any fact or ingredient identity read from the FDC or Open Food Facts APIs.
+  - It compares each FDC value with the attested label fact using the 21 CFR 101.9(c) rounding rules (per 100 g × serving ÷ 100). A mismatch is reported, not fixed.
+- **Jif and Nutella golden records** now hold corroboration and candidates only, until an operator signs a label-photo attestation.
+  - Jif: a proposal from the Open Food Facts nutrition photo (rev 209, CC-BY-SA) is ready, via `python -m lio_comp.attest list|sign`. Signed, it gives ATTESTED facts.
+  - Nutella: the image Open Food Facts selects as "ingredients" is a photo of the jar's front, so the QUID values need an operator photo.
+- **Citrucel.** The "Other information" facts carry an explicit `text_variant_attribution` assumption (A11). The SPL's text list is recorded alongside the structured per-product list, and `lio-verify` reports identity conflicts: "orange flavors (natural and artificial)" has no structured entry.
+
+### Added
+- **Swanson LOWAT Proprietary Blend** golden record (DSLD 78540): DSLD rows (nested included) as facts via `dsld_quantity@1`, which refuses IU and "not present". The blend members are bounded to (0, 300) mg each.
+- `nfp_row@2` / `nfp_serving@2` for label abbreviations. Two-column Nutrition Facts rows are split at each nutrient label.
+- `list_item@2`: a "." inside a list ("FD&C yellow no. 6 lake") does not end it.
+- **Truncation flags** on every ingredient string: ends mid-word, unbalanced brackets, a suspicious length (255/256/1000/1024/2000/4000/4096), or shorter than another transcription. They are shown on the dashboard and the phone.
+
 ## 2026-11-12: Composition coverage M2, attested barcode → NDC → SPL resolution (plan WP1)
 
 ### Added

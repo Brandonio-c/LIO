@@ -31,6 +31,9 @@ from lio_verify.locate import LocatorError, resolve
 from lio_verify.lp import LpError, atoms, check_bound, data_check, has_unknowns, rows_of
 
 VERIFIED, ATTESTED, UNVERIFIED, FAILED = "VERIFIED", "ATTESTED", "UNVERIFIED", "FAILED"
+# Database answers whose numbers are back-computed or crowd-sourced (plan WP3): never facts.
+# Open Food Facts *images* (images.openfoodfacts.org) may be attested evidence.
+DERIVED_HOSTS = ("api.nal.usda.gov/fdc", "world.openfoodfacts.org/api")
 INT_KEYS = {"start", "end", "x", "y", "w", "h", "position"}
 
 
@@ -66,6 +69,8 @@ class Report:
     rules_versions: dict[str, int] = field(default_factory=dict)
     sources: list[dict[str, Any]] = field(default_factory=list)
     refetch: list[dict[str, Any]] = field(default_factory=list)
+    corroboration: list[dict[str, Any]] = field(default_factory=list)
+    conflicts: list[str] = field(default_factory=list)
 
     @property
     def ok(self) -> bool:
@@ -89,6 +94,8 @@ class Report:
             "rules_versions": self.rules_versions,
             "sources": self.sources,
             "refetch": self.refetch,
+            "corroboration": self.corroboration,
+            "conflicts": self.conflicts,
         }
 
 
@@ -160,7 +167,9 @@ class Verifier:
         attested = {a["id"] for a in rec["attestations"]}
         self._facts(rec, rep, data, status, attested)
         self._links(rec, rep, data, status, attested)
+        self._corroboration(rec, rep, data)
         self._identities(rec, rep, data, status)
+        self._identity_conflicts(rec, rep)
         ctx = self._derivations(rec, rep, status)
         self._constraints(rec, rep, ctx, status)
         self._bounds(rec, rep, ctx, status)
@@ -250,12 +259,21 @@ class Verifier:
         attested: set[str],
     ) -> None:
         ings = {i["id"] for i in rec["ingredients"]}
+        derived_sources = {
+            s["source_id"]
+            for s in rep.sources
+            if any(h in str(s.get("retrieval_url", "")) for h in DERIVED_HOSTS)
+        }
         for f in rec["facts"]:
             fld = Field("fact", f["id"], VERIFIED, assumptions=list(f["assumptions"]))
             fld.value = f["value"]
             try:
                 if f["source_id"] not in data:
                     raise ValueError(f"source {f['source_id']} failed or is missing")
+                if f["source_id"] in derived_sources:
+                    raise ValueError(
+                        "FDC and Open Food Facts database values are never facts (plan WP3)"
+                    )
                 loc = f["locator"]
                 text = resolve(loc, data[f["source_id"]])
                 if loc["type"] == "image_bbox":
@@ -285,6 +303,82 @@ class Verifier:
             except (ValueError, KeyError) as e:
                 fld.status, fld.problems = FAILED, [str(e)]
             status[f["id"]] = fld.status
+            rep.fields.append(fld)
+
+    def _corroboration(self, rec: dict[str, Any], rep: Report, data: dict[str, bytes]) -> None:
+        """FDC values and Open Food Facts text: located and checked, never VERIFIED. FDC
+        values are compared with label facts (21 CFR 101.9(c) rounding)."""
+        from lio_verify.rounding import RoundingError, RoundingRules
+        from lio_verify.textrules import parse_raw
+
+        rounding = None
+        ver = rep.rules_versions.get("fda_rounding_101_9")
+        try:
+            if ver is not None:
+                rounding = RoundingRules(table(self.tables, "fda_rounding_101_9", ver))
+        except (InterpretError, RoundingError):
+            rounding = None  # the version mismatch is already a record error (fail closed)
+        label = {
+            f["quantity"]: f
+            for f in rec["facts"]
+            if f["basis"] == "per_serving" and f["interpretation"]["kind"] == "rounded"
+        }
+        serving = next(
+            (c for c in rec.get("corroboration", []) if c["quantity"] == "serving_mass"), None
+        )
+        for c in rec.get("corroboration", []):
+            fld = Field("corroboration", c["id"], UNVERIFIED)
+            try:
+                text = resolve(c["locator"], data[c["source_id"]])
+                if textrules.apply(c["rule"], text) != c["value_raw"]:
+                    raise ValueError("rule does not reproduce the value")
+                fld.problems = [
+                    f"database value ({c['data_source']}), not a label value: never a fact"
+                ]
+                lab = label.get(c["quantity"])
+                if lab is not None and rounding is not None and c["quantity"] in rounding.bands:
+                    v = parse_raw(c["value_raw"]).value
+                    if c["basis"] == "per_100g":
+                        if serving is None:
+                            raise LookupError("no serving size to compare per-100 g values")
+                        v = v * parse_raw(serving["value_raw"]).value / 100
+                    lab_iv, _ = Interval.from_json(lab["value"])
+                    shown = rounding.forward(c["quantity"], v)
+                    ok = any(rounding.inverse(c["quantity"], d) == lab_iv for d in shown)
+                    rep.corroboration.append(
+                        {
+                            "id": c["id"],
+                            "quantity": c["quantity"],
+                            "label_fact": lab["id"],
+                            "result": "consistent" if ok else "mismatch",
+                            "detail": (
+                                f"{c['value_raw']} ({c['basis']}) vs label {lab['value_raw']}"
+                            ),
+                        }
+                    )
+            except LookupError as e:
+                rep.corroboration.append(
+                    {
+                        "id": c["id"],
+                        "quantity": c["quantity"],
+                        "result": "not compared",
+                        "detail": str(e),
+                    }
+                )
+            except (LocatorError, textrules.RuleError, RoundingError, KeyError, ValueError) as e:
+                fld.status, fld.problems = FAILED, [str(e)]
+            rep.fields.append(fld)
+        for c in rec.get("candidates", []):
+            fld = Field(
+                "candidate",
+                c["id"],
+                UNVERIFIED,
+                problems=["crowd-sourced text: a candidate, never evidence"],
+            )
+            try:
+                resolve(c["locator"], data[c["source_id"]])
+            except (LocatorError, KeyError) as e:
+                fld.status, fld.problems = FAILED, [str(e)]
             rep.fields.append(fld)
 
     def _links(
@@ -337,8 +431,10 @@ class Verifier:
                 n11 = f"{parts[0].zfill(5)}{parts[1].zfill(4)}{parts[2].zfill(2)}"
                 if n11 != lk["ndc11"]:
                     raise ValueError(f"package {pkg} is not the linked NDC {lk['ndc11']}")
-                want = ("//v:manufacturedProduct/v:manufacturedProduct"
-                        f"[.//v:containerPackagedProduct/v:code/@code='{pkg}']/v:code")  # fmt: skip
+                want = (
+                    "//v:manufacturedProduct/v:manufacturedProduct"
+                    f"[.//v:containerPackagedProduct/v:code/@code='{pkg}']/v:code"
+                )
                 loc = sel["locator"]
                 if (
                     loc.get("type") != "xpath"
@@ -388,11 +484,20 @@ class Verifier:
             rep.fields.append(fld)
         subs = {s["id"] for s in rec["substances"]}
         attested = {a["id"] for a in rec["attestations"]}
+        crowd = {
+            s["source_id"]
+            for s in rep.sources
+            if "world.openfoodfacts.org/api" in str(s.get("retrieval_url", ""))
+        }
         for i in rec["ingredients"]:
             fld = Field("ingredient", i["id"], VERIFIED)
             try:
                 b = data[i["source_id"]]
                 loc = i["name_locator"]
+                if i["source_id"] in crowd:
+                    raise ValueError(
+                        "Open Food Facts text is a candidate, never an ingredient identity"
+                    )
                 if loc["type"] == "image_bbox":
                     if loc["attestation_id"] not in attested:
                         raise ValueError("an ingredient read from a photo needs its attestation")
@@ -410,6 +515,39 @@ class Verifier:
                 fld.status, fld.problems = FAILED, [str(e)]
             status[i["id"]] = fld.status
             rep.fields.append(fld)
+
+    def _identity_conflicts(self, rec: dict[str, Any], rep: Report) -> None:
+        """An SPL's structured inactive list vs its text list (plan WP2): report every name
+        on one side that matches nothing on the other. Matching is deterministic: lower
+        case, parentheses dropped, the synonym soy -> soybean, and one name's words a
+        subset of the other's ("citric acid" ~ "CITRIC ACID MONOHYDRATE")."""
+
+        def words(name: str) -> frozenset[str]:
+            t = re.sub(r"\([^)]*\)", " ", name.lower())
+            ws = {w.rstrip(".") for w in re.findall(r"[a-z0-9&.]+", t)}
+            return frozenset("soybean" if w == "soy" else w for w in ws if w)
+
+        def match(a: frozenset[str], b: frozenset[str]) -> bool:
+            return a <= b or b <= a
+
+        by: dict[tuple[str, str], list[str]] = {}
+        for i in rec["ingredients"]:
+            by.setdefault((i["source_id"], i["list_id"]), []).append(i["name_verbatim"])
+        for (src, lid), structured in by.items():
+            if lid != "spl_inactive" or (src, "spl_text_inactive") not in by:
+                continue
+            text = by[(src, "spl_text_inactive")]
+            sw, tw = [words(x) for x in structured], [words(x) for x in text]
+            for name, w in zip(text, tw, strict=True):
+                if not any(match(w, o) for o in sw):
+                    rep.conflicts.append(
+                        f"text list names {name!r}, which is not in the structured list"
+                    )
+            for name, w in zip(structured, sw, strict=True):
+                if not any(match(w, o) for o in tw):
+                    rep.conflicts.append(
+                        f"structured list has {name!r}, which the text list does not name"
+                    )
 
     def _context(self, rec: dict[str, Any], status: dict[str, str]) -> Context:
         formulas = {
@@ -503,8 +641,12 @@ class Verifier:
         for b in rec["bounds"]:
             fld = Field("bound", b["id"], VERIFIED, assumptions=list(b["assumptions"]))
             fld.value = b["result"]
-            cited = {a for c in rec["constraints"] if c["id"] in b["constraints"]
-                     for a in c["assumptions"]}  # fmt: skip
+            cited = {
+                a
+                for c in rec["constraints"]
+                if c["id"] in b["constraints"]
+                for a in c["assumptions"]
+            }
             missing = sorted(cited - set(b["assumptions"]))
             problems = check_bound(b, rec["constraints"], units, ctx)
             if missing:

@@ -81,3 +81,18 @@ def dsld_row_quantity(row: int, q: int = 0) -> dict[str, Any]:
 
 def off_nutrient(key: str) -> dict[str, Any]:
     return pointer("/product/nutriments", [f"{key}_100g", f"{key}_unit"])
+
+
+def dsld_rows(label: dict[str, Any]) -> list[tuple[str, str, int, dict[str, Any]]]:
+    """Every dietary-ingredient row of a DSLD label, nested rows included:
+    (pointer to the row, row name, depth, row)."""
+    out: list[tuple[str, str, int, dict[str, Any]]] = []
+
+    def walk(rows: list[dict[str, Any]], base: str, depth: int) -> None:
+        for i, r in enumerate(rows):
+            ptr = f"{base}/{i}"
+            out.append((ptr, str(r.get("name") or ""), depth, r))
+            walk(r.get("nestedRows") or [], f"{ptr}/nestedRows", depth + 1)
+
+    walk(label.get("ingredientRows") or [], "/ingredientRows", 0)
+    return out

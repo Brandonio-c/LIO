@@ -1,0 +1,18 @@
+{
+ "byte_length": 36242,
+ "media_type": "image/jpeg",
+ "retrievals": [
+  {
+   "identifiers": {
+    "attribution": "Open Food Facts contributors (openfoodfacts.org)",
+    "image": "nutrition_fr",
+    "license": "CC-BY-SA 3.0",
+    "rev": "829"
+   },
+   "retrieval_url": "https://images.openfoodfacts.org/images/products/301/762/042/2003/nutrition_fr.829.full.jpg",
+   "retrieved_at": "2026-11-12T18:34:32Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "1428676a96cd8f2f98752682009f75dd3dc1ec7944c6a6b0aad70d7a0c2723a2"
+}

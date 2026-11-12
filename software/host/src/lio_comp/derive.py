@@ -6,6 +6,7 @@ solved with :mod:`lio_comp.bound`. The verifier recomputes all of it.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import Any
 
 from lio_comp import bound as B
@@ -268,12 +269,28 @@ def nutella(b: RecordBuilder) -> None:
         bound_of(b, f"B{i}", q, "per_100g", x)
 
 
-DERIVE = {
+def swanson(b: RecordBuilder) -> None:
+    b.assume(
+        "W4",
+        "modelling",
+        "Each named member of the blend is present (amount > 0) and the members make up the whole blend.",
+    )
+    blend = next(f for f in b.facts if f["quantity"] == "row_1")
+    members = [i for i in b.ingredients if i["list_id"] == "dsld_dietary" and i["position"] > 1]
+    names = [variable(b, f"member_{i['position']}", "mg", i["id"]) for i in members]
+    constrain(b, "C1", "sum_eq", items=names, rhs=blend["id"], assumptions=("W2", "W3", "W4"))
+    constrain(b, "C2", "positive", items=names, assumptions=("W4",))
+    for n, v in enumerate(names, start=1):
+        bound_of(b, f"B{n}", v[2:], "per_unit", v)
+
+
+DERIVE: dict[str, Callable[[RecordBuilder], None]] = {
+    "swanson_lowat_blend_087614040622": swanson,
     "careone_ibuprofen_341520314643": lambda b: None,
     "citrucel_orange_300680418301": citrucel,
-    "jif_creamy_16oz_051500255162": jif,
+    "jif_creamy_16oz_051500255162": lambda b: None,  # no label serving mass: no mass balance
     "nutricost_magnesium_oxide_702669934398": nutricost,
-    "nutella_fr_3017620422003": nutella,
+    "nutella_fr_3017620422003": lambda b: None,  # no facts until a label photo is attested
 }
 
 

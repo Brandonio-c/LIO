@@ -23,6 +23,7 @@
  ],
  "attestations": [],
  "bounds": [],
+ "candidates": [],
  "constraints": [
   {
    "assumptions": [
@@ -35,6 +36,7 @@
    "status": "entailed"
   }
  ],
+ "corroboration": [],
  "derivations": [
   {
    "assumptions": [],

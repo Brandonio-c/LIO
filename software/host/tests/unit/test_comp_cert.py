@@ -180,8 +180,11 @@ def test_open_and_closed_ends_match_the_old_z3_results() -> None:
         Interval(F(0), F(65, 4), False, False),
         "g",
     )
-    n = rec("nutella_fr_3017620422003")
-    assert Interval.from_json(bound(n, "B1")["result"]) == (Interval(F(133, 5), F(563, 10)), "%")
+    n = rec("swanson_lowat_blend_087614040622")
+    assert Interval.from_json(bound(n, "B1")["result"]) == (
+        Interval(F(0), F(300), False, False),
+        "mg",
+    )
 
 
 # -------------------------------------------------------------- import boundary

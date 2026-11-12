@@ -76,7 +76,7 @@ def test_no_api_key_in_the_repository_store() -> None:
 def test_every_fact_re_derives_from_its_snapshot(path: Path) -> None:
     rec = json.loads(path.read_text())
     tables = load_tables(COMP / "rules")
-    assert rec["facts"], "a golden record without facts"
+    # Records built only from corroboration (FDC, Open Food Facts) have no facts (plan WP3).
     for f in rec["facts"]:
         data = src_bytes(rec, f["source_id"])
         text = resolve(f["locator"], data)
@@ -117,18 +117,20 @@ def test_citrucel_facts_reproduce_spec_values() -> None:
     assert value(rec, "F6") == (Interval(F(55), F(65), True, False), "kcal")
     # 21 CFR 201.70(b): calcium is rounded to the nearest 5 mg, so 80 mg is an interval.
     assert value(rec, "F3") == (Interval(F(155, 2), F(165, 2)), "mg")
-    uniis = {i["unii"] for i in rec["ingredients"]}
+    uniis = {i["unii"] for i in rec["ingredients"] if "unii" in i}
     assert {"MRJ667KA5E", "L11K75P92J", "K4C08XP666", "C151H8M554", "7CVR7L4A2D"} <= uniis
     formulas = {s["unii"]: s["formula"] for s in rec["substances"]}
     assert formulas == {"L11K75P92J": "Ca.HO4P", "K4C08XP666": "3Ca.2O4P",
                         "EE90ONI6FF": "C6H5O7.3K.H2O"}  # fmt: skip
 
 
-def test_fdc_computed_values_are_not_facts() -> None:
+def test_fdc_values_are_corroboration_only() -> None:
     rec = record("jif_creamy_16oz_051500255162")
-    ids = {f["id"] for f in rec["facts"]}
-    assert "F_dietary_fiber" not in ids and "F_added_sugars" not in ids  # 2.01 g: FDC-computed
-    assert value(rec, "F_sodium") == (Interval(F(275, 2), F(145), True, False), "mg")
+    assert not rec["facts"]  # no attested label photo signed in the repository yet
+    ids = {c["id"] for c in rec["corroboration"]}
+    assert {"CR_label_total_fat", "CR_100g_total_fat", "CR_serving"} <= ids
+    fiber = next(c for c in rec["corroboration"] if c["id"] == "CR_label_dietary_fiber")
+    assert fiber["value_raw"] == "2.01 g"  # FDC-computed, kept but never a fact
 
 
 def test_json_numbers_are_kept_as_tokens() -> None:

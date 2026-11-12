@@ -293,6 +293,90 @@
    "items": {
     "$ref": "#/$defs/selection"
    }
+  },
+  "corroboration": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "id",
+     "kind",
+     "quantity",
+     "basis",
+     "source_id",
+     "locator",
+     "rule",
+     "value_raw",
+     "data_source"
+    ],
+    "properties": {
+     "id": {
+      "$ref": "#/$defs/id"
+     },
+     "kind": {
+      "const": "derived_corroboration"
+     },
+     "quantity": {
+      "type": "string"
+     },
+     "basis": {
+      "$ref": "#/$defs/basis"
+     },
+     "source_id": {
+      "$ref": "#/$defs/id"
+     },
+     "locator": {
+      "$ref": "#/$defs/locator"
+     },
+     "rule": {
+      "$ref": "#/$defs/rule_ref"
+     },
+     "value_raw": {
+      "type": "string"
+     },
+     "data_source": {
+      "type": "string"
+     },
+     "derivation": {
+      "type": "object",
+      "additionalProperties": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "candidates": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "id",
+     "kind",
+     "what",
+     "source_id",
+     "locator"
+    ],
+    "properties": {
+     "id": {
+      "$ref": "#/$defs/id"
+     },
+     "kind": {
+      "const": "off_text"
+     },
+     "what": {
+      "type": "string"
+     },
+     "source_id": {
+      "$ref": "#/$defs/id"
+     },
+     "locator": {
+      "$ref": "#/$defs/locator"
+     }
+    }
+   }
   }
  },
  "$defs": {

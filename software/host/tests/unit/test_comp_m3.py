@@ -48,8 +48,8 @@ def bound(rec: dict[str, Any], bid: str) -> dict[str, Any]:
 
 
 CITRUCEL = "citrucel_orange_300680418301"
-RECORDS = ["citrucel_orange_300680418301", "jif_creamy_16oz_051500255162",
-           "nutella_fr_3017620422003", "nutricost_magnesium_oxide_702669934398"]  # fmt: skip
+RECORDS = ["citrucel_orange_300680418301", "jif_creamy_16oz_051500255162", "nutella_fr_3017620422003",
+           "nutricost_magnesium_oxide_702669934398", "swanson_lowat_blend_087614040622"]  # fmt: skip
 
 
 # ------------------------------------------------------------- spec §8 values
@@ -142,17 +142,17 @@ def test_tampered_witness_fails() -> None:
 
 
 def test_narrower_than_proven_fails() -> None:
-    rec = record("nutella_fr_3017620422003")
+    rec = record("swanson_lowat_blend_087614040622")
     b = copy.deepcopy(bound(rec, "B1"))
-    b["result"]["lo"] = "27"  # proven minimum is 26.6 %
-    b["certificate"]["min"]["value"] = "27"
+    b["result"]["hi"] = "299"  # proven: below 300 mg
+    b["certificate"]["max"]["value"] = "299"
     assert check_bound(b, rec["constraints"], units_of(rec), ctx_of(rec))
 
 
 def test_wider_than_proven_is_reported_too() -> None:
     """A looser bound is sound but its witness no longer reaches the stated end."""
-    rec = record("nutella_fr_3017620422003")
+    rec = record("swanson_lowat_blend_087614040622")
     b = copy.deepcopy(bound(rec, "B1"))
-    b["result"]["lo"] = "26"
-    b["certificate"]["min"]["value"] = "26"
+    b["result"]["hi"] = "301"
+    b["certificate"]["max"]["value"] = "301"
     assert check_bound(b, rec["constraints"], units_of(rec), ctx_of(rec))

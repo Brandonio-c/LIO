@@ -1,0 +1,18 @@
+{
+ "byte_length": 14034,
+ "media_type": "image/jpeg",
+ "retrievals": [
+  {
+   "identifiers": {
+    "attribution": "Open Food Facts contributors (openfoodfacts.org)",
+    "image": "ingredients_en",
+    "license": "CC-BY-SA 3.0",
+    "rev": "1026"
+   },
+   "retrieval_url": "https://images.openfoodfacts.org/images/products/301/762/042/2003/ingredients_en.1026.full.jpg",
+   "retrieved_at": "2026-11-12T18:34:32Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "72113968d2264e74ced6c9053c47e57b4c5f909faed8268c7262d514d615bac9"
+}

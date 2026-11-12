@@ -16,11 +16,17 @@ Rules (all pure functions of the located text):
 - ``printed_ndc@1``: an NDC printed on a carton ("NDC 41520-745-18") -> 11 digits.
 - ``nfp_row@1:<nutrient>``: a row of a US Nutrition Facts panel ("Total Fat 16g 21%").
 - ``nfp_serving@1``: the panel's serving size in grams ("Serving size 2 Tbsp (32g)").
+- ``nfp_row@2`` / ``nfp_serving@2``: the same, plus common abbreviations ("Sat. Fat",
+  "Cholest.", "Total Carb.", "Fiber", "Serv. size", "Calories per serving 190").
+- ``dsld_quantity@1``: a DSLD row's "quantity unit" in g, mg, mcg or kcal (IU and
+  "NP", not present, are refused).
+- ``fdc_per100g@1``: an FDC foodNutrient "amount unitName" (per 100 g; corroboration only).
 - ``fdc_serving@1``: FoodData Central ``servingSize servingSizeUnit`` ("33.0 GRM").
 - ``line_amount@1:<n>``: the amount opening line ``n`` (from 1) of a multi-line
   statement ("750 mg per serving" -> "750 mg").
 - ``list_item@1:<index>``: the ``index``-th top-level item (from 1) of a
   comma-separated ingredient list, verbatim (used for ingredient identity).
+- ``list_item@2:<index>``: as @1, but a "." inside the list ("no. 6") does not end it.
 - ``ingredient_list@1:<index>``: that item's stated percentage ("13%").
 """
 
@@ -115,6 +121,48 @@ def nfp_row(nutrient: str, text: str) -> str:
     return f"{'<' if m.group('lt') else ''}{m.group('n')} {m.group('u').lower()}"
 
 
+NFP_ROWS_2: dict[str, tuple[str, str]] = {  # nfp_row@2: @1 plus common label abbreviations
+    **NFP_ROWS,
+    "saturated_fat": (r"sat(?:urated|\.)?\s*fat", "g"),
+    "cholesterol": (r"cholest(?:erol|\.)?", "mg"),
+    "total_carbohydrate": (r"total\s+carb(?:ohydrates?|s|\.)?", "g"),
+    "dietary_fiber": (r"(?:dietary\s+)?fib(?:er|re)", "g"),
+}
+
+
+def nfp_row2(nutrient: str, text: str) -> str:
+    """``nfp_row@2``: as ``nfp_row@1`` but also "Sat. Fat", "Cholest.", "Total Carb.", "Fiber",
+    and "Calories" with words between label and number ("Calories per serving 190")."""
+    t = " ".join(text.split())
+    if nutrient == "calories":
+        m = re.fullmatch(r"calories(?:\s+per\s+serving)?\s+(?P<n>[0-9]+)(\s.*)?", t, re.I)
+        if not m:
+            raise RuleError(f"not a Calories row: {text!r}")
+        return f"{m.group('n')} kcal"
+    if nutrient in ("added_sugars", *NFP_ROWS) and nutrient not in NFP_ROWS_2:
+        return nfp_row(nutrient, text)
+    if nutrient == "added_sugars":
+        return nfp_row(nutrient, text)
+    if nutrient not in NFP_ROWS_2:
+        raise RuleError(f"no Nutrition Facts row rule for {nutrient!r}")
+    label, unit = NFP_ROWS_2[nutrient]
+    m = re.fullmatch(label + r"\s*" + _AMT.format(u=unit) + r"(\s.*)?", t, re.I)
+    if not m:
+        raise RuleError(f"not a {nutrient} row: {text!r}")
+    return f"{'<' if m.group('lt') else ''}{m.group('n')} {m.group('u').lower()}"
+
+
+def nfp_serving2(text: str) -> str:
+    """``nfp_serving@2``: also "Serv. size 2 Tbsp (33g)"."""
+    t = " ".join(text.split())
+    m = re.fullmatch(
+        r"serv(?:ing|\.)?\s+size\b.*?(?P<n>[0-9]+(?:\.[0-9]+)?)\s*(?P<u>g|ml)\s*\)?", t, re.I
+    )
+    if not m:
+        raise RuleError(f"not a serving-size row with grams: {text!r}")
+    return f"{m.group('n')} {m.group('u').lower()}"
+
+
 def nfp_serving(text: str) -> str:
     """``nfp_serving@1``: "Serving size 2 Tbsp (32g)" -> "32 g"."""
     t = " ".join(text.split())
@@ -175,6 +223,24 @@ def _otc_items(text: str) -> dict[str, str]:
     return out
 
 
+def split_list2(text: str) -> list[str]:
+    """``list_item@2``: as :func:`split_list`, but a "." ends the list only at the end of
+    the text or before a capitalised next sentence ("vanilline. Sans gluten."), so
+    "FD&C yellow no. 6 lake" stays one item."""
+    t = " ".join(text.split())
+    cut = len(t)
+    for m in re.finditer(r"\.(?=\s+[A-ZÀ-Ý][a-zà-ÿ])", t):
+        depth = sum(1 for ch in t[: m.start()] if ch in "([{") - sum(
+            1 for ch in t[: m.start()] if ch in ")]}"
+        )
+        if depth <= 0:
+            cut = m.start()
+            break
+    # protect the remaining dots so split_list does not end the list at them
+    protected = t[:cut].rstrip(" .").replace(".", "\u2024")
+    return [x.replace("\u2024", ".") for x in split_list(protected)]
+
+
 def split_list(text: str) -> list[str]:
     """Top-level comma-separated items; any of ([{ opens and )]} closes a group.
 
@@ -211,6 +277,10 @@ def _list_item(text: str, sel: str) -> str:
     return parts[int(sel) - 1]
 
 
+def float_free_zero(n: str) -> bool:
+    return parse_decimal(n) == 0
+
+
 def apply(rule: str, text: str) -> str:
     """The ``value_raw`` that ``rule`` (``name@version[:selector]``) reads from ``text``."""
     base, _, sel = rule.partition(":")
@@ -228,6 +298,35 @@ def apply(rule: str, text: str) -> str:
         if not m:
             raise RuleError("not an OTC 'contributes ... calories from' statement")
         return f"{m.group('n')} kcal"
+    if base == "dsld_quantity@1":
+        m = re.fullmatch(r"(?P<n>[0-9]+(?:\.[0-9]+)?) (?P<u>.+)", " ".join(text.split()))
+        units = {
+            "mg": "mg",
+            "milligram(s)": "mg",
+            "g": "g",
+            "gram(s)": "g",
+            "mcg": "mcg",
+            "microgram(s)": "mcg",
+            "calorie(s)": "kcal",
+            "kcal": "kcal",
+        }
+        if not m or m.group("u").lower() not in units:
+            raise RuleError(f"not a DSLD amount in g, mg, mcg or kcal: {text!r}")
+        if float_free_zero(m.group("n")):
+            raise RuleError("DSLD amount 0 means 'not present on the label'")
+        return f"{m.group('n')} {units[m.group('u').lower()]}"
+    if base == "fdc_per100g@1":
+        m = re.fullmatch(
+            r"(?P<n>[0-9]+(?:\.[0-9]+)?(?:[eE][-+]?[0-9]+)?) (?P<u>g|mg|kcal|mcg|IU|kJ|µg)",
+            " ".join(text.split()),
+        )
+        if not m:
+            raise RuleError(f"not an FDC amount and unit: {text!r}")
+        from decimal import Decimal
+
+        return (
+            f"{format(Decimal(m.group('n')), 'f')} {m.group('u')}"  # exact; "0E-8" -> "0.00000000"
+        )
     if base == "fdc_label_nutrient@1":
         if sel not in FDC_LABEL_UNITS:
             raise RuleError(f"no unit known for FDC label nutrient {sel!r}")
@@ -235,6 +334,10 @@ def apply(rule: str, text: str) -> str:
         return f"{text} {FDC_LABEL_UNITS[sel]}"
     if base == "printed_ndc@1":
         return printed_ndc(text)
+    if base == "nfp_row@2":
+        return nfp_row2(sel, text)
+    if base == "nfp_serving@2":
+        return nfp_serving2(text)
     if base == "nfp_row@1":
         return nfp_row(sel, text)
     if base == "nfp_serving@1":
@@ -254,6 +357,11 @@ def apply(rule: str, text: str) -> str:
         return f"{m.group('n')} {m.group('u')}"
     if base == "list_item@1":
         return _list_item(text, sel)
+    if base == "list_item@2":
+        parts = split_list2(text)
+        if not sel.isdigit() or not 1 <= int(sel) <= len(parts):
+            raise RuleError(f"no item {sel!r} in a list of {len(parts)}")
+        return parts[int(sel) - 1]
     if base == "ingredient_list@1":
         found = _PCT.findall(_list_item(text, sel))
         if len(found) != 1:

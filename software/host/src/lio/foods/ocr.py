@@ -17,6 +17,7 @@ review before it is saved.
 from __future__ import annotations
 
 import io
+import itertools
 import json
 import re
 import shutil
@@ -310,40 +311,59 @@ def _join(group: list[Line]) -> Line:
     return Line(" ".join(ln.text for ln in g), min(ln.conf for ln in g), x0, y0, x1 - x0, y1 - y0)
 
 
+def _segments(text: str, labels: list[str]) -> list[tuple[int, int]]:
+    """Split a printed row at every nutrient label it contains (two-column panels put
+    "Total Fat 16g 21%" and "Total Carb. 8g" on one visual row)."""
+    starts = sorted({m.start() for lab in labels for m in re.finditer(r"(?i)\b" + lab, text)})
+    if not starts:
+        return []
+    bounds = [*starts, len(text)]
+    return [(a, b) for a, b in itertools.pairwise(bounds) if text[a:b].strip()]
+
+
 def panel_rows(lines: list[Line], size: tuple[int, int]) -> list[dict[str, Any]]:
     """Nutrition Facts rows that a deterministic row rule can read, with pixel boxes.
 
-    Boxes are in pixels of the upright photo (origin top-left). Needs the
-    composition extra (``lio_verify``); without it no rows are offered.
+    Boxes are in pixels of the upright photo (origin top-left); a row holding two
+    nutrients is split, each part getting the matching share of the row's width.
+    Needs the composition extra (``lio_verify``); without it no rows are offered.
     """
     try:
         from lio_verify import textrules
     except ImportError:
         return []
     w, h = size
-    nutrients = ["calories", *textrules.NFP_ROWS, "added_sugars"]
+    nutrients = ["calories", *textrules.NFP_ROWS_2, "added_sugars"]
+    labels = [lab for lab, _ in textrules.NFP_ROWS_2.values()] + [
+        r"calories",
+        r"incl(?:udes|\.)?\s",
+        r"serv(?:ing|\.)?\s+size",
+    ]
     rows: list[dict[str, Any]] = []
     seen: set[str] = set()
     for ln in visual_rows(lines):
-        box = {
-            "x": max(0, round(ln.x * w)),
-            "y": max(0, round((1 - ln.y - ln.h) * h)),
-            "w": max(1, round(ln.w * w)),
-            "h": max(1, round(ln.h * h)),
-        }
-        candidates = [("serving", "nfp_serving@1")] + [(n, f"nfp_row@1:{n}") for n in nutrients]
-        for key, rule in candidates:
-            if key in seen:
-                continue
-            try:
-                raw = textrules.apply(rule, ln.text)
-            except textrules.RuleError:
-                continue
-            seen.add(key)
-            rows.append(
-                {"nutrient": key, "rule": rule, "text": ln.text, "value_raw": raw, "box": box}
-            )
-            break
+        for a, b in _segments(ln.text, labels) or [(0, len(ln.text))]:
+            seg = ln.text[a:b].strip()
+            frac0, frac1 = a / max(1, len(ln.text)), b / max(1, len(ln.text))
+            box = {
+                "x": max(0, round((ln.x + ln.w * frac0) * w)),
+                "y": max(0, round((1 - ln.y - ln.h) * h)),
+                "w": max(1, round(ln.w * (frac1 - frac0) * w)),
+                "h": max(1, round(ln.h * h)),
+            }
+            candidates = [("serving", "nfp_serving@2")] + [(n, f"nfp_row@2:{n}") for n in nutrients]
+            for key, rule in candidates:
+                if key in seen:
+                    continue
+                try:
+                    raw = textrules.apply(rule, seg)
+                except textrules.RuleError:
+                    continue
+                seen.add(key)
+                rows.append(
+                    {"nutrient": key, "rule": rule, "text": seg, "value_raw": raw, "box": box}
+                )
+                break
     return rows
 
 
