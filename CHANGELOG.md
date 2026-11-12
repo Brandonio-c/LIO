@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-11-12: Composition coverage M7, documentation (plan WP8)
+
+### Changed
+- **`docs/COMPOSITION_VERIFICATION_SPEC.md` is now Rev B.** Rev A is unchanged, and a Revision B section amends it:
+  - solver-free bound certificates;
+  - identity links and product selections;
+  - FDC values as corroboration and Open Food Facts text as candidates;
+  - SPL text with a variant-attribution assumption;
+  - compendial assay intervals;
+  - photo panels and the new text rules.
+- **`docs/COMPOSITION_VERIFICATION.md`** describes the new checks and photo panels and no longer mentions z3.
+
+### Added
+- **`docs/COMPOSITION_COVERAGE.md`**:
+  - every source with its cost, terms and status (free, paid, link-only);
+  - the OTC barcode-to-label resolution flow;
+  - the rule changes;
+  - the golden-record status and the operator steps still needed;
+  - parser accuracy and the benchmark.
+- **`lio.foods.paid_sources`**: disabled stubs documenting how GS1 Data Hub or Label Insight data would plug in. Nothing is licensed or called.
+
 ## 2026-11-12: Composition coverage M6, coverage benchmark tools (plan WP7)
 
 ### Added

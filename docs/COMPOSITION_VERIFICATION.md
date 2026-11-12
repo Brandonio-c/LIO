@@ -84,14 +84,19 @@ The checks run in this order; any failure makes the field FAILED (fail closed):
    - the interpretation, with the pinned rule version, reproduces the interval.
 4. **Substances and ingredients.** Names, UNIIs and formulas match their sources.
 5. **Derivations.** Each is re-evaluated exactly, and the interval and unit must be identical.
-6. **Constraints.** Data checks are recomputed; a `violated` one is a data conflict. The constraints on unknowns must be jointly satisfiable (z3).
+6. **Constraints.** Data checks are recomputed; a `violated` one is a data conflict. The constraints on unknowns must be jointly satisfiable: the record's feasibility witness must satisfy all of them strictly, checked with plain fractions.
 7. **Bounds.**
-   - Each witness is substituted exactly, with plain fractions and no solver.
-   - It must satisfy every constraint and reach its end, or come within the gap for an open end.
-   - z3 must then find **no** feasible point beyond either end.
+   - The certificate's LP must equal the LP rebuilt from the record's constraints.
+   - Each end carries an exact LP dual certificate: multipliers y ≥ 0 that combine the constraints into "value ≥ lo" (or ≤ hi). This proves nothing lies beyond the end, with plain fractions and no solver.
+   - A closed end's witness satisfies every constraint and reaches it. An open end carries a closure witness, a strictly feasible interior point and a Motzkin (Farkas) vector showing the end itself is infeasible.
    - A bound must carry the assumptions of the constraints it uses.
-8. **Attestations.** Signer and statement are present. Signatures are optional and not implemented yet; the report says "unsigned".
-9. **Assumptions.** Everything cited is stated, and everything stated is cited.
+   - The format is in [the specification, Rev B §B1](COMPOSITION_VERIFICATION_SPEC.md#b1-bound-certificates-are-checked-without-a-solver-amends-33-bound-6-check-6).
+8. **Identity links and database values.**
+   - A `gtin_ndc_link` must be attested, and its photo span must re-parse to the linked NDC (`printed_ndc@1`).
+   - A `spl_product_select` must find exactly one product with that package code, and every fact from that SPL must use it.
+   - FDC values are corroboration, compared with the label facts under the rounding rules; Open Food Facts text is candidates. A fact or ingredient identity read from either API fails.
+9. **Attestations.** Signer and statement are present. Signatures are optional and not implemented yet; the report says "unsigned".
+10. **Assumptions.** Everything cited is stated, and everything stated is cited.
 
 ### Reading the report
 
@@ -113,12 +118,16 @@ PASS  composition/records/citrucel_orange_300680418301.json
 ## 5. Label photos: the attestation flow
 
 1. In the phone app or on the dashboard (**Manufacturer data → Nutrition label photo…**), photograph the Nutrition Facts panel.
-2. The Mac reads it (Apple Vision) and proposes each row it can parse: "Total Fat 16g 21%". Each row's pixel box comes from the server's own OCR, never from the client.
+2. The Mac reads it (Apple Vision, or Tesseract if Vision fails; the engine is recorded) and proposes each row it can parse: "Total Fat 16g 21%". Each row's pixel box comes from the server's own OCR, never from the client.
 3. The operator compares each row with the pack, corrects the text if needed, ticks the rows that match, and gives their name. Only ticked rows whose text a row rule (`nfp_row@1`, `nfp_serving@1`) can read are accepted.
 4. The photo goes into the sample's evidence store, an entry is appended to `evidence/<sample>.json`, and the record is rebuilt:
    - one ATTESTED fact per row, an interval under the 101.9(c) rounding rules;
    - per-100 g values derived from the printed serving mass;
    - the library's database and OCR numbers in the unverified layer.
+
+The same flow covers **Drug Facts** and **Supplement Facts** photos (**Drug Facts photo…**, **Supplement Facts photo…**, on the dashboard and on the phone). The checklist lists actives with strengths, "each … contains" minerals, amount rows, blend members and the inactive or other-ingredients list. Ticked items become ATTESTED facts and ingredients; the rules are `drug_active@1`, `otc_contains@1`, `sfp_row@1`, `sfp_serving@1` and `list_item@2`.
+
+For an OTC drug whose barcode NDC is in no current label, photograph the printed **NDC** ("NDC 41520-745-18"; the **NDC photo…** button). The signed link resolves the barcode to the DailyMed SPL with that package code. Parser accuracy is in [COMPOSITION_COVERAGE.md](COMPOSITION_COVERAGE.md).
 
 The dashboard's **Composition** tab runs the verifier every time it opens. It shows each value with its badge, the attestations, the assumptions, and, separately, the unverified estimates.
 
@@ -153,7 +162,7 @@ python -m lio_comp.rules_build --store ../../composition/sources --out ../../com
 python -m lio_comp.golden --store ../../composition/sources --rules ../../composition/rules --out ../../composition/records
 ```
 
-- **Determinism.** Building twice gives byte-identical records. The tests rebuild the golden records and compare them byte for byte with the committed files. `z3-solver` is pinned, and each bound is solved in a fresh z3 context, because z3's shared context keeps state between solves.
+- **Determinism.** Building twice gives byte-identical records. The tests rebuild the golden records and compare them byte for byte with the committed files. Bounds come from an exact `Fraction` simplex with Bland's rule, which is deterministic; there is no z3.
 - **Changing a rule.** Edit `lio_comp/rules_build.py`, bump the table's `version`, rebuild the rules, then rebuild and re-verify the records. Old records keep citing the old version, and the verifier refuses them against the new table.
 - **Changing a rule or text rule's behaviour.** Give it a new version (`nfp_row@2`); never change what an existing version means.
 - **API keys.** The USDA key is used for the request only. Recorded URLs never contain it.
@@ -170,7 +179,8 @@ python -m lio_comp.golden --store ../../composition/sources --rules ../../compos
 - **Potassium and other vitamin/mineral amounts on food labels.** The current 101.9(c)(8) has no increment rule for them; potassium's old sodium-style rule was removed in 2016. They are not in the rounding table and can only be used "as stated" under a named assumption. Supplement Facts mineral amounts likewise (101.36(b)(2)(ii)(B), "levels of significance").
 - **FDC label nutrients.** FDC's `labelNutrients` are partly computed from per-100 g data. For Jif, fibre and added sugars are 2.01 g, where the label shows 2 g. A value becomes a fact only if it is a legal 101.9 declaration; the others are refused and noted in the record.
 - **Identity.** UNIIs come from the SPL itself or from a stored GSRS response looked up by UNII. A GSRS name search is fuzzy (an exact-name query for "SUCROSE" returned "SUCROSE, 1-OLEATE" first) and is never used for identity. "orange flavors" in the Citrucel SPL text has no structured entry or UNII, so it is part of "other ingredients".
-- **The verifier also needs lark.** The spec lists only lxml, jsonschema and z3 as dependencies, but it must re-run the OTC statement grammar. The grammar lives in `lio_verify`, so the verifier depends on lark too.
-- **Bound certificates.** These are witnesses plus z3 re-runs, as the spec says. The verifier substitutes witnesses with plain fractions, so a tampered witness fails without trusting z3. Soundness of each end still trusts z3's linear real arithmetic. Exact LP dual (Farkas) certificates would remove that, and are a possible next step.
+- **The verifier also needs lark.** The spec lists lxml, jsonschema and z3 as dependencies, but the verifier must re-run the OTC statement grammar, which lives in `lio_verify`. Since Rev B the dependencies are lxml, jsonschema and lark; z3 is not used anywhere.
+- **Bound certificates.** Superseded by Rev B: exact dual and Motzkin certificates, checked with `Fraction` alone. pycddlib, the plan's suggested backend, did not build here, so the simplex is hand-written (`lio_comp/simplex.py`).
 - **Attestation signatures.** These are optional in the spec and not implemented. Attestations record signer, time and statement; the report marks them unsigned.
-- **Nutrition Facts photos only.** The attestation flow covers Nutrition Facts panels. Supplement Facts and Drug Facts photos, and verified records built from a sample's DailyMed, DSLD or FDC sources (as for the golden records), are not yet automatic for library samples.
+- **Photo panels.** The attestation flow covers Nutrition Facts, Drug Facts and Supplement Facts panels and printed NDCs. Verified records built from a sample's DailyMed or DSLD sources (as for the golden records) are not yet automatic for library samples.
+- **Tricalcium phosphate.** Superseded by Rev B §B5: the calcium fraction comes from the USP assay interval, not the formula Ca₃(PO₄)₂. See the CHANGELOG (M4) for the new Citrucel range.

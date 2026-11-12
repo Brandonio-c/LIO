@@ -1,7 +1,7 @@
 # LIO — Symbolically Verifiable Composition Records: Specification
 
-**Document:** LIO-SW-COMP-001 Rev A
-**Date:** 11 November 2026
+**Document:** LIO-SW-COMP-001 Rev B
+**Date:** 11 November 2026 (Rev A); 12 November 2026 (Rev B, see the end of this document)
 **Scope:** how the LIO project gathers composition data from labels and databases, and stores it so that **every value can be mechanically verified** by an independent checker.
 
 ---
@@ -220,3 +220,82 @@ The text grammar (for example `"each heaping tablespoon contains: calcium 80 mg,
 | M3 | Deriver + bounder (z3) with certificates |
 | M4 | Independent verifier, mutation tests, determinism test |
 | M5 | Photo attestation flow, UI badges, training export, docs (`docs/COMPOSITION_VERIFICATION.md`) |
+
+---
+
+## Revision B (12 November 2026): changes from LIO-SW-COMP-002
+
+Rev A above is unchanged. This section amends it; where they differ, Rev B applies.
+
+### B1. Bound certificates are checked without a solver (amends §3.3 Bound, §6 check 6)
+
+- **The verifier has no solver.** `lio_verify` does not depend on z3, and a test runs it with z3 blocked from import. Bounds are computed by an exact `Fraction` simplex (two-phase, Bland's rule) in `lio_comp`.
+- **The certificate format:**
+
+```json
+"certificate": {
+  "lp": {"variables": [...], "rows": [{"a": [...], "sense": "<=" | "<", "rhs": "...", "origin": "C1"}],
+         "objective": {"c": [...], "const": "..."}},
+  "min": {"value": "...", "bound": "...", "attained": true,  "dual": [...], "witness": {...}},
+  "max": {"value": "...", "bound": "...", "attained": false, "dual": [...], "witness": {...},
+          "interior": {...}, "motzkin": [...]}
+}
+```
+
+- **What the verifier checks, with `d = c` for the minimum and `d = −c` for the maximum:**
+  1. The LP is exactly the LP rebuilt from the record's constraints.
+  2. `dual ≥ 0` and `Σ dual_i a_i = −d`, so `B = −Σ dual_i rhs_i` bounds `d·x`.
+  3. If the end is attained, the witness satisfies every row and `d·witness = B`.
+  4. If it is not attained:
+     - the witness satisfies the closed rows at `B`;
+     - the interior point satisfies every row strictly;
+     - the Motzkin vector is `≥ 0`, has `Σ z_i a_i + z_obj d = 0`, a positive weight on strict rows, and `Σ z_i rhs_i + z_obj B ≤ 0`.
+- **Joint feasibility.** A record with constraints on unknowns carries `feasibility.witness`, a strictly feasible point.
+
+### B2. Identity links (new, amends §3.3)
+
+- **`links[]`, `gtin_ndc_link`.** ATTESTED: the barcode carries this NDC. With `method: "printed_ndc"` it holds the photo source, an `image_bbox` locator and the span (e.g. "NDC 41520-745-18"). The verifier re-parses the span with `printed_ndc@1`, which must give `ndc11`. `method: "name_search_confirmed"` is the fallback when the carton prints no usable NDC.
+- **`selections[]`, `spl_product_select`.** VERIFIED relative to its link: an XPath must find exactly one `manufacturedProduct` whose package code is the linked NDC. Every fact read from that SPL must use the selected product. The report shows the chain (`via L1 -> SEL1`).
+- **RxNav (ndcstatus, ndcproperties, allhistoricalndcs)** is recorded as concept-level evidence only. It is never proof of which product a barcode is.
+- **The crosswalk.** `software/host/data/crosswalk/gtin_links.jsonl` is append-only, and a newer SPL version flags a link for re-confirmation.
+
+### B3. Derived and crowd-sourced database values (amends §4 and §7)
+
+- **FDC `labelNutrients` and per-100 g values** are `corroboration[]` (`kind: derived_corroboration`, with `data_source` and FDC's per-nutrient `derivation`), never facts. The verifier compares each with the label fact under the 21 CFR 101.9(c) rounding rules (`per100 × serving ÷ 100`) and reports *consistent* or *mismatch*.
+- **Open Food Facts text** is `candidates[]`, never a fact or an ingredient identity. Open Food Facts **images** may be evidence for ATTESTED facts (CC-BY-SA; attribution recorded).
+- **The verifier FAILS** any fact or ingredient identity read from the FDC or Open Food Facts APIs.
+- **Truncation flags** are applied to free-text ingredient strings and shown to the operator:
+  - it ends mid-word, or its brackets are unbalanced;
+  - its length is a suspicious round number;
+  - it is shorter than another transcription in the same language.
+
+### B4. Variant-correct identity (amends §4)
+
+- **Ingredient identity** comes from SPL per-product elements (UNII, class, strength) and DSLD rows.
+- **SPL text sections** are used only for content with no structured form. Facts from them carry a `text_variant_attribution` assumption.
+- **When an SPL record holds both the structured and the text inactive list**, the verifier reports names that do not match as `conflicts` (informational).
+
+### B5. Variable-composition additives (amends §3.2)
+
+- **The rule table `additive_assays@1`** has two entry types:
+  - `element_fraction_interval`: e.g. tricalcium phosphate, Ca ∈ [0.340, 0.400] as-is;
+  - `assay_times_formula`: e.g. anhydrous dibasic calcium phosphate, 98.0–103.0% × the CIAAW Ca fraction of CaHPO₄.
+- **Expression reference:** `A:additive_assays.<entry>`.
+- **Sources.** Each entry quotes its monograph (USP 32–NF 27; the Food Chemicals Codex is not freely available). The verifier re-parses the quote (`usp_assay_percent@1`) and fails if the table disagrees.
+
+### B6. Photo panels (amends §4 nfp_photo)
+
+- **Drug Facts** (21 CFR 201.66) and **Supplement Facts** (21 CFR 101.36) panels are parsed into proposed fields with boxes. The operator ticks and corrects them; each ticked field must re-parse with its rule (`drug_active@1`, `otc_contains@1`, `sfp_row@1`, `sfp_serving@1`, `list_item@2`).
+- **Drug Facts inactive lists** are alphabetical, so no weight-order constraint is applied to them.
+- **A printed NDC is a panel kind** of its own (`printed_ndc@1`).
+
+### B7. New and versioned text rules
+
+- **New rules:**
+  - `printed_ndc@1`;
+  - `nfp_row@2` and `nfp_serving@2` (label abbreviations);
+  - `list_item@2` (a "." inside a list does not end it);
+  - `dsld_quantity@1` (refuses IU and "not present");
+  - `fdc_per100g@1` (corroboration only);
+  - `drug_active@1`, `sfp_row@1` (lark grammar) and `sfp_serving@1`.
+- **Unchanged:** existing rule versions keep their meaning.

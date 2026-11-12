@@ -77,3 +77,81 @@ Fields are not independent (one bad image loses all its fields), so field-level 
 - **Expect to correct or untick fields.** With Tesseract, the checklist proposes about 1 field in 3 (Drug Facts) or 1 in 4 (Supplement and Nutrition Facts), and some of those are wrong.
 - **The guarantee holds anyway.** Nothing reaches the verified layer without the operator's tick and a rule re-parse, so parser errors cost operator time, not correctness.
 - **Photograph the panel itself, flat and in focus.** Most misses in the corpus are images that do not show the full panel. An operator-taken photo of the panel avoids that.
+
+## Sources and their status
+
+| Source | Cost and terms | Used for | In a verified record |
+|---|---|---|---|
+| DailyMed SPL (NLM) | free, public | OTC drug labels by set ID and package NDC | **Facts**: structured per-product actives and inactives (UNII, strength), and text sections with a `text_variant_attribution` assumption |
+| openFDA (drug label, NDC) | free, public; rate-limited | finding an OTC label by UPC, NDC lookups | not used directly; facts come from the DailyMed SPL XML |
+| RxNav (NLM) | free; about 20 requests/s | NDC status, properties, history | **Concept-level evidence only**, never proof that a barcode is a product |
+| DSLD (NIH ODS) | free; 1,000 requests/h without a key | supplement labels by UPC | **Facts**: label rows (`dsld_quantity@1`) and other ingredients |
+| FoodData Central (USDA) | free; API key (kept out of the repository) | branded-food lookups | **Corroboration only**: `labelNutrients` and per-100 g values are partly computed |
+| Open Food Facts | free; database ODbL, images CC-BY-SA | lookups and label photos | text is **candidates only**; images may be evidence for ATTESTED facts, with attribution recorded |
+| GSRS (FDA) | free, public | UNII to name and formula | identity by UNII only; name searches are fuzzy and never used |
+| USP–NF (USP 32–NF 27 via a public mirror) | the current edition is paid; the old edition is read from a mirror | additive assay intervals (`additive_assays@1`) | rule-table source, quoted and re-checked |
+| SmartLabel (smartlabel.org) | pages are public, but scraping is not allowed | — | **link only**; the Label Insight API adapter is off unless a key is configured |
+| Retailer sites | terms forbid scraping | — | **link only**, for the operator to look at |
+| GS1 Data Hub, GDSN pools, Nutritionix, Label Insight | paid | — | not integrated; `lio.foods.paid_sources` has disabled stubs that document the interface |
+| Operator photos | — | facts panels, printed NDCs | **ATTESTED** facts and identity links (photo hash, box, signer) |
+
+## Resolving an OTC drug barcode to its label
+
+1. **Read the barcode.** Every form is tried: UPC-A, EAN-13, GTIN-14, and the NDC candidates a UPC-A starting with 3 encodes (10-digit NDCs in all three segment layouts).
+2. **Check the crosswalk.** An operator-signed `gtin_ndc_link` in `data/crosswalk/gtin_links.jsonl` names the package NDC directly. A newer SPL version flags the link for re-confirmation.
+3. **Look the barcode up.** openFDA by UPC, then DailyMed `spls?ndc=` for each candidate NDC. RxNav `ndcstatus` is recorded, but only as concept-level evidence.
+4. **If no current label lists the barcode's NDC**, as for Citrucel (00068041830 is ACTIVE in RxNav, but no DailyMed label lists it) and Care One ibuprofen (41520-314-64 is UNKNOWN):
+   - the operator photographs the **printed NDC** on the carton (**NDC photo…**);
+   - `printed_ndc@1` reads it, DailyMed finds the SPL with that package code, and the operator signs the proposed link.
+5. **The record** holds the link (ATTESTED) and the product selection (VERIFIED: exactly one product has that package code). Every SPL fact must come from that product.
+
+There is no name search anywhere in this path. A name-search match can become a link only as `name_search_confirmed`, when the carton prints no usable NDC.
+
+## Rule changes (LIO-SW-COMP-001 Rev B)
+
+The full list is in [COMPOSITION_VERIFICATION_SPEC.md, Revision B](COMPOSITION_VERIFICATION_SPEC.md#revision-b-12-november-2026-changes-from-lio-sw-comp-002).
+
+- **Bounds** carry exact LP dual and Motzkin certificates, checked with `Fraction`. z3 is gone.
+- **Identity links and product selections** are new record sections.
+- **FDC values** are corroboration, and **Open Food Facts text** is candidates.
+- **Tricalcium phosphate and the dibasic calcium phosphates** use USP assay intervals (`additive_assays@1`), not formulas. Citrucel's calcium phosphates are now [775/4, ≈285.81] mg.
+- **New text rules:**
+  - `printed_ndc@1`, `drug_active@1`, `sfp_row@1`, `sfp_serving@1`, `dsld_quantity@1`, `fdc_per100g@1`;
+  - new versions `list_item@2`, `nfp_row@2`, `nfp_serving@2`.
+
+## Golden records (12 November 2026)
+
+| Record | `lio-verify` | Fields | Waiting on |
+|---|---|---|---|
+| Citrucel Orange (300680418301) | PASS | 47 VERIFIED | Photo of the tub's printed NDC. Its UPC NDC is in no DailyMed label, so today product 0135-0089 of set 9d5f2244 rests on assumption A1 (name and size on the tub). A signed printed-NDC link replaces A1. |
+| Care One ibuprofen (341520314643) | not built | — | The operator signing the printed-NDC proposal (NDC 41520-745-18, from the FDA carton image). |
+| Jif Creamy (051500255162) | PASS | 5 VERIFIED, 23 UNVERIFIED | Signing the Open Food Facts nutrition-photo proposal `jif_nutrition_en_209`. |
+| Nutella (3017620422003) | PASS | 8 UNVERIFIED | An operator photo of the ingredient panel. The image Open Food Facts selects as "ingredients" shows the front. |
+| Nutricost magnesium oxide (702669934398) | PASS | 12 VERIFIED | — |
+| Swanson Lowat blend (087614040622) | PASS | 10 VERIFIED | — |
+
+The operator commands are:
+
+```bash
+cd software/host
+python -m lio_comp.crosswalk list
+python -m lio_comp.crosswalk sign 00341520314643 --operator "NAME"   # Care One
+python -m lio_comp.attest list
+python -m lio_comp.attest sign jif_nutrition_en_209 --operator "NAME"  # Jif
+```
+
+After signing, rebuild with `python -m lio_comp.golden …` (see [COMPOSITION_VERIFICATION.md §7](COMPOSITION_VERIFICATION.md)).
+
+## Coverage benchmark
+
+The protocol is [COVERAGE_BENCHMARK_PROTOCOL.md](COVERAGE_BENCHMARK_PROTOCOL.md): random shelf slots in 3–4 store formats, three strata, and Wilson 95% intervals. The tools are `lio bench plan`, `ingest` and `report`.
+
+The 10-item **dry run** ([report](reports/bench_pilot_dryrun_2026-11-12.md)) uses coverage-panel barcodes, not shelf samples, so its numbers are not a coverage estimate. It found:
+
+- every item in some source (10/10);
+- an ingredient list for 9 of 10;
+- a truncation flag on 3 of 10;
+- 2 of 3 OTC items that need the printed NDC;
+- a median pipeline time of 3.9 s per item.
+
+The real pilot, about 200 items over 3–4 store visits, is still to be collected.

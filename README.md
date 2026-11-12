@@ -668,6 +668,7 @@ The full schematic, technical document, BOM/net list and firmware for the 16-cha
 | System test suite (`lio` command) | [`software/host/`](software/host/README.md), how-to in [`docs/TESTING.md`](docs/TESTING.md) |
 | Test dashboard and digital twin (`lio dashboard`) | [`docs/TESTING.md` §3](docs/TESTING.md) |
 | Motor jog controller | [`software/control/lio_motor_control.py`](software/control/lio_motor_control.py) |
+| Food library: verifiable composition records and coverage | [`docs/COMPOSITION_VERIFICATION.md`](docs/COMPOSITION_VERIFICATION.md), [`docs/COMPOSITION_COVERAGE.md`](docs/COMPOSITION_COVERAGE.md) |
 | Project log, design decisions, inventory, channel map, open items | [`docs/`](docs/README.md) |
 | Breadboard wiring checklist | [`electronics/WIRING_CHECKLIST.md`](electronics/WIRING_CHECKLIST.md) |
 | Changelog | [`CHANGELOG.md`](CHANGELOG.md) |
