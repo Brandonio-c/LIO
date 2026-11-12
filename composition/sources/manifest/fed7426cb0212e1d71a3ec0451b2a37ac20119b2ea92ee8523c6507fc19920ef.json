@@ -1,0 +1,16 @@
+{
+ "byte_length": 41873,
+ "media_type": "application/json",
+ "retrievals": [
+  {
+   "identifiers": {
+    "name": "SODIUM CHLORIDE",
+    "unii": "451W47IQ8X"
+   },
+   "retrieval_url": "https://gsrs.ncats.nih.gov/api/v1/substances/search?q=root_approvalID:451W47IQ8X&top=1",
+   "retrieved_at": "2026-11-12T01:13:30Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "fed7426cb0212e1d71a3ec0451b2a37ac20119b2ea92ee8523c6507fc19920ef"
+}

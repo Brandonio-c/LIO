@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -26,6 +27,7 @@ class Doc:
     identifiers: dict[str, str]
     media_type: str | None = None
     tracked: bool = True  # False: too large for git; kept in the local store only
+    secret: str | None = None  # name of a key the request needs (never recorded)
 
 
 def _ecfr(part: str, section: str) -> Doc:
@@ -66,6 +68,64 @@ DOCS: tuple[Doc, ...] = (
 )
 
 
+GSRS = "https://gsrs.ncats.nih.gov/api/v1/substances/search"
+
+
+def _gsrs(unii: str, name: str) -> Doc:
+    return Doc(
+        f"gsrs_unii_{unii}",
+        f"{GSRS}?q=root_approvalID:{unii}&top=1",
+        {"unii": unii, "name": name},
+        "application/json",
+    )
+
+
+# Golden records (spec §8): the documents their facts cite.
+GOLDEN: tuple[Doc, ...] = (
+    Doc(
+        "dailymed_spl_citrucel_9d5f2244",
+        "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/"
+        "9d5f2244-a610-4d45-b6e8-e79bb17a558f.xml",
+        {"spl_setid": "9d5f2244-a610-4d45-b6e8-e79bb17a558f"},
+        "application/xml",
+    ),
+    Doc(
+        "fdc_food_2770309_jif_creamy_16oz",
+        "https://api.nal.usda.gov/fdc/v1/food/2770309",
+        {"fdc_id": "2770309", "gtin": "00051500255162"},
+        "application/json",
+        secret="api_key",
+    ),
+    Doc(
+        "dsld_label_223424_nutricost_mgo",
+        "https://api.ods.od.nih.gov/dsld/v9/label/223424",
+        {"dsld_id": "223424", "upc": "7 02669 93439 8"},
+        "application/json",
+    ),
+    Doc(
+        "off_product_3017620422003_nutella",
+        "https://world.openfoodfacts.org/api/v2/product/3017620422003.json",
+        {"gtin": "3017620422003"},
+        "application/json",
+    ),
+    _gsrs("L11K75P92J", "ANHYDROUS DIBASIC CALCIUM PHOSPHATE"),
+    _gsrs("K4C08XP666", "TRICALCIUM PHOSPHATE"),
+    _gsrs("EE90ONI6FF", "POTASSIUM CITRATE"),
+    _gsrs("3A3U0GI71G", "MAGNESIUM OXIDE"),
+    _gsrs("451W47IQ8X", "SODIUM CHLORIDE"),
+)
+
+
+def _secret(name: str) -> tuple[str, str]:
+    if name != "api_key":
+        raise KeyError(name)
+    key = os.environ.get("LIO_USDA_API_KEY", "")
+    if not key:
+        f = Path(__file__).resolve().parents[4] / "data" / "foods" / "usda_api_key.txt"
+        key = f.read_text().strip() if f.exists() else "DEMO_KEY"
+    return ("api_key", key)
+
+
 def catalog_path(store: Path) -> Path:
     return store / "catalog.json"
 
@@ -81,10 +141,13 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("names", nargs="*", help="only these documents")
     a = ap.parse_args(argv)
     cat = load(a.store)
-    for d in DOCS:
+    for d in (*DOCS, *GOLDEN):
         if a.names and d.name not in a.names:
             continue
-        cat[d.name] = snapshot(a.store, d.url, d.identifiers, media_type=d.media_type)
+        secret = _secret(d.secret) if d.secret else None
+        cat[d.name] = snapshot(
+            a.store, d.url, d.identifiers, media_type=d.media_type, secret=secret
+        )
         print(f"{d.name}: {cat[d.name]}")
     catalog_path(a.store).parent.mkdir(parents=True, exist_ok=True)
     catalog_path(a.store).write_bytes(canonical_json(dict(sorted(cat.items()))))

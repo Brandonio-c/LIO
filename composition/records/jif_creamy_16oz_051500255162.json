@@ -1,0 +1,489 @@
+{
+ "assumptions": [
+  {
+   "id": "J1",
+   "kind": "sample_identity",
+   "text": "The sample is GTIN 00051500255162 (Jif Creamy, 16 oz)."
+  },
+  {
+   "id": "J2",
+   "kind": "label_truth",
+   "text": "The FDC Branded record (manufacturer data via GDSN) reproduces the sample's label."
+  },
+  {
+   "id": "J3",
+   "kind": "interpretation",
+   "text": "An FDC labelNutrients value that is a valid 21 CFR 101.9(c) declaration is the label's declared value; FDC computes the others from per-100 g data, so they are not used (spec §7)."
+  },
+  {
+   "id": "J4",
+   "kind": "interpretation",
+   "text": "FDC labelNutrients units: g, mg for cholesterol and sodium, kcal for calories."
+  },
+  {
+   "id": "J5",
+   "kind": "modelling",
+   "text": "'Salt' is sodium chloride."
+  },
+  {
+   "id": "J6",
+   "kind": "modelling",
+   "text": "'Sugar' is sucrose, which is all sugars."
+  }
+ ],
+ "attestations": [],
+ "bounds": [],
+ "constraints": [],
+ "derivations": [],
+ "facts": [
+  {
+   "assumptions": [
+    "J2"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F_serving",
+   "interpretation": {
+    "assumption": "J2",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "fields": [
+     "servingSize",
+     "servingSizeUnit"
+    ],
+    "pointer": "",
+    "text": "33.00000000 GRM",
+    "type": "json_pointer"
+   },
+   "quantity": "serving_mass",
+   "rule": "fdc_serving@1",
+   "source_id": "S1",
+   "value": {
+    "hi": "33",
+    "hi_closed": true,
+    "lo": "33",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "33.00000000 g"
+  },
+  {
+   "assumptions": [
+    "J2",
+    "J3",
+    "J4"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F_calories",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_rounding_101_9@1:calories"
+   },
+   "locator": {
+    "pointer": "/labelNutrients/calories/value",
+    "text": "190",
+    "type": "json_pointer"
+   },
+   "quantity": "calories",
+   "rule": "fdc_label_nutrient@1:calories",
+   "source_id": "S1",
+   "value": {
+    "hi": "195",
+    "hi_closed": false,
+    "lo": "185",
+    "lo_closed": true,
+    "unit": "kcal"
+   },
+   "value_raw": "190 kcal"
+  },
+  {
+   "assumptions": [
+    "J2",
+    "J3",
+    "J4"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F_total_carbohydrate",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_rounding_101_9@1:total_carbohydrate"
+   },
+   "locator": {
+    "pointer": "/labelNutrients/carbohydrates/value",
+    "text": "8.00",
+    "type": "json_pointer"
+   },
+   "quantity": "total_carbohydrate",
+   "rule": "fdc_label_nutrient@1:carbohydrates",
+   "source_id": "S1",
+   "value": {
+    "hi": "17/2",
+    "hi_closed": false,
+    "lo": "15/2",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "8.00 g"
+  },
+  {
+   "assumptions": [
+    "J2",
+    "J3",
+    "J4"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F_cholesterol",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_rounding_101_9@1:cholesterol"
+   },
+   "locator": {
+    "pointer": "/labelNutrients/cholesterol/value",
+    "text": "0.000",
+    "type": "json_pointer"
+   },
+   "quantity": "cholesterol",
+   "rule": "fdc_label_nutrient@1:cholesterol",
+   "source_id": "S1",
+   "value": {
+    "hi": "5/2",
+    "hi_closed": false,
+    "lo": "0",
+    "lo_closed": true,
+    "unit": "mg"
+   },
+   "value_raw": "0.000 mg"
+  },
+  {
+   "assumptions": [
+    "J2",
+    "J3",
+    "J4"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F_total_fat",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_rounding_101_9@1:total_fat"
+   },
+   "locator": {
+    "pointer": "/labelNutrients/fat/value",
+    "text": "16.0",
+    "type": "json_pointer"
+   },
+   "quantity": "total_fat",
+   "rule": "fdc_label_nutrient@1:fat",
+   "source_id": "S1",
+   "value": {
+    "hi": "33/2",
+    "hi_closed": false,
+    "lo": "31/2",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "16.0 g"
+  },
+  {
+   "assumptions": [
+    "J2",
+    "J3",
+    "J4"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F_protein",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_rounding_101_9@1:protein"
+   },
+   "locator": {
+    "pointer": "/labelNutrients/protein/value",
+    "text": "7.00",
+    "type": "json_pointer"
+   },
+   "quantity": "protein",
+   "rule": "fdc_label_nutrient@1:protein",
+   "source_id": "S1",
+   "value": {
+    "hi": "15/2",
+    "hi_closed": false,
+    "lo": "13/2",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "7.00 g"
+  },
+  {
+   "assumptions": [
+    "J2",
+    "J3",
+    "J4"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F_saturated_fat",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_rounding_101_9@1:saturated_fat"
+   },
+   "locator": {
+    "pointer": "/labelNutrients/saturatedFat/value",
+    "text": "3.50",
+    "type": "json_pointer"
+   },
+   "quantity": "saturated_fat",
+   "rule": "fdc_label_nutrient@1:saturatedFat",
+   "source_id": "S1",
+   "value": {
+    "hi": "15/4",
+    "hi_closed": false,
+    "lo": "13/4",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "3.50 g"
+  },
+  {
+   "assumptions": [
+    "J2",
+    "J3",
+    "J4"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F_sodium",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_rounding_101_9@1:sodium"
+   },
+   "locator": {
+    "pointer": "/labelNutrients/sodium/value",
+    "text": "140",
+    "type": "json_pointer"
+   },
+   "quantity": "sodium",
+   "rule": "fdc_label_nutrient@1:sodium",
+   "source_id": "S1",
+   "value": {
+    "hi": "145",
+    "hi_closed": false,
+    "lo": "275/2",
+    "lo_closed": true,
+    "unit": "mg"
+   },
+   "value_raw": "140 mg"
+  },
+  {
+   "assumptions": [
+    "J2",
+    "J3",
+    "J4"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F_total_sugars",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_rounding_101_9@1:total_sugars"
+   },
+   "locator": {
+    "pointer": "/labelNutrients/sugars/value",
+    "text": "3.00",
+    "type": "json_pointer"
+   },
+   "quantity": "total_sugars",
+   "rule": "fdc_label_nutrient@1:sugars",
+   "source_id": "S1",
+   "value": {
+    "hi": "7/2",
+    "hi_closed": false,
+    "lo": "5/2",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "3.00 g"
+  },
+  {
+   "assumptions": [
+    "J2",
+    "J3",
+    "J4"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F_trans_fat",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_rounding_101_9@1:trans_fat"
+   },
+   "locator": {
+    "pointer": "/labelNutrients/transFat/value",
+    "text": "0.000",
+    "type": "json_pointer"
+   },
+   "quantity": "trans_fat",
+   "rule": "fdc_label_nutrient@1:transFat",
+   "source_id": "S1",
+   "value": {
+    "hi": "1/2",
+    "hi_closed": false,
+    "lo": "0",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "0.000 g"
+  }
+ ],
+ "gtin": "00051500255162",
+ "ingredients": [
+  {
+   "id": "I1",
+   "list_id": "fdc_ingredients",
+   "list_rule": "list_item@1:1",
+   "name_locator": {
+    "pointer": "/ingredients",
+    "text": "Roasted Peanuts, Sugar, Contains 2% Or Less Of: Fully Hydrogenated Vegetable Oils (Rapeseed And Soybean), Salt, Molasses.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Roasted Peanuts",
+   "position": 1,
+   "role": "food",
+   "source_id": "S1"
+  },
+  {
+   "id": "I2",
+   "list_id": "fdc_ingredients",
+   "list_rule": "list_item@1:2",
+   "name_locator": {
+    "pointer": "/ingredients",
+    "text": "Roasted Peanuts, Sugar, Contains 2% Or Less Of: Fully Hydrogenated Vegetable Oils (Rapeseed And Soybean), Salt, Molasses.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Sugar",
+   "position": 2,
+   "role": "food",
+   "source_id": "S1"
+  },
+  {
+   "id": "I3",
+   "list_id": "fdc_ingredients",
+   "list_rule": "list_item@1:3",
+   "name_locator": {
+    "pointer": "/ingredients",
+    "text": "Roasted Peanuts, Sugar, Contains 2% Or Less Of: Fully Hydrogenated Vegetable Oils (Rapeseed And Soybean), Salt, Molasses.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Contains 2% Or Less Of: Fully Hydrogenated Vegetable Oils (Rapeseed And Soybean)",
+   "position": 3,
+   "role": "food",
+   "source_id": "S1"
+  },
+  {
+   "id": "I4",
+   "list_id": "fdc_ingredients",
+   "list_rule": "list_item@1:4",
+   "name_locator": {
+    "pointer": "/ingredients",
+    "text": "Roasted Peanuts, Sugar, Contains 2% Or Less Of: Fully Hydrogenated Vegetable Oils (Rapeseed And Soybean), Salt, Molasses.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Salt",
+   "position": 4,
+   "role": "food",
+   "source_id": "S1"
+  },
+  {
+   "id": "I5",
+   "list_id": "fdc_ingredients",
+   "list_rule": "list_item@1:5",
+   "name_locator": {
+    "pointer": "/ingredients",
+    "text": "Roasted Peanuts, Sugar, Contains 2% Or Less Of: Fully Hydrogenated Vegetable Oils (Rapeseed And Soybean), Salt, Molasses.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Molasses",
+   "position": 5,
+   "role": "food",
+   "source_id": "S1"
+  }
+ ],
+ "physical_sample": {
+  "attestation": null,
+  "lot": "",
+  "photos": [],
+  "sample_code": ""
+ },
+ "product_name": "Jif Creamy Peanut Butter 16 oz",
+ "record_id": "jif_creamy_16oz_051500255162",
+ "schema_version": "1",
+ "sources": [
+  {
+   "identifiers": {
+    "catalog_name": "fdc_food_2770309_jif_creamy_16oz",
+    "fdc_id": "2770309"
+   },
+   "media_type": "application/json",
+   "sha256": "dbcd41948d7c83c333b6bbb386ca57c2c0d3177c4aaacf2c9ee539004e69a086",
+   "source_id": "S1"
+  },
+  {
+   "identifiers": {
+    "catalog_name": "gsrs_unii_451W47IQ8X"
+   },
+   "media_type": "application/json",
+   "sha256": "fed7426cb0212e1d71a3ec0451b2a37ac20119b2ea92ee8523c6507fc19920ef",
+   "source_id": "S2"
+  }
+ ],
+ "substances": [
+  {
+   "formula": "Cl.Na",
+   "formula_locator": {
+    "pointer": "/content/0/structure/formula",
+    "text": "Cl.Na",
+    "type": "json_pointer"
+   },
+   "id": "SUB_nacl",
+   "name_locator": {
+    "pointer": "/content/0/_name",
+    "text": "Sodium Chloride",
+    "type": "json_pointer"
+   },
+   "source_id": "S2",
+   "unii": "451W47IQ8X",
+   "unii_locator": {
+    "pointer": "/content/0/approvalID",
+    "text": "451W47IQ8X",
+    "type": "json_pointer"
+   }
+  }
+ ],
+ "toolchain": {
+  "bounder_version": "lio_comp.bound@1",
+  "deriver_version": "lio_comp.derive@1",
+  "extractor_version": "lio_comp.extract@1",
+  "rules_versions": {
+   "atomic_masses": 1,
+   "atwater": 1,
+   "compounds": 1,
+   "fda_otc_rounding_201": 1,
+   "fda_rounding_101_9": 1,
+   "list_ordering": 1,
+   "quid": 1,
+   "units": 1
+  }
+ },
+ "unverified_layer": {
+  "estimates": [],
+  "notes": [
+   "FDC labelNutrients.addedSugar not used: added_sugars: no amount is declared as Declaration(kind='eq', value=Fraction(201, 100)) (FDC-computed, not a label value)",
+   "FDC labelNutrients.fiber not used: dietary_fiber: no amount is declared as Declaration(kind='eq', value=Fraction(201, 100)) (FDC-computed, not a label value)"
+  ]
+ },
+ "variant_note": "FDC 2770309 is the 16 oz jar (GTIN 00051500255162). Other Jif sizes in FDC list the ingredients in a different order or with mono- and diglycerides."
+}

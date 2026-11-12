@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import datetime as dt
 import gzip
+import urllib.parse
 import urllib.request
 import zlib
 from pathlib import Path
@@ -36,10 +37,23 @@ def now_utc() -> str:
 
 
 def snapshot(
-    root: Path, url: str, identifiers: dict[str, str], *, media_type: str | None = None
+    root: Path,
+    url: str,
+    identifiers: dict[str, str],
+    *,
+    media_type: str | None = None,
+    secret: tuple[str, str] | None = None,
 ) -> str:
-    """Fetch ``url`` into the store at ``root``; returns the SHA-256."""
+    """Fetch ``url`` into the store at ``root``; returns the SHA-256.
+
+    ``secret`` = (query parameter, value) is added to the request only; the
+    recorded retrieval URL never contains it (API keys stay out of git).
+    """
     if not url.startswith("https://"):
         raise ValueError("only https sources are snapshotted")
-    body, ctype = download(url)
+    fetch_url = url
+    if secret is not None:
+        sep = "&" if "?" in url else "?"
+        fetch_url = f"{url}{sep}{urllib.parse.urlencode({secret[0]: secret[1]})}"
+    body, ctype = download(fetch_url)
     return put(root, body, media_type or ctype, Retrieval(url, now_utc(), identifiers))

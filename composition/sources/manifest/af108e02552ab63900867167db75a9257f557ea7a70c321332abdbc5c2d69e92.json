@@ -1,0 +1,16 @@
+{
+ "byte_length": 34649,
+ "media_type": "application/json",
+ "retrievals": [
+  {
+   "identifiers": {
+    "name": "ANHYDROUS DIBASIC CALCIUM PHOSPHATE",
+    "unii": "L11K75P92J"
+   },
+   "retrieval_url": "https://gsrs.ncats.nih.gov/api/v1/substances/search?q=root_approvalID:L11K75P92J&top=1",
+   "retrieved_at": "2026-11-12T01:10:10Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "af108e02552ab63900867167db75a9257f557ea7a70c321332abdbc5c2d69e92"
+}

@@ -1,0 +1,245 @@
+{
+ "assumptions": [
+  {
+   "id": "N1",
+   "kind": "sample_identity",
+   "text": "The sample is DSLD label 223424 (UPC 7 02669 93439 8)."
+  },
+  {
+   "id": "N2",
+   "kind": "label_truth",
+   "text": "The DSLD record reproduces the sample's label."
+  },
+  {
+   "id": "N3",
+   "kind": "interpretation",
+   "text": "Supplement Facts mineral amounts have no increment rule (21 CFR 101.36(b)(2)(ii)(B): 'levels of significance'); amounts are taken as stated."
+  },
+  {
+   "id": "N4",
+   "kind": "modelling",
+   "text": "All magnesium is from the magnesium oxide named as its source."
+  }
+ ],
+ "attestations": [],
+ "bounds": [],
+ "constraints": [],
+ "derivations": [],
+ "facts": [
+  {
+   "assumptions": [
+    "N2",
+    "N3"
+   ],
+   "basis": "per_unit",
+   "evidence_class": "document",
+   "id": "F_mg",
+   "interpretation": {
+    "assumption": "N3",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "fields": [
+     "quantity",
+     "unit"
+    ],
+    "pointer": "/ingredientRows/0/quantity/0",
+    "text": "420 mg",
+    "type": "json_pointer"
+   },
+   "quantity": "magnesium",
+   "rule": "quantity@1",
+   "source_id": "S1",
+   "value": {
+    "hi": "420",
+    "hi_closed": true,
+    "lo": "420",
+    "lo_closed": true,
+    "unit": "mg"
+   },
+   "value_raw": "420 mg"
+  },
+  {
+   "assumptions": [
+    "N2",
+    "N3"
+   ],
+   "basis": "per_unit",
+   "evidence_class": "document",
+   "id": "F_mgo",
+   "interpretation": {
+    "assumption": "N3",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "pointer": "/statements/7/notes",
+    "text": "Magnesium Oxide\n420 mg of Magnesium\n750 mg per serving",
+    "type": "json_pointer"
+   },
+   "quantity": "magnesium_oxide",
+   "rule": "line_amount@1:3",
+   "source_id": "S1",
+   "value": {
+    "hi": "750",
+    "hi_closed": true,
+    "lo": "750",
+    "lo_closed": true,
+    "unit": "mg"
+   },
+   "value_raw": "750 mg"
+  }
+ ],
+ "gtin": "00702669934398",
+ "ingredients": [
+  {
+   "id": "I_mg",
+   "list_id": "dsld_dietary",
+   "name_locator": {
+    "pointer": "/ingredientRows/0/name",
+    "text": "Magnesium",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Magnesium",
+   "position": 1,
+   "role": "dietary",
+   "source_id": "S1"
+  },
+  {
+   "id": "I_mg_form",
+   "list_id": "dsld_dietary_form",
+   "name_locator": {
+    "pointer": "/ingredientRows/0/forms/0/name",
+    "text": "Magnesium Oxide",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Magnesium Oxide",
+   "position": 1,
+   "role": "source_of_dietary",
+   "source_id": "S1",
+   "substance": "SUB_mgo"
+  },
+  {
+   "id": "I_other_1",
+   "list_id": "dsld_other",
+   "name_locator": {
+    "pointer": "/otheringredients/ingredients/0/name",
+    "text": "Gelatin",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Gelatin",
+   "position": 1,
+   "role": "other",
+   "source_id": "S1"
+  },
+  {
+   "id": "I_other_2",
+   "list_id": "dsld_other",
+   "name_locator": {
+    "pointer": "/otheringredients/ingredients/1/name",
+    "text": "Rice Flour",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Rice Flour",
+   "position": 2,
+   "role": "other",
+   "source_id": "S1"
+  },
+  {
+   "id": "I_other_3",
+   "list_id": "dsld_other",
+   "name_locator": {
+    "pointer": "/otheringredients/ingredients/2/name",
+    "text": "Stearic Acid",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Stearic Acid",
+   "position": 3,
+   "role": "other",
+   "source_id": "S1"
+  },
+  {
+   "id": "I_other_4",
+   "list_id": "dsld_other",
+   "name_locator": {
+    "pointer": "/otheringredients/ingredients/3/name",
+    "text": "Vegetable Magnesium Stearate",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Vegetable Magnesium Stearate",
+   "position": 4,
+   "role": "other",
+   "source_id": "S1"
+  }
+ ],
+ "physical_sample": {
+  "attestation": null,
+  "lot": "",
+  "photos": [],
+  "sample_code": ""
+ },
+ "product_name": "Nutricost Magnesium Oxide 420 mg capsules",
+ "record_id": "nutricost_magnesium_oxide_702669934398",
+ "schema_version": "1",
+ "sources": [
+  {
+   "identifiers": {
+    "catalog_name": "dsld_label_223424_nutricost_mgo",
+    "dsld_id": "223424"
+   },
+   "media_type": "application/json",
+   "sha256": "85c3bd12f276503cdaebb503793413b7715366c738926692079eab2c3699e047",
+   "source_id": "S1"
+  },
+  {
+   "identifiers": {
+    "catalog_name": "gsrs_unii_3A3U0GI71G"
+   },
+   "media_type": "application/json",
+   "sha256": "3c8eb269ae87e792c18d143e7a626be3392e558a390867eb765801fac82ce56b",
+   "source_id": "S2"
+  }
+ ],
+ "substances": [
+  {
+   "formula": "Mg.O",
+   "formula_locator": {
+    "pointer": "/content/0/structure/formula",
+    "text": "Mg.O",
+    "type": "json_pointer"
+   },
+   "id": "SUB_mgo",
+   "name_locator": {
+    "pointer": "/content/0/_name",
+    "text": "Magnesium oxide",
+    "type": "json_pointer"
+   },
+   "source_id": "S2",
+   "unii": "3A3U0GI71G",
+   "unii_locator": {
+    "pointer": "/content/0/approvalID",
+    "text": "3A3U0GI71G",
+    "type": "json_pointer"
+   }
+  }
+ ],
+ "toolchain": {
+  "bounder_version": "lio_comp.bound@1",
+  "deriver_version": "lio_comp.derive@1",
+  "extractor_version": "lio_comp.extract@1",
+  "rules_versions": {
+   "atomic_masses": 1,
+   "atwater": 1,
+   "compounds": 1,
+   "fda_otc_rounding_201": 1,
+   "fda_rounding_101_9": 1,
+   "list_ordering": 1,
+   "quid": 1,
+   "units": 1
+  }
+ },
+ "unverified_layer": {
+  "estimates": [],
+  "notes": []
+ },
+ "variant_note": "DSLD label 223424, the only Nutricost Magnesium Oxide label."
+}

@@ -1,0 +1,16 @@
+{
+ "byte_length": 11894,
+ "media_type": "application/json",
+ "retrievals": [
+  {
+   "identifiers": {
+    "fdc_id": "2770309",
+    "gtin": "00051500255162"
+   },
+   "retrieval_url": "https://api.nal.usda.gov/fdc/v1/food/2770309",
+   "retrieved_at": "2026-11-12T01:10:08Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "dbcd41948d7c83c333b6bbb386ca57c2c0d3177c4aaacf2c9ee539004e69a086"
+}

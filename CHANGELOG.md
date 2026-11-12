@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-11-11: Verifiable composition, M2 (extractors, golden-record facts)
+
+### Added
+- Locators resolved against the exact snapshot bytes (`lio_verify.locate`): XPath (one node; attribute `fields`), JSON pointer (numbers kept as their literal token, never floats), character span; image boxes are attested only.
+- Versioned text rules (`lio_verify.textrules`): a lark grammar for OTC "each ... contains:" statements, "contributes N calories from", FDC label nutrients and serving size, ingredient-list items and QUID percentages (decimal commas handled).
+- `lio_comp.record` builds every fact by reading its locator, applying its rule and interpreting the result with a cited rounding rule; `lio_comp.golden` builds four golden records into `composition/records/`:
+  - Citrucel Orange (DailyMed SPL v17, product NDC 0135-0089): methylcellulose 2 g per 19 g dose, calcium/potassium/sodium as OTC-rounded intervals (21 CFR 201.70/72/64), energy [55, 65) kcal; every ingredient with its SPL UNII; phosphate and citrate formulas from GSRS.
+  - Jif Creamy 16 oz (FDC 2770309): label nutrients as 101.9 intervals. FDC values that are not valid label declarations (fibre and added sugars 2.01 g) are refused and noted.
+  - Nutricost Magnesium Oxide (DSLD 223424): magnesium 420 mg and magnesium oxide 750 mg per capsule.
+  - Nutella, France (Open Food Facts): QUID hazelnuts 13 %, cocoa 7.4 %, milk powder 6.6 %, nutrition per 100 g.
+- Golden sources snapshotted in `composition/sources/` (the USDA API key is used for the request only and never recorded).
+
 ## 2026-11-11: Verifiable composition, M1 (rules, exact intervals, schema)
 
 ### Added

@@ -1,0 +1,16 @@
+{
+ "byte_length": 41534,
+ "media_type": "application/json",
+ "retrievals": [
+  {
+   "identifiers": {
+    "name": "POTASSIUM CITRATE",
+    "unii": "EE90ONI6FF"
+   },
+   "retrieval_url": "https://gsrs.ncats.nih.gov/api/v1/substances/search?q=root_approvalID:EE90ONI6FF&top=1",
+   "retrieved_at": "2026-11-12T01:10:11Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "2fc05f8cd7c1c954d9f3b97a0283af68df6d583b2c0dfbf2ce11fc5513508b8b"
+}

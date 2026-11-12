@@ -1,0 +1,695 @@
+{
+ "assumptions": [
+  {
+   "id": "A1",
+   "kind": "sample_identity",
+   "text": "The scanned tub (UPC 3 00680 41830 1, 'Citrucel Orange', 30 oz) is SPL product NDC 0135-0089 (850 g bottle, 0135-0089-71). The SPL does not carry the UPC; the link is the product name and size on the tub."
+  },
+  {
+   "id": "A2",
+   "kind": "label_truth",
+   "text": "The SPL (set 9d5f2244, version 17) states the formulation of the physical sample."
+  },
+  {
+   "id": "A3",
+   "kind": "rounding",
+   "rule_ref": "fda_rounding_101_9@1:calories",
+   "text": "The OTC statement 'contributes 60 calories' is rounded like a Nutrition Facts calorie value (21 CFR 101.9(c)(1)); no rule for OTC calorie statements exists."
+  },
+  {
+   "id": "A4",
+   "kind": "modelling",
+   "rule_ref": "atwater@1",
+   "text": "Calories 'from sucrose and maltodextrin' use the general factor of 4 kcal/g for carbohydrate (21 CFR 101.9(c)(1)(i)(B))."
+  },
+  {
+   "id": "A5",
+   "kind": "modelling",
+   "text": "All calcium comes from dibasic and tricalcium phosphate, in any proportion; no other listed ingredient contains calcium."
+  },
+  {
+   "id": "A6",
+   "kind": "modelling",
+   "text": "Tricalcium phosphate has its UNII formula Ca3(PO4)2. (Food/USP 'tribasic calcium phosphate' is a variable mixture close to hydroxyapatite, which has more calcium per gram: the true phosphate mass could be lower than this bound.)"
+  },
+  {
+   "id": "A7",
+   "kind": "modelling",
+   "text": "All potassium comes from potassium citrate (as the UNII monohydrate)."
+  },
+  {
+   "id": "A8",
+   "kind": "interpretation",
+   "text": "A 'heaping tablespoon' dose is the 19 g in the SPL's strength denominator."
+  }
+ ],
+ "attestations": [],
+ "bounds": [],
+ "constraints": [],
+ "derivations": [],
+ "facts": [
+  {
+   "assumptions": [
+    "A2"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F1",
+   "interpretation": {
+    "kind": "exact"
+   },
+   "locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='ACTIB']/v:quantity/v:numerator",
+    "fields": [
+     "value",
+     "unit"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "2 g",
+    "type": "xpath"
+   },
+   "quantity": "methylcellulose",
+   "rule": "quantity@1",
+   "source_id": "S1",
+   "substance": {
+    "ingredient": "I_active_1"
+   },
+   "value": {
+    "hi": "2",
+    "hi_closed": true,
+    "lo": "2",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "2 g"
+  },
+  {
+   "assumptions": [
+    "A2",
+    "A8"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F2",
+   "interpretation": {
+    "kind": "exact"
+   },
+   "locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='ACTIB']/v:quantity/v:denominator",
+    "fields": [
+     "value",
+     "unit"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "19 g",
+    "type": "xpath"
+   },
+   "quantity": "serving_mass",
+   "rule": "quantity@1",
+   "source_id": "S1",
+   "value": {
+    "hi": "19",
+    "hi_closed": true,
+    "lo": "19",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "19 g"
+  },
+  {
+   "assumptions": [
+    "A2"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F3",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_otc_rounding_201@1:calcium"
+   },
+   "locator": {
+    "expr": "//v:section[normalize-space(v:title)='Other information (Citrucel Orange)']/v:text/v:list/v:item[starts-with(normalize-space(.), 'each heaping tablespoon contains')]",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "\n                        each heaping tablespoon contains:calcium 80 mg, potassium 105 mg, sodium 10 mg\n \n  ",
+    "type": "xpath"
+   },
+   "quantity": "calcium",
+   "rule": "otc_contains@1:calcium",
+   "source_id": "S1",
+   "value": {
+    "hi": "165/2",
+    "hi_closed": true,
+    "lo": "155/2",
+    "lo_closed": true,
+    "unit": "mg"
+   },
+   "value_raw": "80 mg"
+  },
+  {
+   "assumptions": [
+    "A2"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F4",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_otc_rounding_201@1:potassium"
+   },
+   "locator": {
+    "expr": "//v:section[normalize-space(v:title)='Other information (Citrucel Orange)']/v:text/v:list/v:item[starts-with(normalize-space(.), 'each heaping tablespoon contains')]",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "\n                        each heaping tablespoon contains:calcium 80 mg, potassium 105 mg, sodium 10 mg\n \n  ",
+    "type": "xpath"
+   },
+   "quantity": "potassium",
+   "rule": "otc_contains@1:potassium",
+   "source_id": "S1",
+   "value": {
+    "hi": "215/2",
+    "hi_closed": true,
+    "lo": "205/2",
+    "lo_closed": true,
+    "unit": "mg"
+   },
+   "value_raw": "105 mg"
+  },
+  {
+   "assumptions": [
+    "A2"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F5",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_otc_rounding_201@1:sodium"
+   },
+   "locator": {
+    "expr": "//v:section[normalize-space(v:title)='Other information (Citrucel Orange)']/v:text/v:list/v:item[starts-with(normalize-space(.), 'each heaping tablespoon contains')]",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "\n                        each heaping tablespoon contains:calcium 80 mg, potassium 105 mg, sodium 10 mg\n \n  ",
+    "type": "xpath"
+   },
+   "quantity": "sodium",
+   "rule": "otc_contains@1:sodium",
+   "source_id": "S1",
+   "value": {
+    "hi": "21/2",
+    "hi_closed": true,
+    "lo": "19/2",
+    "lo_closed": true,
+    "unit": "mg"
+   },
+   "value_raw": "10 mg"
+  },
+  {
+   "assumptions": [
+    "A2",
+    "A3"
+   ],
+   "basis": "per_serving",
+   "evidence_class": "document",
+   "id": "F6",
+   "interpretation": {
+    "kind": "rounded",
+    "rule": "fda_rounding_101_9@1:calories"
+   },
+   "locator": {
+    "expr": "//v:section[normalize-space(v:title)='Other information (Citrucel Orange)']/v:text/v:list/v:item[starts-with(normalize-space(.), 'each heaping tablespoon contributes')]",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "each heaping tablespoon contributes 60 calories from sucrose and maltodextrin",
+    "type": "xpath"
+   },
+   "quantity": "energy_from_sucrose_and_maltodextrin",
+   "rule": "otc_calories_from@1",
+   "source_id": "S1",
+   "value": {
+    "hi": "65",
+    "hi_closed": false,
+    "lo": "55",
+    "lo_closed": true,
+    "unit": "kcal"
+   },
+   "value_raw": "60 kcal"
+  }
+ ],
+ "gtin": "00300680418301",
+ "ingredients": [
+  {
+   "id": "I_active_1",
+   "list_id": "spl_active",
+   "name_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='ACTIB'][1]/v:ingredientSubstance/v:name",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "METHYLCELLULOSE (4000 MPA.S)",
+    "type": "xpath"
+   },
+   "name_verbatim": "METHYLCELLULOSE (4000 MPA.S)",
+   "position": 1,
+   "role": "active",
+   "source_id": "S1",
+   "unii": "MRJ667KA5E",
+   "unii_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='ACTIB'][1]/v:ingredientSubstance/v:code",
+    "fields": [
+     "code"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "MRJ667KA5E",
+    "type": "xpath"
+   }
+  },
+  {
+   "id": "I_citric_acid_monohydrate",
+   "list_id": "spl_inactive",
+   "name_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][1]/v:ingredientSubstance/v:name",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "CITRIC ACID MONOHYDRATE",
+    "type": "xpath"
+   },
+   "name_verbatim": "CITRIC ACID MONOHYDRATE",
+   "position": 1,
+   "role": "inactive",
+   "source_id": "S1",
+   "unii": "2968PHW8QP",
+   "unii_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][1]/v:ingredientSubstance/v:code",
+    "fields": [
+     "code"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "2968PHW8QP",
+    "type": "xpath"
+   }
+  },
+  {
+   "id": "I_dibasic_calcium_phosphate",
+   "list_id": "spl_inactive",
+   "name_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][2]/v:ingredientSubstance/v:name",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "ANHYDROUS DIBASIC CALCIUM PHOSPHATE",
+    "type": "xpath"
+   },
+   "name_verbatim": "ANHYDROUS DIBASIC CALCIUM PHOSPHATE",
+   "position": 2,
+   "role": "inactive",
+   "source_id": "S1",
+   "substance": "SUB_dcp",
+   "unii": "L11K75P92J",
+   "unii_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][2]/v:ingredientSubstance/v:code",
+    "fields": [
+     "code"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "L11K75P92J",
+    "type": "xpath"
+   }
+  },
+  {
+   "id": "I_fdc_yellow6_lake",
+   "list_id": "spl_inactive",
+   "name_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][3]/v:ingredientSubstance/v:name",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "FD&C YELLOW NO. 6 ALUMINUM LAKE",
+    "type": "xpath"
+   },
+   "name_verbatim": "FD&C YELLOW NO. 6 ALUMINUM LAKE",
+   "position": 3,
+   "role": "inactive",
+   "source_id": "S1",
+   "unii": "GYP6Z2JR6Q",
+   "unii_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][3]/v:ingredientSubstance/v:code",
+    "fields": [
+     "code"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "GYP6Z2JR6Q",
+    "type": "xpath"
+   }
+  },
+  {
+   "id": "I_maltodextrin",
+   "list_id": "spl_inactive",
+   "name_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][4]/v:ingredientSubstance/v:name",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "MALTODEXTRIN",
+    "type": "xpath"
+   },
+   "name_verbatim": "MALTODEXTRIN",
+   "position": 4,
+   "role": "inactive",
+   "source_id": "S1",
+   "unii": "7CVR7L4A2D",
+   "unii_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][4]/v:ingredientSubstance/v:code",
+    "fields": [
+     "code"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "7CVR7L4A2D",
+    "type": "xpath"
+   }
+  },
+  {
+   "id": "I_potassium_citrate",
+   "list_id": "spl_inactive",
+   "name_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][5]/v:ingredientSubstance/v:name",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "POTASSIUM CITRATE",
+    "type": "xpath"
+   },
+   "name_verbatim": "POTASSIUM CITRATE",
+   "position": 5,
+   "role": "inactive",
+   "source_id": "S1",
+   "substance": "SUB_kcit",
+   "unii": "EE90ONI6FF",
+   "unii_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][5]/v:ingredientSubstance/v:code",
+    "fields": [
+     "code"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "EE90ONI6FF",
+    "type": "xpath"
+   }
+  },
+  {
+   "id": "I_riboflavin",
+   "list_id": "spl_inactive",
+   "name_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][6]/v:ingredientSubstance/v:name",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "RIBOFLAVIN",
+    "type": "xpath"
+   },
+   "name_verbatim": "RIBOFLAVIN",
+   "position": 6,
+   "role": "inactive",
+   "source_id": "S1",
+   "unii": "TLM2976OFR",
+   "unii_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][6]/v:ingredientSubstance/v:code",
+    "fields": [
+     "code"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "TLM2976OFR",
+    "type": "xpath"
+   }
+  },
+  {
+   "id": "I_soy_lecithin",
+   "list_id": "spl_inactive",
+   "name_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][7]/v:ingredientSubstance/v:name",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "SOYBEAN LECITHIN",
+    "type": "xpath"
+   },
+   "name_verbatim": "SOYBEAN LECITHIN",
+   "position": 7,
+   "role": "inactive",
+   "source_id": "S1",
+   "unii": "1DI56QDM62",
+   "unii_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][7]/v:ingredientSubstance/v:code",
+    "fields": [
+     "code"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "1DI56QDM62",
+    "type": "xpath"
+   }
+  },
+  {
+   "id": "I_sucrose",
+   "list_id": "spl_inactive",
+   "name_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][8]/v:ingredientSubstance/v:name",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "SUCROSE",
+    "type": "xpath"
+   },
+   "name_verbatim": "SUCROSE",
+   "position": 8,
+   "role": "inactive",
+   "source_id": "S1",
+   "unii": "C151H8M554",
+   "unii_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][8]/v:ingredientSubstance/v:code",
+    "fields": [
+     "code"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "C151H8M554",
+    "type": "xpath"
+   }
+  },
+  {
+   "id": "I_titanium_dioxide",
+   "list_id": "spl_inactive",
+   "name_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][9]/v:ingredientSubstance/v:name",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "TITANIUM DIOXIDE",
+    "type": "xpath"
+   },
+   "name_verbatim": "TITANIUM DIOXIDE",
+   "position": 9,
+   "role": "inactive",
+   "source_id": "S1",
+   "unii": "15FIX9V2JP",
+   "unii_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][9]/v:ingredientSubstance/v:code",
+    "fields": [
+     "code"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "15FIX9V2JP",
+    "type": "xpath"
+   }
+  },
+  {
+   "id": "I_tricalcium_phosphate",
+   "list_id": "spl_inactive",
+   "name_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][10]/v:ingredientSubstance/v:name",
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "TRICALCIUM PHOSPHATE",
+    "type": "xpath"
+   },
+   "name_verbatim": "TRICALCIUM PHOSPHATE",
+   "position": 10,
+   "role": "inactive",
+   "source_id": "S1",
+   "substance": "SUB_tcp",
+   "unii": "K4C08XP666",
+   "unii_locator": {
+    "expr": "/v:document/v:component/v:structuredBody/v:component/v:section/v:subject/v:manufacturedProduct/v:manufacturedProduct[v:code/@code='0135-0089']/v:ingredient[@classCode='IACT'][10]/v:ingredientSubstance/v:code",
+    "fields": [
+     "code"
+    ],
+    "namespaces": {
+     "v": "urn:hl7-org:v3"
+    },
+    "text": "K4C08XP666",
+    "type": "xpath"
+   }
+  }
+ ],
+ "physical_sample": {
+  "attestation": null,
+  "lot": "",
+  "photos": [],
+  "sample_code": ""
+ },
+ "product_name": "CITRUCEL Orange (methylcellulose) powder",
+ "record_id": "citrucel_orange_300680418301",
+ "schema_version": "1",
+ "sources": [
+  {
+   "identifiers": {
+    "catalog_name": "dailymed_spl_citrucel_9d5f2244",
+    "ndc_product": "0135-0089"
+   },
+   "media_type": "application/xml",
+   "sha256": "1cb7877bc970fbac0a7cefeef7b93f37c6e023810ebb8ad22f584eb02e6bdf77",
+   "source_id": "S1"
+  },
+  {
+   "identifiers": {
+    "catalog_name": "gsrs_unii_L11K75P92J"
+   },
+   "media_type": "application/json",
+   "sha256": "af108e02552ab63900867167db75a9257f557ea7a70c321332abdbc5c2d69e92",
+   "source_id": "S2"
+  },
+  {
+   "identifiers": {
+    "catalog_name": "gsrs_unii_K4C08XP666"
+   },
+   "media_type": "application/json",
+   "sha256": "8d205dcbc06ac2e02af423dd786a50089d28d34d8ddddd36454e4f4ca93be818",
+   "source_id": "S3"
+  },
+  {
+   "identifiers": {
+    "catalog_name": "gsrs_unii_EE90ONI6FF"
+   },
+   "media_type": "application/json",
+   "sha256": "2fc05f8cd7c1c954d9f3b97a0283af68df6d583b2c0dfbf2ce11fc5513508b8b",
+   "source_id": "S4"
+  }
+ ],
+ "substances": [
+  {
+   "formula": "Ca.HO4P",
+   "formula_locator": {
+    "pointer": "/content/0/structure/formula",
+    "text": "Ca.HO4P",
+    "type": "json_pointer"
+   },
+   "id": "SUB_dcp",
+   "name_locator": {
+    "pointer": "/content/0/_name",
+    "text": "Anhydrous dibasic calcium phosphate",
+    "type": "json_pointer"
+   },
+   "source_id": "S2",
+   "unii": "L11K75P92J",
+   "unii_locator": {
+    "pointer": "/content/0/approvalID",
+    "text": "L11K75P92J",
+    "type": "json_pointer"
+   }
+  },
+  {
+   "formula": "3Ca.2O4P",
+   "formula_locator": {
+    "pointer": "/content/0/structure/formula",
+    "text": "3Ca.2O4P",
+    "type": "json_pointer"
+   },
+   "id": "SUB_tcp",
+   "name_locator": {
+    "pointer": "/content/0/_name",
+    "text": "TRICALCIUM PHOSPHATE",
+    "type": "json_pointer"
+   },
+   "source_id": "S3",
+   "unii": "K4C08XP666",
+   "unii_locator": {
+    "pointer": "/content/0/approvalID",
+    "text": "K4C08XP666",
+    "type": "json_pointer"
+   }
+  },
+  {
+   "formula": "C6H5O7.3K.H2O",
+   "formula_locator": {
+    "pointer": "/content/0/structure/formula",
+    "text": "C6H5O7.3K.H2O",
+    "type": "json_pointer"
+   },
+   "id": "SUB_kcit",
+   "name_locator": {
+    "pointer": "/content/0/_name",
+    "text": "Potassium CItrate",
+    "type": "json_pointer"
+   },
+   "source_id": "S4",
+   "unii": "EE90ONI6FF",
+   "unii_locator": {
+    "pointer": "/content/0/approvalID",
+    "text": "EE90ONI6FF",
+    "type": "json_pointer"
+   }
+  }
+ ],
+ "toolchain": {
+  "bounder_version": "lio_comp.bound@1",
+  "deriver_version": "lio_comp.derive@1",
+  "extractor_version": "lio_comp.extract@1",
+  "rules_versions": {
+   "atomic_masses": 1,
+   "atwater": 1,
+   "compounds": 1,
+   "fda_otc_rounding_201": 1,
+   "fda_rounding_101_9": 1,
+   "list_ordering": 1,
+   "quid": 1,
+   "units": 1
+  }
+ },
+ "unverified_layer": {
+  "estimates": [],
+  "notes": [
+   "CITRUCEL_ORANGE: the SPL text list of inactive ingredients also names 'orange flavors (natural and artificial)', which has no structured entry or UNII in the SPL.",
+   "CITRUCEL_ORANGE: the SPL has no Nutrition Facts, so there is no declared total carbohydrate; consistency is checked by mass balance against the 19 g dose instead."
+  ]
+ },
+ "variant_note": "SPL set 9d5f2244 covers CITRUCEL Orange (NDC 0135-0089) and Sugar Free (0135-0090). Product facts use the manufacturedProduct with code 0135-0089; text facts use the sections titled '(Citrucel Orange)'."
+}

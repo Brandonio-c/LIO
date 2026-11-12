@@ -308,6 +308,8 @@ def _minimal_record() -> dict[str, Any]:
         "physical_sample": {"sample_code": "", "lot": "", "photos": [], "attestation": None},
         "sources": [],
         "assumptions": [],
+        "substances": [],
+        "ingredients": [],
         "facts": [],
         "derivations": [
             {

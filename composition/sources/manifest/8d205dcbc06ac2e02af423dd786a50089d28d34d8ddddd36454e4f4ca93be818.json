@@ -1,0 +1,16 @@
+{
+ "byte_length": 34532,
+ "media_type": "application/json",
+ "retrievals": [
+  {
+   "identifiers": {
+    "name": "TRICALCIUM PHOSPHATE",
+    "unii": "K4C08XP666"
+   },
+   "retrieval_url": "https://gsrs.ncats.nih.gov/api/v1/substances/search?q=root_approvalID:K4C08XP666&top=1",
+   "retrieved_at": "2026-11-12T01:10:11Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "8d205dcbc06ac2e02af423dd786a50089d28d34d8ddddd36454e4f4ca93be818"
+}

@@ -1,0 +1,15 @@
+{
+ "byte_length": 53506,
+ "media_type": "application/xml",
+ "retrievals": [
+  {
+   "identifiers": {
+    "spl_setid": "9d5f2244-a610-4d45-b6e8-e79bb17a558f"
+   },
+   "retrieval_url": "https://dailymed.nlm.nih.gov/dailymed/services/v2/spls/9d5f2244-a610-4d45-b6e8-e79bb17a558f.xml",
+   "retrieved_at": "2026-11-12T01:10:07Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "1cb7877bc970fbac0a7cefeef7b93f37c6e023810ebb8ad22f584eb02e6bdf77"
+}

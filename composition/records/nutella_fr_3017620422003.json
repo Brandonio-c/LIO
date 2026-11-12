@@ -1,0 +1,505 @@
+{
+ "assumptions": [
+  {
+   "id": "E1",
+   "kind": "sample_identity",
+   "text": "The sample is the French-market 400 g jar (GTIN 3017620422003); its label is the French ingredient text."
+  },
+  {
+   "id": "E2",
+   "kind": "label_truth",
+   "text": "The Open Food Facts record (crowd-sourced) transcribes the French label."
+  },
+  {
+   "id": "E3",
+   "kind": "interpretation",
+   "rule_ref": "quid@1",
+   "text": "QUID percentages (Reg. 1169/2011 Art. 22) have no rounding rule; taken as stated, as percent of the finished product at the time of use (Annex VIII 3)."
+  },
+  {
+   "id": "E4",
+   "kind": "interpretation",
+   "text": "EU nutrition values per 100 g are taken as stated (no rounding rule in the regulation; EU guidance on tolerances is not law)."
+  }
+ ],
+ "attestations": [],
+ "bounds": [],
+ "constraints": [],
+ "derivations": [],
+ "facts": [
+  {
+   "assumptions": [
+    "E2",
+    "E3"
+   ],
+   "basis": "per_100g",
+   "evidence_class": "document",
+   "id": "F_quid_hazelnuts",
+   "interpretation": {
+    "assumption": "E3",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "pointer": "/product/ingredients_text_fr",
+    "text": "Sucre, huile de palme, NOISETTES 13%, cacao maigre 7,4%, LAIT écrémé en poudre 6,6%, LACTOSERUM en poudre, émulsifiants: lécithines [SOJA), vanilline. Sans gluten.",
+    "type": "json_pointer"
+   },
+   "quantity": "hazelnuts",
+   "rule": "ingredient_list@1:3",
+   "source_id": "S1",
+   "value": {
+    "hi": "13",
+    "hi_closed": true,
+    "lo": "13",
+    "lo_closed": true,
+    "unit": "%"
+   },
+   "value_raw": "13%"
+  },
+  {
+   "assumptions": [
+    "E2",
+    "E3"
+   ],
+   "basis": "per_100g",
+   "evidence_class": "document",
+   "id": "F_quid_fat_reduced_cocoa",
+   "interpretation": {
+    "assumption": "E3",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "pointer": "/product/ingredients_text_fr",
+    "text": "Sucre, huile de palme, NOISETTES 13%, cacao maigre 7,4%, LAIT écrémé en poudre 6,6%, LACTOSERUM en poudre, émulsifiants: lécithines [SOJA), vanilline. Sans gluten.",
+    "type": "json_pointer"
+   },
+   "quantity": "fat_reduced_cocoa",
+   "rule": "ingredient_list@1:4",
+   "source_id": "S1",
+   "value": {
+    "hi": "37/5",
+    "hi_closed": true,
+    "lo": "37/5",
+    "lo_closed": true,
+    "unit": "%"
+   },
+   "value_raw": "7,4%"
+  },
+  {
+   "assumptions": [
+    "E2",
+    "E3"
+   ],
+   "basis": "per_100g",
+   "evidence_class": "document",
+   "id": "F_quid_skimmed_milk_powder",
+   "interpretation": {
+    "assumption": "E3",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "pointer": "/product/ingredients_text_fr",
+    "text": "Sucre, huile de palme, NOISETTES 13%, cacao maigre 7,4%, LAIT écrémé en poudre 6,6%, LACTOSERUM en poudre, émulsifiants: lécithines [SOJA), vanilline. Sans gluten.",
+    "type": "json_pointer"
+   },
+   "quantity": "skimmed_milk_powder",
+   "rule": "ingredient_list@1:5",
+   "source_id": "S1",
+   "value": {
+    "hi": "33/5",
+    "hi_closed": true,
+    "lo": "33/5",
+    "lo_closed": true,
+    "unit": "%"
+   },
+   "value_raw": "6,6%"
+  },
+  {
+   "assumptions": [
+    "E2",
+    "E4"
+   ],
+   "basis": "per_100g",
+   "evidence_class": "document",
+   "id": "F_energy",
+   "interpretation": {
+    "assumption": "E4",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "fields": [
+     "energy-kcal_100g",
+     "energy-kcal_unit"
+    ],
+    "pointer": "/product/nutriments",
+    "text": "539 kcal",
+    "type": "json_pointer"
+   },
+   "quantity": "energy",
+   "rule": "quantity@1",
+   "source_id": "S1",
+   "value": {
+    "hi": "539",
+    "hi_closed": true,
+    "lo": "539",
+    "lo_closed": true,
+    "unit": "kcal"
+   },
+   "value_raw": "539 kcal"
+  },
+  {
+   "assumptions": [
+    "E2",
+    "E4"
+   ],
+   "basis": "per_100g",
+   "evidence_class": "document",
+   "id": "F_total_fat",
+   "interpretation": {
+    "assumption": "E4",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "fields": [
+     "fat_100g",
+     "fat_unit"
+    ],
+    "pointer": "/product/nutriments",
+    "text": "30.9 g",
+    "type": "json_pointer"
+   },
+   "quantity": "total_fat",
+   "rule": "quantity@1",
+   "source_id": "S1",
+   "value": {
+    "hi": "309/10",
+    "hi_closed": true,
+    "lo": "309/10",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "30.9 g"
+  },
+  {
+   "assumptions": [
+    "E2",
+    "E4"
+   ],
+   "basis": "per_100g",
+   "evidence_class": "document",
+   "id": "F_saturated_fat",
+   "interpretation": {
+    "assumption": "E4",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "fields": [
+     "saturated-fat_100g",
+     "saturated-fat_unit"
+    ],
+    "pointer": "/product/nutriments",
+    "text": "10.6 g",
+    "type": "json_pointer"
+   },
+   "quantity": "saturated_fat",
+   "rule": "quantity@1",
+   "source_id": "S1",
+   "value": {
+    "hi": "53/5",
+    "hi_closed": true,
+    "lo": "53/5",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "10.6 g"
+  },
+  {
+   "assumptions": [
+    "E2",
+    "E4"
+   ],
+   "basis": "per_100g",
+   "evidence_class": "document",
+   "id": "F_total_carbohydrate",
+   "interpretation": {
+    "assumption": "E4",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "fields": [
+     "carbohydrates_100g",
+     "carbohydrates_unit"
+    ],
+    "pointer": "/product/nutriments",
+    "text": "57.5 g",
+    "type": "json_pointer"
+   },
+   "quantity": "total_carbohydrate",
+   "rule": "quantity@1",
+   "source_id": "S1",
+   "value": {
+    "hi": "115/2",
+    "hi_closed": true,
+    "lo": "115/2",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "57.5 g"
+  },
+  {
+   "assumptions": [
+    "E2",
+    "E4"
+   ],
+   "basis": "per_100g",
+   "evidence_class": "document",
+   "id": "F_total_sugars",
+   "interpretation": {
+    "assumption": "E4",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "fields": [
+     "sugars_100g",
+     "sugars_unit"
+    ],
+    "pointer": "/product/nutriments",
+    "text": "56.3 g",
+    "type": "json_pointer"
+   },
+   "quantity": "total_sugars",
+   "rule": "quantity@1",
+   "source_id": "S1",
+   "value": {
+    "hi": "563/10",
+    "hi_closed": true,
+    "lo": "563/10",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "56.3 g"
+  },
+  {
+   "assumptions": [
+    "E2",
+    "E4"
+   ],
+   "basis": "per_100g",
+   "evidence_class": "document",
+   "id": "F_protein",
+   "interpretation": {
+    "assumption": "E4",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "fields": [
+     "proteins_100g",
+     "proteins_unit"
+    ],
+    "pointer": "/product/nutriments",
+    "text": "6.3 g",
+    "type": "json_pointer"
+   },
+   "quantity": "protein",
+   "rule": "quantity@1",
+   "source_id": "S1",
+   "value": {
+    "hi": "63/10",
+    "hi_closed": true,
+    "lo": "63/10",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "6.3 g"
+  },
+  {
+   "assumptions": [
+    "E2",
+    "E4"
+   ],
+   "basis": "per_100g",
+   "evidence_class": "document",
+   "id": "F_salt",
+   "interpretation": {
+    "assumption": "E4",
+    "kind": "as_stated"
+   },
+   "locator": {
+    "fields": [
+     "salt_100g",
+     "salt_unit"
+    ],
+    "pointer": "/product/nutriments",
+    "text": "0.107 g",
+    "type": "json_pointer"
+   },
+   "quantity": "salt",
+   "rule": "quantity@1",
+   "source_id": "S1",
+   "value": {
+    "hi": "107/1000",
+    "hi_closed": true,
+    "lo": "107/1000",
+    "lo_closed": true,
+    "unit": "g"
+   },
+   "value_raw": "0.107 g"
+  }
+ ],
+ "gtin": "03017620422003",
+ "ingredients": [
+  {
+   "id": "I1",
+   "list_id": "off_ingredients_fr",
+   "list_rule": "list_item@1:1",
+   "name_locator": {
+    "pointer": "/product/ingredients_text_fr",
+    "text": "Sucre, huile de palme, NOISETTES 13%, cacao maigre 7,4%, LAIT écrémé en poudre 6,6%, LACTOSERUM en poudre, émulsifiants: lécithines [SOJA), vanilline. Sans gluten.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "Sucre",
+   "position": 1,
+   "role": "food",
+   "source_id": "S1"
+  },
+  {
+   "id": "I2",
+   "list_id": "off_ingredients_fr",
+   "list_rule": "list_item@1:2",
+   "name_locator": {
+    "pointer": "/product/ingredients_text_fr",
+    "text": "Sucre, huile de palme, NOISETTES 13%, cacao maigre 7,4%, LAIT écrémé en poudre 6,6%, LACTOSERUM en poudre, émulsifiants: lécithines [SOJA), vanilline. Sans gluten.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "huile de palme",
+   "position": 2,
+   "role": "food",
+   "source_id": "S1"
+  },
+  {
+   "id": "I3",
+   "list_id": "off_ingredients_fr",
+   "list_rule": "list_item@1:3",
+   "name_locator": {
+    "pointer": "/product/ingredients_text_fr",
+    "text": "Sucre, huile de palme, NOISETTES 13%, cacao maigre 7,4%, LAIT écrémé en poudre 6,6%, LACTOSERUM en poudre, émulsifiants: lécithines [SOJA), vanilline. Sans gluten.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "NOISETTES 13%",
+   "position": 3,
+   "role": "food",
+   "source_id": "S1"
+  },
+  {
+   "id": "I4",
+   "list_id": "off_ingredients_fr",
+   "list_rule": "list_item@1:4",
+   "name_locator": {
+    "pointer": "/product/ingredients_text_fr",
+    "text": "Sucre, huile de palme, NOISETTES 13%, cacao maigre 7,4%, LAIT écrémé en poudre 6,6%, LACTOSERUM en poudre, émulsifiants: lécithines [SOJA), vanilline. Sans gluten.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "cacao maigre 7,4%",
+   "position": 4,
+   "role": "food",
+   "source_id": "S1"
+  },
+  {
+   "id": "I5",
+   "list_id": "off_ingredients_fr",
+   "list_rule": "list_item@1:5",
+   "name_locator": {
+    "pointer": "/product/ingredients_text_fr",
+    "text": "Sucre, huile de palme, NOISETTES 13%, cacao maigre 7,4%, LAIT écrémé en poudre 6,6%, LACTOSERUM en poudre, émulsifiants: lécithines [SOJA), vanilline. Sans gluten.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "LAIT écrémé en poudre 6,6%",
+   "position": 5,
+   "role": "food",
+   "source_id": "S1"
+  },
+  {
+   "id": "I6",
+   "list_id": "off_ingredients_fr",
+   "list_rule": "list_item@1:6",
+   "name_locator": {
+    "pointer": "/product/ingredients_text_fr",
+    "text": "Sucre, huile de palme, NOISETTES 13%, cacao maigre 7,4%, LAIT écrémé en poudre 6,6%, LACTOSERUM en poudre, émulsifiants: lécithines [SOJA), vanilline. Sans gluten.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "LACTOSERUM en poudre",
+   "position": 6,
+   "role": "food",
+   "source_id": "S1"
+  },
+  {
+   "id": "I7",
+   "list_id": "off_ingredients_fr",
+   "list_rule": "list_item@1:7",
+   "name_locator": {
+    "pointer": "/product/ingredients_text_fr",
+    "text": "Sucre, huile de palme, NOISETTES 13%, cacao maigre 7,4%, LAIT écrémé en poudre 6,6%, LACTOSERUM en poudre, émulsifiants: lécithines [SOJA), vanilline. Sans gluten.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "émulsifiants: lécithines [SOJA)",
+   "position": 7,
+   "role": "food",
+   "source_id": "S1"
+  },
+  {
+   "id": "I8",
+   "list_id": "off_ingredients_fr",
+   "list_rule": "list_item@1:8",
+   "name_locator": {
+    "pointer": "/product/ingredients_text_fr",
+    "text": "Sucre, huile de palme, NOISETTES 13%, cacao maigre 7,4%, LAIT écrémé en poudre 6,6%, LACTOSERUM en poudre, émulsifiants: lécithines [SOJA), vanilline. Sans gluten.",
+    "type": "json_pointer"
+   },
+   "name_verbatim": "vanilline",
+   "position": 8,
+   "role": "food",
+   "source_id": "S1"
+  }
+ ],
+ "physical_sample": {
+  "attestation": null,
+  "lot": "",
+  "photos": [],
+  "sample_code": ""
+ },
+ "product_name": "Nutella 400 g (France)",
+ "record_id": "nutella_fr_3017620422003",
+ "schema_version": "1",
+ "sources": [
+  {
+   "identifiers": {
+    "catalog_name": "off_product_3017620422003_nutella",
+    "gtin": "3017620422003"
+   },
+   "media_type": "application/json",
+   "sha256": "93f3edfcbd89ff5902577abcb231db40c48608bf71db14ce293533ad7aab3494",
+   "source_id": "S1"
+  }
+ ],
+ "substances": [],
+ "toolchain": {
+  "bounder_version": "lio_comp.bound@1",
+  "deriver_version": "lio_comp.derive@1",
+  "extractor_version": "lio_comp.extract@1",
+  "rules_versions": {
+   "atomic_masses": 1,
+   "atwater": 1,
+   "compounds": 1,
+   "fda_otc_rounding_201": 1,
+   "fda_rounding_101_9": 1,
+   "list_ordering": 1,
+   "quid": 1,
+   "units": 1
+  }
+ },
+ "unverified_layer": {
+  "estimates": [],
+  "notes": []
+ },
+ "variant_note": "Open Food Facts holds different ingredient texts per language (FR, DE, IT differ in milk powder % and whey); the FR text is used for the French jar. The EN text in the record is incomplete ('sugar, palm oil')."
+}

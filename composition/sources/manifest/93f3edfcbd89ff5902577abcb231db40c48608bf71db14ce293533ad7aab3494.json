@@ -1,0 +1,15 @@
+{
+ "byte_length": 156727,
+ "media_type": "application/json",
+ "retrievals": [
+  {
+   "identifiers": {
+    "gtin": "3017620422003"
+   },
+   "retrieval_url": "https://world.openfoodfacts.org/api/v2/product/3017620422003.json",
+   "retrieved_at": "2026-11-12T01:10:09Z",
+   "retriever_version": "lio_comp.fetch@1"
+  }
+ ],
+ "sha256": "93f3edfcbd89ff5902577abcb231db40c48608bf71db14ce293533ad7aab3494"
+}
