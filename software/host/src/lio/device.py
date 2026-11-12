@@ -596,13 +596,18 @@ class LIODevice:
             self._close_lit(self.now())
         return reply
 
-    def ch_on(self, hole: int, ms: int | None = None) -> int:
-        """Light one hole; returns the firmware's (possibly clamped) on-time in ms."""
+    def ch_on(self, hole: int, ms: int | None = None, *, budget: bool = True) -> int:
+        """Light one hole; returns the firmware's (possibly clamped) on-time in ms.
+
+        ``budget=False`` skips the host duty budget for this flash (dashboard LED
+        diagnostics only); the firmware watchdog still ends it.
+        """
         # Budget what the firmware will allow: the request clamped to the
         # rail's current watchdog limit.
         limit = self.info().as_int(f"wdt_{self.cfg.channel(hole).rail.lower()}_ms")
         planned = min(ms, limit) if ms is not None else limit
-        self._duty_gate(hole, planned)
+        if budget:
+            self._duty_gate(hole, planned)
         cmd = f"CH {hole} ON" + (f" {ms}" if ms is not None else "")
         until = self.command(cmd).fields.as_int("until_ms")
         self._close_lit(self.now())

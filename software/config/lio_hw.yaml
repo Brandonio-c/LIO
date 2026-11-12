@@ -53,6 +53,7 @@ link:
     - [0x1A86, 0x7523, "CH340"]
     - [0x1A86, 0x5523, "CH341"]
     - [0x0403, 0x6001, "FTDI FT232R"]
+    - [0x2341, 0x0074, "Arduino Nano R4 (native USB)"]
     - [0x2341, 0x0043, "ATmega16U2 (Uno R3)"]
     - [0x2341, 0x0001, "ATmega16U2"]
 
@@ -108,8 +109,10 @@ rails:
 
 # Channel map (docs/OPTICAL_CHANNEL_MAP.md). `expect` gives, per detector,
 # signal | weak | none. Detectors not listed are expected to see nothing.
-# fitted: false means no emitter is installed (holes 10-11): lighting them
-# must give no signal on any detector.
+# fitted: false means no emitter is installed: lighting it must give no signal on
+# any detector. All 16 holes are fitted. Holes 10-11 are broadband 5 mm LEDs
+# (white, pink: blue die + phosphor), listed at their 450 nm blue peak. Holes 1-7,
+# 10 and 11 confirmed lit by eye on 2026-11-10.
 channels:
   - {hole: 1,  label: "395",    wavelength_nm: 395,  rail: A, fitted: true,  expect: {opt101: signal}}
   - {hole: 2,  label: "405",    wavelength_nm: 405,  rail: A, fitted: true,  expect: {opt101: signal}}
@@ -120,8 +123,8 @@ channels:
   - {hole: 7,  label: "red",    wavelength_nm: 630,  rail: A, fitted: true,  expect: {opt101: signal}}
   - {hole: 8,  label: "850",    wavelength_nm: 850,  rail: A, fitted: true,  expect: {opt101: signal, ingaas: signal}}
   - {hole: 9,  label: "940",    wavelength_nm: 940,  rail: A, fitted: true,  expect: {opt101: signal, ingaas: signal}}
-  - {hole: 10, label: "res.",   wavelength_nm: null, rail: B, fitted: false, expect: {}}
-  - {hole: 11, label: "res.",   wavelength_nm: null, rail: B, fitted: false, expect: {}}
+  - {hole: 10, label: "white",  wavelength_nm: 450,  rail: B, fitted: true,  expect: {opt101: signal}}   # broadband: 450 nm peak + 550-600 nm phosphor
+  - {hole: 11, label: "pink",   wavelength_nm: 450,  rail: B, fitted: true,  expect: {opt101: signal}}   # broadband: 450 nm peak + ~610 nm phosphor
   - {hole: 12, label: "1450",   wavelength_nm: 1450, rail: B, fitted: true,  expect: {ingaas: signal}}
   - {hole: 13, label: "1550",   wavelength_nm: 1550, rail: B, fitted: true,  expect: {ingaas: signal}}
   - {hole: 14, label: "1650",   wavelength_nm: 1650, rail: B, fitted: true,  expect: {ingaas: signal}}
@@ -159,6 +162,26 @@ dashboard:
   poll_ms: 700               # how often the page asks for updates
   flash_ms: 500              # "Flash" on a hole lights it this long (the rail watchdog still clamps)
   wake_button_ms: 3000       # "Wake bank A": hold the motor coils this long (no steps)
+  # Motors tab, continuous jog: the firmware stops any jog after firmware.limits.jog_max
+  # half-steps, so the dashboard re-sends it while the button stays latched.
+  jog_refresh_steps: 1024    # re-send after this many half-steps (must be < jog_max)
+  jog_check_ms: 200          # how often the jog is checked
+  # Stop if the page has not checked in for this long; 0 = off: a run continues until
+  # STOP / All off / Disconnect or the dashboard exits, even if the page is closed or
+  # the browser is in the background. Browsers slow hidden pages' timers, so a
+  # non-zero value stops runs whenever the tab is hidden or the screen sleeps.
+  jog_deadman_s: 0
+  # LEDs tab, diagnostic ring: lights the holes one at a time around the ring. The
+  # step time is raised automatically so no hole exceeds its duty budget (duty:).
+  ring_on_ms: 100            # default on-time per hole
+  ring_on_ms_min: 10
+  ring_on_ms_max: 1000
+  ring_gap_ms: 20            # dark time at least, between one hole and the next
+  # true: the ring and hold respect duty: (RAIL A 1 s per LED per minute) and wait
+  # between flashes. false (operator, 2026-11-10): no cool-down on this tab; each
+  # flash is still cut off by the firmware watchdog (firmware.limits.wdt_*_ms) and
+  # only one hole is ever lit. Test runs always keep the duty budget.
+  ring_duty_budget: false
 
 run_metadata:
   required: [sample_id]
@@ -269,7 +292,7 @@ thresholds:
     dark_shift_sigma: 10
   verdict:
     max_channel_fails: 2
-    limited_holes: [10, 11, 15, 16]
+    limited_holes: [15, 16]
 
 # Simulator physics (lio.sim). Not used against real hardware.
 sim:
@@ -305,6 +328,8 @@ sim:
     7:  {power_uw: 0.8,  vf: 1.9}
     8:  {power_uw: 1.0,  vf: 1.45}
     9:  {power_uw: 1.2,  vf: 1.3}
+    10: {power_uw: 0.9,  vf: 3.0}
+    11: {power_uw: 0.45, vf: 3.1}
     12: {power_uw: 0.4,  vf: 1.0}
     13: {power_uw: 0.5,  vf: 0.95}
     14: {power_uw: 0.35, vf: 0.9}
@@ -317,3 +342,40 @@ sim:
              [1100, 0.02], [1150, 0.0]]
     ingaas: [[750, 0.0], [800, 0.05], [900, 0.45], [1000, 0.65], [1300, 0.85], [1550, 0.95],
              [1650, 0.90], [1700, 0.60], [1750, 0.15], [1800, 0.0]]
+
+# Food library (dashboard → Database tab) and the phone intake app.
+# Each physical item gets a sample code (LIO-F-00001), its barcode photo, the
+# manufacturer data looked up from the barcode, and its LIO spectral scans.
+foods:
+  dir: data/foods            # SQLite database + photos, relative to the repo root (gitignored)
+  # The phone app listens on the LAN so phones on the same Wi-Fi can reach it.
+  # It serves ONLY the food intake (no LEDs, motors or tests) and needs the
+  # pairing key shown as a QR code on the Database tab.
+  phone_enabled: true
+  phone_host: 0.0.0.0
+  phone_port: 8766
+  # Reach the phone app through a Cloudflare quick tunnel: an outbound HTTPS link, so it
+  # works with a VPN that blocks the local network, and over cellular. The address is
+  # public but every request needs the pairing key; it changes each time the dashboard
+  # starts (re-scan the QR code). Needs `brew install cloudflared`. none = local network only.
+  tunnel: cloudflare
+  cloudflared_path: ""       # empty = find it on PATH or in /opt/homebrew/bin
+  online_lookup: true        # look products up by barcode (Open Food Facts, then USDA)
+  lookup_timeout_s: 10
+  openfoodfacts_url: "https://world.openfoodfacts.org/api/v2/product/{code}.json"
+  usda_url: "https://api.nal.usda.gov/fdc/v1/foods/search"
+  # api.data.gov key. Put a personal key in <dir>/usda_api_key.txt (gitignored) or
+  # $LIO_USDA_API_KEY, never here: this file is in git. DEMO_KEY is the rate-limited fallback.
+  usda_api_key: DEMO_KEY
+  user_agent: "LIO-V3-food-library/0.1"
+  photo_max_px: 2000         # stored photos are downscaled to this (longest side)
+  # Last-resort ingredient search on the web (after USDA, NIH DSLD, FDA labels and Open Food
+  # Facts): search, fetch the pages, cut out their ingredient lists, and show each with its
+  # link for the user to confirm. Nothing from the web is saved without confirmation.
+  web_search:
+    brave_api_key: ""        # better: data/foods/brave_api_key.txt or $LIO_BRAVE_API_KEY (free tier)
+    keyless: true            # without a key, use the public Bing/Brave results pages
+    pages: 8                 # result pages fetched per search
+    timeout_s: 10
+  scan_repeats: 3            # sweeps per spectral scan (averaged per hole; all kept raw)
+  scan_repeats_max: 10

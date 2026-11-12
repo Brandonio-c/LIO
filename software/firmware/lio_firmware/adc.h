@@ -4,6 +4,7 @@
 #include "protocol.h"
 
 bool adc_init();             // software I2C + ADS1115 at GAIN_ONE, 128 SPS
+void adc_defaults();         // gain/rate back to boot values, look for the ADS again
 bool adc_present();
 const __FlashStringHelper *adc_gain_name();
 uint16_t adc_rate_sps();

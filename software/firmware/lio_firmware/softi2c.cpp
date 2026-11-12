@@ -1,14 +1,23 @@
 #include "softi2c.h"
 #include "config.h"
 
-// Direct port access: digitalWrite()/pinMode() take a few microseconds each.
-// Only the main loop touches these ports (no interrupt handler writes PORTB/D),
-// so the read-modify-write below is safe.
-static volatile uint8_t *sda_ddr, *sda_out, *sda_in, *scl_ddr, *scl_out, *scl_in;
-static uint8_t sda_bit, scl_bit;
+// Direct port access: digitalWrite()/pinMode() take a few microseconds each
+// (far more on the Nano R4, where they added ~3 ms per ADC read). Only the main
+// loop touches these ports (no interrupt handler writes them), so the
+// read-modify-write below is safe. AVR ports are 8 bits wide, RA4M1 (Nano R4)
+// ports 16 bits; both cores provide the same port macros.
+#ifdef __AVR__
+typedef uint8_t port_t;
+#else
+typedef uint16_t port_t;
+#endif
+static volatile port_t *sda_ddr, *sda_out, *scl_ddr, *scl_out;
+static const volatile port_t *sda_in, *scl_in;  // read-only on the RA4M1
+static port_t sda_bit, scl_bit;
 
 // LOW: output bit cleared first, then the pin made an output.
-// Released: the pin made an input first, then the internal pull-up switched on.
+// Released: the pin made an input first, then the output bit set (AVR: this is
+// the internal pull-up; RA4M1: no effect, its pull-up is set once by pinMode).
 // The pin is never an output with its bit set, i.e. never driven HIGH.
 static inline void sda_low() { *sda_out &= ~sda_bit; *sda_ddr |= sda_bit; }
 static inline void sda_release() { *sda_ddr &= ~sda_bit; *sda_out |= sda_bit; }
@@ -33,16 +42,20 @@ static bool scl_up() {
 uint32_t si2c_hz() { return 1000000UL / (2UL * SI2C_HALF_US + 2UL); }
 
 void si2c_begin() {
-  uint8_t p = digitalPinToPort(PIN_SDA);
+  // GPIO mode with the internal pull-up (needed on the RA4M1 before the
+  // registers below act on the pin; harmless on the AVR).
+  pinMode(LIO_PIN_SDA, INPUT_PULLUP);
+  pinMode(LIO_PIN_SCL, INPUT_PULLUP);
+  auto p = digitalPinToPort(LIO_PIN_SDA);
   sda_ddr = portModeRegister(p);
   sda_out = portOutputRegister(p);
   sda_in = portInputRegister(p);
-  sda_bit = digitalPinToBitMask(PIN_SDA);
-  p = digitalPinToPort(PIN_SCL);
+  sda_bit = digitalPinToBitMask(LIO_PIN_SDA);
+  p = digitalPinToPort(LIO_PIN_SCL);
   scl_ddr = portModeRegister(p);
   scl_out = portOutputRegister(p);
   scl_in = portInputRegister(p);
-  scl_bit = digitalPinToBitMask(PIN_SCL);
+  scl_bit = digitalPinToBitMask(LIO_PIN_SCL);
   sda_release();
   scl_release();
   half();

@@ -105,12 +105,7 @@ static void dispatch(const Command &c) {
   else if (!cmd_legacy(c)) resp_err(c, E_UNKNOWN, F("unknown command"));
 }
 
-void setup() {
-  optics_init();   // first: CE1 = CE2 = LOW, 595s cleared (§4.3)
-  motors_init();   // coils released
-  Serial.begin(115200);
-  adc_init();
-  safety_init();
+static void print_banner() {
   Serial.println();
   Serial.print(F("# BOOT name=lio fw=" LIO_FW_VERSION));
   resp_kv(F("proto"), LIO_PROTO);
@@ -121,7 +116,40 @@ void setup() {
   resp_end();
 }
 
+#ifndef __AVR__
+// Native-USB boards (Nano R4) do not reset when the host opens the port, and a
+// real reset would drop the USB link. Instead, re-apply the power-up dark state
+// and print the banner when the host opens the port (DTR rises) or sends RESET.
+// Everything a reboot would clear is put back: settings, counters, faults, arming.
+void soft_restart() {
+  optics_init();
+  optics_defaults();
+  motors_init();
+  motors_defaults();
+  safety_defaults();
+  adc_defaults();
+  adc_init();
+  safety_init();   // new arm token
+  print_banner();
+}
+#endif
+
+void setup() {
+  optics_init();   // first: CE1 = CE2 = LOW, 595s cleared (§4.3)
+  motors_init();   // coils released
+  Serial.begin(115200);
+  adc_init();
+  safety_init();
+  print_banner();
+}
+
 void loop() {
+#ifndef __AVR__
+  static bool host_was_open = false;
+  bool host_open = (bool)Serial;
+  if (host_open && !host_was_open) { delay(50); soft_restart(); }
+  host_was_open = host_open;
+#endif
   if (proto_poll(cmd)) dispatch(cmd);
   service();
 }

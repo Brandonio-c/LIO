@@ -7,6 +7,7 @@
 #include "protocol.h"
 
 void motors_init();          // all IN pins low (coils released)
+void motors_defaults();      // jog speeds back to their boot values (soft restart)
 void motors_tick();          // advance any move whose next step is due
 bool motors_moving();
 void motors_stop_all();      // immediate stop + release, both motors

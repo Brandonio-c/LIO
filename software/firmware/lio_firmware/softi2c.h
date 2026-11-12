@@ -1,6 +1,6 @@
 // ===== Software (bit-banged) I2C master on any two digital pins =====
 // The Nano's hardware I2C pins (A4/A5) may be unusable (see config.h), so the
-// ADS1115 is driven from PIN_SDA/PIN_SCL. The lines are open-drain: a pin is
+// ADS1115 is driven from LIO_PIN_SDA/LIO_PIN_SCL. The lines are open-drain: a pin is
 // either driven LOW or released (input, internal pull-up on), never driven
 // HIGH, so nothing on the bus is fought. External 4.7k pull-ups are expected.
 #pragma once

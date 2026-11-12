@@ -1,7 +1,12 @@
 #include "safety.h"
+#ifdef __AVR__
 #include <avr/wdt.h>
+#endif
 #include "motors.h"
 #include "optics.h"
+#ifndef __AVR__
+void soft_restart();
+#endif
 
 static uint8_t fault_bits = 0;
 static uint16_t n_wdt_trips = 0;
@@ -26,6 +31,13 @@ bool motion_armed() {
 
 uint32_t armed_remaining_ms() {
   return motion_armed() ? ARM_DURATION_MS - (millis() - armed_at) : 0;
+}
+
+void safety_defaults() {
+  fault_bits = 0;
+  n_wdt_trips = 0;
+  n_failsafe = 0;
+  armed = false;
 }
 
 void safety_init() {
@@ -88,6 +100,7 @@ void cmd_reset(const Command &c) {
   // Re-run the C runtime and setup() from address 0. This works with both
   // bootloaders; a watchdog reset would hang the old one. setup() re-applies
   // the power-up dark state before anything else.
+#ifdef __AVR__
   cli();
 #if LIO_HW_WDT
   wdt_disable();
@@ -96,4 +109,7 @@ void cmd_reset(const Command &c) {
   TWCR = 0;    // TWI off
   TIMSK0 = 0; TIMSK1 = 0; TIMSK2 = 0;
   asm volatile("jmp 0");
+#else
+  soft_restart();
+#endif
 }

@@ -81,7 +81,7 @@ class TestFaultSpec:
 
 class TestLink:
     def test_boot_banner_and_compat(self, dev: LIODevice) -> None:
-        assert dev.banner is not None and dev.banner.fields.as_str("fw") == "2.2.0"
+        assert dev.banner is not None and dev.banner.fields.as_str("fw") == "2.3.1"
         assert dev.boot_s is not None and dev.boot_s < 3.0
         dev.check_compatible()
 
@@ -184,9 +184,9 @@ class TestOptics:
         assert abs(m16.net("ingaas")) < 30
         assert m3.t_on_ms > 0
 
-    def test_unfitted_hole_is_dark(self, dev: LIODevice) -> None:
-        m = dev.meas(10, n=4)
-        assert abs(m.net("ingaas")) < 30 and abs(m.net("opt101")) < 30
+    def test_white_hole_10_is_visible_only(self, dev: LIODevice) -> None:
+        m = dev.meas(10, n=4)  # white LED: OPT101 sees it, the InGaAs does not
+        assert m.net("opt101") > 100 and abs(m.net("ingaas")) < 30
 
     def test_watchdog_clamp_and_event(self, dev: LIODevice, cfg: HwConfig) -> None:
         until = dev.ch_on(3, 60000)
@@ -566,3 +566,44 @@ class TestPowerWake:
             assert d.keep_awake(force=True)
             assert d.info().as_int("adc_ok") == 1  # found again without a reset
             assert d.adc_read(1, 4).n == 4
+
+
+class TestJogRenewal:
+    """fw 2.2.1: a repeated jog in the same direction renews its bound without a new ramp."""
+
+    def test_same_direction_renews_and_keeps_going(self, cfg: HwConfig) -> None:
+        jog_max = cfg.limits["jog_max"]
+        with make(cfg) as d:
+            sim = sim_of(d)
+            d.command("U")
+            d.sleep(2.0)
+            p1 = d.status().as_int("pos1")
+            d.command("U")  # renew before the bound
+            assert sim.motors[0].renewals == 1 and sim.motors[1].renewals == 1
+            d.sleep(3.0)
+            st = d.status()
+            assert st.as_str("motor1") == "run"
+            assert st.as_int("pos1") > max(p1, jog_max - 1000)
+            d.command("S")
+
+    def test_renewed_jog_is_still_bounded(self, cfg: HwConfig) -> None:
+        jog_max = cfg.limits["jog_max"]
+        with make(cfg) as d:
+            d.command("U")
+            d.sleep(1.0)
+            p = d.status().as_int("pos1")
+            d.command("U")
+            d.sleep(30.0)  # no further renewals: stops within jog_max of the renewal
+            st = d.status()
+            # counted from the renewal, a few steps after the status read
+            assert st.as_str("motor1") == "idle"
+            assert p + jog_max <= st.as_int("pos1") <= p + jog_max + 20
+
+    def test_other_direction_starts_a_new_move(self, cfg: HwConfig) -> None:
+        with make(cfg) as d:
+            sim = sim_of(d)
+            d.command("LU")
+            d.sleep(0.5)
+            d.command("LD")
+            assert sim.motors[0].renewals == 0
+            d.command("S")

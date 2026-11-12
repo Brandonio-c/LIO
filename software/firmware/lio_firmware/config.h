@@ -5,7 +5,7 @@
 #pragma once
 #include <Arduino.h>
 
-#define LIO_FW_VERSION "2.2.0"
+#define LIO_FW_VERSION "2.3.1"
 #define LIO_PROTO 1
 
 // Build with -DLIO_HW_WDT=1 only for the new (Optiboot) bootloader,
@@ -19,6 +19,8 @@
 const uint8_t PIN_DATA  = A0;  // U1 pin 14 (SER)
 const uint8_t PIN_CLOCK = A1;  // U1 + U2 pin 11 (SRCLK)
 const uint8_t PIN_LATCH = A2;  // U1 + U2 pin 12 (RCLK)
+// CE1: A3 (A4 in 2.2.2 only, while the old Nano's port C was faulty). 2.3.0 adds
+// Nano R4 (Renesas RA4M1) support; the old ATmega328P Nano still builds.
 const uint8_t PIN_CE1   = A3;  // DRV1 CE -> RAIL A (holes 1-9), 10k pull-down
 const uint8_t PIN_CE2   = 10;  // DRV2 CE -> RAIL B (holes 10-16), 10k pull-down
 // The optional loop-back jumper (U2 pin 9 Q7' -> D11, plan §6.3) is not
@@ -31,11 +33,11 @@ const uint8_t RAIL_B_FIRST_HOLE = 10;  // holes 10-16 on RAIL B
 
 // ---- ADS1115 over software I2C (softi2c.h) ----
 // The bus runs on two spare digital pins rather than the hardware I2C pins
-// (A4/A5), whose condition is unconfirmed (docs/OPEN_ITEMS_AND_NEXT_STEPS.md).
+// (A4/A5), whose condition was unconfirmed (docs/OPEN_ITEMS_AND_NEXT_STEPS.md).
 // External 4.7k pull-ups to +5 V on both lines.
 const uint8_t ADC_ADDR = 0x48;
-const uint8_t PIN_SDA = 11;             // ADS1115 SDA
-const uint8_t PIN_SCL = 12;             // ADS1115 SCL
+const uint8_t LIO_PIN_SDA = 11;         // ADS1115 SDA
+const uint8_t LIO_PIN_SCL = 12;         // ADS1115 SCL
 const uint8_t SI2C_HALF_US = 2;         // half bit time: about 100 kHz with overheads
 const uint16_t SI2C_RISE_MAX_US = 1000; // SCL must rise within this after release
 const uint16_t DIAG_SETTLE_US = 50;     // I2C DIAG: line settle time per step

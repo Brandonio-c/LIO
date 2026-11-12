@@ -46,6 +46,8 @@ void motors_init() {
   }
 }
 
+void motors_defaults() { va = JOG_VA_DEFAULT; vs = JOG_VS_DEFAULT; acc = JOG_ACC_DEFAULT; }
+
 bool motors_moving() { return mot[0].remaining || mot[1].remaining; }
 
 void motors_stop_all() { release(0); release(1); }
@@ -185,8 +187,19 @@ static void jog(const Command &c, uint8_t mask, int8_t dir) {
   if (optics_any_ce()) { resp_err(c, E_REFUSED, F("LED on")); return; }
   long steps = (long)dir * JOG_MAX_STEPS;
   float v = (mask == 3) ? vs : va;
-  if (mask & 1) start_move(0, steps, v, acc, true);
-  if (mask & 2) start_move(1, steps, v, acc, true);
+  for (uint8_t m = 0; m < 2; m++) {
+    if (!(mask & (1 << m))) continue;
+    Motor &mo = mot[m];
+    if (mo.jog && mo.remaining && mo.dir == dir) {
+      // Repeated jog, same motor and direction: renew the bound to JOG_MAX_STEPS
+      // from here without restarting the ramp, so a held or re-sent jog runs
+      // smoothly. The bound per command is unchanged.
+      mo.remaining = JOG_MAX_STEPS;
+      mo.vmax = v;
+    } else {
+      start_move(m, steps, v, acc, true);
+    }
+  }
   resp_ok(c);
   resp_kv(F("steps"), steps);
   resp_kv(F("v"), (long)v);

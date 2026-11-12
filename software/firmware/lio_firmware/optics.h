@@ -7,6 +7,7 @@
 #include "protocol.h"
 
 void optics_init();   // CE1 = CE2 = LOW, mask = 0. First thing in setup().
+void optics_defaults();  // LED watchdog limits back to boot values (soft restart)
 void optics_off();    // CE both low, then mask = 0
 void optics_tick();   // on-time watchdog; call every loop iteration
 

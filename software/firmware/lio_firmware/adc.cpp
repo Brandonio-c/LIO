@@ -55,6 +55,8 @@ static bool attach() {
   return present;
 }
 
+void adc_defaults() { gain_idx = 1; rate_idx = 4; present = false; }
+
 bool adc_init() {
   si2c_begin();
   if (!attach()) fault_set(F_ADC_MISSING);
@@ -252,7 +254,7 @@ void cmd_adc(const Command &c) {
   else resp_err(c, E_ARG, F("usage: ADC READ|CFG|STREAM ..."));
 }
 
-// --- I2C DIAG: line-level checks of PIN_SDA/PIN_SCL. The pins are only ever
+// --- I2C DIAG: line-level checks of LIO_PIN_SDA/LIO_PIN_SCL. The pins are only ever
 // driven LOW (never HIGH), so nothing on the bus is fought.
 static uint8_t idle_high(uint8_t pin) {
   pinMode(pin, INPUT_PULLUP);
@@ -284,10 +286,10 @@ static uint8_t follows(uint8_t drive, uint8_t sense) {
 }
 
 static void i2c_diag(const Command &c) {
-  uint8_t sda = idle_high(PIN_SDA), scl = idle_high(PIN_SCL);
-  uint8_t sda_pu = has_pullup(PIN_SDA), scl_pu = has_pullup(PIN_SCL);
+  uint8_t sda = idle_high(LIO_PIN_SDA), scl = idle_high(LIO_PIN_SCL);
+  uint8_t sda_pu = has_pullup(LIO_PIN_SDA), scl_pu = has_pullup(LIO_PIN_SCL);
   // Only meaningful when both lines idle high.
-  uint8_t bridge = sda && scl && (follows(PIN_SDA, PIN_SCL) || follows(PIN_SCL, PIN_SDA));
+  uint8_t bridge = sda && scl && (follows(LIO_PIN_SDA, LIO_PIN_SCL) || follows(LIO_PIN_SCL, LIO_PIN_SDA));
   si2c_begin();  // restores the open-drain idle state and frees a stuck bus
   // The software bus has one speed: the "slow" and "fast" fields are kept for
   // the protocol and carry the same result.

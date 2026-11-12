@@ -199,6 +199,7 @@ class _Motor:
     t_end: float = 0.0
     moving: bool = False
     jog: bool = False
+    renewals: int = 0  # jogs renewed without a new ramp (firmware >= 2.2.1)
 
     def pos_at(self, t: float) -> int:
         if not self.moving or self.t_end <= self.t_start:
@@ -225,7 +226,7 @@ _GAIN_NAMES = ("2/3", "1", "2", "4", "8", "16")
 class SimulatedLIO:
     """A simulated LIO V3 controller (firmware v2 behaviour + optics physics)."""
 
-    FW_VERSION = "2.2.0"
+    FW_VERSION = "2.3.1"
     BUILD = "2026-11-03"
 
     def __init__(
@@ -625,6 +626,23 @@ class SimulatedLIO:
         m.t_end = t + self._move_duration(steps, vmax, acc)
         m.moving = steps != 0
         m.jog = jog
+
+    def _renew_jog(self, t: float, i: int, steps: int, vmax: float, acc: float) -> bool:
+        """A repeated jog in the same direction renews the bound without a new ramp."""
+        m = self.motors[i]
+        if not (m.moving and m.jog and (m.steps > 0) == (steps > 0)):
+            return False
+        new = m.pos_at(t)
+        if not self.faults.motor_stall:
+            m.physical += new - m.start_pos
+        m.pos = m.start_pos = new
+        m.steps = steps
+        m.t_start = t
+        # already at speed: cruise, then the usual deceleration at the end
+        n, s_dec = abs(steps), vmax * vmax / (2 * acc)
+        m.t_end = t + ((n - s_dec) / vmax + vmax / acc if n > s_dec else 2 * math.sqrt(n / acc))
+        m.renewals += 1
+        return True
 
     def _stop_motor(self, t: float, i: int) -> None:
         m = self.motors[i]
@@ -1142,7 +1160,7 @@ class _Exec:
             steps = direction * lim["jog_max"]
             v = s.vs if mask == 3 else s.va
             for i in (0, 1):
-                if mask & (1 << i):
+                if mask & (1 << i) and not s._renew_jog(self.t, i, steps, v, s.acc):
                     s._start_move(self.t, i, steps, v, s.acc, jog=True)
             self.ok(f"steps={steps} v={v}")
             return True

@@ -72,6 +72,13 @@ void optics_init() {
   if (PIN_LOOP) pinMode(PIN_LOOP, INPUT_PULLUP);  // HIGH unless the §6.3 jumper drives it
 }
 
+void optics_defaults() {
+  wdt_ms[1] = WDT_A_DEFAULT_MS;
+  wdt_ms[2] = WDT_B_DEFAULT_MS;
+  lit_at = lit_for = 0;
+  lit_by_wdt = false;
+}
+
 void optics_off() {
   ce_all_off();
   latch(0);

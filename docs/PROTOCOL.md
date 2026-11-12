@@ -64,7 +64,7 @@ Lines starting with `#` are **events**. They may appear at any time, including b
 
 ## 5. Commands
 
-Channels are holes 1–16. RAIL A = holes 1–9 (DRV1, CE1 = A3); RAIL B = holes 10–16 (DRV2, CE2 = D10). ADC channel 0 = InGaAs TIA, 1 = OPT101, 2–3 unconnected.
+Channels are holes 1–16. RAIL A = holes 1–9 (DRV1, CE1 = A3 (A4 in firmware 2.2.2 only). Firmware 2.3.0 also runs on the Nano R4: it has no DTR reset, so it re-applies the dark state and prints `# BOOT` when the host opens the port, and RESET does the same without dropping USB); RAIL B = holes 10–16 (DRV2, CE2 = D10). ADC channel 0 = InGaAs TIA, 1 = OPT101, 2–3 unconnected.
 
 ### Identity and state
 
@@ -171,7 +171,7 @@ Power bank A alone supplies the +5 V bus (ADS1115, LEDs, shift registers, motor 
 | `POSL0` `POSR0` | Zero a motor's position counter |
 | `?` | Lists the legacy commands |
 
-Each jog ends at **whichever comes first**: `S`, **2048 half-steps** (`jog_max`), or the comms-loss failsafe (§6.5). A new jog command replaces the current move of the motors it names, and starts a new 2048-step bound. Jogs are refused while an LED is on; LED and measurement commands are refused while a jog runs.
+Each jog ends at **whichever comes first**: `S`, **2048 half-steps** (`jog_max`), or the comms-loss failsafe (§6.5). A new jog command replaces the current move of the motors it names, and starts a new 2048-step bound. From firmware 2.2.1, a jog repeated for a motor that is **already jogging in the same direction** renews its bound to 2048 half-steps from that point **without restarting the speed ramp**, so a re-sent or held jog runs smoothly (the dashboard's Run buttons rely on this). A different direction, or a motor that is not jogging, starts a new move with the usual ramp. Jogs are refused while an LED is on; LED and measurement commands are refused while a jog runs.
 
 This bound also fixes `lio_motor_control.py`'s runaway: if its window loses focus while a key is held, the key-release `S` never arrives, but the jog still stops at the bound.
 

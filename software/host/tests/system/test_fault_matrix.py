@@ -15,11 +15,12 @@ current, so it is optically invisible, and harmless.
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass
 
 import pytest
 
-from lio.config import HwConfig
+from lio.config import HwConfig, parse_config
 from lio.device import LIODevice
 from lio.results import Status, TestResult, Verdict
 from lio.sim import FAULT_NAMES, Faults, SimulatedLIO
@@ -37,10 +38,23 @@ class Row:
     sub: str  # sub-result id that must report the fault
     status: Status = Status.FAIL
     loop_jumper: bool = False
+    unfitted: tuple[int, ...] = ()  # run on a config with these holes empty
 
     @property
     def id(self) -> str:
-        return f"{self.fault}{'+jumper' if self.loop_jumper else ''}->{self.sub}"
+        empty = f"+empty{','.join(map(str, self.unfitted))}" if self.unfitted else ""
+        return f"{self.fault}{'+jumper' if self.loop_jumper else ''}{empty}->{self.sub}"
+
+
+def _with_unfitted(cfg: HwConfig, holes: tuple[int, ...]) -> HwConfig:
+    """The same config with ``holes`` marked as having no emitter fitted."""
+    if not holes:
+        return cfg
+    data = copy.deepcopy(cfg.data)
+    for c in data["channels"]:
+        if c["hole"] in holes:
+            c.update(fitted=False, expect={}, wavelength_nm=None)
+    return parse_config(data, cfg.path)
 
 
 MATRIX = (
@@ -50,7 +64,10 @@ MATRIX = (
     Row("i2c_slow", "T03.1", "T03.1/bus", Status.WARN),
     Row("stuck_on:5", "T05.3", "T05.3/h05/unique"),
     Row("stuck_on:8", "T05.3", "T05.3/h08/unique"),
-    Row("stuck_on:13", "T05.3", "T05.3/B/stuck_via_10"),
+    # Holes 10-11 have LEDs fitted, so a stuck-on RAIL B channel shows as holes
+    # 10, 11 and 13 sharing one signature; with empty holes it is the stuck_via probe.
+    Row("stuck_on:13", "T05.3", "T05.3/h13/unique"),
+    Row("stuck_on:13", "T05.3", "T05.3/B/stuck_via_10", unfitted=(10, 11)),
     Row("dead_channel:3", "T05.2", "T05.2/h03/opt101"),
     Row("dead_channel:13", "T05.2", "T05.2/h13/ingaas"),
     Row("swapped:3,8", "T05.3", "T05.3/h03/pattern"),
@@ -94,7 +111,7 @@ def _find(result: TestResult, sub: str) -> Status | None:
 
 @pytest.mark.parametrize("row", MATRIX, ids=[r.id for r in MATRIX])
 def test_fault_is_detected(cfg: HwConfig, row: Row) -> None:
-    result = _run_one(cfg, row.test, row.fault, row.loop_jumper)
+    result = _run_one(_with_unfitted(cfg, row.unfitted), row.test, row.fault, row.loop_jumper)
     got = _find(result, row.sub)
     assert got == row.status, (
         f"{row.fault}: expected {row.sub} = {row.status.value}, got "
@@ -110,7 +127,7 @@ def test_healthy_control_passes(cfg: HwConfig, row: Row) -> None:
     Some sub-results (duplicate groups, saturation, the chain and stuck-on
     diagnoses) are only emitted when something is wrong.
     """
-    result = _run_one(cfg, row.test, None, row.loop_jumper)
+    result = _run_one(_with_unfitted(cfg, row.unfitted), row.test, None, row.loop_jumper)
     assert result.status == Status.PASS, result.summary()
     assert _find(result, row.sub) in (Status.PASS, None), result.summary()
 
@@ -194,6 +211,9 @@ def test_healthy_simulator_is_functional(cfg: HwConfig) -> None:
         ("dead_channel:3", Verdict.DEGRADED),
         ("tia_saturated", Verdict.DEGRADED),
         ("stuck_on:5", Verdict.NOT_FUNCTIONAL),
+        # A stuck-on hole 13 (lowest Vf but one on RAIL B) takes the current from
+        # the white/pink holes 10-11 and from 12, so 3 counted channels fail:
+        # NOT FUNCTIONAL. With 10-11 empty the stuck_via probe flags the rail.
         ("stuck_on:13", Verdict.NOT_FUNCTIONAL),
         ("reversed_ingaas", Verdict.NOT_FUNCTIONAL),
         ("no_adc", Verdict.NOT_FUNCTIONAL),
@@ -204,3 +224,9 @@ def test_healthy_simulator_is_functional(cfg: HwConfig) -> None:
 )
 def test_verdict(cfg: HwConfig, fault: str, verdict: Verdict) -> None:
     assert _full_run(cfg, fault)["verdict"] == verdict.value
+
+
+def test_verdict_stuck_on_rail_b_with_empty_probe_holes(cfg: HwConfig) -> None:
+    assert _full_run(_with_unfitted(cfg, (10, 11)), "stuck_on:13")["verdict"] == (
+        Verdict.NOT_FUNCTIONAL.value
+    )

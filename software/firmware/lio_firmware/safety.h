@@ -12,6 +12,7 @@ enum FaultBit : uint8_t {
 };
 
 void safety_init();      // arm token, optional hardware watchdog
+void safety_defaults();  // faults, counters and arming cleared, as at boot
 void service();          // call every loop iteration and inside every wait
 void service_delay(uint32_t ms);  // delay() that keeps service() running
 
