@@ -59,33 +59,281 @@
    ],
    "basis": "per_serving",
    "certificate": {
-    "infeasibility_proofs": {
-     "above_max": "objective >= max",
-     "below_min": "objective <= min",
-     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    "lp": {
+     "objective": {
+      "c": [
+       "0",
+       "0",
+       "1",
+       "0",
+       "0"
+      ],
+      "const": "0"
+     },
+     "rows": [
+      {
+       "a": [
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+       ],
+       "origin": "C1",
+       "rhs": "-33",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+       ],
+       "origin": "C1",
+       "rhs": "33",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "1"
+       ],
+       "origin": "C2",
+       "rhs": "0",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C3",
+       "rhs": "33/50",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "1",
+        "0"
+       ],
+       "origin": "C4",
+       "rhs": "33/50",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C5",
+       "rhs": "33/50",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "1"
+       ],
+       "origin": "C6",
+       "rhs": "7/2",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "1",
+        "0"
+       ],
+       "origin": "C7",
+       "rhs": "28249271809/76632564200",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      }
+     ],
+     "variables": [
+      "hydrogenated_vegetable_oils",
+      "molasses",
+      "roasted_peanuts",
+      "salt",
+      "sugar"
+     ]
     },
     "max": {
      "attained": false,
-     "gap": "1/1000000",
+     "bound": "-33",
+     "dual": [
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "1",
+      "1",
+      "1"
+     ],
+     "interior": {
+      "hydrogenated_vegetable_oils": "28249271809/153265128400",
+      "molasses": "28249271809/153265128400",
+      "roasted_peanuts": "1236188037491/38316282100",
+      "salt": "28249271809/153265128400",
+      "sugar": "28249271809/153265128400"
+     },
+     "motzkin": [
+      "0",
+      "1/4",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1/4",
+      "1/4",
+      "1/4",
+      "1/4",
+      "1/4"
+     ],
      "value": "33",
      "witness": {
-      "hydrogenated_vegetable_oils": "1/10000000",
-      "molasses": "3/5000000",
-      "roasted_peanuts": "329999991/10000000",
-      "salt": "1/10000000",
-      "sugar": "1/10000000"
+      "hydrogenated_vegetable_oils": "0",
+      "molasses": "0",
+      "roasted_peanuts": "33",
+      "salt": "0",
+      "sugar": "0"
      }
     },
     "min": {
      "attained": false,
-     "gap": "1/1000000",
+     "bound": "2131256387347/76632564200",
+     "dual": [
+      "1",
+      "0",
+      "0",
+      "1",
+      "0",
+      "1",
+      "1",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+     ],
+     "interior": {
+      "hydrogenated_vegetable_oils": "28249271809/153265128400",
+      "molasses": "28249271809/153265128400",
+      "roasted_peanuts": "1236188037491/38316282100",
+      "salt": "28249271809/153265128400",
+      "sugar": "28249271809/153265128400"
+     },
+     "motzkin": [
+      "1/2",
+      "0",
+      "0",
+      "1/2",
+      "0",
+      "1/2",
+      "1/2",
+      "1/2",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1/2"
+     ],
      "value": "2131256387347/76632564200",
      "witness": {
       "hydrogenated_vegetable_oils": "33/50",
       "molasses": "33/50",
-      "roasted_peanuts": "15984423288265321/574744231500000",
-      "salt": "423738693972179/1149488463000000",
-      "sugar": "10499999/3000000"
+      "roasted_peanuts": "2131256387347/76632564200",
+      "salt": "28249271809/76632564200",
+      "sugar": "7/2"
      }
     }
    },
@@ -109,7 +357,7 @@
     "lo_closed": false,
     "unit": "g"
    },
-   "solver": "z3@5.4.1",
+   "solver": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
    "variables": [
     "hydrogenated_vegetable_oils",
     "molasses",
@@ -128,33 +376,281 @@
    ],
    "basis": "per_serving",
    "certificate": {
-    "infeasibility_proofs": {
-     "above_max": "objective >= max",
-     "below_min": "objective <= min",
-     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    "lp": {
+     "objective": {
+      "c": [
+       "0",
+       "0",
+       "0",
+       "0",
+       "1"
+      ],
+      "const": "0"
+     },
+     "rows": [
+      {
+       "a": [
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+       ],
+       "origin": "C1",
+       "rhs": "-33",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+       ],
+       "origin": "C1",
+       "rhs": "33",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "1"
+       ],
+       "origin": "C2",
+       "rhs": "0",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C3",
+       "rhs": "33/50",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "1",
+        "0"
+       ],
+       "origin": "C4",
+       "rhs": "33/50",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C5",
+       "rhs": "33/50",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "1"
+       ],
+       "origin": "C6",
+       "rhs": "7/2",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "1",
+        "0"
+       ],
+       "origin": "C7",
+       "rhs": "28249271809/76632564200",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      }
+     ],
+     "variables": [
+      "hydrogenated_vegetable_oils",
+      "molasses",
+      "roasted_peanuts",
+      "salt",
+      "sugar"
+     ]
     },
     "max": {
      "attained": false,
-     "gap": "1/1000000",
+     "bound": "-7/2",
+     "dual": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+     ],
+     "interior": {
+      "hydrogenated_vegetable_oils": "28249271809/153265128400",
+      "molasses": "28249271809/153265128400",
+      "roasted_peanuts": "1236188037491/38316282100",
+      "salt": "28249271809/153265128400",
+      "sugar": "28249271809/153265128400"
+     },
+     "motzkin": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1"
+     ],
      "value": "7/2",
      "witness": {
-      "hydrogenated_vegetable_oils": "33/50",
-      "molasses": "33/50",
-      "roasted_peanuts": "10656282319897821/383162821000000",
-      "salt": "282492334927179/766325642000000",
-      "sugar": "6999999/2000000"
+      "hydrogenated_vegetable_oils": "0",
+      "molasses": "0",
+      "roasted_peanuts": "59/2",
+      "salt": "0",
+      "sugar": "7/2"
      }
     },
     "min": {
      "attained": false,
-     "gap": "1/1000000",
+     "bound": "0",
+     "dual": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0"
+     ],
+     "interior": {
+      "hydrogenated_vegetable_oils": "28249271809/153265128400",
+      "molasses": "28249271809/153265128400",
+      "roasted_peanuts": "1236188037491/38316282100",
+      "salt": "28249271809/153265128400",
+      "sugar": "28249271809/153265128400"
+     },
+     "motzkin": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "1"
+     ],
      "value": "0",
      "witness": {
-      "hydrogenated_vegetable_oils": "33/50",
-      "molasses": "33/50",
-      "roasted_peanuts": "2399470362047/76632564200",
-      "salt": "282492334927179/766325642000000",
-      "sugar": "1/2000000"
+      "hydrogenated_vegetable_oils": "0",
+      "molasses": "0",
+      "roasted_peanuts": "33",
+      "salt": "0",
+      "sugar": "0"
      }
     }
    },
@@ -178,7 +674,7 @@
     "lo_closed": false,
     "unit": "g"
    },
-   "solver": "z3@5.4.1",
+   "solver": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
    "variables": [
     "hydrogenated_vegetable_oils",
     "molasses",
@@ -197,33 +693,281 @@
    ],
    "basis": "per_serving",
    "certificate": {
-    "infeasibility_proofs": {
-     "above_max": "objective >= max",
-     "below_min": "objective <= min",
-     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    "lp": {
+     "objective": {
+      "c": [
+       "0",
+       "0",
+       "0",
+       "1",
+       "0"
+      ],
+      "const": "0"
+     },
+     "rows": [
+      {
+       "a": [
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+       ],
+       "origin": "C1",
+       "rhs": "-33",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+       ],
+       "origin": "C1",
+       "rhs": "33",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "1"
+       ],
+       "origin": "C2",
+       "rhs": "0",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C3",
+       "rhs": "33/50",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "1",
+        "0"
+       ],
+       "origin": "C4",
+       "rhs": "33/50",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C5",
+       "rhs": "33/50",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "1"
+       ],
+       "origin": "C6",
+       "rhs": "7/2",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "1",
+        "0"
+       ],
+       "origin": "C7",
+       "rhs": "28249271809/76632564200",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C8",
+       "rhs": "0",
+       "sense": "<"
+      }
+     ],
+     "variables": [
+      "hydrogenated_vegetable_oils",
+      "molasses",
+      "roasted_peanuts",
+      "salt",
+      "sugar"
+     ]
     },
     "max": {
      "attained": false,
-     "gap": "1/1000000",
+     "bound": "-28249271809/76632564200",
+     "dual": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+     ],
+     "interior": {
+      "hydrogenated_vegetable_oils": "28249271809/153265128400",
+      "molasses": "28249271809/153265128400",
+      "roasted_peanuts": "1236188037491/38316282100",
+      "salt": "28249271809/153265128400",
+      "sugar": "28249271809/153265128400"
+     },
+     "motzkin": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1"
+     ],
      "value": "28249271809/76632564200",
      "witness": {
-      "hydrogenated_vegetable_oils": "33/50",
-      "molasses": "33/50",
-      "roasted_peanuts": "10656282319897821/383162821000000",
-      "salt": "282492334927179/766325642000000",
-      "sugar": "6999999/2000000"
+      "hydrogenated_vegetable_oils": "0",
+      "molasses": "0",
+      "roasted_peanuts": "2500625346791/76632564200",
+      "salt": "28249271809/76632564200",
+      "sugar": "0"
      }
     },
     "min": {
      "attained": false,
-     "gap": "1/1000000",
+     "bound": "0",
+     "dual": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0"
+     ],
+     "interior": {
+      "hydrogenated_vegetable_oils": "28249271809/153265128400",
+      "molasses": "28249271809/153265128400",
+      "roasted_peanuts": "1236188037491/38316282100",
+      "salt": "28249271809/153265128400",
+      "sugar": "28249271809/153265128400"
+     },
+     "motzkin": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "1"
+     ],
      "value": "0",
      "witness": {
-      "hydrogenated_vegetable_oils": "33/50",
-      "molasses": "33/50",
-      "roasted_peanuts": "1409/50",
-      "salt": "1/2000000",
-      "sugar": "6999999/2000000"
+      "hydrogenated_vegetable_oils": "0",
+      "molasses": "0",
+      "roasted_peanuts": "33",
+      "salt": "0",
+      "sugar": "0"
      }
     }
    },
@@ -247,7 +991,7 @@
     "lo_closed": false,
     "unit": "g"
    },
-   "solver": "z3@5.4.1",
+   "solver": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
    "variables": [
     "hydrogenated_vegetable_oils",
     "molasses",
@@ -695,6 +1439,16 @@
    "value_raw": "0.000 g"
   }
  ],
+ "feasibility": {
+  "method": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
+  "witness": {
+   "hydrogenated_vegetable_oils": "28249271809/153265128400",
+   "molasses": "28249271809/153265128400",
+   "roasted_peanuts": "1236188037491/38316282100",
+   "salt": "28249271809/153265128400",
+   "sugar": "28249271809/153265128400"
+  }
+ },
  "gtin": "00051500255162",
  "ingredients": [
   {

@@ -67,35 +67,351 @@
    ],
    "basis": "per_serving",
    "certificate": {
-    "infeasibility_proofs": {
-     "above_max": "objective >= max",
-     "below_min": "objective <= min",
-     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    "lp": {
+     "objective": {
+      "c": [
+       "0",
+       "0",
+       "0",
+       "0",
+       "0",
+       "1"
+      ],
+      "const": "0"
+     },
+     "rows": [
+      {
+       "a": [
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+       ],
+       "origin": "C1",
+       "rhs": "-19",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+       ],
+       "origin": "C1",
+       "rhs": "19",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C2",
+       "rhs": "-2",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C2",
+       "rhs": "2",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0",
+        "-1"
+       ],
+       "origin": "C3",
+       "rhs": "-55/4",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "1",
+        "0",
+        "0",
+        "0",
+        "1"
+       ],
+       "origin": "C3",
+       "rhs": "65/4",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C4",
+       "rhs": "-32706662189/163600000000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C4",
+       "rhs": "1496604472033/5343200000000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0"
+       ],
+       "origin": "C5",
+       "rhs": "-166254959/586476000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "1",
+        "0"
+       ],
+       "origin": "C5",
+       "rhs": "465000753/1563928000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      }
+     ],
+     "variables": [
+      "calcium_phosphates",
+      "maltodextrin",
+      "methylcellulose",
+      "other_ingredients",
+      "potassium_citrate",
+      "sucrose"
+     ]
     },
     "max": {
      "attained": false,
-     "gap": "1/1000000",
+     "bound": "-65/4",
+     "dual": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0"
+     ],
+     "interior": {
+      "calcium_phosphates": "1496604472033/5343200000000",
+      "maltodextrin": "1496604472033/5343200000000",
+      "methylcellulose": "2",
+      "other_ingredients": "707945247/1563928000",
+      "potassium_citrate": "465000753/1563928000",
+      "sucrose": "41916895527967/2671600000000"
+     },
+     "motzkin": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1/2",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1/2",
+      "0",
+      "0",
+      "0",
+      "1/2"
+     ],
      "value": "65/4",
      "witness": {
       "calcium_phosphates": "1496604472033/5343200000000",
-      "maltodextrin": "1/3000000",
+      "maltodextrin": "0",
       "methylcellulose": "2",
-      "other_ingredients": "540792821434801591/3133642533600000000",
+      "other_ingredients": "180263925629096797/1044547511200000000",
       "potassium_citrate": "465000753/1563928000",
-      "sucrose": "24374999/1500000"
+      "sucrose": "65/4"
      }
     },
     "min": {
      "attained": false,
-     "gap": "1/1000000",
+     "bound": "0",
+     "dual": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0"
+     ],
+     "interior": {
+      "calcium_phosphates": "1496604472033/5343200000000",
+      "maltodextrin": "1496604472033/5343200000000",
+      "methylcellulose": "2",
+      "other_ingredients": "707945247/1563928000",
+      "potassium_citrate": "465000753/1563928000",
+      "sucrose": "41916895527967/2671600000000"
+     },
+     "motzkin": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1"
+     ],
      "value": "0",
      "witness": {
       "calcium_phosphates": "1496604472033/5343200000000",
-      "maltodextrin": "27499999/2000000",
+      "maltodextrin": "55/4",
       "methylcellulose": "2",
       "other_ingredients": "2791632703629096797/1044547511200000000",
       "potassium_citrate": "465000753/1563928000",
-      "sucrose": "1/2000000"
+      "sucrose": "0"
      }
     }
    },
@@ -117,7 +433,7 @@
     "lo_closed": false,
     "unit": "g"
    },
-   "solver": "z3@5.4.1",
+   "solver": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
    "variables": [
     "calcium_phosphates",
     "maltodextrin",
@@ -139,35 +455,351 @@
    ],
    "basis": "per_serving",
    "certificate": {
-    "infeasibility_proofs": {
-     "above_max": "objective >= max",
-     "below_min": "objective <= min",
-     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    "lp": {
+     "objective": {
+      "c": [
+       "0",
+       "1",
+       "0",
+       "0",
+       "0",
+       "0"
+      ],
+      "const": "0"
+     },
+     "rows": [
+      {
+       "a": [
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+       ],
+       "origin": "C1",
+       "rhs": "-19",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+       ],
+       "origin": "C1",
+       "rhs": "19",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C2",
+       "rhs": "-2",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C2",
+       "rhs": "2",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0",
+        "-1"
+       ],
+       "origin": "C3",
+       "rhs": "-55/4",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "1",
+        "0",
+        "0",
+        "0",
+        "1"
+       ],
+       "origin": "C3",
+       "rhs": "65/4",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C4",
+       "rhs": "-32706662189/163600000000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C4",
+       "rhs": "1496604472033/5343200000000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0"
+       ],
+       "origin": "C5",
+       "rhs": "-166254959/586476000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "1",
+        "0"
+       ],
+       "origin": "C5",
+       "rhs": "465000753/1563928000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      }
+     ],
+     "variables": [
+      "calcium_phosphates",
+      "maltodextrin",
+      "methylcellulose",
+      "other_ingredients",
+      "potassium_citrate",
+      "sucrose"
+     ]
     },
     "max": {
      "attained": false,
-     "gap": "1/1000000",
+     "bound": "-65/4",
+     "dual": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0"
+     ],
+     "interior": {
+      "calcium_phosphates": "1496604472033/5343200000000",
+      "maltodextrin": "1496604472033/5343200000000",
+      "methylcellulose": "2",
+      "other_ingredients": "707945247/1563928000",
+      "potassium_citrate": "465000753/1563928000",
+      "sucrose": "41916895527967/2671600000000"
+     },
+     "motzkin": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1/2",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1/2",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1/2"
+     ],
      "value": "65/4",
      "witness": {
       "calcium_phosphates": "1496604472033/5343200000000",
-      "maltodextrin": "24374999/1500000",
+      "maltodextrin": "65/4",
       "methylcellulose": "2",
-      "other_ingredients": "540792821434801591/3133642533600000000",
+      "other_ingredients": "180263925629096797/1044547511200000000",
       "potassium_citrate": "465000753/1563928000",
-      "sucrose": "1/3000000"
+      "sucrose": "0"
      }
     },
     "min": {
      "attained": false,
-     "gap": "1/1000000",
+     "bound": "0",
+     "dual": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0"
+     ],
+     "interior": {
+      "calcium_phosphates": "1496604472033/5343200000000",
+      "maltodextrin": "1496604472033/5343200000000",
+      "methylcellulose": "2",
+      "other_ingredients": "707945247/1563928000",
+      "potassium_citrate": "465000753/1563928000",
+      "sucrose": "41916895527967/2671600000000"
+     },
+     "motzkin": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "1"
+     ],
      "value": "0",
      "witness": {
       "calcium_phosphates": "1496604472033/5343200000000",
-      "maltodextrin": "1/2000000",
+      "maltodextrin": "0",
       "methylcellulose": "2",
-      "other_ingredients": "2791632703629096797/1044547511200000000",
+      "other_ingredients": "180263925629096797/1044547511200000000",
       "potassium_citrate": "465000753/1563928000",
-      "sucrose": "27499999/2000000"
+      "sucrose": "65/4"
      }
     }
    },
@@ -189,7 +821,7 @@
     "lo_closed": false,
     "unit": "g"
    },
-   "solver": "z3@5.4.1",
+   "solver": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
    "variables": [
     "calcium_phosphates",
     "maltodextrin",
@@ -211,34 +843,324 @@
    ],
    "basis": "per_serving",
    "certificate": {
-    "infeasibility_proofs": {
-     "above_max": "objective > max",
-     "below_min": "objective <= min",
-     "method": "z3 over the reals: constraints and (objective beyond the end) is unsat"
+    "lp": {
+     "objective": {
+      "c": [
+       "0",
+       "0",
+       "0",
+       "1",
+       "0",
+       "0"
+      ],
+      "const": "0"
+     },
+     "rows": [
+      {
+       "a": [
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+       ],
+       "origin": "C1",
+       "rhs": "-19",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+       ],
+       "origin": "C1",
+       "rhs": "19",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C2",
+       "rhs": "-2",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C2",
+       "rhs": "2",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0",
+        "-1"
+       ],
+       "origin": "C3",
+       "rhs": "-55/4",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "1",
+        "0",
+        "0",
+        "0",
+        "1"
+       ],
+       "origin": "C3",
+       "rhs": "65/4",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C4",
+       "rhs": "-32706662189/163600000000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C4",
+       "rhs": "1496604472033/5343200000000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0"
+       ],
+       "origin": "C5",
+       "rhs": "-166254959/586476000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "1",
+        "0"
+       ],
+       "origin": "C5",
+       "rhs": "465000753/1563928000",
+       "sense": "<="
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      },
+      {
+       "a": [
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0"
+       ],
+       "origin": "C6",
+       "rhs": "0",
+       "sense": "<"
+      }
+     ],
+     "variables": [
+      "calcium_phosphates",
+      "maltodextrin",
+      "methylcellulose",
+      "other_ingredients",
+      "potassium_citrate",
+      "sucrose"
+     ]
     },
     "max": {
      "attained": true,
+     "bound": "-66362076373411009/23986868400000000",
+     "dual": [
+      "0",
+      "1",
+      "1",
+      "0",
+      "1",
+      "0",
+      "1",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+     ],
      "value": "66362076373411009/23986868400000000",
      "witness": {
       "calcium_phosphates": "32706662189/163600000000",
-      "maltodextrin": "1/2",
+      "maltodextrin": "32706662189/163600000000",
       "methylcellulose": "2",
       "other_ingredients": "66362076373411009/23986868400000000",
       "potassium_citrate": "166254959/586476000",
-      "sucrose": "53/4"
+      "sucrose": "2216793337811/163600000000"
      }
     },
     "min": {
      "attained": false,
-     "gap": "1/1000000",
+     "bound": "180263925629096797/1044547511200000000",
+     "dual": [
+      "1",
+      "0",
+      "0",
+      "1",
+      "0",
+      "1",
+      "0",
+      "1",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+     ],
+     "interior": {
+      "calcium_phosphates": "1496604472033/5343200000000",
+      "maltodextrin": "1496604472033/5343200000000",
+      "methylcellulose": "2",
+      "other_ingredients": "707945247/1563928000",
+      "potassium_citrate": "465000753/1563928000",
+      "sucrose": "41916895527967/2671600000000"
+     },
+     "motzkin": [
+      "1",
+      "0",
+      "0",
+      "1",
+      "0",
+      "1",
+      "0",
+      "1",
+      "0",
+      "1",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "1"
+     ],
      "value": "180263925629096797/1044547511200000000",
      "witness": {
       "calcium_phosphates": "1496604472033/5343200000000",
-      "maltodextrin": "1/2000000",
+      "maltodextrin": "0",
       "methylcellulose": "2",
-      "other_ingredients": "180264447902852397/1044547511200000000",
+      "other_ingredients": "180263925629096797/1044547511200000000",
       "potassium_citrate": "465000753/1563928000",
-      "sucrose": "16249999/1000000"
+      "sucrose": "65/4"
      }
     }
    },
@@ -260,7 +1182,7 @@
     "lo_closed": false,
     "unit": "g"
    },
-   "solver": "z3@5.4.1",
+   "solver": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
    "variables": [
     "calcium_phosphates",
     "maltodextrin",
@@ -693,6 +1615,17 @@
    "value_raw": "60 kcal"
   }
  ],
+ "feasibility": {
+  "method": "lio_comp.simplex@1 (exact Fraction, Bland's rule)",
+  "witness": {
+   "calcium_phosphates": "1496604472033/5343200000000",
+   "maltodextrin": "1496604472033/5343200000000",
+   "methylcellulose": "2",
+   "other_ingredients": "707945247/1563928000",
+   "potassium_citrate": "465000753/1563928000",
+   "sucrose": "41916895527967/2671600000000"
+  }
+ },
  "gtin": "00300680418301",
  "ingredients": [
   {

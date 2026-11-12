@@ -10,7 +10,7 @@ from typing import Any
 
 import pytest
 
-pytest.importorskip("z3")
+pytest.importorskip("lxml")
 pytest.importorskip("lxml")
 
 from lio_verify.expr import Context, ExprError, evaluate, unit_mul

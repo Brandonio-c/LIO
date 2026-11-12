@@ -13,9 +13,9 @@ literal (spec §3.3 kinds):
 A constraint without unknowns is a consistency check between data: it is
 ``entailed`` (always true), ``consistent`` (possible) or ``violated``.
 
-Every constraint becomes atoms ``form op rhs`` with exact Fraction rhs. Witnesses
-are checked by exact substitution (no solver); the unsat checks use z3 over the
-reals, which is exact for linear real arithmetic.
+Every constraint becomes atoms ``form op rhs`` with exact Fraction rhs, then LP
+rows. Bound certificates are checked in :mod:`lio_verify.cert` with Fraction
+arithmetic alone: no solver is trusted.
 """
 
 from __future__ import annotations
@@ -188,105 +188,49 @@ def data_check(c: dict[str, Any], ctx: Context) -> str:
     raise LpError(f"{c['id']}: {kind} needs unknowns")
 
 
-# --------------------------------------------------------------------- z3 side
-def z3_problem(
-    all_atoms: list[Atom], names: list[str], ctx: Any = None
-) -> tuple[Any, dict[str, Any]]:
-    """z3 constraints in context ``ctx`` (use a fresh ``z3.Context()`` per problem:
-    z3's shared default context keeps state between solves, so results would depend on
-    what was solved before)."""
-    zv = {n: _z3().Real(n, ctx) for n in names}
-    out = []
-    for a in all_atoms:
-        lhs = z3_form(a.form, zv, ctx)
-        r = _z3().RealVal(str(a.rhs), ctx)
-        out.append({"<=": lhs <= r, "<": lhs < r, ">=": lhs >= r, ">": lhs > r}[a.op])
-    return out, zv
+# -------------------------------------------------------------- LP rows
+LpRow = tuple[list[Fraction], Fraction, bool, str]  # a, rhs, strict, origin
 
 
-def _z3() -> Any:
-    import z3
-
-    return z3
-
-
-def z3_form(form: Form, zv: dict[str, Any], ctx: Any = None) -> Any:
-    z3 = _z3()
-    out = z3.RealVal(str(form.const), ctx)
-    for v, c in form.coeffs:
-        out = out + z3.RealVal(str(c), ctx) * zv[v]
+def rows_of(all_atoms: list[Atom], names: list[str]) -> list[LpRow]:
+    """Atoms ``form op rhs`` as rows ``a . x <= rhs`` (or ``<``) over ``names``, in order."""
+    out: list[LpRow] = []
+    for at in all_atoms:
+        coef = dict(at.form.coeffs)
+        a = [coef.get(n, Fraction(0)) for n in names]
+        rhs = at.rhs - at.form.const
+        if at.op in (">=", ">"):
+            a, rhs = [-v for v in a], -rhs
+        out.append((a, rhs, at.op in ("<", ">"), at.origin))
     return out
 
 
-def z3_unsat(constraints: list[Any], extra: Any, ctx: Any = None) -> bool:
-    import z3
-
-    s = z3.Solver(ctx=ctx)
-    s.add(*constraints, extra)
-    r = s.check()
-    if r == z3.unknown:
-        raise LpError("z3 returned unknown")
-    return bool(r == z3.unsat)
-
-
-def model_value(model: Any, var: Any) -> Fraction:
-    v = model.eval(var, model_completion=True)
-    return Fraction(v.as_fraction())
+def record_lp(
+    constraints: list[dict[str, Any]], units: dict[str, str], ctx: Context
+) -> tuple[list[str], list[LpRow]]:
+    """The LP implied by a record's constraints on unknowns (variables sorted)."""
+    names = sorted(units)
+    all_atoms = [a for c in constraints if has_unknowns(c) for a in atoms(c, units, ctx)]
+    return names, rows_of(all_atoms, names)
 
 
 def check_bound(
     bound: dict[str, Any], constraints: list[dict[str, Any]], units: dict[str, str], ctx: Context
 ) -> list[str]:
-    """Problems with a bound's certificate (empty = proven). Fail closed."""
+    """Problems with a bound's certificate (empty = proven). Fail closed; no solver."""
+    from lio_verify import cert
     from lio_verify.interval import IntervalError
 
-    problems: list[str] = []
     try:
-        used = {c["id"]: c for c in constraints}
-        missing = [cid for cid in bound["constraints"] if cid not in used]
-        if missing:
-            return [f"cites unknown constraints {missing}"]
-        all_with = [c for c in constraints if has_unknowns(c)]
-        if sorted(c["id"] for c in all_with) != sorted(bound["constraints"]):
-            problems.append("does not use exactly the record's constraints on unknowns")
-        atoms_all = [a for c in all_with for a in atoms(c, units, ctx)]
+        used = {c["id"] for c in constraints if has_unknowns(c)}
+        if sorted(used) != sorted(bound["constraints"]):
+            return ["does not use exactly the record's constraints on unknowns"]
+        names, rows = record_lp(constraints, units, ctx)
         coeffs, const, unit = linear(bound["objective"], units)
-        obj = _form(coeffs, const)
+        c = [coeffs.get(n, Fraction(0)) for n in names]
         result, runit = Interval.from_json(bound["result"])
         if runit != unit:
-            problems.append(f"result unit {runit} != objective unit {unit}")
-        cert = bound["certificate"]
-        names = sorted(units)
-        for end, value, closed in (("min", result.lo, result.lo_closed),
-                                   ("max", result.hi, result.hi_closed)):  # fmt: skip
-            e = cert[end]
-            if parse_rational(e["value"]) != value or e["attained"] != closed:
-                problems.append(f"{end}: certificate does not match the result")
-                continue
-            w = {n: parse_rational(e["witness"][n]) for n in names}
-            bad = [a.origin for a in atoms_all if not a.holds(w)]
-            if bad:
-                problems.append(f"{end} witness violates {sorted(set(bad))}")
-            at = obj.at(w)
-            if closed and at != value:
-                problems.append(f"{end} witness does not reach {value}")
-            if not closed:
-                gap = parse_rational(e["gap"])
-                inside = value < at < value + gap if end == "min" else value - gap < at < value
-                if not inside:
-                    problems.append(f"{end} witness is not within the stated gap")
-        import z3
-
-        zctx = z3.Context()
-        zc, zv = z3_problem(atoms_all, names, zctx)
-        zo = z3_form(obj, zv, zctx)
-        lo, hi = z3.RealVal(str(result.lo), zctx), z3.RealVal(str(result.hi), zctx)
-        below = zo < lo if result.lo_closed else zo <= lo
-        above = zo > hi if result.hi_closed else zo >= hi
-        if not z3_unsat(zc, below, zctx):
-            problems.append("a feasible point lies below the stated minimum")
-        if not z3_unsat(zc, above, zctx):
-            problems.append("a feasible point lies above the stated maximum")
+            return [f"result unit {runit} != objective unit {unit}"]
+        return cert.check(bound["certificate"], rows, names, c, const, result)
     except (KeyError, TypeError, LpError, ExprError, IntervalError, ValueError) as e:
-        problems.append(f"cannot check: {e}")
-    return problems
+        return [f"cannot check: {e}"]

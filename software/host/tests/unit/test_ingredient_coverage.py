@@ -274,7 +274,7 @@ def test_ingredient_region_from_ocr_lines() -> None:
 
 
 def test_attested_ingredient_panel(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    pytest.importorskip("z3")
+    pytest.importorskip("lxml")
     pytest.importorskip("PIL")
     from PIL import Image
 

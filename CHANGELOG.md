@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-11-12: Composition coverage M1, solver-independent bound certificates (plan WP6)
+
+### Changed
+- **Bounds are computed by an exact simplex** over `Fraction` (`lio_comp.simplex`: two-phase, Bland's rule, size-capped). Each end of a bound carries:
+  - the LP it was computed on;
+  - an LP dual vector proving the end;
+  - a reaching witness, or for an open end a closure-optimal point, a strictly feasible point and a Motzkin certificate that the end is not reached.
+- `lio_verify.cert` checks all of it with `Fraction` arithmetic alone. It also checks that the certificate's LP is exactly the LP rebuilt from the record's constraints. Joint feasibility of the constraints is proven by a record-level `feasibility` witness.
+- **z3 is gone.** It is no longer used by `lio_verify` or `lio_comp`, and `z3-solver` is no longer a dependency. A test runs `lio-verify` with z3, `lio_comp` and `lio` blocked from import.
+- All golden bounds are re-certified; their values and open or closed ends are unchanged.
+
+### Added
+- Property tests: simplex optimum equals vertex enumeration on random LPs, and certificates are sound. Mutation tests: perturbed dual, perturbed witness, an LP differing from the record, a bound narrowed by 1/10⁶, an empty Motzkin vector and an infeasible feasibility witness all FAIL.
+
 ## 2026-11-12: Ingredient coverage for barcode lookups
 
 ### Fixed

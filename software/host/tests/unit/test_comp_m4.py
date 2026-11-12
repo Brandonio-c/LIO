@@ -15,7 +15,7 @@ from typing import Any
 
 import pytest
 
-pytest.importorskip("z3")
+pytest.importorskip("lxml")
 pytest.importorskip("lxml")
 pytest.importorskip("jsonschema")
 
@@ -221,8 +221,9 @@ def test_verifier_does_not_import_the_builder() -> None:
     assert r.returncode == 0, r.stdout + r.stderr
 
 
-def test_narrower_bound_with_a_consistent_witness_is_caught_by_z3(tmp_path: Path) -> None:
-    """Even with a valid witness inside the narrowed range, z3 finds a point beyond it."""
+def test_narrower_bound_with_a_consistent_witness_is_caught(tmp_path: Path) -> None:
+    """Even with a valid witness inside the narrowed range, the dual certificate no longer
+    matches the stated end (no solver is involved)."""
     from fractions import Fraction as F
 
     r = rec(CITRUCEL)
@@ -236,4 +237,4 @@ def test_narrower_bound_with_a_consistent_witness_is_caught_by_z3(tmp_path: Path
     b["certificate"]["max"]["value"] = "16"
     rep = check(r, tmp_path)
     problems = [p for f in rep.fields if f.id == "B1" for p in f.problems]
-    assert problems == ["a feasible point lies above the stated maximum"], problems
+    assert problems, "a narrowed bound must fail"

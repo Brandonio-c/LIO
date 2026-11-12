@@ -2,7 +2,7 @@
 
 Checks, in order: schema and no JSON floats; sources (hash, manifest); facts
 (locator, rule, interpretation); substances and ingredients; derivations;
-constraints; bounds (witnesses, z3); attestations; assumptions. Each field gets
+constraints; bounds (exact LP certificates, no solver); attestations; assumptions. Each field gets
 a status:
 
 - VERIFIED: every check passed, from documents only;
@@ -22,12 +22,12 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from lio_verify import __version__, textrules
+from lio_verify import __version__, cert, textrules
 from lio_verify.expr import Context, ExprError, evaluate
 from lio_verify.interpret import InterpretError, interpret, load_tables, split_ref, table
 from lio_verify.interval import Interval, IntervalError
 from lio_verify.locate import LocatorError, resolve
-from lio_verify.lp import LpError, atoms, check_bound, data_check, has_unknowns, z3_problem
+from lio_verify.lp import LpError, atoms, check_bound, data_check, has_unknowns, rows_of
 
 VERIFIED, ATTESTED, UNVERIFIED, FAILED = "VERIFIED", "ATTESTED", "UNVERIFIED", "FAILED"
 INT_KEYS = {"start", "end", "x", "y", "w", "h", "position"}
@@ -401,14 +401,13 @@ class Verifier:
             status[c["id"]] = fld.status
             rep.fields.append(fld)
         if all_atoms:
-            import z3
-
-            zctx = z3.Context()
-            zc, _ = z3_problem(all_atoms, sorted(units), zctx)
-            s = z3.Solver(ctx=zctx)
-            s.add(*zc)
-            if s.check() != z3.sat:
-                rep.errors.append("the constraints on unknowns contradict each other")
+            # The constraints must agree: the record carries a point satisfying them all
+            # (strict ones strictly), checked by substitution.
+            names = sorted(units)
+            rows = [(a, r, st) for a, r, st, _ in rows_of(all_atoms, names)]
+            wit = (rec.get("feasibility") or {}).get("witness")
+            for p in cert.check_feasible(rows, names, wit):
+                rep.errors.append(f"constraints on unknowns: {p}")
 
     def _bounds(
         self, rec: dict[str, Any], rep: Report, ctx: Context, status: dict[str, str]

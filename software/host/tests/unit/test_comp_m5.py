@@ -12,7 +12,7 @@ from typing import Any
 
 import pytest
 
-pytest.importorskip("z3")
+pytest.importorskip("lxml")
 pytest.importorskip("lxml")
 pytest.importorskip("jsonschema")
 pytest.importorskip("PIL")

@@ -262,6 +262,25 @@
      }
     }
    }
+  },
+  "feasibility": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "witness",
+    "method"
+   ],
+   "properties": {
+    "witness": {
+     "type": "object",
+     "additionalProperties": {
+      "$ref": "#/$defs/rational"
+     }
+    },
+    "method": {
+     "type": "string"
+    }
+   }
   }
  },
  "$defs": {
@@ -747,19 +766,85 @@
      "type": "object",
      "additionalProperties": false,
      "required": [
+      "lp",
       "min",
-      "max",
-      "infeasibility_proofs"
+      "max"
      ],
      "properties": {
+      "lp": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "variables",
+        "rows",
+        "objective"
+       ],
+       "properties": {
+        "variables": {
+         "type": "array",
+         "items": {
+          "type": "string"
+         }
+        },
+        "rows": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+           "a",
+           "sense",
+           "rhs",
+           "origin"
+          ],
+          "properties": {
+           "a": {
+            "type": "array",
+            "items": {
+             "$ref": "#/$defs/rational"
+            }
+           },
+           "sense": {
+            "enum": [
+             "<=",
+             "<"
+            ]
+           },
+           "rhs": {
+            "$ref": "#/$defs/rational"
+           },
+           "origin": {
+            "type": "string"
+           }
+          }
+         }
+        },
+        "objective": {
+         "type": "object",
+         "additionalProperties": false,
+         "required": [
+          "c",
+          "const"
+         ],
+         "properties": {
+          "c": {
+           "type": "array",
+           "items": {
+            "$ref": "#/$defs/rational"
+           }
+          },
+          "const": {
+           "$ref": "#/$defs/rational"
+          }
+         }
+        }
+       }
+      },
       "min": {
        "$ref": "#/$defs/end"
       },
       "max": {
        "$ref": "#/$defs/end"
-      },
-      "infeasibility_proofs": {
-       "type": "object"
       }
      }
     },
@@ -931,22 +1016,42 @@
    "additionalProperties": false,
    "required": [
     "value",
+    "bound",
     "attained",
+    "dual",
     "witness"
    ],
    "properties": {
     "value": {
      "$ref": "#/$defs/rational"
     },
+    "bound": {
+     "$ref": "#/$defs/rational"
+    },
     "attained": {
      "type": "boolean"
     },
-    "gap": {
-     "$ref": "#/$defs/rational"
+    "dual": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/rational"
+     }
     },
     "witness": {
      "type": "object",
      "additionalProperties": {
+      "$ref": "#/$defs/rational"
+     }
+    },
+    "interior": {
+     "type": "object",
+     "additionalProperties": {
+      "$ref": "#/$defs/rational"
+     }
+    },
+    "motzkin": {
+     "type": "array",
+     "items": {
       "$ref": "#/$defs/rational"
      }
     }

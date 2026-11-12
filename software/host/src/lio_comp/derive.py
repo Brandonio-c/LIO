@@ -78,6 +78,10 @@ def bound_of(b: RecordBuilder, bid: str, quantity: str, basis: str, objective: A
     coeffs, const, unit = linear(objective, u)
     form = Form(tuple(sorted(coeffs.items())), const)
     iv, cert = B.bound(all_atoms, sorted(u), form)
+    b.head["feasibility"] = {
+        "witness": B.feasibility_witness(B.rows_of(all_atoms, sorted(u)), sorted(u)),
+        "method": B.SOLVER,
+    }
     cert_assumptions = sorted({a for c in used for a in c["assumptions"]} | set(assumptions))
     out = {
         "id": bid, "quantity": quantity, "basis": basis, "solver": B.solver_version(),
