@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-12: Composition coverage M6, coverage benchmark tools (plan WP7)
+
+### Added
+- **`lio bench plan`** draws seeded random shelf slots (aisle, shelf, facing) per stratum for one store visit. It writes a CSV sheet and a `.plan.json` file with the seed and parameters.
+- **`lio bench ingest`** runs the full lookup on each sheet row: every source, every barcode form, the drug label path and the facts photo. It records source hits, ingredient lists, completeness against the photo, truncation flags, NDC need, the badge mix and timings.
+- **`lio bench report`** gives every metric by stratum, with Wilson 95% intervals.
+- `docs/COVERAGE_BENCHMARK_PROTOCOL.md`: shelf sampling, store formats, the nearest-right substitution rule, and optional sales weighting (documented only).
+- A 10-item **dry run** of the tools (`docs/reports/bench_pilot_dryrun_2026-11-12.md`). Its barcodes come from the coverage panel, not shelves, so it is not a coverage estimate.
+
 ## 2026-11-12: Composition coverage M5, Drug Facts and Supplement Facts photos (plan WP4)
 
 ### Added
