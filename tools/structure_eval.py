@@ -256,6 +256,18 @@ def drugs(n: int, rng: random.Random) -> list[dict[str, Any]]:
         if not prods:
             continue
         info = parse_openfda(r)
+        both = S.structure_record("openfda", info, r, "", spl_xml=xml)
+        coded = [o for o in both["options"] if o["method"] == "spl_coded"]
+        cacts = [x for o in coded for x in o["ingredients"] if x["role"] == "active"]
+        coded_info = {
+            "tables": len(coded),
+            "actives": len(cacts),
+            "actives_with_amount": sum(1 for x in cacts if x["amount"] != NA),
+            "with_purpose": sum(1 for x in cacts if "purpose:" in x["note"]),
+            "text_disagrees": sum(1 for x in cacts if "label text says" in x["note"]),
+            "not_in_text": sum(1 for x in cacts if "not named in the label text" in x["note"]),
+            "default_is_coded": both["options"][both["default"]]["method"] == "spl_coded",
+        }
         res = S.structure_record("openfda", info, r, "")
         sc = [score_drug(o, prods) for o in res["options"]]
         best = max(range(len(sc)), key=lambda i: (sum(a["name_found"] for a in sc[i]["actives"]) * 3
@@ -263,6 +275,7 @@ def drugs(n: int, rng: random.Random) -> list[dict[str, Any]]:
         st = res["options"][best]
         out.append({"kind": "drug", "id": setid, "name": info["name"], "options": len(res["options"]),
                     "has_text": bool(info["ingredients_text"]), "table": st, "score": sc[best],
+                    "coded": coded_info,
                     "failures": failure_signs(st)})  # fmt: skip
         print(f"drug {len(out)}/{n} {setid}", flush=True)
     return out
@@ -395,6 +408,13 @@ def summarise(items: list[dict[str, Any]]) -> dict[str, Any]:
             "inactive_found": sum(i["score"]["inactive_found"] for i in d),
             "per_dose_rows": sum(len(i["table"]["contains"]) for i in d),
             "labels_with_failure_signs": sum(1 for i in d if i["failures"]),
+            "coded_tables_available": sum(1 for i in d if i["coded"]["tables"]),
+            "coded_default": sum(1 for i in d if i["coded"]["default_is_coded"]),
+            "coded_actives": sum(i["coded"]["actives"] for i in d),
+            "coded_actives_with_amount": sum(i["coded"]["actives_with_amount"] for i in d),
+            "coded_actives_with_purpose": sum(i["coded"]["with_purpose"] for i in d),
+            "coded_actives_text_disagrees": sum(i["coded"]["text_disagrees"] for i in d),
+            "coded_actives_not_in_text": sum(i["coded"]["not_in_text"] for i in d),
         },
         "supplement": {
             "labels": len(s),

@@ -482,7 +482,14 @@ class Intake:
             info, raw = lk.fetch(source, ident)
         except (OSError, ValueError) as e:
             raise LibraryError(f"could not fetch the record: {e}") from e
-        out = structure.structure_record(source, info, raw, query)
+        xml = None
+        setid = str(info.get("openfda_set_id") or "")
+        if source == "openfda" and re.fullmatch(r"[0-9a-f-]{36}", setid):
+            try:  # the coded product data of the same label (DailyMed)
+                xml = lk.get_bytes(f"{lk.s.dailymed_url}/spls/{setid}.xml")
+            except (OSError, ValueError):
+                xml = None
+        out = structure.structure_record(source, info, raw, query, spl_xml=xml)
         out["ingredients_text"] = str(info.get("ingredients_text") or "")
         return out
 

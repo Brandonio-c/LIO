@@ -22,6 +22,10 @@
   - DSLD supplements: 533 of 533 rows and amounts correct.
   - Foods: 93% of ingredients agree with Open Food Facts' parse.
   - The evaluation led to the fixes listed in the report, among them homeopathic potencies, the Purpose column, units, allergen statements and "100%" items.
+- **Two readings of an FDA drug label.** "Use this" offers both, and the coded one is preselected:
+  - **FDA coded product data**, from the DailyMed SPL of the same label: exact substance names, UNII codes and strengths for each product. Purposes, per-dose amounts and allergens come from the label text, and a row is noted where the label text states a different strength.
+  - **The label-text reading.**
+  - On 100 random OTC labels the coded reading gave a strength for 273 of 273 actives. The label text disagreed on 9.
 - **Where it is stored.** The table goes in the product's `ingredients_structured` field. Typing a new list by hand removes the old table. It is a reviewed database value, not a verified fact.
 
 ## 2026-11-12: Composition coverage M7, documentation (plan WP8)

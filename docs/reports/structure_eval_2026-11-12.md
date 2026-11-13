@@ -14,6 +14,25 @@
 | 60 DSLD supplement labels (random) | the DSLD record's rows | **533 of 533** rows, with every amount correct<br>serving size on all 60 labels |
 | 63 FDC branded foods also in Open Food Facts | Open Food Facts' own parse of the same list | 654 of 700 top-level ingredients agree (93%) |
 
+## Two readings of a drug label (added after this evaluation)
+
+For an FDA drug label, "Use this" now offers two readings, and the operator picks one. The coded reading is preselected.
+
+1. **FDA coded product data** (the DailyMed SPL of the same set ID):
+   - one table per product;
+   - substance names, ingredient codes (UNII) and strengths exactly as the manufacturer filed them;
+   - purposes, per-dose amounts and allergens copied from the label text.
+2. **The label-text reading** described above.
+
+On the same 100 labels:
+
+- **Coverage.** A coded table was available for all 100. All **273 of 273** coded actives have a strength, against 84% from the label text.
+- **Disagreements.** For 9 actives the label text states a different strength, and the row says so ("label text says …"). For example, "5 mg" against a coded "3.5 mg" neomycin base, or a "10%" coded as 0.1 g per 100 g.
+  - The comparison treats equivalent forms as the same: "5%" equals 5 g per 100 g, "500 units" equals 500 IU.
+- **Unmatched names.**
+  - On regular labels, 5 of 140 coded actives could not be matched to a label-text name; the cause is synonyms or typos.
+  - On homeopathic labels, 107 of 133 could not. The label uses Latin names, the coded data uses substance names, and the row notes this.
+
 ### Why the 22 conventional strengths differ
 
 - **11: the label text gives no strength.** For example, MEDCLOT says only "CarboxymethylCellulose", and a sunscreen has an empty active-ingredient field. N/A is the correct answer here.

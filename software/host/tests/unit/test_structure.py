@@ -302,3 +302,57 @@ def test_allergen_statement_is_not_an_ingredient() -> None:
     table = S.clean({**S._empty("usda", "x"), **sec})
     assert S.to_text(table).endswith("Allergens: wheat, milk, soy")
     assert S.clean({"allergens": "milk"})["allergens"] == []
+
+
+SPL = b"""<?xml version="1.0"?>
+<document xmlns="urn:hl7-org:v3"><component><structuredBody><component><section>
+<subject><manufacturedProduct><manufacturedProduct>
+  <code code="0135-0089" codeSystem="2.16.840.1.113883.6.69"/>
+  <name>CITRUCEL</name><formCode code="C42975" displayName="POWDER, FOR SOLUTION"/>
+  <ingredient classCode="ACTIB"><quantity><numerator value="2" unit="g"/><denominator value="19" unit="g"/></quantity>
+    <ingredientSubstance><code code="MRJ667KA5E"/><name>METHYLCELLULOSE (4000 MPA.S)</name></ingredientSubstance></ingredient>
+  <ingredient classCode="IACT"><ingredientSubstance><code code="C151H8M554"/><name>SUCROSE</name></ingredientSubstance></ingredient>
+  <ingredient classCode="IACT"><ingredientSubstance><code code="2968PHW8QP"/><name>CITRIC ACID MONOHYDRATE</name></ingredientSubstance></ingredient>
+</manufacturedProduct></manufacturedProduct></subject>
+<subject><manufacturedProduct><manufacturedProduct>
+  <code code="0135-0090" codeSystem="2.16.840.1.113883.6.69"/>
+  <name>CITRUCEL</name><formCode code="C42975" displayName="POWDER, FOR SOLUTION"/>
+  <ingredient classCode="ACTIB"><quantity><numerator value="2" unit="g"/><denominator value="10.2" unit="g"/></quantity>
+    <ingredientSubstance><code code="MRJ667KA5E"/><name>METHYLCELLULOSE (4000 MPA.S)</name></ingredientSubstance></ingredient>
+  <ingredient classCode="IACT"><ingredientSubstance><code code="Z0H242BBR1"/><name>ASPARTAME</name></ingredientSubstance></ingredient>
+  <ingredient classCode="IACT"><ingredientSubstance><code code="817L1N4CKP"/><name>MALIC ACID</name></ingredientSubstance></ingredient>
+</manufacturedProduct></manufacturedProduct></subject>
+</section></component></structuredBody></component></document>"""
+
+
+def test_both_readings_coded_first_and_merged() -> None:
+    out = S.structure_record(
+        "openfda", parse_openfda(POWDER), {**POWDER, "purpose": ["Purpose Bulk-forming fiber laxative"]},
+        "citrucel sugar free", spl_xml=SPL,
+    )  # fmt: skip
+    methods = [o["method"] for o in out["options"]]
+    assert methods == ["spl_coded", "spl_coded", "label_text", "label_text"]
+    orange, sf = out["options"][:2]
+    assert orange["variant"].startswith("Citrucel Orange") and "NDC 0135-0089" in orange["variant"]
+    assert sf["variant"].startswith("Citrucel Sugar Free")
+    assert out["default"] == 1  # the query names Sugar Free; the coded reading wins ties
+    act = orange["ingredients"][0]
+    assert (act["role"], act["name"], act["amount"], act["basis"]) == (
+        "active", "methylcellulose (4000 mpa.s)", "2 g", "per 19 g",
+    )  # fmt: skip
+    assert (
+        "UNII MRJ667KA5E" in act["note"] and "purpose: Bulk-forming fiber laxative" in act["note"]
+    )
+    assert "label text says" not in act["note"]
+    assert [c["name"] for c in orange["contains"]][:2] == ["calcium", "potassium"]
+    assert orange["method_label"].startswith("FDA coded")
+
+
+def test_same_amount() -> None:
+    assert S.same_amount("5%", "5 g", "per 100 g")
+    assert S.same_amount("18.6%", "186 mg", "per 1 g")
+    assert S.same_amount("500 units", "500 IU", "per 1 g")
+    assert S.same_amount("30X, 100X", "30X", "per 1 mL")
+    assert S.same_amount("0.5 g", "500 mg", "per 1 tablet")
+    assert not S.same_amount("5 mg", "3.5 mg", "per 1 g")
+    assert not S.same_amount("10%", "0.1 g", "per 100 g")

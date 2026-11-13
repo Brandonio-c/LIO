@@ -683,12 +683,242 @@ def _food(source: str, info: dict[str, Any]) -> dict[str, Any]:
     return s
 
 
+# ------------------------------------------------------------ SPL coded data
+
+_V = "{urn:hl7-org:v3}"
+_SPL_UNITS = {"[iU]": "IU", "[IU]": "IU", "[USP'U]": "USP units", "mL": "mL", "1": ""}
+_ACTIVE_CLASSES = ("ACTIB", "ACTIM", "ACTIR")
+
+
+def _spl_unit(u: str) -> str:
+    hp = re.fullmatch(r"\[(?:hp|kp)_([A-Za-z]+)\]", u)
+    if hp:
+        return hp.group(1).upper()
+    return _SPL_UNITS.get(u, u)
+
+
+def _spl_qty(el: Any) -> str:
+    if el is None:
+        return ""
+    v, u = el.get("value") or "", _spl_unit(el.get("unit") or "")
+    if not v:
+        return ""
+    if u in ("X", "C", "CK", "LM", "M", "CH", "DH"):
+        return f"{v}{u}"
+    return f"{v} {u}".strip()
+
+
+def _text(el: Any) -> str:
+    return _s("".join(el.itertext())) if el is not None else ""
+
+
+def _coded_name(n: str) -> str:
+    return re.sub(r",\s*unspecified(?: form)?$", "", n.strip(), flags=re.I).lower()
+
+
+def spl_tables(xml: bytes, name: str = "") -> list[dict[str, Any]]:
+    """One table per product in a DailyMed SPL, from its coded ingredient elements:
+    substance names, UNIIs and strengths exactly as the manufacturer coded them."""
+    import xml.etree.ElementTree as ET
+
+    root = ET.fromstring(xml)
+    prods = [
+        *root.iter(f"{_V}manufacturedProduct"),
+        *root.iter(f"{_V}partProduct"),
+    ]
+    out = []
+    for mp in prods:
+        ings = mp.findall(f"{_V}ingredient")
+        if not ings:
+            continue
+        pname = _text(mp.find(f"{_V}name"))
+        fc = mp.find(f"{_V}formCode")
+        form = (fc.get("displayName") or "") if fc is not None else ""
+        pc = mp.find(f"{_V}code")
+        ndc = (pc.get("code") or "") if pc is not None else ""
+        s = _empty("spl", name or pname)
+        s["variant"] = (
+            " ".join(x for x in (pname, form.lower(), f"(NDC {ndc})" if ndc else "") if x) or NA
+        )
+        bases = set()
+        for ing in ings:
+            cls = ing.get("classCode") or ""
+            sub = ing.find(f"{_V}ingredientSubstance")
+            sname = _text(sub.find(f"{_V}name")) if sub is not None else ""
+            code = sub.find(f"{_V}code") if sub is not None else None
+            unii = code.get("code") if code is not None else ""
+            moiety = ""
+            if sub is not None:
+                am = sub.find(f"{_V}activeMoiety/{_V}activeMoiety/{_V}name")
+                moiety = _text(am)
+            num = ing.find(f"{_V}quantity/{_V}numerator")
+            den = ing.find(f"{_V}quantity/{_V}denominator")
+            amount = _spl_qty(num)
+            per = _spl_qty(den)
+            if per == "1":  # "per 1 [dose unit]" -> "per tablet"
+                per = form.lower()
+            basis = f"per {per}" if per else ""
+            if cls in _ACTIVE_CLASSES:
+                bases.add(basis)
+                notes = [f"UNII {unii}" if unii else ""]
+                if moiety and moiety.lower() != sname.lower():
+                    notes.append(f"active moiety {moiety.lower()}")
+                if cls == "ACTIM":
+                    notes.append("strength stated as the active moiety")
+                s["ingredients"].append(
+                    row(name=_coded_name(sname), role="active", amount=amount, basis=basis,
+                        note="; ".join(x for x in notes if x))
+                )  # fmt: skip
+            elif cls in ("IACT", "CNTM"):
+                s["ingredients"].append(
+                    row(name=_coded_name(sname), role="inactive", amount=amount,
+                        basis=basis if amount else "", note=f"UNII {unii}" if unii else "")
+                )  # fmt: skip
+        s["ingredients"].sort(key=lambda r: r["role"] != "active")
+        if len(bases) == 1 and next(iter(bases)):
+            s["serving"] = next(iter(bases)).removeprefix("per ")
+        out.append(s)
+    # one table per distinct product (kits repeat parts)
+    seen, uniq = set(), []
+    for t in out:
+        key = (t["variant"], tuple((r["name"], r["amount"]) for r in t["ingredients"]))
+        if key not in seen:
+            seen.add(key)
+            uniq.append(t)
+    return uniq
+
+
+_MASS = {"mcg": 1e-3, "mg": 1.0, "g": 1e3, "kg": 1e6, "ml": 1e3, "l": 1e6}  # mL ~ g for w/v %
+
+
+def _num_unit(a: str) -> tuple[float, str] | None:
+    m = re.fullmatch(r"\s*([0-9]+(?:\.[0-9]+)?)\s*([A-Za-z%' ]*?)\s*", a)
+    if not m:
+        return None
+    u = m.group(2).strip().lower()
+    u = {"iu": "units", "usp units": "units", "unit": "units"}.get(u, u)
+    return float(m.group(1)), u
+
+
+def same_amount(text_amount: str, coded_amount: str, coded_basis: str) -> bool:
+    """Whether a label-text strength and a coded one state the same thing: '5%' and
+    '5 g per 100 g', '500 units' and '500 IU', '30X, 100X' and '30X', '0.5 g' and '500 mg'."""
+    pots = [x.strip().upper() for x in text_amount.split(",")]
+    if (
+        re.fullmatch(r"[0-9.]+[A-Z]+", coded_amount.strip())
+        and coded_amount.strip().upper() in pots
+    ):
+        return True
+    t, c = _num_unit(text_amount), _num_unit(coded_amount)
+    if t is None or c is None:
+        return False
+    if t[1] == "%":
+        b = re.fullmatch(r"per\s+([0-9.]+)\s*([a-z]+)", coded_basis.strip().lower())
+        if not b or c[1] not in _MASS or b.group(2) not in _MASS:
+            return False
+        pct = 100 * c[0] * _MASS[c[1]] / (float(b.group(1)) * _MASS[b.group(2)])
+        return abs(pct - t[0]) <= 0.005 * max(1.0, t[0])  # label % may be rounded
+    if t[1] in _MASS and c[1] in _MASS:
+        return abs(t[0] * _MASS[t[1]] - c[0] * _MASS[c[1]]) < 1e-9
+    return t == c
+
+
+def merge_text_into_coded(coded: dict[str, Any], text_opts: list[dict[str, Any]]) -> dict[str, Any]:
+    """Add what only the label text has (purposes, per-dose statements, allergens) to a
+    coded table, and note where the label text states something different."""
+
+    def words(n: str) -> set[str]:
+        n = re.sub(r"\bhc[li]\b", "hydrochloride", n.lower())
+        return set(re.findall(r"[a-z0-9]+", n)) - {"usp", "anhydrous", "unspecified", "form"}
+
+    def match(name: str, rows: list[dict[str, str]]) -> dict[str, str] | None:
+        w = words(name)
+        best, score = None, 0.0
+        for r in rows:
+            o = words(r["name"])
+            sc = len(w & o) / max(1, min(len(w), len(o)))
+            if sc > score:
+                best, score = r, sc
+        return best if score >= 0.6 else None
+
+    if len(text_opts) > 1:
+
+        def overlap(t: dict[str, Any]) -> int:
+            ti = [r for r in t["ingredients"] if r["role"] == "inactive"]
+            return sum(
+                1 for r in coded["ingredients"] if r["role"] == "inactive" and match(r["name"], ti)
+            )
+
+        best = max(text_opts, key=overlap)
+        if overlap(best) and best["variant"] != NA:
+            coded["variant"] = f"{best['variant']} · {coded['variant']}"
+            text_opts = [best]
+    text_rows = [r for t in text_opts for r in t["ingredients"]]
+    tacts = [r for r in text_rows if r["role"] == "active"]
+    tin = [r for r in text_rows if r["role"] == "inactive"]
+    for r in coded["ingredients"]:
+        if r["role"] == "active":
+            t = match(r["name"], tacts)
+            if t is None:
+                homeo = re.fullmatch(r"[0-9.]+[A-Z]+", r["amount"].strip()) is not None
+                r["note"] = _join(
+                    r["note"],
+                    "label text uses the homeopathic (Latin) name"
+                    if homeo
+                    else "not named in the label text",
+                )
+                continue
+            purpose = re.search(r"purpose: [^;]+", t["note"])
+            if purpose:
+                r["note"] = _join(r["note"], purpose.group(0))
+            if (
+                t["amount"] != NA
+                and r["amount"] != NA
+                and not same_amount(t["amount"], r["amount"], r["basis"])
+            ):
+                said = f"{t['amount']} {t['basis'] if t['basis'] != NA else ''}".strip()
+                r["note"] = _join(r["note"], f"label text says {said}")
+        elif r["role"] == "inactive" and tin and match(r["name"], tin) is None:
+            r["note"] = _join(r["note"], "not in the label text's list (may be named differently)")
+    if not coded["contains"]:
+        for t in text_opts:
+            coded["contains"].extend(t["contains"])
+            if t["contains"]:
+                break
+    for t in text_opts:
+        for a in t.get("allergens") or []:
+            if a not in coded["allergens"]:
+                coded["allergens"].append(a)
+    return coded
+
+
+METHODS = {
+    "spl_coded": "FDA coded product data (DailyMed SPL)",
+    "label_text": "read from the label text",
+    "record": "from the database record",
+}
+
+
 def structure_record(
-    source: str, info: dict[str, Any], raw: Any, query: str = ""
+    source: str, info: dict[str, Any], raw: Any, query: str = "", spl_xml: bytes | None = None
 ) -> dict[str, Any]:
-    """Every variant's table for a picked record, and the one that best matches ``query``."""
+    """Every variant's table for a picked record, and the one that best matches ``query``.
+
+    For an FDA drug label with its SPL XML, both readings are offered: the coded product
+    data (exact names, UNIIs, strengths; preferred) and the label text."""
     if source == "openfda":
         options = _openfda(info, raw)
+        for o in options:
+            o["method"] = "label_text"
+        if spl_xml:
+            try:
+                coded = spl_tables(spl_xml, str(info.get("name") or ""))
+            except Exception:  # a malformed SPL: the label-text reading still stands
+                coded = []
+            for c in coded:
+                c["method"] = "spl_coded"
+                merge_text_into_coded(c, options)
+            options = coded + options
     elif source == "dsld" and isinstance(raw, dict):
         options = [_dsld(raw, info)]
     else:
@@ -698,6 +928,9 @@ def structure_record(
     def score(o: dict[str, Any]) -> int:
         return len(words & set(re.findall(r"[a-z0-9]+", str(o["variant"]).lower())))
 
+    for o in options:
+        o.setdefault("method", "record")
+        o["method_label"] = METHODS[o["method"]]
     best = max(range(len(options)), key=lambda i: (score(options[i]), -i))
     return {"options": options, "default": best}
 
@@ -754,6 +987,7 @@ def clean(s: Any) -> dict[str, Any]:
         "serving": txt(s.get("serving")),
         "ingredients": out_rows,
         "contains": out_cont,
+        "method": s["method"] if s.get("method") in METHODS else NA,
         "allergens": [
             a
             for a in (

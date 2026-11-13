@@ -1733,7 +1733,8 @@ function ingrTable(st, edit) {
     if (k === "role") return `<td><select data-${kind}="${i}" data-k="role">${Object.entries(ROLE_NAME).map(([rk, rl]) => `<option value="${rk}"${rk === v ? " selected" : ""}>${rl}</option>`).join("")}</select></td>`;
     return `<td><input type="text" class="${v === NA ? "na" : ""}" data-${kind}="${i}" data-k="${k}" value="${esc(v)}"></td>`;
   };
-  const head = `<div class="note">${[st.product && st.product !== NA ? esc(st.product) : "", st.variant && st.variant !== NA ? "variant: " + esc(st.variant) : "", "serving: " + (edit ? `<input type="text" id="si-serving" value="${esc(st.serving || NA)}" style="width:200px;font-size:12.5px;padding:2px 5px">` : esc(st.serving || NA))].filter(Boolean).join(" · ")}</div>`;
+  const METHOD = { spl_coded: "FDA coded product data", label_text: "label text", record: "database record" };
+  const head = `<div class="note">${[st.method && METHOD[st.method] ? "from the " + METHOD[st.method] : "", st.product && st.product !== NA ? esc(st.product) : "", st.variant && st.variant !== NA ? "variant: " + esc(st.variant) : "", "serving: " + (edit ? `<input type="text" id="si-serving" value="${esc(st.serving || NA)}" style="width:200px;font-size:12.5px;padding:2px 5px">` : esc(st.serving || NA))].filter(Boolean).join(" · ")}</div>`;
   const it = rows.length ? `<div class="ingr-wrap"><table class="ingr"><tr><th>#</th>${ic.map(([, l]) => `<th>${l}</th>`).join("")}${edit ? "<th></th>" : ""}</tr>
       ${rows.map((r, i) => `<tr><td class="na">${i + 1}</td>${ic.map(([k]) => cell(r, k, i, "ir")).join("")}${edit ? `<td class="x"><button class="btn small" data-del-ir="${i}" title="remove this row">✕</button></td>` : ""}</tr>`).join("")}</table></div>`
     : `<div class="note">No ingredients could be read.</div>`;
@@ -1753,8 +1754,10 @@ function ingrConfirm(s, options, def, sourceText, refs, onSave) {
   const draw = () => {
     $("fo-confirm").innerHTML = `<div style="border-top:2px solid var(--accent);padding-top:10px;display:grid;gap:8px">
         <div class="row"><strong style="flex:1">Confirm the ingredients for ${esc(s.sample_code)}</strong>
-          ${options.length > 1 ? `<label class="note">This label covers ${options.length} products: <select id="si-var">${options.map((o, i) => `<option value="${i}"${i === idx ? " selected" : ""}>${esc(o.variant)}</option>`).join("")}</select></label>` : ""}</div>
-        <div class="note">Read from the source and laid out below. N/A means the source does not state it. Check each row against the pack and correct it before saving.</div>
+          ${options.length > 1 ? `<label class="note">Reading: <select id="si-var">${[...new Set(options.map((o) => o.method_label || ""))].map((m) => `<optgroup label="${esc(m || "Tables")}">${options.map((o, i) => (o.method_label || "") === m ? `<option value="${i}"${i === idx ? " selected" : ""}>${esc(o.variant && o.variant !== NA ? o.variant : "this label")}</option>` : "").join("")}</optgroup>`).join("")}</select></label>` : ""}</div>
+        <div class="note">${st.method === "spl_coded" ? "<b>FDA coded product data</b>: names, ingredient codes (UNII) and strengths exactly as the manufacturer filed them with the FDA; purposes and per-dose amounts come from the label text. The other reading (label text) is in the list above."
+          : st.method === "label_text" ? "<b>Read from the label text.</b>" + (options.some((o) => o.method === "spl_coded") ? " The FDA coded product data for this label is in the list above." : "") : ""}
+          N/A means the source does not state it. Check each row against the pack and correct it before saving.</div>
         ${ingrTable(st, true)}
         <div class="row"><button class="btn small" id="si-add">Add ingredient</button><button class="btn small" id="si-addc">Add per-dose amount</button><span class="sp"></span></div>
         ${sourceText ? `<details><summary class="note">Source text</summary><div class="note" style="margin-top:4px;white-space:pre-wrap">${esc(sourceText)}</div></details>` : ""}

@@ -507,7 +507,7 @@ function ingrList(st) {
   if (!st) return "";
   const groups = Object.keys(ROLE_NAME).map((k) => [k, (st.ingredients || []).filter((r) => r.role === k)]).filter(([, rs]) => rs.length);
   const v = (x) => x && x !== NA ? esc(x) : `<span class="na">N/A</span>`;
-  return `<div class="st-list"><div class="note">${st.variant && st.variant !== NA ? "Variant: " + esc(st.variant) + " · " : ""}Serving: ${v(st.serving)}</div>` +
+  return `<div class="st-list"><div class="note">${st.method_label ? esc(st.method_label[0].toUpperCase() + st.method_label.slice(1)) + " · " : ""}${st.variant && st.variant !== NA ? "Variant: " + esc(st.variant) + " · " : ""}Serving: ${v(st.serving)}</div>` +
     groups.map(([k, rs]) => `<div class="note" style="margin-top:6px;font-weight:600">${ROLE_NAME[k]}</div>` + rs.map((r) => `<div class="st-row"><span>${esc(r.name)}${r.form && r.form !== NA ? ` <span class="na">(${esc(r.form)})</span>` : ""}</span>
       <span class="st-amt">${v(r.amount)}${r.basis && r.basis !== NA ? ` <span class="na">${esc(r.basis)}</span>` : ""}${r.dv && r.dv !== NA ? ` · ${esc(r.dv)} DV` : ""}</span>
       ${(r.sub && r.sub !== NA) || (r.note && r.note !== NA) ? `<span class="st-sub">${[r.sub !== NA ? "contains " + esc(r.sub) : "", r.note !== NA ? esc(r.note) : ""].filter(Boolean).join(" · ")}</span>` : ""}</div>`).join("")).join("") +
