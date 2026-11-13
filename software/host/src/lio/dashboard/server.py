@@ -333,7 +333,10 @@ class _Handler(BaseHTTPRequestHandler):
         if path == "fuse":
             return self._json(
                 f.intake.fuse_sources(
-                    b.get("records"), b.get("sections"), str(b.get("query") or "")
+                    b.get("records"),
+                    b.get("sections"),
+                    str(b.get("query") or ""),
+                    all_variants=bool(b.get("all")),
                 )
             )
         if path == "structure":

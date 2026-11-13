@@ -64,6 +64,15 @@ def retailer_links(code: str, query: str) -> list[dict[str, str]]:
     ]
 
 
+def _search_words(text: str) -> set[str]:
+    """Words for matching a search to a product name ("caplets" ~ "tablet")."""
+    out = set()
+    for w in re.findall(r"[a-z0-9]+", text.lower()):
+        w = {"caplet": "tablet", "caplets": "tablet", "tablets": "tablet", "sf": "sugar"}.get(w, w)
+        out.add(w[:-1] if len(w) > 4 and w.endswith("s") else w)
+    return out
+
+
 class Intake:
     def __init__(self, lib: FoodLibrary, composition: Any = None) -> None:
         self.lib = lib
@@ -493,21 +502,38 @@ class Intake:
         out["ingredients_text"] = str(info.get("ingredients_text") or "")
         return out
 
-    def fuse_sources(self, records: Any, sections: Any, query: str = "") -> dict[str, Any]:
-        """Several picked sources (database records and ticked web-page sections) combined
-        into one table, with each source's own table after it. Nothing is saved."""
-        recs = [r for r in records if isinstance(r, dict)][:6] if isinstance(records, list) else []
+    def fuse_sources(
+        self, records: Any, sections: Any, query: str = "", *, all_variants: bool = False
+    ) -> dict[str, Any]:
+        """Several picked sources (database records and web-page sections) combined.
+
+        The readings are first grouped by product (an Orange powder, a Sugar Free powder
+        and a caplet are three products), and each group is combined into one table.
+        The options are the combined tables, then each source's own table; the default
+        is the group that best matches ``query``. With ``all_variants`` every product
+        variant of every record takes part ("combine all"). Nothing is saved."""
+        recs = [r for r in records if isinstance(r, dict)][:10] if isinstance(records, list) else []
         secs = [x for x in sections if isinstance(x, dict)] if isinstance(sections, list) else []
         if not recs and not secs:
             raise LibraryError("pick the sources to combine")
         tables: list[dict[str, Any]] = []
+        skipped: list[str] = []
         for r in recs:
-            pv = self.preview_record(str(r.get("source") or ""), str(r.get("id") or ""), query)
+            try:
+                pv = self.preview_record(str(r.get("source") or ""), str(r.get("id") or ""), query)
+            except LibraryError as e:  # one source down must not stop the others
+                skipped.append(f"{r.get('name') or r.get('id')}: {e}")
+                continue
             opts = pv["options"]
             pick = opts[pv["default"]]
-            parts = [opts[i] for i in pick.get("parts", [])] or [pick]
-            name = " ".join(str(r.get("name") or "").split())[:40]
+            if all_variants:
+                parts = [o for o in opts if o.get("method") != "combined"]
+            else:
+                parts = [opts[i] for i in pick.get("parts", [])] or [pick]
+            rname = " ".join(str(r.get("name") or "").split())[:40]
             for t in parts:
+                v = str(t.get("variant") or structure.NA)
+                name = v.split(" · ")[0] if v != structure.NA else rname
                 base = structure.METHODS.get(t.get("method", ""), "")
                 kind = {"spl_coded": "FDA coded", "label_text": "FDA label text"}.get(
                     t.get("method", ""),
@@ -517,6 +543,8 @@ class Intake:
                 t["_name"] = name
                 tables.append(t)
         tables += structure.structure_pages(secs)
+        if not tables:
+            raise LibraryError("none of the sources could be read: " + "; ".join(skipped))
         count: dict[str, int] = {}
         for t in tables:
             count[t["label"]] = count.get(t["label"], 0) + 1
@@ -526,12 +554,36 @@ class Intake:
             if count[t["label"]] > 1:
                 n = seen[t["label"]] = seen.get(t["label"], 0) + 1
                 t["label"] = f"{t['label']}: {name}" if name else f"{t['label']} ({n})"
-        fused = structure.fuse(tables)
-        fused["method_label"] = structure.METHODS["combined"]
+        groups = structure.group_tables(tables)
+        words = _search_words(query)
+        fused_all = []
+        for g in groups:
+            f = structure.fuse(g)
+            f["method_label"] = structure.METHODS["combined"]
+            desc = next(
+                (
+                    str(t["variant"]).split(" · ")[0]
+                    for t in g
+                    if t.get("variant") not in (None, "", structure.NA)
+                ),
+                str(g[0].get("product") or "product"),
+            )
+            f["variant"] = f"{desc} ({len(g)} source{'s' if len(g) > 1 else ''})"
+            # match the search against the group's product (its most trusted reading's name)
+            f["_score"] = (len(words & _search_words(desc)), len(g))
+            fused_all.append(f)
+        best = max(range(len(fused_all)), key=lambda i: fused_all[i]["_score"])
+        for f in fused_all:
+            f.pop("_score")
         for t in tables:
             t["method_label"] = t["label"]
             t.pop("parts", None)
-        return {"options": [fused, *tables], "default": 0}
+        return {
+            "options": [*fused_all, *tables],
+            "default": best,
+            "groups": len(groups),
+            "skipped": skipped,
+        }
 
     @staticmethod
     def structure_sections(sections: Any) -> dict[str, Any]:

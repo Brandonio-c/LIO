@@ -1080,6 +1080,46 @@ def fuse(tables: list[dict[str, Any]]) -> dict[str, Any]:
     return out
 
 
+def same_product(a: dict[str, Any], b: dict[str, Any], threshold: float = 0.7) -> bool:
+    """Whether two readings describe the same product: their non-active ingredient lists
+    mostly match (matched rows / the longer list >= ``threshold``) and no active named in
+    both has a different strength (a 500 mg caplet is not the 2 g powder)."""
+    for r in a["ingredients"]:
+        if _group(r["role"]) != "active" or r["amount"] == NA:
+            continue
+        o = _match_row(r, [x for x in b["ingredients"] if _group(x["role"]) == "active"])
+        if (
+            o is not None
+            and o["amount"] != NA
+            and not same_amount(o["amount"], r["amount"], r["basis"])
+            and not same_amount(r["amount"], o["amount"], o["basis"])
+            and o["amount"].replace(" ", "") != r["amount"].replace(" ", "")
+        ):
+            return False
+    ra = [r for r in a["ingredients"] if _group(r["role"]) == "rest"]
+    rb = [r for r in b["ingredients"] if _group(r["role"]) == "rest"]
+    if not ra or not rb:  # nothing to compare beyond the actives: same if actives match
+        aa = [r for r in a["ingredients"] if _group(r["role"]) == "active"]
+        ab = [r for r in b["ingredients"] if _group(r["role"]) == "active"]
+        return bool(aa) and bool(ab) and all(_match_row(r, ab) for r in aa)
+    hits = sum(1 for r in ra if _match_row(r, rb) is not None)
+    return hits / max(len(ra), len(rb)) >= threshold
+
+
+def group_tables(tables: list[dict[str, Any]]) -> list[list[dict[str, Any]]]:
+    """Readings grouped by product (see :func:`same_product`), most trusted first; a
+    reading joins the first group whose every member it matches."""
+    groups: list[list[dict[str, Any]]] = []
+    for t in sorted(tables, key=lambda t: -_PRIORITY.get(_kind(t), 0)):
+        for g in groups:
+            if all(same_product(t, m) for m in g):
+                g.append(t)
+                break
+        else:
+            groups.append([t])
+    return groups
+
+
 METHODS = {
     "combined": "combined from several sources",
     "spl_coded": "FDA coded product data (DailyMed SPL)",

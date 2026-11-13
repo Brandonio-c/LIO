@@ -656,6 +656,10 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
   <div class="row" style="justify-content:flex-end"><button class="btn" id="motion-no">Cancel</button><button class="btn primary" id="motion-yes">Yes, start</button></div>
 </div></div>
 
+<div class="overlay" id="mix-overlay"><div class="modal" role="dialog" aria-modal="true" aria-label="Combined ingredients" style="width:min(1150px,96vw);max-height:90vh;overflow:auto">
+  <div class="row"><strong style="flex:1">Combine all sources</strong><button class="btn small" id="mix-close">Close</button></div>
+  <div id="mix-body" style="margin-top:8px"></div>
+</div></div>
 <div class="overlay" id="img-overlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="img-overlay-title">
   <div class="row"><div class="tag" id="img-overlay-title" style="flex:1"></div><button class="btn small" id="img-overlay-close">Close</button></div>
   <img id="img-overlay-img" alt="">
@@ -1749,11 +1753,12 @@ function ingrTable(st, edit) {
 
 /* The confirm box: the structured table, editable, then save. `options` are the record's
    variants (one table each); `onSave(table, edited)` stores it. */
-function ingrConfirm(s, options, def, sourceText, refs, onSave) {
+function ingrConfirm(s, options, def, sourceText, refs, onSave, opts = {}) {
+  const target = opts.target || "fo-confirm", saveLabel = opts.saveLabel || "Confirm and save";
   let idx = def || 0, edited = false;
   let st = JSON.parse(JSON.stringify(options[idx]));
   const draw = () => {
-    $("fo-confirm").innerHTML = `<div style="border-top:2px solid var(--accent);padding-top:10px;display:grid;gap:8px">
+    $(target).innerHTML = `<div style="${opts.target ? "" : "border-top:2px solid var(--accent);padding-top:10px;"}display:grid;gap:8px">${opts.intro || ""}
         <div class="row"><strong style="flex:1">Confirm the ingredients for ${esc(s.sample_code)}</strong>
           ${options.length > 1 ? `<label class="note">Reading: <select id="si-var">${[...new Set(options.map((o) => o.method_label || ""))].map((m) => `<optgroup label="${esc(m || "Tables")}">${options.map((o, i) => (o.method_label || "") === m ? `<option value="${i}"${i === idx ? " selected" : ""}>${esc(o.variant && o.variant !== NA ? o.variant : "this label")}</option>` : "").join("")}</optgroup>`).join("")}</select></label>` : ""}</div>
         <div class="note">${st.method === "combined" ? `<b>Combined from ${esc((st.sources_used || []).join(", ") || "several sources")}.</b> Each ingredient takes the most trusted value any source states (FDA coded > DSLD > label text > USDA > web pages) and gaps are filled from the others; the Sources column says which agree. <b>Highlighted rows</b> are where sources disagree: settle them against the pack. Each source's own table is in the list above.`
@@ -1764,8 +1769,8 @@ function ingrConfirm(s, options, def, sourceText, refs, onSave) {
         <div class="row"><button class="btn small" id="si-add">Add ingredient</button><button class="btn small" id="si-addc">Add per-dose amount</button><span class="sp"></span></div>
         ${sourceText ? `<details><summary class="note">Source text</summary><div class="note" style="margin-top:4px;white-space:pre-wrap">${esc(sourceText)}</div></details>` : ""}
         <div class="note">Sources: ${refs.map((rf) => `<a href="${esc(rf.url)}" target="_blank" rel="noopener">${esc(rf.title || dbDomain(rf.url))} ↗</a>`).join(" · ") || "none"}</div>
-        <div class="row" style="justify-content:flex-end"><button class="btn small" id="fo-cancel">Cancel</button><button class="btn small primary" id="fo-save">Confirm and save</button></div></div>`;
-    const box = $("fo-confirm");
+        <div class="row" style="justify-content:flex-end"><button class="btn small" id="fo-cancel">Cancel</button><button class="btn small primary" id="fo-save">${esc(saveLabel)}</button></div></div>`;
+    const box = $(target);
     box.querySelectorAll("[data-ir],[data-cr]").forEach((el) => {
       const set = () => { const list = el.dataset.ir !== undefined ? st.ingredients : st.contains, i = +(el.dataset.ir ?? el.dataset.cr);
         list[i][el.dataset.k] = el.value.trim() || NA; el.classList.toggle("na", list[i][el.dataset.k] === NA); edited = true; };
@@ -1778,7 +1783,7 @@ function ingrConfirm(s, options, def, sourceText, refs, onSave) {
     $("si-add").onclick = () => { st.ingredients.push({ name: "", role: (st.ingredients.at(-1) || {}).role || "ingredient", amount: NA, basis: NA, dv: NA, form: NA, sub: NA, variant: st.variant || NA, note: NA }); edited = true; draw(); };
     $("si-addc").onclick = () => { st.contains.push({ name: "", amount: NA, basis: NA, variant: st.variant || NA, note: NA }); edited = true; draw(); };
     if ($("si-var")) $("si-var").onchange = (e) => { idx = +e.target.value; st = JSON.parse(JSON.stringify(options[idx])); edited = idx !== (def || 0); draw(); };
-    $("fo-cancel").onclick = () => { $("fo-confirm").innerHTML = ""; document.querySelectorAll("[data-sec]").forEach((c) => c.checked = false); };
+    $("fo-cancel").onclick = () => { $(target).innerHTML = ""; if (opts.onCancel) opts.onCancel(); else document.querySelectorAll("[data-sec]").forEach((c) => c.checked = false); };
     $("fo-save").onclick = () => {
       const blank = st.ingredients.some((r) => !(r.name || "").trim() || r.name === NA);
       if (blank) return toast("every ingredient row needs a name (or remove the row)");
@@ -1786,7 +1791,7 @@ function ingrConfirm(s, options, def, sourceText, refs, onSave) {
     };
   };
   draw();
-  $("fo-confirm").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  if (!opts.target) $(target).scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 /* Find ingredients online: label databases by name, then web pages. Every result has its link;
@@ -1810,6 +1815,7 @@ async function dbFindOnline(s, p, query) {
   const web = r.web || { pages: [], errors: [] }, withList = web.pages.filter((pg) => pg.sections.length), without = web.pages.filter((pg) => !pg.sections.length);
   const recs = (r.structured || []).filter((c) => (c.ingredients || "").trim() || c.source === "openfda");
   $("fo-results").innerHTML = `
+    <div class="row" style="margin-bottom:8px"><button class="btn small primary" id="fo-mixall"${recs.length + withList.length >= 2 ? "" : " disabled"}>Combine all</button><button class="btn small" id="fo-mix" disabled>Combine the ticked sources</button><span class="note" id="fo-mix-n">Tick "combine" on label records and/or tick web-page sections, then combine them into one table: matching rows are merged, gaps filled, and disagreements highlighted.</span></div>
     <div class="note" style="text-transform:uppercase;letter-spacing:.5px;font-weight:600">Label databases · search "${esc(r.query)}"</div>
     ${recs.length ? `<table class="db">${recs.map((c, i) => `<tr>
         <td style="width:80px"><span class="tag">${esc(SRC_TAG[c.source] || c.source)}</span></td>
@@ -1825,7 +1831,6 @@ async function dbFindOnline(s, p, query) {
       : `<div class="note">No ingredient list found on the web pages${(web.errors || []).length ? " (" + esc(web.errors.join("; ")) + ")" : ""}.</div>`}
     ${without.length ? `<div class="note" style="margin-top:6px">Also looked at, no list could be read: ${without.map((pg) => `<a href="${esc(pg.url)}" target="_blank" rel="noopener">${esc(pg.domain)}</a>${pg.error ? " (" + esc(pg.error) + ")" : ""}`).join(" · ")}. Open them to check by eye.</div>` : ""}
     <div class="note" style="margin-top:4px">Pages often list several versions of a product (flavours, sugar-free, caplets): pick the one that matches the pack you have.</div>
-    <div class="row" style="margin-top:6px"><button class="btn small" id="fo-mix" disabled>Combine the ticked sources</button><span class="note" id="fo-mix-n">Tick "combine" on label records and/or tick web-page sections, then combine them into one table: matching rows are merged, gaps filled, and disagreements highlighted.</span></div>
     <div class="note" style="text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-top:6px">SmartLabel</div>
     ${r.smartlabel && r.smartlabel.result ? `<div><b>${esc(r.smartlabel.result.name)}</b>: ${esc(r.smartlabel.result.ingredients_text)}</div>`
       : `<div class="note">${r.smartlabel && r.smartlabel.configured ? "No SmartLabel record for this barcode." : "SmartLabel's data needs a Label Insight API key (none configured)."} Search it yourself: <a href="${esc((r.smartlabel || {}).link || "https://www.smartlabel.org/")}" target="_blank" rel="noopener">smartlabel.org ↗</a>${((r.smartlabel || {}).gs1_links || []).length ? " · pages the brand registered with GS1: " + r.smartlabel.gs1_links.map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.title)} ↗</a>`).join(" · ") : ""}</div>`}
@@ -1884,21 +1889,29 @@ async function dbFindOnline(s, p, query) {
     $("fo-mix").textContent = n >= 2 ? `Combine ${n} sources` : "Combine the ticked sources";
   };
   $("fo-results").querySelectorAll("[data-mix]").forEach((c) => c.onchange = mixCount);
-  $("fo-mix").onclick = async () => {
-    const m = mixPicked();
-    const refs = [...m.records.filter((c) => c.link).map((c) => ({ url: c.link, title: `${SRC_TAG[c.source] || c.source}: ${c.name}` })),
-      ...[...new Map(m.sections.map(([pg]) => [pg.url, { url: pg.url, title: pg.title || pg.domain, sha256: pg.sha256 || "" }])).values()]];
-    $("fo-confirm").innerHTML = `<div class="note" style="border-top:2px solid var(--accent);padding-top:10px">Reading and combining ${m.records.length + m.sections.length} sources…</div>`;
+  const mixRun = async (recsUsed, secsUsed, all) => {
+    const refs = [...recsUsed.filter((c) => c.link).map((c) => ({ url: c.link, title: `${SRC_TAG[c.source] || c.source}: ${c.name}` })),
+      ...[...new Map(secsUsed.map(([pg]) => [pg.url, { url: pg.url, title: pg.title || pg.domain, sha256: pg.sha256 || "" }])).values()]];
+    $("fo-confirm").innerHTML = "";
+    const ov = $("mix-overlay"), close = () => { ov.classList.remove("open"); $("mix-body").innerHTML = ""; };
+    $("mix-close").onclick = close;
+    $("mix-body").innerHTML = `<div class="note">Reading ${recsUsed.length + secsUsed.length} sources and combining them… this takes a few seconds.</div>`;
+    ov.classList.add("open");
     let out;
-    try { out = await api("/api/foods/fuse", { query: r.query, records: m.records.map((c) => ({ source: c.source, id: c.id, name: c.name })),
-      sections: m.sections.map(([pg, sc]) => ({ heading: sc.heading, text: sc.text, url: pg.url })) }); }
-    catch (e) { $("fo-confirm").innerHTML = ""; return toast(e.message, 7000); }
-    const srcText = [...m.records.map((c) => `${SRC_TAG[c.source] || c.source} · ${c.name}: ${c.ingredients}`), ...m.sections.map(([pg, sc]) => `${pg.domain} · ${sc.heading}: ${sc.text}`)].join("\n");
+    try { out = await api("/api/foods/fuse", { query: r.query, all, records: recsUsed.map((c) => ({ source: c.source, id: c.id, name: c.name })),
+      sections: secsUsed.map(([pg, sc]) => ({ heading: sc.heading, text: sc.text, url: pg.url })) }); }
+    catch (e) { $("mix-body").innerHTML = `<div style="color:var(--critical)">${esc(e.message)}</div>`; return; }
+    const nComb = out.options.filter((o) => o.method === "combined").length;
+    const intro = `<div class="note">${nComb > 1 ? `These sources describe <b>${nComb} different products</b> (matched by their ingredient lists and strengths), so there is one combined table per product. The one that best matches "${esc(r.query)}" is shown; pick another under <b>Reading</b>. Check that it is the pack you have.` : "All the sources describe the same product."}${(out.skipped || []).length ? ` <span style="color:var(--critical)">Could not read: ${esc(out.skipped.join("; "))}.</span>` : ""}</div>`;
+    const srcText = [...recsUsed.map((c) => `${SRC_TAG[c.source] || c.source} · ${c.name}: ${c.ingredients}`), ...secsUsed.map(([pg, sc]) => `${pg.domain} · ${sc.heading}: ${sc.text}`)].join("\n");
     ingrConfirm(s, out.options, out.default, srcText, refs, async (st) => {
-      try { await api("/api/foods/ingredients", { gtin14: s.gtin14, ingredients_text: "", ingredients_structured: st, refs }); toast("combined ingredients saved, with their sources"); await dbRefresh(s.sample_code); }
+      try { await api("/api/foods/ingredients", { gtin14: s.gtin14, ingredients_text: "", ingredients_structured: st, refs }); close(); toast("combined ingredients saved, with their sources"); await dbRefresh(s.sample_code); }
       catch (e) { toast(e.message, 7000); }
-    });
+    }, { target: "mix-body", saveLabel: "Use combination", intro, onCancel: close });
   };
+  $("fo-mix").onclick = () => { const m = mixPicked(); mixRun(m.records, m.sections, false); };
+  $("fo-mixall").onclick = () => mixRun(recs, withList.flatMap((pg) => pg.sections.map((sc) => [pg, sc])), true);
+
 }
 
 function dbLabelEditor(p) {

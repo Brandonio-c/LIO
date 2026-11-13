@@ -31,6 +31,11 @@
   - in the dashboard for any records and web-page sections you tick "combine" on.
   - Matching ingredients are merged (by UNII or by name), each field takes the most trusted source's value, and gaps are filled.
   - A Sources column shows which sources agree. Rows where sources disagree are highlighted ("conflict: …"), and ingredients only one source lists are marked.
+- **"Combine all"** at the top of "Find the ingredients online" fuses every result: all database records, every product variant in them, and all web-page sections.
+  - **Grouped by product first.** Readings are grouped by product: ingredient lists must mostly match, and a shared active may not differ in strength. An Orange powder, a Sugar Free powder and a caplet stay apart.
+  - **The popup.** The result opens in a popup with one combined table per product. The table matching the search is preselected, and **Use combination** saves it.
+  - **Failures.** A source that cannot be read is skipped and named; it does not stop the others.
+  - **An example from Citrucel:** the DSLD record titled "Orange Flavor" lists aspartame and malic acid, so it is grouped with Sugar Free, not with Orange.
 - **Where it is stored.** The table goes in the product's `ingredients_structured` field. Typing a new list by hand removes the old table. It is a reviewed database value, not a verified fact.
 
 ## 2026-11-12: Composition coverage M7, documentation (plan WP8)

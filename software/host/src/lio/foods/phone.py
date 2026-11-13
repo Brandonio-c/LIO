@@ -341,7 +341,10 @@ class _Handler(BaseHTTPRequestHandler):
             if url.path == "/api/fuse":
                 return self._json(
                     intake.fuse_sources(
-                        b.get("records"), b.get("sections"), str(b.get("query") or "")
+                        b.get("records"),
+                        b.get("sections"),
+                        str(b.get("query") or ""),
+                        all_variants=bool(b.get("all")),
                     )
                 )
             if url.path == "/api/structure":

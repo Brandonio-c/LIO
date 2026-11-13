@@ -313,6 +313,8 @@ SPL = b"""<?xml version="1.0"?>
     <ingredientSubstance><code code="MRJ667KA5E"/><name>METHYLCELLULOSE (4000 MPA.S)</name></ingredientSubstance></ingredient>
   <ingredient classCode="IACT"><ingredientSubstance><code code="C151H8M554"/><name>SUCROSE</name></ingredientSubstance></ingredient>
   <ingredient classCode="IACT"><ingredientSubstance><code code="2968PHW8QP"/><name>CITRIC ACID MONOHYDRATE</name></ingredientSubstance></ingredient>
+  <ingredient classCode="IACT"><ingredientSubstance><code code="L11K75P92J"/><name>ANHYDROUS DIBASIC CALCIUM PHOSPHATE</name></ingredientSubstance></ingredient>
+  <ingredient classCode="IACT"><ingredientSubstance><code code="K4C08XP666"/><name>TRICALCIUM PHOSPHATE</name></ingredientSubstance></ingredient>
 </manufacturedProduct></manufacturedProduct></subject>
 <subject><manufacturedProduct><manufacturedProduct>
   <code code="0135-0090" codeSystem="2.16.840.1.113883.6.69"/>
@@ -321,6 +323,7 @@ SPL = b"""<?xml version="1.0"?>
     <ingredientSubstance><code code="MRJ667KA5E"/><name>METHYLCELLULOSE (4000 MPA.S)</name></ingredientSubstance></ingredient>
   <ingredient classCode="IACT"><ingredientSubstance><code code="Z0H242BBR1"/><name>ASPARTAME</name></ingredientSubstance></ingredient>
   <ingredient classCode="IACT"><ingredientSubstance><code code="817L1N4CKP"/><name>MALIC ACID</name></ingredientSubstance></ingredient>
+  <ingredient classCode="IACT"><ingredientSubstance><code code="L11K75P92J"/><name>ANHYDROUS DIBASIC CALCIUM PHOSPHATE</name></ingredientSubstance></ingredient>
 </manufacturedProduct></manufacturedProduct></subject>
 </section></component></structuredBody></component></document>"""
 
@@ -405,7 +408,7 @@ def test_fuse_agreeing_amounts_and_per_dose() -> None:
 def test_fuse_sources_record_and_web_page(lib: FoodLibrary) -> None:
     out = Intake(lib).fuse_sources(
         [{"source": "dsld", "id": "64567", "name": "Fish Oil"}],
-        [{"heading": "Other ingredients", "text": "gelatin, glycerin, water", "url": "https://www.example.com/fish"}],
+        [{"heading": "Other ingredients", "text": "gelatin, glycerin", "url": "https://www.example.com/fish"}],
         "fish oil",
     )  # fmt: skip
     fused, *parts = out["options"]
@@ -415,3 +418,26 @@ def test_fuse_sources_record_and_web_page(lib: FoodLibrary) -> None:
     assert any("web: example.com" in r["sources"] for r in fused["ingredients"])
     with pytest.raises(LibraryError):
         Intake(lib).fuse_sources([], [], "")
+
+
+def test_group_tables_keeps_products_apart() -> None:
+    out = S.structure_record(
+        "openfda", parse_openfda(POWDER), {**POWDER, "purpose": ["Purpose laxative"]}, "", spl_xml=SPL
+    )  # fmt: skip
+    readings = [o for o in out["options"] if o["method"] != "combined"]
+    caplet = S.structure_record("openfda", parse_openfda(CAPLET), CAPLET)["options"][0]
+    groups = S.group_tables([*readings, {**caplet, "method": "label_text"}])
+    names = sorted(sorted(str(t["variant"]).split(" · ")[0] for t in g) for g in groups)
+    assert len(groups) == 3  # Orange, Sugar Free, and the caplet are three products
+    assert ["Citrucel Orange", "Citrucel Orange"] in names
+    assert ["Citrucel Sugar Free", "Citrucel Sugar Free"] in names
+    assert not S.same_product(readings[0], {**caplet, "method": "label_text"})
+
+
+def test_fuse_sources_skips_a_source_that_fails(lib: FoodLibrary) -> None:
+    out = Intake(lib).fuse_sources(
+        [{"source": "dsld", "id": "64567", "name": "Fish Oil"},
+         {"source": "openfda", "id": "not-a-set-id", "name": "Missing"}],
+        [], "fish oil", all_variants=True,
+    )  # fmt: skip
+    assert out["groups"] == 1 and len(out["skipped"]) == 1 and "Missing" in out["skipped"][0]
