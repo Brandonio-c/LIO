@@ -493,6 +493,46 @@ class Intake:
         out["ingredients_text"] = str(info.get("ingredients_text") or "")
         return out
 
+    def fuse_sources(self, records: Any, sections: Any, query: str = "") -> dict[str, Any]:
+        """Several picked sources (database records and ticked web-page sections) combined
+        into one table, with each source's own table after it. Nothing is saved."""
+        recs = [r for r in records if isinstance(r, dict)][:6] if isinstance(records, list) else []
+        secs = [x for x in sections if isinstance(x, dict)] if isinstance(sections, list) else []
+        if not recs and not secs:
+            raise LibraryError("pick the sources to combine")
+        tables: list[dict[str, Any]] = []
+        for r in recs:
+            pv = self.preview_record(str(r.get("source") or ""), str(r.get("id") or ""), query)
+            opts = pv["options"]
+            pick = opts[pv["default"]]
+            parts = [opts[i] for i in pick.get("parts", [])] or [pick]
+            name = " ".join(str(r.get("name") or "").split())[:40]
+            for t in parts:
+                base = structure.METHODS.get(t.get("method", ""), "")
+                kind = {"spl_coded": "FDA coded", "label_text": "FDA label text"}.get(
+                    t.get("method", ""),
+                    {"dsld": "DSLD", "usda": "USDA"}.get(t["source"], t["source"]),
+                )
+                t["label"] = kind or base
+                t["_name"] = name
+                tables.append(t)
+        tables += structure.structure_pages(secs)
+        count: dict[str, int] = {}
+        for t in tables:
+            count[t["label"]] = count.get(t["label"], 0) + 1
+        seen: dict[str, int] = {}
+        for t in tables:  # short labels for the Sources column; the name only if needed
+            name = t.pop("_name", "")
+            if count[t["label"]] > 1:
+                n = seen[t["label"]] = seen.get(t["label"], 0) + 1
+                t["label"] = f"{t['label']}: {name}" if name else f"{t['label']} ({n})"
+        fused = structure.fuse(tables)
+        fused["method_label"] = structure.METHODS["combined"]
+        for t in tables:
+            t["method_label"] = t["label"]
+            t.pop("parts", None)
+        return {"options": [fused, *tables], "default": 0}
+
     @staticmethod
     def structure_sections(sections: Any) -> dict[str, Any]:
         """Web-page sections the user ticked, laid out as one ingredient table."""

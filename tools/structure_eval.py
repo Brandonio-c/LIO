@@ -268,6 +268,18 @@ def drugs(n: int, rng: random.Random) -> list[dict[str, Any]]:
             "not_in_text": sum(1 for x in cacts if "not named in the label text" in x["note"]),
             "default_is_coded": both["options"][both["default"]]["method"] == "spl_coded",
         }
+        comb = [o for o in both["options"] if o["method"] == "combined"]
+        crows = [x for o in comb for x in o["ingredients"]]
+        coded_info.update({
+            "combined_tables": len(comb),
+            "combined_rows": len(crows),
+            "combined_multi_source": sum(1 for x in crows if "," in x["sources"]),
+            "combined_conflicts": sum(1 for x in crows if "conflict:" in x["note"]),
+            "combined_only_one": sum(1 for x in crows if "only in:" in x["note"]),
+            "combined_actives_with_amount": sum(
+                1 for x in crows if x["role"] == "active" and x["amount"] != NA),
+            "combined_actives": sum(1 for x in crows if x["role"] == "active"),
+        })  # fmt: skip
         res = S.structure_record("openfda", info, r, "")
         sc = [score_drug(o, prods) for o in res["options"]]
         best = max(range(len(sc)), key=lambda i: (sum(a["name_found"] for a in sc[i]["actives"]) * 3
@@ -415,6 +427,18 @@ def summarise(items: list[dict[str, Any]]) -> dict[str, Any]:
             "coded_actives_with_purpose": sum(i["coded"]["with_purpose"] for i in d),
             "coded_actives_text_disagrees": sum(i["coded"]["text_disagrees"] for i in d),
             "coded_actives_not_in_text": sum(i["coded"]["not_in_text"] for i in d),
+            **{
+                k: sum(i["coded"][k] for i in d)
+                for k in (
+                    "combined_tables",
+                    "combined_rows",
+                    "combined_multi_source",
+                    "combined_conflicts",
+                    "combined_only_one",
+                    "combined_actives",
+                    "combined_actives_with_amount",
+                )
+            },
         },
         "supplement": {
             "labels": len(s),

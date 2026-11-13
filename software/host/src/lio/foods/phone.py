@@ -338,6 +338,12 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json(
                     intake.read_label(data_url_bytes(b.get("photo")), str(b.get("kind") or ""))
                 )
+            if url.path == "/api/fuse":
+                return self._json(
+                    intake.fuse_sources(
+                        b.get("records"), b.get("sections"), str(b.get("query") or "")
+                    )
+                )
             if url.path == "/api/structure":
                 return self._json(intake.structure_sections(b.get("sections")))
             if url.path == "/api/ingredients":

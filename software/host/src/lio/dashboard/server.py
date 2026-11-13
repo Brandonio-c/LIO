@@ -330,6 +330,12 @@ class _Handler(BaseHTTPRequestHandler):
             return self._json(f.intake.confirm_ingredients(str(b.get("gtin14") or ""), b))
         if path == "label/apply":
             return self._json(f.intake.apply_label(code, b))
+        if path == "fuse":
+            return self._json(
+                f.intake.fuse_sources(
+                    b.get("records"), b.get("sections"), str(b.get("query") or "")
+                )
+            )
         if path == "structure":
             return self._json(f.intake.structure_sections(b.get("sections")))
         if path == "adopt":

@@ -331,11 +331,12 @@ def test_both_readings_coded_first_and_merged() -> None:
         "citrucel sugar free", spl_xml=SPL,
     )  # fmt: skip
     methods = [o["method"] for o in out["options"]]
-    assert methods == ["spl_coded", "spl_coded", "label_text", "label_text"]
-    orange, sf = out["options"][:2]
+    assert methods == ["combined", "combined", "spl_coded", "spl_coded", "label_text", "label_text"]
+    orange, sf = out["options"][2:4]
     assert orange["variant"].startswith("Citrucel Orange") and "NDC 0135-0089" in orange["variant"]
     assert sf["variant"].startswith("Citrucel Sugar Free")
-    assert out["default"] == 1  # the query names Sugar Free; the coded reading wins ties
+    assert out["default"] == 1  # the query names Sugar Free; the combined reading wins ties
+    assert out["options"][0]["parts"] == [2, 4] and out["options"][1]["parts"] == [3, 5]
     act = orange["ingredients"][0]
     assert (act["role"], act["name"], act["amount"], act["basis"]) == (
         "active", "methylcellulose (4000 mpa.s)", "2 g", "per 19 g",
@@ -356,3 +357,61 @@ def test_same_amount() -> None:
     assert S.same_amount("0.5 g", "500 mg", "per 1 tablet")
     assert not S.same_amount("5 mg", "3.5 mg", "per 1 g")
     assert not S.same_amount("10%", "0.1 g", "per 100 g")
+
+
+def test_fuse_merges_fills_and_flags() -> None:
+    coded = {**S._empty("spl", "X"), "method": "spl_coded", "ingredients": [
+        S.row(name="phenylephrine hydrochloride", role="active", amount="10 mg", basis="per 20 mL",
+              note="UNII 04JA59TNSJ"),
+        S.row(name="sucrose", role="inactive", note="UNII C151H8M554"),
+    ]}  # fmt: skip
+    text = {**S._empty("openfda", "X"), "method": "label_text", "serving": "20 mL", "ingredients": [
+        S.row(name="Phenylephrine HCl", role="active", amount="5 mg", basis="per 20 mL",
+              note="purpose: Nasal decongestant"),
+        S.row(name="sucrose", role="inactive"), S.row(name="flavor", role="inactive"),
+    ], "allergens": ["soy"]}  # fmt: skip
+    dsld = {**S._empty("dsld", "X"), "ingredients": [
+        S.row(name="Sucrose", role="other", form="cane"),
+    ]}  # fmt: skip
+    f = S.fuse([text, dsld, coded])
+    assert f["method"] == "combined" and f["serving"] == "20 mL" and f["allergens"] == ["soy"]
+    act = f["ingredients"][0]
+    assert (act["name"], act["amount"]) == ("phenylephrine hydrochloride", "10 mg")  # most trusted
+    assert "conflict: label text says 5 mg per 20 mL" in act["note"]
+    assert (
+        "purpose: Nasal decongestant" in act["note"] and act["sources"] == "FDA coded, label text"
+    )
+    suc = next(r for r in f["ingredients"] if r["name"] == "sucrose")
+    assert suc["sources"] == "FDA coded, DSLD, label text" and suc["form"] == "cane"  # gap filled
+    flav = next(r for r in f["ingredients"] if r["name"] == "flavor")
+    assert "only in: label text" in flav["note"]
+
+
+def test_fuse_agreeing_amounts_and_per_dose() -> None:
+    a = {**S._empty("spl", "X"), "method": "spl_coded", "ingredients": [
+        S.row(name="lidocaine", role="active", amount="5 g", basis="per 100 g")],
+        "contains": [S.contains_row(name="calcium", amount="10 mg", basis="per caplet")]}  # fmt: skip
+    b = {**S._empty("openfda", "X"), "method": "label_text", "ingredients": [
+        S.row(name="Lidocaine", role="active", amount="5%", basis="of product")]}  # fmt: skip
+    c = {**S._empty("dsld", "X"), "ingredients": [
+        S.row(name="Calcium", role="dietary", amount="10 mg", basis="per 1 Caplet")]}  # fmt: skip
+    f = S.fuse([a, b, c])
+    (lid,) = f["ingredients"]
+    assert "amount confirmed by 2 sources" in lid["note"] and "conflict" not in lid["note"]
+    (cal,) = f["contains"]
+    assert "confirmed by: DSLD" in cal["note"]
+
+
+def test_fuse_sources_record_and_web_page(lib: FoodLibrary) -> None:
+    out = Intake(lib).fuse_sources(
+        [{"source": "dsld", "id": "64567", "name": "Fish Oil"}],
+        [{"heading": "Other ingredients", "text": "gelatin, glycerin, water", "url": "https://www.example.com/fish"}],
+        "fish oil",
+    )  # fmt: skip
+    fused, *parts = out["options"]
+    assert out["default"] == 0 and fused["method"] == "combined"
+    assert [p["label"] for p in parts] == ["DSLD", "web: example.com"]
+    assert fused["sources_used"][0] == "DSLD"
+    assert any("web: example.com" in r["sources"] for r in fused["ingredients"])
+    with pytest.raises(LibraryError):
+        Intake(lib).fuse_sources([], [], "")

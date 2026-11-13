@@ -26,6 +26,11 @@
   - **FDA coded product data**, from the DailyMed SPL of the same label: exact substance names, UNII codes and strengths for each product. Purposes, per-dose amounts and allergens come from the label text, and a row is noted where the label text states a different strength.
   - **The label-text reading.**
   - On 100 random OTC labels the coded reading gave a strength for 273 of 273 actives. The label text disagreed on 9.
+- **A combined reading.** Several sources are fused into one table:
+  - automatically for an FDA label (coded data plus the label text), where it is preselected;
+  - in the dashboard for any records and web-page sections you tick "combine" on.
+  - Matching ingredients are merged (by UNII or by name), each field takes the most trusted source's value, and gaps are filled.
+  - A Sources column shows which sources agree. Rows where sources disagree are highlighted ("conflict: …"), and ingredients only one source lists are marked.
 - **Where it is stored.** The table goes in the product's `ingredients_structured` field. Typing a new list by hand removes the old table. It is a reviewed database value, not a verified fact.
 
 ## 2026-11-12: Composition coverage M7, documentation (plan WP8)

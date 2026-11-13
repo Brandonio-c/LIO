@@ -14,12 +14,19 @@
   "per_dose_rows": 7,
   "labels_with_failure_signs": 10,
   "coded_tables_available": 100,
-  "coded_default": 100,
+  "coded_default": 0,
   "coded_actives": 273,
   "coded_actives_with_amount": 273,
-  "coded_actives_with_purpose": 94,
+  "coded_actives_with_purpose": 95,
   "coded_actives_text_disagrees": 9,
-  "coded_actives_not_in_text": 112
+  "coded_actives_not_in_text": 3,
+  "combined_tables": 101,
+  "combined_rows": 1708,
+  "combined_multi_source": 1039,
+  "combined_conflicts": 9,
+  "combined_only_one": 669,
+  "combined_actives": 320,
+  "combined_actives_with_amount": 320
  },
  "supplement": {
   "labels": 60,

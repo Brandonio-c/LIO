@@ -20,7 +20,7 @@ from typing import Any
 from lio_verify import textrules
 
 NA = "N/A"
-FIELDS = ("name", "role", "amount", "basis", "dv", "form", "sub", "variant", "note")
+FIELDS = ("name", "role", "amount", "basis", "dv", "form", "sub", "variant", "note", "sources")
 ROLES = ("active", "inactive", "dietary", "other", "ingredient")
 CONTAINS_FIELDS = ("name", "amount", "basis", "variant", "note")
 MAX_ROWS = 400
@@ -824,34 +824,72 @@ def same_amount(text_amount: str, coded_amount: str, coded_basis: str) -> bool:
     return t == c
 
 
+_NAME_SYNONYMS = (
+    (r"\bhc[li]\b", "hydrochloride"), (r"\bhbr\b", "hydrobromide"),
+    (r"\bdisodium edta\b|\bedta disodium\b", "edetate disodium"),
+    (r"\bbht\b", "butylated hydroxytoluene"), (r"\bbha\b", "butylated hydroxyanisole"),
+    (r"\bcellulose gum\b", "carboxymethylcellulose sodium"), (r"\bsilica\b", "silicon dioxide"),
+    (r"\btocopheryl acetate\b", "alpha tocopherol acetate"), (r"\baloe barbadensis\b", "aloe vera"),
+    (r"&", " and "), (r"\bno\.\s*", "no "), (r"\bsoy\b", "soybean"),
+)  # fmt: skip
+_NAME_DROP = {"usp", "nf", "anhydrous", "unspecified", "form", "natural", "and", "artificial"}
+
+
+def _name_words(n: str) -> set[str]:
+    n = n.lower()
+    n = re.sub(r"\([^()]*\)", " ", n)  # "(4000 mpa.s)", "(a non-allergenic fiber)"
+    for pat, rep in _NAME_SYNONYMS:
+        n = re.sub(pat, rep, n)
+    return set(re.findall(r"[a-z0-9]+", n)) - _NAME_DROP
+
+
+def _unii(r: dict[str, str]) -> str:
+    m = re.search(r"UNII ([A-Z0-9]{10})", r.get("note", ""))
+    return m.group(1) if m else ""
+
+
+def _match_row(r0: dict[str, str], rows: list[dict[str, str]]) -> dict[str, str] | None:
+    """The row in ``rows`` naming the same ingredient (same UNII, or most words shared)."""
+    u = _unii(r0)
+    if u:
+        for r in rows:
+            if _unii(r) == u:
+                return r
+    w = _name_words(r0["name"])
+    best, score = None, 0.0
+    for r in rows:
+        o = _name_words(r["name"])
+        sc = len(w & o) / max(1, min(len(w), len(o)))
+        if sc > score:
+            best, score = r, sc
+    return best if score >= 0.6 else None
+
+
+def pair_text(coded: dict[str, Any], text_opts: list[dict[str, Any]]) -> dict[str, Any] | None:
+    """The label-text variant whose inactive list matches a coded product best."""
+    if not text_opts:
+        return None
+    if len(text_opts) == 1:
+        return text_opts[0]
+
+    def overlap(t: dict[str, Any]) -> int:
+        ti = [r for r in t["ingredients"] if r["role"] == "inactive"]
+        return sum(1 for r in coded["ingredients"] if r["role"] == "inactive" and _match_row(r, ti))
+
+    best = max(text_opts, key=overlap)
+    return best if overlap(best) else None
+
+
 def merge_text_into_coded(coded: dict[str, Any], text_opts: list[dict[str, Any]]) -> dict[str, Any]:
     """Add what only the label text has (purposes, per-dose statements, allergens) to a
     coded table, and note where the label text states something different."""
 
-    def words(n: str) -> set[str]:
-        n = re.sub(r"\bhc[li]\b", "hydrochloride", n.lower())
-        return set(re.findall(r"[a-z0-9]+", n)) - {"usp", "anhydrous", "unspecified", "form"}
-
     def match(name: str, rows: list[dict[str, str]]) -> dict[str, str] | None:
-        w = words(name)
-        best, score = None, 0.0
-        for r in rows:
-            o = words(r["name"])
-            sc = len(w & o) / max(1, min(len(w), len(o)))
-            if sc > score:
-                best, score = r, sc
-        return best if score >= 0.6 else None
+        return _match_row({"name": name, "note": ""}, rows)
 
     if len(text_opts) > 1:
-
-        def overlap(t: dict[str, Any]) -> int:
-            ti = [r for r in t["ingredients"] if r["role"] == "inactive"]
-            return sum(
-                1 for r in coded["ingredients"] if r["role"] == "inactive" and match(r["name"], ti)
-            )
-
-        best = max(text_opts, key=overlap)
-        if overlap(best) and best["variant"] != NA:
+        best = pair_text(coded, text_opts)
+        if best is not None and best["variant"] != NA:
             coded["variant"] = f"{best['variant']} · {coded['variant']}"
             text_opts = [best]
     text_rows = [r for t in text_opts for r in t["ingredients"]]
@@ -893,7 +931,157 @@ def merge_text_into_coded(coded: dict[str, Any], text_opts: list[dict[str, Any]]
     return coded
 
 
+# How much each reading is trusted when sources disagree (higher wins).
+_PRIORITY = {"spl_coded": 5, "dsld": 4, "label_text": 3, "usda": 2, "web": 1, "openfoodfacts": 1}
+_SOURCE_LABEL = {"spl_coded": "FDA coded", "label_text": "label text", "dsld": "DSLD",
+                 "usda": "USDA", "openfoodfacts": "Open Food Facts", "web": "web page"}  # fmt: skip
+_MERGE_NOTES = re.compile(
+    r"^(?:not named in the label text|label text says .*|not in the label text's list.*|"
+    r"label text uses the homeopathic .*|only in: .*|conflict: .*|confirmed by .*)$"
+)
+
+
+def _kind(t: dict[str, Any]) -> str:
+    m = str(t.get("method") or "")
+    return m if m in ("spl_coded", "label_text") else str(t.get("source") or "web")
+
+
+def _label(t: dict[str, Any]) -> str:
+    return str(t.get("label") or _SOURCE_LABEL.get(_kind(t), _kind(t)))
+
+
+def _group(role: str) -> str:
+    """Rows that can describe the same ingredient: a drug active and a supplement-facts
+    row are both stated amounts; inactive/other/food ingredients are the rest."""
+    return {"inactive": "rest", "other": "rest", "ingredient": "rest", "dietary": "active"}.get(
+        role, role
+    )
+
+
+def fuse(tables: list[dict[str, Any]]) -> dict[str, Any]:
+    """One table from several readings of the same product.
+
+    Rows naming the same ingredient (same UNII, or the same words) are merged. Each field
+    takes the value of the most trusted source that states it (FDA coded > DSLD > label
+    text > USDA > web/Open Food Facts) and gaps are filled from the others. Every row
+    lists its sources; a strength that sources state differently is kept from the most
+    trusted one and flagged ("conflict: …") for the operator to settle against the pack.
+    """
+    tabs = sorted(
+        [t for t in tables if t.get("ingredients") or t.get("contains")],
+        key=lambda t: -_PRIORITY.get(_kind(t), 0),
+    )
+    out = _empty("combined", NA)
+    out["method"] = "combined"
+    if not tabs:
+        return out
+    for k in ("product", "variant", "serving"):
+        out[k] = next((t[k] for t in tabs if t.get(k) not in (None, "", NA)), NA)
+    groups: list[list[tuple[dict[str, Any], dict[str, str]]]] = []
+    for t in tabs:
+        for r in t["ingredients"]:
+            hit = None
+            for g in groups:
+                lead = g[0][1]
+                if (
+                    _group(lead["role"]) == _group(r["role"])
+                    and all(x[0] is not t for x in g)
+                    and _match_row(r, [lead]) is not None
+                ):
+                    hit = g
+                    break
+            if hit is None:
+                groups.append([(t, r)])
+            else:
+                hit.append((t, r))
+    labels = [_label(t) for t in tabs]
+    for g in groups:
+        fused = dict(g[0][1])
+        for k in ("amount", "basis", "dv", "form", "sub", "variant"):
+            if fused.get(k, NA) == NA:
+                for _, r in g[1:]:
+                    if r.get(k, NA) != NA:
+                        fused[k] = r[k]
+                        if k == "amount" and r.get("basis", NA) != NA:
+                            fused["basis"] = r["basis"]
+                        break
+        notes: list[str] = []
+        for _, r in g:
+            for part in str(r.get("note", NA)).split("; "):
+                if (
+                    part
+                    and part != NA
+                    and not _MERGE_NOTES.match(part)
+                    and not part.startswith("category:")
+                    and part not in notes
+                ):
+                    notes.append(part)
+        names = {r["name"].lower() for _, r in g}
+        if len(names) > 1:
+            notes.append(
+                "also named: " + ", ".join(sorted(n for n in names if n != fused["name"].lower()))
+            )
+        stated = [(t, r) for t, r in g if r.get("amount", NA) != NA]
+        if stated:
+            ref = next((x for x in stated if x[1]["amount"] == fused["amount"]), stated[0])[1]
+            differ = [
+                (t, r) for t, r in stated
+                if r is not ref and not same_amount(r["amount"], ref["amount"], ref["basis"])
+                and not same_amount(ref["amount"], r["amount"], r["basis"])
+                and r["amount"].replace(" ", "") != ref["amount"].replace(" ", "")
+            ]  # fmt: skip
+            if differ:
+                said = [
+                    f"{_label(t)} says {r['amount']}"
+                    + (f" {r['basis']}" if r["basis"] != NA else "")
+                    for t, r in differ
+                ]
+                notes.append("conflict: " + "; ".join(said))
+            elif len(stated) > 1:
+                notes.append(f"amount confirmed by {len(stated)} sources")
+        srcs = [_label(t) for t, _ in g]
+        fused["sources"] = ", ".join(dict.fromkeys(srcs))
+        if len(tabs) > 1 and len(srcs) == 1:
+            notes.append(f"only in: {srcs[0]}")
+        fused["note"] = "; ".join(notes) or NA
+        out["ingredients"].append(fused)
+    # per-dose statements: union by nutrient, most trusted first
+    for t in tabs:
+        for c in t.get("contains") or []:
+            same = next((x for x in out["contains"] if x["name"] == c["name"]), None)
+            if same is None:
+                out["contains"].append(
+                    {**c, "note": _join(c.get("note", NA), f"from: {_label(t)}")}
+                )
+            elif (
+                not same_amount(c["amount"], same["amount"], same["basis"])
+                and c["amount"] != same["amount"]
+            ):
+                same["note"] = _join(same["note"], f"conflict: {_label(t)} says {c['amount']}")
+            else:
+                same["note"] = _join(same["note"], f"confirmed by: {_label(t)}")
+        for a in t.get("allergens") or []:
+            if a not in out["allergens"]:
+                out["allergens"].append(a)
+    # a supplement-facts row that is a per-dose mineral of a drug label ("calcium 10 mg")
+    keep = []
+    for r in out["ingredients"]:
+        c = next((x for x in out["contains"] if x["name"].lower() == r["name"].lower()), None)
+        if r["role"] == "dietary" and c is not None:
+            if r["amount"] == c["amount"] or same_amount(r["amount"], c["amount"], c["basis"]):
+                c["note"] = _join(c["note"], f"confirmed by: {r['sources']}")
+            else:
+                c["note"] = _join(c["note"], f"conflict: {r['sources']} says {r['amount']}")
+            continue
+        keep.append(r)
+    out["ingredients"] = keep
+    out["ingredients"].sort(key=lambda r: {"active": 0, "dietary": 1}.get(r["role"], 2))
+    out["sources_used"] = labels
+    return out
+
+
 METHODS = {
+    "combined": "combined from several sources",
     "spl_coded": "FDA coded product data (DailyMed SPL)",
     "label_text": "read from the label text",
     "record": "from the database record",
@@ -916,10 +1104,20 @@ def structure_record(
                 coded = spl_tables(spl_xml, str(info.get("name") or ""))
             except Exception:  # a malformed SPL: the label-text reading still stands
                 coded = []
+            combined = []
             for c in coded:
                 c["method"] = "spl_coded"
+                partner = pair_text(c, options)
                 merge_text_into_coded(c, options)
-            options = coded + options
+                if partner is not None:
+                    f = fuse([c, partner])
+                    f["variant"] = c["variant"]
+                    f["_coded"], f["_text"] = coded.index(c), options.index(partner)
+                    combined.append(f)
+            nc, nk = len(combined), len(coded)
+            for f in combined:
+                f["parts"] = [nc + f.pop("_coded"), nc + nk + f.pop("_text")]
+            options = combined + coded + options
     elif source == "dsld" and isinstance(raw, dict):
         options = [_dsld(raw, info)]
     else:
@@ -934,6 +1132,20 @@ def structure_record(
         o["method_label"] = METHODS[o["method"]]
     best = max(range(len(options)), key=lambda i: (score(options[i]), -i))
     return {"options": options, "default": best}
+
+
+def structure_pages(sections: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Ticked web-page sections, one table per page (labelled with its site)."""
+    pages: dict[str, list[dict[str, Any]]] = {}
+    for sc in sections[:50]:
+        pages.setdefault(str(sc.get("url") or ""), []).append(sc)
+    out = []
+    for url, secs in pages.items():
+        t = structure_sections(secs)
+        dom = re.sub(r"^www\.", "", re.sub(r"^https?://([^/]+).*$", r"\1", url)) if url else ""
+        t["label"] = f"web: {dom}" if dom else "web page"
+        out.append(t)
+    return out
 
 
 def structure_sections(sections: list[dict[str, Any]]) -> dict[str, Any]:

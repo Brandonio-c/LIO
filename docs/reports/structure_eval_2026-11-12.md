@@ -33,6 +33,35 @@ On the same 100 labels:
   - On regular labels, 5 of 140 coded actives could not be matched to a label-text name; the cause is synonyms or typos.
   - On homeopathic labels, 107 of 133 could not. The label uses Latin names, the coded data uses substance names, and the row notes this.
 
+## Combined reading (several sources fused)
+
+A third option combines several readings into one table:
+
+- **Automatically**, for an FDA label: the coded data plus the label text of the same product. This reading is preselected.
+- **On demand** in the dashboard: tick "combine" on any database records (FDA, DSLD, USDA) and any web-page sections, then press "Combine N sources".
+
+How the table is built:
+
+- **Matching rows.** Rows naming the same ingredient are merged: same UNII, or the same words after removing synonyms ("HCl" means hydrochloride, "soy" means soybean).
+- **Choosing values.** Each field takes the value of the most trusted source that states it: FDA coded, then DSLD, then label text, then USDA, then web pages and Open Food Facts. Gaps are filled from the other sources.
+- **Showing the evidence.**
+  - A Sources column lists the sources that name each ingredient.
+  - A strength that two sources state differently is highlighted, and the row says "conflict: …".
+  - An ingredient only one source lists is marked "only in: …".
+- **Supplement facts and per-dose amounts.** A DSLD supplement-facts row that matches a drug label's "each … contains" amount confirms that amount.
+
+On the 100 OTC labels (coded data combined with label text):
+
+| | Conventional (86 labels) | Homeopathic (14) |
+|---|---|---|
+| Combined rows | 1,492 | 216 |
+| Named by both sources | 990 (66%) | 49 |
+| Only one source names it | 502 | 167 |
+| Strength conflicts flagged | 8 | 1 |
+| Actives with a strength | 144 of 144 | 176 of 176 |
+
+Homeopathic labels give duplicate rows, because the Latin and substance names cannot be matched; the operator removes the duplicates. On conventional labels, most "only one source" rows are inactive ingredients the label text names differently ("fragrance", "Cyclopentasiloxane") or does not list.
+
 ### Why the 22 conventional strengths differ
 
 - **11: the label text gives no strength.** For example, MEDCLOT says only "CarboxymethylCellulose", and a sunscreen has an empty active-ingredient field. N/A is the correct answer here.

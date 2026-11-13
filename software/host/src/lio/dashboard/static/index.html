@@ -401,6 +401,7 @@ table.ingr td { border-top: 1px solid var(--hair); padding: 3px 4px; vertical-al
 table.ingr td.na, table.ingr input.na { color: var(--muted); }
 table.ingr input, table.ingr select { width: 100%; min-width: 60px; font-size: 12.5px; padding: 3px 5px; }
 table.ingr td.x { width: 26px; }
+table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, transparent); }
 .ingr-wrap { overflow-x: auto; }
 #img-overlay .modal { width: min(900px, 94vw); }
 #img-overlay img { max-width: 100%; max-height: 78vh; object-fit: contain; border-radius: 8px; background: #fff; }
@@ -1720,9 +1721,9 @@ function dbLabelReview(s, kind, r) {
    sub-ingredients, variant, notes) and per-dose statements. "N/A" = the source does not say. */
 const NA = "N/A";
 const ROLE_NAME = { active: "Active", inactive: "Inactive", dietary: "Supplement fact", other: "Other ingredient", ingredient: "Ingredient" };
-const ICOLS = [["name", "Ingredient"], ["role", "Type"], ["amount", "Amount"], ["basis", "Per"], ["dv", "% DV"], ["form", "Form"], ["sub", "Contains"], ["variant", "Variant"], ["note", "Notes"]];
+const ICOLS = [["name", "Ingredient"], ["role", "Type"], ["amount", "Amount"], ["basis", "Per"], ["dv", "% DV"], ["form", "Form"], ["sub", "Contains"], ["variant", "Variant"], ["sources", "Sources"], ["note", "Notes"]];
 const CCOLS = [["name", "Nutrient"], ["amount", "Amount"], ["basis", "Per"], ["variant", "Variant"], ["note", "Notes"]];
-const OPTIONAL = new Set(["dv", "form", "sub", "variant"]);   // shown only when some row has a value
+const OPTIONAL = new Set(["dv", "form", "sub", "variant", "sources"]);   // shown only when some row has a value
 function ingrCols(rows, cols) { return cols.filter(([k]) => !OPTIONAL.has(k) || rows.some((r) => (r[k] || NA) !== NA)); }
 function ingrTable(st, edit) {
   const rows = st.ingredients || [], cont = st.contains || [];
@@ -1733,10 +1734,10 @@ function ingrTable(st, edit) {
     if (k === "role") return `<td><select data-${kind}="${i}" data-k="role">${Object.entries(ROLE_NAME).map(([rk, rl]) => `<option value="${rk}"${rk === v ? " selected" : ""}>${rl}</option>`).join("")}</select></td>`;
     return `<td><input type="text" class="${v === NA ? "na" : ""}" data-${kind}="${i}" data-k="${k}" value="${esc(v)}"></td>`;
   };
-  const METHOD = { spl_coded: "FDA coded product data", label_text: "label text", record: "database record" };
+  const METHOD = { spl_coded: "FDA coded product data", label_text: "label text", record: "database record", combined: "combination of several sources" };
   const head = `<div class="note">${[st.method && METHOD[st.method] ? "from the " + METHOD[st.method] : "", st.product && st.product !== NA ? esc(st.product) : "", st.variant && st.variant !== NA ? "variant: " + esc(st.variant) : "", "serving: " + (edit ? `<input type="text" id="si-serving" value="${esc(st.serving || NA)}" style="width:200px;font-size:12.5px;padding:2px 5px">` : esc(st.serving || NA))].filter(Boolean).join(" · ")}</div>`;
   const it = rows.length ? `<div class="ingr-wrap"><table class="ingr"><tr><th>#</th>${ic.map(([, l]) => `<th>${l}</th>`).join("")}${edit ? "<th></th>" : ""}</tr>
-      ${rows.map((r, i) => `<tr><td class="na">${i + 1}</td>${ic.map(([k]) => cell(r, k, i, "ir")).join("")}${edit ? `<td class="x"><button class="btn small" data-del-ir="${i}" title="remove this row">✕</button></td>` : ""}</tr>`).join("")}</table></div>`
+      ${rows.map((r, i) => `<tr${/conflict:/.test(r.note || "") ? ' class="conflict" title="the sources disagree: check against the pack"' : ""}><td class="na">${i + 1}</td>${ic.map(([k]) => cell(r, k, i, "ir")).join("")}${edit ? `<td class="x"><button class="btn small" data-del-ir="${i}" title="remove this row">✕</button></td>` : ""}</tr>`).join("")}</table></div>`
     : `<div class="note">No ingredients could be read.</div>`;
   const ct = cont.length ? `<div class="note" style="margin-top:8px">Amounts stated per dose (e.g. "each caplet contains")</div><div class="ingr-wrap"><table class="ingr"><tr>${cc.map(([, l]) => `<th>${l}</th>`).join("")}${edit ? "<th></th>" : ""}</tr>
       ${cont.map((r, i) => `<tr>${cc.map(([k]) => cell(r, k, i, "cr")).join("")}${edit ? `<td class="x"><button class="btn small" data-del-cr="${i}" title="remove this row">✕</button></td>` : ""}</tr>`).join("")}</table></div>` : "";
@@ -1755,7 +1756,8 @@ function ingrConfirm(s, options, def, sourceText, refs, onSave) {
     $("fo-confirm").innerHTML = `<div style="border-top:2px solid var(--accent);padding-top:10px;display:grid;gap:8px">
         <div class="row"><strong style="flex:1">Confirm the ingredients for ${esc(s.sample_code)}</strong>
           ${options.length > 1 ? `<label class="note">Reading: <select id="si-var">${[...new Set(options.map((o) => o.method_label || ""))].map((m) => `<optgroup label="${esc(m || "Tables")}">${options.map((o, i) => (o.method_label || "") === m ? `<option value="${i}"${i === idx ? " selected" : ""}>${esc(o.variant && o.variant !== NA ? o.variant : "this label")}</option>` : "").join("")}</optgroup>`).join("")}</select></label>` : ""}</div>
-        <div class="note">${st.method === "spl_coded" ? "<b>FDA coded product data</b>: names, ingredient codes (UNII) and strengths exactly as the manufacturer filed them with the FDA; purposes and per-dose amounts come from the label text. The other reading (label text) is in the list above."
+        <div class="note">${st.method === "combined" ? `<b>Combined from ${esc((st.sources_used || []).join(", ") || "several sources")}.</b> Each ingredient takes the most trusted value any source states (FDA coded > DSLD > label text > USDA > web pages) and gaps are filled from the others; the Sources column says which agree. <b>Highlighted rows</b> are where sources disagree: settle them against the pack. Each source's own table is in the list above.`
+          : st.method === "spl_coded" ? "<b>FDA coded product data</b>: names, ingredient codes (UNII) and strengths exactly as the manufacturer filed them with the FDA; purposes and per-dose amounts come from the label text. The other reading (label text) is in the list above."
           : st.method === "label_text" ? "<b>Read from the label text.</b>" + (options.some((o) => o.method === "spl_coded") ? " The FDA coded product data for this label is in the list above." : "") : ""}
           N/A means the source does not state it. Check each row against the pack and correct it before saving.</div>
         ${ingrTable(st, true)}
@@ -1814,7 +1816,7 @@ async function dbFindOnline(s, p, query) {
         <td><div style="font-weight:600;color:var(--ink)">${esc(c.name)}</div>
             <div class="note">${esc([c.brand, c.detail].filter(Boolean).join(" · "))}${c.link ? ` · <a href="${esc(c.link)}" target="_blank" rel="noopener">open the record ↗</a>` : ""}</div>
             <div style="color:var(--ink-2);margin-top:3px">${esc(c.ingredients)}</div></td>
-        <td style="width:90px"><button class="btn small" data-rec="${i}">Use this</button></td></tr>`).join("")}</table>`
+        <td style="width:120px;white-space:nowrap"><button class="btn small" data-rec="${i}">Use this</button><label class="check note" style="margin-top:4px"><input type="checkbox" data-mix="${i}"> combine</label></td></tr>`).join("")}</table>`
       : `<div class="note">No label record with an ingredient list matched this name.</div>`}
     <div class="note" style="text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-top:6px">Web pages${web.engine ? " · via " + esc(web.engine) : ""}</div>
     ${withList.length ? withList.map((pg, pi) => `<div style="border-top:1px solid var(--hair);padding-top:8px">
@@ -1823,6 +1825,7 @@ async function dbFindOnline(s, p, query) {
       : `<div class="note">No ingredient list found on the web pages${(web.errors || []).length ? " (" + esc(web.errors.join("; ")) + ")" : ""}.</div>`}
     ${without.length ? `<div class="note" style="margin-top:6px">Also looked at, no list could be read: ${without.map((pg) => `<a href="${esc(pg.url)}" target="_blank" rel="noopener">${esc(pg.domain)}</a>${pg.error ? " (" + esc(pg.error) + ")" : ""}`).join(" · ")}. Open them to check by eye.</div>` : ""}
     <div class="note" style="margin-top:4px">Pages often list several versions of a product (flavours, sugar-free, caplets): pick the one that matches the pack you have.</div>
+    <div class="row" style="margin-top:6px"><button class="btn small" id="fo-mix" disabled>Combine the ticked sources</button><span class="note" id="fo-mix-n">Tick "combine" on label records and/or tick web-page sections, then combine them into one table: matching rows are merged, gaps filled, and disagreements highlighted.</span></div>
     <div class="note" style="text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-top:6px">SmartLabel</div>
     ${r.smartlabel && r.smartlabel.result ? `<div><b>${esc(r.smartlabel.result.name)}</b>: ${esc(r.smartlabel.result.ingredients_text)}</div>`
       : `<div class="note">${r.smartlabel && r.smartlabel.configured ? "No SmartLabel record for this barcode." : "SmartLabel's data needs a Label Insight API key (none configured)."} Search it yourself: <a href="${esc((r.smartlabel || {}).link || "https://www.smartlabel.org/")}" target="_blank" rel="noopener">smartlabel.org ↗</a>${((r.smartlabel || {}).gs1_links || []).length ? " · pages the brand registered with GS1: " + r.smartlabel.gs1_links.map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.title)} ↗</a>`).join(" · ") : ""}</div>`}
@@ -1870,7 +1873,32 @@ async function dbFindOnline(s, p, query) {
       catch (e) { toast(e.message, 7000); }
     });
   };
-  $("fo-results").querySelectorAll("[data-sec]").forEach((c) => c.onchange = onTick);
+  $("fo-results").querySelectorAll("[data-sec]").forEach((c) => c.onchange = () => { mixCount(); onTick(); });
+  const mixPicked = () => ({
+    records: [...document.querySelectorAll("[data-mix]:checked")].map((c) => recs[+c.dataset.mix]),
+    sections: [...document.querySelectorAll("[data-sec]:checked")].map((c) => { const [pi, si] = c.dataset.sec.split(":").map(Number); return [withList[pi], withList[pi].sections[si]]; }),
+  });
+  const mixCount = () => {
+    const m = mixPicked(), n = m.records.length + new Set(m.sections.map(([pg]) => pg.url)).size;
+    $("fo-mix").disabled = n < 2;
+    $("fo-mix").textContent = n >= 2 ? `Combine ${n} sources` : "Combine the ticked sources";
+  };
+  $("fo-results").querySelectorAll("[data-mix]").forEach((c) => c.onchange = mixCount);
+  $("fo-mix").onclick = async () => {
+    const m = mixPicked();
+    const refs = [...m.records.filter((c) => c.link).map((c) => ({ url: c.link, title: `${SRC_TAG[c.source] || c.source}: ${c.name}` })),
+      ...[...new Map(m.sections.map(([pg]) => [pg.url, { url: pg.url, title: pg.title || pg.domain, sha256: pg.sha256 || "" }])).values()]];
+    $("fo-confirm").innerHTML = `<div class="note" style="border-top:2px solid var(--accent);padding-top:10px">Reading and combining ${m.records.length + m.sections.length} sources…</div>`;
+    let out;
+    try { out = await api("/api/foods/fuse", { query: r.query, records: m.records.map((c) => ({ source: c.source, id: c.id, name: c.name })),
+      sections: m.sections.map(([pg, sc]) => ({ heading: sc.heading, text: sc.text, url: pg.url })) }); }
+    catch (e) { $("fo-confirm").innerHTML = ""; return toast(e.message, 7000); }
+    const srcText = [...m.records.map((c) => `${SRC_TAG[c.source] || c.source} · ${c.name}: ${c.ingredients}`), ...m.sections.map(([pg, sc]) => `${pg.domain} · ${sc.heading}: ${sc.text}`)].join("\n");
+    ingrConfirm(s, out.options, out.default, srcText, refs, async (st) => {
+      try { await api("/api/foods/ingredients", { gtin14: s.gtin14, ingredients_text: "", ingredients_structured: st, refs }); toast("combined ingredients saved, with their sources"); await dbRefresh(s.sample_code); }
+      catch (e) { toast(e.message, 7000); }
+    });
+  };
 }
 
 function dbLabelEditor(p) {
