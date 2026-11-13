@@ -776,7 +776,8 @@ def spl_tables(xml: bytes, name: str = "") -> list[dict[str, Any]]:
                 )  # fmt: skip
         s["ingredients"].sort(key=lambda r: r["role"] != "active")
         if len(bases) == 1 and next(iter(bases)):
-            s["serving"] = next(iter(bases)).removeprefix("per ")
+            per = next(iter(bases)).removeprefix("per ")
+            s["serving"] = per if per[:1].isdigit() else f"1 {per}"
         out.append(s)
     # one table per distinct product (kits repeat parts)
     seen, uniq = set(), []
