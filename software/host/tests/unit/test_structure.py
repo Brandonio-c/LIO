@@ -441,3 +441,48 @@ def test_fuse_sources_skips_a_source_that_fails(lib: FoodLibrary) -> None:
         [], "fish oil", all_variants=True,
     )  # fmt: skip
     assert out["groups"] == 1 and len(out["skipped"]) == 1 and "Missing" in out["skipped"][0]
+
+
+DM = "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9d5f2244"
+DM_SECTIONS = [
+    {"heading": "Active ingredient (in each heaping tablespoon)",
+     "text": "CITRUCEL Orange Methylcellulose (a non-allergenic fiber) 2 g", "url": DM},
+    {"heading": "Active ingredient (in each rounded tablespoon)",
+     "text": "CITRUCEL Sugar Free Methylcellulose (a non-allergenic fiber) 2 g", "url": DM},
+    {"heading": "Inactive ingredients (Citrucel Orange)",
+     "text": "citric acid, dibasic calcium phosphate, sucrose, tricalcium phosphate", "url": DM},
+    {"heading": "Inactive ingredients (Citrucel Sugar Free)",
+     "text": "aspartame, dibasic calcium phosphate, malic acid", "url": DM},
+    {"heading": "Ingredient", "text": "Name Strength CITRIC ACID MONOHYDRATE (UNII: 2968PHW8QP)", "url": DM},
+    {"heading": "Ingredient", "text": "Name Strength ASPARTAME (UNII: Z0H242BBR1)", "url": DM},
+]  # fmt: skip
+
+
+def test_a_page_covering_two_products_is_split() -> None:
+    tables = S.structure_pages(DM_SECTIONS)
+    by_variant = {t["variant"]: t for t in tables}
+    assert set(by_variant) == {"Citrucel Orange", "Citrucel Sugar Free"}  # nothing left over
+    orange, sf = by_variant["Citrucel Orange"], by_variant["Citrucel Sugar Free"]
+    assert [r["name"] for r in orange["ingredients"] if r["role"] == "active"] == [
+        "Methylcellulose"
+    ]
+    assert orange["serving"] == "1 heaping tablespoon" and sf["serving"] == "1 rounded tablespoon"
+    assert "aspartame" not in [r["name"] for r in orange["ingredients"]]
+    citric = next(r for r in orange["ingredients"] if r["name"] == "citric acid")
+    assert "UNII 2968PHW8QP" in citric["note"]  # the unattributed row enriched its match
+    assert (
+        "UNII Z0H242BBR1" in next(r for r in sf["ingredients"] if r["name"] == "aspartame")["note"]
+    )
+
+
+def test_different_variants_never_combine() -> None:
+    orange, sf = (
+        next(t for t in S.structure_pages(DM_SECTIONS) if t["variant"] == v)
+        for v in ("Citrucel Orange", "Citrucel Sugar Free")
+    )
+    sf_like_orange = {**sf, "ingredients": orange["ingredients"]}  # even with the same rows
+    assert not S.same_product(orange, sf_like_orange)
+    groups = S.group_tables([orange, sf])
+    assert len(groups) == 2
+    fused = S.fuse(groups[0])
+    assert len({r["name"].lower() for r in fused["ingredients"]}) == len(fused["ingredients"])

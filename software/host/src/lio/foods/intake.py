@@ -577,6 +577,7 @@ class Intake:
             f.pop("_score")
         for t in tables:
             t["method_label"] = t["label"]
+            t.setdefault("method", "record")
             t.pop("parts", None)
         return {
             "options": [*fused_all, *tables],

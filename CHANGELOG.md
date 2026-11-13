@@ -36,6 +36,11 @@
   - **The popup.** The result opens in a popup with one combined table per product. The table matching the search is preselected, and **Use combination** saves it.
   - **Failures.** A source that cannot be read is skipped and named; it does not stop the others.
   - **An example from Citrucel:** the DSLD record titled "Orange Flavor" lists aspartame and malic acid, so it is grouped with Sugar Free, not with Orange.
+- **Fixed: "Combine all" mixed products from web pages.**
+  - **Pages are split per variant.** A page covering several variants (DailyMed's Citrucel page lists Orange and Sugar Free) was combined as one source, so Sugar Free rows landed in the Orange table and the same ingredient appeared twice. Now each page is split per variant, using its section headings and the variant named in rows ("CITRUCEL Sugar Free Methylcellulose").
+  - **Unassigned rows enrich their match.** A row that names no variant but matches exactly one variant's row, such as "CITRIC ACID MONOHYDRATE (UNII …)", adds its details to that row.
+  - **Variants never combine.** Tables that name different variants are never combined.
+  - **Drug types win.** A drug's "Inactive" or "Active" type wins over a supplement record's "Other" or "Supplement fact".
 - **Where it is stored.** The table goes in the product's `ingredients_structured` field. Typing a new list by hand removes the old table. It is a reviewed database value, not a verified fact.
 
 ## 2026-11-12: Composition coverage M7, documentation (plan WP8)

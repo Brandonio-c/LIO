@@ -937,7 +937,7 @@ _SOURCE_LABEL = {"spl_coded": "FDA coded", "label_text": "label text", "dsld": "
                  "usda": "USDA", "openfoodfacts": "Open Food Facts", "web": "web page"}  # fmt: skip
 _MERGE_NOTES = re.compile(
     r"^(?:not named in the label text|label text says .*|not in the label text's list.*|"
-    r"label text uses the homeopathic .*|only in: .*|conflict: .*|confirmed by .*)$"
+    r"label text uses the homeopathic .*|only in: .*|conflict: .*|confirmed by .*|also named: .*)$"
 )
 
 
@@ -997,6 +997,13 @@ def fuse(tables: list[dict[str, Any]]) -> dict[str, Any]:
     labels = [_label(t) for t in tabs]
     for g in groups:
         fused = dict(g[0][1])
+        roles = {r["role"] for _, r in g}
+        if (
+            fused["role"] == "dietary" and "active" in roles
+        ):  # a drug's active, not a supplement fact
+            fused["role"] = "active"
+        elif fused["role"] in ("other", "ingredient") and "inactive" in roles:
+            fused["role"] = "inactive"
         for k in ("amount", "basis", "dv", "form", "sub", "variant"):
             if fused.get(k, NA) == NA:
                 for _, r in g[1:]:
@@ -1080,10 +1087,24 @@ def fuse(tables: list[dict[str, Any]]) -> dict[str, Any]:
     return out
 
 
+def _variant_key(t: dict[str, Any]) -> str:
+    """A reading's product-variant name as the label states it ("Citrucel Orange"), or ''.
+    Coded tables carry "Citrucel Orange · CITRUCEL powder (NDC ...)"; an unpaired coded
+    name ("CITRUCEL tablet (NDC ...)") is not a label variant and is ignored."""
+    v = str(t.get("variant") or NA).split(" · ")[0].strip()
+    if v == NA or "NDC" in v:
+        return ""
+    return " ".join(re.findall(r"[a-z0-9]+", v.lower()))
+
+
 def same_product(a: dict[str, Any], b: dict[str, Any], threshold: float = 0.7) -> bool:
-    """Whether two readings describe the same product: their non-active ingredient lists
-    mostly match (matched rows / the longer list >= ``threshold``) and no active named in
-    both has a different strength (a 500 mg caplet is not the 2 g powder)."""
+    """Whether two readings describe the same product: they do not name different
+    variants ("Citrucel Orange" is not "Citrucel Sugar Free"), their non-active ingredient
+    lists mostly match (matched rows / the longer list >= ``threshold``) and no active
+    named in both has a different strength (a 500 mg caplet is not the 2 g powder)."""
+    va, vb = _variant_key(a), _variant_key(b)
+    if va and vb and va != vb:
+        return False
     for r in a["ingredients"]:
         if _group(r["role"]) != "active" or r["amount"] == NA:
             continue
@@ -1183,8 +1204,73 @@ def structure_pages(sections: list[dict[str, Any]]) -> list[dict[str, Any]]:
     for url, secs in pages.items():
         t = structure_sections(secs)
         dom = re.sub(r"^www\.", "", re.sub(r"^https?://([^/]+).*$", r"\1", url)) if url else ""
-        t["label"] = f"web: {dom}" if dom else "web page"
-        out.append(t)
+        label = f"web: {dom}" if dom else "web page"
+        out.extend(split_by_variant(t, label))
+    return out
+
+
+def split_by_variant(t: dict[str, Any], label: str) -> list[dict[str, Any]]:
+    """A page often covers several products ("Inactive ingredients (Citrucel Orange)",
+    "... (Citrucel Sugar Free)"). Rows that name a variant ("CITRUCEL Sugar Free
+    Methylcellulose") are given to it, and the page becomes one table per variant.
+    Rows that name none go to a table of their own, so they cannot join a product
+    by accident."""
+    rows = t["ingredients"]
+    variants = sorted(
+        {r["variant"] for r in rows if r["variant"] != NA}
+        | {c["variant"] for c in t["contains"] if c.get("variant", NA) != NA},
+        key=len,
+        reverse=True,
+    )
+    if not variants:
+        t["label"] = label
+        return [t]
+    for r in rows:
+        if r["variant"] != NA:
+            continue
+        for v in variants:
+            i = r["name"].lower().find(v.lower())
+            if i >= 0:
+                r["variant"] = v
+                rest = _s(r["name"][:i] + " " + r["name"][i + len(v) :])
+                if rest:
+                    r["name"] = rest
+                break
+    out = []
+    for v in variants:
+        sub: dict[str, Any] = {
+            **_empty(t["source"], t["product"]),
+            "variant": v,
+            "label": f"{label} · {v}",
+        }
+        sub["ingredients"] = [r for r in rows if r["variant"] == v]
+        sub["contains"] = [c for c in t["contains"] if c.get("variant", NA) == v]
+        sub["allergens"] = list(t.get("allergens") or [])
+        acts = {
+            r["basis"] for r in sub["ingredients"] if r["role"] == "active" and r["basis"] != NA
+        }
+        if len(acts) == 1:
+            sub["serving"] = "1 " + next(iter(acts)).removeprefix("per ")
+        out.append(sub)
+    # a row naming no variant that restates a row of exactly one variant ("CITRIC ACID
+    # MONOHYDRATE (UNII ...)" ~ the Orange list's "citric acid") enriches that row
+    unplaced: list[dict[str, str]] = []
+    for r in (r for r in rows if r["variant"] == NA):
+        hits = [m for m in (_match_row(r, x["ingredients"]) for x in out) if m is not None]
+        if len(hits) == 1:
+            m = hits[0]
+            for part in str(r["note"]).split("; "):
+                if part != NA and part not in m["note"]:
+                    m["note"] = _join(m["note"], part)
+            if r["name"].lower() != m["name"].lower():
+                m["note"] = _join(m["note"], f"also named: {r['name'].lower()}")
+        else:
+            unplaced.append(r)
+    if unplaced:
+        sub = {**_empty(t["source"], t["product"]), "label": f"{label} · product not stated"}
+        sub["ingredients"] = unplaced
+        sub["contains"] = [c for c in t["contains"] if c.get("variant", NA) == NA]
+        out.append(sub)
     return out
 
 
