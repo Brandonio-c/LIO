@@ -547,6 +547,13 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
       </div>
     </div>
     <div id="mot-msg" class="note" style="margin-top:10px"></div>
+    <h3 style="margin-top:14px">Chamber top position (tracked)</h3>
+    <div class="row" style="align-items:flex-start;gap:16px">
+      <div id="stage-info" class="note" style="flex:1;line-height:1.6">–</div>
+      <button id="stage-top" class="btn" title="The chamber top is at its physical upper end now: position 0">Set top here</button>
+      <button id="stage-bottom" class="btn" title="The chamber top is at its lowest safe position now">Mark bottom here</button>
+    </div>
+    <p class="note" style="margin:6px 0 0">Half-steps from the top of travel (top = 0, lower is negative), kept across sessions in <code>test_results/stage_position.json</code>. Once both limits are marked, step moves that would leave the range are refused and continuous runs stop short of them. A move made by hand or with another program is not seen: set the top again after one.</p>
     <h3 style="margin-top:14px">Motor log</h3>
     <pre id="mot-log" class="mono"></pre>
   </section>
@@ -1087,6 +1094,20 @@ function motorJog(m, dir) {
 $("mot-arm-btn").onclick = () => motorAct("/api/motor/arm");
 $("mot-stop").onclick = () => motorAct("/api/motor/stop");
 $("mot-release").onclick = () => motorAct("/api/motor/release");
+$("stage-top").onclick = () => { if (confirm("Is the chamber top at its physical upper end now, on both sides? This sets position 0.")) motorAct("/api/stage/set_top"); };
+$("stage-bottom").onclick = () => { if (confirm("Is the chamber top at its lowest safe position now, level on both sides?")) motorAct("/api/stage/mark_bottom"); };
+function renderStage() {
+  const st = M && M.connected ? M.stage : null, box = $("stage-info");
+  const busy = !(M && M.connected && M.motors) || (S && S.running) || Object.values((M && M.motors) || {}).some((x) => x.state === "run");
+  $("stage-top").disabled = busy || !st; $("stage-bottom").disabled = busy || !(st && st.known);
+  if (!st) { box.textContent = M && M.connected ? "not tracked on this connection (simulator)" : "not connected"; return; }
+  if (!st.known) { box.innerHTML = "<b>Position unknown.</b> Raise the top to its upper end and press <b>Set top here</b>."; return; }
+  const f = (a) => a ? `left ${a[0]} · right ${a[1]}` : "not marked";
+  box.innerHTML = `<b>Now:</b> ${f(st.abs)}<br><b>Top:</b> ${f(st.top)} &nbsp; <b>Bottom:</b> ${f(st.bottom)}`
+    + (st.range ? `<br><b>Travel:</b> ${st.range[0]} / ${st.range[1]} half-steps` : "")
+    + (st.below_top ? ` &nbsp; <b>below top:</b> ${st.below_top.join(" / ")}` : "")
+    + (st.above_bottom ? ` &nbsp; <b>above bottom:</b> ${st.above_bottom.join(" / ")}` : "");
+}
 async function motorPoll() {
   // While a continuous move runs, keep checking in from any tab: the server stops it if we go quiet.
   if ((view !== "motors" && !(M && M.jog)) || !STATIC) return;
@@ -1094,6 +1115,7 @@ async function motorPoll() {
   renderMotors();
 }
 function renderMotors() {
+  renderStage();
   const on = !!(M && M.connected && M.motors), running = !!(S && S.running);
   const armed = on && M.armed, lit = on && M.lit > 0;
   const arm = $("mot-arm");

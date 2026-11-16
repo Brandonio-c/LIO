@@ -17,6 +17,7 @@ from lio.device import LIODevice
 from lio.operator import Operator, SimOperator
 from lio.results import RunRecord, TestResult, overall_verdict
 from lio.sim import Faults, SimulatedLIO
+from lio.stage import tracker_for
 from lio.suite.core import SuiteContext, TestDef, catalogue, run_test
 from lio.transport import SerialTransport, SimTransport, Transport
 
@@ -63,7 +64,7 @@ def serial_context(
     ``allow_motion``.
     """
     t = transport or SerialTransport(port, cfg.section.integer("link.baud"))
-    dev = LIODevice(t, cfg)
+    dev = LIODevice(t, cfg, stage=tracker_for(cfg) if transport is None else None)
     dev.open()
     return SuiteContext(
         dev,

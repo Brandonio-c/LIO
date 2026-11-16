@@ -16,7 +16,12 @@
 - **T09.7, detectors while the chamber moves.** The scan holes are measured continuously on the way up and back down, each reading with its position.
   - Checks: no refusals, no watchdog trips, the two motors within 2 half-steps of each other, and every expected channel seen somewhere in the travel.
   - The response-vs-height scan is stored in `results.json`.
-- **Both tests skip** until the travel is measured (`thresholds.motion.travel.range_steps`). There are no limit switches, so the operator confirms the top starts at its lowest position.
+- **Both tests skip** until the travel is known. There are no limit switches, so without tracked limits the operator confirms the top starts at its lowest position.
+- **Chamber-top position tracking (`lio.stage`).** The position is kept across sessions in `test_results/stage_position.json`, in half-steps from the top of travel.
+  - Rebased at every firmware boot, and updated from every reported position.
+  - Limits are set with **Set top here** / **Mark bottom here** on the Motors tab, or `lio stage set-top` / `mark-bottom`.
+  - Soft limits refuse step moves beyond the marked range and stop continuous runs short of it.
+  - T09.6 and T09.7 use the tracked travel and drive to the bottom themselves.
 
 ## 2026-11-12: Structured ingredients from "Find the ingredients online"
 

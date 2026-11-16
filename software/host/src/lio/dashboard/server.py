@@ -442,6 +442,10 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json(s.flash(_hole(b), s.cfg.section.integer("dashboard.flash_ms")))
             elif path == "/api/wake":
                 return self._json(s.wake())
+            elif path == "/api/stage/set_top":
+                return self._json(s.stage_set_top())
+            elif path == "/api/stage/mark_bottom":
+                return self._json(s.stage_mark_bottom())
             elif path == "/api/motor/arm":
                 return self._json(s.motor_arm())
             elif path == "/api/motor/move":

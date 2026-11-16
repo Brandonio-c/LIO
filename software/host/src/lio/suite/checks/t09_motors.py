@@ -280,22 +280,58 @@ def t09_4(ctx: SuiteContext, rec: Recorder) -> None:
 
 
 def _travel(ctx: SuiteContext) -> dict[str, float]:
-    """thresholds.motion.travel, or Skip when the travel has not been measured."""
+    """The travel to test: from the tracked limits (lio.stage) when both are marked,
+    else thresholds.motion.travel.range_steps; Skip when neither is known."""
+    st = ctx.dev.stage
+    if st is not None and st.known and st.limits.top is not None:
+        lim = st.limits
+        if lim.bottom is None:
+            raise Skip(
+                "bottom of travel not marked: lower the top to its lowest safe position and "
+                "press 'Mark bottom here' (Motors tab) or run 'lio stage mark-bottom'"
+            )
+        assert lim.top is not None
+        rng = min(lim.top[i] - lim.bottom[i] for i in range(2))
+        margin = ctx.dev.stage_top_margin()
+        if rng - margin <= 0:
+            raise Skip("marked travel is shorter than the top margin")
+        return {"range": rng, "margin": margin, "tracked": 1}
     rng = ctx.th.integer("motion.travel.range_steps")
     if rng <= 0:
         raise Skip(
-            "travel not measured: jog the chamber top from its lowest to its highest "
-            "position and set thresholds.motion.travel.range_steps (half-steps)"
+            "travel not measured: mark the top and bottom (Motors tab, or lio stage "
+            "set-top / mark-bottom), or set thresholds.motion.travel.range_steps"
         )
     margin = ctx.th.integer("motion.travel.margin_steps")
     if rng - margin <= 0:
         raise Skip("travel.margin_steps leaves no travel")
-    return {"range": rng, "margin": margin}
+    return {"range": rng, "margin": margin, "tracked": 0}
 
 
-def _op_at_bottom(ctx: SuiteContext) -> None:
-    """The top must start at its lowest position: there are no limit switches."""
+def _start_at_bottom(ctx: SuiteContext, tr: dict[str, float]) -> None:
+    """Bring the top to the bottom of the travel before the test moves it up.
+
+    With tracked limits the host knows where it is and drives there itself (both
+    motors together; refused if the two sides are not level). Without them the
+    operator must confirm, since there are no limit switches."""
     if ctx.cache.get("at_bottom"):
+        return
+    st = ctx.dev.stage
+    if tr.get("tracked") and st is not None:
+        ctx.dev.status()
+        a, bot = st.abs, st.limits.bottom
+        assert a is not None and bot is not None
+        d1, d2 = bot[0] - a[0], bot[1] - a[1]
+        if d1 != d2:
+            raise Skip(
+                f"the two sides are not level (left {a[0]}, right {a[1]}): level them "
+                "with single-motor moves first"
+            )
+        if d1:
+            ok, msg = _lockstep(ctx, d1)
+            if not ok:
+                raise Skip(f"could not reach the bottom of travel: {msg}")
+        ctx.cache["at_bottom"] = True
         return
     assert ctx.operator is not None
     if not ctx.operator.confirm(
@@ -390,7 +426,7 @@ def t09_6(ctx: SuiteContext, rec: Recorder) -> None:
     """
     tr = _travel(ctx)
     _op_chamber_clear(ctx)
-    _op_at_bottom(ctx)
+    _start_at_bottom(ctx, tr)
     ctx.require_adc()
     holes = list(ctx.th.ints("motion.travel.ref_holes"))
     up = int(tr["range"] - tr["margin"])
@@ -475,7 +511,7 @@ def t09_7(ctx: SuiteContext, rec: Recorder) -> None:
             "firmware has no MOTOR LIGHT (needs 2.4.0): measurements are refused while moving"
         )
     _op_chamber_clear(ctx)
-    _op_at_bottom(ctx)
+    _start_at_bottom(ctx, tr)
     ctx.require_adc()
     dev = ctx.dev
     holes = list(ctx.th.ints("motion.travel.scan_holes"))

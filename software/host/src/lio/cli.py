@@ -35,6 +35,7 @@ from lio.device import DeviceError, LIODevice, NoResponse
 from lio.operator import ConsoleOperator
 from lio.results import Status, TestResult, Verdict
 from lio.sim import Faults, FaultSpecError, SimulatedLIO
+from lio.stage import StageError, tracker_for
 from lio.transport import (
     SerialTransport,
     SimTransport,
@@ -103,7 +104,8 @@ def _transport(args: argparse.Namespace, cfg: HwConfig) -> Transport:
 
 @contextlib.contextmanager
 def _device(args: argparse.Namespace, cfg: HwConfig) -> Iterator[LIODevice]:
-    with LIODevice(_transport(args, cfg), cfg) as dev:
+    stage = None if args.sim else tracker_for(cfg)
+    with LIODevice(_transport(args, cfg), cfg, stage=stage) as dev:
         try:
             dev.check_compatible()
         except Exception as e:  # report, but let the user look at what is there
@@ -212,6 +214,35 @@ def cmd_sweep(args: argparse.Namespace, cfg: HwConfig) -> int:
 
         plot_sweep(Path(args.plot), sweep.records, cfg)
         print(f"saved {args.plot}")
+    return 0
+
+
+def cmd_stage(args: argparse.Namespace, cfg: HwConfig) -> int:
+    """Chamber-top position kept across sessions (lio.stage)."""
+    if args.sim:
+        print("stage tracking applies to the hardware only", file=sys.stderr)
+        return 3
+    if args.stage_command == "show":
+        tr = tracker_for(cfg)
+        if tr is None:
+            print("no stage.state_file in the config", file=sys.stderr)
+            return 3
+        _print_fields({k: str(v) for k, v in tr.summary().items()})
+        return 0
+    with _device(args, cfg) as dev:
+        try:
+            if args.stage_command == "set-top":
+                out = dev.stage_set_top()
+            elif args.stage_command == "mark-bottom":
+                out = dev.stage_mark_bottom()
+            else:  # forget
+                assert dev.stage is not None
+                dev.stage.forget()
+                out = dev.stage.summary()
+        except StageError as e:
+            print(f"refused: {e}", file=sys.stderr)
+            return 3
+    _print_fields({k: str(v) for k, v in out.items()})
     return 0
 
 
@@ -537,6 +568,13 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--plot", help="write a PNG plot here")
     s.set_defaults(fn=cmd_sweep)
 
+    s = sub.add_parser("stage", help="chamber-top position and travel limits")
+    ssub = s.add_subparsers(dest="stage_command", required=True)
+    ssub.add_parser("show", help="tracked position and limits (no connection)")
+    ssub.add_parser("set-top", help="the top is at its physical upper end now (position 0)")
+    ssub.add_parser("mark-bottom", help="the top is at its lowest safe position now")
+    ssub.add_parser("forget", help="the position is no longer known (moved by hand)")
+    s.set_defaults(fn=cmd_stage)
     s = sub.add_parser("motor", help="motor commands (asks before moving)")
     s.add_argument("motor_or_action", help="1, 2, arm, stop or release")
     s.add_argument("rest", nargs="*", help="step <+-n>")

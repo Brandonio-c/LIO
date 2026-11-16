@@ -29,6 +29,7 @@ from lio.protocol import (
     fw_compatible,
     parse_line,
 )
+from lio.stage import StageError, StageTracker
 from lio.transport import Transport
 
 log = logging.getLogger(__name__)
@@ -219,9 +220,18 @@ class DutyTracker:
 class LIODevice:
     """Typed, safe access to an LIO controller over any :class:`Transport`."""
 
-    def __init__(self, transport: Transport, cfg: HwConfig, *, duty: bool = True) -> None:
+    def __init__(
+        self,
+        transport: Transport,
+        cfg: HwConfig,
+        *,
+        duty: bool = True,
+        stage: StageTracker | None = None,
+    ) -> None:
         self.transport = transport
         self.cfg = cfg
+        # Absolute stage position across sessions (lio.stage); None = not tracked.
+        self.stage = stage
         self.events: list[tuple[float, Event]] = []
         self.noise: list[str] = []
         self.banner: Event | None = None
@@ -374,6 +384,16 @@ class LIODevice:
         if ev.is_boot:
             self._info = None
             self._close_lit(self.now())
+            if self.stage is not None:  # the firmware's counters restart at 0
+                self.stage.rebase(0, 0, "boot")
+        if (
+            self.stage is not None
+            and ev.name == "MOTOR"
+            and "m" in ev.fields
+            and "pos" in ev.fields
+        ):
+            m, pos = ev.fields.as_int("m"), ev.fields.as_int("pos")
+            self.stage.observe(pos if m == 1 else None, pos if m == 2 else None)
 
     def wait_banner(self, timeout: float) -> Event:
         deadline = self.now() + timeout
@@ -461,6 +481,9 @@ class LIODevice:
                 reply = Reply(line, events, t_sent, self.now())
                 if check and not line.ok:
                     raise DeviceError(cmd, line.code or 0, line.msg or "")
+                f = reply.fields
+                if self.stage is not None and "pos1" in f and "pos2" in f:
+                    self.stage.observe(f.as_int("pos1"), f.as_int("pos2"))
                 return reply
 
     def send_raw(self, data: bytes, timeout: float) -> Response | None:
@@ -659,6 +682,10 @@ class LIODevice:
         return self.command(f"MOTOR ARM {token:04X}").fields
 
     def motor_step(self, motor: int, steps: int, rpm: int | None = None) -> Fields:
+        """Half-step move; refused before sending if it would leave the marked travel."""
+        if self.stage is not None:
+            self.status()  # bring the tracked position up to date
+            self.stage.check_move(motor, steps, self.stage_top_margin())
         cmd = f"MOTOR {motor} STEP {steps:+d}" + (f" {rpm}" if rpm is not None else "")
         return self.command(cmd).fields
 
@@ -668,6 +695,34 @@ class LIODevice:
         Only while armed; the firmware drops it when the arm lapses, on disarm, RESET
         and the comms failsafe."""
         return self.command(f"MOTOR LIGHT {int(on)}").fields
+
+    # ------------------------------------------------------------ stage position
+
+    def stage_top_margin(self) -> int:
+        try:
+            return self.cfg.section.integer("stage.top_margin_steps")
+        except Exception:  # older configs
+            return 0
+
+    def stage_set_top(self) -> dict[str, object]:
+        """The chamber top is at its physical upper end now: position 0 on both motors."""
+        if self.stage is None:
+            raise StageError("stage tracking is off for this connection")
+        st = self.status()
+        if st.as_str("motor1") == "run" or st.as_str("motor2") == "run":
+            raise StageError("a motor is moving: stop it first")
+        self.stage.set_top((st.as_int("pos1"), st.as_int("pos2")))
+        return self.stage.summary()
+
+    def stage_mark_bottom(self) -> dict[str, object]:
+        """The chamber top is at its lowest safe position now."""
+        if self.stage is None:
+            raise StageError("stage tracking is off for this connection")
+        st = self.status()
+        if st.as_str("motor1") == "run" or st.as_str("motor2") == "run":
+            raise StageError("a motor is moving: stop it first")
+        self.stage.mark_bottom()
+        return self.stage.summary()
 
     def motor_release(self, motor: int | str = "ALL") -> None:
         self.command(f"MOTOR {motor} RELEASE")

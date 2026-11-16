@@ -31,6 +31,7 @@ from lio.device import BootTimeout, DeviceError, LIODevice, Sweep
 from lio.operator import Abort, Operator, SimOperator
 from lio.results import RunRecord, Status, TestResult, Verdict
 from lio.sim import FAULT_NAMES, Faults, SimulatedLIO
+from lio.stage import StageError, tracker_for
 from lio.suite.core import REGISTRY, SuiteContext, TestDef, catalogue, run_test
 from lio.suite.runner import finish, new_record
 from lio.transport import (
@@ -208,7 +209,9 @@ class Session:
             transport = self._transport_factory(target)
         else:
             transport = SerialTransport(target, self.cfg.section.integer("link.baud"))
-        dev = LIODevice(transport, self.cfg)
+        dev = LIODevice(
+            transport, self.cfg, stage=None if sim is not None else tracker_for(self.cfg)
+        )
         self.log(f"connecting to {target}" + (f" (faults: {faults})" if faults else ""))
         try:
             dev.open()  # nothing is kept if there is no banner
@@ -629,6 +632,7 @@ class Session:
             st = dev.status()
             return {
                 "connected": True,
+                "stage": dev.stage.summary() if dev.stage is not None else None,
                 "armed": st.as_int("armed") == 1,
                 "armed_ms": st.as_int("armed_ms"),
                 "lit": st.as_int("ch"),
@@ -672,6 +676,17 @@ class Session:
         targets = [1, 2] if motor == "both" else [int(motor)]
 
         def go(dev: LIODevice) -> dict[str, Any]:
+            if dev.stage is not None:
+                dev.status()
+                stop_at = self._jog_stop_room(speed)
+                for m in targets:
+                    room = dev.stage.room(m, sign, dev.stage_top_margin())
+                    if room is not None and room <= stop_at:
+                        side = "top" if sign > 0 else "bottom"
+                        raise Refused(
+                            f"soft limit: motor {m} is {room} half-steps from the {side} limit; "
+                            "use a step move to go closer"
+                        )
             dev.command(f"{'VS' if motor == 'both' else 'VA'}{speed}")
             dev.command(cmd)
             st = dev.status()
@@ -680,6 +695,7 @@ class Session:
                 self._jog = {
                     "motor": motor, "direction": direction, "speed": speed, "cmd": cmd,
                     "targets": targets, "pos0": {m: st.as_int(f"pos{m}") for m in targets},
+                    "sign": sign,
                     "heartbeat": now, "started": now,
                 }  # fmt: skip
             who = {"both": "both", "1": "left", "2": "right"}[motor]
@@ -707,6 +723,16 @@ class Session:
             self.log(f"motors stopped ({reason})")
         return out
 
+    def _jog_stop_room(self, speed: int) -> int:
+        """Half-steps from a limit at which a continuous jog must stop: the distance run
+        between two checks (twice, for slack) plus stage.jog_stop_margin_steps."""
+        check_s = self.cfg.section.integer("dashboard.jog_check_ms") / 1000.0
+        try:
+            extra = self.cfg.section.integer("stage.jog_stop_margin_steps")
+        except Exception:
+            extra = 32
+        return int(speed * check_s * 2) + extra
+
     def _jog_loop(self) -> None:
         sec = self.cfg.section
         check_s = sec.integer("dashboard.jog_check_ms") / 1000.0
@@ -728,6 +754,20 @@ class Session:
                 st = self.dev.status()
                 states = {m: st.as_str(f"motor{m}") for m in jog["targets"]}
                 pos = {m: st.as_int(f"pos{m}") for m in jog["targets"]}
+                stage = self.dev.stage
+                if stage is not None:
+                    stop_at = self._jog_stop_room(jog["speed"])
+                    margin = self.dev.stage_top_margin()
+                    rooms = [stage.room(m, jog["sign"], margin) for m in jog["targets"]]
+                    near = [r for r in rooms if r is not None and r <= stop_at]
+                    if near:
+                        self.dev.command("S")
+                        with self._lock:
+                            if self._jog is jog:
+                                self._jog = None
+                        side = "top" if jog["sign"] > 0 else "bottom"
+                        self.log(f"continuous move stopped near the {side} soft limit")
+                        return
                 if all(v == "idle" for v in states.values()):
                     with self._lock:
                         if self._jog is jog:
@@ -906,6 +946,32 @@ class Session:
                 finally:
                     self._dev_lock.release()
 
+    def stage_set_top(self) -> dict[str, Any]:
+        """The chamber top is at its physical upper end now (position 0)."""
+
+        def go(dev: LIODevice) -> dict[str, Any]:
+            try:
+                out = dev.stage_set_top()
+            except StageError as e:
+                raise Refused(str(e)) from e
+            self.log("stage: top of travel set here (position 0)")
+            return out
+
+        return self._motor_call(go, wait_s=1.0)
+
+    def stage_mark_bottom(self) -> dict[str, Any]:
+        """The chamber top is at its lowest safe position now."""
+
+        def go(dev: LIODevice) -> dict[str, Any]:
+            try:
+                out = dev.stage_mark_bottom()
+            except StageError as e:
+                raise Refused(str(e)) from e
+            self.log(f"stage: bottom of travel marked at {out.get('bottom')}")
+            return out
+
+        return self._motor_call(go, wait_s=1.0)
+
     def motor_arm(self) -> dict[str, Any]:
         def go(dev: LIODevice) -> dict[str, Any]:
             ms = dev.motor_arm().as_int("armed_ms")
@@ -930,6 +996,13 @@ class Session:
         sign = 1 if (direction == positive) else -1
 
         def go(dev: LIODevice) -> dict[str, Any]:
+            if dev.stage is not None:  # check both sides before either moves
+                dev.status()
+                for m in targets:
+                    try:
+                        dev.stage.check_move(m, sign * steps, dev.stage_top_margin())
+                    except StageError as e:
+                        raise Refused(f"soft limit: {e}") from e
             started: list[int] = []
             try:
                 for m in targets:

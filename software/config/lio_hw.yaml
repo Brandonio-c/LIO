@@ -155,6 +155,13 @@ power:
   settle_ms: 300             # then wait for the bus and the ADS1115 to come up
   interval_s: 20             # wake again only when this long since the last wake
 
+# Chamber-top position, kept across sessions (lio.stage; the firmware's counters restart
+# at every connection). Positions are half-steps from the top of travel (top = 0).
+stage:
+  state_file: test_results/stage_position.json   # relative to the repository root
+  top_margin_steps: 64        # moves stay this far below the top (a hard physical end)
+  jog_stop_margin_steps: 32   # a continuous jog stops this far before a limit (+ its run-on)
+
 # lio dashboard: the local web page that runs the tests (docs/TESTING.md §3).
 dashboard:
   host: 127.0.0.1            # local only: the page can light LEDs and move motors
