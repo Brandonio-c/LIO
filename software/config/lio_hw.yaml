@@ -365,6 +365,28 @@ sim:
     14: {power_uw: 0.35, vf: 0.9}
     15: {power_uw: 0.05, vf: 0.85}
     16: {power_uw: 0.1,  vf: 0.85}
+  # Height model for the diagnostic sweep (LIO-SW-SCAN-001 §9). Heights are half-steps
+  # from the top of travel (top = 0, down < 0); the optical shape is relative to the top,
+  # so every older test (run at the top) sees the same signals as before.
+  height:
+    start_hs: 0                  # stage height at power-on
+    travel_hs: 420017
+    sample: empty                # empty | white_ptfe | black_cup | food (tests can change it)
+    peak_hs: -330000             # optical response peaks here (the sample is at the bottom)
+    width_hs: 90000
+    floor: 0.33                  # far from the peak, relative to the peak
+    peak_shift_hs: 2500          # hole n peaks at peak_hs + (n - 8.5) x this
+    sample_reflectance: {empty: 1.0, white_ptfe: 1.8, black_cup: 0.05, food: 0.9}
+    stray_frac: 0.01             # LED light reaching a detector not via the sample
+    rail_current_ma: {A: 30, B: 45}
+    coupling_counts_per_ma: {opt101: 0.02, ingaas: 0.05}   # healthy LED-current coupling
+    pd_disconnected_counts_per_ma: 2.0                     # ~70-90 counts, as on 15 Nov
+    hum_mv: {opt101: 0.01, ingaas: 0.25}                   # 60 Hz (+ 0.3 x 180 Hz), earthed
+    coil_sigma_counts: {opt101: 0.3, ingaas: 0.6}          # while a motor moves
+    coil_emi_sigma_counts: 25
+    ambient_leak_counts: {opt101: 400, ingaas: 60}         # at full leak
+    ambient_leak_scale_hs: 60000
+    flicker_counts: {opt101: 30, ingaas: 6}
   # Responsivity (A/W) vs wavelength (nm), linearly interpolated, 0 outside.
   responsivity:
     opt101: [[300, 0.05], [400, 0.20], [450, 0.27], [500, 0.32], [550, 0.37], [650, 0.45],

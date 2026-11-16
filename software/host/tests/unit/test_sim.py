@@ -40,11 +40,15 @@ def sim_of(d: LIODevice) -> SimulatedLIO:
 
 class TestFaultSpec:
     def test_all_names_parse(self) -> None:
+        examples = {
+            "stuck_on": "stuck_on:5", "dead_channel": "dead_channel:3", "swapped": "swapped:3,8",
+            "led_swapped": "led_swapped:9,16", "step_loss": "step_loss:2,300",
+            "wrong_led": "wrong_led:16=630", "rail_miswired": "rail_miswired:12",
+        }  # fmt: skip
         for name in FAULT_NAMES:
-            spec = {"stuck_on": "stuck_on:5", "dead_channel": "dead_channel:3"}.get(name, name)
-            if name == "swapped":
-                spec = "swapped:3,8"
-            assert Faults.parse(spec).active
+            f = Faults.parse(examples.get(name, name))
+            assert f.active, name
+            assert Faults.parse(f.active).active == f.active, name  # round trip
 
     def test_combined(self) -> None:
         f = Faults.parse("reversed_ingaas,stuck_on:5,swapped:3,8,noisy_adc")

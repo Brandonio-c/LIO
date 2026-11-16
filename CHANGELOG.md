@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-11-16: Diagnostic sweep S1, simulator height model (LIO-SW-SCAN-001 §9)
+
+### Added
+- **Height-dependent optics.** Each hole has a peaked response g(h) against chamber-top height, relative to the top, so tests run at the top see the same signals as before. Also modelled: sample reflectance by `sample_id` (`empty`, `white_ptfe`, `black_cup`, `food`), stray light, and the InGaAs collection window.
+- **Electrical terms.**
+  - LED-current coupling, and ground shift proportional to the rail current.
+  - TIA leakage and its drift over time.
+  - Mains hum at 60 Hz (+180 Hz), and coil interference while a motor moves.
+- **Ambient light:** a leak below an onset height, and 120 Hz room flicker.
+- **Mechanics:**
+  - backlash on reversal;
+  - step loss on one side when moving up;
+  - the stage's physical position, now kept across board resets (only the counters restart).
+- **The faults of plan §9:**
+  - `pd_disconnected`, `ground_shift`, `leakage`, `leakage_drift`, `ambient_leak`, `room_flicker`, `mains_hum`, `coil_emi`;
+  - `backlash`, `step_loss`, `led_swapped`, `wrong_led`, `rail_miswired`, `window_blocked`, `stray_light`, `mid_run_boot`, `adc_dropout`.
+
+  Their physics is tested in `tests/unit/test_sim_height.py`. Detection by the sweep's metrics follows in S3–S5; until then they are listed as pending in the fault matrix.
+
+### Fixed
+- **Simulator motion profile.** A renewed jog now keeps cruising, as the firmware does, instead of each segment ending in a full deceleration. A simulated full stroke at 500 half-steps/s takes 844 s (was 1,049 s).
+
 ## 2026-11-16: Motion tests over the chamber's full travel; light while moving (firmware 2.4.0)
 
 ### Added

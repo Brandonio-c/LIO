@@ -139,10 +139,22 @@ def test_healthy_control_passes(cfg: HwConfig, row: Row) -> None:
 HEALED = ("bank_a_asleep",)
 
 
+# Diagnostic-sweep faults (LIO-SW-SCAN-001 §9) whose detecting metric (T13) is still to
+# be built. Each milestone S3-S5 moves its faults from here into a MATRIX row; at the end
+# of S5 this set is empty. Their simulated physics is tested in tests/unit/test_sim_height.py.
+PENDING_SCAN_METRIC = {
+    "adc_dropout", "ambient_leak", "backlash", "coil_emi", "ground_shift", "leakage",
+    "leakage_drift", "led_swapped", "mains_hum", "mid_run_boot", "pd_disconnected",
+    "rail_miswired", "room_flicker", "step_loss", "stray_light", "window_blocked", "wrong_led",
+}  # fmt: skip
+
+
 def test_every_fault_has_a_row() -> None:
-    covered = {r.fault.split(":")[0] for r in MATRIX} | set(HEALED)
+    covered = {r.fault.split(":")[0] for r in MATRIX} | set(HEALED) | PENDING_SCAN_METRIC
     missing = set(FAULT_NAMES) - covered
     assert not missing, f"faults without a detecting test: {sorted(missing)}"
+    stale = PENDING_SCAN_METRIC & {r.fault.split(":")[0] for r in MATRIX}
+    assert not stale, f"faults with a row are no longer pending: {sorted(stale)}"
 
 
 # ------------------------------------------------- power bank A asleep (healed)

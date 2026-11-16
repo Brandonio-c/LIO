@@ -20,6 +20,7 @@ import math
 import random
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
+from typing import Any
 
 from lio.analysis import move_duration_s
 from lio.config import HwConfig
@@ -44,9 +45,41 @@ FAULT_NAMES = (
     "bank_a_asleep",  # +5 V bank switched off at low load: no ADC until POWER WAKE
     "i2c_bridged",  # SDA and SCL joined (solder bridge, shared breadboard row): no ADC
     "i2c_slow",  # lines rise too slowly (no external pull-ups): ADC answers at 100 kHz only
+    # --- diagnostic height sweep (LIO-SW-SCAN-001 §9) ---
+    "pd_disconnected",  # InGaAs photodiode not on the TIA input (its can/case lead is)
+    "ground_shift",  # ground_shift:<mV/mA>  TIA reference moves with LED return current
+    "leakage",  # leakage:<nA>  constant current into the TIA summing node
+    "leakage_drift",  # leakage_drift:<nA/h>  that current changing during the run
+    "ambient_leak",  # ambient_leak:<onset_h>  room light below this height (half-steps)
+    "room_flicker",  # 120 Hz room light reaching the detectors
+    "mains_hum",  # mains_hum:<mV>  60 Hz (+180 Hz) on the InGaAs input
+    "coil_emi",  # motor coil switching couples into the detectors
+    "backlash",  # backlash:<hs>  slack taken up on each reversal
+    "step_loss",  # step_loss:<side>,<hs>  that side loses hs per travel moving up
+    "led_swapped",  # led_swapped:<a>,<b>  the two LEDs physically exchanged
+    "wrong_led",  # wrong_led:<hole>=<nm>  a different LED fitted in that hole
+    "rail_miswired",  # rail_miswired:<hole>  LED driven from the other rail
+    "window_blocked",  # window_blocked:<factor>  InGaAs collection x factor
+    "stray_light",  # stray_light:<frac>  LED light reaching a detector not via the sample
+    "mid_run_boot",  # mid_run_boot:<s>  the board resets once at this simulated time
+    "adc_dropout",  # adc_dropout:<n>  every n-th ADC conversion fails
 )
 
 _PARAM_FAULTS = {"stuck_on", "dead_channel", "swapped"}
+# value faults: name -> (default when given without an argument, parser)
+_VALUE_FAULTS: dict[str, tuple[object, Callable[[str], object]]] = {
+    "ground_shift": (0.2, float),
+    "leakage": (20.0, float),
+    "leakage_drift": (10.0, float),
+    "ambient_leak": (-300000, lambda a: int(float(a))),
+    "mains_hum": (8.0, float),
+    "backlash": (400, lambda a: int(float(a))),
+    "window_blocked": (0.1, float),
+    "stray_light": (0.05, float),
+    "mid_run_boot": (300.0, float),
+    "adc_dropout": (200, lambda a: int(float(a))),
+}
+_TWO_ARG = ("swapped:", "led_swapped:", "step_loss:")
 
 BAUD_CHAR_S = 10.0 / 115200.0  # 8N1
 TX_BUFFER_BYTES = 64
@@ -79,6 +112,23 @@ class Faults:
     bank_a_asleep: bool = False
     i2c_bridged: bool = False
     i2c_slow: bool = False
+    pd_disconnected: bool = False
+    ground_shift: float = 0.0  # mV per mA of rail current
+    leakage: float = 0.0  # nA
+    leakage_drift: float = 0.0  # nA/h
+    ambient_leak: int | None = None  # onset height (half-steps, <= 0)
+    room_flicker: bool = False
+    mains_hum: float = 0.0  # mV at 60 Hz
+    coil_emi: bool = False
+    backlash: int = 0  # half-steps
+    step_loss: tuple[int, float] = (0, 0.0)  # (side 1|2, half-steps lost per travel)
+    led_swapped: dict[int, int] = field(default_factory=dict)
+    wrong_led: dict[int, float] = field(default_factory=dict)  # hole -> nm
+    rail_miswired: set[int] = field(default_factory=set)
+    window_blocked: float = 1.0
+    stray_light: float = 0.0
+    mid_run_boot: float | None = None  # simulated seconds
+    adc_dropout: int = 0  # every n-th conversion fails
 
     @classmethod
     def parse(cls, specs: str | Iterable[str] | None) -> Faults:
@@ -95,6 +145,47 @@ class Faults:
             name = name.strip().lower()
             if name not in FAULT_NAMES:
                 raise FaultSpecError(f"unknown fault {name!r}; known: {', '.join(FAULT_NAMES)}")
+            if name in _VALUE_FAULTS:
+                default, conv = _VALUE_FAULTS[name]
+                try:
+                    setattr(f, name, conv(arg) if arg else default)
+                except ValueError as e:
+                    raise FaultSpecError(f"{name}: bad value {arg!r}") from e
+                continue
+            if name in ("led_swapped", "step_loss"):
+                parts = [x.strip() for x in arg.split(",") if x.strip()]
+                if len(parts) != 2:
+                    raise FaultSpecError(f"{name} needs two values: {name}:<a>,<b>")
+                try:
+                    a, b = int(parts[0]), float(parts[1])
+                except ValueError as e:
+                    raise FaultSpecError(f"{name}: bad values {arg!r}") from e
+                if name == "step_loss":
+                    if a not in (1, 2):
+                        raise FaultSpecError("step_loss:<side 1|2>,<half-steps>")
+                    f.step_loss = (a, b)
+                else:
+                    ia, ib = a, int(b)
+                    if not (1 <= ia <= 16 and 1 <= ib <= 16) or ia == ib:
+                        raise FaultSpecError("led_swapped needs two different holes 1-16")
+                    f.led_swapped[ia], f.led_swapped[ib] = ib, ia
+                continue
+            if name == "wrong_led":
+                h, _, nm = arg.partition("=")
+                try:
+                    hole, wl = int(h), float(nm)
+                except ValueError as e:
+                    raise FaultSpecError("wrong_led:<hole>=<nm>") from e
+                if not 1 <= hole <= 16:
+                    raise FaultSpecError("wrong_led: hole must be 1-16")
+                f.wrong_led[hole] = wl
+                continue
+            if name == "rail_miswired":
+                (hole,) = _hole_args(name, arg) or [0]
+                if not hole:
+                    raise FaultSpecError("rail_miswired:<hole>")
+                f.rail_miswired.add(hole)
+                continue
             if name in _PARAM_FAULTS:
                 nums = _hole_args(name, arg)
                 if name == "swapped":
@@ -116,8 +207,24 @@ class Faults:
     @property
     def active(self) -> list[str]:
         out: list[str] = []
+        defaults = Faults()
         for name in FAULT_NAMES:
             v = getattr(self, name)
+            if name in _VALUE_FAULTS:
+                if v != getattr(defaults, name):
+                    out.append(f"{name}:{v:g}" if isinstance(v, float) else f"{name}:{v}")
+                continue
+            if name == "step_loss":
+                if v[0]:
+                    out.append(f"step_loss:{v[0]},{v[1]:g}")
+                continue
+            if name == "led_swapped" and v:
+                pairs = sorted({tuple(sorted(p)) for p in v.items()})
+                out += [f"led_swapped:{a},{b}" for a, b in pairs]
+                continue
+            if name == "wrong_led":
+                out += [f"wrong_led:{h}={nm:g}" for h, nm in sorted(v.items())]
+                continue
             if name == "swapped" and v:
                 pairs = sorted({tuple(sorted(p)) for p in v.items()})
                 out += [f"swapped:{a},{b}" for a, b in pairs]
@@ -144,7 +251,7 @@ def _split_fault_list(s: str) -> list[str]:
         part = part.strip()
         if not part:
             continue
-        if out and part.isdigit() and out[-1].lower().startswith("swapped:") and "," not in out[-1]:
+        if out and part.isdigit() and out[-1].lower().startswith(_TWO_ARG) and "," not in out[-1]:
             out[-1] += "," + part
         else:
             out.append(part)
@@ -189,6 +296,39 @@ class _Filter:
         self.target = target
 
 
+def _profile(n: float, v0: float, vmax: float, acc: float) -> tuple[float, float, float, float]:
+    """Trapezoid from speed ``v0`` over ``n`` steps: (t_acc, t_cruise, t_dec, v_peak).
+
+    Accelerate from v0 to the peak, cruise, decelerate to 0 at the end. A renewed jog
+    starts at its current speed, so it keeps cruising (firmware >= 2.2.1)."""
+    if n <= 0:
+        return 0.0, 0.0, 0.0, 0.0
+    v0 = max(0.0, min(v0, vmax))
+    s_acc = (vmax * vmax - v0 * v0) / (2 * acc)
+    s_dec = vmax * vmax / (2 * acc)
+    if s_acc + s_dec <= n:
+        return (vmax - v0) / acc, (n - s_acc - s_dec) / vmax, vmax / acc, vmax
+    vp = math.sqrt(max(v0 * v0, (2 * acc * n + v0 * v0) / 2))
+    return (vp - v0) / acc, 0.0, vp / acc, vp
+
+
+def _profile_done(
+    tau: float, v0: float, prof: tuple[float, float, float, float], acc: float
+) -> float:
+    """Steps done ``tau`` seconds into a profile."""
+    ta, tc, td, vp = prof
+    if tau <= 0:
+        return 0.0
+    if tau < ta:
+        return v0 * tau + 0.5 * acc * tau * tau
+    s = v0 * ta + 0.5 * acc * ta * ta
+    if tau < ta + tc:
+        return s + vp * (tau - ta)
+    s += vp * tc
+    u = min(tau - ta - tc, td)
+    return s + vp * u - 0.5 * acc * u * u
+
+
 @dataclass
 class _Motor:
     pos: int = 0  # reported (open-loop) half-steps
@@ -200,12 +340,38 @@ class _Motor:
     moving: bool = False
     jog: bool = False
     renewals: int = 0  # jogs renewed without a new ramp (firmware >= 2.2.1)
+    v0: float = 0.0  # speed at the start of this segment (half-steps/s)
+    vmax: float = 1.0
+    acc: float = 1.0
+    last_dir: int = 0  # direction of the last movement (backlash)
+    slack: float = 0.0  # backlash still to take up in this move
+
+    def _prof(self) -> tuple[float, float, float, float]:
+        return _profile(abs(self.steps), self.v0, self.vmax, self.acc)
+
+    def done_at(self, t: float) -> float:
+        """Half-steps done (unsigned) into the current move at time t."""
+        if not self.moving:
+            return 0.0
+        n = abs(self.steps)
+        return min(float(n), _profile_done(t - self.t_start, self.v0, self._prof(), self.acc))
+
+    def speed_at(self, t: float) -> float:
+        if not self.moving:
+            return 0.0
+        ta, tc, _, vp = self._prof()
+        tau = t - self.t_start
+        if tau < ta:
+            return self.v0 + self.acc * max(tau, 0.0)
+        if tau < ta + tc:
+            return vp
+        return max(0.0, vp - self.acc * (tau - ta - tc))
 
     def pos_at(self, t: float) -> int:
         if not self.moving or self.t_end <= self.t_start:
             return self.pos
-        frac = min(1.0, max(0.0, (t - self.t_start) / (self.t_end - self.t_start)))
-        return self.start_pos + round(self.steps * frac)
+        sign = 1 if self.steps > 0 else -1
+        return self.start_pos + sign * round(self.done_at(t))
 
 
 class _Refusal(Exception):
@@ -256,12 +422,34 @@ class SimulatedLIO:
         # Bank A (the +5 V bus) is independent of the Nano: a reset does not wake it.
         self.bank_awake_until = -math.inf
         self.wakes = 0
+        self.height0 = self._hnum("start_hs", 0.0)  # stage height at power-on
+        self.travel_hs = self._hnum("travel_hs", 420017.0)
+        self.sample = str(self._height_cfg().get("sample", "empty"))  # what is in the chamber
+        self._lit_base: dict[str, dict[int, float]] = {"opt101": {}, "ingaas": {}}
+        self._adc_reads = 0
+        self._mid_boot_fired = False
         self._reset_state()
 
     # ------------------------------------------------------------------ state
 
+    def _height_cfg(self) -> dict[str, Any]:
+        try:
+            return dict(self.cfg.sim.mapping("height"))
+        except Exception:  # older configs: no height model
+            return {}
+
+    def _hnum(self, key: str, default: float) -> float:
+        v = self._height_cfg().get(key, default)
+        return float(v) if isinstance(v, (int, float)) else default
+
+    def _hmap(self, key: str) -> dict[str, float]:
+        v = self._height_cfg().get(key)
+        return {str(k): float(x) for k, x in v.items()} if isinstance(v, dict) else {}
+
     def _reset_state(self) -> None:
         lim = self.cfg.limits
+        if getattr(self, "motors", None) is not None:
+            self._stop_motors(self.clock)
         self.mask = 0
         self.ce = {1: False, 2: False}
         self.lit_at = 0.0
@@ -270,7 +458,11 @@ class SimulatedLIO:
         self.wdt_ms = {1: lim["wdt_a_ms"], 2: lim["wdt_b_ms"]}
         self.gain_idx = 1
         self.rate = self.cfg.section.integer("adc.rate_sps")
+        old = getattr(self, "motors", None)
         self.motors = [_Motor(), _Motor()]
+        if old is not None:  # a reset clears the counters, not where the stage is
+            for m, o in zip(self.motors, old, strict=True):
+                m.physical, m.last_dir = o.physical, o.last_dir
         self.armed_until = -1.0
         self.light_req = False  # MOTOR LIGHT 1 (firmware >= 2.4.0)
         self.token = self._rng.randrange(1, 0x10000)
@@ -389,6 +581,8 @@ class SimulatedLIO:
         for i, m in enumerate(self.motors):
             if m.moving:
                 out.append((m.t_end, 1 + i, self._timer_motor(i)))
+        if self.faults.mid_run_boot is not None and not self._mid_boot_fired and self._powered:
+            out.append((self.faults.mid_run_boot, 2, self._timer_mid_boot))
         fs = self.last_rx + self.cfg.limits["comms_ms"] / 1000.0
         if self._any_ce() or any(m.moving for m in self.motors) or self.armed_until > fs:
             out.append((fs, 3, self._timer_failsafe))
@@ -427,12 +621,28 @@ class SimulatedLIO:
         def fire(t: float) -> None:
             m = self.motors[i]
             m.pos = m.start_pos + m.steps
-            if not self.faults.motor_stall:
-                m.physical += m.steps
+            m.physical += self._phys_delta(i, m.steps, commit=True)
             m.moving = False
             self._emit_at(t, f"# MOTOR m={i + 1} steps={abs(m.steps)} pos={m.pos} done")
 
         return fire
+
+    def _timer_mid_boot(self, t: float) -> None:
+        """Fault mid_run_boot: the board resets once (brown-out), mid-run."""
+        self._mid_boot_fired = True
+        self._optics_off(t)
+        self._stop_motors(t)
+        boot = t + 0.05
+        self._reset_state()
+        self._boot_done = boot
+        self.busy_until = boot
+        self.last_rx = boot
+        self._emit_at(boot, "")
+        self._emit_at(
+            boot,
+            f"# BOOT name=lio fw={self.FW_VERSION} proto=1 build={self.BUILD} "
+            f"adc_ok={0 if self.adc_missing(boot) else 1} hw_wdt=0",
+        )
 
     def _timer_failsafe(self, t: float) -> None:
         idle = round((t - self.last_rx) * 1000)
@@ -476,6 +686,21 @@ class SimulatedLIO:
             return False
         return (not self.ce[rail]) if self.faults.ce_inverted else self.ce[rail]
 
+    def _wired_rail(self, hole: int) -> int:
+        """The rail actually driving that hole's LED (rail_miswired swaps it)."""
+        r = self.rail_of(hole)
+        return 3 - r if hole in self.faults.rail_miswired else r
+
+    def _emitter(self, hole: int) -> tuple[float, float]:
+        """(wavelength nm, optical power µW) of the LED physically in ``hole``."""
+        emitters = self.cfg.sim.mapping("emitters")
+        src = self.faults.led_swapped.get(hole, hole)  # LEDs exchanged: power and colour move
+        wl = self.cfg.channel(src).wavelength_nm or 0.0
+        power = float(emitters[str(src)]["power_uw"]) if str(src) in emitters else 0.0
+        if hole in self.faults.wrong_led:
+            wl = self.faults.wrong_led[hole]
+        return wl, power
+
     def _emitting(self) -> dict[int, float]:
         """Physical hole -> fraction of its rail's current (lowest Vf takes it)."""
         emitters = self.cfg.sim.mapping("emitters")
@@ -488,7 +713,7 @@ class SimulatedLIO:
                 h
                 for h in range(1, 17)
                 if pm & (1 << (h - 1))
-                and self.rail_of(h) == rail
+                and self._wired_rail(h) == rail
                 and str(h) in emitters
                 and h not in self.faults.dead_channel
             ]
@@ -506,16 +731,17 @@ class SimulatedLIO:
         return self.cfg.sim.num(f"tau_ms.{det}") / 1000.0
 
     def _light_changed(self, t: float) -> None:
-        emitters = self.cfg.sim.mapping("emitters")
         resp = self.cfg.sim.mapping("responsivity")
         k = self.cfg.sim.num("counts_per_uA")
         em = self._emitting()
         for det, flt in self._filters.items():
             total = 0.0
+            base: dict[int, float] = {}
             for hole, frac in em.items():
-                wl = self.cfg.channel(hole).wavelength_nm or 0.0
-                power = float(emitters[str(hole)]["power_uw"]) * frac
-                total += power * _interp(resp[det], wl) * k
+                wl, power = self._emitter(hole)
+                base[hole] = power * frac * _interp(resp[det], wl) * k
+                total += base[hole]
+            self._lit_base[det] = base
             flt.set_target(t, total, self._tau(det))
         for hole in list(self._light_since):
             if hole not in em:
@@ -590,9 +816,12 @@ class SimulatedLIO:
             # floating input: wanders around a few hundred mV
             base = 1800.0 + 400.0 * math.sin(t * 0.7 + ch)
             return self._scale(base + rng.gauss(0, 60))
-        photo = self._filters[det].value(t, self._tau(det))
+        photo = self._filters[det].value(t, self._tau(det)) * self._optical_factor(det, t)
+        if det == "ingaas" and self.faults.pd_disconnected:
+            photo = 0.0  # the photodiode is not on the amplifier input
         ambient = sim.num(f"ambient_{'open_' if self.chamber_open else ''}counts.{det}")
-        offset = sim.num(f"dark_offset_counts.{det}")
+        ambient += self._ambient(det, t)
+        offset = sim.num(f"dark_offset_counts.{det}") + self._electrical(det, t)
         sigma = sim.num(f"dark_sigma_counts.{det}")
         if self.faults.noisy_adc:
             sigma = sim.num("noisy_adc_sigma_counts")
@@ -614,6 +843,93 @@ class SimulatedLIO:
             value = max(0.0, min(float(sat), offset + ambient + photo + noise))
         return self._scale(value)
 
+    # ----------------------------------------------------- height model (scan)
+
+    def g_rel(self, hole: int, h: float) -> float:
+        """Optical shape of hole ``hole`` at height ``h``, relative to the top (= 1)."""
+        peak = self._hnum("peak_hs", -330000) + (hole - 8.5) * self._hnum("peak_shift_hs", 2500)
+        width = self._hnum("width_hs", 90000)
+        floor = self._hnum("floor", 0.33)
+
+        def g(x: float) -> float:
+            return floor + (1 - floor) * math.exp(-0.5 * ((x - peak) / width) ** 2)
+
+        return g(h) / g(0.0)
+
+    def _optical_factor(self, det: str, t: float) -> float:
+        """Lit signal at time t relative to the height-free base: sample x shape(h)
+        x window, plus stray light (height- and sample-independent)."""
+        base = self._lit_base.get(det) or {}
+        tot = sum(base.values())
+        if tot <= 0:
+            return 1.0
+        h = self.height_at(t)
+        refl = self._hmap("sample_reflectance").get(self.sample, 1.0)
+        win = self.faults.window_blocked if det == "ingaas" else 1.0
+        stray = self._hnum("stray_frac", 0.0) + self.faults.stray_light
+        acc = 0.0
+        for hole, b in base.items():
+            acc += b * (refl * self.g_rel(hole, h) * win + stray)
+        return acc / tot
+
+    def _rail_current_ma(self) -> float:
+        cur = self._hmap("rail_current_ma")
+        em = self._emitting()
+        total = 0.0
+        for rail, key in ((1, "A"), (2, "B")):
+            if any(self._wired_rail(h) == rail for h in em):
+                total += cur.get(key, 0.0)
+        return total
+
+    def _electrical(self, det: str, t: float) -> float:
+        """Height-free electrical terms: coupling and ground shift (with LED current),
+        leakage and its drift, mains hum, coil interference."""
+        rng = self._rng
+        lsb = self.cfg.section.num("adc.lsb_mv.1")
+        f = self.faults
+        ma = self._rail_current_ma()
+        k = self._hmap("coupling_counts_per_ma").get(det, 0.0)
+        if det == "ingaas" and f.pd_disconnected:
+            k = self._hnum("pd_disconnected_counts_per_ma", 2.0)
+        v = k * ma
+        gs = f.ground_shift * ma / lsb  # mV/mA x mA -> counts
+        v += gs if det == "ingaas" else 0.1 * gs
+        if det == "ingaas":
+            na = f.leakage + f.leakage_drift * t / 3600.0
+            if f.pd_disconnected:
+                na += 22.0
+            v -= na / lsb  # 1 MΩ: 1 mV per nA, the output goes negative
+        hum = self._hmap("hum_mv").get(det, 0.0) / lsb
+        if det == "ingaas" and f.mains_hum:
+            hum += f.mains_hum / lsb
+        if det == "ingaas" and f.pd_disconnected:
+            hum *= 8.0
+        v += hum * (math.sin(2 * math.pi * 60 * t) + 0.3 * math.sin(2 * math.pi * 180 * t + 0.4))
+        if any(m.moving for m in self.motors):
+            sig = self._hmap("coil_sigma_counts").get(det, 0.0)
+            if f.coil_emi:
+                sig = math.hypot(sig, self._hnum("coil_emi_sigma_counts", 25.0))
+            v += rng.gauss(0, sig) + (
+                0.5 * sig * math.sin(2 * math.pi * 150 * t) if f.coil_emi else 0.0
+            )
+        return v
+
+    def _ambient(self, det: str, t: float) -> float:
+        """Room light reaching the detector: a leak as the chamber overlap shrinks
+        (below the onset height), and 120 Hz flicker from room lighting."""
+        f = self.faults
+        amb = 0.0
+        if f.ambient_leak is not None:
+            h = self.height_at(t)
+            frac = min(
+                1.0, max(0.0, (f.ambient_leak - h) / self._hnum("ambient_leak_scale_hs", 60000))
+            )
+            amb += self._hmap("ambient_leak_counts").get(det, 0.0) * frac
+        if f.room_flicker:
+            fl = self._hmap("flicker_counts").get(det, 0.0)
+            amb += fl * (1.0 + math.sin(2 * math.pi * 120 * t))
+        return amb
+
     def _scale(self, counts_gain_one: float) -> int:
         lsb = self.cfg.section.num(f"adc.lsb_mv.{_GAIN_NAMES[self.gain_idx]}")
         c = counts_gain_one * self.cfg.section.num("adc.lsb_mv.1") / lsb
@@ -632,9 +948,17 @@ class SimulatedLIO:
         m.start_pos = m.pos
         m.steps = steps
         m.t_start = t
-        m.t_end = t + self._move_duration(steps, vmax, acc)
+        m.v0, m.vmax, m.acc = 0.0, vmax, acc
+        ta, tc, td, _ = m._prof()
+        m.t_end = t + ta + tc + td
         m.moving = steps != 0
         m.jog = jog
+        if steps:
+            d = 1 if steps > 0 else -1
+            bl = self.faults.backlash
+            if bl and m.last_dir and d != m.last_dir:
+                m.slack = float(bl)  # reversing: the slack is taken up first
+            m.last_dir = d
 
     def _renew_jog(self, t: float, i: int, steps: int, vmax: float, acc: float) -> bool:
         """A repeated jog in the same direction renews the bound without a new ramp."""
@@ -642,14 +966,15 @@ class SimulatedLIO:
         if not (m.moving and m.jog and (m.steps > 0) == (steps > 0)):
             return False
         new = m.pos_at(t)
-        if not self.faults.motor_stall:
-            m.physical += new - m.start_pos
+        v_now = m.speed_at(t)
+        m.physical += self._phys_delta(i, new - m.start_pos, commit=True)
         m.pos = m.start_pos = new
         m.steps = steps
         m.t_start = t
-        # already at speed: cruise, then the usual deceleration at the end
-        n, s_dec = abs(steps), vmax * vmax / (2 * acc)
-        m.t_end = t + ((n - s_dec) / vmax + vmax / acc if n > s_dec else 2 * math.sqrt(n / acc))
+        # already moving: carry on from the current speed (no new ramp from 0)
+        m.v0, m.vmax, m.acc = v_now, vmax, acc
+        ta, tc, td, _ = m._prof()
+        m.t_end = t + ta + tc + td
         m.renewals += 1
         return True
 
@@ -657,10 +982,40 @@ class SimulatedLIO:
         m = self.motors[i]
         if m.moving:
             new = m.pos_at(t)
-            if not self.faults.motor_stall:
-                m.physical += new - m.start_pos
+            m.physical += self._phys_delta(i, new - m.start_pos, commit=True)
             m.pos = new
         m.moving = False
+
+    def _phys_delta(self, i: int, moved: int, *, commit: bool) -> float:
+        """Physical movement for ``moved`` reported half-steps of motor ``i``.
+
+        Faults: motor_stall (nothing moves), backlash (on a reversal the first
+        ``backlash`` half-steps only take up slack), step_loss (that side loses
+        ``hs`` per travel's worth of upward movement)."""
+        m = self.motors[i]
+        if self.faults.motor_stall or moved == 0:
+            return 0.0
+        sign = 1.0 if moved > 0 else -1.0
+        n = float(abs(moved))
+        take = min(n, m.slack)
+        if commit:
+            m.slack -= take
+        n -= take
+        side, lost = self.faults.step_loss
+        if side == i + 1 and sign > 0 and lost:
+            n *= 1.0 - lost / self.travel_hs
+        return sign * n
+
+    def physical_at(self, i: int, t: float) -> float:
+        """Where motor ``i``'s side physically is at time ``t`` (half-steps)."""
+        m = self.motors[i]
+        if not m.moving:
+            return m.physical
+        return m.physical + self._phys_delta(i, m.pos_at(t) - m.start_pos, commit=False)
+
+    def height_at(self, t: float) -> float:
+        """Absolute height of the chamber top (half-steps from the top, <= 0)."""
+        return self.height0 + (self.physical_at(0, t) + self.physical_at(1, t)) / 2
 
     def _stop_motors(self, t: float) -> None:
         self._stop_motor(t, 0)
@@ -745,7 +1100,10 @@ class _Exec:
 
     def adc_read(self, ch: int) -> int:
         s = self.sim
-        if s.adc_missing(self.t):
+        s._adc_reads += 1
+        if s.adc_missing(self.t) or (
+            s.faults.adc_dropout and s._adc_reads % s.faults.adc_dropout == 0
+        ):
             s.fault_bits |= _FAULT_I2C_ERROR
             raise _Refusal(4, "adc read failed")
         self.wait(s.conv_s + s.cfg.sim.num("i2c_overhead_s"))
