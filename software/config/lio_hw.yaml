@@ -224,6 +224,11 @@ thresholds:
     weak_min_counts: 15
     none_max_sigma: 10           # unfitted/expected-none: net beyond this is "unexpected signal"
     none_min_counts: 50
+    # false: each hole is judged only by the detector(s) its `expect` names (OPT101 for the
+    # visible holes, InGaAs for the infrared ones). A reading on a detector outside its
+    # range is recorded, not judged. true: an unlisted detector must show no light, which
+    # also catches electrical crosstalk (an LED's current shifting the other detector).
+    judge_out_of_range: false
     polarity_sigma: -5           # InGaAs net below this x sigma on an InGaAs hole -> reversed
     off_return_sigma: 5
     signature_similarity: 0.98   # cosine similarity above which two channels "look the same"

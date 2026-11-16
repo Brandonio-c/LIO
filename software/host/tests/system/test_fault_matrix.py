@@ -70,7 +70,10 @@ MATRIX = (
     Row("stuck_on:13", "T05.3", "T05.3/B/stuck_via_10", unfitted=(10, 11)),
     Row("dead_channel:3", "T05.2", "T05.2/h03/opt101"),
     Row("dead_channel:13", "T05.2", "T05.2/h13/ingaas"),
-    Row("swapped:3,8", "T05.3", "T05.3/h03/pattern"),
+    # Caught at hole 8 (blue LED: no InGaAs signal where one is expected). Hole 3 now
+    # lights 850 nm, which the OPT101 also sees; the InGaAs is not judged on hole 3
+    # (channel.judge_out_of_range: false), so hole 3 alone no longer shows the swap.
+    Row("swapped:3,8", "T05.3", "T05.3/h08/pattern"),
     Row("swapped:3,13", "T05.2", "T05.2/h13/ingaas"),
     Row("rail_a_dead", "T05.1", "T05.1/A/h08/ce_high"),
     Row("rail_b_dead", "T05.1", "T05.1/B/h12/ce_high"),

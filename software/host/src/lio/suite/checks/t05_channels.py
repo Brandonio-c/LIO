@@ -9,7 +9,7 @@ from lio.device import DeviceError
 from lio.protocol import ErrCode
 from lio.results import Status
 from lio.suite.core import DETECTORS, Recorder, SuiteContext, hole_id, register, skip_unusable
-from lio.suite.judge import judge, never_fail_absence, observed_pattern
+from lio.suite.judge import judge, never_fail_absence, observed_pattern, out_of_range
 
 U2_HOLES = range(9, 17)  # bits 8-15: the U2 byte (LIO-ELEC-001 §5.2)
 
@@ -91,6 +91,21 @@ def t05_2(ctx: SuiteContext, rec: Recorder) -> None:
             label = f"Hole {hole} ({ch.label}) on {det}"
             if skip_unusable(ctx, rec, det, sub, label):
                 continue
+            if out_of_range(ctx, hole, det):
+                judged_by = ", ".join(ch.expected_detectors) or "no detector"
+                rec.add(
+                    sub,
+                    label,
+                    Status.SKIP,
+                    f"not judged: {ch.label} is outside the {det} range (judged by {judged_by}); "
+                    f"recorded net {m.net(det):+d}",
+                    "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+                    net=m.net(det),
+                    dark=m.dark(det),
+                    lit=m.lit(det),
+                    expect="not judged",
+                )
+                continue
             j = judge(ctx, hole, det, m.net(det), n)
             msg = f"net {m.net(det):+d} ({j.detection.level}); {j.verdict.reason}"
             if not ch.fitted:
@@ -141,10 +156,13 @@ def t05_3(ctx: SuiteContext, rec: Recorder) -> None:
         observed = observed_pattern(ctx, hole, nets, n)
         seen[hole] = observed
         expected = {d for d in ch.expected_detectors if d in dets}
+        ignored = sorted(d for d in dets if out_of_range(ctx, hole, d))
         unexpected = sorted(observed - expected)
         missing = sorted(expected - observed)
         if not unexpected and not missing:
             status, msg = Status.PASS, f"seen by {sorted(observed) or 'nothing'} as expected"
+            if ignored:
+                msg += f" ({', '.join(ignored)} not judged: outside its range)"
         else:
             parts = []
             if unexpected:
