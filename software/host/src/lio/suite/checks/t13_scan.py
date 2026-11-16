@@ -17,10 +17,12 @@ import tempfile
 from pathlib import Path
 
 from lio import scan
-from lio.results import Status
+from lio.results import Status, TestResult, worst
 from lio.scan import report as scan_report
-from lio.scan.analysis import analyse
+from lio.scan.analysis import Analysis, analyse
 from lio.suite.core import Recorder, Skip, SuiteContext, register
+
+CAPABILITY_IDS = ("elec/rails", "mech/home", "elec/coupling_states")
 
 
 def sub_id(fid: str) -> str:
@@ -60,20 +62,33 @@ def t13_1(ctx: SuiteContext, rec: Recorder) -> None:
         plan = scan.plan_for(cfg, mode, dev.stage, dev.stage_top_margin())
     except scan.PlanError as e:
         raise Skip(str(e)) from e
-    store, status = scan.start(dev, cfg, plan, root, ctx.operator, sample_id=sample,
+    store, _ = scan.start(dev, cfg, plan, root, ctx.operator, sample_id=sample,
                                sim=ctx.sim is not None)  # fmt: skip
     a = analyse(store.folder, cfg)
     out = scan_report.write(store.folder, cfg)
     rec.artefact(str(out["html"]))
-    rec.measure(run=str(store.folder), mode=mode, status=status, verdict=a.verdict["verdict"],
+    fill(rec, a, store.folder)
+
+
+def fill(rec: Recorder, a: Analysis, folder: Path) -> None:
+    """Every finding as a sub-result (with its explanation), the run in ``measured``."""
+    rec.measure(run=str(folder), mode=a.mode, status=a.status, verdict=a.verdict["verdict"],
                 health={h["key"]: h["health"] for h in a.health})  # fmt: skip
     for f in a.findings:
-        if f.status == Status.SKIP and f.id.startswith(
-            ("elec/rails", "mech/home", "elec/coupling_states")
-        ):
+        if f.status == Status.SKIP and f.id.startswith(CAPABILITY_IDS):
             continue  # capabilities not fitted: listed once in the scan report
         ex = a.explanations.get(f.id)
         msg = f.detail + (f" | why: {ex['cause']} | parts: {', '.join(ex['parts'])}" if ex else "")
         rec.add(sub_id(f.id), f.title, f.status, msg, f.criteria,
                 **({"value": f.value, "unit": f.unit} if f.value is not None else {}))  # fmt: skip
-    rec.note(f"{mode} scan {status}: {a.verdict['verdict']} ({store.folder.name})")
+    rec.note(f"{a.mode} scan {a.status}: {a.verdict['verdict']} ({Path(folder).name})")
+
+
+def scan_result(a: Analysis, folder: Path) -> TestResult:
+    """A finished scan as the T13.1 result (for the dashboard's twin)."""
+    r = TestResult("T13.1", "Diagnostic height sweep", "T13", "M")
+    rec = Recorder(r)
+    fill(rec, a, folder)
+    rec.artefact(str(Path(folder) / "report.html"))
+    r.status = worst([x.status for x in r.subs])
+    return r

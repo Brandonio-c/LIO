@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import collections
 import contextlib
+import dataclasses
 import datetime as dt
 import itertools
 import json
@@ -23,9 +24,10 @@ import threading
 import time
 from collections.abc import Callable, Iterable
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from lio import baseline as bl
+from lio import scan
 from lio.config import HwConfig
 from lio.device import BootTimeout, DeviceError, LIODevice, Sweep
 from lio.operator import Abort, Operator, SimOperator
@@ -44,6 +46,9 @@ from lio.transport import (
 )
 
 from . import twin
+
+if TYPE_CHECKING:
+    from lio.dashboard.scan_job import ScanJob
 
 log = logging.getLogger(__name__)
 
@@ -144,6 +149,7 @@ class Session:
         self.error = ""
         self._log: collections.deque[str] = collections.deque(maxlen=LOG_LINES)
         self._thread: threading.Thread | None = None
+        self.scan_job: ScanJob | None = None  # the Scan tab's diagnostic sweep
         self._stop = threading.Event()
         self.catalogue = catalogue()
         self._state_path = results_root / STATE_FILE
@@ -167,7 +173,12 @@ class Session:
 
     @property
     def running(self) -> bool:
-        return self._thread is not None and self._thread.is_alive()
+        suite = self._thread is not None and self._thread.is_alive()
+        return suite or self.scanning
+
+    @property
+    def scanning(self) -> bool:
+        return self.scan_job is not None and self.scan_job.alive
 
     def _planned(self) -> dict[str, list[str]]:
         out: dict[str, list[str]] = {}
@@ -583,6 +594,9 @@ class Session:
 
     def all_off(self) -> None:
         """LEDs off and motors stopped; during a run, stop the run (it restores the safe state)."""
+        if self.scanning:
+            self.scan_abort("All off pressed")
+            return
         if self.running:
             self.stop()
             return
@@ -1157,6 +1171,131 @@ class Session:
             }
         self.log(f"showing earlier run {run_id} ({record.target})")
 
+    # ------------------------------------------------------------ scan tab
+
+    def scan_plan(self, mode: str, overrides: dict[str, Any] | None = None) -> dict[str, Any]:
+        """The plan for ``mode`` between the tracked limits, without running it."""
+        from lio.dashboard.scan_job import sim_stage_if_needed
+
+        dev = self._device()
+        sim_stage_if_needed(self)
+        try:
+            plan = scan.plan_for(self.cfg, mode, dev.stage, dev.stage_top_margin(), overrides)
+        except scan.PlanError as e:
+            raise Refused(str(e)) from e
+        return {
+            "mode": plan.mode, "label": plan.label, "summary": plan.summary(),
+            "steps": len(plan.steps), "eta_s": plan.eta_s, "eta_parts": plan.eta_parts,
+            "duty": plan.duty, "top": plan.top, "bottom": plan.bottom,
+            "top_mm": plan.mm(plan.top), "bottom_mm": plan.mm(plan.bottom),
+            "heights_down": plan.heights_down, "heights_up": plan.heights_up,
+            "ref_heights": plan.ref_heights, "static": plan.static,
+            "continuous": plan.continuous, "settings": dataclasses.asdict(plan.settings),
+        }  # fmt: skip
+
+    def scan_start(
+        self,
+        mode: str,
+        sample_id: str,
+        *,
+        overrides: dict[str, Any] | None = None,
+        heartbeat: bool = True,
+        motion_confirmed: bool = False,
+        sim_operator: bool = True,
+        resume: str = "",
+    ) -> dict[str, Any]:
+        from lio.dashboard.scan_job import ScanJob, make_operator, sim_stage_if_needed
+
+        with self._lock:
+            dev = self._device()
+            if self.running:
+                raise Busy("a run is already in progress")
+            if self._jog is not None:
+                raise Busy("the motors are running continuously: stop them first")
+            if self._ring is not None:
+                raise Busy("the LED ring is running: stop it first")
+            sim_stage_if_needed(self)
+            folder = None
+            if resume:
+                folder = self.results_root / resume
+                if "/" in resume or ".." in resume or not (folder / "scan.json").is_file():
+                    raise Refused(f"no scan run {resume!r}")
+                st = scan.ScanStore.open(folder)
+                plan = scan.ScanPlan.from_dict(st.meta["plan"])
+                sample_id = str(st.meta.get("sample_id", sample_id))
+            else:
+                try:
+                    plan = scan.plan_for(self.cfg, mode, dev.stage, dev.stage_top_margin(),
+                                         overrides)  # fmt: skip
+                except scan.PlanError as e:
+                    raise Refused(str(e)) from e
+            if not plan.static and self.sim is None and not motion_confirmed:
+                raise Refused(
+                    "this scan moves the chamber top: confirm that someone is at the bench"
+                )
+            timeout = float((overrides or {}).get("heartbeat_timeout_s",
+                                                  plan.settings.heartbeat_timeout_s))  # fmt: skip
+            self._stop.clear()
+            dev.clear_cancel()
+            job = ScanJob(self, plan, sample_id=sample_id, heartbeat=heartbeat, timeout_s=timeout,
+                          operator=make_operator(self, sim_operator), resume=folder)  # fmt: skip
+            self.scan_job = job
+            job.thread.start()
+        self.log(f"scan {'resumed' if resume else 'started'}: {plan.mode}, sample {sample_id}"
+                 f"{', heartbeat ' + str(int(timeout)) + ' s' if heartbeat else ''}")  # fmt: skip
+        self._changed()
+        return {"steps": len(plan.steps), "eta_s": plan.eta_s}
+
+    def _scan(self) -> ScanJob:
+        if self.scan_job is None or not self.scan_job.alive:
+            raise Refused("no scan is running")
+        return self.scan_job
+
+    def scan_pause(self, on: bool) -> None:
+        self._scan().control.pause(on)
+        self.log("scan pause requested" if on else "scan continue requested")
+        self._changed()
+
+    def scan_abort(self, reason: str = "operator abort (dashboard)") -> None:
+        job = self._scan()
+        job.control.abort(reason)
+        with self._lock:
+            self._stop.set()
+            if self.prompt is not None:
+                self.prompt.aborted = True
+                self.prompt.done.set()
+        self.log(f"scan abort: {reason}")
+        self._changed()
+
+    def scan_beat(self) -> dict[str, Any]:
+        if self.scan_job is not None and self.scan_job.alive:
+            self.scan_job.control.beat()
+        return {"ok": True, "running": self.scanning}
+
+    def scan_view(self) -> dict[str, Any]:
+        return {"job": self.scan_job.view() if self.scan_job is not None else None,
+                "runs": self.scan_runs()}  # fmt: skip
+
+    def scan_runs(self, limit: int = 20) -> list[dict[str, Any]]:
+        out: list[dict[str, Any]] = []
+        if not self.results_root.is_dir():
+            return out
+        for f in sorted(self.results_root.glob("*_scan_*/scan.json"), reverse=True)[:limit]:
+            try:
+                d = json.loads(f.read_text())
+            except (OSError, ValueError):
+                continue
+            out.append({
+                "run_id": f.parent.name, "mode": d.get("mode"), "sample_id": d.get("sample_id"),
+                "status": d.get("status"), "simulated": bool(d.get("simulated")),
+                "aborts": [a.get("reason") for a in d.get("aborts") or []],
+                "steps": len((d.get("plan") or {}).get("steps") or []),
+                "completed": int(d.get("completed_step", -1)) + 1,
+                "report": f"/results/{f.parent.name}/report.html"
+                if (f.parent / "report.html").exists() else None,
+            })  # fmt: skip
+        return out
+
     # --------------------------------------------------------- snapshot
 
     def snapshot(self) -> dict[str, Any]:
@@ -1200,6 +1339,24 @@ class Session:
                 "provisional": self.cfg.provisional,
             }
 
+    def _scan_static(self) -> dict[str, Any]:
+        cfg = self.cfg
+        modes = cfg.section.mapping("scan.modes")
+        return {
+            "modes": [{"key": k, "label": str(dict(v).get("label", k))} for k, v in modes.items()],
+            "default_mode": str(cfg.section.raw("scan.default_mode")),
+            "sample_ids": [str(x) for x in cfg.section.raw("scan.sample_ids")],
+            "settings": dataclasses.asdict(scan.ScanSettings.from_config(cfg)),
+            "hardware": dict(cfg.section.raw("scan.hardware") or {}),
+            "lead_mm_per_rev": cfg.section.raw("scan.lead_mm_per_rev"),
+            "half_steps_per_rev": cfg.limits["half_steps_per_rev"],
+            "detectors": {
+                d: {"blind": [h for h in range(1, 17) if cfg.channel(h).expect_for(d) == "none"]}
+                for d in ("opt101", "ingaas")
+            },
+            "labels": {str(c.hole): c.label for c in cfg.channels},
+        }
+
     def static_info(self) -> dict[str, Any]:
         """What does not change while the dashboard runs: the catalogue and the hardware."""
         cfg = self.cfg
@@ -1238,6 +1395,7 @@ class Session:
                     for c in cfg.channels
                 ],
             },
+            "scan": self._scan_static(),
             "motors": {
                 "names": {str(m): str(cfg.section.raw(f"motors.{m}.name")) for m in (1, 2)},
                 "step_max": cfg.limits["step_max"],

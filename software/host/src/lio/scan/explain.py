@@ -434,6 +434,28 @@ RULES = (
 )  # fmt: skip
 
 
+_PD = E(
+    "A consequence of the InGaAs signal being electrical, not light (see "
+    "optics/ingaas/electrical_only): the photodiode is not connected to the amplifier.",
+    ("D1", "U5", "SUM", "TIA_REF"),
+    "Fault tree 'InGaAs coupling': meter the D1 leads and the pin 2/3 wiring of U5.",
+)
+_PD_WHEN: When = lambda f, c: _status(c, "optics/ingaas/electrical_only", Status.FAIL)  # noqa: E731
+# Checked first: in the disconnected-photodiode case these symptoms are not the window
+# or the grounding.
+RULES = (
+    Rule("optics/ingaas/throughput", _PD, when=_PD_WHEN),
+    Rule("elec/ingaas/ground_shift", _PD, when=_PD_WHEN),
+    Rule("optics/ingaas/snr", _PD, when=_PD_WHEN),
+    Rule("elec/ingaas/hum", E(
+        "Mains hum is much larger with the photodiode disconnected: the TIA input is left "
+        "open and picks it up.", ("D1", "U5 pin-2 node", "earth bond"),
+        "Reconnect D1 first; then check the earth bond if the hum remains.")
+        , when=_PD_WHEN),
+    *RULES,
+)  # fmt: skip
+
+
 def _match(pattern: str, fid: str) -> bool:
     pat = pattern.replace("hNN", "h[0-9][0-9]")
     return fnmatch.fnmatchcase(fid, pat)

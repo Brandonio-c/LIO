@@ -28,6 +28,19 @@
   }
 }
 * { box-sizing: border-box; }
+.scan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 14px; margin-top: 10px; }
+.scan-hm { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+@media (max-width: 760px) { .scan-hm { grid-template-columns: 1fr; } }
+.scan-hm canvas { width: 100%; height: 300px; border: 1px solid var(--hair); border-radius: 6px; background: var(--surface-2); }
+.pbar { height: 10px; background: var(--surface-2); border: 1px solid var(--hair); border-radius: 6px; overflow: hidden; }
+.pbar > div { height: 100%; background: var(--accent); width: 0; transition: width .4s; }
+.scan-find { border: 1px solid var(--hair); border-radius: 8px; padding: 8px 10px; margin: 6px 0; }
+.scan-find dl { display: grid; grid-template-columns: 6.5rem 1fr; gap: 2px 10px; margin: 6px 0 0; font-size: 13px; }
+.scan-find dt { color: var(--ink-2); font-weight: 600; }
+.scan-find dd { margin: 0; }
+.hb { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); }
+.hb .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); }
+.hb.on .dot { background: var(--good); }
 body { margin: 0; background: var(--page); color: var(--ink);
   font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
 button, input, select { font: inherit; color: inherit; }
@@ -414,6 +427,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
     <button class="tab on" data-tab="system">System</button>
     <button class="tab" data-tab="motors">Motors</button>
     <button class="tab" data-tab="leds">LEDs</button>
+    <button class="tab" data-tab="scan">Scan</button>
     <button class="tab" data-tab="database">Database</button>
   </nav>
   <span id="conn" class="pill"><span class="led"></span><span id="conn-text">not connected</span></span>
@@ -553,6 +567,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
       <button id="stage-top" class="btn" title="The chamber top is at its physical upper end now: position 0">Set top here</button>
       <button id="stage-bottom" class="btn" title="The chamber top is at its lowest safe position now">Mark bottom here</button>
     </div>
+    <p class="note" id="mot-drive" style="margin:6px 0 0"></p>
     <p class="note" style="margin:6px 0 0">Half-steps from the top of travel (top = 0, lower is negative), kept across sessions in <code>test_results/stage_position.json</code>. Once both limits are marked, step moves that would leave the range are refused and continuous runs stop short of them. A move made by hand or with another program is not seen: set the top again after one.</p>
     <h3 style="margin-top:14px">Motor log</h3>
     <pre id="mot-log" class="mono"></pre>
@@ -583,6 +598,47 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
         <div class="seehint" id="ring-hints"></div>
       </div>
     </div>
+  </section>
+  <!-- Scan: the diagnostic height sweep (docs/DIAGNOSTIC_SWEEP.md) -->
+  <section class="card hidden" data-view="scan" id="scan-view">
+    <div class="row" style="justify-content:space-between">
+      <h2>Diagnostic sweep</h2>
+      <span id="scan-hb" class="hb" title="The page tells the dashboard every few seconds that someone is here; if it goes quiet for longer than the timeout, the scan pauses safely (everything off) until it comes back"><span class="dot"></span><span>heartbeat off</span></span>
+    </div>
+    <p class="note" style="margin:6px 0 0">Moves the chamber top through its travel and, at every height, measures every LED on both detectors (one LED at a time, stop–measure–move; RAIL A within 1 s on-time per LED per minute). Any abort turns everything off, stops and releases the motors, and records why. The travel limits must be marked on the <a href="#motors">Motors</a> tab.</p>
+    <div class="row" style="margin-top:12px;align-items:flex-end">
+      <label class="field">Mode <select id="scan-mode"></select></label>
+      <label class="field">Sample <select id="scan-sample"></select></label>
+      <label class="field" id="scan-food-wrap" style="display:none">Food code <input id="scan-food" type="text" placeholder="LIO-F-00001" style="width:130px"></label>
+      <button id="scan-preview" class="btn">Preview plan</button>
+      <span style="flex:1"></span>
+      <button id="scan-start" class="btn primary">Start scan</button>
+      <button id="scan-pause" class="btn">Pause</button>
+      <button id="scan-abort" class="btn danger">■ Abort</button>
+    </div>
+    <details style="margin-top:10px"><summary>Settings for this run <span class="muted">(defaults from lio_hw.yaml, scan:)</span></summary>
+      <div class="scan-grid" id="scan-settings"></div>
+    </details>
+    <div class="row" style="margin-top:10px;gap:18px">
+      <label class="check"><input type="checkbox" id="scan-hb-on" checked><span>Operator heartbeat: pause if this page is quiet for the timeout</span></label>
+      <label class="check hw-only"><input type="checkbox" id="scan-bench"><span>Someone is at the bench and the chamber is clear (the top will move)</span></label>
+      <label class="check sim-only hidden"><input type="checkbox" id="scan-simop" checked><span>Simulator answers the operator questions</span></label>
+    </div>
+    <pre id="scan-plan" class="mono" style="margin-top:10px;white-space:pre-wrap">Preview the plan to see the heights, duration and LED duty.</pre>
+    <h3 style="margin-top:14px">Progress</h3>
+    <div class="pbar"><div id="scan-bar"></div></div>
+    <div id="scan-prog" class="note" style="margin-top:6px">No scan running.</div>
+    <h3 style="margin-top:14px">Live response (hole × height, down pass; blind holes grey)</h3>
+    <div class="scan-hm">
+      <div><div class="ink2" style="font-size:13px">OPT101 (silicon)</div><canvas id="scan-hm-opt101" width="560" height="300" role="img" aria-label="OPT101 response, hole by height"></canvas></div>
+      <div><div class="ink2" style="font-size:13px">InGaAs (SWIR)</div><canvas id="scan-hm-ingaas" width="560" height="300" role="img" aria-label="InGaAs response, hole by height"></canvas></div>
+    </div>
+    <p class="note" style="margin:4px 0 0">Colour: net counts, scaled to the strongest reading on that detector so far (darker = more light). Left = top of travel, right = bottom.</p>
+    <div id="scan-result"></div>
+    <h3 style="margin-top:14px">Earlier scans</h3>
+    <div id="scan-runs" class="note">–</div>
+    <h3 style="margin-top:14px">Drive (for mm)</h3>
+    <div id="scan-drive" class="note">–</div>
   </section>
   <!-- Database: the food library -->
   <!-- 1 · admin: status, exports, phone app -->
@@ -1040,7 +1096,7 @@ let view = "system", M = null;
 function showView(v) {
   // "database/LIO-F-00012[/product]" opens a sample (and a sub-tab); "database/compare/A,B" compares
   const [base, arg, sub] = String(v || "").split("/");
-  view = ["motors", "leds", "database"].includes(base) ? base : "system";
+  view = ["motors", "leds", "database", "scan"].includes(base) ? base : "system";
   document.body.dataset.view = view;
   document.querySelectorAll("[data-view]").forEach((e) => e.classList.toggle("hidden", e.dataset.view !== view));
   document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("on", t.dataset.tab === view));
@@ -1048,6 +1104,7 @@ function showView(v) {
   if (location.hash !== want) history.replaceState(null, "", view === "system" ? "#" : want);
   if (view === "motors") motorPoll();
   if (view === "leds") ringPoll();
+  if (view === "scan") { scanSetup(); scanPoll(); }
   if (view === "database") {
     if (arg === "compare" && sub) {
       DB.cmp = []; DB.cmpSlot = {};
@@ -1060,6 +1117,179 @@ function showView(v) {
 document.querySelectorAll(".tab").forEach((t) => t.onclick = () => showView(t.dataset.tab));
 window.addEventListener("hashchange", () => showView(location.hash.slice(1)));
 
+/* ------------------------------------------------------------------ scan */
+let SC = null, scanReady = false, hbWorker = null, hbOn = false;
+const SCAN_FIELDS = [
+  ["sweep_n", "Samples per reading", 1, 16, 1], ["optical_settle_ms", "Optical settle (ms)", 0, 100, 1],
+  ["settle_ms_mech", "Mechanical settle (ms)", 0, 5000, 50], ["dark_n", "Dark samples", 1, 64, 1],
+  ["hum_every_k", "Hum record every k heights", 1, 50, 1], ["hum_bursts", "Hum bursts (48 samples)", 1, 64, 1],
+  ["long_dark_s", "Long dark record (s)", 0, 600, 5], ["jog_speed", "Move speed (half-steps/s)", 100, 1000, 50],
+  ["ref_offset_steps", "Repeatability offset (half-steps)", 256, 40960, 256],
+  ["heartbeat_timeout_s", "Heartbeat timeout (s)", 15, 3600, 5],
+];
+function driveText() {
+  const sc = STATIC.scan; if (!sc) return "";
+  const hw = sc.hardware || {};
+  const per = sc.lead_mm_per_rev ? `${sc.half_steps_per_rev} half-steps per output turn = ${sc.lead_mm_per_rev} mm of travel (${(sc.half_steps_per_rev / sc.lead_mm_per_rev).toFixed(0)} half-steps per mm)` : "lead per turn not configured: heights in half-steps only";
+  return `<b>Lead screw:</b> ${esc(hw.lead_screw || "–")}<br><b>Coupler:</b> ${esc(hw.coupler || "–")}<br><b>Motors:</b> ${esc(hw.motors || "–")}<br>${esc(per)}`;
+}
+function scanSetup() {
+  if (scanReady || !STATIC || !STATIC.scan) return;
+  scanReady = true;
+  const sc = STATIC.scan;
+  $("scan-mode").innerHTML = sc.modes.map((m) => `<option value="${esc(m.key)}" ${m.key === sc.default_mode ? "selected" : ""}>${esc(m.key)} — ${esc(m.label)}</option>`).join("");
+  $("scan-sample").innerHTML = sc.sample_ids.map((x) => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
+  $("scan-sample").onchange = () => { $("scan-food-wrap").style.display = $("scan-sample").value === "food" ? "" : "none"; };
+  $("scan-settings").innerHTML = SCAN_FIELDS.map(([k, label, lo, hi, step]) =>
+    `<label class="field">${esc(label)}<input type="number" data-k="${k}" min="${lo}" max="${hi}" step="${step}" value="${sc.settings[k]}"></label>`).join("")
+    + `<label class="check" style="align-self:end"><input type="checkbox" data-k="abort_on_saturation" ${sc.settings.abort_on_saturation ? "checked" : ""}><span>Abort on saturation</span></label>`;
+  $("scan-drive").innerHTML = driveText();
+  $("scan-preview").onclick = scanPreview;
+  $("scan-mode").onchange = () => { $("scan-plan").textContent = "Preview the plan to see the heights, duration and LED duty."; };
+  $("scan-start").onclick = scanStart;
+  $("scan-pause").onclick = () => scanAct("/api/scan/pause", { on: !(SC && SC.job && (SC.job.pause_requested || SC.job.paused)) });
+  $("scan-abort").onclick = () => { if (confirm("Abort the scan? Everything is turned off and the motors released; the run can be resumed later.")) scanAct("/api/scan/abort"); };
+}
+function scanOverrides() {
+  const o = {};
+  document.querySelectorAll("#scan-settings [data-k]").forEach((i) => {
+    const k = i.dataset.k, d = STATIC.scan.settings[k];
+    const v = i.type === "checkbox" ? i.checked : Number(i.value);
+    if (v !== d) o[k] = v;
+  });
+  return o;
+}
+function scanSample() {
+  const v = $("scan-sample").value;
+  if (v !== "food") return v;
+  const c = $("scan-food").value.trim();
+  return /^LIO-F-\d+$/.test(c) ? c : "food";
+}
+async function scanAct(path, body) {
+  try { const out = await api(path, body ?? {}); await scanPoll(); poll(true); return out; }
+  catch (e) { toast(e.message, 8000); await scanPoll(); return null; }
+}
+async function scanPreview() {
+  const p = await scanAct("/api/scan/plan", { mode: $("scan-mode").value, overrides: scanOverrides() });
+  if (p) $("scan-plan").textContent = p.summary + (p.static ? "\nNo motion: measures here." : "");
+}
+async function scanStart() {
+  const sim = S && S.is_sim, bench = $("scan-bench").checked;
+  if (!sim && !bench) { toast("Tick 'Someone is at the bench' first: the top will move.", 7000); return; }
+  await scanAct("/api/scan/start", { mode: $("scan-mode").value, sample_id: scanSample(), overrides: scanOverrides(),
+    heartbeat: $("scan-hb-on").checked, motion_confirmed: bench, sim_operator: $("scan-simop").checked });
+}
+function scanResume(run) {
+  if (!(S && S.is_sim) && !$("scan-bench").checked) { toast("Tick 'Someone is at the bench' first: the top will move.", 7000); return; }
+  scanAct("/api/scan/start", { resume: run, heartbeat: $("scan-hb-on").checked, motion_confirmed: $("scan-bench").checked, sim_operator: $("scan-simop").checked });
+}
+// The heartbeat runs in a Web Worker: its timer keeps going when the tab is hidden.
+const HB_SRC = `let t = null;
+onmessage = (e) => {
+  clearInterval(t); t = null;
+  if (e.data.stop) return;
+  const beat = () => fetch(e.data.url, { method: "POST", headers: { "X-LIO-Token": e.data.token, "Content-Type": "application/json" }, body: "{}" })
+    .then((r) => postMessage(r.ok)).catch(() => postMessage(false));
+  beat(); t = setInterval(beat, e.data.ms);
+};`;
+function heartbeat(on, timeoutS) {
+  if (on === hbOn) return;
+  hbOn = on;
+  try {
+    if (!hbWorker) {
+      hbWorker = new Worker(URL.createObjectURL(new Blob([HB_SRC], { type: "text/javascript" })));
+      hbWorker.onmessage = (e) => { $("scan-hb").classList.toggle("on", !!e.data); };
+    }
+    hbWorker.postMessage(on ? { url: location.origin + "/api/scan/beat", token: TOKEN, ms: Math.max(2000, Math.min(15000, timeoutS * 250)) } : { stop: true });
+  } catch (e) { toast("heartbeat worker unavailable: " + e.message, 8000); }
+  $("scan-hb").classList.toggle("on", on);
+  $("scan-hb").lastElementChild.textContent = on ? `heartbeat on (pause after ${timeoutS} s quiet)` : "heartbeat off";
+}
+function fmtH(h) {
+  const sc = STATIC.scan;
+  return sc.lead_mm_per_rev ? `${(h / sc.half_steps_per_rev * sc.lead_mm_per_rev).toFixed(1)} mm` : `${h} half-steps`;
+}
+function drawHeat(det, job) {
+  const cv = $(`scan-hm-${det}`); if (!cv) return;
+  const ctx = cv.getContext("2d"), W = cv.width, H = cv.height, padL = 64, rowH = (H - 8) / 16;
+  const css = getComputedStyle(document.documentElement);
+  ctx.clearRect(0, 0, W, H);
+  ctx.font = "11px -apple-system, Segoe UI, sans-serif"; ctx.textBaseline = "middle";
+  const blind = new Set(STATIC.scan.detectors[det].blind);
+  const grid = (job && job.grid && job.grid[det]) || {};
+  const plan = job && job.plan, heights = (plan && plan.heights_down) || [];
+  let vmax = 1;
+  for (const [h, pts] of Object.entries(grid)) if (!blind.has(Number(h))) for (const p of pts) if (p[2] === 0) vmax = Math.max(vmax, p[1]);
+  const top = plan ? plan.top : 0, bot = plan ? plan.bottom : -1, span = (top - bot) || 1;
+  const n = Math.max(heights.length, 1), cw = (W - padL - 4) / n;
+  for (let hole = 1; hole <= 16; hole++) {
+    const y = 4 + (hole - 1) * rowH;
+    ctx.fillStyle = css.getPropertyValue("--ink-2");
+    ctx.fillText(`${hole} ${STATIC.scan.labels[hole] || ""}`, 4, y + rowH / 2);
+    if (blind.has(hole)) { ctx.fillStyle = css.getPropertyValue("--hair"); ctx.fillRect(padL, y + 1, W - padL - 4, rowH - 2); continue; }
+    for (const p of grid[hole] || []) {
+      if (p[2] !== 0) continue;  // the down pass
+      const x = padL + ((top - p[0]) / span) * (W - padL - 4 - cw);
+      const a = Math.max(0, Math.min(1, p[1] / vmax));
+      ctx.fillStyle = `rgba(${det === "opt101" ? "42,120,214" : "235,104,52"},${0.08 + 0.92 * a})`;
+      ctx.fillRect(x, y + 1, Math.max(cw - 1, 2), rowH - 2);
+    }
+  }
+}
+function scanRender() {
+  if (!SC || !STATIC || !STATIC.scan) return;
+  const job = SC.job, running = !!(job && job.running), connected = !!(S && S.connected), sim = !!(S && S.is_sim);
+  document.querySelectorAll("#scan-view .sim-only").forEach((e) => e.classList.toggle("hidden", !sim));
+  document.querySelectorAll("#scan-view .hw-only").forEach((e) => e.classList.toggle("hidden", sim));
+  const otherRun = !!(S && S.running) && !running;
+  $("scan-start").disabled = !connected || running || otherRun;
+  $("scan-preview").disabled = !connected;
+  $("scan-pause").disabled = !running;
+  $("scan-abort").disabled = !running;
+  $("scan-pause").textContent = job && (job.pause_requested || job.paused) ? "Continue" : "Pause";
+  heartbeat(running && job.heartbeat, job ? Math.round(job.timeout_s) : 90);
+  const pr = job ? job.progress || {} : {};
+  const done = pr.done || 0, of = pr.of || (job ? 1 : 0);
+  $("scan-bar").style.width = of ? `${Math.round(100 * done / of)}%` : "0";
+  if (!job) $("scan-prog").textContent = connected ? "No scan running." : "Connect on the System tab first.";
+  else {
+    const st = job.paused ? `PAUSED (${pr.reason || "paused"}) — everything is off` : (pr.status || "");
+    $("scan-prog").innerHTML = `<b>${esc(job.plan.mode)}</b> · sample ${esc(job.sample_id)} · step ${done}/${of} · ${esc(st)}`
+      + (pr.phase ? ` · ${esc(pr.phase)} ${esc(pr.label || pr.kind || "")}` : "")
+      + (pr.target_hs != null ? ` · height ${esc(fmtH(pr.target_hs))}` : "")
+      + (pr.elapsed_s != null ? ` · ${Math.round(pr.elapsed_s / 60)} min run` : "")
+      + (running && pr.eta_s != null ? ` · about ${Math.round(pr.eta_s / 60)} min left` : "")
+      + (job.error ? `<br><span style="color:var(--critical)">${esc(job.error)}</span>` : "")
+      + (pr.reason && pr.status === "aborted" ? `<br><b>Aborted:</b> ${esc(pr.reason)}` : "");
+  }
+  for (const det of ["opt101", "ingaas"]) drawHeat(det, job);
+  const r = job && job.result;
+  $("scan-result").innerHTML = !r ? "" : `<h3 style="margin-top:14px">Result</h3>
+    <div class="row">${badge(r.verdict.verdict === "FUNCTIONAL" ? "PASS" : r.verdict.verdict === "DEGRADED" ? "WARN" : "FAIL", r.verdict.verdict)}
+    <span class="note">${esc((r.verdict.reasons || []).join("; "))}</span>
+    <a class="btn small" href="${esc(r.report)}" target="_blank" rel="noopener">Open the report</a></div>
+    ${(r.flagged || []).map((f) => `<div class="scan-find">${badge(f.status)} <b>${esc(f.title)}</b> <code>${esc(f.id)}</code>
+      <div class="note">${esc(f.detail)}</div>${f.explanation ? `<dl><dt>Why</dt><dd>${esc(f.explanation.cause)}</dd>
+      <dt>Parts</dt><dd>${esc(f.explanation.parts.join(", "))}</dd><dt>Next check</dt><dd>${esc(f.explanation.check)}</dd></dl>` : ""}</div>`).join("")}`;
+  const runs = SC.runs || [];
+  $("scan-runs").innerHTML = !runs.length ? "No scans yet." : `<table class="runs"><tr><th>Run</th><th>Mode</th><th>Sample</th><th>Status</th><th>Steps</th><th></th></tr>`
+    + runs.map((x) => `<tr><td><code>${esc(x.run_id)}</code>${x.simulated ? ' <span class="muted">sim</span>' : ""}</td><td>${esc(x.mode)}</td><td>${esc(x.sample_id)}</td>
+      <td>${badge(x.status === "COMPLETE" ? "PASS" : x.status === "RUNNING" ? "SKIP" : "WARN", x.status)}${x.aborts.length ? `<br><span class="muted">${esc(x.aborts[x.aborts.length - 1])}</span>` : ""}</td>
+      <td>${x.completed}/${x.steps}</td>
+      <td>${x.report ? `<a href="${esc(x.report)}" target="_blank" rel="noopener">report</a>` : ""}
+      ${x.status === "INCOMPLETE" && connected && !running ? ` <button class="btn small" data-resume="${esc(x.run_id)}">Resume</button>` : ""}</td></tr>`).join("") + "</table>";
+  document.querySelectorAll("[data-resume]").forEach((b) => b.onclick = () => scanResume(b.dataset.resume));
+}
+async function scanPoll() {
+  if (!STATIC || !STATIC.scan) return;
+  const live = SC && SC.job && SC.job.running;
+  if (view !== "scan" && !live) return;
+  try { SC = await api("/api/scan"); } catch (e) { return; }
+  scanSetup();
+  scanRender();
+}
+setInterval(scanPoll, 1000);
+
 /* ---------------------------------------------------------------- motors */
 function motorSetup() {
   const mo = STATIC.motors;
@@ -1068,6 +1298,7 @@ function motorSetup() {
   $("mot-rpm").max = mo.rpm_max; $("mot-rpm").value = mo.rpm_default;
   $("mot-jog-v").min = mo.jog_v_min; $("mot-jog-v").max = mo.jog_v_max; $("mot-jog-v").value = mo.jog_vs_default;
   $("mot-arm-s").textContent = (mo.arm_ms / 1000).toFixed(0);
+  $("mot-drive").innerHTML = driveText();
   document.querySelectorAll(".mcard[data-motor]").forEach((c) => {
     const m = c.dataset.motor;
     if (mo.names[m]) c.querySelector(".mname").textContent = `${mo.names[m][0].toUpperCase()}${mo.names[m].slice(1)} (M${m})`;
@@ -1102,7 +1333,9 @@ function renderStage() {
   $("stage-top").disabled = busy || !st; $("stage-bottom").disabled = busy || !(st && st.known);
   if (!st) { box.textContent = M && M.connected ? "not tracked on this connection (simulator)" : "not connected"; return; }
   if (!st.known) { box.innerHTML = "<b>Position unknown.</b> Raise the top to its upper end and press <b>Set top here</b>."; return; }
-  const f = (a) => a ? `left ${a[0]} · right ${a[1]}` : "not marked";
+  const lead = STATIC.scan && STATIC.scan.lead_mm_per_rev, hpr = STATIC.motors.half_steps_per_rev;
+  const mm = (v) => lead ? ` (${(v / hpr * lead).toFixed(2)} mm)` : "";
+  const f = (a) => a ? `left ${a[0]}${mm(a[0])} · right ${a[1]}${mm(a[1])}` : "not marked";
   box.innerHTML = `<b>Now:</b> ${f(st.abs)}<br><b>Top:</b> ${f(st.top)} &nbsp; <b>Bottom:</b> ${f(st.bottom)}`
     + (st.range ? `<br><b>Travel:</b> ${st.range[0]} / ${st.range[1]} half-steps` : "")
     + (st.below_top ? ` &nbsp; <b>below top:</b> ${st.below_top.join(" / ")}` : "")

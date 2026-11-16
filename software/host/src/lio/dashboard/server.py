@@ -139,7 +139,7 @@ class _Handler(BaseHTTPRequestHandler):
             body = page_html(self.server.token).encode()
             csp = (
                 "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; "
-                "img-src 'self' data:; frame-ancestors 'none'"
+                "img-src 'self' data:; worker-src blob:; frame-ancestors 'none'"
             )
             return self._send(
                 HTTPStatus.OK, body, "text/html; charset=utf-8", {"Content-Security-Policy": csp}
@@ -166,6 +166,8 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json({"runs": s.past_runs()})
             if url.path == "/api/motor":
                 return self._json(s.motor_status())
+            if url.path == "/api/scan":
+                return self._json(s.scan_view())
             if url.path == "/api/ring":
                 return self._json(s.ring_status())
             if url.path.startswith("/api/foods/"):
@@ -434,6 +436,26 @@ class _Handler(BaseHTTPRequestHandler):
                 )
             elif path == "/api/stop":
                 s.stop()
+            elif path == "/api/scan/plan":
+                return self._json(s.scan_plan(str(b.get("mode") or ""), _overrides(b)))
+            elif path == "/api/scan/start":
+                return self._json(
+                    s.scan_start(
+                        str(b.get("mode") or ""),
+                        str(b.get("sample_id") or ""),
+                        overrides=_overrides(b),
+                        heartbeat=bool(b.get("heartbeat", True)),
+                        motion_confirmed=bool(b.get("motion_confirmed")),
+                        sim_operator=bool(b.get("sim_operator", True)),
+                        resume=str(b.get("resume") or ""),
+                    )
+                )
+            elif path == "/api/scan/pause":
+                s.scan_pause(bool(b.get("on", True)))
+            elif path == "/api/scan/abort":
+                s.scan_abort()
+            elif path == "/api/scan/beat":
+                return self._json(s.scan_beat())
             elif path == "/api/answer":
                 s.answer(int(b["id"]), b.get("value"), bool(b.get("abort")))
             elif path == "/api/measure":
@@ -501,6 +523,13 @@ class _Handler(BaseHTTPRequestHandler):
             log.exception("POST %s", path)
             return self._error(HTTPStatus.INTERNAL_SERVER_ERROR, f"{type(e).__name__}: {e}")
         self._json({"ok": True})
+
+
+def _overrides(b: dict[str, Any]) -> dict[str, Any]:
+    o = b.get("overrides") or {}
+    if not isinstance(o, dict):
+        raise ValueError("overrides must be an object")
+    return {str(k): v for k, v in o.items() if v not in ("", None)}
 
 
 def _hole(b: dict[str, Any]) -> int:

@@ -1,5 +1,44 @@
 # Changelog
 
+## 2026-11-16: Diagnostic sweep S2–S6: the full-system height scan (LIO-SW-SCAN-001)
+
+### Added
+- **The diagnostic height sweep** (`lio.scan`, `docs/DIAGNOSTIC_SWEEP.md`). One run moves the chamber top through its travel and, at every height, measures every LED on both detectors in several electrical states.
+  - **Modes:** `quick_down`, `quick`, `full`, `fine`, `repeatability`, `electrical`, `continuous`. Every setting can be changed per run.
+  - **Phases:** P0 preflight, P1 static, P2/P3 stop–measure–move, P4 closing checks.
+  - **Running it:**
+    - checkpoint and resume;
+    - pause, and an operator heartbeat;
+    - safe aborts (`OFF`, `MOTOR STOP`, `MOTOR ALL RELEASE`, `MOTOR LIGHT 0`, with the reason recorded) on: the operator, Ctrl-C, saturation, an ADC dropout, a lost link, a soft limit, an unexpected `# BOOT`;
+    - the RAIL A duty budget, with every wait logged.
+  - **Command line:** `lio scan plan | run | resume | analyse | report | baseline | compare`.
+- **Analysis:**
+  - **optics:** response curves, optimum (mm), decomposition net = O·g(h) + C, plausibility, throughput, stray light, effectiveness;
+  - **electrical:** coupling, ground shift, dark offset and leakage, drift, mains hum, coil EMI, select-only coupling;
+  - **ambient:** light leak against height, flicker;
+  - **mechanics:** backlash, step loss, repeatability, travel, lockstep, settle;
+  - **system:** a matrix with health per subsystem, and the T11 verdict;
+  - **trend:** baselines, comparison and control charts.
+
+  Thresholds are in `scan.health`, provisional.
+- **Explanations:** each flagged finding comes with a cause, the parts implicated (the hole's own LEDn / Qn) and the next manual check.
+- **Report:** `report.html` / `report.md` with heat-maps, response curves, dark plots, spectra and control charts.
+- **T13.1 Diagnostic height sweep** in the catalogue (motion). It feeds the twin and the verdict; the twin gets a "Diagnostic sweep" tile.
+- **Dashboard Scan tab:**
+  - plan preview and per-run settings;
+  - Start, Pause, Abort, and Resume of interrupted scans;
+  - an operator heartbeat from a Web Worker;
+  - live progress and a live hole × height heat-map;
+  - the result with explanations and a link to the report.
+
+  The lead screw, coupler and motors (M6 × 1.0, 5–6 mm coupler, 28BYJ-48) are shown on the Scan and Motors tabs, and positions are given in mm.
+- **Stage validity:** an unexpected `# BOOT` marks the tracked position as not trusted until the top is set again.
+- **`lio.motion`:** continuous moves of both motors, shared by T09 and the scan.
+- **Fault matrix:** a row for every scan fault, checking that the intended finding flags it and that its explanation names the right part. Healthy `quick` and `full` scans at full size give FUNCTIONAL.
+
+### Changed
+- The simulated white-tile reflectance is now 1.5 (was 1.8). At 1.8 a healthy white run came within 2% of InGaAs saturation.
+
 ## 2026-11-16: Diagnostic sweep S1, simulator height model (LIO-SW-SCAN-001 §9)
 
 ### Added
