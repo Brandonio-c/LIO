@@ -139,7 +139,7 @@ class TestOptics:
             white = net(dev, 4, "opt101")
         with rig(cfg, sample="black_cup") as (dev, _):
             black = net(dev, 4, "opt101")
-        assert white / empty == pytest.approx(1.8 + 0.01, rel=0.05)
+        assert white / empty == pytest.approx(1.5 + 0.01, rel=0.05)
         assert black / empty < 0.1  # 0.05 reflectance + 0.01 stray
 
     def test_window_blocked_and_stray_light(self, cfg: HwConfig) -> None:

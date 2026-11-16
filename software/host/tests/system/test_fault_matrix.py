@@ -16,13 +16,17 @@ current, so it is optically invisible, and harmless.
 from __future__ import annotations
 
 import copy
+from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Any
 
 import pytest
 
+from lio import scan
 from lio.config import HwConfig, parse_config
 from lio.device import LIODevice
 from lio.results import Status, TestResult, Verdict
+from lio.scan.analysis import Analysis, analyse
 from lio.sim import FAULT_NAMES, Faults, SimulatedLIO
 from lio.suite.core import REGISTRY, SuiteContext, catalogue, run_test
 from lio.suite.runner import everything, new_record, run_catalogue, sim_context
@@ -139,21 +143,114 @@ def test_healthy_control_passes(cfg: HwConfig, row: Row) -> None:
 HEALED = ("bank_a_asleep",)
 
 
-# Diagnostic-sweep faults (LIO-SW-SCAN-001 §9) whose detecting metric (T13) is still to
-# be built. Each milestone S3-S5 moves its faults from here into a MATRIX row; at the end
-# of S5 this set is empty. Their simulated physics is tested in tests/unit/test_sim_height.py.
+# Diagnostic-sweep faults (LIO-SW-SCAN-001 §9) whose detecting metric is still to be
+# built. Each milestone S3-S5 moves its faults from here into SCAN_MATRIX; at the end of
+# S5 this set is empty. Their simulated physics is tested in tests/unit/test_sim_height.py.
 PENDING_SCAN_METRIC = {
-    "adc_dropout", "ambient_leak", "backlash", "coil_emi", "ground_shift", "leakage",
-    "leakage_drift", "led_swapped", "mains_hum", "mid_run_boot", "pd_disconnected",
-    "rail_miswired", "room_flicker", "step_loss", "stray_light", "window_blocked", "wrong_led",
+    "adc_dropout", "ambient_leak", "backlash", "mid_run_boot", "room_flicker", "step_loss",
 }  # fmt: skip
 
 
+# ------------------------------------------------- diagnostic sweep (lio.scan)
+
+
+@dataclass(frozen=True)
+class ScanRow:
+    """A scan on a faulted simulator; the analysis finding ``finding`` must report it.
+
+    ``reference``: the sample of a reference run on the same (faulted) rig, e.g. the
+    white tile for stray light measured with the black cup."""
+
+    fault: str
+    finding: str
+    status: Status = Status.FAIL
+    sample: str = "empty"
+    reference: str | None = None
+
+    @property
+    def id(self) -> str:
+        ref = f"+ref:{self.reference}" if self.reference else ""
+        return f"{self.fault}@{self.sample}{ref}->{self.finding}"
+
+
+SCAN_MATRIX = (
+    # S3: optics and electrical health
+    ScanRow("pd_disconnected", "optics/ingaas/electrical_only"),
+    ScanRow("ground_shift:0.2", "elec/ingaas/ground_shift"),
+    ScanRow("leakage:20", "elec/ingaas/dark_offset"),
+    ScanRow("leakage_drift:10", "elec/ingaas/drift"),
+    ScanRow("mains_hum:8", "elec/ingaas/hum"),
+    ScanRow("coil_emi", "elec/ingaas/coil_emi"),
+    ScanRow("coil_emi", "elec/opt101/coil_emi"),
+    ScanRow("led_swapped:9,16", "optics/opt101/h16/plausibility"),
+    ScanRow("led_swapped:9,16", "optics/opt101/h09/response"),
+    ScanRow("wrong_led:16=630", "optics/opt101/h16/plausibility"),
+    ScanRow("rail_miswired:12", "optics/ingaas/h12/response"),
+    ScanRow("window_blocked:0.1", "optics/ingaas/throughput"),
+    ScanRow("stray_light:0.05", "optics/stray", sample="black_cup", reference="white_ptfe"),
+)
+
+
+@pytest.fixture(scope="module")
+def scan_cfg(cfg: HwConfig) -> HwConfig:
+    """Scaled geometry (a tenth of the travel) and short records: a run in ~1 s."""
+    data = copy.deepcopy(cfg.data)
+    data["sim"]["height"].update(travel_hs=40000, peak_hs=-30000, width_hs=9000,
+                                 peak_shift_hs=250)  # fmt: skip
+    data["scan"].update(long_dark_s=4, hum_bursts=5)
+    data["scan"]["modes"]["matrix"] = {"heights": 9, "up": "same", "return_top": True,
+                                       "repeats": 1, "ref_heights": 1, "label": "matrix"}  # fmt: skip
+    return parse_config(data, cfg.path)
+
+
+@pytest.fixture(scope="module")
+def scan_analysis(
+    scan_cfg: HwConfig, tmp_path_factory: pytest.TempPathFactory
+) -> Callable[[str | None, str, str | None], Analysis]:
+    cache: dict[tuple[str | None, str, str | None], Analysis] = {}
+    root = tmp_path_factory.mktemp("scans")
+
+    def get(faults: str | None, sample: str, reference: str | None) -> Analysis:
+        key = (faults, sample, reference)
+        if key not in cache:
+            ref = None
+            if reference is not None:
+                ref, st = scan.sim_run(scan_cfg, "matrix", root, faults=faults, sample=reference)
+                assert st == "COMPLETE", ref.meta["aborts"]
+            store, st = scan.sim_run(scan_cfg, "matrix", root, faults=faults, sample=sample)
+            assert st == "COMPLETE", store.meta["aborts"]
+            cache[key] = analyse(store.folder, scan_cfg, None if ref is None else ref.folder)
+        return cache[key]
+
+    return get
+
+
+@pytest.mark.parametrize("row", SCAN_MATRIX, ids=[r.id for r in SCAN_MATRIX])
+def test_scan_fault_is_detected(scan_analysis: Any, row: ScanRow) -> None:
+    a = scan_analysis(row.fault, row.sample, row.reference)
+    f = a.get(row.finding)
+    assert f.status == row.status, f"{row.finding}: {f.status.value}: {f.detail}\n{a.summary()}"
+
+
+@pytest.mark.parametrize(
+    ("sample", "reference"), [("empty", None), ("white_ptfe", None), ("black_cup", "white_ptfe")]
+)
+def test_scan_healthy_control(scan_analysis: Any, sample: str, reference: str | None) -> None:
+    """A healthy rig: no finding flagged, and every matrix finding for this sample computed."""
+    a = scan_analysis(None, sample, reference)
+    flagged = [f"{f.id}: {f.status.value} {f.detail}" for f in a.flagged()]
+    assert not flagged, "\n".join(flagged)
+    for row in SCAN_MATRIX:
+        if row.sample == sample and row.reference == reference:
+            assert a.get(row.finding).status == Status.PASS, row.finding
+
+
 def test_every_fault_has_a_row() -> None:
-    covered = {r.fault.split(":")[0] for r in MATRIX} | set(HEALED) | PENDING_SCAN_METRIC
+    rows = {r.fault.split(":")[0] for r in MATRIX} | {r.fault.split(":")[0] for r in SCAN_MATRIX}
+    covered = rows | set(HEALED) | PENDING_SCAN_METRIC
     missing = set(FAULT_NAMES) - covered
     assert not missing, f"faults without a detecting test: {sorted(missing)}"
-    stale = PENDING_SCAN_METRIC & {r.fault.split(":")[0] for r in MATRIX}
+    stale = PENDING_SCAN_METRIC & rows
     assert not stale, f"faults with a row are no longer pending: {sorted(stale)}"
 
 
@@ -245,3 +342,13 @@ def test_verdict_stuck_on_rail_b_with_empty_probe_holes(cfg: HwConfig) -> None:
     assert _full_run(_with_unfitted(cfg, (10, 11)), "stuck_on:13")["verdict"] == (
         Verdict.NOT_FUNCTIONAL.value
     )
+
+
+@pytest.mark.parametrize("mode", ["quick", "full"])
+def test_scan_full_size_healthy(cfg: HwConfig, tmp_path: Any, mode: str) -> None:
+    """The real geometry and settings (lio_hw.yaml as shipped): nothing flagged."""
+    store, status = scan.sim_run(cfg, mode, tmp_path, sample="empty")
+    assert status == "COMPLETE", store.meta["aborts"]
+    a = analyse(store.folder, cfg)
+    flagged = [f"{f.id}: {f.status.value} {f.detail}" for f in a.flagged()]
+    assert not flagged, "\n".join(flagged)

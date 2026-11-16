@@ -15,6 +15,7 @@
     lio dashboard [--sim]          # web page: run the tests, digital twin, overall verdict
     lio scan plan --mode full      # diagnostic height sweep: plan, run, resume
     lio scan run --mode quick --sample empty --allow-motion
+    lio scan analyse test_results/<ts>_scan_quick [--reference <white run>]
 
 Opening the serial port resets the Nano (about 2 s), so each one-shot command
 starts from the safe power-up state and leaves everything off when it exits.
@@ -546,6 +547,15 @@ def cmd_scan(args: argparse.Namespace, cfg: HwConfig) -> int:
     from lio import scan
     from lio.operator import SimOperator
 
+    if args.scan_command == "analyse":
+        from lio.scan.analysis import analyse
+
+        ref = Path(args.reference) if args.reference else None
+        a = analyse(Path(args.folder), cfg, ref)
+        print(a.summary())
+        print(f"analysis -> {Path(args.folder) / 'analysis.json'}")
+        return 0 if not any(f.status.value == "FAIL" for f in a.findings) else 2
+
     overrides = _scan_overrides(args.set)
     mode = args.mode or str(cfg.section.raw("scan.default_mode"))
     out = getattr(args, "out", None)
@@ -725,6 +735,11 @@ def build_parser() -> argparse.ArgumentParser:
                            "food, or LIO-F-...")  # fmt: skip
             c.add_argument("--out", help="results root (default test_results/)")
         c.set_defaults(fn=cmd_scan)
+    c = scsub.add_parser("analyse", help="compute the metrics of a run (writes analysis.json)")
+    c.add_argument("folder", help="the run folder")
+    c.add_argument("--reference", help="a reference run: white_ptfe for stray light, or a "
+                   "baseline of the same sample for effectiveness")  # fmt: skip
+    c.set_defaults(fn=cmd_scan)
 
     s = sub.add_parser("bench", help="coverage benchmark: plan / ingest / report")
     bsub = s.add_subparsers(dest="bench_command", required=True)

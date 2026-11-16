@@ -34,6 +34,7 @@ __all__ = [
     "build",
     "plan_for",
     "resume",
+    "sim_run",
     "sim_stage",
     "start",
 ]
@@ -73,6 +74,38 @@ def sim_stage(dev: LIODevice, path: Path, travel_hs: int | None = None) -> Stage
     tr.data["bottom"] = [-travel, -travel]
     tr._save()
     return tr
+
+
+def sim_run(
+    cfg: HwConfig,
+    mode: str,
+    root: Path,
+    *,
+    faults: str | None = None,
+    sample: str = "empty",
+    overrides: dict[str, Any] | None = None,
+    control: Control | None = None,
+    on_progress: Callable[[dict[str, Any]], None] | None = None,
+) -> tuple[ScanStore, str]:
+    """A whole scan on a fresh simulator (top at the start, bottom = sim travel)."""
+    import tempfile
+
+    from lio.operator import SimOperator
+    from lio.sim import Faults, SimulatedLIO
+    from lio.transport import SimTransport
+
+    sim = SimulatedLIO(cfg, Faults.parse(faults))
+    sim.sample = "food" if sample.startswith("LIO-F-") else sample
+    dev = LIODevice(SimTransport(sim), cfg)
+    dev.open()
+    try:
+        sim_stage(dev, Path(tempfile.mkdtemp(prefix="lio_sim_stage_")) / "stage.json",
+                  int(sim.travel_hs))  # fmt: skip
+        plan = plan_for(cfg, mode, dev.stage, dev.stage_top_margin(), overrides)
+        return start(dev, cfg, plan, root, SimOperator(sim), sample_id=sample, control=control,
+                     on_progress=on_progress, sim=True)  # fmt: skip
+    finally:
+        dev.close()
 
 
 def start(

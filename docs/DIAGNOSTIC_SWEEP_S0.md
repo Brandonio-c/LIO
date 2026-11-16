@@ -106,6 +106,12 @@ I recommend **(a)** as the default quick check, since the extra data is nearly f
 
 **D14 (found in S2). ADC rate changes re-read INFO.** The device's timeouts assume 128 SPS until INFO is read again. The P1 long dark record (8 SPS, 30 s) timed out. The executor now re-reads INFO after each rate change. `LIODevice` itself is unchanged: changing its default shifted catalogue timings (T07.2).
 
+**D15 (found in S3). Coupling C is anchored on the blind channels.** Plan §6.6 takes C from a plateau where the light vanishes, else from the coupling states. In the simulator, as on the rig as far as we know, the optical response never vanishes inside the travel: far from the peak it is still about a third of the peak. And select-only carries no LED current, so it cannot show ground shift. So C per detector and rail is the median net on the holes that detector cannot see: InGaAs on 1–7, 10, 11 and 16; OPT101 on 12–16. There the LED current flows but no light is detected. The OPT101 has no blind hole on rail A, so its rail-A C is inferred from rail B by the current ratio (marked "inferred"). Select-only is reported separately, as gate-drive coupling.
+
+**D16 (found in S3). Wavelength plausibility uses the channel map's `expect`**, not a responsivity ratio. The only responsivity tables in the config are the simulator's, and the analysis must not judge the rig by the simulator's own physics. The ratio form can follow once cited tables are added (plan §10).
+
+**D17 (found in S3). Thresholds come from the simulator.** `scan.health` values are set between healthy and faulted simulator runs and marked provisional. Commissioning (S7) must recalibrate them, especially throughput (absolute counts) and stray light. The simulated white-tile reflectance was lowered from 1.8 to 1.5: at 1.8 a healthy white run came within 2% of InGaAs saturation, which would trip the saturation abort.
+
 ## 4. Questions
 
 Plan §13:

@@ -190,6 +190,30 @@ scan:
   heartbeat_timeout_s: 90      # dashboard operator-present heartbeat; pause when it is missing
   abort_on_saturation: true
   sample_ids: [empty, white_ptfe, black_cup, food]
+  # Health thresholds for the scan analysis (plan §6). ALL PROVISIONAL: set from the
+  # simulator's healthy/faulted runs, to be calibrated on the rig at commissioning (S7).
+  # Pairs are [WARN, FAIL]. The dark offset uses thresholds.dark (shared with T06).
+  health:
+    provisional: true
+    coupling_counts: [8, 20]          # |C| on blind channels (LED on, light invisible)
+    ground_shift_mv_per_ma: [0.03, 0.08]
+    drift_mv_per_h: {opt101: [3, 8], ingaas: [3, 8]}
+    hum_mv: {opt101: [0.3, 1.0], ingaas: [1.0, 3.0]}   # 60 Hz amplitude, coils off
+    hum_fraction_warn: 0.5            # mains share of the dark-noise variance
+    noise_floor_counts: {opt101: 1.0, ingaas: 1.0}   # sigma floor for the EMI ratio
+    coil_emi_ratio: [3, 6]            # sigma moving / sigma coils off
+    optics:
+      judged_samples: [empty, white_ptfe]   # absolute levels are judged only for these
+      min_signal_counts: [100, 40]    # O on a hole its detector should see
+      plausibility_counts: [30, 80]   # residual on a hole its detector cannot see
+      modulation_min: 0.15            # (max - min) / O below this: flat, not light
+      throughput_counts:              # median O over expected holes (sim healthy: ~5800 / ~8500 empty)
+        empty: {opt101: [2000, 800], ingaas: [3000, 1000]}
+        white_ptfe: {opt101: [3600, 1400], ingaas: [5400, 1800]}
+      snr_db_min: 30
+      headroom_pct_min: 10
+      stray_pct: [0.6, 1.0]           # black_cup vs white_ptfe: height-invariant part, % of the white optimum (sim healthy 0.2)
+      effectiveness_ratio: [0.8, 0.5] # O / O_reference (baseline)
   # Modes. heights: points down the travel (top and bottom included). up: points measured on
   # the way back up (0: none; "same": every down height). return_top: end at the top (P4 at the
   # top). repeats: readings at each reference height (ref_heights of them), approached from
@@ -418,7 +442,7 @@ sim:
     width_hs: 90000
     floor: 0.33                  # far from the peak, relative to the peak
     peak_shift_hs: 2500          # hole n peaks at peak_hs + (n - 8.5) x this
-    sample_reflectance: {empty: 1.0, white_ptfe: 1.8, black_cup: 0.05, food: 0.9}
+    sample_reflectance: {empty: 1.0, white_ptfe: 1.5, black_cup: 0.05, food: 0.9}
     stray_frac: 0.01             # LED light reaching a detector not via the sample
     rail_current_ma: {A: 30, B: 45}
     coupling_counts_per_ma: {opt101: 0.02, ingaas: 0.05}   # healthy LED-current coupling
