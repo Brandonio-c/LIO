@@ -198,10 +198,12 @@ scan:
     coupling_counts: [8, 20]          # |C| on blind channels (LED on, light invisible)
     ground_shift_mv_per_ma: [0.03, 0.08]
     drift_mv_per_h: {opt101: [3, 8], ingaas: [3, 8]}
+    drift_min_span_s: 300            # shorter runs: drift not judged (SKIP)
     hum_mv: {opt101: [0.3, 1.0], ingaas: [1.0, 3.0]}   # 60 Hz amplitude, coils off
     hum_fraction_warn: 0.5            # mains share of the dark-noise variance
     noise_floor_counts: {opt101: 1.0, ingaas: 1.0}   # sigma floor for the EMI ratio
     coil_emi_ratio: [3, 6]            # sigma moving / sigma coils off
+    addressing_match_frac: 0.01       # two holes this alike at every height: same LED (WARN)
     optics:
       judged_samples: [empty, white_ptfe]   # absolute levels are judged only for these
       min_signal_counts: [100, 40]    # O on a hole its detector should see
@@ -214,6 +216,19 @@ scan:
       headroom_pct_min: 10
       stray_pct: [0.6, 1.0]           # black_cup vs white_ptfe: height-invariant part, % of the white optimum (sim healthy 0.2)
       effectiveness_ratio: [0.8, 0.5] # O / O_reference (baseline)
+    ambient:
+      leak_counts: {opt101: [8, 25], ingaas: [8, 25]}   # dark rise at the bottom vs the top
+      flicker_mv: {opt101: [0.4, 1.2], ingaas: [0.4, 1.2]}  # 120 Hz in the dark streams
+    mech:
+      backlash_hs: [600, 1500]        # 0.15 / 0.37 mm (M6 x 1.0): nut + coupler + gearbox
+      step_loss_hs: [400, 1000]       # height lost over a full upward travel
+      repeatability_hs: [300, 800]    # spread of repeated visits to one height
+      travel_tol_hs: 256
+      settle_extra_ms: [500, 1500]    # dark-agreement time beyond settle_ms_mech
+    trend:
+      ratio_change: [0.10, 0.25]      # per-hole O vs the previous baseline (as T11)
+      min_counts: 100                 # channels weaker than this are not compared
+      control_min_baselines: 5
   # Modes. heights: points down the travel (top and bottom included). up: points measured on
   # the way back up (0: none; "same": every down height). return_top: end at the top (P4 at the
   # top). repeats: readings at each reference height (ref_heights of them), approached from

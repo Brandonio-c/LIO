@@ -136,6 +136,8 @@ class ScanExecutor:
         self._emi_pending = False
         self._t_start = 0.0
         self._rows: list[dict[str, Any]] = []
+        self._moves = 0
+        self._unlevel: list[list[int]] = []
         self.capabilities: dict[str, Any] = {}
 
     # ================================================================ running
@@ -162,6 +164,7 @@ class ScanExecutor:
                 self.store.append_rows(self._rows, completed_step=st.index)
                 self.store.phase_time(st.phase, self.dev.now() - t0)
             self._safe_stop()
+            self._record_health()
             self.store.finish("COMPLETE")
             self.store.event("complete")
             self._progress(None, "complete")
@@ -171,6 +174,8 @@ class ScanExecutor:
             if self.dev.unexpected_boots > self._boots0 and "BOOT" not in reason:
                 reason = f"unexpected # BOOT: the board reset during the run ({reason})"
             self._safe_stop()
+            with contextlib.suppress(Exception):
+                self._record_health()
             self.store.abort(reason, step=self.store.meta.get("completed_step", -1) + 1)
             self._progress(None, "aborted", reason=reason)
             if isinstance(e, KeyboardInterrupt):
@@ -347,6 +352,37 @@ class ScanExecutor:
         if not ok:
             raise ScanAbort(f"move to {h}: {msg}")
         self._check_link()
+        a = self.dev.stage.abs if self.dev.stage is not None else None
+        self._moves += 1
+        if a is not None and a[0] != a[1]:
+            self._unlevel.append([a[0], a[1]])
+
+    def _record_health(self) -> None:
+        """What the system matrix needs (plan §6.5): duty, boots, levels, positions."""
+        duty = self.dev.duty
+        out: dict[str, Any] = {"unexpected_boots": self.dev.unexpected_boots - self._boots0}
+        if duty is not None:
+            worst = 0.0
+            for hole, spans in duty.history.items():
+                if self.cfg.channel(hole).rail != "A":
+                    continue
+                for t0, _ in spans:
+                    on = sum(min(b, t0 + 60) - max(a, t0) for a, b in spans
+                             if a < t0 + 60 and b > t0)  # fmt: skip
+                    worst = max(worst, on * 1000)
+            out["duty"] = {
+                "max_rail_a_ms_per_min": round(worst, 1),
+                "budget_a_ms": float(duty.budget_ms["A"]),
+                "over_budget": [[h, round(ms, 1)] for h, ms in duty.over_budget],
+                "cooldown_s": round(duty.total_cooldown_s, 2),
+                "cooldowns": len(duty.cooldowns),
+            }
+        out["moves"] = self._moves
+        out["unlevel"] = self._unlevel
+        st = self.dev.stage
+        out["stage_end"] = st.summary() if st is not None else None
+        self.store.meta["health"] = out
+        self.store.save_meta()
 
     def _approach(self, st: Step) -> None:
         """Reach the height from the stated side (repeats: from an offset first)."""

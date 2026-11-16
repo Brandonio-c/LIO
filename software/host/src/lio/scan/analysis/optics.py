@@ -163,7 +163,13 @@ def analyse(
                     {"O": r, "modulation": st["modulation"]},
                 ))  # fmt: skip
         out += _detector_level(cube, cfg, det, stats[det], coup.get(det, {}), judged)
-    out += _optimum(cfg, stats)
+    planned = len((cube.meta.get("plan") or {}).get("heights_down") or [])
+    got = len(np.unique(cube.num["height_hs"][cube.mask(state="lit", phase="P2")]))
+    if got < planned:
+        why = f"down pass incomplete ({got} of {planned} heights)"
+        out.append(Finding("optics/optimum", "optimum height (all holes)", Status.SKIP, detail=why))
+    else:
+        out += _optimum(cfg, stats)
     out += _snr_headroom(cube, cfg, stats, elec)
     out += _stray(cube, cfg, stats, reference)
     out += _effectiveness(cube, cfg, stats, reference)

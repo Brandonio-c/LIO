@@ -147,9 +147,11 @@ def drift(cube: Cube, cfg: HwConfig) -> list[Finding]:
         t, h, d, ph = cube.darks(det)
         ok = np.isfinite(d)
         t, h, d, ph = t[ok], h[ok], d[ok], ph[ok]
-        if len(d) < 4 or float(np.ptp(t)) < 60:
+        min_s = float(cfg.section.raw("scan.health.drift_min_span_s"))
+        if len(d) < 6 or float(np.ptp(t)) < min_s:
             out.append(Finding(f"elec/{det}/drift", f"{det}: dark drift", Status.SKIP,
-                               detail="run too short for a drift estimate"))  # fmt: skip
+                               detail=f"under {min_s / 60:.0f} min of dark frames: "
+                               "too short for a drift estimate"))  # fmt: skip
             continue
         th = t / 3600.0
         cols = [np.ones_like(th), th]

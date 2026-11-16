@@ -16,6 +16,7 @@
     lio scan plan --mode full      # diagnostic height sweep: plan, run, resume
     lio scan run --mode quick --sample empty --allow-motion
     lio scan analyse test_results/<ts>_scan_quick [--reference <white run>]
+    lio scan baseline save|list ...; lio scan compare <runA> <runB>
 
 Opening the serial port resets the Nano (about 2 s), so each one-shot command
 starts from the safe power-up state and leaves everything off when it exits.
@@ -31,6 +32,7 @@ import sys
 import time
 from collections.abc import Iterator
 from pathlib import Path
+from typing import Any
 
 from lio import __version__
 from lio.config import ConfigError, HwConfig, load_config
@@ -547,14 +549,8 @@ def cmd_scan(args: argparse.Namespace, cfg: HwConfig) -> int:
     from lio import scan
     from lio.operator import SimOperator
 
-    if args.scan_command == "analyse":
-        from lio.scan.analysis import analyse
-
-        ref = Path(args.reference) if args.reference else None
-        a = analyse(Path(args.folder), cfg, ref)
-        print(a.summary())
-        print(f"analysis -> {Path(args.folder) / 'analysis.json'}")
-        return 0 if not any(f.status.value == "FAIL" for f in a.findings) else 2
+    if args.scan_command in ("analyse", "baseline", "compare"):
+        return _scan_offline(args, cfg)
 
     overrides = _scan_overrides(args.set)
     mode = args.mode or str(cfg.section.raw("scan.default_mode"))
@@ -615,6 +611,54 @@ def cmd_scan(args: argparse.Namespace, cfg: HwConfig) -> int:
     for a in store.meta.get("aborts", []):
         print(f"  abort: {a['reason']}")
     return 0 if status == "COMPLETE" else 1
+
+
+def _scan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
+    """lio scan analyse / baseline / compare: on run folders, no connection."""
+    from lio.scan.analysis import analyse, trend
+
+    root = Path(getattr(args, "out", None) or REPO_ROOT / "test_results")
+
+    def analysed(folder: Path) -> dict[str, Any]:
+        if not (folder / "analysis.json").exists():
+            analyse(folder, cfg, None, root)
+        data: dict[str, Any] = json.loads((folder / "analysis.json").read_text())
+        return data
+
+    if args.scan_command == "analyse":
+        ref = Path(args.reference) if args.reference else None
+        a = analyse(Path(args.folder), cfg, ref, None if args.no_baselines else root)
+        print(a.summary())
+        print(f"analysis -> {Path(args.folder) / 'analysis.json'}")
+        return EXIT_FOR_VERDICT.get(a.verdict.get("verdict", ""), EXIT_ERROR)
+    if args.scan_command == "baseline":
+        if args.action == "list":
+            d = root / "scan_baselines"
+            for sd in sorted(p for p in d.glob("*") if p.is_dir()) if d.exists() else []:
+                if args.sample and sd.name != args.sample:
+                    continue
+                runs = sorted(p.stem for p in sd.glob("*.json"))
+                print(f"{sd.name}: {len(runs)} baseline(s)")
+                for r in runs:
+                    print(f"  {r}")
+            return 0
+        if not args.folder:
+            raise CliError("usage: lio scan baseline save <run folder>")
+        folder = Path(args.folder)
+        analysed(folder)
+        try:
+            out = trend.save_baseline(folder, root, cfg)
+        except ValueError as e:
+            raise CliError(str(e)) from e
+        print(f"baseline -> {out}")
+        return 0
+    snap_a = trend.snapshot(analysed(Path(args.run_a)))
+    snap_b = trend.snapshot(analysed(Path(args.run_b)))
+    for f in trend.compare(snap_a, snap_b, cfg):
+        print(f"{f.status.value:<5} {f.title}: {f.detail} (furthest ratio {f.value:.2f})")
+        for det, r in f.data["ratios"].items():
+            print(f"  {det}: " + " ".join(f"h{h}={v:.2f}" for h, v in sorted(r.items())))
+    return 0
 
 
 # ------------------------------------------------------------------- parser
@@ -739,6 +783,18 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("folder", help="the run folder")
     c.add_argument("--reference", help="a reference run: white_ptfe for stray light, or a "
                    "baseline of the same sample for effectiveness")  # fmt: skip
+    c.add_argument("--no-baselines", action="store_true", help="skip trend and control charts")
+    c.add_argument("--out", help="results root holding scan_baselines/ (default test_results/)")
+    c.set_defaults(fn=cmd_scan)
+    c = scsub.add_parser("baseline", help="save a run as a baseline, or list baselines")
+    c.add_argument("action", choices=["save", "list"])
+    c.add_argument("folder", nargs="?", help="the run folder (save)")
+    c.add_argument("--sample", help="list: only this sample id")
+    c.add_argument("--out", help="results root holding scan_baselines/ (default test_results/)")
+    c.set_defaults(fn=cmd_scan)
+    c = scsub.add_parser("compare", help="compare two runs: per-hole ratios, where it changed")
+    c.add_argument("run_a")
+    c.add_argument("run_b")
     c.set_defaults(fn=cmd_scan)
 
     s = sub.add_parser("bench", help="coverage benchmark: plan / ingest / report")

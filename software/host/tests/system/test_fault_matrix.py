@@ -146,9 +146,7 @@ HEALED = ("bank_a_asleep",)
 # Diagnostic-sweep faults (LIO-SW-SCAN-001 §9) whose detecting metric is still to be
 # built. Each milestone S3-S5 moves its faults from here into SCAN_MATRIX; at the end of
 # S5 this set is empty. Their simulated physics is tested in tests/unit/test_sim_height.py.
-PENDING_SCAN_METRIC = {
-    "adc_dropout", "ambient_leak", "backlash", "mid_run_boot", "room_flicker", "step_loss",
-}  # fmt: skip
+PENDING_SCAN_METRIC: set[str] = set()
 
 
 # ------------------------------------------------- diagnostic sweep (lio.scan)
@@ -166,6 +164,7 @@ class ScanRow:
     status: Status = Status.FAIL
     sample: str = "empty"
     reference: str | None = None
+    incomplete: bool = False  # the fault aborts the run (the analysis still runs)
 
     @property
     def id(self) -> str:
@@ -188,6 +187,15 @@ SCAN_MATRIX = (
     ScanRow("rail_miswired:12", "optics/ingaas/h12/response"),
     ScanRow("window_blocked:0.1", "optics/ingaas/throughput"),
     ScanRow("stray_light:0.05", "optics/stray", sample="black_cup", reference="white_ptfe"),
+    # S4: ambient, mechanics, the run itself
+    ScanRow("ambient_leak:-20000", "ambient/opt101/leak"),
+    ScanRow("ambient_leak:-20000", "ambient/ingaas/leak"),
+    ScanRow("room_flicker", "ambient/opt101/flicker"),
+    ScanRow("backlash:2000", "mech/backlash"),
+    ScanRow("step_loss:2,4200", "mech/step_loss"),
+    ScanRow("mid_run_boot:120", "system/link", incomplete=True),
+    ScanRow("mid_run_boot:120", "system/stage", incomplete=True),
+    ScanRow("adc_dropout:30", "system/adc", incomplete=True),
 )
 
 
@@ -196,7 +204,8 @@ def scan_cfg(cfg: HwConfig) -> HwConfig:
     """Scaled geometry (a tenth of the travel) and short records: a run in ~1 s."""
     data = copy.deepcopy(cfg.data)
     data["sim"]["height"].update(travel_hs=40000, peak_hs=-30000, width_hs=9000,
-                                 peak_shift_hs=250)  # fmt: skip
+                                 peak_shift_hs=250, ambient_leak_scale_hs=6000)  # fmt: skip
+    data["thresholds"]["motion"]["travel"]["range_steps"] = 40000
     data["scan"].update(long_dark_s=4, hum_bursts=5)
     data["scan"]["modes"]["matrix"] = {"heights": 9, "up": "same", "return_top": True,
                                        "repeats": 1, "ref_heights": 1, "label": "matrix"}  # fmt: skip
@@ -217,8 +226,7 @@ def scan_analysis(
             if reference is not None:
                 ref, st = scan.sim_run(scan_cfg, "matrix", root, faults=faults, sample=reference)
                 assert st == "COMPLETE", ref.meta["aborts"]
-            store, st = scan.sim_run(scan_cfg, "matrix", root, faults=faults, sample=sample)
-            assert st == "COMPLETE", store.meta["aborts"]
+            store, _ = scan.sim_run(scan_cfg, "matrix", root, faults=faults, sample=sample)
             cache[key] = analyse(store.folder, scan_cfg, None if ref is None else ref.folder)
         return cache[key]
 
@@ -228,6 +236,7 @@ def scan_analysis(
 @pytest.mark.parametrize("row", SCAN_MATRIX, ids=[r.id for r in SCAN_MATRIX])
 def test_scan_fault_is_detected(scan_analysis: Any, row: ScanRow) -> None:
     a = scan_analysis(row.fault, row.sample, row.reference)
+    assert (a.status == "INCOMPLETE") is row.incomplete, a.summary()
     f = a.get(row.finding)
     assert f.status == row.status, f"{row.finding}: {f.status.value}: {f.detail}\n{a.summary()}"
 
@@ -238,8 +247,11 @@ def test_scan_fault_is_detected(scan_analysis: Any, row: ScanRow) -> None:
 def test_scan_healthy_control(scan_analysis: Any, sample: str, reference: str | None) -> None:
     """A healthy rig: no finding flagged, and every matrix finding for this sample computed."""
     a = scan_analysis(None, sample, reference)
+    assert a.status == "COMPLETE"
     flagged = [f"{f.id}: {f.status.value} {f.detail}" for f in a.flagged()]
     assert not flagged, "\n".join(flagged)
+    assert a.verdict["verdict"] == Verdict.FUNCTIONAL.value, a.verdict
+    assert {h["health"] for h in a.health} <= {"OK", "n/a"}
     for row in SCAN_MATRIX:
         if row.sample == sample and row.reference == reference:
             assert a.get(row.finding).status == Status.PASS, row.finding
@@ -352,3 +364,20 @@ def test_scan_full_size_healthy(cfg: HwConfig, tmp_path: Any, mode: str) -> None
     a = analyse(store.folder, cfg)
     flagged = [f"{f.id}: {f.status.value} {f.detail}" for f in a.flagged()]
     assert not flagged, "\n".join(flagged)
+    assert a.verdict["verdict"] == Verdict.FUNCTIONAL.value, a.verdict
+
+
+@pytest.mark.parametrize(
+    ("fault", "verdict"),
+    [
+        ("pd_disconnected", Verdict.NOT_FUNCTIONAL),  # the InGaAs signal is not light
+        ("rail_miswired:12", Verdict.DEGRADED),  # one failing channel
+        ("led_swapped:9,16", Verdict.DEGRADED),  # two channels
+        ("mid_run_boot:120", Verdict.NOT_FUNCTIONAL),  # link: a critical module
+        ("backlash:2000", Verdict.NOT_FUNCTIONAL),  # a failure not tied to a channel
+    ],
+)
+def test_scan_verdict(scan_analysis: Any, fault: str, verdict: Verdict) -> None:
+    a = scan_analysis(fault, "empty", None)
+    assert a.verdict["verdict"] == verdict.value, a.summary()
+    assert any(h["health"] == "ACT" for h in a.health)

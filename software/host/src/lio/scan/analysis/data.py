@@ -83,6 +83,11 @@ class Cube:
             c: np.array([r[c] for r in rows], dtype=np.str_)
             for c in ("phase", "direction", "state", "detector")
         }
+        kinds = [s.get("kind", "") for s in (self.meta.get("plan") or {}).get("steps", [])]
+        self.str["kind"] = np.array(
+            [kinds[int(r["step"])] if r["step"] and int(r["step"]) < len(kinds) else ""
+             for r in rows], dtype=np.str_,
+        )  # fmt: skip
 
     @classmethod
     def open(cls, folder: Path) -> Cube:
@@ -109,7 +114,7 @@ class Cube:
         m = self.mask(state="lit", detector=det, phase=phase)
         if direction is not None:
             m &= self.str["direction"] == direction
-        m &= (self.num["hole"] == hole) & (self.num["rep"] == 0)
+        m &= (self.num["hole"] == hole) & (self.num["rep"] == 0) & (self.str["kind"] != "extra")
         h = self.num["height_hs"][m]
         v = self.num["net_counts"][m]
         if not len(h):

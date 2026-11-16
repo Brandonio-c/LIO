@@ -15,14 +15,19 @@ import pytest
 
 from lio.config import HwConfig
 from lio.results import Status
-from lio.scan.analysis import analyse, electrical, optics
-from lio.scan.analysis.data import Cube
+from lio.scan.analysis import analyse, electrical, optics, system, trend
+from lio.scan.analysis.data import Cube, Finding
 from lio.scan.store import ScanStore
 
 pytestmark = [pytest.mark.unit]
 
 HEIGHTS = [round(-4000 - i * 4000) for i in range(9)]  # -4000 ... -36000
 AMP = 6000.0  # optical amplitude of a healthy channel (shape = 1 at its peak)
+
+
+def amp_of(hole: int) -> float:
+    """Distinct LEDs: every hole a little brighter than the one before."""
+    return AMP * (1 + 0.04 * hole)
 
 
 def shape(h: float, peak: float = -30000, width: float = 9000, floor: float = 0.33) -> float:
@@ -41,21 +46,41 @@ def write_run(
     both_ways: bool = True,
     hum_counts: float = 0.0,
     emi_sigma: float = 0.0,
+    backlash: float = 0.0,
+    step_loss: float = 0.0,
+    leak: float = 0.0,
+    gain: float = 1.0,
 ) -> Path:
-    """A synthetic run: net = O·g(h) + k·I_rail on the channels each detector sees."""
+    """A synthetic run: net = O·g(h_phys) + k·I_rail on the channels each detector sees.
+
+    On the way up the stage sits ``backlash`` lower, and falls ``step_loss`` further
+    behind over a full upward travel. ``leak``: dark rise at the bottom (linear below
+    -20000). ``gain``: every optical amplitude scaled (a later, changed run)."""
     rng = np.random.default_rng(1)
     o = o or {}
     c_per_ma = c_per_ma or {"opt101": 0.0, "ingaas": 0.0}
     dark = dark or {"opt101": 200.0, "ingaas": 40.0}
-    st = ScanStore.create(root, "test", {"sample_id": sample, "status": "COMPLETE"})
-    heights = HEIGHTS + (list(reversed(HEIGHTS[:-1])) if both_ways else [])
+    up = list(reversed(HEIGHTS[:-1])) if both_ways else []
+    heights = HEIGHTS + up
+    top, bottom = HEIGHTS[0], HEIGHTS[-1]
+    steps = [{"index": i, "phase": "P2" if i < len(HEIGHTS) else "P3", "kind": "measure",
+              "height": h, "direction": "down" if i < len(HEIGHTS) else "up", "rep": 0,
+              "hum": False, "label": ""} for i, h in enumerate(heights)]  # fmt: skip
+    plan = {"mode": "test", "top": top, "bottom": bottom, "heights_down": HEIGHTS,
+            "heights_up": up, "steps": steps, "static": False, "continuous": False}  # fmt: skip
+    st = ScanStore.create(root, "test", {"sample_id": sample, "status": "COMPLETE", "plan": plan})
     t = 0.0
     for step, h in enumerate(heights):
-        phase = "P2" if step < len(HEIGHTS) else "P3"
+        phase = steps[step]["phase"]
+        direction = steps[step]["direction"]
+        hp = float(h)
+        if direction == "up":
+            hp -= backlash + step_loss * (h - bottom) / (top - bottom)
         rows: list[dict[str, Any]] = []
         for det in ("opt101", "ingaas"):
-            d = dark[det] + drift_per_h * t / 3600 + rng.normal(0, 0.5)
-            rows.append({"step": step, "phase": phase, "height_hs": h, "direction": "down",
+            rise = leak * min(1.0, max(0.0, (-20000 - h) / 16000))
+            d = dark[det] + drift_per_h * t / 3600 + rise + rng.normal(0, 0.5)
+            rows.append({"step": step, "phase": phase, "height_hs": h, "direction": direction,
                          "rep": 0, "hole": 0, "state": "dark", "detector": det,
                          "dark_counts": d, "t_s": t})  # fmt: skip
             for hole in range(1, 17):
@@ -63,12 +88,12 @@ def write_run(
                 cur = float(cfg.section.num(f"rails.{ch.rail}.current_ma"))
                 amp = o.get((hole, det))
                 if amp is None:
-                    amp = AMP if ch.expect_for(det) == "signal" else 0.0
-                net = amp * shape(h) + c_per_ma[det] * cur + rng.normal(0, 1)
-                rows.append({"step": step, "phase": phase, "height_hs": h, "direction": "down",
-                             "rep": 0, "hole": hole, "state": "lit", "detector": det,
-                             "dark_counts": d, "lit_counts": d + net, "net_counts": net,
-                             "t_s": t})  # fmt: skip
+                    amp = amp_of(hole) if ch.expect_for(det) == "signal" else 0.0
+                net = gain * amp * shape(hp) + c_per_ma[det] * cur + rng.normal(0, 1)
+                rows.append({"step": step, "phase": phase, "height_hs": h,
+                             "direction": direction, "rep": 0, "hole": hole, "state": "lit",
+                             "detector": det, "dark_counts": d, "lit_counts": d + net,
+                             "net_counts": net, "t_s": t, "settle_ms": 320})  # fmt: skip
         st.append_rows(rows, completed_step=step)
         t += 120
     for det in ("opt101", "ingaas"):  # hum: 3 bursts of 48 at 400 SPS, coils off and moving
@@ -117,7 +142,7 @@ def test_healthy_synthetic_run_passes(cfg: HwConfig, tmp_path: Path) -> None:
     assert not a.flagged(), a.summary()
     st = a.context["optics"]["channels"]["ingaas"][13]
     assert st["h_opt"] in (-28000, -32000)  # the grid points either side of the -30000 peak
-    assert st["O"] == pytest.approx(AMP * shape(st["h_opt"]), rel=0.01)
+    assert st["O"] == pytest.approx(amp_of(13) * shape(st["h_opt"]), rel=0.01)
     assert (tmp_path / a.run_id / "analysis.json").exists()
 
 
@@ -131,7 +156,7 @@ def test_coupling_and_ground_shift_amplitude(cfg: HwConfig, tmp_path: Path) -> N
     assert gs.data["scales_with_current"] is True
     # the optical amplitude is still recovered on top of the coupling
     st = a.context["optics"]["channels"]["ingaas"][13]
-    assert st["O"] == pytest.approx(AMP * shape(st["h_opt"]), rel=0.01)
+    assert st["O"] == pytest.approx(amp_of(13) * shape(st["h_opt"]), rel=0.01)
 
 
 def test_electrical_only_signature(cfg: HwConfig, tmp_path: Path) -> None:
@@ -194,3 +219,88 @@ def test_cube_curve_takes_first_visits_only(cfg: HwConfig, tmp_path: Path) -> No
     assert list(cur.h) == sorted(HEIGHTS)
     up = c.curve(13, "ingaas", phase="P3")
     assert len(up) == len(HEIGHTS) - 1
+
+
+# ------------------------------------------------------------------ S4
+
+
+def test_backlash_and_step_loss_are_separated(cfg: HwConfig, tmp_path: Path) -> None:
+    a = analyse(write_run(tmp_path / "b", cfg, backlash=1500), cfg)
+    b, sl = a.get("mech/backlash"), a.get("mech/step_loss")
+    assert b.value == pytest.approx(1500, abs=150) and b.status != Status.PASS
+    assert abs(sl.value) < 300
+    a = analyse(write_run(tmp_path / "s", cfg, step_loss=1600), cfg)
+    b, sl = a.get("mech/backlash"), a.get("mech/step_loss")
+    assert sl.value == pytest.approx(1600, abs=250) and sl.status != Status.PASS
+    assert abs(b.value) < 300
+
+
+def test_healthy_mechanics_read_zero(cfg: HwConfig, tmp_path: Path) -> None:
+    a = analyse(write_run(tmp_path, cfg), cfg)
+    assert abs(a.get("mech/backlash").value) < 3 * a.get("mech/backlash").data["se_d0"] + 50
+    assert a.get("mech/repeatability").status == Status.SKIP  # no repeated visits here
+    assert a.get("mech/settle").value == 320
+
+
+def test_light_leak_onset(cfg: HwConfig, tmp_path: Path) -> None:
+    a = analyse(write_run(tmp_path, cfg, leak=100.0), cfg)
+    f = a.get("ambient/opt101/leak")
+    assert f.status == Status.FAIL and f.value == pytest.approx(100, abs=5)
+    assert -24000 <= f.data["onset_hs"] <= -20000  # the first height below -20000
+
+
+def test_compare_localises_the_change(cfg: HwConfig, tmp_path: Path) -> None:
+    def snap(**kw: Any) -> dict[str, Any]:
+        root = tmp_path / str(len(list(tmp_path.iterdir())))
+        a = analyse(write_run(root, cfg, **kw), cfg)
+        return trend.snapshot(a.to_dict())
+
+    base = snap()
+    one = snap(o={(13, "ingaas"): amp_of(13) * 0.6})
+    det = snap(o={(h, "ingaas"): amp_of(h) * 0.5 for h in (8, 9, 12, 13, 14)})
+    allx = snap(gain=0.7)
+    same = snap()
+    f = trend.compare(base, one, cfg)[0]
+    assert f.status == Status.FAIL and "holes [13]" in f.detail
+    assert "every hole on ingaas" in trend.compare(base, det, cfg)[0].detail
+    assert "both detectors" in trend.compare(base, allx, cfg)[0].detail
+    assert trend.compare(base, same, cfg)[0].status == Status.PASS
+
+
+def test_control_charts(cfg: HwConfig, tmp_path: Path) -> None:
+    rng = np.random.default_rng(3)
+    base = [{"run_id": f"r{i}", "sample_id": "empty",
+             "metrics": {"elec/ingaas/dark_offset": 5.0 + rng.normal(0, 0.1)}} for i in range(6)]  # fmt: skip
+    ok = {"run_id": "x", "sample_id": "empty", "metrics": {"elec/ingaas/dark_offset": 5.05}}
+    bad = {"run_id": "y", "sample_id": "empty", "metrics": {"elec/ingaas/dark_offset": 7.0}}
+    assert trend.control(ok, base, cfg)[0].status == Status.PASS
+    f = trend.control(bad, base, cfg)[0]
+    assert f.status == Status.WARN and "elec/ingaas/dark_offset" in f.data["out_of_limits"]
+    assert trend.control(ok, base[:3], cfg)[0].status == Status.SKIP
+
+
+def test_baseline_save_and_load(cfg: HwConfig, tmp_path: Path) -> None:
+    folder = write_run(tmp_path / "runs", cfg)
+    analyse(folder, cfg)
+    out = trend.save_baseline(folder, tmp_path, cfg)
+    loaded = trend.load_baselines(tmp_path, "empty")
+    assert out.exists() and len(loaded) == 1
+    assert (
+        loaded[0]["O"]["ingaas"]["13"] > 1000 and "elec/ingaas/dark_offset" in loaded[0]["metrics"]
+    )
+
+
+def test_verdict_uses_the_t11_rules(cfg: HwConfig) -> None:
+    def f(fid: str, st: Status) -> Finding:
+        return Finding(fid, fid, st)
+
+    ok = [f("system/link", Status.PASS), f("optics/ingaas/h13/response", Status.PASS)]
+    assert system.verdict(cfg, ok)["verdict"] == "FUNCTIONAL"
+    one = [*ok, f("optics/ingaas/h12/response", Status.FAIL)]
+    assert system.verdict(cfg, one)["verdict"] == "DEGRADED"  # one channel
+    link = [*ok, f("system/link", Status.FAIL)]
+    assert system.verdict(cfg, link)["verdict"] == "NOT FUNCTIONAL"  # critical module
+    unatt = [*ok, f("elec/ingaas/dark_offset", Status.FAIL)]
+    assert system.verdict(cfg, unatt)["verdict"] == "NOT FUNCTIONAL"  # not tied to a channel
+    table = {r["key"]: r["health"] for r in system.health_table(unatt)}
+    assert table["ingaas"] == "ACT" and table["link"] == "OK" and table["motors"] == "n/a"

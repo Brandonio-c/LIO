@@ -112,6 +112,10 @@ I recommend **(a)** as the default quick check, since the extra data is nearly f
 
 **D17 (found in S3). Thresholds come from the simulator.** `scan.health` values are set between healthy and faulted simulator runs and marked provisional. Commissioning (S7) must recalibrate them, especially throughput (absolute counts) and stray light. The simulated white-tile reflectance was lowered from 1.8 to 1.5: at 1.8 a healthy white run came within 2% of InGaAs saturation, which would trip the saturation abort.
 
+**D18 (found in S4). Mechanics are read optically, with a two-term model.** There are no home sensors, so the stage's real height is read from the response curves. The down pass is the reference: a natural cubic spline through the raw readings. Smoothing the reference, or interpolating it linearly, biased the offsets by a few hundred half-steps on the coarse quick grid. On the way up the offset is fitted as δ0 + κ·progress. Backlash is −δ0. Step loss is −κ: a side losing steps makes the offset grow as the top climbs. Both are flagged only beyond 3σ of their own resolution, which is reported. Step loss reads about 20% high when other upward moves (reference approaches) add to the loss. The P1-versus-P4 comparison at the top (plan §6.4) is reported but not judged: at the top the response is flat, so the comparison has no resolution.
+
+**D19 (found in S4). The verdict is the T11 function, unchanged.** Findings are grouped into the catalogue modules they test (T02 link, T03 ADC, T04 addressing, T05 rails and channels, T06 detectors and power, T09 motion and stage, T10 safety, T13 optical path and run), and `overall_verdict` is applied. So a failure not tied to a channel (dark offset, ground shift, backlash) gives NOT FUNCTIONAL, as it would in the suite. An incomplete run is a WARN (DEGRADED at best). Drift needs at least 5 minutes of dark frames, otherwise SKIP.
+
 ## 4. Questions
 
 Plan §13:
