@@ -13,6 +13,8 @@
     lio shell                      # keep the port open and type protocol commands
     lio sim-serve                  # simulated LIO on a pseudo-terminal, for practice
     lio dashboard [--sim]          # web page: run the tests, digital twin, overall verdict
+    lio scan plan --mode full      # diagnostic height sweep: plan, run, resume
+    lio scan run --mode quick --sample empty --allow-motion
 
 Opening the serial port resets the Nano (about 2 s), so each one-shot command
 starts from the safe power-up state and leaves everything off when it exits.
@@ -527,6 +529,84 @@ def cmd_sim_serve(args: argparse.Namespace, cfg: HwConfig) -> int:
     return 0
 
 
+def _scan_overrides(items: list[str] | None) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for item in items or []:
+        if "=" not in item:
+            raise CliError(f"--set expects key=value, got {item!r}")
+        k, v = item.split("=", 1)
+        out[k.strip()] = v.strip()
+    return out
+
+
+def cmd_scan(args: argparse.Namespace, cfg: HwConfig) -> int:
+    """The diagnostic height sweep (docs/DIAGNOSTIC_SWEEP.md)."""
+    import tempfile
+
+    from lio import scan
+    from lio.operator import SimOperator
+
+    overrides = _scan_overrides(args.set)
+    mode = args.mode or str(cfg.section.raw("scan.default_mode"))
+    out = getattr(args, "out", None)
+    root = Path(out) if out else REPO_ROOT / "test_results"
+    if args.sim:
+        sim = SimulatedLIO(cfg, Faults.parse(args.fault))
+        sample = getattr(args, "sample", None)
+        if sample:
+            sim.sample = "food" if sample.startswith("LIO-F-") else sample
+        dev = LIODevice(SimTransport(sim, transcript=sys.stderr if args.verbose else None), cfg)
+    else:
+        sim = None
+        dev = LIODevice(_transport(args, cfg), cfg, stage=tracker_for(cfg))
+    with dev:
+        if sim is not None:
+            stage_dir = Path(tempfile.mkdtemp(prefix="lio_sim_stage_"))
+            scan.sim_stage(dev, stage_dir / "stage.json", int(sim.travel_hs))
+        else:
+            dev.check_compatible()
+        if args.scan_command == "plan":
+            plan = scan.plan_for(cfg, mode, dev.stage, dev.stage_top_margin(), overrides)
+            print(plan.summary())
+            if args.json:
+                Path(args.json).write_text(json.dumps(plan.to_dict(), indent=1) + "\n")
+                print(f"plan -> {args.json}")
+            return 0
+        operator = SimOperator(sim) if sim is not None else ConsoleOperator()
+        if args.scan_command == "resume":
+            folder = Path(args.folder)
+            mode_of = json.loads((folder / "scan.json").read_text()).get("plan", {})
+            static = bool(mode_of.get("static"))
+        else:
+            plan = scan.plan_for(cfg, mode, dev.stage, dev.stage_top_margin(), overrides)
+            static = plan.static
+            print(plan.summary())
+        if not static and sim is None and not getattr(args, "allow_motion", False):
+            raise CliError(
+                "this mode moves the chamber top: add --allow-motion (and stay with the rig)"
+            )
+        if not args.sample and args.scan_command == "run":
+            raise CliError(f"--sample is required: one of {cfg.section.raw('scan.sample_ids')} "
+                           "or a food code LIO-F-...")  # fmt: skip
+
+        def show(p: dict[str, object]) -> None:
+            if p.get("status") in ("measured", "paused", "aborted", "complete"):
+                print(f"[{p.get('done')}/{p.get('of')}] {p.get('status')} {p.get('phase') or ''} "
+                      f"{p.get('label') or ''} h={p.get('target_hs')} "
+                      f"eta {float(str(p.get('eta_s') or 0)) / 60:.1f} min "
+                      f"{p.get('reason') or ''}", file=sys.stderr)  # fmt: skip
+
+        if args.scan_command == "resume":
+            store, status = scan.resume(dev, cfg, Path(args.folder), operator, on_progress=show)
+        else:
+            store, status = scan.start(dev, cfg, plan, root, operator, sample_id=args.sample,
+                                       on_progress=show, sim=sim is not None)  # fmt: skip
+    print(f"{status}: {store.folder}")
+    for a in store.meta.get("aborts", []):
+        print(f"  abort: {a['reason']}")
+    return 0 if status == "COMPLETE" else 1
+
+
 # ------------------------------------------------------------------- parser
 
 
@@ -621,6 +701,30 @@ def build_parser() -> argparse.ArgumentParser:
         "--no-tunnel", action="store_true", help="do not open the Cloudflare tunnel (foods.tunnel)"
     )
     s.set_defaults(fn=cmd_dashboard)
+
+    s = sub.add_parser("scan", help="diagnostic height sweep: plan / run / resume")
+    scsub = s.add_subparsers(dest="scan_command", required=True)
+    for name, hlp in (("plan", "show the plan and its ETA (no motion, no light)"),
+                      ("run", "run a scan (asks first; --allow-motion for moving modes)"),
+                      ("resume", "carry on an INCOMPLETE run from its next step")):  # fmt: skip
+        c = scsub.add_parser(name, help=hlp)
+        if name == "resume":
+            c.add_argument("folder", help="the run folder (test_results/<ts>_scan_<mode>)")
+        else:
+            c.add_argument("--mode", help="quick_down, quick, full, fine, repeatability, "
+                           "electrical, continuous (default: scan.default_mode)")  # fmt: skip
+            c.add_argument("--set", action="append", metavar="KEY=VALUE",
+                           help="override a scan setting, e.g. sweep_n=4")  # fmt: skip
+        if name == "plan":
+            c.add_argument("--json", help="also write the plan as JSON")
+        else:
+            c.add_argument("--allow-motion", action="store_true",
+                           help="allow moving the chamber top (hardware)")  # fmt: skip
+        if name == "run":
+            c.add_argument("--sample", help="sample in the chamber: empty, white_ptfe, black_cup, "
+                           "food, or LIO-F-...")  # fmt: skip
+            c.add_argument("--out", help="results root (default test_results/)")
+        c.set_defaults(fn=cmd_scan)
 
     s = sub.add_parser("bench", help="coverage benchmark: plan / ingest / report")
     bsub = s.add_subparsers(dest="bench_command", required=True)

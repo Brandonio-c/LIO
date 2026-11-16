@@ -8,9 +8,9 @@ chamber is clear before the first move of a run. T09.5 (integration with
 
 from __future__ import annotations
 
-import contextlib
 from typing import Any
 
+from lio import motion
 from lio.analysis import move_duration_s, stats
 from lio.device import DeviceError
 from lio.protocol import ErrCode
@@ -345,25 +345,7 @@ def _start_at_bottom(ctx: SuiteContext, tr: dict[str, float]) -> None:
 
 
 def _positions(ctx: SuiteContext) -> tuple[int, int, bool]:
-    st = ctx.dev.status()
-    running = st.as_str("motor1") == "run" or st.as_str("motor2") == "run"
-    return st.as_int("pos1"), st.as_int("pos2"), running
-
-
-def _exact(ctx: SuiteContext, motor: int, steps: int) -> tuple[bool, str]:
-    """An exact short move of one motor (chunks of at most step_max), waited for."""
-    dev = ctx.dev
-    rpm = ctx.th.integer("motion.travel.rpm")
-    step_max = int(ctx.cfg.limits["step_max"])
-    left = steps
-    while left:
-        n = max(-step_max, min(step_max, left))
-        dev.motor_arm()
-        ok, msg = _move(ctx, motor, n, rpm)
-        if not ok:
-            return False, msg
-        left -= n
-    return True, ""
+    return motion.positions(ctx.dev)
 
 
 def _lockstep(
@@ -373,91 +355,8 @@ def _lockstep(
     light: bool = False,
     during: Any = None,
 ) -> tuple[bool, str]:
-    """Move both motors by ``steps`` together, continuously.
-
-    A long move is one continuous jog of both motors (the legacy ``U``/``D``: one
-    command, synchronised speed, so the two sides stay in lockstep). It is renewed
-    every ``renew_steps`` before its 2048-step bound runs out (firmware >= 2.2.1
-    renews a same-direction jog without a new ramp, so the motion never pauses),
-    re-armed every ``rearm_s`` so ``MOTOR LIGHT`` stays in force, and stopped
-    ``stop_window`` half-steps before the target. Each motor then finishes with an
-    exact step move, so both end exactly on the target. ``during(p1, p2)`` is
-    called repeatedly while the jog runs. Returns (ok, message); any error stops
-    both motors.
-    """
-    dev = ctx.dev
-    th = ctx.th
-    speed = th.integer("motion.travel.jog_speed")
-    renew = th.integer("motion.travel.renew_steps")
-    rearm_s = th.num("motion.travel.rearm_s")
-    poll_s = th.num("motion.travel.poll_s")
-    stop_window = int(speed * poll_s * 3) + th.integer("motion.travel.stop_extra_steps")
-    positive = str(ctx.cfg.section.raw("motors.positive"))
-    sign = 1 if steps > 0 else -1
-    up = sign > 0
-    cmd = "U" if up == (positive == "up") else "D"
-    a1, a2, _ = _positions(ctx)
-    target = (a1 + steps, a2 + steps)
-    if dev.stage is not None:  # the soft limits apply to jogs too
-        for m in (1, 2):
-            dev.stage.check_move(m, steps, dev.stage_top_margin())
-    try:
-        if abs(steps) > stop_window + renew:
-            dev.motor_arm()
-            if light:
-                dev.motor_light(True)
-            t_arm = dev.now()
-            dev.command(f"VS{speed}")
-            dev.command(cmd)
-            renewed_at = a1
-            # generous: the whole distance at speed, twice, plus a minute
-            deadline = dev.now() + 2 * abs(steps) / speed + 60
-            while True:
-                p1, p2, running = _positions(ctx)
-                if sign * (target[0] - p1) <= stop_window or sign * (target[1] - p2) <= stop_window:
-                    dev.command("S")  # stop both at once
-                    break
-                if not running:
-                    return (
-                        False,
-                        f"the continuous move ended early at {p1}/{p2} (bound or failsafe)",
-                    )
-                if dev.now() > deadline:
-                    dev.command("S")
-                    return False, "the continuous move took too long (stopped)"
-                if abs(p1 - renewed_at) >= renew:
-                    dev.command(cmd)  # a fresh 2048-step bound, no new ramp
-                    renewed_at = p1
-                if dev.now() - t_arm >= rearm_s:
-                    dev.motor_arm()
-                    if light:
-                        dev.motor_light(True)
-                    t_arm = dev.now()
-                if during is not None:
-                    during(p1, p2)
-                else:
-                    dev.sleep(poll_s)
-            for _ in range(50):  # S stops at once; wait for STATUS to agree
-                if not _positions(ctx)[2]:
-                    break
-                dev.sleep(0.05)
-        p1, p2, _ = _positions(ctx)
-        for m, rest in ((1, target[0] - p1), (2, target[1] - p2)):
-            ok, msg = _exact(ctx, m, rest)
-            if not ok:
-                return False, f"motor {m} final approach: {msg}"
-        p1, p2, _ = _positions(ctx)
-        if (p1, p2) != target:
-            return False, f"ended at {p1}/{p2}, target {target[0]}/{target[1]}"
-    except Exception:
-        dev.motor_stop()
-        raise
-    finally:
-        if light:
-            # best effort: the arm lapsing clears it anyway
-            with contextlib.suppress(Exception):
-                dev.motor_light(False)
-    return True, f"moved {steps:+d} half-steps on both motors"
+    """Both motors by ``steps``, continuously, ending exactly (lio.motion.move_both)."""
+    return motion.move_both(ctx.dev, ctx.cfg, steps, light=light, during=during)
 
 
 def _ref_reading(ctx: SuiteContext, holes: list[int]) -> dict[str, float]:

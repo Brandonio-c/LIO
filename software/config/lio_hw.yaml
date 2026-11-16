@@ -162,6 +162,48 @@ stage:
   top_margin_steps: 4096      # moves stay this far below the top (a hard physical end); one turn until the count is proven
   jog_stop_margin_steps: 32   # a continuous jog stops this far before a limit (+ its run-on)
 
+# Diagnostic height sweep (docs/DIAGNOSTIC_SWEEP_PLAN.md, LIO-SW-SCAN-001). Every value
+# here can also be overridden per run (lio scan run --set key=value, or the dashboard).
+# Heights are absolute, half-steps from the top of travel (lio.stage: top = 0, down < 0).
+scan:
+  default_mode: quick
+  # The mechanics, for mm output: M6 coarse threaded rod (1.0 mm pitch), 304 stainless,
+  # 255 mm long, driven directly through a 5-6 mm aluminium shaft coupler (25 x 20 mm),
+  # so one output turn (4096 half-steps) is 1.0 mm of travel.
+  lead_mm_per_rev: 1.0
+  hardware:
+    lead_screw: "M6 x 1.0 threaded rod, 304 stainless steel, 255 mm (10 in), x4"
+    coupler: "5 mm to 6 mm shaft coupler, aluminium alloy, 25 mm long, 20 mm diameter"
+    motors: "28BYJ-48 5 V stepper (64:1 gearbox), ULN2003 driver boards, x2"
+  jog_speed: 500               # half-steps/s between heights (the speed the travel was jogged at)
+  settle_ms_mech: 300          # after a move, before the dark frame
+  dark_agree_sigma: 3          # two dark reads must agree within this many sigma ...
+  dark_agree_tries: 5          # ... trying this many times
+  dark_n: 8                    # samples per dark frame, each input
+  optical_settle_ms: 8         # SWEEP settle
+  sweep_n: 2                   # SWEEP samples per reading (on-time ~47 ms per LED)
+  hum_every_k: 4               # hum record (coils off) every k-th height, coil EMI on the next move
+  hum_bursts: 17               # 48-sample buffered bursts at the fastest rate (~0.12 s each)
+  long_dark_s: 30              # P1: dark record at 8 SPS on each input
+  ref_offset_steps: 4096       # repeatability: move away by this much and come back
+  arm_renew_s: 40
+  heartbeat_timeout_s: 90      # dashboard operator-present heartbeat; pause when it is missing
+  abort_on_saturation: true
+  sample_ids: [empty, white_ptfe, black_cup, food]
+  # Modes. heights: points down the travel (top and bottom included). up: points measured on
+  # the way back up (0: none; "same": every down height). return_top: end at the top (P4 at the
+  # top). repeats: readings at each reference height (ref_heights of them), approached from
+  # both directions. extra_near_optimum: points added around the optimum after the down pass.
+  # static: no motion at all (measure here). continuous: measure while moving (MOTOR LIGHT 1).
+  modes:
+    quick_down:   {heights: 9,  up: 0,  return_top: false, repeats: 1, ref_heights: 0, label: "routine, ends at the bottom (~17 min)"}
+    quick:        {heights: 9,  up: same, return_top: true, repeats: 1, ref_heights: 0, label: "routine, back to the top, measured both ways (~31 min)"}
+    full:         {heights: 33, up: 9,  return_top: true, repeats: 2, ref_heights: 5, label: "commissioning, after rewiring (~44 min)"}
+    fine:         {heights: 33, up: 9,  return_top: true, repeats: 3, ref_heights: 5, extra_near_optimum: 16, label: "optical characterisation (~52 min)"}
+    repeatability: {heights: 0, up: 0, return_top: true, repeats: 5, ref_heights: 5, label: "mechanical repeatability and backlash only (~47 min)"}
+    electrical:   {heights: 0, up: 0, return_top: false, repeats: 1, ref_heights: 0, static: true, label: "electrical health here, no motion (~2 min)"}
+    continuous:   {heights: 0, up: 0, return_top: true, repeats: 1, ref_heights: 0, continuous: true, label: "dynamic: measure while moving (MOTOR LIGHT 1), down and back up (~30 min)"}
+
 # lio dashboard: the local web page that runs the tests (docs/TESTING.md §3).
 dashboard:
   host: 127.0.0.1            # local only: the page can light LEDs and move motors

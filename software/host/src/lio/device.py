@@ -232,6 +232,11 @@ class LIODevice:
         self.cfg = cfg
         # Absolute stage position across sessions (lio.stage); None = not tracked.
         self.stage = stage
+        # A # BOOT is expected after opening the port and after RESET; any other one
+        # (a brown-out mid-move) means steps may have been lost: the position is
+        # then marked not trusted (plan LIO-SW-SCAN-001 §3.2, D3).
+        self._expect_boot = False
+        self.unexpected_boots = 0
         self.events: list[tuple[float, Event]] = []
         self.noise: list[str] = []
         self.banner: Event | None = None
@@ -261,12 +266,15 @@ class LIODevice:
 
     def open(self) -> Event:
         t0 = self.transport.now()
+        self._expect_boot = True
         self.transport.open()
         try:
             banner = self.wait_banner(self.cfg.section.num("link.boot_timeout_s"))
         except BaseException:
             self.transport.close()
             raise
+        finally:
+            self._expect_boot = False
         self.boot_s = self.transport.now() - t0
         self.keep_awake(force=True)
         return banner
@@ -385,7 +393,11 @@ class LIODevice:
             self._info = None
             self._close_lit(self.now())
             if self.stage is not None:  # the firmware's counters restart at 0
-                self.stage.rebase(0, 0, "boot")
+                self.stage.rebase(0, 0, "boot" if self._expect_boot else "unexpected boot")
+            if not self._expect_boot:
+                self.unexpected_boots += 1
+                if self.stage is not None and self.stage.known:
+                    self.stage.invalidate("unexpected # BOOT: the board reset by itself")
         if (
             self.stage is not None
             and ev.name == "MOTOR"
@@ -530,8 +542,12 @@ class LIODevice:
             )
 
     def reset(self) -> Event:
-        self.command("RESET")
-        return self.wait_banner(self.cfg.section.num("link.boot_timeout_s"))
+        self._expect_boot = True
+        try:
+            self.command("RESET")
+            return self.wait_banner(self.cfg.section.num("link.boot_timeout_s"))
+        finally:
+            self._expect_boot = False
 
     # ------------------------------------------------------------------- ADC
 

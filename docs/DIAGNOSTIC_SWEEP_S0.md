@@ -100,6 +100,12 @@ I recommend **(a)** as the default quick check, since the extra data is nearly f
 
 **D11. Branch base.** `feature/motion-travel-tests` (firmware 2.4.0, stage, continuous motion) exists **only locally**, and it sits on `feature/structured-ingredients` (food library, pushed, not merged). A pull request from the scan work into `main` would carry both. See Q7.
 
+**D12 (found in S2). Reference repeats ride the up pass.** Plan §3.1 lists the repeatability pairs after the up pass. Run that way, `full` took 65 min on the simulator (two extra strokes: back down to the reference heights, then up again). The up-pass heights and the reference pairs (from above, then from below, at each reference height) are now one list in height order, bottom first. Same measurements, no extra strokes: `full` takes 44 min and `fine` 52 min. Mode labels in `lio_hw.yaml` updated.
+
+**D13 (found in S2). P4 in static mode.** `electrical` (no motion) also ends with P4 here: a drift re-measure and the single-channel interlock. Light-while-moving is SKIP there (nothing moves).
+
+**D14 (found in S2). ADC rate changes re-read INFO.** The device's timeouts assume 128 SPS until INFO is read again. The P1 long dark record (8 SPS, 30 s) timed out. The executor now re-reads INFO after each rate change. `LIODevice` itself is unchanged: changing its default shifted catalogue timings (T07.2).
+
 ## 4. Questions
 
 Plan §13:

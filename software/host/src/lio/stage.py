@@ -102,6 +102,18 @@ class StageTracker:
         return self.data.get("abs") is not None
 
     @property
+    def valid(self) -> bool:
+        """False after an unexpected board reset: the position may have moved unseen."""
+        return bool(self.data.get("valid", True))
+
+    def invalidate(self, reason: str) -> None:
+        with self._lock:
+            self.data["valid"] = False
+            self.data["invalid_reason"] = reason
+            self._log("invalidate", reason=reason)
+            self._save()
+
+    @property
     def abs(self) -> tuple[int, int] | None:
         a = self.data.get("abs")
         return (int(a[0]), int(a[1])) if a is not None else None
@@ -118,6 +130,8 @@ class StageTracker:
         lim = self.limits
         out: dict[str, Any] = {
             "known": self.known,
+            "valid": self.valid,
+            "invalid_reason": None if self.valid else self.data.get("invalid_reason"),
             "abs": list(self.abs) if self.abs else None,
             "top": list(lim.top) if lim.top else None,
             "bottom": list(lim.bottom) if lim.bottom else None,
@@ -166,6 +180,8 @@ class StageTracker:
         with self._lock:
             self.data["abs"] = [0, 0]
             self.data["top"] = [0, 0]
+            self.data["valid"] = True
+            self.data.pop("invalid_reason", None)
             b = self.data.get("bottom")
             if b is not None and (b[0] >= 0 or b[1] >= 0):
                 self.data["bottom"] = None
@@ -206,6 +222,12 @@ class StageTracker:
         a = self.abs
         if a is None:
             return
+        if not self.valid:
+            raise StageError(
+                "position not trusted ("
+                + str(self.data.get("invalid_reason") or "unknown")
+                + "): raise the top to its upper end and set the top again"
+            )
         lim = self.limits
         i = motor - 1
         target = a[i] + steps
