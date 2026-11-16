@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO diagnostic sweep {{ a.run_id }}</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  .card { border: 1px solid var(--rule); border-radius: 6px; padding: .6rem .9rem; margin: .6rem 0; }
+  .card dl { display: grid; grid-template-columns: 7rem 1fr; gap: .2rem .8rem; margin: .4rem 0 0; }
+  .card dt { color: var(--ink2); font-weight: 600; }
+  .card dd { margin: 0; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+  .note { color: var(--ink2); font-size: 12px; }
+  @media (max-width: 640px) { .card dl { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>LIO diagnostic sweep</h1>
+<p class="meta">Run <code>{{ a.run_id }}</code>{% if m.simulated %} on the <strong>simulator</strong>{% endif %},
+mode <strong>{{ a.mode }}</strong>, sample <strong>{{ a.sample_id }}</strong>,
+{{ m.started }} to {{ m.finished or "—" }}: <strong>{{ a.status }}</strong></p>
+<div class="verdict" style="background: {{ verdict_color }}">{{ a.verdict.verdict }}</div>
+{% if a.verdict.reasons %}<ul>{% for x in a.verdict.reasons %}<li>{{ x }}</li>{% endfor %}</ul>{% endif %}
+{% if provisional %}<p class="note">Thresholds are provisional (set on the simulator), to be calibrated at commissioning.</p>{% endif %}
+
+<table>
+<tr><th>Firmware</th><td>{{ m.firmware.fw }} (proto {{ m.firmware.proto }})</td>
+    <th>Config</th><td><code>{{ (m.config_sha256 or "")[:12] }}</code></td></tr>
+<tr><th>Lead screw</th><td>{{ hardware.lead_screw }}</td><th>Coupler</th><td>{{ hardware.coupler }}</td></tr>
+<tr><th>Motors</th><td>{{ hardware.motors }}</td><th>Plan</th>
+    <td>{{ m.plan.steps | length }} steps, {{ m.plan.heights_down | length }} heights down,
+        ETA {{ "%.0f" | format(m.plan.eta_s / 60) }} min</td></tr>
+{% if m.aborts %}<tr><th>Aborts</th><td colspan="3">{% for x in m.aborts %}{{ x.reason }}{% if not loop.last %}; {% endif %}{% endfor %}</td></tr>{% endif %}
+</table>
+
+<h2>Subsystem health</h2>
+<table>
+<tr><th>Subsystem</th><th>Parts</th><th>Health</th><th>Reason</th></tr>
+{% for h in a.health %}{% set hs = health_style[h.health] %}
+<tr><td>{{ h.title }}</td><td>{{ h.parts }}</td>
+<td><span class="badge" style="border-color: {{ hs[0] }}">{{ hs[1] }} {{ h.health }}</span></td>
+<td>{{ h.reason }}</td></tr>
+{% endfor %}
+</table>
+
+{% set flagged = a.findings | selectattr("status", "in", ["WARN", "FAIL"]) | list %}
+{% if flagged %}<h2>Findings to act on</h2>
+{% for f in flagged %}{% set st = status_style[f.status] %}
+<div class="card">
+<div><span class="badge" style="border-color: {{ st[0] }}">{{ st[1] }} {{ f.status }}</span>
+<strong>{{ f.title }}</strong> <code>{{ f.id }}</code></div>
+<div class="meta">{{ f.detail }}</div>
+{% if f.explanation %}<dl>
+<dt>Why</dt><dd>{{ f.explanation.cause }}</dd>
+<dt>Parts</dt><dd>{{ f.explanation.parts | join(", ") }}</dd>
+<dt>Next check</dt><dd>{{ f.explanation.check }}</dd>
+</dl>{% endif %}
+</div>
+{% endfor %}{% endif %}
+
+{% if plots %}<h2>Plots</h2>
+{% for title, rel in plots %}<h3>{{ title }}</h3><img src="{{ rel }}" alt="{{ title }}">{% endfor %}
+{% endif %}
+
+{% for group, fs in groups %}
+<h2>{{ group }}</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+{% for f in fs %}{% set st = status_style[f.status] %}
+<tr><td><span class="badge" style="border-color: {{ st[0] }}">{{ st[1] }} {{ f.status }}</span></td>
+<td>{{ f.title }}<br><code>{{ f.id }}</code></td>
+<td>{% if f.value is not none %}{{ "%g" | format(f.value) }} {{ f.unit }}{% endif %}</td>
+<td>{{ f.detail }}</td><td>{{ f.criteria }}</td></tr>
+{% endfor %}
+</table>
+{% endfor %}
+
+{% if m.skipped_checks %}<h2>Not measured (capability)</h2>
+<ul>{% for k, why in m.skipped_checks.items() %}<li><code>{{ k }}</code>: {{ why }}</li>{% endfor %}</ul>{% endif %}
+</body>
+</html>

@@ -10,4 +10,5 @@ from lio.suite.checks import (  # noqa: F401
     t09_motors,
     t10_safety,
     t11_baseline,
+    t13_scan,
 )

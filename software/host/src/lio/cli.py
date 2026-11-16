@@ -16,7 +16,7 @@
     lio scan plan --mode full      # diagnostic height sweep: plan, run, resume
     lio scan run --mode quick --sample empty --allow-motion
     lio scan analyse test_results/<ts>_scan_quick [--reference <white run>]
-    lio scan baseline save|list ...; lio scan compare <runA> <runB>
+    lio scan report <run>; lio scan baseline save|list ...; lio scan compare <runA> <runB>
 
 Opening the serial port resets the Nano (about 2 s), so each one-shot command
 starts from the safe power-up state and leaves everything off when it exits.
@@ -64,6 +64,7 @@ MODULE_ALIASES = {
     "motors": "T09",
     "safety": "T10",
     "baseline": "T11",
+    "scan": "T13",
 }
 EXIT_FOR_VERDICT = {
     Verdict.FUNCTIONAL.value: 0,
@@ -549,7 +550,7 @@ def cmd_scan(args: argparse.Namespace, cfg: HwConfig) -> int:
     from lio import scan
     from lio.operator import SimOperator
 
-    if args.scan_command in ("analyse", "baseline", "compare"):
+    if args.scan_command in ("analyse", "baseline", "compare", "report"):
         return _scan_offline(args, cfg)
 
     overrides = _scan_overrides(args.set)
@@ -631,6 +632,14 @@ def _scan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
         print(a.summary())
         print(f"analysis -> {Path(args.folder) / 'analysis.json'}")
         return EXIT_FOR_VERDICT.get(a.verdict.get("verdict", ""), EXIT_ERROR)
+    if args.scan_command == "report":
+        from lio.scan import report as scan_report
+
+        ref = Path(args.reference) if args.reference else None
+        written = scan_report.write(Path(args.folder), cfg, reference=ref,
+                                    baselines_root=None if args.no_baselines else root)  # fmt: skip
+        print(f"report -> {written['html']}")
+        return 0
     if args.scan_command == "baseline":
         if args.action == "list":
             d = root / "scan_baselines"
@@ -783,6 +792,12 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("folder", help="the run folder")
     c.add_argument("--reference", help="a reference run: white_ptfe for stray light, or a "
                    "baseline of the same sample for effectiveness")  # fmt: skip
+    c.add_argument("--no-baselines", action="store_true", help="skip trend and control charts")
+    c.add_argument("--out", help="results root holding scan_baselines/ (default test_results/)")
+    c.set_defaults(fn=cmd_scan)
+    c = scsub.add_parser("report", help="write report.html / report.md with plots")
+    c.add_argument("folder", help="the run folder")
+    c.add_argument("--reference", help="a reference run (as for analyse)")
     c.add_argument("--no-baselines", action="store_true", help="skip trend and control charts")
     c.add_argument("--out", help="results root holding scan_baselines/ (default test_results/)")
     c.set_defaults(fn=cmd_scan)

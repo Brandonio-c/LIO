@@ -167,6 +167,7 @@ stage:
 # Heights are absolute, half-steps from the top of travel (lio.stage: top = 0, down < 0).
 scan:
   default_mode: quick
+  suite_mode: quick            # T13 in the catalogue (lio selftest --allow-motion, dashboard)
   # The mechanics, for mm output: M6 coarse threaded rod (1.0 mm pitch), 304 stainless,
   # 255 mm long, driven directly through a 5-6 mm aluminium shaft coupler (25 x 20 mm),
   # so one output turn (4096 half-steps) is 1.0 mm of travel.
@@ -190,6 +191,7 @@ scan:
   heartbeat_timeout_s: 90      # dashboard operator-present heartbeat; pause when it is missing
   abort_on_saturation: true
   sample_ids: [empty, white_ptfe, black_cup, food]
+  sample_aliases: {none-empty-chamber: empty}   # suite sample ids (metadata.defaults) -> scan ids
   # Health thresholds for the scan analysis (plan §6). ALL PROVISIONAL: set from the
   # simulator's healthy/faulted runs, to be calibrated on the rig at commissioning (S7).
   # Pairs are [WARN, FAIL]. The dark offset uses thresholds.dark (shared with T06).

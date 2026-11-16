@@ -55,6 +55,12 @@ SUBSYSTEMS: tuple[Subsystem, ...] = (
     Subsystem("motors", "T09", "Motors", "arming, both directions, stop, EMI"),
     Subsystem("safety", "T10", "Safety interlocks", "power-up, watchdogs, failsafe, one channel"),
     Subsystem("baseline", "T11", "Baseline comparison", "drift against a saved healthy run"),
+    Subsystem(
+        "scan",
+        "T13",
+        "Diagnostic sweep",
+        "every LED at every height: optics, electrical, ambient, mechanics",
+    ),
 )
 
 # Parts judged by whole catalogue modules.

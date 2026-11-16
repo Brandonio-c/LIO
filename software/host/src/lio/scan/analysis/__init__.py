@@ -30,6 +30,7 @@ class Analysis:
     context: dict[str, Any] = field(default_factory=dict)
     verdict: dict[str, Any] = field(default_factory=dict)
     health: list[dict[str, Any]] = field(default_factory=list)
+    explanations: dict[str, dict[str, Any]] = field(default_factory=dict)
 
     def get(self, fid: str) -> Finding:
         for f in self.findings:
@@ -48,7 +49,11 @@ class Analysis:
             "status": self.status,
             "verdict": self.verdict,
             "health": self.health,
-            "findings": [f.to_dict() for f in self.findings],
+            "findings": [
+                f.to_dict()
+                | ({"explanation": self.explanations[f.id]} if f.id in self.explanations else {})
+                for f in self.findings
+            ],
             "context": self.context,
         }
 
@@ -63,6 +68,10 @@ class Analysis:
         for f in self.findings:
             v = "" if f.value is None else f"{f.value:g} {f.unit}"
             lines.append(f"  {f.status.value:<5} {f.id:<34} {v:<18} {f.detail}")
+            e = self.explanations.get(f.id)
+            if e:
+                lines.append(f"        why:   {e['cause']}")
+                lines.append(f"        parts: {', '.join(e['parts'])}; next: {e['check']}")
         return "\n".join(lines)
 
 
@@ -89,6 +98,9 @@ def analyse(
         if prior:
             a.findings += trend.compare(prior[-1], snap, cfg)
         a.findings += trend.control(snap, base, cfg)
+    from lio.scan.explain import explain_all
+
+    a.explanations = {k: e.to_dict() for k, e in explain_all(a.findings).items()}
     a.health = system.health_table(a.findings)
     a.verdict = system.verdict(cfg, a.findings)
     (Path(folder) / "analysis.json").write_text(

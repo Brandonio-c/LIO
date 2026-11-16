@@ -165,6 +165,7 @@ class ScanRow:
     sample: str = "empty"
     reference: str | None = None
     incomplete: bool = False  # the fault aborts the run (the analysis still runs)
+    part: str = ""  # the explanation must name this part
 
     @property
     def id(self) -> str:
@@ -174,28 +175,34 @@ class ScanRow:
 
 SCAN_MATRIX = (
     # S3: optics and electrical health
-    ScanRow("pd_disconnected", "optics/ingaas/electrical_only"),
-    ScanRow("ground_shift:0.2", "elec/ingaas/ground_shift"),
-    ScanRow("leakage:20", "elec/ingaas/dark_offset"),
-    ScanRow("leakage_drift:10", "elec/ingaas/drift"),
-    ScanRow("mains_hum:8", "elec/ingaas/hum"),
-    ScanRow("coil_emi", "elec/ingaas/coil_emi"),
-    ScanRow("coil_emi", "elec/opt101/coil_emi"),
-    ScanRow("led_swapped:9,16", "optics/opt101/h16/plausibility"),
-    ScanRow("led_swapped:9,16", "optics/opt101/h09/response"),
-    ScanRow("wrong_led:16=630", "optics/opt101/h16/plausibility"),
-    ScanRow("rail_miswired:12", "optics/ingaas/h12/response"),
-    ScanRow("window_blocked:0.1", "optics/ingaas/throughput"),
-    ScanRow("stray_light:0.05", "optics/stray", sample="black_cup", reference="white_ptfe"),
+    ScanRow("pd_disconnected", "optics/ingaas/electrical_only", part="D1"),
+    ScanRow("ground_shift:0.2", "elec/ingaas/ground_shift", part="GND star point"),
+    ScanRow("leakage:20", "elec/ingaas/dark_offset", part="U5 pin-2 node"),
+    ScanRow("leakage_drift:10", "elec/ingaas/drift", part="U5 pin-2 node"),
+    ScanRow("mains_hum:8", "elec/ingaas/hum", part="earth bond"),
+    ScanRow("coil_emi", "elec/ingaas/coil_emi", part="motor wiring"),
+    ScanRow("coil_emi", "elec/opt101/coil_emi", part="motor wiring"),
+    ScanRow("led_swapped:9,16", "optics/opt101/h16/plausibility", part="LED16"),
+    ScanRow("led_swapped:9,16", "optics/opt101/h09/response", part="LED9"),
+    ScanRow("wrong_led:16=630", "optics/opt101/h16/plausibility", part="LED16"),
+    ScanRow("rail_miswired:12", "optics/ingaas/h12/response", part="rail wiring"),
+    ScanRow("window_blocked:0.1", "optics/ingaas/throughput", part="detector window"),
+    ScanRow(
+        "stray_light:0.05",
+        "optics/stray",
+        sample="black_cup",
+        reference="white_ptfe",
+        part="chamber walls",
+    ),
     # S4: ambient, mechanics, the run itself
-    ScanRow("ambient_leak:-20000", "ambient/opt101/leak"),
-    ScanRow("ambient_leak:-20000", "ambient/ingaas/leak"),
-    ScanRow("room_flicker", "ambient/opt101/flicker"),
-    ScanRow("backlash:2000", "mech/backlash"),
-    ScanRow("step_loss:2,4200", "mech/step_loss"),
-    ScanRow("mid_run_boot:120", "system/link", incomplete=True),
-    ScanRow("mid_run_boot:120", "system/stage", incomplete=True),
-    ScanRow("adc_dropout:30", "system/adc", incomplete=True),
+    ScanRow("ambient_leak:-20000", "ambient/opt101/leak", part="shroud"),
+    ScanRow("ambient_leak:-20000", "ambient/ingaas/leak", part="shroud"),
+    ScanRow("room_flicker", "ambient/opt101/flicker", part="lid"),
+    ScanRow("backlash:2000", "mech/backlash", part="5-6 mm couplers"),
+    ScanRow("step_loss:2,4200", "mech/step_loss", part="M2"),
+    ScanRow("mid_run_boot:120", "system/link", incomplete=True, part="5 V supply"),
+    ScanRow("mid_run_boot:120", "system/stage", incomplete=True, part="lio.stage"),
+    ScanRow("adc_dropout:30", "system/adc", incomplete=True, part="ADS1115"),
 )
 
 
@@ -239,6 +246,10 @@ def test_scan_fault_is_detected(scan_analysis: Any, row: ScanRow) -> None:
     assert (a.status == "INCOMPLETE") is row.incomplete, a.summary()
     f = a.get(row.finding)
     assert f.status == row.status, f"{row.finding}: {f.status.value}: {f.detail}\n{a.summary()}"
+    e = a.explanations.get(row.finding)
+    assert e is not None, f"no explanation for {row.finding}"
+    assert row.part in e["parts"], f"{row.finding}: explanation names {e['parts']}, not {row.part}"
+    assert e["check"], "an explanation gives the next manual check"
 
 
 @pytest.mark.parametrize(
