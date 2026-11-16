@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-11-16: Motion tests over the chamber's full travel; light while moving (firmware 2.4.0)
+
+### Added
+- **Firmware 2.4.0: `MOTOR LIGHT <0|1>`.** It allows LEDs and measurements while the motors move, which the firmware otherwise refuses.
+  - Accepted only while motion is armed, and it lapses with the arm.
+  - Cleared by disarm, `RESET`, the comms failsafe and boot.
+  - The LED watchdogs, the single-LED rule and the failsafe are unchanged, and starting a move while an LED is lit is still refused.
+  - `INFO` and `STATUS` report `light_in_motion`.
+  - The simulator implements the same command.
+- **T09.6, full travel with both motors in lockstep.** The top goes from its lowest position to near the top (`travel.range_steps` − `margin_steps`) and back.
+  - Each chunk must move both motors by exactly the commanded steps.
+  - The reference holes must read differently at the top and the same again at the bottom.
+  - The operator confirms the top is back down and level.
+- **T09.7, detectors while the chamber moves.** The scan holes are measured continuously on the way up and back down, each reading with its position.
+  - Checks: no refusals, no watchdog trips, the two motors within 2 half-steps of each other, and every expected channel seen somewhere in the travel.
+  - The response-vs-height scan is stored in `results.json`.
+- **Both tests skip** until the travel is measured (`thresholds.motion.travel.range_steps`). There are no limit switches, so the operator confirms the top starts at its lowest position.
+
 ## 2026-11-12: Structured ingredients from "Find the ingredients online"
 
 ### Changed

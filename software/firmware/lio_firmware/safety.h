@@ -26,6 +26,9 @@ bool motion_armed();
 uint32_t armed_remaining_ms();
 uint16_t arm_token();
 void disarm();
+// MOTOR LIGHT <0|1>: allow LEDs and measurements while a motor moves (armed only)
+void set_light_in_motion(bool on);
+bool light_in_motion();
 
 void cmd_motor_arm(const Command &c);   // MOTOR ARM <token>
 void cmd_reset(const Command &c);       // RESET

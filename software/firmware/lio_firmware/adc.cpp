@@ -202,7 +202,7 @@ static void adc_cmd_stream(const Command &c) {
       resp_err(c, E_ARG, F("bad LED schedule"));
       return;
     }
-    if (motors_moving()) { resp_err(c, E_BUSY, F("motor moving")); return; }
+    if (motors_moving() && !light_in_motion()) { resp_err(c, E_BUSY, F("motor moving")); return; }
     uint32_t per_us = max((uint32_t)iv * 1000UL, adc_conv_us() + 500UL);
     uint32_t est_ms = (uint32_t)(off_i - on_i) * per_us / 1000UL + 20;
     if (est_ms > optics_wdt_ms(optics_rail_of((uint8_t)hole))) {

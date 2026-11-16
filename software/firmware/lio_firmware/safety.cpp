@@ -22,7 +22,13 @@ void wdt_trip_count() { n_wdt_trips++; fault_set(F_WDT_TRIP); }
 uint16_t failsafe_trips() { return n_failsafe; }
 
 uint16_t arm_token() { return token; }
-void disarm() { armed = false; }
+// Light while moving (MOTOR LIGHT 1): lets LED and measurement commands run while a
+// motor moves. Only effective while motion is armed; cleared by disarm, RESET, the
+// comms failsafe and at boot, and lapses with the arm.
+static bool light_req = false;
+void disarm() { armed = false; light_req = false; }
+void set_light_in_motion(bool on) { light_req = on; }
+bool light_in_motion() { return light_req && motion_armed(); }
 
 bool motion_armed() {
   if (armed && millis() - armed_at >= ARM_DURATION_MS) armed = false;
@@ -38,6 +44,7 @@ void safety_defaults() {
   n_wdt_trips = 0;
   n_failsafe = 0;
   armed = false;
+  light_req = false;
 }
 
 void safety_init() {
@@ -58,6 +65,7 @@ static void comms_failsafe() {
   optics_off();
   motors_stop_all();
   armed = false;
+  light_req = false;
   n_failsafe++;
   fault_set(F_FAILSAFE);
   event_begin(F("FAILSAFE"));

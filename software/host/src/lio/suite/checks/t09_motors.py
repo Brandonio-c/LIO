@@ -8,8 +8,13 @@ chamber is clear before the first move of a run. T09.5 (integration with
 
 from __future__ import annotations
 
+import contextlib
+from typing import Any
+
 from lio.analysis import move_duration_s, stats
+from lio.device import DeviceError
 from lio.protocol import ErrCode
+from lio.results import Status
 from lio.suite.core import DETECTORS, Recorder, Skip, SuiteContext, register
 
 SHAFT_DEG_PER_HALF_STEP = 360.0
@@ -269,3 +274,290 @@ def t09_4(ctx: SuiteContext, rec: Recorder) -> None:
             sigma_rest=rest[d],
             sigma_moving=moving[d],
         )
+
+
+# ------------------------------------------------- T09.6 / T09.7: full travel
+
+
+def _travel(ctx: SuiteContext) -> dict[str, float]:
+    """thresholds.motion.travel, or Skip when the travel has not been measured."""
+    rng = ctx.th.integer("motion.travel.range_steps")
+    if rng <= 0:
+        raise Skip(
+            "travel not measured: jog the chamber top from its lowest to its highest "
+            "position and set thresholds.motion.travel.range_steps (half-steps)"
+        )
+    margin = ctx.th.integer("motion.travel.margin_steps")
+    if rng - margin <= 0:
+        raise Skip("travel.margin_steps leaves no travel")
+    return {"range": rng, "margin": margin}
+
+
+def _op_at_bottom(ctx: SuiteContext) -> None:
+    """The top must start at its lowest position: there are no limit switches."""
+    if ctx.cache.get("at_bottom"):
+        return
+    assert ctx.operator is not None
+    if not ctx.operator.confirm(
+        "chamber_bottom",
+        "Full-travel test: is the chamber top at its LOWEST position on both sides, "
+        "level, and is the chamber clear? Both motors will lift it to near the top "
+        "and bring it back down.",
+    ):
+        raise Skip("operator: the top is not at its lowest position, no motion attempted")
+    ctx.cache["at_bottom"] = True
+
+
+def _positions(ctx: SuiteContext) -> tuple[int, int, bool]:
+    st = ctx.dev.status()
+    running = st.as_str("motor1") == "run" or st.as_str("motor2") == "run"
+    return st.as_int("pos1"), st.as_int("pos2"), running
+
+
+def _lockstep(
+    ctx: SuiteContext,
+    steps: int,
+    *,
+    light: bool = False,
+    during: Any = None,
+) -> tuple[bool, str]:
+    """Move both motors by ``steps`` together, in chunks of at most chunk_steps.
+
+    Each chunk re-arms (an arm lasts 60 s) and starts motor 1 then motor 2 back to
+    back, so the two sides stay within a fraction of a step. ``during`` is called
+    repeatedly while the chunk runs (with ``light`` the firmware allows MEAS then).
+    Returns (ok, message); any error stops both motors.
+    """
+    dev = ctx.dev
+    rpm = ctx.th.integer("motion.travel.rpm")
+    chunk = min(ctx.th.integer("motion.travel.chunk_steps"), int(ctx.cfg.limits["step_max"]))
+    left = steps
+    try:
+        while left:
+            n = max(-chunk, min(chunk, left))
+            dev.motor_arm()
+            if light:
+                dev.motor_light(True)
+            a1, a2, _ = _positions(ctx)
+            dev.motor_step(1, n, rpm)
+            dev.motor_step(2, n, rpm)
+            deadline = dev.now() + _timeout(ctx, abs(n), rpm)
+            while True:
+                p1, p2, running = _positions(ctx)
+                if not running:
+                    break
+                if dev.now() > deadline:
+                    dev.motor_stop()
+                    return False, f"chunk of {n:+d} did not finish in time (stopped)"
+                if during is not None:
+                    during(p1, p2)
+                else:
+                    dev.sleep(0.1)
+            p1, p2, _ = _positions(ctx)
+            if (p1 - a1, p2 - a2) != (n, n):
+                return False, f"chunk {n:+d}: motor 1 moved {p1 - a1:+d}, motor 2 {p2 - a2:+d}"
+            left -= n
+    except Exception:
+        dev.motor_stop()
+        raise
+    finally:
+        if light:
+            # best effort: the arm lapsing clears it anyway
+            with contextlib.suppress(Exception):
+                dev.motor_light(False)
+    return True, f"moved {steps:+d} half-steps on both motors"
+
+
+def _ref_reading(ctx: SuiteContext, holes: list[int]) -> dict[str, float]:
+    """Net response of each reference hole on its expected detector(s)."""
+    n = ctx.th.integer("channel.meas_n")
+    out: dict[str, float] = {}
+    for h in holes:
+        m = ctx.dev.meas(h, None, n)
+        for det in ctx.cfg.channel(h).expected_detectors:
+            if ctx.usable(det):
+                out[f"h{h:02d}/{det}"] = float(m.net(det))
+    return out
+
+
+@register("T09.6", "Full travel, both motors in lockstep", "M")
+def t09_6(ctx: SuiteContext, rec: Recorder) -> None:
+    """Lift the top from its lowest position to near the top and back.
+
+    Proves both ends of the travel: every chunk moves both motors by exactly the
+    commanded steps, the top end is reached, the bottom is returned to, and the
+    detectors confirm the geometry really changed and came back.
+    """
+    tr = _travel(ctx)
+    _op_chamber_clear(ctx)
+    _op_at_bottom(ctx)
+    ctx.require_adc()
+    holes = list(ctx.th.ints("motion.travel.ref_holes"))
+    up = int(tr["range"] - tr["margin"])
+    p0 = _positions(ctx)[:2]
+    bottom = _ref_reading(ctx, holes)
+    ok_up, msg_up = _lockstep(ctx, +up)
+    p_top = _positions(ctx)[:2]
+    rec.check(
+        "top",
+        "Top of travel reached",
+        ok_up and p_top == (p0[0] + up, p0[1] + up),
+        f"{msg_up}; positions {p_top} (start {p0})",
+        f"both motors at start + {up} (range {int(tr['range'])} - margin {int(tr['margin'])})",
+        pos_top=list(p_top),
+    )
+    if not ok_up:
+        back = p0[0] - _positions(ctx)[0]
+        if back:
+            _lockstep(ctx, back)
+        return
+    top = _ref_reading(ctx, holes)
+    ok_dn, msg_dn = _lockstep(ctx, -up)
+    p_end = _positions(ctx)[:2]
+    rec.check(
+        "bottom",
+        "Back at the bottom of travel",
+        ok_dn and p_end == p0,
+        f"{msg_dn}; positions {p_end} (start {p0})",
+        "both motors back at the start position",
+        pos_end=list(p_end),
+    )
+    again = _ref_reading(ctx, holes)
+    tol = ctx.th.num("motion.travel.return_tol_frac")
+    moved = ctx.th.num("motion.travel.moved_min_frac")
+    floor = ctx.th.num("channel.detect_min_counts")
+    for key, b in bottom.items():
+        t, a = top[key], again[key]
+        scale = max(abs(b), floor)
+        rec.check(
+            f"{key}/moved",
+            f"{key}: response changes between bottom and top",
+            abs(t - b) >= moved * scale,
+            f"bottom {b:+.0f}, top {t:+.0f}",
+            f"|top - bottom| >= {moved:g} x max(|bottom|, {floor:g})",
+            warn=True,
+            bottom=b,
+            top=t,
+        )
+        rec.check(
+            f"{key}/return",
+            f"{key}: same response back at the bottom",
+            abs(a - b) <= tol * scale,
+            f"first {b:+.0f}, after the round trip {a:+.0f}",
+            f"within {tol:.0%} of the first reading",
+            warn=True,
+            bottom=b,
+            again=a,
+        )
+    assert ctx.operator is not None
+    rec.check(
+        "observed",
+        "Operator: top back at its lowest position and level",
+        ctx.operator.confirm(
+            "travel_back", "Is the chamber top back at its lowest position, level on both sides?"
+        ),
+        "",
+        "operator confirms",
+    )
+
+
+@register("T09.7", "Detectors while the chamber moves", "M")
+def t09_7(ctx: SuiteContext, rec: Recorder) -> None:
+    """Measure the scan holes continuously while the top travels up and back down.
+
+    Needs firmware >= 2.4.0 (MOTOR LIGHT): MEAS is otherwise refused while a motor
+    moves. Records each reading with the position, so the report has the response of
+    every channel against height.
+    """
+    tr = _travel(ctx)
+    if "light_in_motion" not in ctx.dev.info(refresh=True).values:
+        raise Skip(
+            "firmware has no MOTOR LIGHT (needs 2.4.0): measurements are refused while moving"
+        )
+    _op_chamber_clear(ctx)
+    _op_at_bottom(ctx)
+    ctx.require_adc()
+    dev = ctx.dev
+    holes = list(ctx.th.ints("motion.travel.scan_holes"))
+    settle = ctx.th.integer("motion.travel.scan_settle_ms")
+    n = ctx.th.integer("motion.travel.scan_n")
+    up = int(tr["range"] - tr["margin"])
+    wdt0 = dev.status().as_int("wdt_trips")
+    p0 = _positions(ctx)[:2]
+    rows: list[dict[str, Any]] = []
+    refused: list[str] = []
+    idx = [0]
+    direction = ["up"]
+
+    def during(p1: int, p2: int) -> None:
+        h = holes[idx[0] % len(holes)]
+        idx[0] += 1
+        try:
+            m = dev.meas(h, settle, n)
+        except DeviceError as e:
+            refused.append(f"hole {h} at {p1}: {e.msg} (code {e.code})")
+            dev.sleep(0.05)
+            return
+        q1, q2, _ = _positions(ctx)
+        rows.append({"dir": direction[0], "pos": (p1 + q1) / 2, "skew": q1 - q2, "hole": h,
+                     **{f"net_{d}": m.net(d) for d in DETECTORS}})  # fmt: skip
+
+    ok_up, msg_up = _lockstep(ctx, +up, light=True, during=during)
+    direction[0] = "down"
+    ok_dn, msg_dn = _lockstep(ctx, -(_positions(ctx)[0] - p0[0]), light=True, during=during)
+    p_end = _positions(ctx)[:2]
+    rec.measure(scan=rows)
+    rec.check(
+        "motion",
+        "Up and back down with measurements running",
+        ok_up and ok_dn and p_end == p0,
+        f"{msg_up}; {msg_dn}; end {p_end} (start {p0})",
+        "both chunks complete, back at the start",
+    )
+    rec.check(
+        "accepted",
+        "MEAS accepted while moving",
+        not refused and len(rows) > 0,
+        f"{len(rows)} readings while moving, {len(refused)} refused"
+        + (f": {refused[0]}" if refused else ""),
+        "no refusals (MOTOR LIGHT 1)",
+    )
+    skew = max((abs(r["skew"]) for r in rows), default=0)
+    rec.check(
+        "lockstep",
+        "Motors stay together while measuring",
+        skew <= 2,
+        f"largest motor 1 - motor 2 difference during the run: {skew} half-steps",
+        "<= 2 half-steps",
+        skew=skew,
+    )
+    rec.check(
+        "watchdog",
+        "No LED watchdog trips",
+        dev.status().as_int("wdt_trips") == wdt0,
+        "",
+        "wdt_trips unchanged",
+    )
+    detect = ctx.th.num("channel.detect_min_counts")
+    for h in holes:
+        for det in ctx.cfg.channel(h).expected_detectors:
+            if not ctx.usable(det):
+                continue
+            vals = [r[f"net_{det}"] for r in rows if r["hole"] == h]
+            if not vals:
+                rec.add(f"h{h:02d}/{det}", f"Hole {h} on {det} while moving", Status.WARN,
+                        "no reading taken", "")  # fmt: skip
+                continue
+            best = max(vals)
+            at = next(r["pos"] for r in rows if r["hole"] == h and r[f"net_{det}"] == best)
+            rec.check(
+                f"h{h:02d}/{det}",
+                f"Hole {h} ({ctx.cfg.channel(h).label}) on {det} while moving",
+                best >= detect,
+                f"{len(vals)} readings; best {best:+.0f} at position {at:.0f}, "
+                f"range {min(vals):+.0f} to {best:+.0f}",
+                f"best >= {detect:g} counts somewhere in the travel",
+                warn=True,
+                best=best,
+                best_pos=at,
+            )

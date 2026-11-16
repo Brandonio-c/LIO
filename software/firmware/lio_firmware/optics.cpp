@@ -93,7 +93,7 @@ static void start_timer(uint32_t req_ms, uint8_t rail) {
 
 uint8_t optics_ch_on(uint8_t hole, uint32_t ms, uint32_t &until_ms) {
   if (hole < 1 || hole > N_HOLES) return E_ARG;
-  if (motors_moving()) return E_BUSY;
+  if (motors_moving() && !light_in_motion()) return E_BUSY;
   uint8_t rail = optics_rail_of(hole);
   ce_all_off();                         // drop CE before changing the selection
   latch((uint16_t)1 << (hole - 1));     // select the MOSFET ...
@@ -143,7 +143,7 @@ void cmd_ce(const Command &c) {
   }
   if (on) {
     uint8_t h = single_hole(mask);
-    if (motors_moving()) { resp_err(c, E_BUSY, F("motor moving")); return; }
+    if (motors_moving() && !light_in_motion()) { resp_err(c, E_BUSY, F("motor moving")); return; }
     if (!h || optics_rail_of(h) != rail) {
       resp_err(c, E_REFUSED, F("needs exactly one selected hole on this rail"));
       return;
@@ -196,7 +196,7 @@ static const __FlashStringHelper *meas_err_msg = nullptr;
 // Atomic measurement (LIO-ELEC-001 §14.1): dark read -> CH on -> settle ->
 // lit read -> off. ADS A0 = InGaAs TIA, A1 = OPT101.
 static uint8_t do_meas(uint8_t hole, uint16_t settle, uint8_t n, MeasRec &r) {
-  if (motors_moving()) { meas_err_msg = F("motor moving"); return E_BUSY; }
+  if (motors_moving() && !light_in_motion()) { meas_err_msg = F("motor moving"); return E_BUSY; }
   uint32_t est = settle + 2UL * n * (adc_conv_us() / 1000UL + 2) + 10;
   if (est > wdt_ms[optics_rail_of(hole)]) { meas_err_msg = F("on-time exceeds watchdog"); return E_REFUSED; }
   optics_off();

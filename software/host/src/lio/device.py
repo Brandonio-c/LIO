@@ -662,6 +662,13 @@ class LIODevice:
         cmd = f"MOTOR {motor} STEP {steps:+d}" + (f" {rpm}" if rpm is not None else "")
         return self.command(cmd).fields
 
+    def motor_light(self, on: bool) -> Fields:
+        """MOTOR LIGHT 0|1 (firmware >= 2.4.0): allow LEDs and MEAS while a motor moves.
+
+        Only while armed; the firmware drops it when the arm lapses, on disarm, RESET
+        and the comms failsafe."""
+        return self.command(f"MOTOR LIGHT {int(on)}").fields
+
     def motor_release(self, motor: int | str = "ALL") -> None:
         self.command(f"MOTOR {motor} RELEASE")
 

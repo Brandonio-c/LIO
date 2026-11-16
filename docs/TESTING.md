@@ -160,6 +160,10 @@ Every check compares a measurement with a threshold from `software/config/lio_hw
 | T09.2 | M | Each motor +64 / −64 half-steps; operator confirms up then down | `motor_stall`, reversed direction, wiring |
 | T09.3 | M | MOTOR STOP answers in < 50 ms and freezes the position | stop latency |
 | T09.4 | M | Detector noise while moving vs at rest (WARN if > 3×) | motor EMI on the detectors |
+| T09.6 | M | Full travel: both motors in lockstep from the lowest position to the top (less a margin) and back. Each chunk must move both motors exactly. The reference holes must read differently at the top and the same again back at the bottom. The operator confirms the top is back down and level | a motor slipping or binding, losing steps, the two sides drifting apart |
+| T09.7 | M | Detectors while the chamber moves (firmware ≥ 2.4.0, `MOTOR LIGHT 1`): the scan holes are measured continuously up and back down, each reading with its position. No refusals, no LED watchdog trips, motors within 2 half-steps of each other, each expected channel seen somewhere in the travel. The scan (response vs height) is in `results.json` | measurements unusable during motion, the best height for each channel |
+
+T09.6 and T09.7 skip until the travel is measured: jog the top from its lowest to its highest position and set `thresholds.motion.travel.range_steps` in `lio_hw.yaml`. They start with the operator confirming that the top is at its lowest position, because there are no limit switches.
 | T10.1 | A | Dark and idle after RESET and after reopening the port | power-up state |
 | T10.2 | A | `CH n ON 60000` clamped; LED off at the (lowered) watchdog limit; `# WDT` | watchdog |
 | T10.3 | A | 11 s of silence with motion armed: `# FAILSAFE`, everything off | comms-loss failsafe |

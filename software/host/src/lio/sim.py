@@ -226,7 +226,7 @@ _GAIN_NAMES = ("2/3", "1", "2", "4", "8", "16")
 class SimulatedLIO:
     """A simulated LIO V3 controller (firmware v2 behaviour + optics physics)."""
 
-    FW_VERSION = "2.3.1"
+    FW_VERSION = "2.4.0"
     BUILD = "2026-11-03"
 
     def __init__(
@@ -272,6 +272,7 @@ class SimulatedLIO:
         self.rate = self.cfg.section.integer("adc.rate_sps")
         self.motors = [_Motor(), _Motor()]
         self.armed_until = -1.0
+        self.light_req = False  # MOTOR LIGHT 1 (firmware >= 2.4.0)
         self.token = self._rng.randrange(1, 0x10000)
         self.last_rx = self.clock
         self.fault_bits = 0
@@ -369,6 +370,13 @@ class SimulatedLIO:
     def _moving(self, t: float) -> bool:
         return any(m.moving and t < m.t_end for m in self.motors)
 
+    def _light_in_motion(self, t: float) -> bool:
+        """MOTOR LIGHT 1: LEDs and measurements allowed while moving (armed only)."""
+        return self.light_req and self._armed(t)
+
+    def _busy_for_light(self, t: float) -> bool:
+        return self._moving(t) and not self._light_in_motion(t)
+
     def _timers(self) -> list[tuple[float, int, Callable[[float], None]]]:
         """Pending firmware timers: LED off, motor done, comms-loss failsafe.
 
@@ -431,6 +439,7 @@ class SimulatedLIO:
         self._optics_off(t)
         self._stop_motors(t)
         self.armed_until = -1.0
+        self.light_req = False
         self.failsafe_trips += 1
         self.fault_bits |= _FAULT_FAILSAFE
         self.last_rx = t
@@ -541,7 +550,7 @@ class SimulatedLIO:
         self.lit_at = t
 
     def _ch_on(self, t: float, hole: int, ms: int) -> int:
-        if self._moving(t):
+        if self._busy_for_light(t):
             raise _Refusal(5, "motor moving")
         rail = self.rail_of(hole)
         self._set_ce(t, 1, False)
@@ -806,6 +815,7 @@ class _Exec:
             f"jog_max={lim['jog_max']} jog_v_max={lim['jog_v_max']} "
             f"jog_acc_max={lim['jog_acc_max']} wake_ms_max={lim['wake_ms_max']} "
             f"motion_armed={int(s._armed(self.t))} "
+            f"light_in_motion={int(s._light_in_motion(self.t))} "
             f"arm_token=0x{s.token:04X} hw_wdt=0"
         )
 
@@ -818,7 +828,8 @@ class _Exec:
             f"motor1={'run' if m1.moving else 'idle'} motor2={'run' if m2.moving else 'idle'} "
             f"pos1={m1.pos_at(self.t)} pos2={m2.pos_at(self.t)} armed={int(s._armed(self.t))} "
             f"armed_ms={armed_ms} va={s.va} vs={s.vs} acc={s.acc} faults=0x{s.fault_bits:02X} "
-            f"wdt_trips={s.wdt_trips} failsafe_trips={s.failsafe_trips}"
+            f"wdt_trips={s.wdt_trips} failsafe_trips={s.failsafe_trips} "
+            f"light_in_motion={int(s._light_in_motion(self.t))}"
         )
 
     def c_i2c(self) -> None:
@@ -908,7 +919,7 @@ class _Exec:
             if h is None or a is None or b is None:
                 raise _Refusal(2, "bad LED schedule")
             hole, on_i, off_i = h, a, b
-            if s._moving(self.t):
+            if s._busy_for_light(self.t):
                 raise _Refusal(5, "motor moving")
             per_us = max(iv * 1000, s._conv_us_fw() + 500)
             est_ms = (off_i - on_i) * per_us // 1000 + 20
@@ -958,7 +969,7 @@ class _Exec:
         s = self.sim
         if on:
             h = s._single_hole(s.mask)
-            if s._moving(self.t):
+            if s._busy_for_light(self.t):
                 raise _Refusal(5, "motor moving")
             if not h or s.rail_of(h) != rail:
                 raise _Refusal(3, "needs exactly one selected hole on this rail")
@@ -1002,7 +1013,7 @@ class _Exec:
 
     def _do_meas(self, hole: int, settle: int, n: int) -> str:
         s = self.sim
-        if s._moving(self.t):
+        if s._busy_for_light(self.t):
             raise _Refusal(5, "motor moving")
         est = settle + 2 * n * (s._conv_us_fw() // 1000 + 2) + 10
         if est > s.wdt_ms[s.rail_of(hole)]:
@@ -1093,7 +1104,7 @@ class _Exec:
 
     # -- motors
     def c_motor(self) -> None:
-        usage = "usage: MOTOR ARM|STOP|<m> STEP|<m> RELEASE"
+        usage = "usage: MOTOR ARM|STOP|LIGHT|<m> STEP|<m> RELEASE"
         s = self.sim
         lim = s.cfg.limits
         if len(self.tok) < 2:
@@ -1111,6 +1122,13 @@ class _Exec:
                 raise _Refusal(3, "wrong token")
             s.armed_until = self.t + lim["arm_ms"] / 1000.0
             self.ok(f"armed_ms={lim['arm_ms']}")
+            return
+        if sub == "LIGHT":
+            on = self.need(2, 0, 1, "usage: MOTOR LIGHT <0|1>")
+            if on and not s._armed(self.t):
+                raise _Refusal(3, "not armed")
+            s.light_req = bool(on)
+            self.ok(f"light={on}")
             return
         if sub == "STOP":
             s._stop_motors(self.t)

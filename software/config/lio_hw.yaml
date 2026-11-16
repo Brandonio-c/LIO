@@ -280,6 +280,20 @@ thresholds:
     emi_samples: 48              # T09.4: dark stream during the move (buffered: <= stream_buf_n)
     emi_steps: 256               # T09.4: ~2 s at test_rpm, longer than the streams (~22 degrees)
     emi_interval_ms: 5
+    # T09.6 / T09.7: the chamber top's full travel. Both motors lift it, so they always
+    # move together. No limit switches exist: the operator puts the top at its lowest
+    # position before the run and measures the travel once (jog bottom -> top).
+    travel:
+      range_steps: 0             # bottom -> top, half-steps; 0 = not measured yet: tests skip
+      margin_steps: 64           # stop this far below the top end
+      chunk_steps: 1024          # half-steps per MOTOR STEP (<= firmware.limits.step_max)
+      rpm: 5
+      ref_holes: [8, 13]         # T09.6: measured at the bottom, the top and back at the bottom
+      return_tol_frac: 0.15      # T09.6: back at the bottom, readings within this of the first
+      moved_min_frac: 0.10       # T09.6: top vs bottom must differ by this much on a ref hole
+      scan_holes: [1, 4, 7, 8, 10, 11, 12, 13, 14]   # T09.7: measured while moving
+      scan_settle_ms: 8
+      scan_n: 2
   interactive:
     walk_ms: 400                 # T04.4: each hole lit this long
     visible_max_nm: 700          # T04.4: seen by eye below this

@@ -113,8 +113,18 @@ static bool motor_arg(const char *t, uint8_t &mask) {
 
 // MOTOR ARM <token> | MOTOR <1|2> STEP <+-n> [rpm] | MOTOR <1|2|ALL> RELEASE | MOTOR STOP
 void cmd_motor(const Command &c) {
-  if (c.ntok < 2) { resp_err(c, E_ARG, F("usage: MOTOR ARM|STOP|<m> STEP|<m> RELEASE")); return; }
+  if (c.ntok < 2) { resp_err(c, E_ARG, F("usage: MOTOR ARM|STOP|LIGHT|<m> STEP|<m> RELEASE")); return; }
   if (tok_is(c.tok[1], F("ARM"))) { cmd_motor_arm(c); return; }
+  if (tok_is(c.tok[1], F("LIGHT"))) {
+    long on;
+    if (!arg_long(c, 2, 0, 1, on)) { resp_err(c, E_ARG, F("usage: MOTOR LIGHT <0|1>")); return; }
+    if (on && !motion_armed()) { resp_err(c, E_REFUSED, F("not armed")); return; }
+    set_light_in_motion(on != 0);
+    resp_ok(c);
+    resp_kv(F("light"), on);
+    resp_end();
+    return;
+  }
   if (tok_is(c.tok[1], F("STOP"))) {
     motors_stop_all();
     resp_ok(c);
@@ -125,7 +135,7 @@ void cmd_motor(const Command &c) {
   }
   uint8_t mask;
   if (!motor_arg(c.tok[1], mask) || c.ntok < 3) {
-    resp_err(c, E_ARG, F("usage: MOTOR ARM|STOP|<m> STEP|<m> RELEASE"));
+    resp_err(c, E_ARG, F("usage: MOTOR ARM|STOP|LIGHT|<m> STEP|<m> RELEASE"));
     return;
   }
   if (tok_is(c.tok[2], F("RELEASE"))) {

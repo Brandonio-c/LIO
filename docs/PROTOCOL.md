@@ -140,6 +140,7 @@ Motor 1 = left (D2–D5), motor 2 = right (D6–D9), 28BYJ-48 through ULN2003. *
 | `MOTOR <1\|2> STEP <±n> [rpm]` | Half-step move, \|n\| ≤ 2048, `rpm` 1–15 (default 5). Needs arming; refused while an LED is on or that motor is moving. Returns at once; `# MOTOR … done` follows | `m steps rpm` |
 | `MOTOR <1\|2\|ALL> RELEASE` | Stop and de-energise | — |
 | `MOTOR STOP` | Stop both immediately and release the coils | `pos1 pos2` |
+| `MOTOR LIGHT <0\|1>` | Firmware ≥ 2.4.0. `1` lets `CH`, `CE … 1`, `MEAS`, `SWEEP` and a `STREAM` with an LED schedule run **while a motor moves** (normally refused, rule 6). Accepted only while armed (`code=3` otherwise); lapses with the arm and is cleared by disarm, `RESET`, the comms failsafe and boot. `INFO` and `STATUS` report `light_in_motion` | `light` |
 
 Moves use a trapezoidal profile with an acceleration of 250 half-steps/s². The coils are released at the end of every move. An arm that expires during a move does not stop it; the move is bounded anyway.
 
@@ -154,7 +155,7 @@ Power bank A alone supplies the +5 V bus (ADS1115, LEDs, shift registers, motor 
 3. **Switching order.** Select the MOSFET, then raise CE. Drop CE before any change of selection.
 4. **On-time watchdog.** It is checked on every loop iteration and inside every wait. RAIL A: default 2000 ms, hard cap 5000 ms (its LEDs are driven at 30 mA, above their 20 mA rating). RAIL B: default 5000 ms, cap 10000 ms. When it fires, the channel turns off and `# WDT` is emitted.
 5. **Comms-loss failsafe.** If no byte arrives for 10 s while an LED is on, a motor is moving, or motion is armed, everything turns off, the coils are released, motion is disarmed and `# FAILSAFE` is emitted. Any received byte resets the timer. A host that holds a session open while idle and armed should expect to be disarmed.
-6. **Motion and light are mutually exclusive.** `CH`, `CE … 1`, `MEAS`, `SWEEP` and a `STREAM` with an LED schedule are refused with `code=5` while a motor moves. Motor commands and jogs are refused with `code=3` while an LED is on.
+6. **Motion and light are mutually exclusive, unless the host asks otherwise.** `CH`, `CE … 1`, `MEAS`, `SWEEP` and a `STREAM` with an LED schedule are refused with `code=5` while a motor moves. From firmware 2.4.0, `MOTOR LIGHT 1` (armed only, lapsing with the arm) lifts this for measurements during motion (T09.7). The LED watchdogs, the single-LED rule and the failsafe still apply. Starting a motor or a jog while an LED is on is always refused with `code=3`.
 7. **Bounded motion.** No limit switches exist, so every move is bounded (≤ 2048 half-steps per command), never homes automatically, and always ends with the coils released.
 
 ## 7. Legacy jog commands (reviewed exception to the arming rule)
