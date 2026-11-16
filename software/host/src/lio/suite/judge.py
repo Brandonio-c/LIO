@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from lio.analysis import Detection, Level, Verdict, detect_level, judge_expectation
+from lio.config import ConfigError
 from lio.suite.core import SuiteContext
 
 
@@ -52,6 +53,21 @@ def never_fail_absence(ctx: SuiteContext, hole: int) -> bool:
     return ch.fitted and hole in ctx.th.ints("verdict.limited_holes")
 
 
+def out_of_range(ctx: SuiteContext, hole: int, det: str) -> bool:
+    """True if ``det`` is not meant to see this hole and such readings are not judged.
+
+    With ``channel.judge_out_of_range: false`` a fitted hole is judged only by the
+    detector(s) its ``expect`` names. Unfitted holes stay strict: light there means a
+    stuck-on or misrouted channel.
+    """
+    ch = ctx.cfg.channel(hole)
+    try:
+        strict = bool(ctx.th.raw("channel.judge_out_of_range"))
+    except ConfigError:
+        strict = True  # older configs: the previous behaviour
+    return ch.fitted and not strict and ch.expect_for(det) == Level.NONE
+
+
 def judge(ctx: SuiteContext, hole: int, det: str, net: float, n: int) -> Judgement:
     expect = ctx.cfg.channel(hole).expect_for(det)
     detection = classify(ctx, det, net, n, expect=expect)
@@ -68,6 +84,8 @@ def observed_pattern(ctx: SuiteContext, hole: int, nets: dict[str, float], n: in
     out: set[str] = set()
     ch = ctx.cfg.channel(hole)
     for det, net in nets.items():
+        if out_of_range(ctx, hole, det):
+            continue
         d = classify(ctx, det, net, n, expect=ch.expect_for(det))
         if d.level != Level.NONE:
             out.add(det)
