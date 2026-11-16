@@ -18,7 +18,6 @@ pytestmark = [pytest.mark.sim]
 def _with_travel(cfg: HwConfig, steps: int) -> HwConfig:
     data = copy.deepcopy(cfg.data)
     data["thresholds"]["motion"]["travel"]["range_steps"] = steps
-    data["thresholds"]["motion"]["travel"]["chunk_steps"] = 600
     return parse_config(data, cfg.path)
 
 
@@ -88,3 +87,23 @@ def test_motor_light_gates_meas_during_motion(cfg: HwConfig) -> None:
         dev.motor_stop()
     finally:
         dev.close()
+
+
+def test_long_travel_is_continuous_and_exact(cfg: HwConfig) -> None:
+    """A long travel: continuous jog (renewed, no stops), readings all the way, exact ends."""
+    catalogue()
+    ctx = sim_context(_with_travel(cfg, 30000))
+    try:
+        sim = ctx.dev.transport.sim  # type: ignore[attr-defined]
+        r0 = [m.renewals for m in sim.motors]
+        r = run_test(ctx, REGISTRY["T09.7"])
+        assert r.status in (Status.PASS, Status.WARN), r.summary()
+        assert _sub(r, "T09.7/motion").status == Status.PASS
+        assert all(m.renewals - a >= 20 for m, a in zip(sim.motors, r0, strict=True))
+        scan = r.measured["scan"]
+        ups = sorted(row["pos"] for row in scan if row["dir"] == "up")
+        assert len(scan) > 200 and ups[0] < 2000 and ups[-1] > 25000  # readings span the travel
+        st = ctx.dev.status()
+        assert (st.as_int("pos1"), st.as_int("pos2")) == (0, 0)
+    finally:
+        ctx.dev.close()

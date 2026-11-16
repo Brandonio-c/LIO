@@ -159,7 +159,7 @@ power:
 # at every connection). Positions are half-steps from the top of travel (top = 0).
 stage:
   state_file: test_results/stage_position.json   # relative to the repository root
-  top_margin_steps: 64        # moves stay this far below the top (a hard physical end)
+  top_margin_steps: 4096      # moves stay this far below the top (a hard physical end); one turn until the count is proven
   jog_stop_margin_steps: 32   # a continuous jog stops this far before a limit (+ its run-on)
 
 # lio dashboard: the local web page that runs the tests (docs/TESTING.md §3).
@@ -293,8 +293,12 @@ thresholds:
     travel:
       range_steps: 0             # bottom -> top, half-steps; 0 = not measured yet: tests skip
       margin_steps: 64           # stop this far below the top end
-      chunk_steps: 1024          # half-steps per MOTOR STEP (<= firmware.limits.step_max)
-      rpm: 5
+      jog_speed: 500             # half-steps/s for long moves: one continuous jog of both motors
+      renew_steps: 1024          # renew the jog this often (its bound is 2048 half-steps)
+      rearm_s: 40                # re-arm while moving (an arm lasts 60 s; MOTOR LIGHT needs it)
+      poll_s: 0.1                # position check interval while moving without measurements
+      stop_extra_steps: 64       # stop the jog this much earlier than speed x poll_s x 3, then step exactly
+      rpm: 7                     # ~478 half-steps/s: the speed the full travel was jogged at
       ref_holes: [8, 13]         # T09.6: measured at the bottom, the top and back at the bottom
       return_tol_frac: 0.15      # T09.6: back at the bottom, readings within this of the first
       moved_min_frac: 0.10       # T09.6: top vs bottom must differ by this much on a ref hole

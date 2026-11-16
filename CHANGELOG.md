@@ -22,6 +22,11 @@
   - Limits are set with **Set top here** / **Mark bottom here** on the Motors tab, or `lio stage set-top` / `mark-bottom`.
   - Soft limits refuse step moves beyond the marked range and stop continuous runs short of it.
   - T09.6 and T09.7 use the tracked travel and drive to the bottom themselves.
+- **Continuous motion for the full-travel tests.** Long moves no longer go in 1,024-step pulses, which ramped from a standstill each time (too slow over 420,000 half-steps).
+  - **How:** one continuous jog of both motors at `travel.jog_speed`, 500 half-steps/s, renewed every 1,024 half-steps without a new ramp and re-armed every 40 s so `MOTOR LIGHT` stays on.
+  - **Finish:** the jog stops just short of the target, and each motor then makes an exact step move onto it.
+  - **Soft limits** apply to these jogs too.
+- **Config:** test speed 7 rpm, and a top margin of one turn (4,096 half-steps) until the step count over the full travel is proven on the rig.
 
 ## 2026-11-12: Structured ingredients from "Find the ingredients online"
 

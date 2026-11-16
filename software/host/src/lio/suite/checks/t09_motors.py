@@ -350,6 +350,22 @@ def _positions(ctx: SuiteContext) -> tuple[int, int, bool]:
     return st.as_int("pos1"), st.as_int("pos2"), running
 
 
+def _exact(ctx: SuiteContext, motor: int, steps: int) -> tuple[bool, str]:
+    """An exact short move of one motor (chunks of at most step_max), waited for."""
+    dev = ctx.dev
+    rpm = ctx.th.integer("motion.travel.rpm")
+    step_max = int(ctx.cfg.limits["step_max"])
+    left = steps
+    while left:
+        n = max(-step_max, min(step_max, left))
+        dev.motor_arm()
+        ok, msg = _move(ctx, motor, n, rpm)
+        if not ok:
+            return False, msg
+        left -= n
+    return True, ""
+
+
 def _lockstep(
     ctx: SuiteContext,
     steps: int,
@@ -357,42 +373,82 @@ def _lockstep(
     light: bool = False,
     during: Any = None,
 ) -> tuple[bool, str]:
-    """Move both motors by ``steps`` together, in chunks of at most chunk_steps.
+    """Move both motors by ``steps`` together, continuously.
 
-    Each chunk re-arms (an arm lasts 60 s) and starts motor 1 then motor 2 back to
-    back, so the two sides stay within a fraction of a step. ``during`` is called
-    repeatedly while the chunk runs (with ``light`` the firmware allows MEAS then).
-    Returns (ok, message); any error stops both motors.
+    A long move is one continuous jog of both motors (the legacy ``U``/``D``: one
+    command, synchronised speed, so the two sides stay in lockstep). It is renewed
+    every ``renew_steps`` before its 2048-step bound runs out (firmware >= 2.2.1
+    renews a same-direction jog without a new ramp, so the motion never pauses),
+    re-armed every ``rearm_s`` so ``MOTOR LIGHT`` stays in force, and stopped
+    ``stop_window`` half-steps before the target. Each motor then finishes with an
+    exact step move, so both end exactly on the target. ``during(p1, p2)`` is
+    called repeatedly while the jog runs. Returns (ok, message); any error stops
+    both motors.
     """
     dev = ctx.dev
-    rpm = ctx.th.integer("motion.travel.rpm")
-    chunk = min(ctx.th.integer("motion.travel.chunk_steps"), int(ctx.cfg.limits["step_max"]))
-    left = steps
+    th = ctx.th
+    speed = th.integer("motion.travel.jog_speed")
+    renew = th.integer("motion.travel.renew_steps")
+    rearm_s = th.num("motion.travel.rearm_s")
+    poll_s = th.num("motion.travel.poll_s")
+    stop_window = int(speed * poll_s * 3) + th.integer("motion.travel.stop_extra_steps")
+    positive = str(ctx.cfg.section.raw("motors.positive"))
+    sign = 1 if steps > 0 else -1
+    up = sign > 0
+    cmd = "U" if up == (positive == "up") else "D"
+    a1, a2, _ = _positions(ctx)
+    target = (a1 + steps, a2 + steps)
+    if dev.stage is not None:  # the soft limits apply to jogs too
+        for m in (1, 2):
+            dev.stage.check_move(m, steps, dev.stage_top_margin())
     try:
-        while left:
-            n = max(-chunk, min(chunk, left))
+        if abs(steps) > stop_window + renew:
             dev.motor_arm()
             if light:
                 dev.motor_light(True)
-            a1, a2, _ = _positions(ctx)
-            dev.motor_step(1, n, rpm)
-            dev.motor_step(2, n, rpm)
-            deadline = dev.now() + _timeout(ctx, abs(n), rpm)
+            t_arm = dev.now()
+            dev.command(f"VS{speed}")
+            dev.command(cmd)
+            renewed_at = a1
+            # generous: the whole distance at speed, twice, plus a minute
+            deadline = dev.now() + 2 * abs(steps) / speed + 60
             while True:
                 p1, p2, running = _positions(ctx)
-                if not running:
+                if sign * (target[0] - p1) <= stop_window or sign * (target[1] - p2) <= stop_window:
+                    dev.command("S")  # stop both at once
                     break
+                if not running:
+                    return (
+                        False,
+                        f"the continuous move ended early at {p1}/{p2} (bound or failsafe)",
+                    )
                 if dev.now() > deadline:
-                    dev.motor_stop()
-                    return False, f"chunk of {n:+d} did not finish in time (stopped)"
+                    dev.command("S")
+                    return False, "the continuous move took too long (stopped)"
+                if abs(p1 - renewed_at) >= renew:
+                    dev.command(cmd)  # a fresh 2048-step bound, no new ramp
+                    renewed_at = p1
+                if dev.now() - t_arm >= rearm_s:
+                    dev.motor_arm()
+                    if light:
+                        dev.motor_light(True)
+                    t_arm = dev.now()
                 if during is not None:
                     during(p1, p2)
                 else:
-                    dev.sleep(0.1)
-            p1, p2, _ = _positions(ctx)
-            if (p1 - a1, p2 - a2) != (n, n):
-                return False, f"chunk {n:+d}: motor 1 moved {p1 - a1:+d}, motor 2 {p2 - a2:+d}"
-            left -= n
+                    dev.sleep(poll_s)
+            for _ in range(50):  # S stops at once; wait for STATUS to agree
+                if not _positions(ctx)[2]:
+                    break
+                dev.sleep(0.05)
+        p1, p2, _ = _positions(ctx)
+        for m, rest in ((1, target[0] - p1), (2, target[1] - p2)):
+            ok, msg = _exact(ctx, m, rest)
+            if not ok:
+                return False, f"motor {m} final approach: {msg}"
+        p1, p2, _ = _positions(ctx)
+        if (p1, p2) != target:
+            return False, f"ended at {p1}/{p2}, target {target[0]}/{target[1]}"
     except Exception:
         dev.motor_stop()
         raise
@@ -526,8 +582,17 @@ def t09_7(ctx: SuiteContext, rec: Recorder) -> None:
     direction = ["up"]
 
     def during(p1: int, p2: int) -> None:
-        h = holes[idx[0] % len(holes)]
-        idx[0] += 1
+        # Never let the LED duty budget block: a wait here would let the move run on
+        # unwatched. Take the next hole that may be lit now, or none this time.
+        on_ms = settle + 2 * n * 9 + 10
+        for _ in range(len(holes)):
+            h = holes[idx[0] % len(holes)]
+            idx[0] += 1
+            if dev.duty is None or dev.duty.wait_needed(h, on_ms, dev.now()) <= 0:
+                break
+        else:
+            dev.sleep(0.05)
+            return
         try:
             m = dev.meas(h, settle, n)
         except DeviceError as e:

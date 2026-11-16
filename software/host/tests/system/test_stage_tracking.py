@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
+import copy
 from pathlib import Path
 
 import pytest
 
-from lio.config import HwConfig
+from lio.config import HwConfig, parse_config
 from lio.device import LIODevice
 from lio.results import Status
 from lio.sim import Faults, SimulatedLIO
@@ -16,6 +17,14 @@ from lio.suite.runner import sim_context
 from lio.transport import SimTransport
 
 pytestmark = [pytest.mark.sim]
+
+
+@pytest.fixture
+def cfg(cfg: HwConfig) -> HwConfig:
+    """The repo config with a small top margin, to suit the short simulated travel."""
+    data = copy.deepcopy(cfg.data)
+    data["stage"]["top_margin_steps"] = 64
+    return parse_config(data, cfg.path)
 
 
 def _dev(cfg: HwConfig, path: Path, sim: SimulatedLIO | None = None) -> LIODevice:
@@ -105,9 +114,12 @@ def test_full_travel_uses_tracked_limits(cfg: HwConfig, tmp_path: Path) -> None:
     _move(dev, 2, +700)
     tctx = SuiteContext(dev, cfg, "sim", interactive=True, allow_motion=True,
                         operator=ctx.operator)  # fmt: skip
+    renewals0 = [m.renewals for m in sim.motors]
     r = run_test(tctx, REGISTRY["T09.6"])
     assert r.status in (Status.PASS, Status.WARN), r.summary()
     assert next(s for s in r.subs if s.id == "T09.6/top").status == Status.PASS
+    # long moves are one continuous jog, renewed without stopping
+    assert all(m.renewals > r0 for m, r0 in zip(sim.motors, renewals0, strict=True))
     dev.status()
     assert dev.stage is not None and dev.stage.abs == (-1500, -1500)  # back at the bottom
     dev.close()
