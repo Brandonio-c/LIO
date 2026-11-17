@@ -315,9 +315,9 @@ thresholds:
   channel:
     meas_n: 4
     detect_sigma: 10
-    detect_min_counts: 50
+    detect_min_counts: 15         # rig 17 Nov: noise 0.3-3 counts, weakest lit holes 20-40 (was 50, set on the sim)
     weak_sigma: 3
-    weak_min_counts: 15
+    weak_min_counts: 6
     none_max_sigma: 10           # unfitted/expected-none: net beyond this is "unexpected signal"
     none_min_counts: 50
     # false: each hole is judged only by the detector(s) its `expect` names (OPT101 for the
