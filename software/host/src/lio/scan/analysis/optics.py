@@ -333,13 +333,14 @@ def _stray(cube: Cube, cfg: HwConfig, stats: dict[str, dict[int, dict[str, Any]]
     if cube.sample_id != "black_cup":
         return [Finding("optics/stray", "stray light", Status.SKIP,
                         detail="needs a black_cup run (with a white_ptfe reference)")]  # fmt: skip
-    if ref is None or ref.sample_id != "white_ptfe":
+    if ref is None or ref.sample_id not in ("white_ptfe", "empty"):
         return [Finding("optics/stray", "stray light", Status.SKIP,
-                        detail="needs a white_ptfe reference (analyse --reference)")]  # fmt: skip
+                        detail="needs a white_ptfe or empty reference (--reference)")]  # fmt: skip
     from lio.scan.analysis.electrical import coupling
 
     ref_c, _ = coupling(ref, cfg)
     vals: dict[str, float] = {}
+    ratio: dict[str, float] = {}  # black-cup response at the optimum / the reference's
     for det in DETECTORS:
         for hole in _expected(cfg, det, stats[det]):
             ch = cfg.channel(hole)
@@ -354,14 +355,19 @@ def _stray(cube: Cube, cfg: HwConfig, stats: dict[str, dict[int, dict[str, Any]]
             x = np.stack([g, np.ones_like(g)], axis=1)
             (_, b), *_ = np.linalg.lstsq(x, y, rcond=None)
             vals[f"{det}/h{hole:02d}"] = 100 * float(b) / o_ref
+            ratio[f"{det}/h{hole:02d}"] = round(s["O"] / o_ref, 4)
     if not vals:
         return [Finding("optics/stray", "stray light", Status.SKIP, detail="no usable channels")]
     med = float(np.median(list(vals.values())))
     w, f = pair(cfg, "optics.stray_pct")
+    rmed = float(np.median(list(ratio.values()))) if ratio else float("nan")
     return [Finding("optics/stray", "stray light (height-invariant optical)", grade(med, w, f),
-                    round(med, 2), "% of white",
-                    f"median over {len(vals)} channels", f"< {w:g}% (WARN), < {f:g}% (FAIL)",
-                    {"per_channel_pct": vals})]  # fmt: skip
+                    round(med, 2), f"% of {ref.sample_id}",
+                    f"median over {len(vals)} channels against {ref.sample_id} "
+                    f"({ref.store.run_id}); the black cup keeps {100 * rmed:.1f}% of the "
+                    "response at the optimum",
+                    f"< {w:g}% (WARN), < {f:g}% (FAIL)",
+                    {"per_channel_pct": vals, "black_over_ref": ratio})]  # fmt: skip
 
 
 def _effectiveness(cube: Cube, cfg: HwConfig, stats: dict[str, dict[int, dict[str, Any]]],

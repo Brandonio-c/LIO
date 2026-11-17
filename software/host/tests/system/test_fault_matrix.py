@@ -194,6 +194,14 @@ SCAN_MATRIX = (
     ScanRow(
         "window_blocked:0.1", "optics/ingaas/effectiveness", part="window", healthy_reference=True
     ),
+    # no white tile on the rig: the empty chamber as the reference
+    ScanRow(
+        "stray_light:0.05",
+        "optics/stray",
+        sample="black_cup",
+        reference="empty",
+        part="chamber walls",
+    ),
     ScanRow(
         "stray_light:0.05",
         "optics/stray",
@@ -265,7 +273,8 @@ def test_scan_fault_is_detected(scan_analysis: Any, row: ScanRow) -> None:
 
 
 @pytest.mark.parametrize(
-    ("sample", "reference"), [("empty", None), ("white_ptfe", None), ("black_cup", "white_ptfe")]
+    ("sample", "reference"),
+    [("empty", None), ("white_ptfe", None), ("black_cup", "white_ptfe"), ("black_cup", "empty")],
 )
 def test_scan_healthy_control(scan_analysis: Any, sample: str, reference: str | None) -> None:
     """A healthy rig: no finding flagged, and every matrix finding for this sample computed."""
