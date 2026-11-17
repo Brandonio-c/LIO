@@ -47,12 +47,39 @@ def _f(v: str) -> float:
     return float(v) if v not in ("", None) else float("nan")
 
 
+def despike(v: Array, floor: float = 10.0, k: float = 6.0) -> tuple[Array, int]:
+    """Replace single-reading spikes (first seen on the rig: one reading off by 100+
+    counts amid smooth neighbours) by the neighbours' line. Interior points are
+    compared with the mean of their neighbours, the ends with the line through the
+    next two. Two passes, so two adjacent spikes are caught too."""
+    out = np.array(v, dtype=np.float64)
+    n = len(out)
+    fixed = 0
+    if n < 4:
+        return out, 0
+    for _ in range(2):
+        ref = np.empty(n)
+        ref[1:-1] = (out[:-2] + out[2:]) / 2
+        ref[0] = 2 * out[1] - out[2]
+        ref[-1] = 2 * out[-2] - out[-3]
+        r = out - ref
+        scale = 1.4826 * float(np.median(np.abs(r)))
+        bad = np.abs(r) > max(k * scale, floor)
+        if not bad.any():
+            break
+        i = int(np.argmax(np.abs(r) * bad))
+        out[i] = ref[i]
+        fixed += 1
+    return out, fixed
+
+
 @dataclass
 class Curve:
     """S(h) of one hole on one detector: heights ascending (half-steps), net counts."""
 
     h: Array
     net: Array
+    spikes: int = 0  # single-reading spikes replaced (despike)
 
     def __len__(self) -> int:
         return len(self.h)
@@ -121,7 +148,10 @@ class Cube:
             return Curve(np.zeros(0), np.zeros(0))
         uh = np.unique(h)
         med = np.array([float(np.median(v[h == x])) for x in uh])
-        return Curve(uh, med)
+        clean, n_fixed = despike(med)
+        c = Curve(uh, clean)
+        c.spikes = n_fixed
+        return c
 
     def lit_all(self, det: str) -> tuple[Array, Array, Array]:
         """(hole, height, net) of every stop-measure-move lit reading on ``det``."""

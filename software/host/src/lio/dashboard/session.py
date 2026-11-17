@@ -490,6 +490,8 @@ class Session:
                 raise Refused("that question is no longer open")
             p.answer, p.aborted = value, abort
         self.log(f"[operator] answered {'abort' if abort else value!r}")
+        if self.scan_job is not None and self.scan_job.alive:
+            self.scan_job.control.beat()  # answering proves someone is there
         p.done.set()
 
     # ----------------------------------------------------- manual tools

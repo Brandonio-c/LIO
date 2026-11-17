@@ -183,3 +183,29 @@ The report should reproduce the known bench state:
 - InGaAs dark offset ≈ −21 mV, which flags `elec/ingaas/dark_offset`;
 - OPT101 dark ≈ 7 mV;
 - the hole 9 / 16 anomaly, explained.
+
+### 8.1 First rig scan: 2026-11-16, `quick`, chamber empty (firmware 2.5.0)
+
+Run `20261116-202110_scan_quick`. It completed: 19 steps in 46 min, no aborts, and the LED duty stayed within budget. The verdict was **NOT FUNCTIONAL**, and the scan pinned down the known problems:
+
+| Finding | What it means | Next check |
+|---|---|---|
+| `optics/wrong_rail/h09` FAIL | Hole 9 gives nothing normally, but **lights when only RAIL B is enabled**. Its LED is wired to DRV2, not DRV1. This explains the "dead hole 9". | Trace LED9's return/anode to its driver; move it to RAIL A. |
+| `optics/opt101/h16/plausibility` FAIL | The silicon OPT101 sees hole 16 strongly (333→764 counts, rising with height). It cannot be an 1850 nm LED. | Check hole 16 with a phone camera; check the LED part. |
+| `optics/ingaas/throughput` FAIL | The InGaAs sees almost no light on any hole (~20–50 counts, nearly flat). | Inspect the window over D1 and the alignment; see the dark offset below. |
+| `elec/ingaas/dark_offset` FAIL | −20.9 mV, about 21 nA into the TIA input (the bench state). | Fault tree "InGaAs coupling": the U5 pin-2 node, D1. |
+| `elec/ingaas/hum` WARN | 2.0 mV at 60 Hz, 99% of the InGaAs noise. | Earth bond and chargers. |
+| `elec/opt101/coil_emi` FAIL | The OPT101 noise rises tenfold (0.1 → 1.0 mV) while the motors run. It matters only for measuring while moving. | Route the motor cables away from the OPT101 leads. |
+| `optics/optimum` WARN | The response rises all the way to the bottom of the travel, so the best height is at or below the bottom. | — |
+
+Mechanics:
+- Backlash and step loss were not resolvable from a quick scan (about ±4,000 half-steps), because the curves rise steadily rather than peaking.
+- The up and down curves overlap closely.
+- A `full` scan (repeat visits at 5 heights) is the better test.
+
+**Calibration from this run.**
+- The rig's optical levels are about 100× below the simulator's. The weakest working OPT101 hole (5) gives O ≈ 22 counts.
+- The light floors are now `min_signal_counts [15, 6]`, or 8/4 × the detector noise if larger, and throughput `empty [60, 20]`.
+- Partial losses are judged against the baseline of the same sample (`effectiveness`, `trend/compare`).
+- The analysis now removes single-reading spikes (on the rig, holes 14–16 at the first and last steps) and fits the mechanics robustly.
+- Saved as the first `empty` baseline.

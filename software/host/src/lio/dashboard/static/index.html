@@ -1282,7 +1282,9 @@ function scanRender() {
 }
 async function scanPoll() {
   if (!STATIC || !STATIC.scan) return;
-  const live = SC && SC.job && SC.job.running;
+  // Any tab: while a scan runs (S.running from the main poll) keep polling, so the
+  // heartbeat keeps beating wherever the operator is looking.
+  const live = (SC && SC.job && SC.job.running) || (S && S.running);
   if (view !== "scan" && !live) return;
   try { SC = await api("/api/scan"); } catch (e) { return; }
   scanSetup();

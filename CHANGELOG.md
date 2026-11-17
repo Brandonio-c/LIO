@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-11-16: Diagnostic sweep S7, commissioning on the rig
+
+### Added
+- **Firmware 2.5.0 flashed** to the Nano R4.
+- **First rig scan** (`quick`, empty chamber). It found hole 9 wired to RAIL B (the wrong-rail state), hole 16 visible to the OPT101 (so not an 1850 nm LED), an InGaAs that sees almost no light plus its −21 mV offset, 60 Hz hum on the InGaAs, and coil interference on the OPT101 while moving. Results: `docs/DIAGNOSTIC_SWEEP.md` §8.1. Saved as the first `empty` baseline.
+
+### Changed
+- **Thresholds calibrated from the rig.** The light floors use the larger of the configured counts and the detector's noise. Partial light losses are judged against the baseline.
+- **Response curves are despiked.** Single-reading spikes are replaced by their neighbours' line.
+- **The mechanics fit is robust.** It rejects outliers, and backlash and step loss are SKIP when the curves cannot resolve them.
+- **Dashboard heartbeat.** It runs on every tab while a scan is going, and answering an operator prompt counts as a heartbeat. Before this fix, a scan started from another tab paused for want of a heartbeat.
+
 ## 2026-11-16: Diagnostic sweep S2–S6: the full-system height scan (LIO-SW-SCAN-001)
 
 ### Added

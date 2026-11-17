@@ -98,6 +98,19 @@ def channel_stats(curve: Curve, c: float) -> dict[str, Any]:
     }
 
 
+def signal_floors(cfg: HwConfig, elec: dict[str, Any]) -> dict[str, tuple[float, float]]:
+    """[WARN, FAIL] for "this hole gives light", per detector: the configured counts, or
+    8 / 4 times the detector's own dark noise if that is larger (a noisy detector's
+    flat curve must not pass for light)."""
+    w, f = pair(cfg, "optics.min_signal_counts")
+    out = {}
+    for det in DETECTORS:
+        sp = (elec.get("spectra") or {}).get(det) or {}
+        sig = float(sp.get("sigma_counts", 0.0))
+        out[det] = (max(w, 8 * sig), max(f, 4 * sig))
+    return out
+
+
 def _judged(cube: Cube, cfg: HwConfig) -> bool:
     return cube.sample_id in [str(x) for x in health(cfg, "optics.judged_samples")]
 
@@ -109,14 +122,15 @@ def analyse(
     stats: dict[str, dict[int, dict[str, Any]]] = {d: {} for d in DETECTORS}
     coup = elec["coupling"]
     judged = _judged(cube, cfg)
-    w_sig, f_sig = pair(cfg, "optics.min_signal_counts")
+    floors = signal_floors(cfg, elec)
     w_pl, f_pl = pair(cfg, "optics.plausibility_counts")
     mod_min = float(health(cfg, "optics.modulation_min"))
     if not cube.mask(state="lit", phase="P2").any():
         out.append(Finding("optics/curves", "response curves vs height", Status.SKIP,
                            detail="no down pass in this mode (no height data)"))  # fmt: skip
-        return {"channels": stats}, out
+        return {"channels": stats, "floors": floors}, out
     for det in DETECTORS:
+        w_sig, f_sig = floors[det]
         cmap = coup.get(det, {}).get("C", {})
         blind = set(blind_holes(cfg, det))
         for hole in range(1, 17):
@@ -162,7 +176,8 @@ def analyse(
                     f"< {w_pl:g} counts (WARN), < {f_pl:g} (FAIL)",
                     {"O": r, "modulation": st["modulation"]},
                 ))  # fmt: skip
-        out += _detector_level(cube, cfg, det, stats[det], coup.get(det, {}), judged)
+        out += _detector_level(cube, cfg, det, stats[det], coup.get(det, {}), judged,
+                               floors[det])  # fmt: skip
     planned = len((cube.meta.get("plan") or {}).get("heights_down") or [])
     got = len(np.unique(cube.num["height_hs"][cube.mask(state="lit", phase="P2")]))
     if got < planned:
@@ -173,7 +188,7 @@ def analyse(
     out += _snr_headroom(cube, cfg, stats, elec)
     out += _stray(cube, cfg, stats, reference)
     out += _effectiveness(cube, cfg, stats, reference)
-    return {"channels": stats}, out
+    return {"channels": stats, "floors": floors}, out
 
 
 def _expected(cfg: HwConfig, det: str, stats: dict[int, dict[str, Any]]) -> list[int]:
@@ -183,12 +198,13 @@ def _expected(cfg: HwConfig, det: str, stats: dict[int, dict[str, Any]]) -> list
 
 
 def _detector_level(cube: Cube, cfg: HwConfig, det: str, st: dict[int, dict[str, Any]],
-                    coup: dict[str, Any], judged: bool) -> list[Finding]:  # fmt: skip
+                    coup: dict[str, Any], judged: bool,
+                    floor: tuple[float, float]) -> list[Finding]:  # fmt: skip
     out: list[Finding] = []
     exp = _expected(cfg, det, st)
     if not exp:
         return out
-    _, f_sig = pair(cfg, "optics.min_signal_counts")
+    f_sig = floor[1]
     w_c, _ = pair(cfg, "coupling_counts")
     o = np.array([st[h]["O"] for h in exp])
     no_light = int((o < f_sig).sum())
@@ -266,7 +282,7 @@ def _snr_headroom(cube: Cube, cfg: HwConfig, stats: dict[str, dict[int, dict[str
         exp = _expected(cfg, det, stats[det])
         if sp and exp:
             sig = max(float(sp["sigma_counts"]), 0.5)
-            _, f_sig = pair(cfg, "optics.min_signal_counts")
+            f_sig = signal_floors(cfg, elec)[det][1]
             live = [h for h in exp if stats[det][h]["O"] >= f_sig]  # dead holes: see response
             snr = {h: 20 * math.log10(stats[det][h]["O"] / sig) for h in live}
             if not snr:

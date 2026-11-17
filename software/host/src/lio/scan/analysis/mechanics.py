@@ -128,6 +128,26 @@ def _cost(pts: list[Point], d0: Array, k: Array) -> Array:
 
 
 def fit_offset(pts: list[Point], span: float, *, with_k: bool) -> dict[str, float] | None:
+    """Robust: fit, drop readings beyond 5 robust sigma (glitches), fit again."""
+    first = _fit_offset(pts, span, with_k=with_k)
+    if first is None:
+        return None
+    res = np.array([
+        (pt.v - float(pt.ref.at(np.array([pt.h + first["d0"] + first.get("k", 0.0) * pt.p]))[0][0]))
+        / pt.ref.o for pt in pts
+    ])  # fmt: skip
+    scale = 1.4826 * float(np.median(np.abs(res - np.median(res)))) or 1e-9
+    keep = [pt for pt, r in zip(pts, res, strict=True) if abs(r) <= 5 * scale]
+    if len(keep) == len(pts):
+        return first
+    second = _fit_offset(keep, span, with_k=with_k)
+    if second is None:
+        return first
+    second["dropped"] = float(len(pts) - len(keep))
+    return second
+
+
+def _fit_offset(pts: list[Point], span: float, *, with_k: bool) -> dict[str, float] | None:
     """δ0 (and κ) minimising the squared residual; standard errors from the Jacobian."""
     if len(pts) < 3:
         return None
@@ -164,6 +184,8 @@ def fit_offset(pts: list[Point], span: float, *, with_k: bool) -> dict[str, floa
 
 
 def _significant(value: float, se: float, warn: float, fail: float) -> Status:
+    if se > warn / 2:
+        return Status.SKIP  # the curves are too flat or noisy to resolve it
     st = grade(abs(value), warn, fail)
     if st != Status.PASS and abs(value) < 3 * se:
         return Status.PASS  # within the resolution: not shown
@@ -202,7 +224,8 @@ def analyse(cube: Cube, cfg: HwConfig, optics_ctx: dict[str, Any]) -> list[Findi
             round(b, 0), "half-steps",
             f"{b:+.0f} ± {se_b:.0f} half-steps" + (f" ({mm:+.3f} mm)" if mm is not None else "")
             + f" from {int(fit['n'])} readings on {len(refs)} channels",
-            f"< {w:g} (WARN), < {f:g} (FAIL); not flagged within 3 sigma",
+            f"< {w:g} (WARN), < {f:g} (FAIL); not flagged within 3 sigma; not judged when "
+            f"the resolution is worse than {w / 2:g}",
             fit,
         ))  # fmt: skip
         loss, se_l = -fit["k"], fit["se_k"]

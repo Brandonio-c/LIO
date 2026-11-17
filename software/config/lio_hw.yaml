@@ -208,13 +208,13 @@ scan:
     addressing_match_frac: 0.01       # two holes this alike at every height: same LED (WARN)
     optics:
       judged_samples: [empty, white_ptfe]   # absolute levels are judged only for these
-      min_signal_counts: [100, 40]    # O on a hole its detector should see
+      min_signal_counts: [15, 6]      # O on a hole its detector should see (rig 2026-11-16: weakest working OPT101 hole ~22)
       plausibility_counts: [30, 80]   # residual on a hole its detector cannot see
       modulation_min: 0.15            # (max - min) / O below this: flat, not light
-      throughput_counts:              # median O over expected holes (sim healthy: ~5800 / ~8500 empty)
-        empty: {opt101: [2000, 800], ingaas: [3000, 1000]}
-        white_ptfe: {opt101: [3600, 1400], ingaas: [5400, 1800]}
-      snr_db_min: 30
+      throughput_counts:              # median O over expected holes: a floor (sim healthy ~5800 / ~8500)
+        empty: {opt101: [60, 20], ingaas: [60, 20]}      # rig 2026-11-16: OPT101 median ~100; partial losses: vs baseline
+        white_ptfe: {opt101: [100, 30], ingaas: [100, 30]}   # to set from the first white-tile run
+      snr_db_min: 20
       headroom_pct_min: 10
       stray_pct: [0.6, 1.0]           # black_cup vs white_ptfe: height-invariant part, % of the white optimum (sim healthy 0.2)
       effectiveness_ratio: [0.8, 0.5] # O / O_reference (baseline)

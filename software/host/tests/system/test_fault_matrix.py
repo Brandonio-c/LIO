@@ -166,10 +166,12 @@ class ScanRow:
     reference: str | None = None
     incomplete: bool = False  # the fault aborts the run (the analysis still runs)
     part: str = ""  # the explanation must name this part
+    healthy_reference: bool = False  # the reference run is on a healthy rig (a baseline)
 
     @property
     def id(self) -> str:
         ref = f"+ref:{self.reference}" if self.reference else ""
+        ref += "+baseline" if self.healthy_reference else ""
         return f"{self.fault}@{self.sample}{ref}->{self.finding}"
 
 
@@ -187,7 +189,11 @@ SCAN_MATRIX = (
     ScanRow("wrong_led:16=630", "optics/opt101/h16/plausibility", part="LED16"),
     ScanRow("rail_miswired:12", "optics/ingaas/h12/response", part="rail wiring"),
     ScanRow("rail_miswired:12", "optics/wrong_rail/h12", part="rail wiring"),  # fw 2.5.0
-    ScanRow("window_blocked:0.1", "optics/ingaas/throughput", part="detector window"),
+    # a partial loss of light is judged against a baseline of the same sample (absolute
+    # floors are set from the rig, whose levels are ~100x below the simulator's)
+    ScanRow(
+        "window_blocked:0.1", "optics/ingaas/effectiveness", part="window", healthy_reference=True
+    ),
     ScanRow(
         "stray_light:0.05",
         "optics/stray",
@@ -223,16 +229,21 @@ def scan_cfg(cfg: HwConfig) -> HwConfig:
 @pytest.fixture(scope="module")
 def scan_analysis(
     scan_cfg: HwConfig, tmp_path_factory: pytest.TempPathFactory
-) -> Callable[[str | None, str, str | None], Analysis]:
-    cache: dict[tuple[str | None, str, str | None], Analysis] = {}
+) -> Callable[..., Analysis]:
+    cache: dict[tuple[str | None, str, str | None, bool], Analysis] = {}
     root = tmp_path_factory.mktemp("scans")
 
-    def get(faults: str | None, sample: str, reference: str | None) -> Analysis:
-        key = (faults, sample, reference)
+    def get(faults: str | None, sample: str, reference: str | None,
+            baseline: bool = False) -> Analysis:  # fmt: skip
+        key = (faults, sample, reference, baseline)
+        if baseline:
+            reference = sample
         if key not in cache:
             ref = None
             if reference is not None:
-                ref, st = scan.sim_run(scan_cfg, "matrix", root, faults=faults, sample=reference)
+                ref, st = scan.sim_run(scan_cfg, "matrix", root,
+                                       faults=None if baseline else faults,
+                                       sample=reference)  # fmt: skip
                 assert st == "COMPLETE", ref.meta["aborts"]
             store, _ = scan.sim_run(scan_cfg, "matrix", root, faults=faults, sample=sample)
             cache[key] = analyse(store.folder, scan_cfg, None if ref is None else ref.folder)
@@ -243,7 +254,7 @@ def scan_analysis(
 
 @pytest.mark.parametrize("row", SCAN_MATRIX, ids=[r.id for r in SCAN_MATRIX])
 def test_scan_fault_is_detected(scan_analysis: Any, row: ScanRow) -> None:
-    a = scan_analysis(row.fault, row.sample, row.reference)
+    a = scan_analysis(row.fault, row.sample, row.reference, row.healthy_reference)
     assert (a.status == "INCOMPLETE") is row.incomplete, a.summary()
     f = a.get(row.finding)
     assert f.status == row.status, f"{row.finding}: {f.status.value}: {f.detail}\n{a.summary()}"
@@ -265,8 +276,12 @@ def test_scan_healthy_control(scan_analysis: Any, sample: str, reference: str | 
     assert a.verdict["verdict"] == Verdict.FUNCTIONAL.value, a.verdict
     assert {h["health"] for h in a.health} <= {"OK", "n/a"}
     for row in SCAN_MATRIX:
-        if row.sample == sample and row.reference == reference:
+        if row.sample == sample and row.reference == reference and not row.healthy_reference:
             assert a.get(row.finding).status == Status.PASS, row.finding
+    for row in SCAN_MATRIX:  # baseline rows: a healthy run against a healthy baseline
+        if row.healthy_reference and row.sample == sample and reference is None:
+            b = scan_analysis(None, sample, None, True)
+            assert b.get(row.finding).status == Status.PASS, row.finding
 
 
 def test_every_fault_has_a_row() -> None:

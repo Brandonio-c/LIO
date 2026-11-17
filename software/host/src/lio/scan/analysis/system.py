@@ -148,7 +148,9 @@ def _addressing(cfg: HwConfig, octx: dict[str, Any]) -> list[Finding]:
     for two holes: their whole response, every height on both detectors, then agrees
     within noise. Two different LEDs never do (the height shapes differ slightly)."""
     ch = octx.get("channels") or {}
-    _, f_sig = pair(cfg, "optics.min_signal_counts")
+    f_sig = min(
+        f for _, f in (octx.get("floors") or {"x": pair(cfg, "optics.min_signal_counts")}).values()
+    )
     tol = float(cfg.section.raw("scan.health.addressing_match_frac"))
     sig: dict[int, list[list[float]]] = {}
     for hole in range(1, 17):
@@ -183,12 +185,13 @@ def _rails(cfg: HwConfig, octx: dict[str, Any]) -> list[Finding]:
     ch = octx.get("channels") or {}
     if not any(ch.values()):
         return []
-    _, f_sig = pair(cfg, "optics.min_signal_counts")
+    floors = octx.get("floors") or {}
+    f_def = pair(cfg, "optics.min_signal_counts")[1]
     out = []
     for rail in ("A", "B"):
         holes = [h for h in range(1, 17) if cfg.channel(h).rail == rail and cfg.channel(h).fitted]
         live = [h for h in holes
-                if any(ch.get(d, {}).get(h, {}).get("O", 0.0) >= f_sig
+                if any(ch.get(d, {}).get(h, {}).get("O", 0.0) >= floors.get(d, (0, f_def))[1]
                        for d in cfg.channel(h).expected_detectors)]  # fmt: skip
         out.append(Finding(
             f"system/rail/{rail}", f"RAIL {rail} (driver gates the LEDs)",
