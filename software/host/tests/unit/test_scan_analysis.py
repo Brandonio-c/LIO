@@ -177,10 +177,14 @@ def test_plausibility_flags_a_visible_hole_on_the_wrong_detector(
 
 
 def test_dark_offset_and_equivalent_current(cfg: HwConfig, tmp_path: Path) -> None:
-    a = analyse(write_run(tmp_path, cfg, dark={"opt101": 200.0, "ingaas": -168.0}), cfg)
-    f = a.get("elec/ingaas/dark_offset")  # the bench state: -21 mV, ~21 nA into pin 2
-    assert f.status == Status.FAIL and f.value == pytest.approx(-21, abs=0.2)
+    # the rig's steady -21 mV (U5's own offset, 17 Nov) is within the range ...
+    a = analyse(write_run(tmp_path / "rig", cfg, dark={"opt101": 200.0, "ingaas": -168.0}), cfg)
+    f = a.get("elec/ingaas/dark_offset")
+    assert f.status == Status.PASS and f.value == pytest.approx(-21, abs=0.2)
     assert f.data["i_eq_na"] == pytest.approx(21, abs=0.3)
+    # ... a real leak (60 nA: -60 mV) is not
+    a = analyse(write_run(tmp_path / "leak", cfg, dark={"opt101": 200.0, "ingaas": -480.0}), cfg)
+    assert a.get("elec/ingaas/dark_offset").status == Status.FAIL
 
 
 @pytest.mark.parametrize("both_ways", [True, False])

@@ -223,6 +223,33 @@ def cmd_sweep(args: argparse.Namespace, cfg: HwConfig) -> int:
     return 0
 
 
+def cmd_watch(args: argparse.Namespace, cfg: HwConfig) -> int:
+    """Live readout of both detector inputs (read-only: no LED, no motion). Ctrl-C stops."""
+    lsb = 0.125
+    with _device(args, cfg) as dev:
+        if dev.mains_hz:
+            dev.adc_mains(0)
+        base: dict[str, float] = {}
+        print(
+            "InGaAs (A0) and OPT101 (A1): counts, mV, and change since the start. Ctrl-C to stop."
+        )
+        try:
+            while True:
+                out = []
+                for name, ch in (("InGaAs", cfg.detectors["ingaas"].adc_channel),
+                                 ("OPT101", cfg.detectors["opt101"].adc_channel)):  # fmt: skip
+                    v = dev.adc_read(ch, args.n).mean
+                    base.setdefault(name, v)
+                    d = v - base[name]
+                    bar = "#" * min(25, int(abs(d) / max(args.scale, 1)))
+                    out.append(f"{name} {v:8.1f} ({v * lsb:+8.2f} mV) {d:+8.1f} {bar:<25}")
+                print("  ".join(out), flush=True)
+                dev.sleep(args.interval)
+        except KeyboardInterrupt:
+            print()
+    return 0
+
+
 def cmd_stage(args: argparse.Namespace, cfg: HwConfig) -> int:
     """Chamber-top position kept across sessions (lio.stage)."""
     if args.sim:
@@ -710,6 +737,12 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--csv", help="write the logger-format CSV here")
     s.add_argument("--plot", help="write a PNG plot here")
     s.set_defaults(fn=cmd_sweep)
+
+    s = sub.add_parser("watch", help="live readout of both detectors (read-only)")
+    s.add_argument("--interval", type=float, default=0.5, help="seconds between readings")
+    s.add_argument("-n", type=int, default=8, help="samples averaged per reading")
+    s.add_argument("--scale", type=float, default=10.0, help="counts per # in the bar")
+    s.set_defaults(fn=cmd_watch)
 
     s = sub.add_parser("stage", help="chamber-top position and travel limits")
     ssub = s.add_subparsers(dest="stage_command", required=True)

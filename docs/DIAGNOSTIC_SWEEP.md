@@ -226,5 +226,16 @@ Still failing: they need the bench.
 2. **Hole 16 is not an 1850 nm LED** (`optics/opt101/h16/plausibility`). Check it with a phone camera; check the part.
 3. **Hole 6 intermittent** (`optics/h06/intermittent`). Reflow or re-seat LED6 and Q6; wiggle-test.
 4. **InGaAs sees almost no light** (`optics/ingaas/throughput`). Check that D1 is in circuit, its orientation, and the window over it.
-5. **InGaAs −21 mV dark offset (21 nA)** (`elec/ingaas/dark_offset`, T06.2 `dark`). Swap Rf to 100 kΩ to confirm it's a current. Then rebuild the pin-2 node off the breadboard (dead-bug), away from −5 V, and clean any flux.
+5. **InGaAs −21 mV dark offset: traced to U5 itself, and accepted.** On 17 Nov the offset stayed the same with D1 disconnected, with pin 2 lifted off the breadboard, and with Cf out. It also measured −22 mV between pin 1 and pin 3, with pin 2 equal to pin 3 and no ground difference to the ADC. So it is the TL072's own offset or input leakage. It is steady (about 0.2 counts of noise) and subtracted in every measurement, so `thresholds.dark.ingaas_counts` now allows down to −50 mV. A real leak still FAILs, and drift is still watched. Swapping U5 would remove it.
 6. **Stray light**: the black cup keeps 84% of the empty-chamber response (`optics/stray`). Darken or baffle the chamber's inner surfaces. A white tile would give the absolute scale.
+
+### 8.3 Check after the InGaAs rework (2026-11-17)
+
+- **Dark levels as before:** InGaAs −21.0 mV, OPT101 +7.1 mV.
+- **One sweep at the top** matched the empty baseline within about 10% on holes 1–13 and 16.
+- **Hole 14 changed:** 8/4 counts (OPT101/InGaAs) against 22/23 in the baseline. Its LED current coupling has almost vanished, so LED14 is probably not getting its current.
+- **Hole 15 changed the other way:** 40/80 against 19/27.
+
+Both are RAIL B neighbours, so a wire on that side probably moved. Check LED14's and LED15's connections.
+
+`lio watch` gives a live, read-only readout of both detectors, used for the remote-control test.

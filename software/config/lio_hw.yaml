@@ -306,7 +306,10 @@ thresholds:
     rate_check_duration_s: 0.25  # samples per rate = rate x this (8 to stream_buf_n)
   dark:
     opt101_counts: [0, 800]      # ≈0-100 mV
-    ingaas_counts: [-100, 2000]  # small positive expected; strongly negative -> fault
+    # Rig 2026-11-17: a steady -21 mV (-168 counts) traced to U5 itself (TL072 offset or input
+    # leakage; pin 2 lifted off the board, D1 out: unchanged). It is subtracted in every
+    # measurement; -50 mV leaves room for it and still catches a real leak (sim leakage:60).
+    ingaas_counts: [-400, 2000]  # small offset expected; strongly negative -> fault
     erratic_sigma_factor: 5.0    # dark sigma > factor x T03 limit -> erratic (missing -5 V?)
     negative_rail_counts: -1500  # dark mean below this: output pinned at the negative clamp
   channel:

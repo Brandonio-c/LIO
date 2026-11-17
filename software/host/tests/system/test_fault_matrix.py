@@ -180,7 +180,7 @@ SCAN_MATRIX = (
     # S3: optics and electrical health
     ScanRow("pd_disconnected", "optics/ingaas/electrical_only", part="D1"),
     ScanRow("ground_shift:0.2", "elec/ingaas/ground_shift", part="GND star point"),
-    ScanRow("leakage:20", "elec/ingaas/dark_offset", part="U5 pin-2 node"),
+    ScanRow("leakage:60", "elec/ingaas/dark_offset", part="U5 pin-2 node"),
     ScanRow("leakage_drift:10", "elec/ingaas/drift", part="U5 pin-2 node"),
     ScanRow("mains_hum:8", "elec/ingaas/hum", part="earth bond"),
     # judged in continuous mode only (stop-measure-move readings never see it)

@@ -6,7 +6,10 @@
 - **Firmware 2.5.1 (flashed): `ADC CFG MAINS <0|50|60>`.** Readings integrate whole mains periods, so hum and 120 Hz flicker cancel between the dark and lit reads. The scan uses it (`scan.mains_hz`, `scan.mains_periods: 2`). On the rig the InGaAs reading spread fell from 1.9 to 0.9 counts.
 - **`optics/hNN/intermittent`:** a hole whose readings jump on both detectors at once. It found hole 6 on the rig. Simulator fault `intermittent:<hole>`.
 
+- **`lio watch`:** a live, read-only readout of both detector inputs, for bench tests.
+
 ### Changed
+- **The InGaAs dark range** (`thresholds.dark.ingaas_counts`) now goes down to −50 mV, so the rig's steady −21 mV passes. It was traced to U5 itself (bench tests, 17 Nov) and is subtracted in every measurement. The simulator's leakage matrix row now uses 60 nA.
 - **OPT101/InGaAs coupling and ground shift** are corrected in software and PASS below their FAIL limits.
 - **Coil interference** is judged only in continuous mode, which now records it during the move.
 - **The plan's duty and timing estimates** include the longer mains-integrated readings.
