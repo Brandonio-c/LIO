@@ -312,3 +312,40 @@ class TestDebugStates:
             with pytest.raises(DeviceError) as e:
                 dev.command("DBG STATE CE_ONLY 1")
             assert e.value.code == 1
+
+
+class TestMainsIntegration:
+    """Firmware 2.5.1 ADC CFG MAINS: readings integrate whole mains periods."""
+
+    def test_hum_cancels_in_readings(self, cfg: HwConfig) -> None:
+        def spread(mains: int) -> float:
+            with rig(cfg, "mains_hum:8") as (dev, _):
+                if mains:
+                    dev.adc_mains(mains)
+                v = []
+                for i in range(30):
+                    v.append(dev.meas(13, 8, 1 if mains else 2).net("ingaas"))
+                    dev.sleep(0.137 * (i % 7))
+                m = sum(v) / len(v)
+                return math.sqrt(sum((x - m) ** 2 for x in v) / len(v))
+
+        assert spread(60) < 0.5 * spread(0)
+
+    def test_info_reset_and_old_firmware(self, cfg: HwConfig) -> None:
+        import copy as _copy
+
+        from lio.config import parse_config
+
+        with rig(cfg) as (dev, _):
+            dev.adc_mains(60)
+            assert dev.info(refresh=True).as_int("mains") == 60 and dev.mains_hz == 60
+            dev.reset()
+            assert dev.mains_hz == 0 and dev.info(refresh=True).as_int("mains") == 0
+            with pytest.raises(DeviceError):
+                dev.command("ADC CFG MAINS 55")
+        data = _copy.deepcopy(cfg.data)
+        data["sim"]["firmware"] = "2.5.0"
+        with rig(parse_config(data, cfg.path)) as (dev, _):
+            assert "mains" not in dev.info(refresh=True).values
+            with pytest.raises(DeviceError):
+                dev.adc_mains(60)

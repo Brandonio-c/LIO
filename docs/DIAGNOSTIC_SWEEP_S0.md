@@ -123,6 +123,12 @@ I recommend **(a)** as the default quick check, since the extra data is nearly f
 - The simulator reports 2.5.0 by default; `sim.firmware: "2.4.0"` emulates the rig as it is now, where the states are SKIP.
 - **Flashing waits for the owner's "go" at commissioning.**
 
+**D21 (S7). Mains integration (firmware 2.5.1), and findings judged by their effect.**
+- `ADC CFG MAINS` integrates readings over whole mains periods, so hum and flicker cancel in the measurements. The raw hum is still measured and reported, and it still FAILs above 3 mV.
+- Couplings that are subtracted per rail are PASS below their FAIL limit.
+- Coil interference is judged only in continuous mode, the only mode that measures while moving.
+- A new check, `optics/hNN/intermittent`, with its simulator fault `intermittent:<hole>`, catches the electrical glitches seen on hole 6.
+
 ## 4. Questions
 
 Plan §13:

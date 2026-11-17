@@ -63,9 +63,10 @@ FAULT_NAMES = (
     "stray_light",  # stray_light:<frac>  LED light reaching a detector not via the sample
     "mid_run_boot",  # mid_run_boot:<s>  the board resets once at this simulated time
     "adc_dropout",  # adc_dropout:<n>  every n-th ADC conversion fails
+    "intermittent",  # intermittent:<hole>  a loose joint: some lit readings drop on both inputs
 )
 
-_PARAM_FAULTS = {"stuck_on", "dead_channel", "swapped"}
+_PARAM_FAULTS = {"stuck_on", "dead_channel", "swapped", "intermittent"}
 # value faults: name -> (default when given without an argument, parser)
 _VALUE_FAULTS: dict[str, tuple[object, Callable[[str], object]]] = {
     "ground_shift": (0.2, float),
@@ -96,6 +97,7 @@ class Faults:
     no_adc: bool = False
     stuck_on: set[int] = field(default_factory=set)
     dead_channel: set[int] = field(default_factory=set)
+    intermittent: set[int] = field(default_factory=set)
     swapped: dict[int, int] = field(default_factory=dict)
     rail_a_dead: bool = False
     rail_b_dead: bool = False
@@ -392,7 +394,7 @@ _GAIN_NAMES = ("2/3", "1", "2", "4", "8", "16")
 class SimulatedLIO:
     """A simulated LIO V3 controller (firmware v2 behaviour + optics physics)."""
 
-    FW_VERSION = "2.5.0"  # sim.firmware in the config can emulate an older one
+    FW_VERSION = "2.5.1"  # sim.firmware in the config can emulate an older one
     BUILD = "2026-11-16"
 
     def __init__(
@@ -410,7 +412,9 @@ class SimulatedLIO:
         if fw:
             self.FW_VERSION = str(fw)
         # DBG STATE (diagnostic-sweep coupling states) arrived in 2.5.0
-        self.debug_states = tuple(int(x) for x in self.FW_VERSION.split(".")[:2]) >= (2, 5)
+        ver = tuple(int(x) for x in self.FW_VERSION.split(".")[:3])
+        self.debug_states = ver >= (2, 5, 0)
+        self.mains_supported = ver >= (2, 5, 1)
         self.chamber_open = False  # operator action for T06.4
         sim = cfg.sim
         self._rng = random.Random(sim.integer("seed") if seed is None else seed)
@@ -463,6 +467,7 @@ class SimulatedLIO:
         self.wdt_ms = {1: lim["wdt_a_ms"], 2: lim["wdt_b_ms"]}
         self.gain_idx = 1
         self.rate = self.cfg.section.integer("adc.rate_sps")
+        self.mains_hz = 0  # ADC CFG MAINS (firmware 2.5.1)
         old = getattr(self, "motors", None)
         self.motors = [_Motor(), _Motor()]
         if old is not None:  # a reset clears the counters, not where the stage is
@@ -812,6 +817,11 @@ class SimulatedLIO:
     def _conv_us_fw(self) -> int:
         return 1000000 // self.rate
 
+    def _mean_ms(self, n: int) -> int:
+        if self.mains_hz:
+            return n * 1000 // self.mains_hz + 4
+        return n * (self._conv_us_fw() // 1000 + 2)
+
     def _counts(self, ch: int, t: float) -> int:
         """ADS1115 reading of input ``ch`` at time ``t`` (GAIN_ONE counts, scaled)."""
         sim = self.cfg.sim
@@ -1115,10 +1125,38 @@ class _Exec:
         return s._counts(ch, self.t - s.conv_s / 2)
 
     def adc_mean(self, ch: int, n: int) -> int:
+        if self.sim.mains_hz:
+            return self._adc_mean_mains(ch, n)
         total = sum(self.adc_read(ch) for _ in range(n))
         # C-style rounding of (sum +/- n/2) / n with truncation toward zero
         adj = n // 2 if total >= 0 else -(n // 2)
         return int((total + adj) / n)
+
+    def _adc_mean_mains(self, ch: int, n: int) -> int:
+        """As the firmware: integrate over n whole mains periods at 860 SPS."""
+        s = self.sim
+        saved = s.rate
+        s.rate = 860
+        try:
+            window = n / s.mains_hz
+            half = s.conv_s / 2
+            v_prev = float(self.adc_read(ch))
+            t0 = self.t - half
+            t_prev = 0.0
+            integ = 0.0
+            while True:
+                v = float(self.adc_read(ch))
+                tt = self.t - half - t0
+                if tt >= window:
+                    v_end = v_prev + (v - v_prev) * (window - t_prev) / (tt - t_prev)
+                    integ += 0.5 * (v_prev + v_end) * (window - t_prev)
+                    break
+                integ += 0.5 * (v_prev + v) * (tt - t_prev)
+                v_prev, t_prev = v, tt
+        finally:
+            s.rate = saved
+        m = integ / window
+        return int(m + 0.5) if m >= 0 else int(m - 0.5)
 
     # -- dispatch
     def dispatch(self) -> None:
@@ -1181,7 +1219,9 @@ class _Exec:
             f"jog_acc_max={lim['jog_acc_max']} wake_ms_max={lim['wake_ms_max']} "
             f"motion_armed={int(s._armed(self.t))} "
             f"light_in_motion={int(s._light_in_motion(self.t))} "
-            f"arm_token=0x{s.token:04X} hw_wdt=0" + (" debug_states=1" if s.debug_states else "")
+            f"arm_token=0x{s.token:04X} hw_wdt=0"
+            + (" debug_states=1" if s.debug_states else "")
+            + (f" mains={s.mains_hz}" if s.mains_supported else "")
         )
 
     def c_status(self) -> None:
@@ -1264,6 +1304,10 @@ class _Exec:
             s.gain_idx = _GAIN_NAMES.index(val)
             lsb = s.cfg.section.num(f"adc.lsb_mv.{val}")
             self.ok(f"gain={val} lsb_mv={lsb:.7f}")
+            return
+        if what == "MAINS" and s.mains_supported and val in ("0", "50", "60"):
+            s.mains_hz = int(val)
+            self.ok(f"mains={s.mains_hz}")
             return
         if what == "RATE" and val.isdigit() and int(val) in s.cfg.section.ints("adc.rates_sps"):
             s.rate = int(val)
@@ -1380,7 +1424,7 @@ class _Exec:
         s = self.sim
         if s._busy_for_light(self.t):
             raise _Refusal(5, "motor moving")
-        est = settle + 2 * n * (s._conv_us_fw() // 1000 + 2) + 10
+        est = settle + 2 * s._mean_ms(n) + 10
         if est > s.wdt_ms[s.rail_of(hole)]:
             raise _Refusal(3, "on-time exceeds watchdog")
         s._optics_off(self.t)
@@ -1397,6 +1441,11 @@ class _Exec:
             s._optics_off(self.t)
         if not still:
             raise _Refusal(3, "watchdog fired during measurement")
+        if hole in s.faults.intermittent and s._rng.random() < 0.35:
+            # a joint opening for an instant: the LED current and its return jump, both
+            # inputs see the same negative excursion (seen on the rig, hole 6)
+            drop = max(s._rng.uniform(50, 400), abs(l1 - d1) * s._rng.uniform(0.3, 0.8))
+            l0, l1 = int(l0 - drop), int(l1 - drop)
         return f"ch={hole} dark0={d0} dark1={d1} lit0={l0} lit1={l1} t_on_ms={t_on_ms}"
 
     def c_dbg(self) -> None:
@@ -1416,7 +1465,7 @@ class _Exec:
             raise _Refusal(5, "motor moving")
         rail = arg if ce_only else 3 - s.rail_of(arg)
         sel = 0 if ce_only else 1 << (arg - 1)
-        est = settle + 2 * n * (s._conv_us_fw() // 1000 + 2) + 10
+        est = settle + 2 * s._mean_ms(n) + 10
         if est > s.wdt_ms[rail]:
             raise _Refusal(3, "on-time exceeds watchdog")
         s._optics_off(self.t)

@@ -209,3 +209,22 @@ Mechanics:
 - Partial losses are judged against the baseline of the same sample (`effectiveness`, `trend/compare`).
 - The analysis now removes single-reading spikes (on the rig, holes 14–16 at the first and last steps) and fits the mechanics robustly.
 - Saved as the first `empty` baseline.
+
+### 8.2 Software fixes after commissioning (2026-11-17), and what remains
+
+| Finding | Status now | How |
+|---|---|---|
+| InGaAs mains hum | Cancelled in the readings | Firmware 2.5.1 `ADC CFG MAINS 60`: each reading integrates 2 whole mains periods. The scan turns it on in P0 and off at the end. On the rig the InGaAs reading-to-reading spread fell from 1.9 to 0.9 counts with the hum at its 17 Nov level. The raw hum is still reported, as PASS unless above 3 mV. |
+| Room-light flicker (120 Hz) | Cancelled the same way | 120 Hz is a mains harmonic. |
+| OPT101 coupling and ground shift | Corrected (PASS below FAIL) | C is measured per rail on the blind holes and subtracted from every hole. FAIL only if it grows beyond 20 counts or 0.08 mV/mA. |
+| OPT101 / InGaAs coil interference | Judged only in `continuous` mode | Stop–measure–move readings never see it. Continuous runs now record it at the start of each move. |
+| T07.2 settle false warning (simulator) | Fixed | The settle band is never tighter than 4 robust sigmas of the plateau noise. |
+| Hole 6 intermittent | Now detected | `optics/hNN/intermittent`: down and up readings at one height disagree on both detectors at once. It flags hole 6 in the black-cup run, and one-off RAIL B jumps (holes 13, 14, 16) at the first height of the empty run. |
+
+Still failing: they need the bench.
+1. **Hole 9 wired to RAIL B** (`optics/wrong_rail/h09`, `optics/*/h09/response`). Move LED9's connection from DRV2 to DRV1.
+2. **Hole 16 is not an 1850 nm LED** (`optics/opt101/h16/plausibility`). Check it with a phone camera; check the part.
+3. **Hole 6 intermittent** (`optics/h06/intermittent`). Reflow or re-seat LED6 and Q6; wiggle-test.
+4. **InGaAs sees almost no light** (`optics/ingaas/throughput`). Check that D1 is in circuit, its orientation, and the window over it.
+5. **InGaAs −21 mV dark offset (21 nA)** (`elec/ingaas/dark_offset`, T06.2 `dark`). Swap Rf to 100 kΩ to confirm it's a current. Then rebuild the pin-2 node off the breadboard (dead-bug), away from −5 V, and clean any flux.
+6. **Stray light**: the black cup keeps 84% of the empty-chamber response (`optics/stray`). Darken or baffle the chamber's inner surfaces. A white tile would give the absolute scale.

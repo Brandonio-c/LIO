@@ -57,7 +57,11 @@ def leak(cube: Cube, cfg: HwConfig, optics_ctx: dict[str, Any]) -> list[Finding]
     return out
 
 
-def flicker(cfg: HwConfig, spectra: dict[str, Any]) -> list[Finding]:
+def mains_rejected_meta(meta: dict[str, Any]) -> bool:
+    return bool((meta.get("capabilities") or {}).get("mains_rejection"))
+
+
+def flicker(cfg: HwConfig, spectra: dict[str, Any], meta: dict[str, Any]) -> list[Finding]:
     out = []
     for det in DETECTORS:
         sp = spectra.get(det)
@@ -67,9 +71,12 @@ def flicker(cfg: HwConfig, spectra: dict[str, Any]) -> list[Finding]:
             continue
         a = mv(float(sp["amp_counts"]["120"]))
         w, f = pair(cfg, f"ambient.flicker_mv.{det}")
+        rejected = mains_rejected_meta(meta)
         out.append(Finding(
-            f"ambient/{det}/flicker", f"{det}: room-light flicker (120 Hz)", grade(a, w, f),
-            round(a, 4), "mV", f"120 Hz amplitude in the dark streams {a:.3f} mV",
+            f"ambient/{det}/flicker", f"{det}: room-light flicker (120 Hz)",
+            Status.PASS if rejected and grade(a, w, f) == Status.WARN else grade(a, w, f),
+            round(a, 4), "mV", f"120 Hz amplitude in the dark streams {a:.3f} mV"
+            + ("; readings integrate whole mains periods, so it cancels" if rejected else ""),
             f"< {w:g} mV (WARN), < {f:g} (FAIL)",
         ))  # fmt: skip
     return out
@@ -79,7 +86,7 @@ def analyse(
     cube: Cube, cfg: HwConfig, elec: dict[str, Any], optics_ctx: dict[str, Any]
 ) -> list[Finding]:
     out = leak(cube, cfg, optics_ctx)
-    out += flicker(cfg, elec.get("spectra") or {})
+    out += flicker(cfg, elec.get("spectra") or {}, cube.meta)
     out.append(Finding("ambient/lid", "lid sensitivity", Status.SKIP,
                        detail="optional operator step (lid ajar at two heights)"))  # fmt: skip
     return out

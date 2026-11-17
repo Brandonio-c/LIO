@@ -59,6 +59,7 @@ static void cmd_info(const Command &c) {
   resp_kv(F("wake_ms_max"), WAKE_MS_MAX);
   resp_kv(F("motion_armed"), motion_armed() ? 1 : 0);
   resp_kv(F("debug_states"), 1);
+  resp_kv(F("mains"), adc_mains_hz());
   resp_kv(F("light_in_motion"), light_in_motion() ? 1 : 0);
   resp_kv_hex16(F("arm_token"), arm_token());
   resp_kv(F("hw_wdt"), LIO_HW_WDT);

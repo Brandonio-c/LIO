@@ -178,6 +178,7 @@ def analyse(
                 ))  # fmt: skip
         out += _detector_level(cube, cfg, det, stats[det], coup.get(det, {}), judged,
                                floors[det])  # fmt: skip
+    out += _intermittent(cube, cfg, floors)
     planned = len((cube.meta.get("plan") or {}).get("heights_down") or [])
     got = len(np.unique(cube.num["height_hs"][cube.mask(state="lit", phase="P2")]))
     if got < planned:
@@ -237,6 +238,58 @@ def _detector_level(cube: Cube, cfg: HwConfig, det: str, st: dict[int, dict[str,
         f"median O over {len(exp)} expected holes; spread (CV) {cv:.0f}% across holes",
         crit, {"O": {h: st[h]["O"] for h in exp}, "cv_pct": cv},
     ))  # fmt: skip
+    return out
+
+
+def _raw_by_height(cube: Cube, hole: int, det: str, phase: str,
+                   direction: str) -> dict[float, float]:  # fmt: skip
+    m = cube.mask(state="lit", detector=det, phase=phase, direction=direction)
+    m &= (cube.num["hole"] == hole) & (cube.num["rep"] == 0) & (cube.str["kind"] == "measure")
+    return {float(h): float(v) for h, v in zip(cube.num["height_hs"][m],
+                                               cube.num["net_counts"][m], strict=True)}  # fmt: skip
+
+
+def _intermittent(cube: Cube, cfg: HwConfig,
+                  floors: dict[str, tuple[float, float]]) -> list[Finding]:  # fmt: skip
+    """A hole whose readings jump on BOTH inputs at the same moment: an electrical event
+    (a joint opening, an intermittent short), not light. Found by comparing the raw down
+    and up readings at the same heights (raw: the despiked curves would hide it)."""
+    out: list[Finding] = []
+    if not cube.mask(state="lit", phase="P3", direction="up").any():
+        return out
+    frac = float(health(cfg, "optics.intermittent_frac"))
+    for hole in range(1, 17):
+        events = []
+        per = {d: (_raw_by_height(cube, hole, d, "P2", "down"),
+                   _raw_by_height(cube, hole, d, "P3", "up")) for d in DETECTORS}  # fmt: skip
+        common = set(per["opt101"][0]) & set(per["opt101"][1])
+        common &= set(per["ingaas"][0]) & set(per["ingaas"][1])
+        for h in sorted(common):
+            jumps = []
+            for d in DETECTORS:
+                a, b = per[d][0][h], per[d][1][h]
+                tol = max(5 * floors[d][1], frac * max(abs(a), abs(b)))
+                jumps.append(abs(a - b) > tol)
+            if all(jumps):
+                events.append(h)
+        ch = cfg.channel(hole)
+        if not common:
+            continue
+        if not events:
+            ok = f"down and up agree at {len(common)} heights"
+            out.append(Finding(f"optics/h{hole:02d}/intermittent",
+                               f"hole {hole} ({ch.label}) intermittent", Status.PASS, 0.0,
+                               "heights", ok))  # fmt: skip
+        else:
+            out.append(Finding(
+                f"optics/h{hole:02d}/intermittent", f"hole {hole} ({ch.label}) intermittent",
+                Status.FAIL if len(events) >= 2 else Status.WARN, float(len(events)),
+                "heights",
+                f"down and up readings disagree on both detectors at once at {len(events)} "
+                f"height(s): {', '.join(f'{h:.0f}' for h in events)}",
+                f"both detectors within max(5 x noise floor, {frac:g} x reading) of each other",
+                {"heights": events},
+            ))  # fmt: skip
     return out
 
 

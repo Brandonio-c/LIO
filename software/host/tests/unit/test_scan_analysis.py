@@ -193,7 +193,13 @@ def test_drift_estimate(cfg: HwConfig, tmp_path: Path, both_ways: bool) -> None:
 
 
 def test_hum_and_coil_emi(cfg: HwConfig, tmp_path: Path) -> None:
-    a = analyse(write_run(tmp_path, cfg, hum_counts=40.0, emi_sigma=30.0), cfg)
+    folder = write_run(tmp_path, cfg, hum_counts=40.0, emi_sigma=30.0)
+    a = analyse(folder, cfg)
+    assert a.get("elec/opt101/coil_emi").status == Status.PASS  # stop-measure-move: no effect
+    st = ScanStore.open(folder)
+    st.meta["plan"]["continuous"] = True  # measuring while moving: it matters
+    st.save_meta()
+    a = analyse(folder, cfg)
     hum = a.get("elec/ingaas/hum")
     assert hum.value == pytest.approx(40 * 0.125, rel=0.1) and hum.status == Status.FAIL
     assert hum.data["mains_fraction"] > 0.9

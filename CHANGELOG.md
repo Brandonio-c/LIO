@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-11-17: Software fixes after commissioning (firmware 2.5.1)
+
+### Added
+- **Firmware 2.5.1 (flashed): `ADC CFG MAINS <0|50|60>`.** Readings integrate whole mains periods, so hum and 120 Hz flicker cancel between the dark and lit reads. The scan uses it (`scan.mains_hz`, `scan.mains_periods: 2`). On the rig the InGaAs reading spread fell from 1.9 to 0.9 counts.
+- **`optics/hNN/intermittent`:** a hole whose readings jump on both detectors at once. It found hole 6 on the rig. Simulator fault `intermittent:<hole>`.
+
+### Changed
+- **OPT101/InGaAs coupling and ground shift** are corrected in software and PASS below their FAIL limits.
+- **Coil interference** is judged only in continuous mode, which now records it during the move.
+- **The plan's duty and timing estimates** include the longer mains-integrated readings.
+
+### Fixed
+- **T07 settle time is noise-aware.** The 1% band is never tighter than 4 robust sigmas of the plateau. A single noisy sample made T07.2 warn on a healthy simulator.
+
 ## 2026-11-16: Diagnostic sweep S7, commissioning on the rig
 
 ### Added

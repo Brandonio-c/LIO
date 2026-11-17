@@ -230,7 +230,8 @@ def settling(
     taken as halfway between samples ``on_idx - 1`` and ``on_idx``. Baseline is
     the mean before ``on_idx``.
 
-    If every lit sample is already within ``1 - fraction`` of the final level,
+    If every lit sample is already within ``1 - fraction`` of the final level (or within
+    4 robust sigmas of the plateau noise, if that is wider),
     the response settled within the first sample (the hardware case: settling
     is far faster than one conversion) and the settle time is an upper bound.
     If it settles within fewer than ``MIN_FIT_SAMPLES`` samples, the time of
@@ -247,8 +248,14 @@ def settling(
     t_on_us = (t_us[on_idx - 1] + t_us[on_idx]) / 2.0
     first_ms = (t_us[on_idx] - t_on_us) / 1000.0
 
+    # The band cannot be tighter than the noise on the plateau: 4 robust sigmas of the
+    # tail's scatter (else one noisy sample late in the stream reads as "not settled").
+    tail_med = sorted(tail)[len(tail) // 2]
+    mad = sorted(abs(r - tail_med) for r in tail)[len(tail) // 2]
+    noise_tol = 4.0 * 1.4826 * mad
+
     def settled_index(level: float) -> int | None:
-        tol = abs(level - base) * (1.0 - fraction)
+        tol = max(abs(level - base) * (1.0 - fraction), noise_tol)
         for i in range(on_idx, off_idx):
             if all(abs(r - level) <= tol for r in raw[i:off_idx]):
                 return i

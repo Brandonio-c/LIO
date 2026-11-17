@@ -10,11 +10,14 @@ const __FlashStringHelper *adc_gain_name();
 uint16_t adc_rate_sps();
 float adc_lsb_mv();
 uint32_t adc_conv_us();      // nominal single-shot conversion time
+uint8_t adc_mains_hz();      // 0, or 50/60 when means integrate whole mains periods
+uint32_t adc_mean_ms(uint8_t n);  // expected duration of adc_read_mean(n)
 
 // Blocking single-ended read that keeps service() running while it waits.
 // Returns 0, or E_ADC on an I2C error / timeout.
 uint8_t adc_read(uint8_t ch, int16_t &raw);
-// Mean of n reads (integer counts, rounded). Returns 0 or E_ADC.
+// Mean of n reads (integer counts, rounded); with ADC CFG MAINS, the time-weighted
+// mean over n whole mains periods instead. Returns 0 or E_ADC.
 uint8_t adc_read_mean(uint8_t ch, uint8_t n, int16_t &mean);
 
 void cmd_adc(const Command &c);  // ADC READ | CFG | STREAM

@@ -237,6 +237,7 @@ class LIODevice:
         # then marked not trusted (plan LIO-SW-SCAN-001 §3.2, D3).
         self._expect_boot = False
         self.unexpected_boots = 0
+        self.mains_hz = 0  # ADC CFG MAINS in force (firmware >= 2.5.1)
         self.events: list[tuple[float, Event]] = []
         self.noise: list[str] = []
         self.banner: Event | None = None
@@ -390,6 +391,7 @@ class LIODevice:
         if ev.name in ("WDT", "OFF", "FAILSAFE"):
             self._close_lit(self.now())
         if ev.is_boot:
+            self.mains_hz = 0  # the firmware boots with mains integration off
             self._info = None
             self._close_lit(self.now())
             if self.stage is not None:  # the firmware's counters restart at 0
@@ -657,13 +659,25 @@ class LIODevice:
         self.command("OFF")
         self._close_lit(self.now())
 
+    def _mean_s(self, n: int) -> float:
+        """Duration of one firmware mean of n: n reads, or n mains periods (2.5.1)."""
+        if self.mains_hz:
+            return n / self.mains_hz + 0.004
+        return n * self._conv_s()
+
+    def adc_mains(self, hz: int) -> None:
+        """ADC CFG MAINS: MEAS/SWEEP/DBG means integrate whole mains periods (2.5.1)."""
+        self.command(f"ADC CFG MAINS {hz}")
+        self.mains_hz = hz
+        self._info = None
+
     def meas_timeout(self, settle_ms: int, n: int) -> float:
-        return 1.0 + (2 * settle_ms / 1000.0 + 4 * n * self._conv_s()) * 1.5
+        return 1.0 + (2 * settle_ms / 1000.0 + 4 * self._mean_s(n)) * 1.5
 
     def meas(self, hole: int, settle_ms: int | None = None, n: int | None = None) -> Meas:
         s = settle_ms if settle_ms is not None else self.cfg.limits["settle_ms"]
         k = n if n is not None else 1
-        self._duty_gate(hole, s + 2 * k * self._conv_s() * 1000)
+        self._duty_gate(hole, s + 2 * self._mean_s(k) * 1000)
         t0 = self.now()
         reply = self.command(f"MEAS {hole} {s} {k}", timeout=self.meas_timeout(s, k))
         m = Meas.from_fields(reply.fields)
@@ -673,7 +687,7 @@ class LIODevice:
     def sweep(self, settle_ms: int | None = None, n: int | None = None) -> Sweep:
         s = settle_ms if settle_ms is not None else self.cfg.limits["settle_ms"]
         k = n if n is not None else 1
-        per_ms = s + 2 * k * self._conv_s() * 1000
+        per_ms = s + 2 * self._mean_s(k) * 1000
         for hole in range(1, 17):
             self._duty_gate(hole, per_ms)
         t0 = self.now()
@@ -689,7 +703,7 @@ class LIODevice:
         ``arg`` selected, the other rail's CE high). A wrong-rail LED should stay dark;
         it is counted against the hole's duty budget anyway, in case it is miswired."""
         word = {"ce_only": "CE_ONLY", "wrong_rail": "WRONG_RAIL"}[state]
-        on_ms = settle_ms + 2 * n * self._conv_s() * 1000
+        on_ms = settle_ms + 2 * self._mean_s(n) * 1000
         if state == "wrong_rail":
             self._duty_gate(arg, on_ms)
         t0 = self.now()

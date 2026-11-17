@@ -314,6 +314,16 @@ RULES: tuple[Rule, ...] = (
         ),
     ),
     Rule(
+        "optics/hNN/intermittent",
+        E(
+            "This hole's readings jump on both detectors at the same moment: an electrical "
+            "event (a joint opening for an instant, or an intermittent short), not light.",
+            ("LED", "Q (MOSFET)", "solder joints", "breadboard contacts"),
+            "Wiggle-test the LED and MOSFET leads while watching 'lio ch N on' readings; "
+            "reflow or re-seat the joints.",
+        ),
+    ),
+    Rule(
         "optics/wrong_rail/hNN",
         E(
             "The LED lights when only the other rail's driver is enabled: it is wired to the "

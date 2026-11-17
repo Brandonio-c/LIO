@@ -144,6 +144,8 @@ def test_healthy_run_completes_safely(rig: Any, mode: str) -> None:
             assert not r.light_while_moving, "an LED lit while the top moved"
         # capability checks without firmware support are SKIP with a reason (plan §8)
         assert set(meta["skipped_checks"]) == {"rail_monitor", "home_sensors"}
+        assert meta["capabilities"]["mains_rejection"] is True
+        assert r.dev.mains_hz == 0  # turned off again for the other tests
         states = {row["state"] for row in store.rows()}
         assert {"dark", "lit"} <= states
         if mode != "continuous":

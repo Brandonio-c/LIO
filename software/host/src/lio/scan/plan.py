@@ -41,6 +41,8 @@ class ScanSettings:
     heartbeat_timeout_s: float = 90.0
     abort_on_saturation: bool = True
     lead_mm_per_rev: float | None = 1.0
+    mains_hz: int = 60  # firmware >= 2.5.1: readings integrate whole mains periods (0 = off)
+    mains_periods: int = 2  # periods per reading in that mode (replaces sweep_n)
 
     @classmethod
     def from_config(cls, cfg: HwConfig, overrides: dict[str, Any] | None = None) -> ScanSettings:
@@ -170,14 +172,23 @@ def conv_s(cfg: HwConfig) -> float:
     return 1.0 / cfg.section.integer("adc.rate_sps") + 0.0019
 
 
+def read_s(cfg: HwConfig, s: ScanSettings) -> float:
+    """One reading on one input: sweep_n conversions, or (firmware >= 2.5.1, assumed
+    when mains_hz is set) mains_periods whole mains periods."""
+    plain = s.sweep_n * conv_s(cfg)
+    if s.mains_hz:
+        return max(plain, s.mains_periods / s.mains_hz + 0.004)
+    return plain
+
+
 def sweep_on_ms(cfg: HwConfig, s: ScanSettings) -> float:
     """On-time per LED in one SWEEP: settle + lit reads on both inputs."""
-    return s.optical_settle_ms + 2 * s.sweep_n * conv_s(cfg) * 1000
+    return s.optical_settle_ms + 2 * read_s(cfg, s) * 1000
 
 
 def measure_s(cfg: HwConfig, s: ScanSettings, hum: bool) -> float:
     c = conv_s(cfg)
-    sweep = 16 * (2 * s.optical_settle_ms / 1000 + 4 * s.sweep_n * c + 0.004)
+    sweep = 16 * (2 * s.optical_settle_ms / 1000 + 4 * read_s(cfg, s) + 0.004)
     darks = 2 * 2 * s.dark_n * c
     t = s.settle_ms_mech / 1000 + 2 * darks + sweep + 0.3
     if hum:
@@ -332,7 +343,7 @@ def _estimate(cfg: HwConfig, plan: ScanPlan) -> None:
                 waits += w
                 t += w
             duty.record(hole, t, t + on_ms / 1000)
-        return t + 16 * (2 * s.optical_settle_ms / 1000 + 4 * s.sweep_n * c)
+        return t + 16 * (2 * s.optical_settle_ms / 1000 + 4 * read_s(cfg, s))
 
     for st in plan.steps:
         t0 = t
@@ -348,7 +359,7 @@ def _estimate(cfg: HwConfig, plan: ScanPlan) -> None:
                 t += move_s(cfg, s, st.height - pos)
             pos = st.height
             t += measure_s(cfg, s, st.hum) - 16 * (
-                2 * s.optical_settle_ms / 1000 + 4 * s.sweep_n * c
+                2 * s.optical_settle_ms / 1000 + 4 * read_s(cfg, s)
             )
             t = sweep_at(t)
         elif st.kind == "continuous":

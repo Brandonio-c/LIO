@@ -44,6 +44,7 @@ class TestFaultSpec:
             "stuck_on": "stuck_on:5", "dead_channel": "dead_channel:3", "swapped": "swapped:3,8",
             "led_swapped": "led_swapped:9,16", "step_loss": "step_loss:2,300",
             "wrong_led": "wrong_led:16=630", "rail_miswired": "rail_miswired:12",
+            "intermittent": "intermittent:6",
         }  # fmt: skip
         for name in FAULT_NAMES:
             f = Faults.parse(examples.get(name, name))

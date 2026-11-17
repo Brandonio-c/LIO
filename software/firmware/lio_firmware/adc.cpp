@@ -10,6 +10,7 @@
 static bool present = false;
 static uint8_t gain_idx = 1;  // GAIN_ONE (+-4.096 V)
 static uint8_t rate_idx = 4;  // 128 SPS
+static uint8_t mains_hz = 0;  // 0 = off; 50/60: means are integrals over whole mains periods
 
 // The ADS1115's PGA and DR codes are the indexes into these tables.
 static const float LSB_MV[6] = {0.1875f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f};
@@ -55,7 +56,12 @@ static bool attach() {
   return present;
 }
 
-void adc_defaults() { gain_idx = 1; rate_idx = 4; present = false; }
+void adc_defaults() { gain_idx = 1; rate_idx = 4; mains_hz = 0; present = false; }
+uint8_t adc_mains_hz() { return mains_hz; }
+uint32_t adc_mean_ms(uint8_t n) {
+  if (mains_hz) return (uint32_t)n * 1000UL / mains_hz + 4;  // + the closing conversion
+  return (uint32_t)n * (adc_conv_us() / 1000UL + 2);
+}
 
 bool adc_init() {
   si2c_begin();
@@ -97,7 +103,47 @@ uint8_t adc_read(uint8_t ch, int16_t &raw) {
   return 0;
 }
 
+// Mains-rejecting mean (2.5.1): sample at the fastest rate for n whole mains periods
+// and integrate the piecewise-linear signal over exactly that window (each sample is
+// placed at the middle of its conversion). The integral of 60 Hz and its harmonics
+// over whole periods is zero, so hum no longer differs between a dark and a lit read.
+static uint8_t read_mean_mains(uint8_t ch, uint8_t n, int16_t &mean) {
+  uint8_t saved = rate_idx;
+  rate_idx = 7;  // 860 SPS: ~6 samples per 60 Hz period over the software I2C bus
+  uint32_t window = (uint32_t)n * 1000000UL / mains_hz;
+  uint32_t half = adc_conv_us() / 2;
+  int16_t r;
+  uint32_t t = micros();
+  uint8_t e = adc_read(ch, r);
+  uint32_t t0 = t + half;     // the window starts at the first sample
+  float prev_v = r;
+  uint32_t prev_t = 0;        // time relative to t0
+  double integ = 0;
+  while (!e) {
+    t = micros();
+    e = adc_read(ch, r);
+    if (e) break;
+    uint32_t tt = t + half - t0;
+    float v = r;
+    if (tt >= window) {       // close the window by linear interpolation
+      float frac = (float)(window - prev_t) / (float)(tt - prev_t);
+      float v_end = prev_v + (v - prev_v) * frac;
+      integ += 0.5 * (prev_v + v_end) * (window - prev_t);
+      break;
+    }
+    integ += 0.5 * (prev_v + v) * (tt - prev_t);
+    prev_v = v;
+    prev_t = tt;
+  }
+  rate_idx = saved;
+  if (e) return e;
+  double m = integ / window;
+  mean = (int16_t)(m >= 0 ? m + 0.5 : m - 0.5);
+  return 0;
+}
+
 uint8_t adc_read_mean(uint8_t ch, uint8_t n, int16_t &mean) {
+  if (mains_hz) return read_mean_mains(ch, n, mean);
   long sum = 0;
   for (uint8_t i = 0; i < n; i++) {
     int16_t r;
@@ -138,9 +184,9 @@ static void adc_cmd_read(const Command &c) {
   resp_end();
 }
 
-// ADC CFG GAIN <2/3|1|2|4|8|16> | ADC CFG RATE <8..860>
+// ADC CFG GAIN <2/3|1|2|4|8|16> | ADC CFG RATE <8..860> | ADC CFG MAINS <0|50|60>
 static void adc_cmd_cfg(const Command &c) {
-  if (c.ntok < 4) { resp_err(c, E_ARG, F("usage: ADC CFG GAIN|RATE <v>")); return; }
+  if (c.ntok < 4) { resp_err(c, E_ARG, F("usage: ADC CFG GAIN|RATE|MAINS <v>")); return; }
   if (tok_is(c.tok[2], F("GAIN"))) {
     static const char *const names[6] = {"2/3", "1", "2", "4", "8", "16"};
     for (uint8_t i = 0; i < 6; i++) {
@@ -152,6 +198,15 @@ static void adc_cmd_cfg(const Command &c) {
         resp_end();
         return;
       }
+    }
+  } else if (tok_is(c.tok[2], F("MAINS"))) {
+    long hz;
+    if (parse_long(c.tok[3], hz) && (hz == 0 || hz == 50 || hz == 60)) {
+      mains_hz = (uint8_t)hz;
+      resp_ok(c);
+      resp_kv(F("mains"), hz);
+      resp_end();
+      return;
     }
   } else if (tok_is(c.tok[2], F("RATE"))) {
     long r;
@@ -167,7 +222,7 @@ static void adc_cmd_cfg(const Command &c) {
       }
     }
   }
-  resp_err(c, E_ARG, F("bad gain or rate"));
+  resp_err(c, E_ARG, F("bad gain, rate or mains (0, 50, 60)"));
 }
 
 // Longest line: "# S i=1999 t_us=4294967295 raw=-32768\r\n" (39 bytes).

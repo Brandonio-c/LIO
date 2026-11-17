@@ -183,6 +183,8 @@ scan:
   dark_n: 8                    # samples per dark frame, each input
   optical_settle_ms: 8         # SWEEP settle
   sweep_n: 2                   # SWEEP samples per reading (on-time ~47 ms per LED)
+  mains_hz: 60                 # fw >= 2.5.1: each reading integrates whole mains periods (hum cancels); 0 = off
+  mains_periods: 2             # periods per reading in that mode (on-time ~80 ms per LED; rig: InGaAs sd 1.9 -> 0.9 counts)
   hum_every_k: 4               # hum record (coils off) every k-th height, coil EMI on the next move
   hum_bursts: 17               # 48-sample buffered bursts at the fastest rate (~0.12 s each)
   long_dark_s: 30              # P1: dark record at 8 SPS on each input
@@ -210,6 +212,7 @@ scan:
       judged_samples: [empty, white_ptfe]   # absolute levels are judged only for these
       min_signal_counts: [15, 6]      # O on a hole its detector should see (rig 2026-11-16: weakest working OPT101 hole ~22)
       plausibility_counts: [30, 80]   # residual on a hole its detector cannot see
+      intermittent_frac: 0.1          # down vs up at one height, both detectors (or 5 x noise floor): an electrical event
       modulation_min: 0.15            # (max - min) / O below this: flat, not light
       throughput_counts:              # median O over expected holes: a floor (sim healthy ~5800 / ~8500)
         empty: {opt101: [60, 20], ingaas: [60, 20]}      # rig 2026-11-16: OPT101 median ~100; partial losses: vs baseline

@@ -197,7 +197,7 @@ static const __FlashStringHelper *meas_err_msg = nullptr;
 // lit read -> off. ADS A0 = InGaAs TIA, A1 = OPT101.
 static uint8_t do_meas(uint8_t hole, uint16_t settle, uint8_t n, MeasRec &r) {
   if (motors_moving() && !light_in_motion()) { meas_err_msg = F("motor moving"); return E_BUSY; }
-  uint32_t est = settle + 2UL * n * (adc_conv_us() / 1000UL + 2) + 10;
+  uint32_t est = settle + 2UL * adc_mean_ms((uint8_t)n) + 10;
   if (est > wdt_ms[optics_rail_of(hole)]) { meas_err_msg = F("on-time exceeds watchdog"); return E_REFUSED; }
   optics_off();
   service_delay(settle);
@@ -245,7 +245,7 @@ void cmd_dbg(const Command &c) {
   if (motors_moving()) { resp_err(c, E_BUSY, F("motor moving")); return; }
   uint8_t rail = ce_only ? (uint8_t)arg : (uint8_t)(3 - optics_rail_of((uint8_t)arg));
   uint16_t sel = ce_only ? 0 : (uint16_t)(1u << (arg - 1));
-  uint32_t est = settle + 2UL * n * (adc_conv_us() / 1000UL + 2) + 10;
+  uint32_t est = settle + 2UL * adc_mean_ms((uint8_t)n) + 10;
   if (est > wdt_ms[rail]) { resp_err(c, E_REFUSED, F("on-time exceeds watchdog")); return; }
   MeasRec r;
   optics_off();

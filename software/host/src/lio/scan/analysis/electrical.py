@@ -40,13 +40,18 @@ def blind_holes(cfg: HwConfig, det: str) -> list[int]:
     return out
 
 
+def mains_rejected(cube: Cube) -> bool:
+    """Readings integrated whole mains periods (firmware >= 2.5.1, ADC CFG MAINS)."""
+    return bool((cube.meta.get("capabilities") or {}).get("mains_rejection"))
+
+
 def coupling(cube: Cube, cfg: HwConfig) -> tuple[dict[str, dict[str, Any]], list[Finding]]:
     """C per detector and rail from the blind channels; the coupling and ground-shift
     findings."""
     ctx: dict[str, dict[str, Any]] = {}
     out: list[Finding] = []
     w_c, f_c = pair(cfg, "coupling_counts")
-    w_g, f_g = pair(cfg, "ground_shift_mv_per_ma")
+    _, f_g = pair(cfg, "ground_shift_mv_per_ma")
     for det in DETECTORS:
         holes, _, net = cube.lit_all(det)
         per_rail: dict[str, float] = {}
@@ -70,14 +75,16 @@ def coupling(cube: Cube, cfg: HwConfig) -> tuple[dict[str, dict[str, Any]], list
             continue
         ctx[det] = {"C": per_rail, "inferred": inferred, "blind": blind}
         worst = max(abs(v) for r, v in per_rail.items() if r not in inferred)
-        st = grade(worst, w_c, f_c)
+        # subtracted from every hole of its rail (optics: O = S - C), so it costs nothing
+        # below the FAIL limit; beyond it the coupling itself points at a wiring fault
+        st = Status.FAIL if worst >= f_c else Status.PASS
         out.append(Finding(
             f"elec/{det}/coupling", f"{det}: electrical coupling (height-invariant, LED on)", st,
             round(worst, 1), "counts",
             ", ".join(f"rail {r}: {v:+.1f} counts ({mv(v):+.2f} mV)"
                       + (" inferred" if r in inferred else f" from {n_rail[r]} blind holes")
                       for r, v in sorted(per_rail.items())),
-            f"|C| < {w_c:g} counts (WARN), < {f_c:g} (FAIL)",
+            f"corrected in software below {f_c:g} counts (FAIL at or above)",
             {"C_counts": per_rail, "blind_holes": blind, "inferred": inferred},
         ))  # fmt: skip
         # ground shift: C proportional to the rail current (through the origin)
@@ -91,7 +98,7 @@ def coupling(cube: Cube, cfg: HwConfig) -> tuple[dict[str, dict[str, Any]], list
             ratio = (cb / ib) / (ca / ia)
             scales = 0.6 <= ratio <= 1.6
         k_mv = mv(k)
-        st = grade(abs(k_mv), w_g, f_g)
+        st = Status.FAIL if abs(k_mv) >= f_g else Status.PASS  # corrected below FAIL
         if scales is False and st != Status.PASS:
             st = Status.WARN  # coupling, but not in proportion to the current
         out.append(Finding(
@@ -100,7 +107,7 @@ def coupling(cube: Cube, cfg: HwConfig) -> tuple[dict[str, dict[str, Any]], list
             f"{k:+.3f} counts/mA" + ("" if scales is None else
                                      ("; scales with the rail current" if scales else
                                       "; does not scale with the rail current")),
-            f"|slope| < {w_g:g} mV/mA (WARN), < {f_g:g} (FAIL)",
+            f"corrected in software below {f_g:g} mV/mA (FAIL at or above)",
             {"counts_per_ma": k, "scales_with_current": scales},
         ))  # fmt: skip
     return ctx, out
@@ -261,13 +268,19 @@ def hum(cube: Cube, cfg: HwConfig) -> tuple[dict[str, Any], list[Finding]]:
         fw = float(cfg.section.raw("scan.health.hum_fraction_warn"))
         if st == Status.PASS and frac > fw and a60 > w / 4:
             st = Status.WARN
+        rejected = mains_rejected(cube)
+        if rejected and st == Status.WARN:
+            st = Status.PASS  # integrated over whole mains periods: cancels in the readings
         out.append(Finding(
             f"elec/{det}/hum", f"{det}: mains hum (coils off)", st, round(a60, 4), "mV",
             "60/120/180 Hz: "
             + " / ".join(f"{mv(sp['amp_counts'][k]):.3f}" for k in ("60", "120", "180"))
             + f" mV; {100 * frac:.0f}% of the variance at mains harmonics; broadband sigma "
-            f"{mv(sp['sigma_counts']):.3f} mV",
-            f"60 Hz amplitude < {w:g} mV (WARN), < {f:g} (FAIL); mains fraction < {fw:g}",
+            f"{mv(sp['sigma_counts']):.3f} mV"
+            + ("; readings integrate whole mains periods, so it cancels in the measurements"
+               if rejected else ""),
+            f"60 Hz amplitude < {w:g} mV (WARN; not when the readings reject it), "
+            f"< {f:g} (FAIL); mains fraction < {fw:g}",
             sp,
         ))  # fmt: skip
     return spectra, out
@@ -286,12 +299,17 @@ def coil_emi(cube: Cube, cfg: HwConfig, spectra: dict[str, Any]) -> list[Finding
         floor = float(cfg.section.raw(f"scan.health.noise_floor_counts.{det}"))
         ratio = max(mov["sigma_counts"], floor) / max(off["sigma_counts"], floor)
         st = grade(ratio, w, f)
+        moving = bool((cube.meta.get("plan") or {}).get("continuous"))
+        if not moving:
+            st = Status.PASS  # stop-measure-move: no reading is taken while the coils switch
         out.append(Finding(
             f"elec/{det}/coil_emi", f"{det}: coil interference (moving vs coils off)", st,
             round(ratio, 2), "x",
             f"sigma {mv(mov['sigma_counts']):.3f} mV moving vs "
             f"{mv(off['sigma_counts']):.3f} mV off "
-            "(firmware has no coils-held state: measured while moving, S0 D2)",
+            "(measured while moving, S0 D2)"
+            + ("" if moving else "; judged only when measuring while moving (continuous mode): "
+               "every other reading is taken with the motors stopped"),
             f"ratio < {w:g} (WARN), < {f:g} (FAIL)",
             {"moving": mov, "off": off},
         ))  # fmt: skip

@@ -166,6 +166,7 @@ class ScanRow:
     reference: str | None = None
     incomplete: bool = False  # the fault aborts the run (the analysis still runs)
     part: str = ""  # the explanation must name this part
+    mode: str = "matrix"
     healthy_reference: bool = False  # the reference run is on a healthy rig (a baseline)
 
     @property
@@ -182,8 +183,9 @@ SCAN_MATRIX = (
     ScanRow("leakage:20", "elec/ingaas/dark_offset", part="U5 pin-2 node"),
     ScanRow("leakage_drift:10", "elec/ingaas/drift", part="U5 pin-2 node"),
     ScanRow("mains_hum:8", "elec/ingaas/hum", part="earth bond"),
-    ScanRow("coil_emi", "elec/ingaas/coil_emi", part="motor wiring"),
-    ScanRow("coil_emi", "elec/opt101/coil_emi", part="motor wiring"),
+    # judged in continuous mode only (stop-measure-move readings never see it)
+    ScanRow("coil_emi", "elec/ingaas/coil_emi", part="motor wiring", mode="matrix_cont"),
+    ScanRow("coil_emi", "elec/opt101/coil_emi", part="motor wiring", mode="matrix_cont"),
     ScanRow("led_swapped:9,16", "optics/opt101/h16/plausibility", part="LED16"),
     ScanRow("led_swapped:9,16", "optics/opt101/h09/response", part="LED9"),
     ScanRow("wrong_led:16=630", "optics/opt101/h16/plausibility", part="LED16"),
@@ -209,6 +211,7 @@ SCAN_MATRIX = (
         reference="white_ptfe",
         part="chamber walls",
     ),
+    ScanRow("intermittent:6", "optics/h06/intermittent", part="LED6"),  # seen on the rig
     # S4: ambient, mechanics, the run itself
     ScanRow("ambient_leak:-20000", "ambient/opt101/leak", part="shroud"),
     ScanRow("ambient_leak:-20000", "ambient/ingaas/leak", part="shroud"),
@@ -229,6 +232,9 @@ def scan_cfg(cfg: HwConfig) -> HwConfig:
                                  peak_shift_hs=250, ambient_leak_scale_hs=6000)  # fmt: skip
     data["thresholds"]["motion"]["travel"]["range_steps"] = 40000
     data["scan"].update(long_dark_s=4, hum_bursts=5)
+    data["scan"]["modes"]["matrix_cont"] = {"heights": 0, "up": 0, "return_top": True,
+                                            "repeats": 1, "ref_heights": 0, "continuous": True,
+                                            "label": "matrix, continuous"}  # fmt: skip
     data["scan"]["modes"]["matrix"] = {"heights": 9, "up": "same", "return_top": True,
                                        "repeats": 1, "ref_heights": 1, "label": "matrix"}  # fmt: skip
     return parse_config(data, cfg.path)
@@ -238,22 +244,22 @@ def scan_cfg(cfg: HwConfig) -> HwConfig:
 def scan_analysis(
     scan_cfg: HwConfig, tmp_path_factory: pytest.TempPathFactory
 ) -> Callable[..., Analysis]:
-    cache: dict[tuple[str | None, str, str | None, bool], Analysis] = {}
+    cache: dict[tuple[str | None, str, str | None, bool, str], Analysis] = {}
     root = tmp_path_factory.mktemp("scans")
 
     def get(faults: str | None, sample: str, reference: str | None,
-            baseline: bool = False) -> Analysis:  # fmt: skip
-        key = (faults, sample, reference, baseline)
+            baseline: bool = False, mode: str = "matrix") -> Analysis:  # fmt: skip
+        key = (faults, sample, reference, baseline, mode)
         if baseline:
             reference = sample
         if key not in cache:
             ref = None
             if reference is not None:
-                ref, st = scan.sim_run(scan_cfg, "matrix", root,
+                ref, st = scan.sim_run(scan_cfg, mode, root,
                                        faults=None if baseline else faults,
                                        sample=reference)  # fmt: skip
                 assert st == "COMPLETE", ref.meta["aborts"]
-            store, _ = scan.sim_run(scan_cfg, "matrix", root, faults=faults, sample=sample)
+            store, _ = scan.sim_run(scan_cfg, mode, root, faults=faults, sample=sample)
             cache[key] = analyse(store.folder, scan_cfg, None if ref is None else ref.folder)
         return cache[key]
 
@@ -262,7 +268,7 @@ def scan_analysis(
 
 @pytest.mark.parametrize("row", SCAN_MATRIX, ids=[r.id for r in SCAN_MATRIX])
 def test_scan_fault_is_detected(scan_analysis: Any, row: ScanRow) -> None:
-    a = scan_analysis(row.fault, row.sample, row.reference, row.healthy_reference)
+    a = scan_analysis(row.fault, row.sample, row.reference, row.healthy_reference, row.mode)
     assert (a.status == "INCOMPLETE") is row.incomplete, a.summary()
     f = a.get(row.finding)
     assert f.status == row.status, f"{row.finding}: {f.status.value}: {f.detail}\n{a.summary()}"
@@ -285,8 +291,14 @@ def test_scan_healthy_control(scan_analysis: Any, sample: str, reference: str | 
     assert a.verdict["verdict"] == Verdict.FUNCTIONAL.value, a.verdict
     assert {h["health"] for h in a.health} <= {"OK", "n/a"}
     for row in SCAN_MATRIX:
-        if row.sample == sample and row.reference == reference and not row.healthy_reference:
+        if (row.sample == sample and row.reference == reference and not row.healthy_reference
+                and row.mode == "matrix"):  # fmt: skip
             assert a.get(row.finding).status == Status.PASS, row.finding
+    if sample == "empty" and reference is None:  # continuous-mode rows: a healthy control
+        c = scan_analysis(None, sample, None, False, "matrix_cont")
+        for row in SCAN_MATRIX:
+            if row.mode == "matrix_cont":
+                assert c.get(row.finding).status == Status.PASS, row.finding
     for row in SCAN_MATRIX:  # baseline rows: a healthy run against a healthy baseline
         if row.healthy_reference and row.sample == sample and reference is None:
             b = scan_analysis(None, sample, None, True)

@@ -199,10 +199,19 @@ class ScanExecutor:
         return str(e)
 
     def _safe_stop(self) -> None:
-        """OFF, MOTOR STOP, MOTOR RELEASE, MOTOR LIGHT 0: best effort, never raises."""
+        """OFF, MOTOR STOP, MOTOR RELEASE, MOTOR LIGHT 0: best effort, never raises.
+        Mains integration back off too, so other tests see the boot behaviour."""
         for cmd in ("OFF", "MOTOR STOP", "MOTOR ALL RELEASE", "MOTOR LIGHT 0"):
             with contextlib.suppress(Exception):
                 self.dev.command(cmd, timeout=1.5)
+        if self.dev.mains_hz:
+            with contextlib.suppress(Exception):
+                self.dev.adc_mains(0)
+
+    @property
+    def _n(self) -> int:
+        """Samples (or, with mains integration, mains periods) per reading."""
+        return self.s.mains_periods if self.dev.mains_hz else self.s.sweep_n
 
     # ================================================================ checks
 
@@ -251,7 +260,8 @@ class ScanExecutor:
         if st.as_int("ch") != 0 or st.as_str("motor1") == "run" or st.as_str("motor2") == "run":
             raise ScanAbort("the board is not in its safe state (an LED on or a motor moving)")
         self.capabilities = {
-            "coupling_states": "debug_states" in info.values,  # firmware 2.5.0 (proposal)
+            "coupling_states": "debug_states" in info.values,  # firmware 2.5.0
+            "mains_rejection": "mains" in info.values and self.s.mains_hz > 0,  # 2.5.1
             "rail_monitor": False,
             "home_sensors": False,
         }
@@ -297,6 +307,8 @@ class ScanExecutor:
             self.store.answer(key, ok)
             if not ok:
                 raise ScanAbort(f"preflight: operator answered no to {prompt!r}")
+        if self.capabilities["mains_rejection"]:
+            dev.adc_mains(self.s.mains_hz)
         self.store.meta["capabilities"] = self.capabilities
         self.store.meta["skipped_checks"] = {
             k: reason
@@ -445,7 +457,7 @@ class ScanExecutor:
     def _sweep(self, st: Step, settle_ms: float) -> None:
         dev = self.dev
         cool0 = dev.duty.total_cooldown_s if dev.duty else 0.0
-        sw = dev.sweep(self.s.optical_settle_ms, self.s.sweep_n)
+        sw = dev.sweep(self.s.optical_settle_ms, self._n)
         wait_ms = ((dev.duty.total_cooldown_s if dev.duty else 0.0) - cool0) * 1000.0
         for m in sw.records:
             for det in DETECTORS:
@@ -453,7 +465,7 @@ class ScanExecutor:
                 self._rows.append(self._row(
                     st, hole=m.hole, state="lit", detector=det, dark_counts=dark, lit_counts=lit,
                     net_counts=lit - dark, duty_wait_ms=round(wait_ms, 1),
-                    settle_ms=round(settle_ms, 1), n=self.s.sweep_n,
+                    settle_ms=round(settle_ms, 1), n=self._n,
                 ))  # fmt: skip
                 sat = self.cfg.detectors[det].saturation_counts
                 if self.s.abort_on_saturation and lit >= sat:
@@ -562,7 +574,7 @@ class ScanExecutor:
                 dev.off()
         if not self.capabilities.get("coupling_states"):
             return  # recorded as SKIP in P0 (firmware without DBG STATE)
-        settle, n = self.s.optical_settle_ms, self.s.sweep_n
+        settle, n = self.s.optical_settle_ms, self._n
         for state, args in (("ce_only", (1, 2)), ("wrong_rail", range(1, 17))):
             for arg in args:
                 f = dev.dbg_state(state, arg, settle, n)
@@ -621,9 +633,20 @@ class ScanExecutor:
         dev = self.dev
         holes = list(range(1, 17))
         idx = [0]
-        on_ms = self.s.optical_settle_ms + 2 * self.s.sweep_n * 10 + 10
+        on_ms = self.s.optical_settle_ms + 2 * self.dev._mean_s(self._n) * 1000 + 10
+
+        recorded = [False]
 
         def during(p1: int, p2: int) -> None:
+            if not recorded[0]:  # coil interference, as the measurements below will see it
+                recorded[0] = True
+                for det in DETECTORS:
+                    t, v = self._bursts(ADC_OF[det], 4)
+                    self.store.save_stream(f"s{st.index:03d}_coils_moving_{det}", t_us=t, raw=v,
+                                           state="coils_moving", detector=det,
+                                           height_hs=round((p1 + p2) / 2),
+                                           rate_setting=860)  # fmt: skip
+                return
             for _ in range(len(holes)):
                 h = holes[idx[0] % len(holes)]
                 idx[0] += 1
@@ -632,11 +655,11 @@ class ScanExecutor:
             else:
                 dev.sleep(0.05)
                 return
-            m = dev.meas(h, self.s.optical_settle_ms, self.s.sweep_n)
+            m = dev.meas(h, self.s.optical_settle_ms, self._n)
             for det in DETECTORS:
                 self._rows.append(self._row(st, hole=h, state="lit", detector=det,
                                             dark_counts=m.dark(det), lit_counts=m.lit(det),
-                                            net_counts=m.net(det), n=self.s.sweep_n))  # fmt: skip
+                                            net_counts=m.net(det), n=self._n))  # fmt: skip
 
         a = self._height()
         ok, msg = motion.move_both(
