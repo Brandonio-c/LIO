@@ -268,3 +268,47 @@ class TestLinkFaults:
         with rig(cfg, "rail_miswired:12") as (dev, _):
             bad = net(dev, 12, "ingaas")  # CE2 raised, but the LED hangs on rail A
         assert ok > 1000 and bad < 0.05 * ok
+
+
+class TestDebugStates:
+    """Firmware 2.5.0 DBG STATE: atomic, one CE, bounded, refused while moving."""
+
+    def test_wrong_rail_is_dark_unless_miswired(self, cfg: HwConfig) -> None:
+        with rig(cfg) as (dev, sim):
+            f = dev.dbg_state("wrong_rail", 12, 8, 2)
+            assert f.as_int("ce") == 1 and abs(f.as_int("lit0") - f.as_int("dark0")) < 30
+            assert not sim._light_since and dev.status().as_int("mask") == 0  # all off after
+        with rig(cfg, "rail_miswired:12") as (dev, _):
+            f = dev.dbg_state("wrong_rail", 12, 8, 2)
+            assert f.as_int("lit0") - f.as_int("dark0") > 1000
+
+    def test_ce_only_and_refusals(self, cfg: HwConfig) -> None:
+        with rig(cfg) as (dev, _):
+            f = dev.dbg_state("ce_only", 2, 8, 2)
+            assert f.as_int("ch") == 0 and f.as_str("state") == "ce_only"
+            with pytest.raises(DeviceError) as e:
+                dev.command("DBG STATE CE_ONLY 3")
+            assert e.value.code == 2
+            dev.wdt_cfg("B", 50)  # hole 4 is on RAIL A: its wrong-rail state raises CE2
+            with pytest.raises(DeviceError) as e:
+                dev.command("DBG STATE WRONG_RAIL 4 45 4")
+            assert e.value.code == 3 and "watchdog" in str(e.value)
+            dev.command("VS500")
+            dev.command("D")
+            with pytest.raises(DeviceError) as e:
+                dev.command("DBG STATE CE_ONLY 1")
+            assert e.value.code == 5
+            dev.command("S")
+
+    def test_older_firmware_has_no_dbg(self, cfg: HwConfig) -> None:
+        import copy as _copy
+
+        from lio.config import parse_config
+
+        data = _copy.deepcopy(cfg.data)
+        data["sim"]["firmware"] = "2.4.0"
+        with rig(parse_config(data, cfg.path)) as (dev, _):
+            assert "debug_states" not in dev.info(refresh=True).values
+            with pytest.raises(DeviceError) as e:
+                dev.command("DBG STATE CE_ONLY 1")
+            assert e.value.code == 1

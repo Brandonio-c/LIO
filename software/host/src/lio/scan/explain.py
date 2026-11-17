@@ -314,6 +314,25 @@ RULES: tuple[Rule, ...] = (
         ),
     ),
     Rule(
+        "optics/wrong_rail/hNN",
+        E(
+            "The LED lights when only the other rail's driver is enabled: it is wired to the "
+            "wrong rail (its return or anode on the other driver).",
+            ("rail wiring", "LED", "DRV1/DRV2"),
+            "Trace the LED's wiring to its driver against docs/OPTICAL_CHANNEL_MAP.md; meter "
+            "the rail current with the hole lit (T05.6).",
+        ),
+    ),
+    Rule(
+        "elec/*/ce_only",
+        E(
+            "Enabling a driver with no LED selected moves the detector output: driver-enable "
+            "coupling (CE line or driver supply into the detector ground).",
+            ("DRV1/DRV2", "CE1/CE2 lines", "GND"),
+            "Look for the CE lines and driver supply near the detector wiring.",
+        ),
+    ),
+    Rule(
         "elec/*/select_only",
         E(
             "Selecting a MOSFET (gate drive, no LED current) moves the detector output: gate-drive "

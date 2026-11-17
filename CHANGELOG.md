@@ -36,7 +36,13 @@
 - **`lio.motion`:** continuous moves of both motors, shared by T09 and the scan.
 - **Fault matrix:** a row for every scan fault, checking that the intended finding flags it and that its explanation names the right part. Healthy `quick` and `full` scans at full size give FUNCTIONAL.
 
+- **Firmware 2.5.0 (written and simulated, not yet flashed): `DBG STATE CE_ONLY <rail>` and `DBG STATE WRONG_RAIL <hole>`.**
+  - Atomic coupling states for the sweep, bounded by the rail watchdog and refused while moving.
+  - `INFO` reports `debug_states=1`.
+  - The sweep uses them when present (`elec/<det>/ce_only`, `optics/wrong_rail/hNN`, which catches a hole wired to the wrong rail directly) and reports them as SKIP on 2.4.0.
+
 ### Changed
+- `mech/settle` is judged on the time lost to repeated dark reads (max − median), so one routine retry no longer warns.
 - The simulated white-tile reflectance is now 1.5 (was 1.8). At 1.8 a healthy white run came within 2% of InGaAs saturation.
 
 ## 2026-11-16: Diagnostic sweep S1, simulator height model (LIO-SW-SCAN-001 §9)

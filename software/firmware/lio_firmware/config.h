@@ -5,7 +5,7 @@
 #pragma once
 #include <Arduino.h>
 
-#define LIO_FW_VERSION "2.4.0"
+#define LIO_FW_VERSION "2.5.0"
 #define LIO_PROTO 1
 
 // Build with -DLIO_HW_WDT=1 only for the new (Optiboot) bootloader,

@@ -135,8 +135,12 @@ The thresholds are in `scan.health`, as `[WARN, FAIL]` pairs. **All are provisio
 
   With 5 or more baselines of a sample, each metric gets a control chart (±3σ and an EWMA).
 
+**Coupling states (firmware ≥ 2.5.0, `DBG STATE`).** In P1:
+- **CE-only**, per rail: CE high with nothing selected. Measures driver-enable coupling (`elec/<det>/ce_only`).
+- **Wrong-rail**, per hole: the hole selected, the other rail enabled. The LED must stay dark; light means it is wired to the wrong rail (`optics/wrong_rail/hNN`).
+
 Checks that need hardware or firmware not fitted are reported as **SKIP** with the reason:
-- the CE-only and wrong-rail coupling states (firmware 2.5.0 proposal);
+- the coupling states on firmware 2.4.0 (the rig until 2.5.0 is flashed);
 - rail and ground monitoring on A2/A3;
 - home sensors.
 

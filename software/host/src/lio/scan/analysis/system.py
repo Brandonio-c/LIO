@@ -52,7 +52,7 @@ def subsystem_of(fid: str) -> str:
         return "adc"
     if fid.startswith("system/addressing"):
         return "shift_registers"
-    if fid.startswith(("system/rail", "elec/coupling_states")):
+    if fid.startswith(("system/rail", "elec/coupling_states")) or fid.endswith("/ce_only"):
         return "drivers"
     if HOLE_RE.search(fid + "/"):
         return "channels"

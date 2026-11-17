@@ -116,6 +116,13 @@ I recommend **(a)** as the default quick check, since the extra data is nearly f
 
 **D19 (found in S4). The verdict is the T11 function, unchanged.** Findings are grouped into the catalogue modules they test (T02 link, T03 ADC, T04 addressing, T05 rails and channels, T06 detectors and power, T09 motion and stage, T10 safety, T13 optical path and run), and `overall_verdict` is applied. So a failure not tied to a channel (dark offset, ground shift, backlash) gives NOT FUNCTIONAL, as it would in the suite. An incomplete run is a WARN (DEGRADED at best). Drift needs at least 5 minutes of dark frames, otherwise SKIP.
 
+**D20 (S8). Firmware 2.5.0: `DBG STATE`, written and simulated, not yet flashed.**
+- `CE_ONLY <rail>` and `WRONG_RAIL <hole>` are single atomic commands (dark, state, settle, read, off), not separate set-state commands. CE is never left high in an odd state.
+- Both are bounded by the rail watchdog and refused while a motor moves.
+- No "coils held" state: holding the coils (`POWER WAKE`) blocks the firmware, so it cannot measure meanwhile. Coil interference stays measured while moving (D2).
+- The simulator reports 2.5.0 by default; `sim.firmware: "2.4.0"` emulates the rig as it is now, where the states are SKIP.
+- **Flashing waits for the owner's "go" at commissioning.**
+
 ## 4. Questions
 
 Plan §13:

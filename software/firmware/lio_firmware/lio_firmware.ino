@@ -58,6 +58,7 @@ static void cmd_info(const Command &c) {
   resp_kv(F("jog_acc_max"), JOG_ACC_MAX);
   resp_kv(F("wake_ms_max"), WAKE_MS_MAX);
   resp_kv(F("motion_armed"), motion_armed() ? 1 : 0);
+  resp_kv(F("debug_states"), 1);
   resp_kv(F("light_in_motion"), light_in_motion() ? 1 : 0);
   resp_kv_hex16(F("arm_token"), arm_token());
   resp_kv(F("hw_wdt"), LIO_HW_WDT);
@@ -103,6 +104,7 @@ static void dispatch(const Command &c) {
   else if (tok_is(t, F("MOTOR"))) cmd_motor(c);
   else if (tok_is(t, F("POWER"))) cmd_power(c);
   else if (tok_is(t, F("WDT"))) cmd_wdt(c);
+  else if (tok_is(t, F("DBG"))) cmd_dbg(c);
   else if (tok_is(t, F("RESET"))) cmd_reset(c);
   else if (!cmd_legacy(c)) resp_err(c, E_UNKNOWN, F("unknown command"));
 }

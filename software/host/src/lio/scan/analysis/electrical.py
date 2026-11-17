@@ -322,6 +322,49 @@ def select_only(cube: Cube, cfg: HwConfig) -> list[Finding]:
     return out
 
 
+def coupling_states(cube: Cube, cfg: HwConfig) -> list[Finding]:
+    """Firmware 2.5.0 DBG STATE readings (P1): CE-only per rail (driver enable with no
+    LED path) and wrong-rail per hole (the hole selected, the other rail enabled: its
+    LED must stay dark, light means it is wired to the other rail)."""
+    out: list[Finding] = []
+    w_c, f_c = pair(cfg, "coupling_counts")
+    w_p, f_p = pair(cfg, "optics.plausibility_counts")
+    for det in DETECTORS:
+        m = cube.mask(state="ce_only", detector=det)
+        if not m.any():
+            continue
+        rails = cube.num["rep"][m]
+        net = cube.num["net_counts"][m]
+        worst = float(np.max(np.abs(net)))
+        out.append(Finding(
+            f"elec/{det}/ce_only", f"{det}: CE-only coupling (driver enabled, no LED)",
+            grade(worst, w_c, f_c), round(worst, 1), "counts",
+            ", ".join(f"CE{int(r)}: {v:+.1f}" for r, v in zip(rails, net, strict=True)),
+            f"< {w_c:g} counts (WARN), < {f_c:g} (FAIL)",
+        ))  # fmt: skip
+    if not cube.mask(state="wrong_rail").any():
+        return out
+    for hole in range(1, 17):
+        ch = cfg.channel(hole)
+        vals = []
+        for det in DETECTORS:
+            m = cube.mask(state="wrong_rail", detector=det) & (cube.num["hole"] == hole)
+            if m.any() and ch.expect_for(det) != "none":
+                vals.append((det, float(np.max(cube.num["net_counts"][m]))))
+        if not vals:
+            continue
+        det, v = max(vals, key=lambda x: x[1])
+        other = "B" if ch.rail == "A" else "A"
+        out.append(Finding(
+            f"optics/wrong_rail/h{hole:02d}", f"hole {hole} dark with only RAIL {other} enabled",
+            grade(v, w_p, f_p), round(v, 1), "counts",
+            f"{v:+.0f} counts on {det} with the hole selected and RAIL {other} enabled"
+            + ("; it lights: wired to the other rail" if v >= w_p else ""),
+            f"< {w_p:g} counts (WARN), < {f_p:g} (FAIL)",
+        ))  # fmt: skip
+    return out
+
+
 def capability_skips(cube: Cube) -> list[Finding]:
     titles = {
         "coupling_states": ("elec/coupling_states", "CE-only and wrong-rail coupling states"),
@@ -343,5 +386,6 @@ def analyse(cube: Cube, cfg: HwConfig) -> tuple[dict[str, Any], list[Finding]]:
     out += f_hum
     out += coil_emi(cube, cfg, spectra)
     out += select_only(cube, cfg)
+    out += coupling_states(cube, cfg)
     out += capability_skips(cube)
     return {"coupling": ctx, "spectra": spectra}, out

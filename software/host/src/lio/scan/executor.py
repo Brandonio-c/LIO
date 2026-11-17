@@ -542,8 +542,8 @@ class ScanExecutor:
         self._dark_frame(st)
 
     def _coupling_states(self, st: Step) -> None:
-        """Select-only on every hole (MOSFET on, CE low: SR RAW forces CE low). CE-only and
-        wrong-rail need firmware debug states: SKIP without them (recorded in P0)."""
+        """Select-only on every hole (MOSFET on, CE low: SR RAW forces CE low); with
+        firmware 2.5.0 also CE-only per rail and wrong-rail per hole (DBG STATE)."""
         dev = self.dev
         n = self.s.dark_n
         for hole in range(1, 17):
@@ -560,6 +560,20 @@ class ScanExecutor:
                     ))  # fmt: skip
             finally:
                 dev.off()
+        if not self.capabilities.get("coupling_states"):
+            return  # recorded as SKIP in P0 (firmware without DBG STATE)
+        settle, n = self.s.optical_settle_ms, self.s.sweep_n
+        for state, args in (("ce_only", (1, 2)), ("wrong_rail", range(1, 17))):
+            for arg in args:
+                f = dev.dbg_state(state, arg, settle, n)
+                for det in DETECTORS:
+                    i = ADC_OF[det]
+                    dark, lit = f.as_int(f"dark{i}"), f.as_int(f"lit{i}")
+                    self._rows.append(self._row(
+                        st, hole=0 if state == "ce_only" else arg, state=state, detector=det,
+                        dark_counts=dark, lit_counts=lit, net_counts=lit - dark, n=n,
+                        rep=arg if state == "ce_only" else 0,
+                    ))  # fmt: skip
 
     def _closing(self, st: Step) -> None:
         """P4: re-measure here (drift vs P1), then the interlocks, then everything off."""

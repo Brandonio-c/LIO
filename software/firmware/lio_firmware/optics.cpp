@@ -225,6 +225,62 @@ static bool meas_args(const Command &c, uint8_t first, long &settle, long &n) {
   return true;
 }
 
+// DBG STATE CE_ONLY <1|2> | WRONG_RAIL <1-16> [settle_ms] [n]  (2.5.0, diagnostic sweep)
+// Coupling states, atomic like MEAS: dark read -> state -> settle -> read -> off.
+//   CE_ONLY <rail>     nothing selected, the rail's CE high: driver-enable coupling,
+//                      no LED path.
+//   WRONG_RAIL <hole>  the hole selected, the OTHER rail's CE high: its LED must stay
+//                      dark (light here = the hole is wired to the other rail).
+// Never more than one CE high and one hole selected; bounded by the rail watchdog;
+// refused while a motor moves.
+void cmd_dbg(const Command &c) {
+  long arg, settle, n;
+  bool ce_only = c.ntok > 2 && tok_is(c.tok[1], F("STATE")) && tok_is(c.tok[2], F("CE_ONLY"));
+  bool wrong = c.ntok > 2 && tok_is(c.tok[1], F("STATE")) && tok_is(c.tok[2], F("WRONG_RAIL"));
+  if ((!ce_only && !wrong) || !arg_long(c, 3, 1, ce_only ? 2 : N_HOLES, arg) ||
+      !meas_args(c, 4, settle, n)) {
+    resp_err(c, E_ARG, F("usage: DBG STATE CE_ONLY <1|2> | WRONG_RAIL <1-16> [settle_ms] [n]"));
+    return;
+  }
+  if (motors_moving()) { resp_err(c, E_BUSY, F("motor moving")); return; }
+  uint8_t rail = ce_only ? (uint8_t)arg : (uint8_t)(3 - optics_rail_of((uint8_t)arg));
+  uint16_t sel = ce_only ? 0 : (uint16_t)(1u << (arg - 1));
+  uint32_t est = settle + 2UL * n * (adc_conv_us() / 1000UL + 2) + 10;
+  if (est > wdt_ms[rail]) { resp_err(c, E_REFUSED, F("on-time exceeds watchdog")); return; }
+  MeasRec r;
+  optics_off();
+  service_delay(settle);
+  if (adc_read_mean(0, n, r.dark0) || adc_read_mean(1, n, r.dark1)) {
+    optics_off();
+    resp_err(c, E_ADC, F("adc read failed"));
+    return;
+  }
+  latch(sel);                 // select first (or nothing) ...
+  start_timer(0, rail);
+  set_ce(rail, true);         // ... then raise CE (the other rail's, for WRONG_RAIL)
+  uint32_t t0 = millis();
+  service_delay(settle);
+  uint8_t e = adc_read_mean(0, n, r.lit0) || adc_read_mean(1, n, r.lit1);
+  bool held = ce[rail];
+  r.t_on_ms = (uint16_t)(millis() - t0);
+  optics_off();
+  if (e) { resp_err(c, E_ADC, F("adc read failed")); return; }
+  if (!held) { resp_err(c, E_REFUSED, F("watchdog fired during measurement")); return; }
+  resp_ok(c);
+  resp_kv_P(F("state"), ce_only ? F("ce_only") : F("wrong_rail"));
+  resp_kv(F("ce"), rail);
+  resp_kv(F("ch"), ce_only ? 0 : arg);
+  resp_kv(F("dark0"), r.dark0);
+  resp_kv(F("dark1"), r.dark1);
+  resp_kv(F("lit0"), r.lit0);
+  resp_kv(F("lit1"), r.lit1);
+  resp_kv(F("t_on_ms"), r.t_on_ms);
+  resp_kv(F("settle_ms"), settle);
+  resp_kv(F("n"), n);
+  resp_end();
+}
+
+
 static void print_meas(uint8_t hole, const MeasRec &r) {
   resp_kv(F("ch"), hole);
   resp_kv(F("dark0"), r.dark0);

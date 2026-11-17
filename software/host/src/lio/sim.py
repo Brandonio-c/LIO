@@ -392,8 +392,8 @@ _GAIN_NAMES = ("2/3", "1", "2", "4", "8", "16")
 class SimulatedLIO:
     """A simulated LIO V3 controller (firmware v2 behaviour + optics physics)."""
 
-    FW_VERSION = "2.4.0"
-    BUILD = "2026-11-03"
+    FW_VERSION = "2.5.0"  # sim.firmware in the config can emulate an older one
+    BUILD = "2026-11-16"
 
     def __init__(
         self,
@@ -406,6 +406,11 @@ class SimulatedLIO:
         self.cfg = cfg
         self.faults = faults or Faults()
         self.loop_jumper = loop_jumper
+        fw = cfg.data.get("sim", {}).get("firmware")
+        if fw:
+            self.FW_VERSION = str(fw)
+        # DBG STATE (diagnostic-sweep coupling states) arrived in 2.5.0
+        self.debug_states = tuple(int(x) for x in self.FW_VERSION.split(".")[:2]) >= (2, 5)
         self.chamber_open = False  # operator action for T06.4
         sim = cfg.sim
         self._rng = random.Random(sim.integer("seed") if seed is None else seed)
@@ -1135,6 +1140,8 @@ class _Exec:
             "RESET": self.c_reset,
             "POWER": self.c_power,
         }
+        if self.sim.debug_states:
+            handlers["DBG"] = self.c_dbg
         h = handlers.get(self.word)
         if h is not None:
             h()
@@ -1174,7 +1181,7 @@ class _Exec:
             f"jog_acc_max={lim['jog_acc_max']} wake_ms_max={lim['wake_ms_max']} "
             f"motion_armed={int(s._armed(self.t))} "
             f"light_in_motion={int(s._light_in_motion(self.t))} "
-            f"arm_token=0x{s.token:04X} hw_wdt=0"
+            f"arm_token=0x{s.token:04X} hw_wdt=0" + (" debug_states=1" if s.debug_states else "")
         )
 
     def c_status(self) -> None:
@@ -1391,6 +1398,46 @@ class _Exec:
         if not still:
             raise _Refusal(3, "watchdog fired during measurement")
         return f"ch={hole} dark0={d0} dark1={d1} lit0={l0} lit1={l1} t_on_ms={t_on_ms}"
+
+    def c_dbg(self) -> None:
+        """DBG STATE CE_ONLY <1|2> | WRONG_RAIL <1-16> [settle] [n] (firmware 2.5.0)."""
+        usage = "usage: DBG STATE CE_ONLY <1|2> | WRONG_RAIL <1-16> [settle_ms] [n]"
+        if (
+            len(self.tok) < 4
+            or self.tok[1] != "STATE"
+            or self.tok[2] not in ("CE_ONLY", "WRONG_RAIL")
+        ):
+            raise _Refusal(2, usage)
+        ce_only = self.tok[2] == "CE_ONLY"
+        arg = self.need(3, 1, 2 if ce_only else 16, usage)
+        settle, n = self._meas_args(4)
+        s = self.sim
+        if any(m.moving and self.t < m.t_end for m in s.motors):
+            raise _Refusal(5, "motor moving")
+        rail = arg if ce_only else 3 - s.rail_of(arg)
+        sel = 0 if ce_only else 1 << (arg - 1)
+        est = settle + 2 * n * (s._conv_us_fw() // 1000 + 2) + 10
+        if est > s.wdt_ms[rail]:
+            raise _Refusal(3, "on-time exceeds watchdog")
+        s._optics_off(self.t)
+        self.wait(settle / 1000.0)
+        d0, d1 = self.adc_mean(0, n), self.adc_mean(1, n)
+        s._latch(self.t, sel)
+        s._start_timer(self.t, 0, rail)
+        s._set_ce(self.t, rail, True)
+        t_on = self.t
+        self.wait(settle / 1000.0)
+        try:
+            l0, l1 = self.adc_mean(0, n), self.adc_mean(1, n)
+        finally:
+            held = s.ce[rail]
+            t_on_ms = int((self.t - t_on) * 1000)
+            s._optics_off(self.t)
+        if not held:
+            raise _Refusal(3, "watchdog fired during measurement")
+        state = "ce_only" if ce_only else "wrong_rail"
+        self.ok(f"state={state} ce={rail} ch={0 if ce_only else arg} dark0={d0} dark1={d1} "
+                f"lit0={l0} lit1={l1} t_on_ms={t_on_ms} settle_ms={settle} n={n}")  # fmt: skip
 
     def c_meas(self) -> None:
         hole = self.need(1, 1, 16, "usage: MEAS <1-16> [settle_ms] [n]")

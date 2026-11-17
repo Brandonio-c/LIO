@@ -683,6 +683,22 @@ class LIODevice:
             self._record_duty(m.hole, t0, t0 + m.t_on_ms / 1000.0)
         return Sweep(records, reply.fields.as_int("dur_ms"))
 
+    def dbg_state(self, state: str, arg: int, settle_ms: int, n: int) -> Fields:
+        """Firmware >= 2.5.0 coupling states (``debug_states=1`` in INFO), atomic like MEAS:
+        ``ce_only`` (rail ``arg``: CE high, nothing selected) or ``wrong_rail`` (hole
+        ``arg`` selected, the other rail's CE high). A wrong-rail LED should stay dark;
+        it is counted against the hole's duty budget anyway, in case it is miswired."""
+        word = {"ce_only": "CE_ONLY", "wrong_rail": "WRONG_RAIL"}[state]
+        on_ms = settle_ms + 2 * n * self._conv_s() * 1000
+        if state == "wrong_rail":
+            self._duty_gate(arg, on_ms)
+        t0 = self.now()
+        f = self.command(f"DBG STATE {word} {arg} {settle_ms} {n}",
+                         timeout=self.meas_timeout(settle_ms, n)).fields  # fmt: skip
+        if state == "wrong_rail":
+            self._record_duty(arg, t0, t0 + f.as_int("t_on_ms") / 1000.0)
+        return f
+
     def loop_test(self) -> Fields:
         return self.command("LOOP TEST", timeout=3.0).fields
 

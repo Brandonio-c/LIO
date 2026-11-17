@@ -308,13 +308,14 @@ def _settle(cube: Cube, cfg: HwConfig) -> list[Finding]:
                         detail="no settle records")]  # fmt: skip
     base = float(cfg.section.raw("scan.settle_ms_mech"))
     w, f = pair(cfg, "mech.settle_extra_ms")
-    extra = float(np.max(vals)) - base
+    # time lost to repeated dark reads (the median step needs none)
+    extra = float(np.max(vals)) - float(np.median(vals))
     return [Finding(
         "mech/settle", "settle time after a move (dark-read convergence)", grade(extra, w, f),
         round(float(np.median(vals)), 0), "ms",
         f"median {np.median(vals):.0f} ms, max {np.max(vals):.0f} ms "
         f"(mechanical wait {base:.0f} ms)",
-        f"max - wait < {w:g} ms (WARN), < {f:g} (FAIL)",
+        f"max - median < {w:g} ms (WARN), < {f:g} (FAIL)",
     )]  # fmt: skip
 
 

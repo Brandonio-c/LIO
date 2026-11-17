@@ -186,6 +186,7 @@ SCAN_MATRIX = (
     ScanRow("led_swapped:9,16", "optics/opt101/h09/response", part="LED9"),
     ScanRow("wrong_led:16=630", "optics/opt101/h16/plausibility", part="LED16"),
     ScanRow("rail_miswired:12", "optics/ingaas/h12/response", part="rail wiring"),
+    ScanRow("rail_miswired:12", "optics/wrong_rail/h12", part="rail wiring"),  # fw 2.5.0
     ScanRow("window_blocked:0.1", "optics/ingaas/throughput", part="detector window"),
     ScanRow(
         "stray_light:0.05",

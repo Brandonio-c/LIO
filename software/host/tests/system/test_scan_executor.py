@@ -143,11 +143,11 @@ def test_healthy_run_completes_safely(rig: Any, mode: str) -> None:
         if mode != "continuous":
             assert not r.light_while_moving, "an LED lit while the top moved"
         # capability checks without firmware support are SKIP with a reason (plan §8)
-        assert set(meta["skipped_checks"]) == {"coupling_states", "rail_monitor", "home_sensors"}
+        assert set(meta["skipped_checks"]) == {"rail_monitor", "home_sensors"}
         states = {row["state"] for row in store.rows()}
         assert {"dark", "lit"} <= states
         if mode != "continuous":
-            assert "select_only" in states and "coils_off" in states
+            assert {"select_only", "ce_only", "wrong_rail", "coils_off"} <= states
         if mode == "tiny":
             assert any(s["state"] == "coils_moving" for s in meta["streams"])  # coil EMI (D2)
 
@@ -319,3 +319,19 @@ def test_mid_run_boot_aborts_and_invalidates_the_position(rig: Any) -> None:
         _, status2 = scan.resume(r.dev, r.cfg, store.folder, SimOperator(r.sim))
         assert status2 == "INCOMPLETE"
         assert "not trusted" in scan.ScanStore.open(store.folder).meta["aborts"][-1]["reason"]
+
+
+def test_firmware_without_debug_states_skips_them(scfg: HwConfig, tmp_path: Path) -> None:
+    """On 2.4.0 (no DBG STATE) the CE-only and wrong-rail states are SKIP with the reason."""
+    data = copy.deepcopy(scfg.data)
+    data["sim"]["firmware"] = "2.4.0"
+    old = parse_config(data, scfg.path)
+    r = Rig(old, tmp_path, None, "empty")
+    try:
+        store, status = r.run("electrical")
+        assert status == "COMPLETE"
+        assert "coupling_states" in store.meta["skipped_checks"]
+        states = {row["state"] for row in store.rows()}
+        assert "select_only" in states and not states & {"ce_only", "wrong_rail"}
+    finally:
+        r.dev.close()

@@ -30,3 +30,4 @@ void cmd_meas(const Command &c);   // MEAS <1-16> [settle_ms] [n]
 void cmd_sweep(const Command &c);  // SWEEP [settle_ms] [n]
 void cmd_loop(const Command &c);   // LOOP TEST
 void cmd_wdt(const Command &c);    // WDT CFG A|B <ms>
+void cmd_dbg(const Command &c);    // DBG STATE CE_ONLY <1|2> | WRONG_RAIL <1-16> [settle] [n]
