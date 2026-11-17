@@ -337,3 +337,27 @@ def test_firmware_without_debug_states_skips_them(scfg: HwConfig, tmp_path: Path
         assert "select_only" in states and not states & {"ce_only", "wrong_rail"}
     finally:
         r.dev.close()
+
+
+def test_unexpected_error_stops_safely(rig: Any) -> None:
+    """A full disk (or any bug) mid-run: everything off and stopped before it propagates."""
+    with rig() as r:
+        calls = {"n": 0}
+        orig = scan.ScanStore.append_rows
+
+        def failing(self: scan.ScanStore, rows: Any, *, completed_step: int) -> None:
+            calls["n"] += 1
+            if calls["n"] == 3:
+                raise OSError(28, "No space left on device")
+            orig(self, rows, completed_step=completed_step)
+
+        scan.ScanStore.append_rows = failing  # type: ignore[method-assign]
+        try:
+            with pytest.raises(OSError):
+                r.run("tiny")
+        finally:
+            scan.ScanStore.append_rows = orig  # type: ignore[method-assign]
+        r.safe()
+        folder = next(r.tmp.glob("*_scan_tiny"))
+        meta = scan.ScanStore.open(folder).meta
+        assert meta["status"] == "INCOMPLETE" and "No space left" in meta["aborts"][-1]["reason"]

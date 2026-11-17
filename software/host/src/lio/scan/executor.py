@@ -181,6 +181,16 @@ class ScanExecutor:
             if isinstance(e, KeyboardInterrupt):
                 raise
             return "INCOMPLETE"
+        except BaseException as e:
+            # Anything unexpected (a full disk, a bug): make the rig safe first, then record
+            # what we can and let the error through.
+            self._safe_stop()
+            with contextlib.suppress(Exception):
+                self.store.abort(f"unexpected error: {type(e).__name__}: {e}",
+                                 step=self.store.meta.get("completed_step", -1) + 1)  # fmt: skip
+            with contextlib.suppress(Exception):
+                self._progress(None, "aborted", reason=f"{type(e).__name__}: {e}")
+            raise
 
     @staticmethod
     def _reason(e: BaseException) -> str:

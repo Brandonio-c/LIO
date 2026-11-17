@@ -107,3 +107,27 @@ def test_long_travel_is_continuous_and_exact(cfg: HwConfig) -> None:
         assert (st.as_int("pos1"), st.as_int("pos2")) == (0, 0)
     finally:
         ctx.dev.close()
+
+
+def test_motor_tests_make_room_when_parked_at_the_top(cfg: HwConfig, tmp_path: object) -> None:
+    """17 Nov on the rig: a scan left the top at its upper limit and T09.2-T09.4 errored
+    (the soft limits refused their first move up). They now lower the top first."""
+    from pathlib import Path
+
+    from lio import scan
+
+    catalogue()
+    ctx = sim_context(cfg)
+    try:
+        assert ctx.sim is not None
+        st = scan.sim_stage(ctx.dev, Path(str(tmp_path)) / "stage.json", int(ctx.sim.travel_hs))
+        margin = ctx.dev.stage_top_margin()
+        from lio import motion
+
+        ok, _ = motion.move_both(ctx.dev, ctx.cfg, -margin)  # parked exactly at the top limit
+        assert ok and st.room(1, +1, margin) == 0
+        for tid in ("T09.2", "T09.3", "T09.4"):
+            r = run_test(ctx, REGISTRY[tid])
+            assert r.status in (Status.PASS, Status.WARN), r.summary()
+    finally:
+        ctx.dev.close()

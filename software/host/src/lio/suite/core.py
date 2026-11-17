@@ -245,10 +245,13 @@ class SuiteContext:
         return dark
 
     def is_dark(self, det: str, reading: float, n: int = 1) -> bool:
-        """Reading (mean of n) is within dark +- off_return_sigma."""
+        """Reading (mean of n) is within dark +- off_return_sigma, and never a tighter band
+        than channel.off_return_min_counts: a very quiet detector (rig, 17 Nov: sigma
+        0.1-0.5 counts) would otherwise fail on a one-count drift of its dark level."""
         d = self.dark()
         k = self.th.num("channel.off_return_sigma")
-        return abs(reading - d.mean(det)) <= k * d.sigma(det) / math.sqrt(n)
+        floor = self.th.num("channel.off_return_min_counts")
+        return abs(reading - d.mean(det)) <= max(k * d.sigma(det) / math.sqrt(n), floor)
 
     def is_lit(self, det: str, reading: float, n: int = 1) -> bool:
         """Reading (mean of n) is above dark by the signal detection threshold."""

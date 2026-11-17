@@ -327,6 +327,7 @@ thresholds:
     judge_out_of_range: false
     polarity_sigma: -5           # InGaAs net below this x sigma on an InGaAs hole -> reversed
     off_return_sigma: 5
+    off_return_min_counts: 4      # dark band never tighter than this (very quiet detectors drift ~1 count)
     signature_similarity: 0.98   # cosine similarity above which two channels "look the same"
     signature_min_counts: 200    # only compare signatures with this much total signal
     # Identical = same LED, same current: equal within noise, not just similar.

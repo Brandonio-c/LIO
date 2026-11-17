@@ -124,6 +124,9 @@ class SimOperator(Operator):
         return sorted(e for e in log if e[0] >= t0 - 1e-9)
 
     def inform(self, message: str) -> None:
+        # Being told about a move, an operator watches the stage afresh from here: the
+        # "did it move up/down" questions that follow are about the moves after it.
+        self._motor_seen = [m.physical for m in self.sim.motors]
         self._record("inform", message, None)
 
     def act(self, key: str, prompt: str) -> None:

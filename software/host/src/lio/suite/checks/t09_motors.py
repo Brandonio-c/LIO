@@ -111,9 +111,35 @@ def t09_1(ctx: SuiteContext, rec: Recorder) -> None:
     step_refused("after_expiry", "MOTOR STEP after expiry is refused")
 
 
+def _make_room_up(ctx: SuiteContext, need: int) -> None:
+    """These tests move a motor UP first. With the top parked near its upper limit (where
+    a scan leaves it), the soft limits refuse that: lower both motors together, level,
+    just far enough first. Untracked stage: nothing to check (the operator is in charge)."""
+    st = ctx.dev.stage
+    if st is None or not st.known:
+        return
+    margin = ctx.dev.stage_top_margin()
+    rooms = [st.room(m, +1, margin) for m in (1, 2)]
+    room = min(need if r is None else r for r in rooms)  # None: no top limit marked
+    if room >= need:
+        return
+    down = need - room + 64
+    if st.limits.bottom is not None:
+        belows = [st.room(m, -1) for m in (1, 2)]
+        below = min(down if b is None else b for b in belows)
+        if below < down:
+            raise Skip(f"no room to move up ({room} half-steps) and only {below} below")
+    ok, msg = motion.move_both(ctx.dev, ctx.cfg, -down)
+    if not ok:
+        raise Skip(f"could not make room above the top position: {msg}")
+    if ctx.operator is not None:  # the questions that follow are about the moves after this
+        ctx.operator.inform(f"lowered the top {down} half-steps to make room above")
+
+
 @register("T09.2", "Each motor moves both ways", "M")
 def t09_2(ctx: SuiteContext, rec: Recorder) -> None:
     _op_chamber_clear(ctx)
+    _make_room_up(ctx, ctx.th.integer("motion.test_steps"))
     assert ctx.operator is not None
     dev, op = ctx.dev, ctx.operator
     steps = ctx.th.integer("motion.test_steps")
@@ -179,6 +205,7 @@ def t09_2(ctx: SuiteContext, rec: Recorder) -> None:
 @register("T09.3", "MOTOR STOP latency", "M")
 def t09_3(ctx: SuiteContext, rec: Recorder) -> None:
     _op_chamber_clear(ctx)
+    _make_room_up(ctx, ctx.cfg.limits["step_max"])
     dev = ctx.dev
     rpm = ctx.th.integer("motion.test_rpm")
     full = ctx.cfg.limits["step_max"]
@@ -225,6 +252,7 @@ def t09_3(ctx: SuiteContext, rec: Recorder) -> None:
 @register("T09.4", "Detector noise while a motor moves", "M")
 def t09_4(ctx: SuiteContext, rec: Recorder) -> None:
     _op_chamber_clear(ctx)
+    _make_room_up(ctx, ctx.th.integer("motion.emi_steps"))
     ctx.require_adc()
     dev = ctx.dev
     n = ctx.th.integer("motion.emi_samples")
