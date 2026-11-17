@@ -2,7 +2,11 @@
   <img src="images/LIO-Logo.png" alt="LIO logo" width="320">
 </p>
 
-**Lio** is an open hardware experiment to build a low-cost, 3D-printable multispectral diffuse-reflectance scanner for powdered food samples.
+<h1 align="center">LIO</h1>
+
+<p align="center"><strong><u>L</u>ED-<u>I</u>lluminated <u>O</u>ptospectrometer for a <u>L</u>ight-based <u>I</u>ngredient <u>O</u>bserver</strong></p>
+
+**LIO** (LED-Illuminated Optospectrometer for a Light-based Ingredient Observer) is an open hardware experiment to build a low-cost, 3D-printable multispectral diffuse-reflectance scanner for powdered food samples.
 
 The project aims to collect repeatable optical reflectance data from controlled food powders and known mixtures using LED illumination, photodiode sensing, calibration references, and a motorized sample-height stage.
 
@@ -14,7 +18,7 @@ The honest answer is currently unknown. This repository documents the attempt.
 
 ---
 
-## What Lio is trying to achieve
+## What LIO is trying to achieve
 
 ### Near-term goals
 
@@ -36,7 +40,7 @@ The honest answer is currently unknown. This repository documents the attempt.
 
 ## Measurement concept
 
-Lio uses **multispectral diffuse reflectance**.
+LIO uses **multispectral diffuse reflectance**.
 
 A powdered sample sits in a controlled cup inside a dark, black-lined chamber. LEDs illuminate the sample one wavelength at a time. A detector measures reflected light from the sample. Each wavelength produces one channel value.
 
@@ -114,7 +118,7 @@ moving sample platform
 M6 threaded rod + 28BYJ motor
 ```
 
-This is the physical mechanism referred to as the Lio telescoping focusing channel. It is not a lens. It is a light-sealed adjustable sample-height shroud.
+This is the physical mechanism referred to as the LIO telescoping focusing channel. It is not a lens. It is a light-sealed adjustable sample-height shroud.
 
 ---
 
@@ -393,13 +397,13 @@ Modeling starts with interpretable methods and adds complexity only as the data 
 The first concrete targets are:
 
 ```text
-Can Lio distinguish known powder classes under controlled preparation?
+Can LIO distinguish known powder classes under controlled preparation?
 ```
 
 and:
 
 ```text
-Can Lio estimate the percentage of one ingredient in a controlled binary mixture?
+Can LIO estimate the percentage of one ingredient in a controlled binary mixture?
 ```
 
 ---
@@ -430,7 +434,7 @@ LIO/
 
 ## Current status
 
-Lio is in early mechanical prototyping.
+LIO is in early mechanical prototyping.
 
 - Hardware components have been sourced.
 - 3D-printer setup is underway.
@@ -443,11 +447,11 @@ Lio is in early mechanical prototyping.
 
 ## Safety and operating notes
 
-Lio is an experimental research prototype intended for controlled laboratory and educational use.
+LIO is an experimental research prototype intended for controlled laboratory and educational use.
 
 LEDs across the visible, UV, NIR, and SWIR ranges can deliver significant optical power, and some wavelengths are invisible while still being energetic. Handle the optics with appropriate care: avoid looking directly into LEDs, use current limiting, keep the optical path enclosed, and treat unknown high-power emitters with caution.
 
-Results from Lio are research data. Keep them within the closed-world experimental context the instrument is built for.
+Results from LIO are research data. Keep them within the closed-world experimental context the instrument is built for.
 
 ---
 
@@ -473,7 +477,7 @@ A license has not yet been selected. Before the project opens to outside contrib
 
 ## Project philosophy
 
-Lio is an exercise in disciplined instrument design: build a controlled, repeatable measurement platform, collect clean data, and map out exactly what low-cost multispectral reflectance can do for closed-world food analysis. The work centers on repeatable measurements, well-characterized limits, and a clear, incremental path from mechanical validation to controlled-mixture discrimination and narrow classification.D_i = dark reading
+LIO is an exercise in disciplined instrument design: build a controlled, repeatable measurement platform, collect clean data, and map out exactly what low-cost multispectral reflectance can do for closed-world food analysis. The work centers on repeatable measurements, well-characterized limits, and a clear, incremental path from mechanical validation to controlled-mixture discrimination and narrow classification.D_i = dark reading
 W_i = white-reference reading
 ```
 
@@ -531,7 +535,7 @@ moving sample platform
 M6 threaded rod + 28BYJ motor
 ```
 
-This mechanism is referred to as the Lio telescoping focusing channel: a light-sealed, adjustable sample-height shroud that maintains a dark optical path as the sample height changes.
+This mechanism is referred to as the LIO telescoping focusing channel: a light-sealed, adjustable sample-height shroud that maintains a dark optical path as the sample height changes.
 
 ---
 
@@ -562,9 +566,9 @@ right guide rod:     X = +45, Y = 0
 sample/optical axis: X = 0, Y = +35
 ```
 
-Offsetting the sample cup forward keeps the M6 threaded rod clear of the sample. The fixed tower frame positions the optical tube direct# Lio
+Offsetting the sample cup forward keeps the M6 threaded rod clear of the sample. The fixed tower frame positions the optical tube direct# LIO
 
-**Lio** is an open-hardware research instrument: a low-cost, 3D-printable multispectral diffuse-reflectance scanner for powdered food samples.
+**LIO** is an open-hardware research instrument: a low-cost, 3D-printable multispectral diffuse-reflectance scanner for powdered food samples.
 
 We are building a benchtop optical instrument that shines light through a sequence of individual LED wavelengths onto a prepared food powder, measures how much light each wavelength reflects back, and turns that into a calibrated spectral signature for the sample. By collecting these signatures across many known powders and controlled mixtures, we can train models that recognize what a sample is, or estimate how much of one ingredient is present in a blend. The entire instrument — optical chamber, motorized sample stage, electronics housing — is 3D-printable and built from inexpensive, widely available parts, so the whole design can be reproduced on a hobbyist printer for a fraction of the cost of a commercial spectrometer.
 
@@ -584,7 +588,7 @@ The scope is deliberately focused:
 
 Visible/NIR/SWIR spectroscopy is a well-established approach to food analysis. Near-infrared methods are widely deployed for rapid quality control, origin and authenticity screening, and broad compositional analysis, typically paired with chemometric calibration models. These techniques are indirect and calibration-driven by nature: the instrument measures reflected light, and a trained model maps that signal to a property of interest.
 
-Lio brings that idea down to a hobbyist-accessible price point by replacing a full commercial spectrometer with a set of discrete, individually addressable LEDs. The central research question is straightforward:
+LIO brings that idea down to a hobbyist-accessible price point by replacing a full commercial spectrometer with a set of discrete, individually addressable LEDs. The central research question is straightforward:
 
 > Can a small, inexpensive, repeatable multispectral reflectance instrument produce enough usable signal to support closed-world food-powder classification or controlled-mixture estimation?
 
@@ -616,7 +620,7 @@ This repository documents the design, build, and experimental program developed 
 
 ## Scope
 
-Lio is a research-grade instrument for controlled, closed-world experiments. It is purpose-built to:
+LIO is a research-grade instrument for controlled, closed-world experiments. It is purpose-built to:
 
 - Acquire calibrated reflectance data from prepared powdered samples.
 - Discriminate among a known, trained set of powder classes.
@@ -628,7 +632,7 @@ Its design priority is measurement integrity: prove repeatability first, then co
 
 ## Measurement principle
 
-Lio operates on **multispectral diffuse reflectance**.
+LIO operates on **multispectral diffuse reflectance**.
 
 A powdered sample sits in a controlled cup inside a dark, black-lined chamber. LEDs illuminate the sample one wavelength at a time, and a detector measures the diffusely reflected light. Each wavelength contributes one channel to the resulting spectral vector.
 
