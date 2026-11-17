@@ -2,7 +2,11 @@
   <img src="images/LIO-Logo.png" alt="LIO logo" width="320">
 </p>
 
-**Lio** is an open hardware experiment to build a low-cost, 3D-printable multispectral diffuse-reflectance scanner for powdered food samples.
+<h1 align="center">LIO</h1>
+
+<p align="center"><strong><u>L</u>ED-<u>I</u>lluminated <u>O</u>ptospectrometer for a <u>L</u>ight-based <u>I</u>ngredient <u>O</u>bserver</strong></p>
+
+**LIO** (LED-Illuminated Optospectrometer for a Light-based Ingredient Observer) is an open hardware experiment to build a low-cost, 3D-printable multispectral diffuse-reflectance scanner for powdered food samples.
 
 The project aims to collect repeatable optical reflectance data from controlled food powders and known mixtures using LED illumination, photodiode sensing, calibration references, and a motorized sample-height stage.
 
