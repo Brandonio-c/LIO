@@ -28,8 +28,15 @@ class TestShippedConfig:
         assert cfg.provisional
 
     def test_rails_match_hardware(self, cfg: HwConfig) -> None:
-        assert cfg.rail_holes("A") == tuple(range(1, 10))
-        assert cfg.rail_holes("B") == tuple(range(10, 17))
+        assert cfg.rail_holes("A") == tuple(range(1, 9))
+        assert cfg.rail_holes("B") == tuple(range(9, 17))
+        assert cfg.rail_b_first == 9
+
+    def test_duty_budgets(self, cfg: HwConfig) -> None:
+        # hole 9 (940 nm, rated 20 mA) sits on RAIL B but keeps RAIL A's budget
+        assert cfg.duty_key(9) == "h9" and cfg.duty_budget_ms(9) == 1000
+        assert cfg.duty_key(8) == "A" and cfg.duty_key(12) == "B"
+        assert cfg.duty_budget_ms(12) == cfg.duty_budgets_ms()["B"] == 5000
 
     def test_detector_coverage(self, cfg: HwConfig) -> None:
         assert cfg.channel(3).expected_detectors == ("opt101",)
@@ -172,7 +179,7 @@ class TestValidation:
 
     def test_channel_wrong_rail(self, raw: dict[str, Any]) -> None:
         d = copy.deepcopy(raw)
-        d["channels"][8]["rail"] = "B"  # hole 9 is on RAIL A
+        d["channels"][7]["rail"] = "B"  # hole 8 is on RAIL A
         with pytest.raises(ConfigError, match="does not list"):
             _parse(d)
 

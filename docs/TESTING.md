@@ -123,7 +123,7 @@ Every check compares a measurement with a threshold from `software/config/lio_hw
 |---|---|---|---|
 | T01.1 | A | Python and dependency versions recorded | broken install |
 | T01.2 | A | Port discovery by USB VID/PID | wrong port, unknown adapter |
-| T01.3 | A | Config loads; 16 holes; rails A = 1–9, B = 10–16 | edited YAML |
+| T01.3 | A | Config loads; 16 holes; rails A = 1–8, B = 9–16 | edited YAML |
 | T02.1 | A | Boot banner within 3 s of opening the port | wrong firmware, dead board |
 | T02.2 | A | 100 PINGs all answered, p99 < 50 ms | flaky USB link (`comms_drop`) |
 | T02.3 | A | INFO fields; firmware version; safety limits match the YAML | firmware/YAML mismatch |

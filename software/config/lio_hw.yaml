@@ -104,8 +104,10 @@ detectors:
     rf_ohm: 1.0e6
 
 rails:
-  A: {driver: DRV1, ce: CE1, holes: [1, 2, 3, 4, 5, 6, 7, 8, 9], current_ma: 30, led_rating_ma: 20}
-  B: {driver: DRV2, ce: CE2, holes: [10, 11, 12, 13, 14, 15, 16], current_ma: 45}
+  # As built: RAIL A = holes 1-8 (U1, red/black leads), RAIL B = holes 9-16 (U2,
+  # yellow/white leads). Firmware >= 2.5.2 reports its split as INFO rail_b_first.
+  A: {driver: DRV1, ce: CE1, holes: [1, 2, 3, 4, 5, 6, 7, 8], current_ma: 30, led_rating_ma: 20}
+  B: {driver: DRV2, ce: CE2, holes: [9, 10, 11, 12, 13, 14, 15, 16], current_ma: 45}
 
 # Channel map (docs/OPTICAL_CHANNEL_MAP.md). `expect` gives, per detector,
 # signal | weak | none. Detectors not listed are expected to see nothing.
@@ -122,7 +124,7 @@ channels:
   - {hole: 6,  label: "orange", wavelength_nm: 605,  rail: A, fitted: true,  expect: {opt101: signal}}
   - {hole: 7,  label: "red",    wavelength_nm: 630,  rail: A, fitted: true,  expect: {opt101: signal}}
   - {hole: 8,  label: "850",    wavelength_nm: 850,  rail: A, fitted: true,  expect: {opt101: signal, ingaas: signal}}
-  - {hole: 9,  label: "940",    wavelength_nm: 940,  rail: A, fitted: true,  expect: {opt101: signal, ingaas: signal}}
+  - {hole: 9,  label: "940",    wavelength_nm: 940,  rail: B, fitted: true,  expect: {opt101: signal, ingaas: signal}}
   - {hole: 10, label: "white",  wavelength_nm: 450,  rail: B, fitted: true,  expect: {opt101: signal}}   # broadband: 450 nm peak + 550-600 nm phosphor
   - {hole: 11, label: "pink",   wavelength_nm: 450,  rail: B, fitted: true,  expect: {opt101: signal}}   # broadband: 450 nm peak + ~610 nm phosphor
   - {hole: 12, label: "1450",   wavelength_nm: 1450, rail: B, fitted: true,  expect: {ingaas: signal}}
@@ -143,6 +145,10 @@ duty:
   max_on_ms_per_channel:
     A: 1000
     B: 5000
+  # Per-hole caps that override the rail budget. Hole 9's 940 nm LED is rated
+  # 20 mA but sits on RAIL B (45 mA), so it gets RAIL A's overdrive budget.
+  max_on_ms_per_hole:
+    9: 1000
 
 # Power bank A alone powers the +5 V bus (ADS1115, LEDs, shift registers, motor
 # boards) and switches itself off when the load is small. The host wakes it with

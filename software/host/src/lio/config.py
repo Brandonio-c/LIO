@@ -153,6 +153,29 @@ class HwConfig:
     def rail_holes(self, rail: str) -> tuple[int, ...]:
         return tuple(c.hole for c in self.channels if c.rail == rail)
 
+    @property
+    def rail_b_first(self) -> int:
+        """First RAIL B hole; the firmware (>= 2.5.2 INFO ``rail_b_first``) must agree."""
+        return min(self.rail_holes("B"))
+
+    def _hole_duty_ms(self) -> dict[int, float]:
+        raw = self.data.get("duty", {}).get("max_on_ms_per_hole") or {}
+        return {int(h): float(v) for h, v in raw.items()}
+
+    def duty_budgets_ms(self) -> dict[str, float]:
+        """LED duty budgets keyed by :meth:`duty_key`: one per rail plus per-hole caps."""
+        sec = self.section
+        out = {r: sec.num(f"duty.max_on_ms_per_channel.{r}") for r in ("A", "B")}
+        out.update({f"h{h}": v for h, v in self._hole_duty_ms().items()})
+        return out
+
+    def duty_key(self, hole: int) -> str:
+        """Budget key for ``hole``: its own cap (``duty.max_on_ms_per_hole``) or its rail."""
+        return f"h{hole}" if hole in self._hole_duty_ms() else self.channel(hole).rail
+
+    def duty_budget_ms(self, hole: int) -> float:
+        return self.duty_budgets_ms()[self.duty_key(hole)]
+
     def detector_for_adc(self, adc_channel: int) -> str | None:
         for d in self.detectors.values():
             if d.adc_channel == adc_channel:

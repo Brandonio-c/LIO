@@ -394,7 +394,7 @@ _GAIN_NAMES = ("2/3", "1", "2", "4", "8", "16")
 class SimulatedLIO:
     """A simulated LIO V3 controller (firmware v2 behaviour + optics physics)."""
 
-    FW_VERSION = "2.5.1"  # sim.firmware in the config can emulate an older one
+    FW_VERSION = "2.5.2"  # sim.firmware in the config can emulate an older one
     BUILD = "2026-11-16"
 
     def __init__(
@@ -415,6 +415,10 @@ class SimulatedLIO:
         ver = tuple(int(x) for x in self.FW_VERSION.split(".")[:3])
         self.debug_states = ver >= (2, 5, 0)
         self.mains_supported = ver >= (2, 5, 1)
+        self.reports_rail_split = ver >= (2, 5, 2)
+        # The emulated firmware is built for this config's rail split unless
+        # sim.rail_b_first says otherwise (a stale flash).
+        self.rail_b_first = int(cfg.data.get("sim", {}).get("rail_b_first", cfg.rail_b_first))
         self.chamber_open = False  # operator action for T06.4
         sim = cfg.sim
         self._rng = random.Random(sim.integer("seed") if seed is None else seed)
@@ -673,9 +677,8 @@ class SimulatedLIO:
             return 0
         return mask.bit_length()
 
-    @staticmethod
-    def rail_of(hole: int) -> int:
-        return 2 if hole >= 10 else 1
+    def rail_of(self, hole: int) -> int:
+        return 2 if hole >= self.rail_b_first else 1
 
     def _physical_mask(self) -> int:
         """Gate drive actually reaching the MOSFETs (chain/swap faults applied)."""
@@ -1222,6 +1225,7 @@ class _Exec:
             f"arm_token=0x{s.token:04X} hw_wdt=0"
             + (" debug_states=1" if s.debug_states else "")
             + (f" mains={s.mains_hz}" if s.mains_supported else "")
+            + (f" rail_b_first={s.rail_b_first}" if s.reports_rail_split else "")
         )
 
     def c_status(self) -> None:

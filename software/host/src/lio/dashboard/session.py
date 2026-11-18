@@ -849,8 +849,7 @@ class Session:
         if not self._ring_budget:
             return gap
         window_ms = sec.num("duty.window_s") * 1000.0
-        rails = {self.cfg.channel(h).rail for h in holes}
-        budget = min(sec.num(f"duty.max_on_ms_per_channel.{r}") for r in rails)
+        budget = min(self.cfg.duty_budget_ms(h) for h in holes)
         by_duty = on_ms * window_ms / (budget * len(holes))
         return math.ceil(max(by_duty, gap))
 

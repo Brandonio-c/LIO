@@ -5,7 +5,7 @@
 #pragma once
 #include <Arduino.h>
 
-#define LIO_FW_VERSION "2.5.1"
+#define LIO_FW_VERSION "2.5.2"
 #define LIO_PROTO 1
 
 // Build with -DLIO_HW_WDT=1 only for the new (Optiboot) bootloader,
@@ -21,15 +21,15 @@ const uint8_t PIN_CLOCK = A1;  // U1 + U2 pin 11 (SRCLK)
 const uint8_t PIN_LATCH = A2;  // U1 + U2 pin 12 (RCLK)
 // CE1: A3 (A4 in 2.2.2 only, while the old Nano's port C was faulty). 2.3.0 adds
 // Nano R4 (Renesas RA4M1) support; the old ATmega328P Nano still builds.
-const uint8_t PIN_CE1   = A3;  // DRV1 CE -> RAIL A (holes 1-9), 10k pull-down
-const uint8_t PIN_CE2   = 10;  // DRV2 CE -> RAIL B (holes 10-16), 10k pull-down
+const uint8_t PIN_CE1   = A3;  // DRV1 CE -> RAIL A (holes 1-8), 10k pull-down
+const uint8_t PIN_CE2   = 10;  // DRV2 CE -> RAIL B (holes 9-16), 10k pull-down
 // The optional loop-back jumper (U2 pin 9 Q7' -> D11, plan §6.3) is not
 // available: D11 now carries I2C SDA. 0 = no loop-back input; LOOP TEST then
 // reports not_fitted without touching any pin.
 const uint8_t PIN_LOOP  = 0;
 
 const uint8_t N_HOLES = 16;
-const uint8_t RAIL_B_FIRST_HOLE = 10;  // holes 10-16 on RAIL B
+const uint8_t RAIL_B_FIRST_HOLE = 9;   // holes 9-16 on RAIL B (U2), as built; INFO rail_b_first
 
 // ---- ADS1115 over software I2C (softi2c.h) ----
 // The bus runs on two spare digital pins rather than the hardware I2C pins

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-17: Rail split matches the build (firmware 2.5.2)
+
+### Changed
+- **Hole 9 (940 nm) is on RAIL B.** The rig is wired RAIL A = holes 1–8 (U1) and RAIL B = holes 9–16 (U2), but the firmware, config and simulator put hole 9 on RAIL A. So hole 9 stayed dark in a normal measurement and lit only in the wrong-rail state. Fixed in `RAIL_B_FIRST_HOLE` (firmware), `rails` and channel 9 in `lio_hw.yaml`, and the simulator.
+- **Per-hole LED duty caps** (`duty.max_on_ms_per_hole`). Hole 9 is rated 20 mA but now runs at RAIL B's 45 mA, so it keeps the 1 s/min budget.
+
+### Added
+- **Firmware 2.5.2: `INFO rail_b_first`.** `check_compatible` refuses firmware whose rail split differs from the config.
+
 ## 2026-11-17: Software fixes after commissioning (firmware 2.5.1)
 
 ### Added

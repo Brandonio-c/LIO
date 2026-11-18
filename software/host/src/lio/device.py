@@ -172,7 +172,7 @@ class Sweep:
 class DutyTracker:
     """Host-side LED duty budget (approved M0 proposal 7).
 
-    Each channel may be lit for at most ``budget_ms[rail]`` within any
+    Each channel may be lit for at most ``budget_ms[rail_of(hole)]`` within any
     ``window_s``. Before an LED action the device asks how long to cool down;
     the waits are recorded for the report. A single request longer than the
     budget is allowed after the window clears and recorded as over-budget.
@@ -256,8 +256,8 @@ class LIODevice:
         self.duty: DutyTracker | None = (
             DutyTracker(
                 window_s=th.num("duty.window_s"),
-                budget_ms={r: th.num(f"duty.max_on_ms_per_channel.{r}") for r in ("A", "B")},
-                rail_of=lambda h: cfg.channel(h).rail,
+                budget_ms=cfg.duty_budgets_ms(),
+                rail_of=cfg.duty_key,
             )
             if duty
             else None
@@ -541,6 +541,11 @@ class LIODevice:
             raise ProtocolError(
                 f"firmware {f.as_str('fw')} proto {f.as_int('proto')} is not compatible "
                 f"(need >= {self.cfg.fw_min_version}, proto {self.cfg.fw_proto})"
+            )
+        if "rail_b_first" in f and f.as_int("rail_b_first") != self.cfg.rail_b_first:
+            raise ProtocolError(
+                f"firmware puts holes {f.as_int('rail_b_first')}-16 on RAIL B but the config "
+                f"puts holes {self.cfg.rail_b_first}-16 there: re-flash or fix lio_hw.yaml rails"
             )
 
     def reset(self) -> Event:

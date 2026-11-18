@@ -11,7 +11,7 @@ import pytest
 
 from lio.config import HwConfig
 from lio.device import DeviceError, LIODevice, NoResponse
-from lio.protocol import ErrCode
+from lio.protocol import ErrCode, ProtocolError
 from lio.sim import FAULT_NAMES, Faults, FaultSpecError, SimulatedLIO, loop_patterns
 from lio.transport import SimTransport, TransportError
 
@@ -89,6 +89,16 @@ class TestLink:
         assert dev.banner is not None and dev.banner.fields.as_str("fw") == SimulatedLIO.FW_VERSION
         assert dev.boot_s is not None and dev.boot_s < 3.0
         dev.check_compatible()
+        assert dev.info().as_int("rail_b_first") == 9
+
+    def test_rail_split_mismatch_refused(self, cfg: HwConfig) -> None:
+        # firmware flashed for the old 1-9 / 10-16 split must not drive this rig
+        stale = HwConfig(
+            cfg.path, cfg.sha256, {**cfg.data, "sim": {**cfg.data["sim"], "rail_b_first": 10}},
+            cfg.channels, cfg.detectors, cfg.limits,
+        )  # fmt: skip
+        with make(stale) as d, pytest.raises(ProtocolError, match="RAIL B"):
+            d.check_compatible()
 
     def test_ping_latency(self, dev: LIODevice) -> None:
         rtts = [dev.ping() for _ in range(20)]

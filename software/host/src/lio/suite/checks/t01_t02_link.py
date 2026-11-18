@@ -94,8 +94,8 @@ def t01_3(ctx: SuiteContext, rec: Recorder) -> None:
     rails = {r: again.rail_holes(r) for r in ("A", "B")}
     rec.check(
         "rails",
-        "Rails split A = 1-9, B = 10-16",
-        rails["A"] == tuple(range(1, 10)) and rails["B"] == tuple(range(10, 17)),
+        "Rails split A = 1-8, B = 9-16 (as built)",
+        rails["A"] == tuple(range(1, 9)) and rails["B"] == tuple(range(9, 17)),
         f"A={list(rails['A'])} B={list(rails['B'])}",
     )
     # Provisional thresholds are expected until M6; recorded, not judged.

@@ -26,7 +26,7 @@ Holes are numbered clockwise from 12 o'clock on the 35 mm emitter ring of the op
 | 6 | Orange ≈605 nm | U1 Q5 (5) | A / DRV1 | OPT101 |
 | 7 | Red ≈630 nm | U1 Q6 (6) | A / DRV1 | OPT101 |
 | 8 | 850 nm | U1 Q7 (7) | A / DRV1 | OPT101 + InGaAs |
-| 9 | 940 nm | U2 Q0 (15) | A / DRV1 | OPT101 + InGaAs |
+| 9 | 940 nm | U2 Q0 (15) | B / DRV2 | OPT101 + InGaAs |
 | 10 | reserved | U2 Q1 (1) | B / DRV2 | (InGaAs) |
 | 11 | reserved | U2 Q2 (2) | B / DRV2 | (InGaAs) |
 | 12 | 1450 nm | U2 Q3 (3) | B / DRV2 | InGaAs |
@@ -35,7 +35,9 @@ Holes are numbered clockwise from 12 o'clock on the 35 mm emitter ring of the op
 | 15 | 1760 nm | U2 Q6 (6) | B / DRV2 | InGaAs (weak, at cutoff) |
 | 16 | 1850 nm | U2 Q7 (7) | B / DRV2 | none yet |
 
-**Holes 10–11:** fit through-hole 1200 / 1300 nm emitters (RAIL B) when bought. If white or pink LEDs go there instead, wire their anodes to RAIL A and change `isRailB()` in the firmware to `return h >= 11;`.
+**Rails as built:** RAIL A (DRV1, 30 mA) feeds holes 1–8 on U1, with red/black leads. RAIL B (DRV2, ≈45 mA) feeds holes 9–16 on U2, with yellow/white leads. The split is `RAIL_B_FIRST_HOLE = 9` in the firmware and `rails` in `lio_hw.yaml`. Firmware ≥ 2.5.2 reports it as `INFO rail_b_first`, and the host refuses to run if it differs from the config. Hole 9's 940 nm LED is rated 20 mA, so `duty.max_on_ms_per_hole` gives it RAIL A's 1 s/min budget even though it is on RAIL B.
+
+**Holes 10–11** hold white and pink LEDs on RAIL B (`lio_hw.yaml`).
 
 ## Detector coverage
 
@@ -52,6 +54,7 @@ Holes are numbered clockwise from 12 o'clock on the 35 mm emitter ring of the op
 |---|---|---|
 | v1 | 300, 400, blue, green, yellow, orange, red, 890, 1020, 1200, 1300, 1450, 1550, 1650, 1760, 1850 | SMD emitters (300–1300 nm) couldn't be mounted reliably |
 | Rev A (current) | Table above | Through-hole only |
+| Rev A, 2026-11-17 | Unchanged | Hole 9 moved from RAIL A to RAIL B in software, to match the wiring (U2 holes 9–16 on DRV2) |
 
 ## Mechanical notes
 

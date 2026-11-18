@@ -326,8 +326,8 @@ def _estimate(cfg: HwConfig, plan: ScanPlan) -> None:
     th = cfg.section
     duty = DutyTracker(
         window_s=th.num("duty.window_s"),
-        budget_ms={r: th.num(f"duty.max_on_ms_per_channel.{r}") for r in ("A", "B")},
-        rail_of=lambda h: cfg.channel(h).rail,
+        budget_ms=cfg.duty_budgets_ms(),
+        rail_of=cfg.duty_key,
     )
     on_ms = sweep_on_ms(cfg, s)
     t = parts["P0"] + p1

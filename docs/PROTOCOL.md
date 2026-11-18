@@ -71,7 +71,7 @@ Channels are holes 1–16. RAIL A = holes 1–9 (DRV1, CE1 = A3 (A4 in firmware 
 | Command | Response fields |
 |---|---|
 | `PING` | `uptime_ms` |
-| `INFO` | `fw proto build adc_addr adc_ok gain rate settle_ms wdt_a_ms wdt_b_ms wdt_a_cap_ms wdt_b_cap_ms comms_ms arm_ms step_max jog_max jog_v_max jog_acc_max wake_ms_max motion_armed arm_token hw_wdt` (`wake_ms_max` since the POWER WAKE build) |
+| `INFO` | `fw proto build adc_addr adc_ok gain rate settle_ms wdt_a_ms wdt_b_ms wdt_a_cap_ms wdt_b_cap_ms comms_ms arm_ms step_max jog_max jog_v_max jog_acc_max wake_ms_max motion_armed arm_token hw_wdt` (`wake_ms_max` since the POWER WAKE build; `debug_states` since 2.5.0, `mains` since 2.5.1, `rail_b_first` since 2.5.2: the first hole on RAIL B, which the host checks against `lio_hw.yaml`) |
 | `STATUS` | `ch` (lit hole, 0 = none) `ce1 ce2 mask motor1 motor2` (`idle`/`run`) `pos1 pos2 armed armed_ms va vs acc faults wdt_trips failsafe_trips` |
 | `RESET` | `OK RESET`, then the device restarts and prints `# BOOT` |
 
