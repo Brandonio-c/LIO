@@ -7,6 +7,7 @@
 - **Per-hole LED duty caps** (`duty.max_on_ms_per_hole`). Hole 9 is rated 20 mA but now runs at RAIL B's 45 mA, so it keeps the 1 s/min budget.
 
 ### Added
+- **Dashboard runs and scans ask no questions.** Pick what is in the chamber, click Run, and confirm the set-up once (chamber clear, lid closed, earth bond, sample). The run then goes start to finish. Checks only a person could make (did the stage move up?) are recorded as SKIP. Bench steps (walk test, meter, open lid) run only when "Include bench steps" is ticked, and only then does the page ask questions. `PreflightOperator` in `lio.operator`.
 - **Firmware 2.5.2: `INFO rail_b_first`.** `check_compatible` refuses firmware whose rail split differs from the config.
 
 ## 2026-11-17: Software fixes after commissioning (firmware 2.5.1)

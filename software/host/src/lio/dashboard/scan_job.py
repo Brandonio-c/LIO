@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from lio import scan
-from lio.operator import Operator, SimOperator
+from lio.operator import Operator, PreflightOperator, SimOperator
 from lio.results import RunRecord, overall_verdict
 from lio.scan import report as scan_report
 from lio.scan.analysis import analyse
@@ -195,8 +195,8 @@ def sim_stage_if_needed(session: Session) -> None:
 
 
 def make_operator(session: Session, sim_operator: bool) -> Operator:
-    from lio.dashboard.session import WebOperator
-
+    """No questions during a scan: chamber, lid, earth bond and sample were confirmed
+    when it was started (``motion_confirmed`` and the chosen sample)."""
     if session.sim is not None and sim_operator:
         return SimOperator(session.sim)
-    return WebOperator(session)
+    return PreflightOperator(lambda m: session.log(m))

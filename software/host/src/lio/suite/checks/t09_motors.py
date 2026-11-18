@@ -18,6 +18,7 @@ from lio.results import Status
 from lio.suite.core import DETECTORS, Recorder, Skip, SuiteContext, register
 
 SHAFT_DEG_PER_HALF_STEP = 360.0
+UNWATCHED = "not watched: the run was started without prompts (the step counts are checked)"
 
 
 def _op_chamber_clear(ctx: SuiteContext) -> None:
@@ -157,22 +158,26 @@ def t09_2(ctx: SuiteContext, rec: Recorder) -> None:
             msg,
             f"'# MOTOR m={m} steps={steps} ... done'",
         )
-        up = op.confirm(
-            f"motor_up:{m}",
-            f"Did the {name} stage (motor {m}) just move UP "
-            f"a little (about {deg:.0f} degrees of the motor shaft)?",
-        )
-        rec.check(
-            f"{m}/up",
-            f"Operator saw motor {m} ({name}) move up",
-            up,
-            "confirmed"
-            if up
-            else "not seen: if it moved DOWN the +steps convention is "
-            f"reversed; if it did not move, check the driver, coils, pins and supply "
-            f"(motor {m}: {ctx.cfg.section.raw(f'motors.{m}.pins')})",
-            "+steps = up (legacy U direction)",
-        )
+        if not op.attended:
+            rec.add(f"{m}/up", f"Operator saw motor {m} ({name}) move up", Status.SKIP,
+                    UNWATCHED, "+steps = up (legacy U direction)")  # fmt: skip
+        else:
+            up = op.confirm(
+                f"motor_up:{m}",
+                f"Did the {name} stage (motor {m}) just move UP "
+                f"a little (about {deg:.0f} degrees of the motor shaft)?",
+            )
+            rec.check(
+                f"{m}/up",
+                f"Operator saw motor {m} ({name}) move up",
+                up,
+                "confirmed"
+                if up
+                else "not seen: if it moved DOWN the +steps convention is "
+                f"reversed; if it did not move, check the driver, coils, pins and supply "
+                f"(motor {m}: {ctx.cfg.section.raw(f'motors.{m}.pins')})",
+                "+steps = up (legacy U direction)",
+            )
         done, msg = _move(ctx, m, -steps, rpm)
         rec.check(
             f"{m}/minus",
@@ -181,16 +186,20 @@ def t09_2(ctx: SuiteContext, rec: Recorder) -> None:
             msg,
             f"'# MOTOR m={m} steps={steps} ... done'",
         )
-        down = op.confirm(
-            f"motor_down:{m}", f"Did the {name} stage move back DOWN by the same amount?"
-        )
-        rec.check(
-            f"{m}/down",
-            f"Operator saw motor {m} ({name}) move back down",
-            down,
-            "confirmed" if down else "not seen",
-            "returned",
-        )
+        if not op.attended:
+            rec.add(f"{m}/down", f"Operator saw motor {m} ({name}) move back down",
+                    Status.SKIP, UNWATCHED, "returned")  # fmt: skip
+        else:
+            down = op.confirm(
+                f"motor_down:{m}", f"Did the {name} stage move back DOWN by the same amount?"
+            )
+            rec.check(
+                f"{m}/down",
+                f"Operator saw motor {m} ({name}) move back down",
+                down,
+                "confirmed" if down else "not seen",
+                "returned",
+            )
         st = dev.status()
         idle = st.as_str(f"motor{m}") == "idle"
         rec.check(
@@ -469,6 +478,10 @@ def t09_6(ctx: SuiteContext, rec: Recorder) -> None:
             again=a,
         )
     assert ctx.operator is not None
+    if not ctx.operator.attended:
+        rec.add("observed", "Operator: top back at its lowest position and level",
+                Status.SKIP, UNWATCHED, "operator confirms")  # fmt: skip
+        return
     rec.check(
         "observed",
         "Operator: top back at its lowest position and level",

@@ -5,7 +5,7 @@ from collections.abc import Iterator
 import pytest
 
 from lio.config import HwConfig
-from lio.operator import Abort, ConsoleOperator, SimOperator
+from lio.operator import Abort, ConsoleOperator, PreflightOperator, SimOperator, Unattended
 from lio.results import Status
 from lio.sim import SimulatedLIO
 from lio.suite.core import REGISTRY, SuiteContext, catalogue, run_test
@@ -126,3 +126,43 @@ class TestGating:
         assert r.status == Status.PASS
         assert r.sub("T06.4/opt101").measured["delta_counts"] > 1000
         assert ctx.sim is not None and not ctx.sim.chamber_open
+
+
+class TestPreflightOperator:
+    """Runs started with one up-front confirmation never ask anything."""
+
+    def test_setup_questions_answered_others_unattended(self) -> None:
+        op = PreflightOperator(lambda m: None)
+        assert not op.attended
+        for key in ("chamber_clear", "scan_lid_closed", "scan_earth_bond", "scan_sample"):
+            assert op.confirm(key, "?") is True
+        with pytest.raises(Unattended):
+            op.confirm("motor_up:1", "Did it move up?")
+        with pytest.raises(Unattended):
+            op.act("open_chamber", "Open the lid")
+        with pytest.raises(Unattended):
+            op.number("meter_ma:A", "Current", "mA")
+        assert op.text("note", "?") == ""
+
+    def test_motor_test_runs_without_prompts(self, cfg: HwConfig) -> None:
+        catalogue()
+        ctx = sim_context(cfg)
+        ctx.operator = PreflightOperator(lambda m: None)
+        try:
+            r = run_test(ctx, REGISTRY["T09.2"])
+            assert r.status == Status.PASS, r.summary()
+            watched = [s for s in r.subs if s.id.endswith(("/up", "/down"))]
+            assert watched and all(s.status == Status.SKIP for s in watched)
+            assert any(s.id.endswith("/plus") and s.status == Status.PASS for s in r.subs)
+        finally:
+            ctx.dev.close()
+
+    def test_bench_step_is_skipped_not_failed(self, cfg: HwConfig) -> None:
+        catalogue()
+        ctx = sim_context(cfg)
+        ctx.operator = PreflightOperator(lambda m: None)
+        try:
+            r = run_test(ctx, REGISTRY["T06.4"])
+            assert r.status == Status.SKIP and "bench" in r.message
+        finally:
+            ctx.dev.close()

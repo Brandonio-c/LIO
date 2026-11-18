@@ -21,7 +21,21 @@ class Abort(Exception):
     """The operator aborted the test."""
 
 
+class Unattended(Exception):
+    """A question nobody is there to answer (a run started without prompts).
+
+    The test runner records the test as skipped with the question as the reason."""
+
+
+# Set-up questions that the confirmation given when a run starts already answers
+# ("chamber clear, lid closed, earth bond on, sample in place: go").
+PREFLIGHT_KEYS = frozenset({"chamber_clear", "scan_lid_closed", "scan_earth_bond", "scan_sample"})
+
+
 class Operator(abc.ABC):
+    #: False when nobody watches the run: checks then skip what only a person could see.
+    attended: bool = True
+
     @abc.abstractmethod
     def inform(self, message: str) -> None:
         """Show a message; no answer needed."""
@@ -44,6 +58,40 @@ class Operator(abc.ABC):
 
 
 ABORT_WORDS = ("a", "abort")
+
+
+class PreflightOperator(Operator):
+    """No questions during the run.
+
+    The person confirmed the set-up (chamber clear, lid closed, earth bond, sample)
+    when they started it, so those questions are answered yes. Anything else (watch
+    a stage, read a meter, open the lid) raises :class:`Unattended`; checks that
+    know about ``attended`` skip just that observation instead.
+    """
+
+    attended = False
+
+    def __init__(self, log: Callable[[str], None] = print) -> None:
+        self._log = log
+        self.answers: dict[str, object] = {}
+
+    def inform(self, message: str) -> None:
+        self._log(f"[run] {message}")
+
+    def act(self, key: str, prompt: str) -> None:
+        raise Unattended(f"needs someone at the bench: {prompt}")
+
+    def confirm(self, key: str, prompt: str) -> bool:
+        if key in PREFLIGHT_KEYS:
+            self.answers[key] = True
+            return True
+        raise Unattended(f"needs someone at the bench: {prompt}")
+
+    def number(self, key: str, prompt: str, unit: str) -> float | None:
+        raise Unattended(f"needs someone at the bench: {prompt}")
+
+    def text(self, key: str, prompt: str) -> str:
+        return ""
 
 
 class ConsoleOperator(Operator):

@@ -23,7 +23,7 @@ from typing import Any, NoReturn
 from lio.analysis import Stats, detect_level
 from lio.config import HwConfig, Section
 from lio.device import Cancelled, DeviceError, LIODevice, Meas, NoResponse
-from lio.operator import Abort, Operator
+from lio.operator import Abort, Operator, Unattended
 from lio.results import Status, SubResult, TestResult, worst
 from lio.sim import SimulatedLIO
 
@@ -401,6 +401,9 @@ def run_test(ctx: SuiteContext, t: TestDef) -> TestResult:
     except Skip as s:
         result.status = Status.SKIP
         rec.note(str(s))
+    except Unattended as u:
+        result.status = Status.SKIP
+        rec.note(str(u))
     except (Abort, Cancelled) as a:
         result.status = Status.SKIP
         rec.note(str(a))

@@ -484,14 +484,14 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
         <span class="muted">or run one subsystem from its tile below</span>
       </div>
       <div style="display:grid;gap:6px;grid-template-columns:1fr 1fr">
-        <label class="check"><input type="checkbox" id="opt-operator"><span>Include operator steps<br><span class="muted">walk test, rail current with a meter, ambient light</span></span></label>
-        <label class="check"><input type="checkbox" id="opt-motion"><span>Include motor tests<br><span class="muted">someone at the bench, chamber clear</span></span></label>
+        <label class="check"><input type="checkbox" id="opt-operator"><span>Include bench steps (asks questions)<br><span class="muted">walk test, rail current with a meter, ambient light</span></span></label>
+        <label class="check"><input type="checkbox" id="opt-motion" checked><span>Include motor tests and the height scan<br><span class="muted">no questions: you confirm the set-up once when you start</span></span></label>
         <label class="check"><input type="checkbox" id="opt-compare"><span>Compare with latest baseline<br><span id="baseline-name" class="muted">none saved yet</span></span></label>
         <label class="check"><input type="checkbox" id="opt-save"><span>Save as baseline<br><span class="muted">whole-system runs that are not NOT FUNCTIONAL</span></span></label>
         <label class="check sim-only hidden"><input type="checkbox" id="opt-simop" checked><span>Simulator answers operator prompts<br><span class="muted">untick to practise answering them</span></span></label>
       </div>
       <div class="row" style="margin-top:10px">
-        <label class="field">Sample id<input id="sample-id" type="text" value="none-empty-chamber"></label>
+        <label class="field">In the chamber<select id="sample-id"><option value="empty">empty</option></select></label>
         <label class="field">Operator<input id="operator" type="text" placeholder="your name"></label>
         <label class="field" style="flex:1">Notes<input id="notes" type="text" placeholder="optional"></label>
       </div>
@@ -625,7 +625,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
     </details>
     <div class="row" style="margin-top:10px;gap:18px">
       <label class="check"><input type="checkbox" id="scan-hb-on" checked><span>Operator heartbeat: pause if this page is quiet for the timeout</span></label>
-      <label class="check hw-only"><input type="checkbox" id="scan-bench"><span>Someone is at the bench and the chamber is clear (the top will move)</span></label>
+      <label class="check hw-only"><input type="checkbox" id="scan-bench"><span>Chamber clear, lid closed, earth bond connected, sample in place (no questions during the scan; the top will move)</span></label>
       <label class="check sim-only hidden"><input type="checkbox" id="scan-simop" checked><span>Simulator answers the operator questions</span></label>
     </div>
     <pre id="scan-plan" class="mono" style="margin-top:10px;white-space:pre-wrap">Preview the plan to see the heights, duration and LED duty.</pre>
@@ -717,10 +717,10 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
 </div></div>
 
 <div class="overlay" id="motion-overlay"><div class="modal" role="dialog" aria-modal="true">
-  <div class="tag">Motor tests</div>
-  <div class="q">The motor tests move both stages by small amounts and back. <strong>Is someone at the bench, with the chamber clear?</strong></div>
-  <div class="note">Watch the direction of each move: + must be up. Use “All off / Stop” at any time.</div>
-  <div class="row" style="justify-content:flex-end"><button class="btn" id="motion-no">Cancel</button><button class="btn primary" id="motion-yes">Yes, start</button></div>
+  <div class="tag">Ready to run</div>
+  <div class="q">In the chamber: <strong id="ready-sample">empty</strong>.<br>The chamber is clear for the top to move, the lid is closed and the earth bond is connected?</div>
+  <div class="note">The run then goes start to finish with no questions; the top moves through its travel. Use “All off / Stop” at any time. Checks that need someone to watch (did the stage move up?) are skipped; the step counts and detectors are still checked.</div>
+  <div class="row" style="justify-content:flex-end"><button class="btn" id="motion-no">Cancel</button><button class="btn primary" id="motion-yes">Go</button></div>
 </div></div>
 
 <div class="overlay" id="mix-overlay"><div class="modal" role="dialog" aria-modal="true" aria-label="Combined ingredients" style="width:min(1150px,96vw);max-height:90vh;overflow:auto">
@@ -1051,7 +1051,7 @@ function runOptions() {
 }
 function startRun(modules, overrides = {}) {
   const body = { modules, ...runOptions(), ...overrides };
-  if (body.allow_motion && !S.is_sim) { pendingRun = body; $("motion-overlay").classList.add("open"); return; }
+  if (!S.is_sim) { pendingRun = body; $("ready-sample").textContent = body.sample_id || "empty"; $("motion-overlay").classList.add("open"); return; }
   if (body.allow_motion) body.motion_confirmed = true;
   act("/api/run", body);
 }
@@ -1179,12 +1179,12 @@ async function scanPreview() {
 }
 async function scanStart() {
   const sim = S && S.is_sim, bench = $("scan-bench").checked;
-  if (!sim && !bench) { toast("Tick 'Someone is at the bench' first: the top will move.", 7000); return; }
+  if (!sim && !bench) { toast("Tick the set-up box first (chamber clear, lid closed, sample in place): the top will move.", 7000); return; }
   await scanAct("/api/scan/start", { mode: $("scan-mode").value, sample_id: scanSample(), overrides: scanOverrides(),
     heartbeat: $("scan-hb-on").checked, motion_confirmed: bench, sim_operator: $("scan-simop").checked });
 }
 function scanResume(run) {
-  if (!(S && S.is_sim) && !$("scan-bench").checked) { toast("Tick 'Someone is at the bench' first: the top will move.", 7000); return; }
+  if (!(S && S.is_sim) && !$("scan-bench").checked) { toast("Tick the set-up box first (chamber clear, lid closed, sample in place): the top will move.", 7000); return; }
   scanAct("/api/scan/start", { resume: run, heartbeat: $("scan-hb-on").checked, motion_confirmed: $("scan-bench").checked, sim_operator: $("scan-simop").checked });
 }
 // The heartbeat runs in a Web Worker: its timer keeps going when the tab is hidden.
@@ -2473,6 +2473,7 @@ async function dbShow() {
   $("fault-names").innerHTML = STATIC.faults.map((f) => `<option value="${esc(f)}">`).join("");
   $("baseline-name").textContent = STATIC.baseline ? STATIC.baseline.split("/").pop() : "none saved yet";
   $("opt-compare").disabled = !STATIC.baseline;
+  if (STATIC.scan) $("sample-id").innerHTML = STATIC.scan.sample_ids.map((x) => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
   buildTwin(); motorSetup(); ringSetup(); dbSetup(); await loadPorts(); await poll(true); loadRuns();
   showView(location.hash.slice(1));
   setInterval(poll, STATIC.poll_ms);

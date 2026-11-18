@@ -30,7 +30,7 @@ from lio import baseline as bl
 from lio import scan
 from lio.config import HwConfig
 from lio.device import BootTimeout, DeviceError, LIODevice, Sweep
-from lio.operator import Abort, Operator, SimOperator
+from lio.operator import Abort, Operator, PreflightOperator, SimOperator
 from lio.results import RunRecord, Status, TestResult, Verdict
 from lio.sim import FAULT_NAMES, Faults, SimulatedLIO
 from lio.stage import StageError, tracker_for
@@ -328,7 +328,7 @@ class Session:
             if self._ring is not None:
                 raise Busy("the LED ring is running: stop it first")
             if allow_motion and not motion_confirmed:
-                raise Refused("motion tests need confirmation that someone is at the bench")
+                raise Refused("motion tests need confirmation that the chamber is clear")
             ids = self.select(modules, interactive=interactive, allow_motion=allow_motion)
             if not ids:
                 raise Refused("no tests match that selection")
@@ -343,8 +343,11 @@ class Session:
             operator: Operator | None = None
             if self.sim is not None and sim_operator:
                 operator = SimOperator(self.sim)
-            elif interactive or allow_motion:
-                operator = WebOperator(self)
+            elif interactive:
+                operator = WebOperator(self)  # bench steps: the page asks each question
+            elif allow_motion:
+                # No questions during the run: the set-up was confirmed on starting it.
+                operator = PreflightOperator(lambda m: self.log(m))
             ctx = SuiteContext(
                 dev,
                 self.cfg,
