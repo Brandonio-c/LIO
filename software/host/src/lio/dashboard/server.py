@@ -468,6 +468,8 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json(s.stage_set_top())
             elif path == "/api/stage/mark_bottom":
                 return self._json(s.stage_mark_bottom())
+            elif path == "/api/stage/goto":
+                return self._json(s.stage_goto(str(b.get("where") or "")))
             elif path == "/api/motor/arm":
                 return self._json(s.motor_arm())
             elif path == "/api/motor/move":

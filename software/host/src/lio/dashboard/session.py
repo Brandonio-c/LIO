@@ -724,6 +724,29 @@ class Session:
             self._jog_thread.start()
         return out
 
+    def stage_goto(self, where: str) -> dict[str, Any]:
+        """Move both motors together to the top (or bottom) of the tracked travel: a
+        continuous jog that the soft limits stop just short of the marked end (so the
+        chamber can be opened). STOP, All off and the dead-man stop it like any jog."""
+        if where not in ("top", "bottom"):
+            raise Refused("where must be top or bottom")
+        dev = self._device()
+        st = dev.stage
+        if st is None or not st.known:
+            raise Refused("the top position is not tracked: set the top first")
+        if not st.valid:
+            raise Refused("the position is not trusted (unexpected reset): set the top again")
+        lim = st.limits
+        if (lim.top if where == "top" else lim.bottom) is None:
+            raise Refused(f"the {where} of the travel is not marked")
+        speed = self.cfg.thresholds.integer("motion.travel.jog_speed")
+        out = self.jog_start("both", "up" if where == "top" else "down", speed)
+        with self._lock:
+            if self._jog is not None:
+                self._jog["goto"] = where
+        self.log(f"going to the {where} of the travel (both motors, {speed} half-steps/s)")
+        return {**out, "goto": where}
+
     def jog_stop(self, reason: str = "stop pressed") -> dict[str, Any]:
         with self._lock:
             was, self._jog = self._jog, None
@@ -782,7 +805,12 @@ class Session:
                             if self._jog is jog:
                                 self._jog = None
                         side = "top" if jog["sign"] > 0 else "bottom"
-                        self.log(f"continuous move stopped near the {side} soft limit")
+                        if jog.get("goto"):
+                            self.log(
+                                f"reached the {side} of the travel (stopped at the soft limit)"
+                            )
+                        else:
+                            self.log(f"continuous move stopped near the {side} soft limit")
                         return
                 if all(v == "idle" for v in states.values()):
                     with self._lock:
