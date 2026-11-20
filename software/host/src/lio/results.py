@@ -115,10 +115,11 @@ def overall_verdict(
     - NOT FUNCTIONAL: any FAIL/ERROR in an automatic T02, T03, T04 or T10 test; any FAIL that is
       not tied to a channel (e.g. InGaAs polarity); or more than
       ``max_channel_fails`` failing channels outside ``limited_holes``.
-    - DEGRADED: only WARNs, failures on the expected-limited channels, or at
-      most ``max_channel_fails`` other failing channels (interpretation of the
+    - DEGRADED: failures on the expected-limited channels, or at most
+      ``max_channel_fails`` other failing channels (interpretation of the
       plan, which leaves 1-2 channel FAILs unclassified).
-    - FUNCTIONAL: no FAILs and no WARNs.
+    - FUNCTIONAL: no FAILs. Warnings alone still count as FUNCTIONAL (listed in
+      the reasons): the rig is usable, with known soft issues.
     """
     reasons: list[str] = []
     failing = [r for r in results if r.status.rank >= Status.FAIL.rank]
@@ -153,10 +154,12 @@ def overall_verdict(
         reasons.append(f"failing channels: {', '.join(map(str, real))}")
     if limited:
         reasons.append(f"failures on expected-limited channels: {', '.join(map(str, limited))}")
-    if warns:
-        reasons.append(f"warnings: {', '.join(warns)}")
-    if reasons:
+    if real or limited:
+        if warns:
+            reasons.append(f"warnings: {', '.join(warns)}")
         return OverallVerdict(Verdict.DEGRADED, reasons)
+    if warns:
+        return OverallVerdict(Verdict.FUNCTIONAL, [f"warnings: {', '.join(warns)}"])
     return OverallVerdict(Verdict.FUNCTIONAL, ["no failures or warnings"])
 
 

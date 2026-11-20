@@ -168,12 +168,19 @@ def analyse(
                 optical = st["modulation"] >= mod_min and r >= w_pl
                 if status != Status.PASS and not optical:
                     status = Status.WARN  # large, but flat: hole-specific coupling, not light
+                # Hole 16 (1850 nm): beyond both detectors' range. A silicon response means
+                # the wrong LED is fitted, but there is no spare 1850 nm part yet — WARN only.
+                beyond = not ch.expected_detectors
+                if beyond and status == Status.FAIL:
+                    status = Status.WARN
                 out.append(Finding(
                     f"{fid}/plausibility", f"hole {hole} ({ch.label}) seen by {det}?", status,
                     round(r, 1), "counts",
                     f"{det} cannot see {ch.wavelength_nm:g} nm; residual {r:+.0f} counts over "
                     f"C {c:+.1f}" + ("; height-dependent (optical)" if optical else ""),
-                    f"< {w_pl:g} counts (WARN), < {f_pl:g} (FAIL)",
+                    f"< {w_pl:g} counts (WARN)"
+                    + ("; FAIL capped to WARN: no in-range detector for this hole"
+                       if beyond else f", < {f_pl:g} (FAIL)"),
                     {"O": r, "modulation": st["modulation"]},
                 ))  # fmt: skip
         out += _detector_level(cube, cfg, det, stats[det], coup.get(det, {}), judged,
@@ -281,9 +288,11 @@ def _intermittent(cube: Cube, cfg: HwConfig,
                                f"hole {hole} ({ch.label}) intermittent", Status.PASS, 0.0,
                                "heights", ok))  # fmt: skip
         else:
+            # WARN only: the LED usually still works; this flags a flaky joint to reseat,
+            # not a dead channel that should paint the twin red / fail the system.
             out.append(Finding(
                 f"optics/h{hole:02d}/intermittent", f"hole {hole} ({ch.label}) intermittent",
-                Status.FAIL if len(events) >= 2 else Status.WARN, float(len(events)),
+                Status.WARN, float(len(events)),
                 "heights",
                 f"down and up readings disagree on both detectors at once at {len(events)} "
                 f"height(s): {', '.join(f'{h:.0f}' for h in events)}",

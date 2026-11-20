@@ -61,6 +61,22 @@ def test_tracker_basics(tmp_path: Path) -> None:
     assert again.abs == (-300, -300) and again.summary()["range"] == [300, 300]
 
 
+def test_set_top_rebases_bottom_to_keep_physical_height(tmp_path: Path) -> None:
+    """Redefining top lower (e.g. after light leaked at the old top) must shorten
+    the marked travel, not leave the old bottom and invent extra downward range."""
+    tr = StageTracker(tmp_path / "s.json")
+    tr.set_top((0, 0))
+    tr.observe(-400000, -400000)
+    tr.mark_bottom()
+    assert tr.limits.bottom == (-400000, -400000)
+    # Operator lowers to a light-tight height and sets top there.
+    tr.observe(-90000, -90000)
+    tr.set_top((10, 10))
+    assert tr.abs == (0, 0)
+    assert tr.limits.bottom == (-310000, -310000)
+    assert tr.summary()["range"] == [310000, 310000]
+
+
 def test_position_survives_reconnect_and_reset(cfg: HwConfig, tmp_path: Path) -> None:
     path = tmp_path / "stage.json"
     sim = SimulatedLIO(cfg, Faults.parse(None))

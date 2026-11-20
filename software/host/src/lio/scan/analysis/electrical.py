@@ -330,11 +330,19 @@ def select_only(cube: Cube, cfg: HwConfig) -> list[Finding]:
         holes, net = holes[ok], net[ok]
         i = int(np.argmax(np.abs(net)))
         worst = float(abs(net[i]))
+        hole = int(holes[i])
+        # Gate-drive pickup with CE low: the LED is not on. Cap at WARN so a few
+        # tens of counts of coupling do not paint a working hole red / fail the rig.
+        status = grade(worst, w, f)
+        if status == Status.FAIL:
+            status = Status.WARN
+        # Name the worst hole so the twin/verdict attribute it (not "untied").
         out.append(Finding(
-            f"elec/{det}/select_only", f"{det}: select-only coupling (MOSFET on, CE low)",
-            grade(worst, w, f), round(worst, 1), "counts",
-            f"largest on hole {int(holes[i])}: {net[i]:+.1f} counts",
-            f"< {w:g} counts (WARN), < {f:g} (FAIL)",
+            f"elec/{det}/h{hole:02d}/select_only",
+            f"{det}: select-only coupling (MOSFET on, CE low)",
+            status, round(worst, 1), "counts",
+            f"largest on hole {hole}: {net[i]:+.1f} counts",
+            f"< {w:g} counts (WARN); FAIL capped to WARN (gate coupling, LED off)",
             {"per_hole": {int(h): float(v) for h, v in zip(holes, net, strict=True)}},
         ))  # fmt: skip
     return out

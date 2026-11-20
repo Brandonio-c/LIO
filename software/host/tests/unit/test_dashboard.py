@@ -100,7 +100,15 @@ class TestTwin:
 
     def test_safety_watchdog_failure_on_one_rail_is_not_excused(self, cfg: HwConfig) -> None:
         r = result("T10.2", ("A/h03/off", Status.FAIL), ("B/h13/off", Status.PASS))
-        assert twin.parts([r], cfg)["safety"]["status"] == "FAIL"
+        p = twin.parts([r], cfg)
+        assert p["safety"]["status"] == "FAIL"
+        # T10.2 names rails in its probe ids; that must not paint DRV1/DRV2 red.
+        assert p["rails"]["A"]["status"] == twin.NOT_RUN
+        assert p["rails"]["B"]["status"] == twin.NOT_RUN
+
+    def test_hole16_plausibility_is_warn_on_the_twin(self, cfg: HwConfig) -> None:
+        r = result("T13.1", ("optics/opt101/h16/plausibility", Status.FAIL), kind="M")
+        assert twin.parts([r], cfg)["holes"]["16"]["status"] == "WARN"
 
     def test_subsystem_tiles_and_partial_verdict(self, cfg: HwConfig) -> None:
         rs = [

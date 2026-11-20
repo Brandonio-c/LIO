@@ -5,16 +5,19 @@ the port is opened or the board is RESET, and the rig has no limit switches. So 
 host keeps the real position in a small JSON file and carries it from one connection
 to the next:
 
-- **Reference:** half-steps from the top of the travel, which is the stage's physical
-  upper end. Top = 0, lower positions are negative (+steps = up, ``motors.positive``).
+- **Reference:** half-steps from the top of the travel. Top = 0, lower positions are
+  negative (+steps = up, ``motors.positive``). **Top means the highest light-tight
+  position** (telescoping sleeves still overlapping) — not “as high as the motors
+  will physically go”, which can open the chamber to ambient light.
 - **Tracking:** :class:`lio.device.LIODevice` rebases the tracker whenever the counters
   restart (open, RESET) and reports every position the firmware gives (STATUS, MOTOR
   STOP, ``# MOTOR ... done``). A move made while no host is connected (e.g. by hand,
   or by ``lio_motor_control.py`` on another computer) is not seen: set the top again
   (``lio stage set-top``) after one.
-- **Limits:** ``top`` is set where the stage cannot go higher; ``bottom`` is marked by
-  the operator at the lowest safe position. Once both are known, moves that would
-  leave the range are refused (:meth:`StageTracker.check_move`).
+- **Limits:** ``top`` is the light-tight upper end; ``bottom`` is marked by the
+  operator at the lowest safe position. Once both are known, moves that would leave
+  the range are refused (:meth:`StageTracker.check_move`). Soft limits also keep
+  ``stage.top_margin_steps`` below the marked top.
 """
 
 from __future__ import annotations
@@ -173,20 +176,35 @@ class StageTracker:
     # ------------------------------------------------------------ operator marks
 
     def set_top(self, fw: tuple[int, int]) -> None:
-        """The stage is at the top of its travel now: position 0 on both motors.
+        """The stage is at the (light-tight) top of its travel now: position 0.
 
-        ``fw`` is the firmware's current counters. A bottom mark that would now lie
+        ``fw`` is the firmware's current counters. If a bottom mark exists and the
+        previous absolute position is known, the bottom is shifted by the same
+        amount so it still names the same physical height (redefining top lower
+        must not pretend the travel is longer). A bottom that would now lie at or
         above the top is cleared."""
         with self._lock:
+            old_abs = self.abs
+            old_bottom = self.data.get("bottom")
             self.data["abs"] = [0, 0]
             self.data["top"] = [0, 0]
             self.data["valid"] = True
             self.data.pop("invalid_reason", None)
-            b = self.data.get("bottom")
-            if b is not None and (b[0] >= 0 or b[1] >= 0):
-                self.data["bottom"] = None
+            if old_bottom is not None and old_abs is not None:
+                # Keep the physical bottom: new_bottom = old_bottom - old_abs.
+                shifted = [int(old_bottom[i]) - int(old_abs[i]) for i in range(2)]
+                self.data["bottom"] = shifted if shifted[0] < 0 and shifted[1] < 0 else None
+            else:
+                b = self.data.get("bottom")
+                if b is not None and (b[0] >= 0 or b[1] >= 0):
+                    self.data["bottom"] = None
             self._fw_base, self._abs_base = fw, (0, 0)
-            self._log("set_top", fw=list(fw))
+            self._log(
+                "set_top",
+                fw=list(fw),
+                previous_abs=list(old_abs) if old_abs else None,
+                bottom=self.data.get("bottom"),
+            )
             self._save()
 
     def mark_bottom(self) -> None:
@@ -216,9 +234,9 @@ class StageTracker:
     def check_move(self, motor: int, steps: int, margin_top: int = 0) -> None:
         """Raise StageError if moving ``motor`` by ``steps`` leaves the marked range.
 
-        The top is a hard physical end, so moves stay ``margin_top`` below it. With a
-        limit not yet marked, that side is not limited; with the position unknown,
-        nothing is (the operator is in charge)."""
+        The top is the light-tight upper end, so moves stay ``margin_top`` below it.
+        With a limit not yet marked, that side is not limited; with the position
+        unknown, nothing is (the operator is in charge)."""
         a = self.abs
         if a is None:
             return

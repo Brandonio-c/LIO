@@ -11,6 +11,11 @@ REVERSED_ADVICE = (
     "the InGaAs photodiode is reversed: swap its two leads at the TIA input (anode <-> "
     "cathode), then rerun T06.2"
 )
+# Gate already proved the diode polarity: a single negative hole is that channel, not D1.
+HOLE_NEG_ADVICE = (
+    "this hole went negative while other InGaAs holes are positive — the photodiode is "
+    "not reversed. Check this LED/MOSFET (intermittent joint, wrong part, or flaky contact)"
+)
 NEG_RAIL_ADVICE = (
     "the -5 V rail looks missing (bank B asleep?): check the -5 V supply at the TIA op-amp "
     "and that bank B stays powered"
@@ -118,7 +123,7 @@ def t06_2(ctx: SuiteContext, rec: Recorder) -> None:
             f"{hole_id(h)}/polarity",
             f"Hole {h} InGaAs polarity",
             not rev,
-            f"net {net:+d}" + (f"; {REVERSED_ADVICE}" if rev else ""),
+            f"net {net:+d}" + (f"; {HOLE_NEG_ADVICE}" if rev else ""),
             "net not negative",
             net=net,
         )
@@ -154,19 +159,38 @@ def t06_3(ctx: SuiteContext, rec: Recorder) -> None:
     ratios: dict[int, float] = {}
     for h in shared:
         m = chans[h].meas
-        both = all(
-            classify(ctx, d, m.net(d), n, expect=Level.SIGNAL).level == Level.SIGNAL
+        levels = {
+            d: classify(ctx, d, m.net(d), n, expect=Level.SIGNAL).level
             for d in ("opt101", "ingaas")
-        )
+        }
+        both_signal = all(lv == Level.SIGNAL for lv in levels.values())
+        both_seen = all(lv != Level.NONE for lv in levels.values())
         ratio = m.net("ingaas") / m.net("opt101") if m.net("opt101") else float("nan")
-        if both:
+        if both_signal:
             ratios[h] = ratio
+            msg = f"InGaAs/OPT101 = {ratio:.3f}"
+        elif both_seen:
+            # Weak on one side (often InGaAs at the sealed top) is not a dead LED —
+            # the full travel scan is the better check. Record ratio when possible.
+            if m.net("opt101"):
+                ratios[h] = ratio
+            msg = (
+                f"both respond but one is weak "
+                f"(opt101={levels['opt101']}, ingaas={levels['ingaas']}; "
+                f"ratio {ratio:.3f})"
+            )
+        else:
+            missing = [d for d, lv in levels.items() if lv == Level.NONE]
+            msg = f"no response on {missing}"
+        # FAIL only when a detector is dark; weak cross-cal → WARN.
         rec.check(
             f"{hole_id(h)}",
             f"Hole {h} seen by both detectors",
-            both,
-            f"InGaAs/OPT101 = {ratio:.3f}" if both else "one detector does not respond",
+            both_signal,
+            msg,
             "both above the detection threshold",
+            warn=both_seen and not both_signal,
             ratio=ratio,
+            levels=levels,
         )
     rec.measure(ingaas_over_opt101=ratios)

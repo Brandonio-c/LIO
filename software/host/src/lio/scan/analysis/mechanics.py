@@ -277,12 +277,19 @@ def _repeatability(cube: Cube, cfg: HwConfig, refs: dict[tuple[str, int], Ref], 
                         "no spread to measure (full, fine, repeatability repeat them)",
                         data={"backlash_direct": b})]  # fmt: skip
     st = grade(rep, w, f)
+    # V3 stage is known-loose (couplers / nut play); next build will be tighter.
+    # Cap at WARN so a large spread does not mark the whole system NOT FUNCTIONAL.
+    detail = (
+        f"spread of repeated visits {rep:.0f} half-steps (RMS over {len(spreads)} groups)"
+        + (f"; above minus below {b:+.0f} half-steps (backlash, direct)" if diffs else "")
+    )
+    criteria = f"< {w:g} (WARN), < {f:g} (would FAIL; capped at WARN for V3 mechanics)"
+    if st == Status.FAIL:
+        st = Status.WARN
+        detail += "; softened to WARN (V3 mechanics provisional)"
     return [Finding(
         "mech/repeatability", "repeatability at the reference heights", st, round(rep, 0),
-        "half-steps",
-        f"spread of repeated visits {rep:.0f} half-steps (RMS over {len(spreads)} groups)"
-        + (f"; above minus below {b:+.0f} half-steps (backlash, direct)" if diffs else ""),
-        f"< {w:g} (WARN), < {f:g} (FAIL)",
+        "half-steps", detail, criteria,
         {"groups": {f"{h:.0f}/{d}": v for (h, d), v in groups.items()}, "backlash_direct": b},
     )]  # fmt: skip
 

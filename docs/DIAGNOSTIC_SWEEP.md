@@ -8,7 +8,7 @@ One run moves the chamber top through its travel. At every height it measures ev
 
 ## 1. Before a run (hardware)
 
-1. **Mark the travel limits.** On the Motors tab, raise the top to its upper end and press *Set top here*. Lower it to the lowest safe position and press *Mark bottom here*. Or use `lio stage set-top` / `lio stage mark-bottom`.
+1. **Mark the travel limits.** On the Motors tab, raise the top to its highest **light-tight** height (telescoping sleeves still overlapping — not as high as the motors can physically go) and press *Set top here*. Lower it to the lowest safe position and press *Mark bottom here*. Or use `lio stage set-top` / `lio stage mark-bottom`. Soft limits keep `stage.top_margin_steps` (~4 mm) below the marked top so the seal cannot open.
    - The position is kept in `test_results/stage_position.json`.
    - After an unexpected board reset the position is marked *not trusted*. Scans then refuse to start until the top is set again.
 2. **Put the sample in:** `empty`, `white_ptfe`, `black_cup`, or a food (`food` / `LIO-F-xxxxx`).

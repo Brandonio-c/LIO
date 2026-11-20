@@ -56,12 +56,16 @@ def t07_1(ctx: SuiteContext, rec: Recorder) -> None:
             continue
         det, s = got
         if not ctx.is_lit(det, s.plateau):
+            # No usable step at this height (common for SWIR at the sealed top) —
+            # WARN so the twin does not paint the LED dead; T05 / the full scan
+            # judge whether the channel actually works across travel.
             rec.check(
                 sub,
                 f"Hole {hole} step response",
                 False,
                 f"no step on {det} (baseline {s.baseline:.0f}, plateau {s.plateau:.0f})",
                 "a step above the detection threshold",
+                warn=True,
             )
             continue
         if s.within_first_sample:

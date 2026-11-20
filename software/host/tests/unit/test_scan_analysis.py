@@ -173,7 +173,8 @@ def test_plausibility_flags_a_visible_hole_on_the_wrong_detector(
 ) -> None:
     a = analyse(write_run(tmp_path, cfg, o={(16, "opt101"): 2000.0}), cfg)
     f = a.get("optics/opt101/h16/plausibility")
-    assert f.status == Status.FAIL and f.value == pytest.approx(2000, rel=0.05)
+    # Hole 16 has no in-range detector: wrong LED is WARN (known, no spare part yet).
+    assert f.status == Status.WARN and f.value == pytest.approx(2000, rel=0.05)
 
 
 def test_dark_offset_and_equivalent_current(cfg: HwConfig, tmp_path: Path) -> None:

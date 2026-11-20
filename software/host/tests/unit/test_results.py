@@ -87,8 +87,9 @@ class TestVerdict:
         v, reasons = _verdict(r)
         assert v == Verdict.DEGRADED and "expected-limited" in reasons[0]
 
-    def test_warnings_degraded(self) -> None:
-        assert _verdict(_r("T07.2", ("settle", Status.WARN)))[0] == Verdict.DEGRADED
+    def test_warnings_still_functional(self) -> None:
+        v, reasons = _verdict(_r("T07.2", ("settle", Status.WARN)))
+        assert v == Verdict.FUNCTIONAL and "warnings" in reasons[0]
 
 
 class TestRunRecord:

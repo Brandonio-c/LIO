@@ -698,8 +698,14 @@ class LIODevice:
         t0 = self.now()
         reply = self.command(f"SWEEP {s} {k}", timeout=16 * self.meas_timeout(s, k))
         records = [Meas.from_fields(e.fields) for e in reply.events if e.name == "M"]
+        # Attribute on-time sequentially: sharing one t0 for every hole made the
+        # end-of-run "max ms/min" look like the whole-run total (all flashes piled
+        # into one window) and defeated cool-down once wall time left that pile.
+        t = t0
         for m in records:
-            self._record_duty(m.hole, t0, t0 + m.t_on_ms / 1000.0)
+            dur_s = max(m.t_on_ms, 0) / 1000.0
+            self._record_duty(m.hole, t, t + dur_s)
+            t += dur_s if dur_s > 0 else per_ms / 1000.0
         return Sweep(records, reply.fields.as_int("dur_ms"))
 
     def dbg_state(self, state: str, arg: int, settle_ms: int, n: int) -> Fields:

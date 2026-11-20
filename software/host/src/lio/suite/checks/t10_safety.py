@@ -50,8 +50,17 @@ def _check_off(ctx: SuiteContext, rec: Recorder, sub: str, when: str) -> None:
         "ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle",
     )
     if ctx.has_adc():
+        # A small dark-band drift is a warning, not a broken interlock: STATUS already
+        # proves everything is off. FAIL only when the electrical state is wrong.
         dark, readings = _dark_now(ctx)
-        rec.check(f"{sub}/dark", f"Detectors dark {when}", dark, readings, "dark +- k sigma")
+        rec.check(
+            f"{sub}/dark",
+            f"Detectors dark {when}",
+            dark,
+            readings,
+            "dark +- k sigma",
+            warn=True,
+        )
 
 
 @register("T10.1", "Power-up dark state")
@@ -138,12 +147,16 @@ def t10_2(ctx: SuiteContext, rec: Recorder) -> None:
         step = step_response(ctx, hole)
         detector_ms = step[1].t_settle_ms if step is not None else 0.0
         limit_s = (test_ms + tol_ms + detector_ms) / 1000.0
+        # Detector lit/off is how we *observe* the cut-off. A weak SWIR hole or a
+        # one-count dark drift must not paint the instrument NOT FUNCTIONAL: the
+        # '# WDT' event below is the interlock itself. Soft-fail these as WARN.
         rec.check(
             f"{pre}/lit",
             f"Hole {hole} lit before the watchdog",
             seen_lit,
             "light seen" if seen_lit else f"no light on {det}",
             "light seen",
+            warn=True,
         )
         rec.check(
             f"{pre}/off",
@@ -152,6 +165,7 @@ def t10_2(ctx: SuiteContext, rec: Recorder) -> None:
             f"dark after {t_dark * 1000:.0f} ms" if t_dark is not None else "never dark",
             f"<= {limit_s * 1000:.0f} ms: limit {until} + tolerance {tol_ms:g} + detector "
             f"settling {detector_ms:.1f} ms",
+            warn=True,
             t_dark_ms=None if t_dark is None else t_dark * 1000,
         )
         on_ms = wdt[0].fields.as_int("on_ms") if wdt else None

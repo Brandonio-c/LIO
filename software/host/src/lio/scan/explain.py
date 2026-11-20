@@ -343,7 +343,7 @@ RULES: tuple[Rule, ...] = (
         ),
     ),
     Rule(
-        "elec/*/select_only",
+        "elec/*/hNN/select_only",
         E(
             "Selecting a MOSFET (gate drive, no LED current) moves the detector output: gate-drive "
             "coupling.",

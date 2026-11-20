@@ -568,7 +568,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
         <button id="stage-goto-top" class="btn primary" title="Both motors together up to just below the marked top (stops by itself; STOP stops it)">▲ Go to top</button>
         <button id="stage-goto-bottom" class="btn" title="Both motors together down to the marked bottom (stops by itself; STOP stops it)">▼ Go to bottom</button>
       </div>
-      <button id="stage-top" class="btn" title="The chamber top is at its physical upper end now: position 0">Set top here</button>
+      <button id="stage-top" class="btn" title="Highest LIGHT-TIGHT height (sleeves still overlapping): position 0. Do not set this where the chamber has opened to ambient light.">Set top here</button>
       <button id="stage-bottom" class="btn" title="The chamber top is at its lowest safe position now">Mark bottom here</button>
     </div>
     <p class="note" id="mot-drive" style="margin:6px 0 0"></p>
@@ -1333,7 +1333,7 @@ $("mot-stop").onclick = () => motorAct("/api/motor/stop");
 $("mot-release").onclick = () => motorAct("/api/motor/release");
 $("stage-goto-top").onclick = () => { if (confirm("Move the chamber top up to the top of its travel (both motors together)? The chamber must be clear. Press STOP to stop it.")) motorAct("/api/stage/goto", { where: "top" }); };
 $("stage-goto-bottom").onclick = () => { if (confirm("Move the chamber top down to the bottom of its travel (both motors together)? The chamber must be clear. Press STOP to stop it.")) motorAct("/api/stage/goto", { where: "bottom" }); };
-$("stage-top").onclick = () => { if (confirm("Is the chamber top at its physical upper end now, on both sides? This sets position 0.")) motorAct("/api/stage/set_top"); };
+$("stage-top").onclick = () => { if (confirm("Is the chamber top at its highest LIGHT-TIGHT height now (sleeves still overlapping, no ambient light leaking in), on both sides? This sets position 0. Soft limits will keep a few mm below this.")) motorAct("/api/stage/set_top"); };
 $("stage-bottom").onclick = () => { if (confirm("Is the chamber top at its lowest safe position now, level on both sides?")) motorAct("/api/stage/mark_bottom"); };
 function renderStage() {
   const st = M && M.connected ? M.stage : null, box = $("stage-info");
@@ -1342,7 +1342,7 @@ function renderStage() {
   const canGo = !busy && st && st.known && st.valid !== false;
   $("stage-goto-top").disabled = !(canGo && st.top); $("stage-goto-bottom").disabled = !(canGo && st.bottom);
   if (!st) { box.textContent = M && M.connected ? "not tracked on this connection (simulator)" : "not connected"; return; }
-  if (!st.known) { box.innerHTML = "<b>Position unknown.</b> Raise the top to its upper end and press <b>Set top here</b>."; return; }
+  if (!st.known) { box.innerHTML = "<b>Position unknown.</b> Raise the top to its highest light-tight height (sleeves overlapping) and press <b>Set top here</b>."; return; }
   const lead = STATIC.scan && STATIC.scan.lead_mm_per_rev, hpr = STATIC.motors.half_steps_per_rev;
   const mm = (v) => lead ? ` (${(v / hpr * lead).toFixed(2)} mm)` : "";
   const f = (a) => a ? `left ${a[0]}${mm(a[0])} · right ${a[1]}${mm(a[1])}` : "not marked";

@@ -1,7 +1,8 @@
 """Scan planning: a mode and the travel limits -> an ordered list of steps, with ETA.
 
 Heights are absolute half-steps from the top of travel (lio.stage: top = 0, down < 0).
-The measured top is ``top_limit - stage.top_margin_steps`` (the top is a hard end).
+The measured top is ``top_limit - stage.top_margin_steps`` (keep-out below the
+light-tight top so the telescoping seal cannot open).
 Everything comes from ``scan:`` in lio_hw.yaml, with per-run overrides.
 """
 

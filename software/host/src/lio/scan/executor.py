@@ -384,14 +384,13 @@ class ScanExecutor:
         duty = self.dev.duty
         out: dict[str, Any] = {"unexpected_boots": self.dev.unexpected_boots - self._boots0}
         if duty is not None:
+            # Max rolling-window on-time per RAIL A hole (same clock as the gate).
             worst = 0.0
             for hole, spans in duty.history.items():
                 if self.cfg.channel(hole).rail != "A":
                     continue
-                for t0, _ in spans:
-                    on = sum(min(b, t0 + 60) - max(a, t0) for a, b in spans
-                             if a < t0 + 60 and b > t0)  # fmt: skip
-                    worst = max(worst, on * 1000)
+                for _t0, t1 in spans:
+                    worst = max(worst, duty.used_ms(hole, t1))
             out["duty"] = {
                 "max_rail_a_ms_per_min": round(worst, 1),
                 "budget_a_ms": float(duty.budget_ms["A"]),

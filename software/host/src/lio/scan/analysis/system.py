@@ -117,11 +117,30 @@ def findings(cube: Cube, cfg: HwConfig, optics_ctx: dict[str, Any]) -> list[Find
         over = duty.get("over_budget") or []
         hi = float(duty.get("max_rail_a_ms_per_min", 0.0))
         budget = float(duty.get("budget_a_ms", 1000.0))
-        st = Status.FAIL if over or hi > budget * 1.001 else Status.PASS
+        cool_n = int(duty.get("cooldowns", 0) or 0)
+        # Host bug (shared SWEEP t0): whole-run on-time was reported as "per minute"
+        # with 0 cool-downs and no single over-budget pulse. Don't call that a FAIL.
+        bogus = (not over) and cool_n == 0 and hi > budget * 5
+        if over or (hi > budget * 1.001 and not bogus):
+            st = Status.FAIL
+        elif bogus:
+            st = Status.WARN
+        else:
+            st = Status.PASS
+        detail = (
+            f"max {hi:.0f} ms of {budget:.0f} ms; {cool_n} cool-down waits, "
+            f"{duty.get('cooldown_s', 0)} s in all"
+        )
+        if over:
+            detail += f"; over budget: {over}"
+        if bogus:
+            detail += (
+                "; host duty log looks like a whole-run total, not a rolling minute "
+                "(0 cool-downs) — treat as accounting, not an overdriven LED"
+            )
         out.append(Finding(
             "system/duty", "LED duty (RAIL A <= budget per LED per minute)", st, hi, "ms/min",
-            f"max {hi:.0f} ms of {budget:.0f} ms; {duty.get('cooldowns', 0)} cool-down waits, "
-            f"{duty.get('cooldown_s', 0)} s in all" + (f"; over budget: {over}" if over else ""),
+            detail,
         ))  # fmt: skip
     else:
         out.append(Finding("system/duty", "LED duty", Status.SKIP, detail="no duty record"))

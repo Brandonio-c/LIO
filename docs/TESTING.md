@@ -169,13 +169,13 @@ The rig has no limit switches, and the firmware's step counters restart at 0 whe
 
 | Action | Dashboard (Motors tab) | Command line |
 |---|---|---|
-| The top is at its physical upper end | **Set top here** | `lio stage set-top` |
+| The top is at its highest **light-tight** height (sleeves still overlapping — not as high as the motors can physically go) | **Set top here** | `lio stage set-top` |
 | The top is at its lowest safe position | **Mark bottom here** | `lio stage mark-bottom` |
 | Show the position and limits | the "Chamber top position" panel | `lio stage show` |
 | The top was moved by hand, or steps were lost | set the top again | `lio stage forget`, then `set-top` |
 
 Once both limits are marked:
-- step moves that would leave the range are refused before anything moves; the top keeps `stage.top_margin_steps` of margin;
+- step moves that would leave the range are refused before anything moves; the top keeps `stage.top_margin_steps` of margin (a few mm of keep-out so the light seal cannot open);
 - continuous runs stop short of a limit;
 - T09.6 and T09.7 drive to the bottom themselves and use the marked travel.
 

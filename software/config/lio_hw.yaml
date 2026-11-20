@@ -131,7 +131,7 @@ channels:
   - {hole: 13, label: "1550",   wavelength_nm: 1550, rail: B, fitted: true,  expect: {ingaas: signal}}
   - {hole: 14, label: "1650",   wavelength_nm: 1650, rail: B, fitted: true,  expect: {ingaas: signal}}
   - {hole: 15, label: "1760",   wavelength_nm: 1760, rail: B, fitted: true,  expect: {ingaas: weak}}
-  - {hole: 16, label: "1850",   wavelength_nm: 1850, rail: B, fitted: true,  expect: {}}   # beyond InGaAs: never FAIL for absence
+  - {hole: 16, label: "1850",   wavelength_nm: 1850, rail: B, fitted: true,  expect: {}}   # beyond both detectors: absence never FAIL; wrong-LED response is WARN only
 
 # Motors (approved M0 answer 8): +steps = the legacy sketch's U direction (up).
 motors:
@@ -163,9 +163,13 @@ power:
 
 # Chamber-top position, kept across sessions (lio.stage; the firmware's counters restart
 # at every connection). Positions are half-steps from the top of travel (top = 0).
+# "Top" = highest LIGHT-TIGHT height (sleeves still overlapping). Raising past that
+# separates the telescoping seal and lets ambient light into the chamber.
 stage:
   state_file: test_results/stage_position.json   # relative to the repository root
-  top_margin_steps: 4096      # moves stay this far below the top (a hard physical end); one turn until the count is proven
+  # Keep this far below the marked top (M6×1.0: 4096 half-steps = 1.0 mm). 4 mm of
+  # keep-out so a slightly optimistic "Set top" still cannot open the light seal.
+  top_margin_steps: 16384
   jog_stop_margin_steps: 32   # a continuous jog stops this far before a limit (+ its run-on)
 
 # Diagnostic height sweep (docs/DIAGNOSTIC_SWEEP_PLAN.md, LIO-SW-SCAN-001). Every value
@@ -233,7 +237,9 @@ scan:
     mech:
       backlash_hs: [600, 1500]        # 0.15 / 0.37 mm (M6 x 1.0): nut + coupler + gearbox
       step_loss_hs: [400, 1000]       # height lost over a full upward travel
-      repeatability_hs: [300, 800]    # spread of repeated visits to one height
+      # Spread of repeated visits. Analysis caps FAIL→WARN on V3 (loose stage);
+      # the second number is still the "would fail" line in the report.
+      repeatability_hs: [300, 800]
       travel_tol_hs: 256
       settle_extra_ms: [500, 1500]    # dark-agreement time beyond settle_ms_mech
     trend:
@@ -388,7 +394,7 @@ thresholds:
     # position before the run and measures the travel once (jog bottom -> top).
     travel:
       range_steps: 0             # bottom -> top, half-steps; 0 = not measured yet: tests skip
-      margin_steps: 64           # stop this far below the top end
+      margin_steps: 16384        # fallback when travel is not tracked; match stage.top_margin_steps
       jog_speed: 500             # half-steps/s for long moves: one continuous jog of both motors
       renew_steps: 1024          # renew the jog this often (its bound is 2048 half-steps)
       rearm_s: 40                # re-arm while moving (an arm lasts 60 s; MOTOR LIGHT needs it)

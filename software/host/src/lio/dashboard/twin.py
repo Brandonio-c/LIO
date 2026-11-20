@@ -5,7 +5,9 @@ is testable without a browser. A part's status is the worst status of the
 sub-results that concern it:
 
 - **holes 1-16**: every sub-result whose id names the hole (``.../h08/...``)
-- **rails A, B**: sub-results whose id starts with the rail (``T05.1/A/...``)
+- **rails A, B**: T05 sub-results whose id starts with the rail (``T05.1/A/...``).
+  Watchdog probes that happen to name a rail (``T10.2/A/...``) do not paint the
+  rail tiles: those judge the interlock, not the driver.
 - **detectors**: T06.1 (OPT101) and T06.2 (InGaAs), plus any sub-result not
   tied to a hole whose id names the detector (``T03.5/ingaas``) or its ADC
   input (``T03.2/a0``)
@@ -146,6 +148,7 @@ def parts(results: Iterable[TestResult], cfg: HwConfig) -> dict[str, Any]:
     boards = {k: _Part() for k in MODULE_PARTS}
     nets: dict[int, dict[str, int]] = {}
     max_fails = cfg.thresholds.integer("verdict.max_channel_fails")
+    limited = set(cfg.thresholds.ints("verdict.limited_holes"))
     for r in results:
         tolerance = max_fails if r.id in VIA_LEDS else None
         for key, modules in MODULE_PARTS.items():
@@ -158,11 +161,21 @@ def parts(results: Iterable[TestResult], cfg: HwConfig) -> dict[str, Any]:
         for s in r.subs:
             path = s.id.split("/")[1:]
             hole = hole_of(s.id)
+            status = s.status
+            # Hole 16 (and any other limited hole): a wrong-LED plausibility hit is
+            # known and accepted — show WARN, never paint the hole FAIL for it.
+            if (
+                hole in limited
+                and "plausibility" in s.id
+                and status.rank >= Status.FAIL.rank
+            ):
+                status = Status.WARN
             if hole is not None:
-                holes[hole].add(r, s.id, s.status, s.message)
+                holes[hole].add(r, s.id, status, s.message)
                 if r.id == "T05.2" and path[-1] in DETECTORS and "net" in s.measured:
                     nets.setdefault(hole, {})[path[-1]] = int(s.measured["net"])
-            if path and path[0] in rails:
+            # Rails = LED drivers (T05). T10.2 uses A/B in the id for its probe hole.
+            if path and path[0] in rails and r.module == "T05":
                 rails[path[0]].add(r, s.id, s.status, s.message)
             if r.module == "T09" and path and path[0] in motors:
                 motors[path[0]].add(r, s.id, s.status, s.message)
