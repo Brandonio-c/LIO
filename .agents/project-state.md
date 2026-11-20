@@ -28,13 +28,26 @@ Latest empty quick scan (via T13): `20261120-012619_scan_quick` → **FUNCTIONAL
 | Stage repeatability large spread | Cap FAIL→WARN |
 | Duty “46 s/min” with 0 cool-downs | WARN / accounting bug; SWEEP duty staggered |
 
-## Not done / next for food work
+## Food-profile software (M0–M7)
+
+Implemented on `main`: `lio.food_profiles` + dashboard **Profiles** tab + `lio profiles …` CLI.
+Offline Explore/Compare/Food Map, recipes (amplitude/SNV/MSC/reference/O), frozen PCA/distances,
+whole-height fPCA, grouped validation, optional t-SNE/UMAP, ASCA, EWMA trends, portable reports.
+Synthetic fixtures are labeled; **no measured food-discrimination claims**. See `docs/FOOD_PROFILES.md`.
+
+```bash
+lio dashboard --results-dir test_results --no-food-library --no-browser
+lio profiles fixtures --out /tmp/lio_synth
+```
+
+## Not done / next for food work (physical)
 
 1. Save a **fresh scan baseline** for `empty` (promote today’s empty quick or run a **full** empty scan, then `lio scan baseline save <run>`).
 2. Optional references: `white_ptfe`, `black_cup` full scans → scan baselines.
-3. Collect food profiles: Scan tab → **full** (or fine), sample id = food / `LIO-F-…`, lid closed.
-4. UI: “Compare with latest baseline” may show “none saved yet” until session refresh — file on disk exists.
-5. Thresholds still **provisional** (`docs/TESTING.md` §7.3).
+3. Collect food profiles: Scan tab → **full** (or fine), sample id = food / `LIO-F-…`, lid closed; annotate preparation/lot.
+4. Qualify reference protocol and discrimination on **measured** data (software paths already tested on synthetic).
+5. UI: “Compare with latest baseline” may show “none saved yet” until session refresh — file on disk exists.
+6. Thresholds still **provisional** (`docs/TESTING.md` §7.3).
 
 ## Open soft issues (do not block food collection)
 

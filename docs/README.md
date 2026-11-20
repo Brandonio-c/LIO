@@ -2,6 +2,7 @@
 
 | Document | Contents |
 |---|---|
+| [FOOD_PROFILES.md](FOOD_PROFILES.md) | Usage: offline Explore / Compare / Food Map CLI and dashboard (`lio profiles`, `--no-food-library`) |
 | [FOOD_PROFILE_ANALYSIS_PLAN.md](FOOD_PROFILE_ANALYSIS_PLAN.md) | Implementation plan: food fingerprints, PCA, height curves, validation and offline dashboard |
 | [FOOD_PROFILE_AGENT_HANDOFF.md](FOOD_PROFILE_AGENT_HANDOFF.md) | Copyable coding-agent prompt for the food-profile implementation |
 | [research/LIO_FOOD_SCAN_LITERATURE_REVIEW.md](research/LIO_FOOD_SCAN_LITERATURE_REVIEW.md) | Literature review and LIO-specific processing/visualization recommendations |
