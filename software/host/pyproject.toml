@@ -39,6 +39,15 @@ dev = [
   "types-pyserial",
   "hypothesis>=6.100",
 ]
+# Food-profile PCA, distances, clustering, t-SNE
+profiles = [
+  "scikit-learn>=1.3",
+  "scipy>=1.11",
+]
+# Optional UMAP exploratory embeddings
+embeddings = [
+  "umap-learn>=0.5",
+]
 
 [project.scripts]
 lio = "lio.cli:main"
@@ -50,7 +59,14 @@ where = ["src"]
 [tool.setuptools.package-data]
 lio_verify = ["py.typed"]
 lio_comp = ["py.typed"]
-lio = ["py.typed", "templates/*", "dashboard/static/*", "foods/static/*", "foods/swift/*"]
+lio = [
+  "py.typed",
+  "templates/*",
+  "dashboard/static/*",
+  "dashboard/static/profiles/*",
+  "foods/static/*",
+  "foods/swift/*",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -70,5 +86,23 @@ strict = true
 files = ["src/lio", "src/lio_comp", "src/lio_verify"]
 
 [[tool.mypy.overrides]]
-module = ["matplotlib.*", "zxingcpp.*", "segno.*", "z3.*", "lark.*", "jsonschema.*", "lxml.*"]
+module = [
+  "matplotlib.*",
+  "zxingcpp.*",
+  "segno.*",
+  "z3.*",
+  "lark.*",
+  "jsonschema.*",
+  "lxml.*",
+  "sklearn.*",
+  "scipy.*",
+  "umap.*",
+]
 ignore_missing_imports = true
+
+# Numerical food-profile modules use NumPy arrays heavily; keep useful checks without
+# requiring ndarray type-parameters on every signature (matches Array alias style elsewhere).
+[[tool.mypy.overrides]]
+module = ["lio.food_profiles.*"]
+disallow_any_generics = false
+warn_return_any = false
