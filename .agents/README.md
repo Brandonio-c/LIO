@@ -10,6 +10,7 @@ Read this folder at the start of any agent session on this repo.
 | [workflows.md](workflows.md) | How to run suite, scan, dashboard, baselines |
 | [known-issues.md](known-issues.md) | Soft WARNs, false fails, USB-after-Stop |
 | [baselines.md](baselines.md) | Suite vs scan baselines; food-profile prep |
+| [scan-data-viz-handoff.md](scan-data-viz-handoff.md) | Full scan data model + viz research brief (pass to a research agent) |
 
 Repo: https://github.com/Brandonio-c/LIO  
 Local: `/Users/coleloughbc/Documents/VSCode-Local/LIO`  
