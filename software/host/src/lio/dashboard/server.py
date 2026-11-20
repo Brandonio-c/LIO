@@ -39,6 +39,13 @@ log = logging.getLogger(__name__)
 
 LOCAL_HOSTS = ("127.0.0.1", "localhost", "[::1]")
 RESULT_TYPES = {".html", ".png", ".csv", ".json", ".md", ".svg"}
+STATIC_TYPES = {
+    ".js": "application/javascript; charset=utf-8",
+    ".css": "text/css; charset=utf-8",
+    ".map": "application/json",
+    ".svg": "image/svg+xml",
+    ".woff2": "font/woff2",
+}
 MAX_BODY = 64 * 1024
 MAX_PHOTO_BODY = 24 * 1024 * 1024  # food photos (base64)
 PHOTO_PATHS = ("/api/foods/identify", "/api/foods/save", "/api/foods/photo", "/api/foods/label")
@@ -138,12 +145,16 @@ class _Handler(BaseHTTPRequestHandler):
         if url.path in ("/", "/index.html"):
             body = page_html(self.server.token).encode()
             csp = (
-                "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; "
+                "default-src 'self'; "
+                "script-src 'self' 'unsafe-inline'; "
+                "style-src 'self' 'unsafe-inline'; "
                 "img-src 'self' data:; worker-src blob:; frame-ancestors 'none'"
             )
             return self._send(
                 HTTPStatus.OK, body, "text/html; charset=utf-8", {"Content-Security-Policy": csp}
             )
+        if url.path.startswith("/static/"):
+            return self._package_static(url.path[len("/static/") :])
         if url.path.startswith("/results/"):
             return self._result_file(url.path[len("/results/") :])
         if url.path.startswith("/foods/"):
@@ -170,6 +181,8 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json(s.scan_view())
             if url.path == "/api/ring":
                 return self._json(s.ring_status())
+            if url.path.startswith("/api/profiles/"):
+                return self._profiles_get(url.path[len("/api/profiles/") :], parse_qs(url.query))
             if url.path.startswith("/api/foods/"):
                 return self._foods_get(url.path[len("/api/foods/") :], parse_qs(url.query))
             if url.path == "/api/ring/min_step":
@@ -197,6 +210,68 @@ class _Handler(BaseHTTPRequestHandler):
         if ctype.startswith("text/"):
             ctype += "; charset=utf-8"
         self._send(HTTPStatus.OK, path.read_bytes(), ctype)
+
+    def _package_static(self, rel: str) -> None:
+        """Serve scoped dashboard package assets (profiles JS/CSS; correct MIME)."""
+        if ".." in rel or rel.startswith("/"):
+            return self._error(HTTPStatus.NOT_FOUND, "not found")
+        path = Path(rel)
+        suffix = path.suffix.lower()
+        if suffix not in STATIC_TYPES:
+            return self._error(HTTPStatus.NOT_FOUND, "not found")
+        try:
+            data = resources.files("lio.dashboard").joinpath("static", *path.parts).read_bytes()
+        except (FileNotFoundError, OSError, TypeError, ValueError):
+            return self._error(HTTPStatus.NOT_FOUND, "not found")
+        self._send(HTTPStatus.OK, data, STATIC_TYPES[suffix])
+
+    def _profiles_get(self, path: str, q: dict[str, list[str]]) -> None:
+        from lio.dashboard import scan_explorer as ex
+        from lio.food_profiles.schema import finite_json
+
+        root = self.server.session.results_root
+        try:
+            if path == "runs":
+                return self._json(finite_json(ex.api_list_runs(root)))
+            if path.startswith("run/"):
+                rest = path[len("run/") :]
+                parts = rest.split("/")
+                run_id = parts[0]
+                if len(parts) == 1:
+                    return self._json(finite_json(ex.api_run_summary(root, run_id)))
+                if parts[1] == "heatmap":
+                    det = (q.get("detector") or ["opt101"])[0]
+                    return self._json(finite_json(ex.api_heatmap(root, run_id, det)))
+                if parts[1] == "curve":
+                    hole = int((q.get("hole") or ["1"])[0])
+                    det = (q.get("detector") or ["opt101"])[0]
+                    return self._json(finite_json(ex.api_curve(root, run_id, hole, det)))
+                if parts[1] == "findings":
+                    return self._json(finite_json(ex.api_findings(root, run_id)))
+                if parts[1] == "stream":
+                    sid = (q.get("id") or [""])[0]
+                    return self._json(finite_json(ex.api_stream(root, run_id, sid)))
+            if path.startswith("gallery/"):
+                return self._json(finite_json(ex.api_gallery(root, path[len("gallery/") :])))
+            if path.startswith("compare/"):
+                ds = path[len("compare/") :]
+                a = (q.get("a") or [""])[0]
+                b = (q.get("b") or [""])[0]
+                return self._json(finite_json(ex.api_compare(root, ds, a, b)))
+        except FileNotFoundError as e:
+            raise Refused(str(e)) from e
+        raise Refused(f"unknown profiles path: {path}")
+
+    def _profiles_post(self, path: str, b: dict[str, Any]) -> None:
+        from lio.dashboard import scan_explorer as ex
+        from lio.food_profiles.schema import finite_json
+
+        root = self.server.session.results_root
+        if path == "init":
+            runs = b.get("runs")
+            run_ids = [str(x) for x in runs] if isinstance(runs, list) else None
+            return self._json(finite_json(ex.api_init_dataset(root, run_ids)))
+        raise Refused(f"unknown profiles POST: {path}")
 
     # -------------------------------------------------------------- foods
 
@@ -416,6 +491,8 @@ class _Handler(BaseHTTPRequestHandler):
             b = self._body(MAX_PHOTO_BODY if path in PHOTO_PATHS else MAX_BODY)
             if path.startswith("/api/foods/"):
                 return self._foods_post(path[len("/api/foods/") :], b)
+            if path.startswith("/api/profiles/"):
+                return self._profiles_post(path[len("/api/profiles/") :], b)
             if path == "/api/connect":
                 s.connect(str(b.get("target") or ""), str(b.get("faults") or ""))
             elif path == "/api/disconnect":

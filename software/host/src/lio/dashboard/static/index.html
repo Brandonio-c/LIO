@@ -428,6 +428,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
     <button class="tab" data-tab="motors">Motors</button>
     <button class="tab" data-tab="leds">LEDs</button>
     <button class="tab" data-tab="scan">Scan</button>
+    <button class="tab" data-tab="profiles">Profiles</button>
     <button class="tab" data-tab="database">Database</button>
   </nav>
   <span id="conn" class="pill"><span class="led"></span><span id="conn-text">not connected</span></span>
@@ -643,6 +644,32 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
     <div id="scan-runs" class="note">–</div>
     <h3 style="margin-top:14px">Drive (for mm)</h3>
     <div id="scan-drive" class="note">–</div>
+  </section>
+  <!-- Profiles: offline Explore / Compare / Food Map (saved scans only) -->
+  <section class="card hidden" data-view="profiles" id="profiles-view">
+    <div class="row" style="justify-content:space-between;align-items:flex-start">
+      <div>
+        <h2>Food profiles</h2>
+        <p class="note" style="margin:6px 0 0">Offline Explore / Compare / Food Map over saved <span class="mono">scan.json</span> + <span class="mono">cube.csv.gz</span>. No USB, food library, or <span class="mono">analyse()</span> required. Synthetic fixtures are labeled.</p>
+      </div>
+      <button class="btn" id="pf-refresh">Refresh</button>
+    </div>
+    <div class="row" style="margin-top:12px;gap:12px;align-items:flex-end">
+      <label class="field">Saved run <select id="pf-run" style="min-width:220px"></select></label>
+      <label class="field">Detector <select id="pf-det"><option value="opt101">OPT101</option><option value="ingaas">InGaAs</option></select></label>
+      <button class="btn primary" id="pf-load">Explore</button>
+      <button class="btn" id="pf-init-ds">Init dataset from listed runs</button>
+    </div>
+    <div id="pf-banner" class="note" style="margin-top:10px"></div>
+    <div class="scan-hm" style="margin-top:12px">
+      <div><div class="ink2" style="font-size:13px">Heatmap (mean net; blinds grey)</div><canvas id="pf-hm" width="560" height="300" aria-label="profile heatmap"></canvas></div>
+      <div><div class="ink2" style="font-size:13px">Curve (hole <input id="pf-hole" type="number" min="1" max="16" value="5" style="width:3rem">)</div><canvas id="pf-curve" width="560" height="300" aria-label="profile curve"></canvas></div>
+    </div>
+    <h3 style="margin-top:14px">Findings / streams</h3>
+    <pre id="pf-meta" class="mono" style="white-space:pre-wrap;max-height:220px;overflow:auto">Select a run.</pre>
+    <h3 style="margin-top:14px">Food Map gallery</h3>
+    <div id="pf-gallery" class="note">Init a dataset to list foods / preparations.</div>
+    <p class="note">CLI: <span class="mono">lio profiles explore FOLDER</span> · <span class="mono">lio profiles fit DATASET --method pca</span> · dashboard <span class="mono">--no-food-library</span></p>
   </section>
   <!-- Database: the food library -->
   <!-- 1 · admin: status, exports, phone app -->
@@ -1100,7 +1127,7 @@ let view = "system", M = null;
 function showView(v) {
   // "database/LIO-F-00012[/product]" opens a sample (and a sub-tab); "database/compare/A,B" compares
   const [base, arg, sub] = String(v || "").split("/");
-  view = ["motors", "leds", "database", "scan"].includes(base) ? base : "system";
+  view = ["motors", "leds", "database", "scan", "profiles"].includes(base) ? base : "system";
   document.body.dataset.view = view;
   document.querySelectorAll("[data-view]").forEach((e) => e.classList.toggle("hidden", e.dataset.view !== view));
   document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("on", t.dataset.tab === view));
@@ -1109,6 +1136,7 @@ function showView(v) {
   if (view === "motors") motorPoll();
   if (view === "leds") ringPoll();
   if (view === "scan") { scanSetup(); scanPoll(); }
+  if (view === "profiles") { pfRefresh().catch((e) => toast(e.message)); }
   if (view === "database") {
     if (arg === "compare" && sub) {
       DB.cmp = []; DB.cmpSlot = {};
@@ -2468,16 +2496,75 @@ async function dbShow() {
   }, 5000);
 }
 
+/* -------------------------------------------------------------- profiles */
+const PF = { runs: [], ds: null };
+async function pfRefresh() {
+  const r = await api("/api/profiles/runs");
+  PF.runs = r.runs || [];
+  const sel = $("pf-run");
+  sel.innerHTML = PF.runs.map((x) => `<option value="${esc(x.run_id)}">${esc(x.run_id)}${x.synthetic ? " [SYN]" : ""}</option>`).join("")
+    || `<option value="">(no saved scans)</option>`;
+  $("pf-banner").textContent = `${PF.runs.length} run(s); ${ (r.datasets || []).length } dataset(s). Offline; does not call analyse().`;
+  if ((r.datasets || []).length) {
+    PF.ds = r.datasets[0].dataset_id;
+    try {
+      const g = await api("/api/profiles/gallery/" + encodeURIComponent(PF.ds));
+      $("pf-gallery").innerHTML = Object.keys(g.foods || {}).map((f) =>
+        `<div><b>${esc(f)}</b>: ${(g.foods[f] || []).map((x) => esc(x.run_id)).join(", ")}</div>`).join("") || "empty";
+    } catch (e) { $("pf-gallery").textContent = e.message; }
+  }
+}
+function pfDrawHeatmap(canvas, payload) {
+  if (window.LIOProfiles) return window.LIOProfiles.drawHeatmap(canvas, payload);
+  const ctx = canvas.getContext("2d"); ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillText("heatmap", 10, 20);
+}
+function pfDrawCurve(canvas, payload) {
+  if (window.LIOProfiles) return window.LIOProfiles.drawCurve(canvas, payload);
+}
+async function pfLoad() {
+  const run = $("pf-run").value; if (!run) return toast("no run");
+  const det = $("pf-det").value;
+  const hole = +$("pf-hole").value || 5;
+  const [sum, hm, curve, findings] = await Promise.all([
+    api("/api/profiles/run/" + encodeURIComponent(run)),
+    api("/api/profiles/run/" + encodeURIComponent(run) + "/heatmap?detector=" + encodeURIComponent(det)),
+    api("/api/profiles/run/" + encodeURIComponent(run) + "/curve?detector=" + encodeURIComponent(det) + "&hole=" + hole),
+    api("/api/profiles/run/" + encodeURIComponent(run) + "/findings"),
+  ]);
+  pfDrawHeatmap($("pf-hm"), hm);
+  pfDrawCurve($("pf-curve"), curve);
+  $("pf-meta").textContent = JSON.stringify({
+    summary: sum, findings_available: findings.available, findings_reason: findings.reason,
+    streams: sum.streams, channel_map_verified: sum.channel_map_verified, synthetic: sum.synthetic,
+  }, null, 2);
+}
+function pfSetup() {
+  if (!$("pf-refresh")) return;
+  $("pf-refresh").onclick = () => pfRefresh().catch((e) => toast(e.message));
+  $("pf-load").onclick = () => pfLoad().catch((e) => toast(e.message));
+  $("pf-init-ds").onclick = async () => {
+    try {
+      const out = await api("/api/profiles/init", { runs: PF.runs.map((x) => x.run_id) });
+      PF.ds = out.dataset_id; toast("dataset " + out.dataset_id); await pfRefresh();
+    } catch (e) { toast(e.message); }
+  };
+  $("pf-hole").onchange = () => pfLoad().catch(() => {});
+  $("pf-det").onchange = () => pfLoad().catch(() => {});
+}
+
 (async function init() {
   STATIC = await api("/api/static");
   $("fault-names").innerHTML = STATIC.faults.map((f) => `<option value="${esc(f)}">`).join("");
   $("baseline-name").textContent = STATIC.baseline ? STATIC.baseline.split("/").pop() : "none saved yet";
   $("opt-compare").disabled = !STATIC.baseline;
   if (STATIC.scan) $("sample-id").innerHTML = STATIC.scan.sample_ids.map((x) => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
-  buildTwin(); motorSetup(); ringSetup(); dbSetup(); await loadPorts(); await poll(true); loadRuns();
+  buildTwin(); motorSetup(); ringSetup(); dbSetup(); pfSetup(); await loadPorts(); await poll(true); loadRuns();
   showView(location.hash.slice(1));
+  if (view === "profiles") pfRefresh().catch(() => {});
   setInterval(poll, STATIC.poll_ms);
 })();
 </script>
+<script src="/static/profiles/explorer.js"></script>
 </body>
 </html>

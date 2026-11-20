@@ -422,33 +422,41 @@ def _composition(foods_dir: Path) -> object | None:
 def cmd_dashboard(args: argparse.Namespace, cfg: HwConfig) -> int:
     import webbrowser
 
-    from lio import foods as food_lib
     from lio.dashboard.server import Foods, serve
     from lio.dashboard.session import Session
-    from lio.foods.intake import Intake
-    from lio.foods.phone import PhoneKey, PhoneServer
-    from lio.foods.tunnel import CloudflareTunnel
 
     results = Path(args.results_dir) if args.results_dir else REPO_ROOT / "test_results"
     session = Session(cfg, results)
     host = str(cfg.section.raw("dashboard.host"))
     port = args.http_port if args.http_port is not None else cfg.section.integer("dashboard.port")
-    fs = food_lib.settings(cfg, REPO_ROOT)
-    if args.foods_dir:
-        fs.dir = Path(args.foods_dir)
-    lib = food_lib.open_library(fs)
-    foods = Foods(lib, Intake(lib, _composition(fs.dir)), fs.scan_repeats, fs.scan_repeats_max)
-    if fs.phone_enabled and not args.no_phone:
-        try:
-            foods.phone = PhoneServer(
-                lib, foods.intake, PhoneKey(fs.dir / "phone_key.txt"), fs.phone_host, fs.phone_port
-            )
-            foods.phone.serve_in_thread()
-            foods.phone.tunnel = CloudflareTunnel(foods.phone.port, fs.cloudflared)
-            if fs.tunnel == "cloudflare" and not args.no_tunnel:
-                foods.phone.tunnel.start()
-        except OSError as e:
-            foods.phone_error = f"cannot listen on {fs.phone_host}:{fs.phone_port} ({e})"
+    foods: Foods | None = None
+    lib = None
+    if not getattr(args, "no_food_library", False):
+        from lio import foods as food_lib
+        from lio.foods.intake import Intake
+        from lio.foods.phone import PhoneKey, PhoneServer
+        from lio.foods.tunnel import CloudflareTunnel
+
+        fs = food_lib.settings(cfg, REPO_ROOT)
+        if args.foods_dir:
+            fs.dir = Path(args.foods_dir)
+        lib = food_lib.open_library(fs)
+        foods = Foods(lib, Intake(lib, _composition(fs.dir)), fs.scan_repeats, fs.scan_repeats_max)
+        if fs.phone_enabled and not args.no_phone:
+            try:
+                foods.phone = PhoneServer(
+                    lib,
+                    foods.intake,
+                    PhoneKey(fs.dir / "phone_key.txt"),
+                    fs.phone_host,
+                    fs.phone_port,
+                )
+                foods.phone.serve_in_thread()
+                foods.phone.tunnel = CloudflareTunnel(foods.phone.port, fs.cloudflared)
+                if fs.tunnel == "cloudflare" and not args.no_tunnel:
+                    foods.phone.tunnel.start()
+            except OSError as e:
+                foods.phone_error = f"cannot listen on {fs.phone_host}:{fs.phone_port} ({e})"
     try:
         server = serve(session, host, port, foods)
     except OSError as e:
@@ -458,16 +466,20 @@ def cmd_dashboard(args: argparse.Namespace, cfg: HwConfig) -> int:
     elif args.port:
         session.connect(str(args.port))
     print(f"LIO dashboard: {server.url}")
-    print(f"Food library: {lib.db_path}")
-    if foods.phone is not None:
-        tun = (
-            " + Cloudflare tunnel"
-            if foods.phone.tunnel and foods.phone.tunnel.state != "off"
-            else ""
-        )
-        print(f"Phone app: port {foods.phone.port}{tun} (pair from the Database tab)")
-    elif foods.phone_error:
-        print(f"Phone app OFF: {foods.phone_error}")
+    if foods is None:
+        print("Food library: disabled (--no-food-library); food-profile Explore still available")
+    else:
+        assert lib is not None
+        print(f"Food library: {lib.db_path}")
+        if foods.phone is not None:
+            tun = (
+                " + Cloudflare tunnel"
+                if foods.phone.tunnel and foods.phone.tunnel.state != "off"
+                else ""
+            )
+            print(f"Phone app: port {foods.phone.port}{tun} (pair from the Database tab)")
+        elif foods.phone_error:
+            print(f"Phone app OFF: {foods.phone_error}")
     print("Ctrl-C to quit (stops any run and turns everything off).")
     if not args.no_browser:
         webbrowser.open(server.url)
@@ -478,13 +490,20 @@ def cmd_dashboard(args: argparse.Namespace, cfg: HwConfig) -> int:
     finally:
         session.shutdown()
         server.server_close()
-        if foods.phone is not None:
+        if foods is not None and foods.phone is not None:
             if foods.phone.tunnel is not None:
                 foods.phone.tunnel.stop()
             foods.phone.shutdown()
             foods.phone.server_close()
-        lib.close()
+        if lib is not None:
+            lib.close()
     return 0
+
+
+def cmd_profiles(args: argparse.Namespace, cfg: HwConfig) -> int:
+    from lio.food_profiles.cli import cmd_profiles as _cmd
+
+    return _cmd(args)
 
 
 def _outcome(r: TestResult) -> str:
@@ -796,7 +815,16 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument(
         "--no-tunnel", action="store_true", help="do not open the Cloudflare tunnel (foods.tunnel)"
     )
+    s.add_argument(
+        "--no-food-library",
+        action="store_true",
+        help="skip food DB/phone/tunnel; food-profile Explore remains enabled",
+    )
     s.set_defaults(fn=cmd_dashboard)
+
+    from lio.food_profiles.cli import build_profiles_parser
+
+    build_profiles_parser(sub, fn=cmd_profiles)
 
     s = sub.add_parser("scan", help="diagnostic height sweep: plan / run / resume")
     scsub = s.add_subparsers(dest="scan_command", required=True)
