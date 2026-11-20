@@ -2,6 +2,10 @@
 
 | Document | Contents |
 |---|---|
+| [FOOD_PROFILE_ANALYSIS_PLAN.md](FOOD_PROFILE_ANALYSIS_PLAN.md) | Implementation plan: food fingerprints, PCA, height curves, validation and offline dashboard |
+| [FOOD_PROFILE_AGENT_HANDOFF.md](FOOD_PROFILE_AGENT_HANDOFF.md) | Copyable coding-agent prompt for the food-profile implementation |
+| [research/LIO_FOOD_SCAN_LITERATURE_REVIEW.md](research/LIO_FOOD_SCAN_LITERATURE_REVIEW.md) | Literature review and LIO-specific processing/visualization recommendations |
+| [research/LIO_FOOD_SCAN_EVIDENCE.csv](research/LIO_FOOD_SCAN_EVIDENCE.csv) | Fifty primary research/method records with applicability and access limits |
 | [PROJECT_LOG.md](PROJECT_LOG.md) | Chronological history of the optics and electronics design |
 | [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md) | Decision record (D-01 … D-16), with rationale |
 | [OPTICAL_CHANNEL_MAP.md](OPTICAL_CHANNEL_MAP.md) | 16-hole emitter map, detector coverage, map history |
@@ -23,3 +27,4 @@
 | [../electronics/WIRING_CHECKLIST.md](../electronics/WIRING_CHECKLIST.md) | Tick-list for checking the breadboard |
 | [../software/README.md](../software/README.md) | Firmware, the `lio` test command, motor control and logger usage |
 | [../CAD/V3/README_dual_detector_plate.md](../CAD/V3/README_dual_detector_plate.md) | Dual-detector plate and the required deck change |
+
