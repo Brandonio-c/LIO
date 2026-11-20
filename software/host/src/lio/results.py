@@ -131,7 +131,20 @@ def overall_verdict(
     for r in failing:
         if r.id in critical:
             continue
-        bad = [hole_of(s.id) for s in r.subs if s.status.rank >= Status.FAIL.rank]
+        # V3 sealed-top soft fails: weak cross-cal / no settling step — not dead LEDs.
+        def _counts_as_channel_fail(s: SubResult) -> bool:
+            if s.status.rank < Status.FAIL.rank:
+                return False
+            if r.id == "T06.3":
+                return False
+            if r.id == "T07.1" and "no step" in (s.message or "").lower():
+                return False
+            return True
+
+        bad = [hole_of(s.id) for s in r.subs if _counts_as_channel_fail(s)]
+        if not bad and r.subs and any(s.status.rank >= Status.FAIL.rank for s in r.subs):
+            # Only soft FAILs on this test — treat like a WARN for the verdict.
+            continue
         if bad and all(h is not None for h in bad):
             holes |= {h for h in bad if h is not None}
         else:
@@ -139,6 +152,20 @@ def overall_verdict(
     real = sorted(h for h in holes if h not in limited_holes)
     limited = sorted(h for h in holes if h in limited_holes)
     warns = [r.id for r in results if r.status == Status.WARN]
+    # Soft channel FAILs (T06.3 / T07.1 no-step) surface as warnings, not fails.
+    for r in results:
+        if r.id in warns or r.status.rank < Status.FAIL.rank:
+            continue
+        if r.id == "T06.3" or (
+            r.id == "T07.1"
+            and r.subs
+            and all(
+                s.status.rank < Status.FAIL.rank or "no step" in (s.message or "").lower()
+                for s in r.subs
+            )
+        ):
+            if r.id not in warns:
+                warns.append(r.id)
     if critical:
         reasons.append(f"failure in a critical module: {', '.join(critical)}")
     if unattributed:

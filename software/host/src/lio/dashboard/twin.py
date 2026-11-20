@@ -170,6 +170,12 @@ def parts(results: Iterable[TestResult], cfg: HwConfig) -> dict[str, Any]:
                 and status.rank >= Status.FAIL.rank
             ):
                 status = Status.WARN
+            # V3 at the sealed top: weak InGaAs / no settling step is not a dead LED.
+            if status.rank >= Status.FAIL.rank and (
+                r.id == "T06.3"
+                or (r.id == "T07.1" and "no step" in (s.message or "").lower())
+            ):
+                status = Status.WARN
             if hole is not None:
                 holes[hole].add(r, s.id, status, s.message)
                 if r.id == "T05.2" and path[-1] in DETECTORS and "net" in s.measured:

@@ -289,6 +289,28 @@ class Session:
             self.log(f"USB link to the Nano lost ({err}); reconnect to continue")
         self._changed()
 
+    @staticmethod
+    def _is_link_lost_message(message: str) -> bool:
+        m = (message or "").lower()
+        return (
+            "transporterror" in m
+            or "device not configured" in m
+            or "errno 6" in m
+            or "port is not open" in m
+        )
+
+    def ensure_link(self) -> None:
+        """Fail fast if the open port is a stale handle (common after an abort/reset)."""
+        dev = self._device()
+        try:
+            dev.info(refresh=True)
+        except TransportError as e:
+            self.link_lost(e)
+            raise Refused(
+                "USB link to the Nano is dead (often after Stop mid-run). "
+                "Reconnect, then run again."
+            ) from e
+
     def _device(self) -> LIODevice:
         if self.dev is None:
             raise Refused("not connected")
@@ -329,6 +351,11 @@ class Session:
                 raise Busy("the LED ring is running: stop it first")
             if allow_motion and not motion_confirmed:
                 raise Refused("motion tests need confirmation that the chamber is clear")
+        # Outside the lock: a blocking INFO must not hold _lock (and detects a
+        # stale USB handle left behind when Stop dropped the Nano mid-run).
+        self.ensure_link()
+        with self._lock:
+            dev = self._device()
             ids = self.select(modules, interactive=interactive, allow_motion=allow_motion)
             if not ids:
                 raise Refused("no tests match that selection")
@@ -423,6 +450,12 @@ class Session:
                         self.job["current"] = None
                     note = f" ({r.message})" if r.message else ""
                     self.log(f"{tid} {r.status.value:5} {t.name}{note}")
+                    # A dead USB link ERROR-cascades every remaining test; stop and
+                    # drop the stale port so the page asks to reconnect.
+                    if r.status == Status.ERROR and self._is_link_lost_message(r.message):
+                        self.link_lost(TransportError(r.message.split(";")[0].strip()))
+                        self._stop.set()
+                        break
                 finish(record, ctx)
                 # run ids have one-second resolution: never overwrite an earlier report
                 base, n = record.run_id, 2
@@ -465,6 +498,11 @@ class Session:
                 with self._lock:
                     self.job = None
                     self.prompt = None
+                # Stop mid-run often resets the Nano (USB re-enumerates): drop a
+                # stale handle so the next "Run" is not an instant ERROR cascade.
+                if self.dev is not None:
+                    with contextlib.suppress(Refused, TransportError):
+                        self.ensure_link()
                 self._changed()
 
     # ---------------------------------------------------------- prompts

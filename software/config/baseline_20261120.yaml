@@ -1,0 +1,83 @@
+# LIO baseline from run 20261120-003626_host (sample empty).
+# Written by 'lio selftest --save-baseline'; compare with --baseline <this file>.
+schema: 1
+created: '2026-11-20T02:02:28-05:00'
+run_id: 20261120-003626_host
+target: /dev/cu.usbmodem101
+sample_id: empty
+operator: unknown
+firmware:
+  fw: 2.5.2
+  proto: '1'
+  build: '2026-11-17'
+config_sha256: ed3b4ba8e1856a2995a3b49e5790e02724f99a20099d761d6d6cfda9457c9ea0
+verdict: FUNCTIONAL
+channels:
+  1:
+    ingaas: 6
+    opt101: 107
+  2:
+    ingaas: 5
+    opt101: 92
+  3:
+    ingaas: 7
+    opt101: 73
+  4:
+    ingaas: 2
+    opt101: 89
+  5:
+    ingaas: 22
+    opt101: 43
+  6:
+    ingaas: 11
+    opt101: 33
+  7:
+    ingaas: 3
+    opt101: 42
+  8:
+    ingaas: 28
+    opt101: 288
+  9:
+    ingaas: 26
+    opt101: 237
+  10:
+    ingaas: 3
+    opt101: 183
+  11:
+    ingaas: 17
+    opt101: 413
+  12:
+    ingaas: 66
+    opt101: 18
+  13:
+    ingaas: 29
+    opt101: 12
+  14:
+    ingaas: 27
+    opt101: 15
+  15:
+    ingaas: 22
+    opt101: 14
+  16:
+    ingaas: 36
+    opt101: 605
+dark:
+  a0:
+    mean: -167.42
+    sigma: 3.34
+  a1:
+    mean: 57.77
+    sigma: 0.43
+  a2:
+    mean: 4565.5
+    sigma: 9.33
+  a3:
+    mean: 2734.64
+    sigma: 1.99
+ingaas_over_opt101:
+  8: 0.09722222222222222
+  9: 0.10970464135021098
+settle_ms:
+  h03: 3.8345
+  h08: 1.2905
+repeatability_cv: {}
