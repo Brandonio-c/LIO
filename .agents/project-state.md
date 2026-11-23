@@ -1,6 +1,16 @@
-# Project state (as of 2026-11-20)
+# Project state (updated 2026-11-23)
 
-## Verdict
+## Current audited evidence and planned sensor-readings upgrade
+
+- Latest audited quick scan: `test_results/20261123-003133_scan_quick` is **NOT FUNCTIONAL** under its saved analysis; h12–h14 and InGaAs electrical/throughput findings require attention. H8/h9 still respond; the detector is not globally dead. This supersedes treating the 20 November snapshot below as the current measurement verdict.
+- Historical `test_results/` are tracked on `main` as of `138a963`; only physical `test_results/stage_position.json` stays local/ignored. Read `test_results/README.md` for the anchors.
+- Research/code/raw-data assessment: [sensor information assessment](../docs/research/LIO_V3_SENSOR_INFORMATION_ASSESSMENT_2026-11-23.md). H16 OPT101 is a reproducible, spectrally unassigned response, not a primary-1850 channel. Nov 19 report/analysis verdicts disagree; preserve provenance.
+- **Planned, not implemented:** [sensor-readings upgrade](../docs/SENSOR_READINGS_UPGRADE_PLAN.md), with [coding-agent handoff](../docs/handoffs/2026-11-23_sensor_readings_implementation.md). Core M0–M6 cover provenance/units, strict durable exposure accounting, explicit coupling uncertainty, fixed-N repeat estimation, bounded targeted acquisition, shared scout/confirm height selection and usable UI/CLI/profile integration.
+- No new bench validation or software SNR improvement is established by publishing these documents. Offline implementation does not authorize device connections, light/motion, flashing, current/wiring changes or physical confirmations.
+
+## Historical commissioning snapshot — 20 November 2026
+
+### Verdict
 
 **FUNCTIONAL with warnings** — ready to start collecting food LIO scan profiles, with provisional thresholds and known soft optics/mechanics.
 
@@ -9,7 +19,7 @@ Latest host suite: `test_results/20261120-003626_host` → **FUNCTIONAL**
 
 Latest empty quick scan (via T13): `20261120-012619_scan_quick` → **FUNCTIONAL** (InGaAs soft WARNs, h16 plausibility).
 
-## Commissioning done
+### Commissioning done
 
 - Firmware **2.5.2**; rails A=1–8 / B=9–16 match the build.
 - Dashboard twin + host suite: soft WARNs for V3 loose stage, weak InGaAs at sealed top, hole 16, intermittent/select-only, bogus SWEEP duty accounting.
@@ -18,7 +28,7 @@ Latest empty quick scan (via T13): `20261120-012619_scan_quick` → **FUNCTIONAL
 - Suite baseline saved: `software/config/baseline_20261120.yaml` (sample `empty`).
 - Extra remote branches removed; repo is **main-only**.
 
-## Twin / LED display policy (V3)
+### Twin / LED display policy (V3)
 
 | Symptom | Treatment |
 |---------|-----------|
@@ -28,7 +38,7 @@ Latest empty quick scan (via T13): `20261120-012619_scan_quick` → **FUNCTIONAL
 | Stage repeatability large spread | Cap FAIL→WARN |
 | Duty “46 s/min” with 0 cool-downs | WARN / accounting bug; SWEEP duty staggered |
 
-## Food-profile software (M0–M7)
+### Food-profile software (M0–M7)
 
 Implemented on `main`: `lio.food_profiles` + dashboard **Profiles** tab + `lio profiles …` CLI.
 Offline Explore/Compare/Food Map, recipes (amplitude/SNV/MSC/reference/O), frozen PCA/distances,
@@ -40,7 +50,7 @@ lio dashboard --results-dir test_results --no-food-library --no-browser
 lio profiles fixtures --out /tmp/lio_synth
 ```
 
-## Not done / next for food work (physical)
+### Not done / next for food work (physical)
 
 1. Save a **fresh scan baseline** for `empty` (promote today’s empty quick or run a **full** empty scan, then `lio scan baseline save <run>`).
 2. Optional references: `white_ptfe`, `black_cup` full scans → scan baselines.
@@ -49,8 +59,9 @@ lio profiles fixtures --out /tmp/lio_synth
 5. UI: “Compare with latest baseline” may show “none saved yet” until session refresh — file on disk exists.
 6. Thresholds still **provisional** (`docs/TESTING.md` §7.3).
 
-## Open soft issues (do not block food collection)
+### Open soft issues (do not block food collection)
 
 - InGaAs weak / low SNR on some SWIR holes (13–14); hole 16 known coupling.
 - Stage mechanically clunky (repeatability WARN by policy).
 - Prefer sealed-top suite vs mid-travel / full-scan heatmaps when judging “LEDs work.”
+
