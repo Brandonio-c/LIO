@@ -2,8 +2,11 @@
 
 | Document | Contents |
 |---|---|
+| [SENSOR_READINGS_REMEDIATION_PLAN.md](SENSOR_READINGS_REMEDIATION_PLAN.md) | Current repair specification after failed M0–M6 QA: D01–D20, R0–R8 and acceptance gates |
+| [handoffs/2026-11-23_sensor_readings_remediation.md](handoffs/2026-11-23_sensor_readings_remediation.md) | Coding-agent prompt to implement and verify the remediation offline |
+| [research/LIO_V3_SENSOR_READINGS_QA_2026-11-23.md](research/LIO_V3_SENSOR_READINGS_QA_2026-11-23.md) | Independent audit of 38eb8e6: reproduced failures, numerical checks and code/test evidence |
 | [SENSOR_READINGS_UPGRADE_PLAN.md](SENSOR_READINGS_UPGRADE_PLAN.md) | Staged implementation specification: calibrated readings, strict exposure accounting, coupling/uncertainty and targeted acquisition (planned) |
-| [handoffs/2026-11-23_sensor_readings_implementation.md](handoffs/2026-11-23_sensor_readings_implementation.md) | Copyable implementation-agent handoff for the sensor-readings upgrade |
+| [handoffs/2026-11-23_sensor_readings_implementation.md](handoffs/2026-11-23_sensor_readings_implementation.md) | Original upgrade handoff; follow the remediation handoff for current repair work |
 | [research/LIO_V3_SENSOR_INFORMATION_ASSESSMENT_2026-11-23.md](research/LIO_V3_SENSOR_INFORMATION_ASSESSMENT_2026-11-23.md) | Raw-data/code/physics audit behind the upgrade; h16 bounds and weak-SWIR evidence |
 | [FOOD_PROFILES.md](FOOD_PROFILES.md) | Usage: offline Explore / Compare / Food Map CLI and dashboard (`lio profiles`, `--no-food-library`) |
 | [FOOD_PROFILE_ANALYSIS_PLAN.md](FOOD_PROFILE_ANALYSIS_PLAN.md) | Implementation plan: food fingerprints, PCA, height curves, validation and offline dashboard |
@@ -31,5 +34,3 @@
 | [../electronics/WIRING_CHECKLIST.md](../electronics/WIRING_CHECKLIST.md) | Tick-list for checking the breadboard |
 | [../software/README.md](../software/README.md) | Firmware, the `lio` test command, motor control and logger usage |
 | [../CAD/V3/README_dual_detector_plate.md](../CAD/V3/README_dual_detector_plate.md) | Dual-detector plate and the required deck change |
-
-

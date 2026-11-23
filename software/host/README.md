@@ -6,7 +6,7 @@ Python package for the LIO V3 controller running firmware v2 (`docs/PROTOCOL.md`
 |---|---|
 | `lio.protocol` | Encodes commands and parses `OK` / `ERR` / `#` lines (pure functions) |
 | `lio.transport` | `SerialTransport` (pyserial; opening resets the Nano) and `SimTransport` (virtual clock); port discovery by USB VID/PID |
-| `lio.device` | `LIODevice`: typed API (`meas`, `sweep`, `adc_read`, `motor_step`, …). Used as a context manager it always sends `OFF` and `MOTOR STOP` on exit. Includes the LED duty-budget tracker |
+| `lio.device` | `LIODevice`: typed API (`meas`, `sweep`, `adc_read`, `motor_step`, …). Its context manager attempts `OFF` and `MOTOR STOP` on exit; the sensor-readings audit found cancellation/accounting defects requiring remediation (below) |
 | `lio.config` | Loads and validates `software/config/lio_hw.yaml`, the only place hardware constants and thresholds live |
 | `lio.sim` | `SimulatedLIO`: the firmware protocol plus a simple optical model and injectable faults |
 | `lio.analysis` | Statistics, detection levels, settling fits, signature comparison (pure functions) |
@@ -72,51 +72,38 @@ How the catalogue works:
 
 The `lio` command does the same without pytest (`lio selftest`, `lio --sim selftest`); see [docs/TESTING.md](../../docs/TESTING.md) for the catalogue, the report and the hardware checklist.
 
-## Sensor-readings upgrade (M0–M6 done; M7 opt-in offline)
+## Sensor-readings upgrade
 
-Specification: [docs/SENSOR_READINGS_UPGRADE_PLAN.md](../../docs/SENSOR_READINGS_UPGRADE_PLAN.md).
-**Code-complete / offline-tested ≠ bench-qualified.** Do not treat these commands as measured SNR or SWIR chemistry improvement. Bench A0 / Rf / ammeter checks remain owner-deferred.
+**Remediation required.** Independent QA of 38eb8e6 found M0–M6 incomplete, including exposure/stop defects, inaccurate acquisition facts and unqualified quantitative reuse. M7 is isolated experimental code, not a completed gain/STREAM workflow. The earlier completion claims are superseded.
 
-### CLI workflows
+- [Current remediation plan](../../docs/SENSOR_READINGS_REMEDIATION_PLAN.md): D01–D20, repair order and acceptance gates.
+- [Independent QA report](../../docs/research/LIO_V3_SENSOR_READINGS_QA_2026-11-23.md): reproduced failures and code/test evidence.
+- [Implementation handoff](../../docs/handoffs/2026-11-23_sensor_readings_remediation.md).
+- [Original upgrade specification](../../docs/SENSOR_READINGS_UPGRADE_PLAN.md): M0–M6 contracts and numerical anchors.
+
+Do not use a new quick/full scan to qualify this build before the software safety fixes and tests. A0/Rf/ammeter checks remain owner-deferred bench work. Code/simulator success cannot establish measured SNR improvement or recovered SWIR/1850 chemistry.
+
+### Offline inspection
+
+The protocol planner is offline. The qualified-v2 product currently remains unresolved and has known estimator/eligibility integration gaps; it is not accepted quantitative analysis.
+
+From the repository root:
 
 ```bash
-# Offline plan (no device, serial, POWER WAKE, or light)
-lio scan plan --protocol src/lio/scan/examples/stationary_targeted_h12.json --json /tmp/plan.json
-
-# Offline audit / versioned analysis under a derived root (run folder raw bytes untouched)
+lio scan plan --protocol software/host/src/lio/scan/examples/stationary_targeted_h12.json --json /tmp/plan.json
 lio scan audit test_results/20261123-003133_scan_quick --model qualified-v2 --derived-out /tmp/lio_derived
-lio scan analyse test_results/20261123-003133_scan_quick --model qualified-v2 --derived-out /tmp/lio_derived
-lio scan report test_results/20261123-003133_scan_quick --analysis <ANALYSIS_ID> --derived-out /tmp/lio_derived
-
-# Simulator protocol run (explicit light + operator checkpoint; still no real hardware)
-lio --sim scan run --protocol src/lio/scan/examples/stationary_targeted_h12.json \
-    --allow-light --sample empty --out /tmp/lio_proto_out
-
-# Profiles: held-out ablation of proxy_unassigned: (h16) features; baseline selection
-lio profiles ablate <dataset> --results-dir test_results --recipe amplitude_raw
-lio profiles baseline <run_folder…> --results-dir test_results --use quantitative
 ```
 
-`--protocol` is mutually exclusive with legacy `--mode`. Legacy height sweeps now freeze `acquisition_snapshot` + terminal source seal on **new** runs only (Nov23 historical folders stay untouched). Example protocol: `src/lio/scan/examples/stationary_targeted_h12.json`.
+At the audited commit, the new --model legacy analysis path still writes source analysis.json despite --derived-out. Use a disposable copy for investigating that failure until remediation makes all new audit/analysis/report modes source-safe. Historical records must remain unchanged.
 
-### Dashboard
+The Scan UI has protocol preview and a derived-summary browser. Actual pause/heartbeat, per-occurrence checkpoints, progress and numerical qualification inspection need the documented repairs. The real CLI protocol run is currently unconditionally disabled. Treat these as implementation gaps, not bench-only tasks.
 
-```bash
-lio dashboard --results-dir test_results --no-food-library --no-browser
-```
-
-Scan tab: height-sweep behaviour preserved (including solid LED hold). Extended with protocol plan preview, protocol start (requires allow-light + operator checkpoint flag), pause/abort/heartbeat reuse, and a derived-analysis browser (`GET /api/scan/derived`). Historical recorded verdict, current model output, and quantitative eligibility are shown as separate layers — h8/h9 SNR PASS does not certify h12–h15.
-
-### Optional extras (CI / local)
+### Optional extras
 
 | Extra | Purpose |
 |---|---|
-| `lio[precision]` | SciPy student-t intervals for fixed-N estimators (`scan/analysis/uncertainty.py`) |
-| `lio[profiles]` | scikit-learn + scipy for PCA / distances / food-profile pipelines |
-| `lio[dev]` | pytest, ruff, mypy, hypothesis |
+| lio[precision] | Optional SciPy fixed-N intervals; assumptions and consumer integration still require remediation |
+| lio[profiles] | scikit-learn/SciPy profile analysis and existing validation tools |
+| lio[dev] | pytest, Ruff, mypy and Hypothesis |
 
-Without scipy, interval fields return `available=False` with an explicit reason; unit tests skip the interval assertions cleanly (`tests/unit/test_precision_extras.py`).
-
-### M7 (opt-in software only)
-
-`lio.scan.m7_gain`: shared PGA profiles, off–on–off STREAM planner/executor interface with real `t_us` fields and ownership-journal exposure accounting, GLS/sequential stub that returns not-identifiable / not-qualified when design rank is insufficient. Core default remains gain 1; unexpected gain is rejected on non-M7 protocols. Synthetic different-gain fixtures must be labelled synthetic. Serial-limited STREAM rate is documented — not a uniform 860 SPS claim.
+Capture/basic summaries must remain usable without SciPy, with explicit unavailable-interval reasons. Required release tests cover core/extras and installed-wheel operation; helper presence is not release evidence.
