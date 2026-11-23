@@ -152,6 +152,7 @@ class Session:
         self._log: collections.deque[str] = collections.deque(maxlen=LOG_LINES)
         self._thread: threading.Thread | None = None
         self.scan_job: ScanJob | None = None  # the Scan tab's diagnostic sweep
+        self.protocol_job: Any | None = None  # targeted stationary protocol (M6)
         self._stop = threading.Event()
         self.catalogue = catalogue()
         self._state_path = results_root / STATE_FILE
@@ -180,7 +181,9 @@ class Session:
 
     @property
     def scanning(self) -> bool:
-        return self.scan_job is not None and self.scan_job.alive
+        return (self.scan_job is not None and self.scan_job.alive) or (
+            self.protocol_job is not None and self.protocol_job.alive
+        )
 
     def _planned(self) -> dict[str, list[str]]:
         out: dict[str, list[str]] = {}
@@ -1419,11 +1422,23 @@ class Session:
         return self.scan_job
 
     def scan_pause(self, on: bool) -> None:
+        if self.protocol_job is not None and self.protocol_job.alive:
+            self.protocol_job.control.pause(on)
+            self.log("protocol pause requested" if on else "protocol continue requested")
+            self._changed()
+            return
         self._scan().control.pause(on)
         self.log("scan pause requested" if on else "scan continue requested")
         self._changed()
 
     def scan_abort(self, reason: str = "operator abort (dashboard)") -> None:
+        if self.protocol_job is not None and self.protocol_job.alive:
+            self.protocol_job.control.abort(reason)
+            with self._lock:
+                self._stop.set()
+            self.log(f"protocol abort: {reason}")
+            self._changed()
+            return
         job = self._scan()
         job.control.abort(reason)
         with self._lock:
@@ -1437,11 +1452,107 @@ class Session:
     def scan_beat(self) -> dict[str, Any]:
         if self.scan_job is not None and self.scan_job.alive:
             self.scan_job.control.beat()
+        if self.protocol_job is not None and self.protocol_job.alive:
+            self.protocol_job.control.beat()
         return {"ok": True, "running": self.scanning}
 
+    def protocol_plan_preview(self, protocol: str | dict[str, Any]) -> dict[str, Any]:
+        """Offline protocol preview (duration, exposure, unresolved). No device."""
+        from lio.scan.acquisition import ProtocolError, plan_protocol
+
+        try:
+            plan = plan_protocol(protocol, self.cfg)
+        except ProtocolError as e:
+            raise Refused(str(e)) from e
+        d = plan.to_dict()
+        d["preview"] = {
+            "duration_s": plan.predicted_duration_s,
+            "exposure_on_ms": plan.predicted_on_ms,
+            "unresolved_calibration_notes": list(plan.unresolved),
+            "physical_prerequisites": list(plan.physical_prerequisites),
+            "assumptions": list(plan.assumptions),
+        }
+        return d
+
+    def protocol_start(
+        self,
+        protocol: str | dict[str, Any],
+        sample_id: str,
+        *,
+        allow_light: bool = False,
+        heartbeat: bool = True,
+        operator_checkpoint_flag: bool = False,
+        resume: str = "",
+        timeout_s: float = 90.0,
+    ) -> dict[str, Any]:
+        from lio.dashboard.protocol_job import ProtocolJob
+        from lio.scan.acquisition import ProtocolError, plan_protocol
+
+        with self._lock:
+            if self.running:
+                raise Busy("a run is already in progress")
+            if self._jog is not None:
+                raise Busy("the motors are running continuously: stop them first")
+            if self._ring is not None:
+                raise Busy("the LED ring is running: stop it first")
+            if not allow_light:
+                raise Refused("protocol run requires allow_light=true (no silent emission)")
+            if not operator_checkpoint_flag:
+                raise Refused(
+                    "protocol requires operator_checkpoint_flag=true (explicit; never invented)"
+                )
+            folder = None
+            if resume:
+                folder = self.results_root / resume
+                if "/" in resume or ".." in resume or not (folder / "scan.json").is_file():
+                    raise Refused(f"no protocol run {resume!r}")
+                try:
+                    plan = plan_protocol(
+                        __import__("json").loads((folder / "scan.json").read_text())["protocol"],
+                        self.cfg,
+                    )
+                except (OSError, KeyError, ValueError, ProtocolError) as e:
+                    raise Refused(str(e)) from e
+            else:
+                try:
+                    plan = plan_protocol(protocol, self.cfg)
+                except ProtocolError as e:
+                    raise Refused(str(e)) from e
+            self._stop.clear()
+            if self.dev is not None:
+                self.dev.clear_cancel()
+            job = ProtocolJob(
+                self,
+                plan,
+                sample_id=sample_id,
+                allow_light=allow_light,
+                heartbeat=heartbeat,
+                timeout_s=timeout_s,
+                operator_checkpoint_flag=operator_checkpoint_flag,
+                resume=folder,
+            )
+            self.protocol_job = job
+            job.thread.start()
+        self.log(f"protocol {'resumed' if resume else 'started'}: {plan.protocol.id}")
+        self._changed()
+        return {
+            "steps": len(plan.steps),
+            "eta_s": plan.predicted_duration_s,
+            "protocol_id": plan.protocol.id,
+        }
+
     def scan_view(self) -> dict[str, Any]:
-        return {"job": self.scan_job.view() if self.scan_job is not None else None,
-                "runs": self.scan_runs()}  # fmt: skip
+        return {
+            "job": self.scan_job.view() if self.scan_job is not None else None,
+            "protocol_job": self.protocol_job.view() if self.protocol_job is not None else None,
+            "runs": self.scan_runs(),
+            "verdict_layers": {
+                "note": (
+                    "historical recorded verdict vs current model output vs quantitative "
+                    "eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+                ),
+            },
+        }  # fmt: skip
 
     def scan_runs(self, limit: int = 20) -> list[dict[str, Any]]:
         out: list[dict[str, Any]] = []

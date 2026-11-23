@@ -790,7 +790,7 @@ def _scan_protocol_run(args: argparse.Namespace, cfg: HwConfig) -> int:
                 device=dev,
                 simulated=True,
                 rig_identity="sim",
-                operator_confirm=lambda _m: True,
+                operator_checkpoint_flag=True,
             )
     else:
         raise CliError(

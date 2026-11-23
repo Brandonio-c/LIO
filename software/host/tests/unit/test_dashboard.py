@@ -790,6 +790,76 @@ class TestHoldOneHole:
             session.ring_start(100, 0, include_unfitted=False, holes=[17])
 
 
+class TestProtocolAndDerived:
+    """M6 dashboard protocol preview + derived browser (offline; no USB for saved data)."""
+
+    def test_protocol_plan_preview_offline(self, session: Session) -> None:
+        repo = Path(__file__).resolve().parents[4]
+        example = (
+            repo
+            / "software"
+            / "host"
+            / "src"
+            / "lio"
+            / "scan"
+            / "examples"
+            / "stationary_targeted_h12.json"
+        )
+        out = session.protocol_plan_preview(example)
+        assert out["n_steps"] > 0
+        assert "preview" in out
+        assert "duration_s" in out["preview"]
+        assert "exposure_on_ms" in out["preview"]
+        assert isinstance(out["preview"]["unresolved_calibration_notes"], list)
+
+    def test_protocol_start_requires_flags(self, session: Session) -> None:
+        repo = Path(__file__).resolve().parents[4]
+        example = (
+            repo
+            / "software"
+            / "host"
+            / "src"
+            / "lio"
+            / "scan"
+            / "examples"
+            / "stationary_targeted_h12.json"
+        )
+        session.connect("sim")
+        with pytest.raises(Refused, match="allow_light"):
+            session.protocol_start(str(example), "empty", allow_light=False)
+        with pytest.raises(Refused, match="checkpoint"):
+            session.protocol_start(
+                str(example), "empty", allow_light=True, operator_checkpoint_flag=False
+            )
+
+    def test_derived_list_http(self, server: DashboardServer, tmp_path: Path) -> None:
+        root = tmp_path / "derived"
+        folder = root / "run1" / "qualified-v2_abcd"
+        folder.mkdir(parents=True)
+        (folder / "analysis.json").write_text(
+            json.dumps(
+                {
+                    "analysis_id": "abcd",
+                    "run_id": "run1",
+                    "model": "qualified-v2",
+                    "status": "COMPLETE",
+                    "verdict": {"verdict": "UNRESOLVED", "reasons": ["offline"]},
+                    "coupling": {"ingaas": {"model": "validated_control"}},
+                    "estimates": {"ingaas:h08": {"value": 1.0}, "ingaas:h12": {"value": 2.0}},
+                }
+            )
+        )
+        code, out = call(server, f"/api/scan/derived?derived_out={root}")
+        assert code == 200
+        assert out["analyses"]
+        assert "h8/h9" in (out.get("note") or "")
+        summary = out["analyses"][0]["signed_summary"]
+        assert summary["model_verdict"] == "UNRESOLVED"
+        assert "08" in summary["holes_with_estimates"] or "8" in str(
+            summary["holes_with_estimates"]
+        )
+
+
 class TestUsbLinkLost:
     def test_ring_drops_the_stale_port_and_page_says_reconnect(
         self, cfg: HwConfig, tmp_path: Path

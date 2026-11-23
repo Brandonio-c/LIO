@@ -90,12 +90,14 @@ def test_fake_transport_only_intended_holes(cfg, tmp_path: Path) -> None:
         allow_light=True,
         meas=meas,
         simulated=True,
+        operator_checkpoint_flag=True,
     )
     assert result.status == "COMPLETE"
     assert set(seen) <= set(plan.protocol.holes)
     assert (result.folder / "cube.csv.gz").exists()
     assert "terminal_source_seal" in result.store.meta
     assert "acquisition_snapshot" in result.store.meta
+    assert result.store.meta.get("operator_checkpoints")
 
 
 def test_pilot_frozen_improves_synthetic_objective(cfg) -> None:
@@ -147,10 +149,13 @@ def test_partial_cancel_keeps_unresolved(cfg, tmp_path: Path) -> None:
         meas=meas,
         cancel_check=lambda: n["i"] >= 3,
         simulated=True,
+        operator_checkpoint_flag=True,
     )
     assert result.status == "INCOMPLETE"
     assert result.cancel_reason == "cancelled"
     assert result.store.meta.get("unresolved") is True
+    assert result.store.meta.get("status") == "INCOMPLETE"
+    assert result.store.meta.get("duty_journal_policy") == "retain_charges_on_incomplete"
 
 
 def test_run_requires_allow_light(cfg, tmp_path: Path) -> None:
@@ -163,4 +168,119 @@ def test_run_requires_allow_light(cfg, tmp_path: Path) -> None:
             sample_id="empty",
             allow_light=False,
             meas=lambda *a: {},
+        )
+
+
+def test_checkpoint_requires_explicit_flag(cfg, tmp_path: Path) -> None:
+    plan = plan_protocol(EXAMPLE, cfg)
+    with pytest.raises(ProtocolError, match="checkpoint"):
+        run_protocol(
+            plan,
+            cfg=cfg,
+            root=tmp_path,
+            sample_id="empty",
+            allow_light=True,
+            meas=lambda *a: {},
+        )
+
+
+def test_checkpoint_refused_keeps_incomplete(cfg, tmp_path: Path) -> None:
+    plan = plan_protocol(EXAMPLE, cfg)
+    result = run_protocol(
+        plan,
+        cfg=cfg,
+        root=tmp_path,
+        sample_id="empty",
+        allow_light=True,
+        meas=lambda *a: {},
+        operator_checkpoint_flag=False,
+        simulated=True,
+    )
+    assert result.status == "INCOMPLETE"
+    assert result.cancel_reason == "checkpoint_refused"
+    assert result.store.meta["status"] == "INCOMPLETE"
+    assert result.store.meta.get("unresolved") is True
+    ck = result.store.meta.get("operator_checkpoints") or []
+    assert ck and ck[0]["operator_confirmed"] is False
+    assert ck[0]["human_confirmation_invented"] is False
+
+
+def test_resume_protocol_from_incomplete(cfg, tmp_path: Path) -> None:
+    from lio.scan.acquisition import resume_protocol
+
+    plan = plan_protocol(EXAMPLE, cfg)
+    n = {"i": 0}
+
+    def meas(hole: int, settle: int, n_avg: int) -> dict:
+        n["i"] += 1
+        return {
+            "hole": hole,
+            "dark_ingaas": 0,
+            "lit_ingaas": 1,
+            "net_ingaas": 1,
+            "dark_opt101": 0,
+            "lit_opt101": 1,
+            "net_opt101": 1,
+        }
+
+    partial = run_protocol(
+        plan,
+        cfg=cfg,
+        root=tmp_path,
+        sample_id="empty",
+        allow_light=True,
+        meas=meas,
+        cancel_check=lambda: n["i"] >= 2,
+        simulated=True,
+        operator_checkpoint_flag=True,
+    )
+    assert partial.status == "INCOMPLETE"
+    # Resume must not silently promote; continue with remaining steps.
+    done = resume_protocol(
+        partial.folder,
+        cfg=cfg,
+        allow_light=True,
+        meas=meas,
+        operator_checkpoint_flag=True,
+    )
+    assert done.status in ("COMPLETE", "INCOMPLETE")
+    assert done.store.meta["status"] == done.status
+    if done.status == "COMPLETE":
+        assert done.store.meta.get("unresolved") is not True
+
+
+def test_resume_refuses_complete(cfg, tmp_path: Path) -> None:
+    from lio.scan.acquisition import resume_protocol
+
+    plan = plan_protocol(EXAMPLE, cfg)
+
+    def meas(hole: int, settle: int, n_avg: int) -> dict:
+        return {
+            "hole": hole,
+            "dark_ingaas": 0,
+            "lit_ingaas": 1,
+            "net_ingaas": 1,
+            "dark_opt101": 0,
+            "lit_opt101": 1,
+            "net_opt101": 1,
+        }
+
+    full = run_protocol(
+        plan,
+        cfg=cfg,
+        root=tmp_path,
+        sample_id="empty",
+        allow_light=True,
+        meas=meas,
+        simulated=True,
+        operator_checkpoint_flag=True,
+    )
+    assert full.status == "COMPLETE"
+    with pytest.raises(ProtocolError, match="COMPLETE"):
+        resume_protocol(
+            full.folder,
+            cfg=cfg,
+            allow_light=True,
+            meas=meas,
+            operator_checkpoint_flag=True,
         )

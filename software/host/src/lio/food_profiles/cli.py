@@ -413,6 +413,46 @@ def cmd_fixtures(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_ablate(args: argparse.Namespace) -> int:
+    """Held-out ablation of ``proxy_unassigned:`` (h16) features."""
+    from lio.food_profiles.ablation import held_out_proxy_ablation
+    from lio.food_profiles.pipeline import build_feature_batch
+
+    root = Path(args.results_dir)
+    ds = load_dataset(root, args.dataset)
+    batch = build_feature_batch(root, ds, args.recipe, reference_run_id=args.reference)
+    result = held_out_proxy_ablation(batch, metric=args.metric)
+    _print(result.to_dict())
+    return 0
+
+
+def cmd_baseline(args: argparse.Namespace) -> int:
+    """Select a compatible baseline for quantitative reuse or raw compare."""
+    from lio.food_profiles.baselines import (
+        BaselineKind,
+        BaselineUse,
+        candidate_from_run_folder,
+        select_baseline,
+    )
+
+    root = Path(args.results_dir)
+    cands = [candidate_from_run_folder(root / p) for p in args.candidates]
+    use = BaselineUse.QUANTITATIVE if args.use == "quantitative" else BaselineUse.RAW_COMPARE
+    kind = BaselineKind(args.kind) if args.kind else None
+    decision = select_baseline(
+        cands,
+        use=use,
+        require_kind=kind,
+        require_config_sha256=args.config_sha256,
+        require_calibration_id=args.calibration_id,
+        require_model=args.model,
+        require_geometry_key=args.geometry_key,
+        require_reference_protocol=args.reference_protocol,
+    )
+    _print(decision.to_dict())
+    return 0 if decision.ok else 1
+
+
 def build_profiles_parser(sub: Any, *, fn: Any = None) -> None:
     p = sub.add_parser("profiles", help="offline food-profile Explore / Compare / Food Map")
     if fn is not None:
@@ -532,6 +572,36 @@ def build_profiles_parser(sub: Any, *, fn: Any = None) -> None:
     c = ss.add_parser("verify", help="verify bundle schema / arrays")
     c.add_argument("bundle")
     c.set_defaults(profiles_fn=cmd_verify)
+
+    c = ss.add_parser(
+        "ablate",
+        help="held-out ablation of proxy_unassigned: (h16) features",
+        parents=[common],
+    )
+    c.add_argument("dataset")
+    c.add_argument("--recipe", default="amplitude_raw")
+    c.add_argument("--reference", default=None)
+    c.add_argument("--metric", default="mean_pairwise_distance")
+    c.set_defaults(profiles_fn=cmd_ablate)
+
+    c = ss.add_parser(
+        "baseline",
+        help="select compatible baseline (rejects incomplete for quantitative reuse)",
+        parents=[common],
+    )
+    c.add_argument("candidates", nargs="+", help="run folders relative to --results-dir")
+    c.add_argument("--use", default="quantitative", choices=["quantitative", "raw_compare"])
+    c.add_argument(
+        "--kind",
+        default=None,
+        choices=["suite_yaml", "scan_baseline", "empty_holder", "white_reference", "unknown"],
+    )
+    c.add_argument("--config-sha256", default=None)
+    c.add_argument("--calibration-id", default=None)
+    c.add_argument("--model", default=None)
+    c.add_argument("--geometry-key", default=None)
+    c.add_argument("--reference-protocol", default=None)
+    c.set_defaults(profiles_fn=cmd_baseline)
 
 
 def cmd_profiles(args: argparse.Namespace) -> int:

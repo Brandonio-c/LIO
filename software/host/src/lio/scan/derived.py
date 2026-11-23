@@ -26,6 +26,7 @@ def derived_root(path: Path | str) -> Path:
 
 
 def list_derived(root: Path | str, run_id: str | None = None) -> list[dict[str, Any]]:
+    """List derived analyses. Never opens USB; saved-data views only."""
     root = Path(root)
     if not root.is_dir():
         return []
@@ -37,16 +38,64 @@ def list_derived(root: Path | str, run_id: str | None = None) -> list[dict[str, 
             continue
         if run_id and str(data.get("run_id")) != run_id and run_id not in str(p):
             continue
-        out.append(
-            {
-                "analysis_id": data.get("analysis_id") or p.parent.name,
-                "path": str(p),
-                "model": data.get("model"),
-                "run_id": data.get("run_id"),
-                "status": data.get("status"),
-            }
-        )
+        out.append(summarize_derived(data, path=p))
     return out
+
+
+def summarize_derived(data: dict[str, Any], *, path: Path | None = None) -> dict[str, Any]:
+    """Signed summary for dashboard/CLI: model, coupling, eligibility notes.
+
+    Explicitly separates historical recorded verdict vs current model output vs
+    quantitative eligibility. An h8/h9 SNR PASS must not imply h12-h15 OK.
+    """
+    verdict = data.get("verdict") or {}
+    coupling = data.get("coupling") or {}
+    estimates = data.get("estimates") or {}
+    eligibility_notes = [
+        "h8/h9 SNR PASS (if present) does not certify h12-h15",
+        "historical recorded verdict ≠ current model output ≠ quantitative eligibility",
+        "saved-data view: no USB / device open",
+    ]
+    # Surface which holes have estimates without promoting control PASS to SWIR OK.
+    holes_with_estimates = sorted(
+        {k.split(":h")[-1] for k in estimates if ":h" in k}
+    )
+    recorded = data.get("recorded_verdict") or data.get("historical_verdict")
+    return {
+        "analysis_id": data.get("analysis_id") or (path.parent.name if path else None),
+        "path": None if path is None else str(path),
+        "model": data.get("model"),
+        "run_id": data.get("run_id"),
+        "status": data.get("status"),
+        "identity": data.get("identity"),
+        "signed_summary": {
+            "model_verdict": verdict.get("verdict"),
+            "model_reasons": list(verdict.get("reasons") or []),
+            "historical_recorded_verdict": recorded,
+            "coupling_models": {
+                det: (c.get("model") if isinstance(c, dict) else None)
+                for det, c in coupling.items()
+            },
+            "holes_with_estimates": holes_with_estimates,
+            "eligibility_notes": eligibility_notes,
+        },
+        "coupling": coupling,
+        "eligibility_notes": eligibility_notes,
+    }
+
+
+def get_derived(root: Path | str, analysis_id: str) -> dict[str, Any] | None:
+    """Load one derived analysis by id under derived-out (offline)."""
+    root = Path(root)
+    matches = list(root.glob(f"**/*{analysis_id}*/analysis.json"))
+    if not matches:
+        matches = list(root.glob(f"**/{analysis_id}/analysis.json"))
+    if not matches:
+        return None
+    data = json.loads(matches[0].read_text(encoding="utf-8"))
+    summary = summarize_derived(data, path=matches[0])
+    summary["payload"] = data
+    return summary
 
 
 def _write_derived(folder: Path, payload: dict[str, Any]) -> Path:

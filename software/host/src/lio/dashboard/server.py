@@ -180,27 +180,39 @@ class _Handler(BaseHTTPRequestHandler):
             if url.path == "/api/scan":
                 return self._json(s.scan_view())
             if url.path == "/api/scan/protocol/plan":
-                # Offline protocol preview (no device / light). CLI remains primary.
+                # Offline protocol preview (no device / light).
                 q = parse_qs(url.query)
                 proto = (q.get("protocol") or [""])[0]
                 if not proto:
                     raise ValueError("protocol= path or inline JSON required")
-                from lio.scan.acquisition import ProtocolError, plan_protocol
-
-                try:
-                    plan = plan_protocol(proto if proto.strip().startswith("{") else Path(proto), s.cfg)
-                except ProtocolError as e:
-                    raise ValueError(str(e)) from e
-                return self._json(plan.to_dict())
+                return self._json(
+                    s.protocol_plan_preview(
+                        proto if proto.strip().startswith("{") else Path(proto)
+                    )
+                )
             if url.path == "/api/scan/derived":
                 q = parse_qs(url.query)
                 root = (q.get("derived_out") or [""])[0]
                 run_id = (q.get("run_id") or [None])[0]
+                analysis_id = (q.get("analysis_id") or [None])[0]
                 if not root:
                     raise ValueError("derived_out= required")
-                from lio.scan.derived import list_derived
+                from lio.scan.derived import get_derived, list_derived
 
-                return self._json({"analyses": list_derived(root, run_id)})
+                if analysis_id:
+                    detail = get_derived(root, analysis_id)
+                    if detail is None:
+                        raise ValueError(f"analysis_id {analysis_id!r} not found")
+                    return self._json(detail)
+                return self._json(
+                    {
+                        "analyses": list_derived(root, run_id),
+                        "note": (
+                            "saved-data only; no USB. Historical verdict ≠ model output ≠ "
+                            "eligibility; h8/h9 SNR PASS does not certify h12-h15."
+                        ),
+                    }
+                )
             if url.path == "/api/ring":
                 return self._json(s.ring_status())
             if url.path.startswith("/api/profiles/"):
@@ -547,6 +559,21 @@ class _Handler(BaseHTTPRequestHandler):
                         motion_confirmed=bool(b.get("motion_confirmed")),
                         sim_operator=bool(b.get("sim_operator", True)),
                         resume=str(b.get("resume") or ""),
+                    )
+                )
+            elif path == "/api/scan/protocol/start":
+                proto = b.get("protocol")
+                if not proto:
+                    raise ValueError("protocol path or object required")
+                return self._json(
+                    s.protocol_start(
+                        proto if isinstance(proto, dict) else str(proto),
+                        str(b.get("sample_id") or "empty"),
+                        allow_light=bool(b.get("allow_light")),
+                        heartbeat=bool(b.get("heartbeat", True)),
+                        operator_checkpoint_flag=bool(b.get("operator_checkpoint_flag")),
+                        resume=str(b.get("resume") or ""),
+                        timeout_s=float(b.get("timeout_s") or 90),
                     )
                 )
             elif path == "/api/scan/pause":

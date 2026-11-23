@@ -112,6 +112,57 @@ class AcquisitionSnapshot:
         d["adc"]["detector_order"] = list(self.adc.detector_order)
         return d
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> AcquisitionSnapshot:
+        adc_raw = dict(data.get("adc") or {})
+        order = adc_raw.get("detector_order") or ()
+        adc = AdcProvenance(
+            gain=adc_raw.get("gain"),
+            fsr_v=adc_raw.get("fsr_v"),
+            lsb_mv=adc_raw.get("lsb_mv"),
+            mux_map=dict(adc_raw.get("mux_map") or {}),
+            configured_rate_sps=adc_raw.get("configured_rate_sps"),
+            effective_mode=adc_raw.get("effective_mode"),
+            mains_hz=adc_raw.get("mains_hz"),
+            mains_periods=adc_raw.get("mains_periods"),
+            settle_ms=adc_raw.get("settle_ms"),
+            detector_order=tuple(order),
+        )
+        rf = {
+            k: RfProvenance(
+                v.get("value_ohm") if isinstance(v, dict) else None,
+                str(v.get("state", "unknown")) if isinstance(v, dict) else "unknown",
+                str(v.get("note", "")) if isinstance(v, dict) else "",
+            )
+            for k, v in dict(data.get("rf") or {}).items()
+        }
+        rail = {
+            k: CurrentProvenance(
+                v.get("value_ma") if isinstance(v, dict) else None,
+                str(v.get("state", "unknown")) if isinstance(v, dict) else "unknown",
+                str(v.get("note", "")) if isinstance(v, dict) else "",
+            )
+            for k, v in dict(data.get("rail_current") or {}).items()
+        }
+        return cls(
+            schema_version=int(data.get("schema_version", SCHEMA_VERSION)),
+            protocol_hash=str(data.get("protocol_hash", "")),
+            acquisition_version=str(data.get("acquisition_version", "m0")),
+            processing_version=str(data.get("processing_version", "m0")),
+            simulated=bool(data.get("simulated", False)),
+            rig_identity=str(data.get("rig_identity", "unknown")),
+            config_snapshot=dict(data.get("config_snapshot") or {}),
+            config_sha256=str(data.get("config_sha256", "")),
+            channel_map_snapshot=dict(data.get("channel_map_snapshot") or {}),
+            channel_map_sha256=str(data.get("channel_map_sha256", "")),
+            adc=adc,
+            rf=rf,
+            rail_current=rail,
+            assembly=dict(data.get("assembly") or {}),
+            planned=dict(data.get("planned") or {}),
+            input_range=dict(data.get("input_range") or {}),
+        )
+
     def manifest_hash(self) -> str:
         return content_hash(self.to_dict())
 
@@ -152,6 +203,92 @@ def build_acquisition_snapshot(
         planned=dict(planned or {}),
         input_range=dict(input_range or {}),
     )
+
+
+def snapshot_from_hw_config(
+    cfg: Any,
+    *,
+    protocol_hash: str,
+    planned: dict[str, Any] | None = None,
+    simulated: bool = False,
+    rig_identity: str = "unknown",
+    gain: str = "1",
+    detectors: tuple[str, ...] = ("opt101", "ingaas"),
+    mains_periods: int | None = None,
+    settle_ms: float | None = None,
+    assembly: dict[str, Any] | None = None,
+    acquisition_version: str = "m0-height-scan",
+) -> AcquisitionSnapshot:
+    """Build an initial snapshot from ``HwConfig`` for height-scan or protocol runs.
+
+    Historical Nov23 (and earlier) runs are left untouched; only NEW runs that call
+    this helper receive ``acquisition_snapshot`` / terminal seal fields.
+    """
+    rf: dict[str, RfProvenance] = {}
+    for d in detectors:
+        try:
+            raw_rf = cfg.section.raw(f"detectors.{d}.rf_ohm")
+            rf[d] = RfProvenance(float(raw_rf), "declared", "config")
+        except Exception:
+            rf[d] = RfProvenance(None, "unknown", "rf_ohm missing")
+    holes: list[int] = []
+    try:
+        holes = [int(ch.hole) for ch in cfg.channels]
+    except Exception:
+        holes = list(range(1, 17))
+    return build_acquisition_snapshot(
+        protocol_hash=protocol_hash,
+        config_snapshot={"sha256": cfg.sha256, "path": str(getattr(cfg, "path", ""))},
+        config_sha256=cfg.sha256,
+        channel_map_snapshot={"source": "config", "holes": holes},
+        adc=AdcProvenance(
+            gain=str(gain),
+            fsr_v=4.096,
+            lsb_mv=0.125 if str(gain) in ("1", "GAIN_ONE") else None,
+            effective_mode="mains" if mains_periods else "ordinary",
+            mains_hz=60.0 if mains_periods else None,
+            mains_periods=mains_periods,
+            settle_ms=settle_ms,
+            detector_order=detectors,
+        ),
+        rf=rf,
+        simulated=simulated,
+        rig_identity=rig_identity,
+        planned=dict(planned or {}),
+        input_range={d: "unverified" for d in detectors},
+        assembly=dict(assembly or {}),
+        acquisition_version=acquisition_version,
+    )
+
+
+def seal_store_terminal(
+    store: Any,
+    *,
+    status: str,
+    cancel_reason: str | None = None,
+) -> TerminalSourceSeal | None:
+    """Apply terminal source seal to an open ``ScanStore`` if a snapshot exists.
+
+    No-op (returns None) for historical runs without ``acquisition_snapshot``.
+    """
+    raw_snap = store.meta.get("acquisition_snapshot")
+    if not raw_snap or not isinstance(raw_snap, dict):
+        return None
+    snap = AcquisitionSnapshot.from_dict(raw_snap)
+    raw_bytes = b""
+    cube = getattr(store, "cube_path", None)
+    if cube is not None and Path(cube).exists():
+        raw_bytes = Path(cube).read_bytes()
+    seal = seal_terminal_source(
+        snap,
+        raw_bytes=raw_bytes,
+        terminal_meta={"status": status, "cancel_reason": cancel_reason},
+        revision="complete" if status == "COMPLETE" else "partial",
+        status=status,
+    )
+    store.meta["terminal_source_seal"] = seal.to_dict()
+    store.save_meta()
+    return seal
 
 
 @dataclass(frozen=True)

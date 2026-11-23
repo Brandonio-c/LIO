@@ -29,8 +29,8 @@ from lio import motion
 from lio.config import HwConfig
 from lio.device import DeviceError, LIODevice, NoResponse
 from lio.operator import Abort, Operator
-from lio.scan.plan import ScanPlan, Step
 from lio.scan.calibration import resolve_calibration
+from lio.scan.plan import ScanPlan, Step
 from lio.scan.store import ScanStore
 from lio.stage import StageError
 
@@ -141,6 +141,12 @@ class ScanExecutor:
         self._unlevel: list[list[int]] = []
         self.capabilities: dict[str, Any] = {}
 
+    def _seal_terminal(self, status: str, *, cancel_reason: str | None = None) -> None:
+        """Seal NEW runs that carry an acquisition_snapshot; historical no-op."""
+        from lio.scan.provenance import seal_store_terminal
+
+        seal_store_terminal(self.store, status=status, cancel_reason=cancel_reason)
+
     # ================================================================ running
 
     def run(self, *, resume: bool = False) -> str:
@@ -167,6 +173,7 @@ class ScanExecutor:
             self._safe_stop()
             self._record_health()
             self.store.finish("COMPLETE")
+            self._seal_terminal("COMPLETE")
             self.store.event("complete")
             self._progress(None, "complete")
             return "COMPLETE"
@@ -178,6 +185,7 @@ class ScanExecutor:
             with contextlib.suppress(Exception):
                 self._record_health()
             self.store.abort(reason, step=self.store.meta.get("completed_step", -1) + 1)
+            self._seal_terminal("INCOMPLETE", cancel_reason=reason)
             self._progress(None, "aborted", reason=reason)
             if isinstance(e, KeyboardInterrupt):
                 raise
@@ -189,6 +197,8 @@ class ScanExecutor:
             with contextlib.suppress(Exception):
                 self.store.abort(f"unexpected error: {type(e).__name__}: {e}",
                                  step=self.store.meta.get("completed_step", -1) + 1)  # fmt: skip
+            with contextlib.suppress(Exception):
+                self._seal_terminal("INCOMPLETE", cancel_reason=f"{type(e).__name__}: {e}")
             with contextlib.suppress(Exception):
                 self._progress(None, "aborted", reason=f"{type(e).__name__}: {e}")
             raise

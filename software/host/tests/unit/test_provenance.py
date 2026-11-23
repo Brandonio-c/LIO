@@ -214,6 +214,27 @@ def test_snapshot_and_seal_separate() -> None:
     seal = seal_terminal_source(snap, raw_bytes=b"cube", terminal_meta={"status": "COMPLETE"})
     assert seal.manifest_hash == snap.manifest_hash()
     assert seal.raw_sha256 != seal.manifest_hash
+    roundtrip = type(snap).from_dict(snap.to_dict())
+    assert roundtrip.manifest_hash() == snap.manifest_hash()
+
+
+def test_snapshot_from_hw_config_helper() -> None:
+    from lio.config import load_config
+    from lio.scan.provenance import snapshot_from_hw_config
+
+    repo = Path(__file__).resolve().parents[4]
+    cfg = load_config(repo / "software" / "config" / "lio_hw.yaml")
+    snap = snapshot_from_hw_config(
+        cfg,
+        protocol_hash="height",
+        planned={"mode": "quick"},
+        simulated=True,
+        mains_periods=2,
+        settle_ms=8.0,
+    )
+    assert snap.adc.gain == "1"
+    assert snap.simulated is True
+    assert "opt101" in snap.rf
 
 
 def test_legacy_analysis_not_accepted_by_names_alone() -> None:

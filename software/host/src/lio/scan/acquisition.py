@@ -28,6 +28,10 @@ from lio.scan.provenance import (
 )
 from lio.scan.store import ScanStore
 
+# Software-asserted checkpoint events (all-off / no-motion); never invents human OK.
+CHECKPOINT_ALL_OFF = "all_off"
+CHECKPOINT_NO_MOTION = "no_motion"
+
 PROTOCOL_SCHEMA_VERSION = 1
 APPROVED_FIXED_GAIN = "1"
 KNOWN_TOP_KEYS = frozenset(
@@ -523,6 +527,106 @@ class AcquisitionResult:
         return self.store.folder
 
 
+def record_operator_checkpoint(
+    store: ScanStore,
+    *,
+    checkpoint_id: str,
+    message: str,
+    operator_confirmed: bool,
+    all_off: bool,
+    no_motion: bool,
+    condition_id: str | None = None,
+    step_index: int | None = None,
+) -> dict[str, Any]:
+    """Record a checkpoint event from software-visible state + explicit operator flag.
+
+    Does **not** invent human confirmation: ``operator_confirmed`` must be supplied
+    by the caller. ``all_off`` / ``no_motion`` are software assertions only.
+    """
+    event = {
+        "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "checkpoint_id": checkpoint_id,
+        "message": message,
+        "operator_confirmed": bool(operator_confirmed),
+        "software_state": {
+            CHECKPOINT_ALL_OFF: bool(all_off),
+            CHECKPOINT_NO_MOTION: bool(no_motion),
+        },
+        "condition_id": condition_id,
+        "step_index": step_index,
+        "human_confirmation_invented": False,
+    }
+    store.meta.setdefault("operator_checkpoints", []).append(event)
+    store.event(
+        "operator_checkpoint",
+        checkpoint_id=checkpoint_id,
+        operator_confirmed=bool(operator_confirmed),
+        all_off=bool(all_off),
+        no_motion=bool(no_motion),
+    )
+    return event
+
+
+def _software_all_off(device: Any | None) -> bool:
+    if device is None:
+        return True  # offline/fake meas: no lit channel asserted
+    try:
+        st = device.status()
+        return int(st.as_int("ch")) == 0
+    except Exception:
+        return False
+
+
+def _software_no_motion(device: Any | None) -> bool:
+    if device is None:
+        return True
+    try:
+        if getattr(device, "_motor_armed", False):
+            return False
+        st = device.status()
+        return st.as_str("motor1") != "run" and st.as_str("motor2") != "run"
+    except Exception:
+        return False
+
+
+def _finalize_protocol(
+    store: ScanStore,
+    snap: AcquisitionSnapshot,
+    *,
+    status: str,
+    cancel_reason: str | None,
+    observations: list[dict[str, Any]],
+) -> None:
+    """Durable terminal status: never silently promote incomplete → complete."""
+    raw_bytes = b""
+    if store.cube_path.exists():
+        raw_bytes = store.cube_path.read_bytes()
+    seal = seal_terminal_source(
+        snap,
+        raw_bytes=raw_bytes,
+        terminal_meta={"status": status, "cancel_reason": cancel_reason},
+        revision="complete" if status == "COMPLETE" else "partial",
+        status=status,
+    )
+    store.meta["terminal_source_seal"] = seal.to_dict()
+    store.meta["observations"] = observations
+    # Duty journal charges are retained by the ownership journal independently;
+    # never clear them here on cancel.
+    store.meta["duty_journal_policy"] = "retain_charges_on_incomplete"
+    if status == "COMPLETE":
+        # Successful finish clears prior incomplete markers (e.g. after resume).
+        store.meta.pop("cancel_reason", None)
+        store.meta.pop("unresolved", None)
+        store.finish("COMPLETE")
+    else:
+        # Explicit durable incomplete — never auto-promote.
+        if cancel_reason:
+            store.meta["cancel_reason"] = cancel_reason
+        store.meta["status"] = "INCOMPLETE"
+        store.meta["unresolved"] = True
+        store.save_meta()
+
+
 def run_protocol(
     plan: ProtocolPlan,
     *,
@@ -536,12 +640,20 @@ def run_protocol(
     rig_identity: str = "offline",
     cancel_check: Callable[[], bool] | None = None,
     operator_confirm: Callable[[str], bool] | None = None,
+    operator_checkpoint_flag: bool | None = None,
+    store: ScanStore | None = None,
+    start_step: int = 0,
 ) -> AcquisitionResult:
     """Execute a stationary protocol through typed MEAS only.
 
     Requires ``allow_light``. Never arms motors. ``meas(hole, settle_ms, n)`` may
     be injected for tests; otherwise ``device.meas`` is used (must already be open
     and journal-gated).
+
+    When the protocol declares checkpoints / optical_block conditions, an explicit
+    operator confirmation is required (``operator_confirm`` returning True, or
+    ``operator_checkpoint_flag=True``). Software records all-off / no-motion state
+    without inventing human OK.
     """
     if not allow_light:
         raise ProtocolError("run requires --allow-light (no silent emission)")
@@ -549,50 +661,108 @@ def run_protocol(
     if device is not None and getattr(device, "_motor_armed", False):
         raise ProtocolError("stationary protocol must not run while motors armed")
 
-    snap = _snapshot_for_plan(plan, cfg, simulated=simulated, rig_identity=rig_identity)
-    meta = {
-        "mode": "protocol",
-        "protocol": plan.protocol.to_dict(),
-        "protocol_hash": plan.protocol.protocol_hash(),
-        "protocol_plan": plan.to_dict(),
-        "sample_id": sample_id,
-        "simulated": simulated,
-        "acquisition_snapshot": snap.to_dict(),
-        "config_sha256": cfg.sha256,
-        "stationary": True,
-        "arms_motors": False,
-    }
-    store = ScanStore.create(root, "protocol", meta)
+    step_checkpoints = any(s.optical_block or s.checkpoint for s in plan.steps)
+    proto_checkpoints = tuple(plan.protocol.operator_checkpoints)
+    needs_checkpoint = bool(proto_checkpoints) or step_checkpoints
+    if needs_checkpoint and operator_confirm is None and operator_checkpoint_flag is None:
+        raise ProtocolError(
+            "protocol requires operator checkpoint: pass operator_confirm callback "
+            "or operator_checkpoint_flag=True (explicit; never invented)"
+        )
+
+    def _operator_says_ok(msg: str) -> bool:
+        if operator_confirm is not None:
+            return bool(operator_confirm(msg))
+        if operator_checkpoint_flag is not None:
+            return bool(operator_checkpoint_flag)
+        return False
+
+    if store is None:
+        snap = _snapshot_for_plan(plan, cfg, simulated=simulated, rig_identity=rig_identity)
+        meta = {
+            "mode": "protocol",
+            "protocol": plan.protocol.to_dict(),
+            "protocol_hash": plan.protocol.protocol_hash(),
+            "protocol_plan": plan.to_dict(),
+            "sample_id": sample_id,
+            "simulated": simulated,
+            "acquisition_snapshot": snap.to_dict(),
+            "config_sha256": cfg.sha256,
+            "stationary": True,
+            "arms_motors": False,
+        }
+        store = ScanStore.create(root, "protocol", meta)
+    else:
+        raw = store.meta.get("acquisition_snapshot")
+        if not raw:
+            raise ProtocolError("resume store missing acquisition_snapshot")
+        snap = AcquisitionSnapshot.from_dict(raw)
+
+    if store.meta.get("status") == "COMPLETE":
+        raise ProtocolError(f"{store.folder} is already COMPLETE; refuse silent re-run")
     store.meta["status"] = "RUNNING"
     store.save_meta()
 
-    observations: list[dict[str, Any]] = []
+    observations: list[dict[str, Any]] = list(store.meta.get("observations") or [])
     cal = resolve_calibration(gain=APPROVED_FIXED_GAIN, cfg=cfg, detector="ingaas")
     status = "COMPLETE"
     cancel_reason = None
     t0 = time.monotonic()
     max_wall = float(plan.protocol.budgets["max_wall_s"])
 
+    # Protocol-level checkpoints at start (explicit operator flag; software state only).
+    if start_step == 0 and proto_checkpoints:
+        for i, msg in enumerate(proto_checkpoints):
+            confirmed = _operator_says_ok(msg)
+            if device is not None:
+                with contextlib.suppress(Exception):
+                    device.off()
+            record_operator_checkpoint(
+                store,
+                checkpoint_id=f"protocol:{i}",
+                message=msg,
+                operator_confirmed=confirmed,
+                all_off=_software_all_off(device),
+                no_motion=_software_no_motion(device),
+            )
+            if not confirmed:
+                status = "INCOMPLETE"
+                cancel_reason = "checkpoint_refused"
+                _finalize_protocol(
+                    store,
+                    snap,
+                    status=status,
+                    cancel_reason=cancel_reason,
+                    observations=observations,
+                )
+                return AcquisitionResult(
+                    store=store,
+                    status=status,
+                    plan=plan,
+                    observations=observations,
+                    cancel_reason=cancel_reason,
+                )
+
     def _meas(hole: int, settle: int, n: int) -> dict[str, Any]:
         if meas is not None:
             return meas(hole, settle, n)
         if device is None:
             raise ProtocolError("no meas callback or device")
-        # Enforce gain readback if available.
+        # Enforce gain readback if available (core default gain 1; M7 opt-in elsewhere).
         info = device.info(refresh=True)
         gain_read = str(
             info.values.get("adc_gain") or info.values.get("gain") or APPROVED_FIXED_GAIN
         )
         if gain_read not in (APPROVED_FIXED_GAIN, "1", "GAIN_ONE"):
             raise ProtocolError(
-                f"device gain readback {gain_read!r} ≠ approved {APPROVED_FIXED_GAIN}"
+                f"device gain readback {gain_read!r} ≠ approved {APPROVED_FIXED_GAIN} "
+                "(unexpected gain on non-M7 protocol)"
             )
         m = device.meas(hole, settle_ms=settle, n=n)
         out: dict[str, Any] = {"hole": hole, "t_on_ms": m.t_on_ms}
         for det in plan.protocol.detectors:
             out[f"dark_{det}"] = m.dark(det) if hasattr(m, "dark") else None
             out[f"lit_{det}"] = m.lit(det) if hasattr(m, "lit") else None
-            # Meas API uses .net(det)
             try:
                 out[f"net_{det}"] = m.net(det)
             except Exception:
@@ -600,7 +770,7 @@ def run_protocol(
         return out
 
     try:
-        for step in plan.steps:
+        for step in plan.steps[start_step:]:
             if cancel_check and cancel_check():
                 status = "INCOMPLETE"
                 cancel_reason = "cancelled"
@@ -611,14 +781,24 @@ def run_protocol(
                 break
             if step.optical_block or step.checkpoint:
                 msg = step.checkpoint or f"optical_block condition {step.condition_id}"
-                if operator_confirm is not None and not operator_confirm(msg):
-                    status = "INCOMPLETE"
-                    cancel_reason = "checkpoint_refused"
-                    break
-                # Light must be off at checkpoint; best-effort if device present.
+                confirmed = _operator_says_ok(msg)
                 if device is not None:
                     with contextlib.suppress(Exception):
                         device.off()
+                record_operator_checkpoint(
+                    store,
+                    checkpoint_id=step.checkpoint or step.condition_id,
+                    message=msg,
+                    operator_confirmed=confirmed,
+                    all_off=_software_all_off(device),
+                    no_motion=_software_no_motion(device),
+                    condition_id=step.condition_id,
+                    step_index=step.index,
+                )
+                if not confirmed:
+                    status = "INCOMPLETE"
+                    cancel_reason = "checkpoint_refused"
+                    break
 
             raw = _meas(step.hole, step.settle_ms, step.mains_periods)
             rows = []
@@ -663,34 +843,14 @@ def run_protocol(
         status = "INCOMPLETE"
         cancel_reason = f"error:{type(e).__name__}:{e}"
         store.abort(cancel_reason)
-        # Still seal partial.
     finally:
         if device is not None:
             with contextlib.suppress(Exception):
                 device.off()
 
-    # Terminal seal over frozen manifest + raw cube bytes.
-    raw_bytes = b""
-    if store.cube_path.exists():
-        raw_bytes = store.cube_path.read_bytes()
-    seal = seal_terminal_source(
-        snap,
-        raw_bytes=raw_bytes,
-        terminal_meta={"status": status, "cancel_reason": cancel_reason},
-        revision="complete" if status == "COMPLETE" else "partial",
-        status=status,
+    _finalize_protocol(
+        store, snap, status=status, cancel_reason=cancel_reason, observations=observations
     )
-    store.meta["terminal_source_seal"] = seal.to_dict()
-    store.meta["observations"] = observations
-    if cancel_reason:
-        store.meta["cancel_reason"] = cancel_reason
-        store.meta["unresolved"] = True
-    if status == "COMPLETE":
-        store.finish("COMPLETE")
-    else:
-        store.meta["status"] = "INCOMPLETE"
-        store.meta["finished"] = store.meta.get("finished")
-        store.save_meta()
 
     return AcquisitionResult(
         store=store,
@@ -698,6 +858,62 @@ def run_protocol(
         plan=plan,
         observations=observations,
         cancel_reason=cancel_reason,
+    )
+
+
+def resume_protocol(
+    folder: Path | str,
+    *,
+    cfg: HwConfig,
+    allow_light: bool,
+    meas: Callable[[int, int, int], dict[str, Any]] | None = None,
+    device: Any | None = None,
+    cancel_check: Callable[[], bool] | None = None,
+    operator_confirm: Callable[[str], bool] | None = None,
+    operator_checkpoint_flag: bool | None = None,
+) -> AcquisitionResult:
+    """Resume an INCOMPLETE protocol run from the next step.
+
+    Refuses COMPLETE folders (no silent promote). Retains prior observations and
+    relies on the ownership journal to keep duty charges.
+    """
+    store = ScanStore.open(Path(folder))
+    status = store.meta.get("status")
+    if status == "COMPLETE":
+        raise ProtocolError(f"{folder} is already COMPLETE; refuse silent promote/resume")
+    # Allow resume from durable incomplete-like states only.
+    if status not in ("INCOMPLETE", "RUNNING", "ABORTED") and store.meta.get(
+        "unresolved"
+    ) is not True:
+        raise ProtocolError(f"cannot resume protocol with status={status!r}")
+    proto_plan = store.meta.get("protocol_plan")
+    if not proto_plan:
+        raise ProtocolError("store missing protocol_plan")
+    if not store.meta.get("protocol"):
+        raise ProtocolError("store missing frozen protocol")
+    # Rebuild from frozen protocol body (dict); refuse if COMPLETE (checked above).
+    plan = plan_protocol(store.meta["protocol"], cfg)
+    # Prefer frozen allocation detail from the original plan when present.
+    if proto_plan.get("allocation_detail"):
+        plan.allocation_detail = dict(proto_plan["allocation_detail"])
+    start = int(store.meta.get("completed_step", -1)) + 1
+    return run_protocol(
+        plan,
+        cfg=cfg,
+        root=store.folder.parent,
+        sample_id=str(store.meta.get("sample_id") or "unknown"),
+        allow_light=allow_light,
+        meas=meas,
+        device=device,
+        simulated=bool(store.meta.get("simulated")),
+        rig_identity=str(
+            (store.meta.get("acquisition_snapshot") or {}).get("rig_identity", "offline")
+        ),
+        cancel_check=cancel_check,
+        operator_confirm=operator_confirm,
+        operator_checkpoint_flag=operator_checkpoint_flag,
+        store=store,
+        start_step=start,
     )
 
 

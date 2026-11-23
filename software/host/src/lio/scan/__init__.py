@@ -120,8 +120,30 @@ def start(
     on_progress: Callable[[dict[str, Any]], None] | None = None,
     sim: bool = False,
 ) -> tuple[ScanStore, str]:
-    """Create the run folder and execute the plan; returns (store, status)."""
+    """Create the run folder and execute the plan; returns (store, status).
+
+    NEW runs freeze an ``acquisition_snapshot`` before the first reading and
+    receive a terminal source seal on finish/abort. Historical folders without
+    those fields stay untouched.
+    """
+    from lio.scan.provenance import content_hash, snapshot_from_hw_config
+
     info = dev.info(refresh=True)
+    plan_dict = plan.to_dict()
+    snap = snapshot_from_hw_config(
+        cfg,
+        protocol_hash=content_hash({"kind": "height_scan", "mode": plan.mode, "plan": plan_dict}),
+        planned={
+            "mode": plan.mode,
+            "n_steps": len(plan.steps),
+            "heights_down": plan_dict.get("heights_down"),
+        },
+        simulated=sim,
+        rig_identity="sim" if sim else "host",
+        mains_periods=getattr(plan.settings, "mains_periods", None),
+        settle_ms=float(getattr(plan.settings, "optical_settle_ms", 0) or 0),
+        acquisition_version="m0-height-scan",
+    )
     meta = {
         "mode": plan.mode,
         "sample_id": sample_id,
@@ -129,8 +151,9 @@ def start(
         "host": {"lio": __version__, "python": platform.python_version()},
         "firmware": dict(info.values),
         "config_sha256": cfg.sha256,
-        "plan": plan.to_dict(),
+        "plan": plan_dict,
         "stage": dev.stage.summary() if dev.stage is not None else None,
+        "acquisition_snapshot": snap.to_dict(),
     }
     store = ScanStore.create(root, plan.mode, meta)
     ex = ScanExecutor(dev, cfg, plan, store, operator, sample_id=sample_id,

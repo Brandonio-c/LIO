@@ -72,10 +72,12 @@ How the catalogue works:
 
 The `lio` command does the same without pytest (`lio selftest`, `lio --sim selftest`); see [docs/TESTING.md](../../docs/TESTING.md) for the catalogue, the report and the hardware checklist.
 
-## Sensor-readings upgrade (M0–M6, offline-tested)
+## Sensor-readings upgrade (M0–M6 done; M7 opt-in offline)
 
 Specification: [docs/SENSOR_READINGS_UPGRADE_PLAN.md](../../docs/SENSOR_READINGS_UPGRADE_PLAN.md).
-**Code-complete / offline-tested ≠ bench-qualified.** Do not treat these commands as measured SNR or SWIR chemistry improvement.
+**Code-complete / offline-tested ≠ bench-qualified.** Do not treat these commands as measured SNR or SWIR chemistry improvement. Bench A0 / Rf / ammeter checks remain owner-deferred.
+
+### CLI workflows
 
 ```bash
 # Offline plan (no device, serial, POWER WAKE, or light)
@@ -86,9 +88,35 @@ lio scan audit test_results/20261123-003133_scan_quick --model qualified-v2 --de
 lio scan analyse test_results/20261123-003133_scan_quick --model qualified-v2 --derived-out /tmp/lio_derived
 lio scan report test_results/20261123-003133_scan_quick --analysis <ANALYSIS_ID> --derived-out /tmp/lio_derived
 
-# Simulator protocol run (explicit light permission; still no real hardware)
+# Simulator protocol run (explicit light + operator checkpoint; still no real hardware)
 lio --sim scan run --protocol src/lio/scan/examples/stationary_targeted_h12.json \
     --allow-light --sample empty --out /tmp/lio_proto_out
+
+# Profiles: held-out ablation of proxy_unassigned: (h16) features; baseline selection
+lio profiles ablate <dataset> --results-dir test_results --recipe amplitude_raw
+lio profiles baseline <run_folder…> --results-dir test_results --use quantitative
 ```
 
-`--protocol` is mutually exclusive with legacy `--mode`. Legacy `lio scan plan --mode …` is also offline (planning envelope from config; no POWER WAKE). Example protocol: `src/lio/scan/examples/stationary_targeted_h12.json` (also under `docs/examples/`).
+`--protocol` is mutually exclusive with legacy `--mode`. Legacy height sweeps now freeze `acquisition_snapshot` + terminal source seal on **new** runs only (Nov23 historical folders stay untouched). Example protocol: `src/lio/scan/examples/stationary_targeted_h12.json`.
+
+### Dashboard
+
+```bash
+lio dashboard --results-dir test_results --no-food-library --no-browser
+```
+
+Scan tab: height-sweep behaviour preserved (including solid LED hold). Extended with protocol plan preview, protocol start (requires allow-light + operator checkpoint flag), pause/abort/heartbeat reuse, and a derived-analysis browser (`GET /api/scan/derived`). Historical recorded verdict, current model output, and quantitative eligibility are shown as separate layers — h8/h9 SNR PASS does not certify h12–h15.
+
+### Optional extras (CI / local)
+
+| Extra | Purpose |
+|---|---|
+| `lio[precision]` | SciPy student-t intervals for fixed-N estimators (`scan/analysis/uncertainty.py`) |
+| `lio[profiles]` | scikit-learn + scipy for PCA / distances / food-profile pipelines |
+| `lio[dev]` | pytest, ruff, mypy, hypothesis |
+
+Without scipy, interval fields return `available=False` with an explicit reason; unit tests skip the interval assertions cleanly (`tests/unit/test_precision_extras.py`).
+
+### M7 (opt-in software only)
+
+`lio.scan.m7_gain`: shared PGA profiles, off–on–off STREAM planner/executor interface with real `t_us` fields and ownership-journal exposure accounting, GLS/sequential stub that returns not-identifiable / not-qualified when design rank is insufficient. Core default remains gain 1; unexpected gain is rejected on non-M7 protocols. Synthetic different-gain fixtures must be labelled synthetic. Serial-limited STREAM rate is documented — not a uniform 860 SPS claim.

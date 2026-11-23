@@ -24,7 +24,19 @@ lio dashboard                 # or: the web dashboard (run tests, digital twin, 
 
 How to test, the full catalogue and the first-hardware-session checklist: [docs/TESTING.md](../docs/TESTING.md).
 
-Sensor-readings upgrade (M0–M6 offline CLI/protocol): see [host/README.md](host/README.md#sensor-readings-upgrade-m0m6-offline-tested) and [docs/SENSOR_READINGS_UPGRADE_PLAN.md](../docs/SENSOR_READINGS_UPGRADE_PLAN.md). Not bench-qualified.
+Sensor-readings upgrade (M0–M6 done; M7 opt-in offline): see [host/README.md](host/README.md#sensor-readings-upgrade-m0m6-done-m7-opt-in-offline) and [docs/SENSOR_READINGS_UPGRADE_PLAN.md](../docs/SENSOR_READINGS_UPGRADE_PLAN.md). Not bench-qualified — A0/Rf/ammeter checks deferred.
+
+```bash
+# Offline protocol plan + derived audit
+lio scan plan --protocol software/host/src/lio/scan/examples/stationary_targeted_h12.json
+lio scan audit test_results/20261123-003133_scan_quick --model qualified-v2 --derived-out /tmp/lio_derived
+
+# Dashboard (Scan tab: height sweep + protocol preview/derived browser)
+lio dashboard --results-dir test_results --no-food-library --no-browser
+
+# Optional precision intervals / profile extras
+pip install -e "software/host[precision,profiles,dev]"
+```
 
 ## Firmware
 

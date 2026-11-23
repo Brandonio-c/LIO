@@ -611,7 +611,25 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
       <span id="scan-hb" class="hb" title="The page tells the dashboard every few seconds that someone is here; if it goes quiet for longer than the timeout, the scan pauses safely (everything off) until it comes back"><span class="dot"></span><span>heartbeat off</span></span>
     </div>
     <p class="note" style="margin:6px 0 0">Moves the chamber top through its travel and, at every height, measures every LED on both detectors (one LED at a time, stop–measure–move; RAIL A within 1 s on-time per LED per minute). Any abort turns everything off, stops and releases the motors, and records why. The travel limits must be marked on the <a href="#motors">Motors</a> tab.</p>
-    <p class="note" style="margin:6px 0 0">Targeted stationary protocols (sensor-readings M4–M6) are CLI-first and offline for plan/audit: <code>lio scan plan --protocol …</code>, <code>lio scan audit … --derived-out …</code>. API: <code>GET /api/scan/protocol/plan</code>, <code>GET /api/scan/derived</code>. Not bench-qualified; no SNR/SWIR chemistry claim.</p>
+    <p class="note" style="margin:6px 0 0">Targeted stationary protocols (M4–M6) and derived analyses (offline). Historical recorded verdict, current model output, and quantitative eligibility are separate — an h8/h9 SNR PASS does not certify h12–h15. Not bench-qualified.</p>
+    <details style="margin-top:10px" id="scan-protocol-panel"><summary>Protocol plan preview / derived browser (offline)</summary>
+      <div class="row" style="margin-top:8px;align-items:flex-end;gap:10px;flex-wrap:wrap">
+        <label class="field" style="flex:1;min-width:220px">Protocol path or JSON
+          <input id="proto-path" type="text" placeholder="src/lio/scan/examples/stationary_targeted_h12.json" style="width:100%"></label>
+        <button id="proto-preview" class="btn">Preview protocol</button>
+        <label class="check"><input type="checkbox" id="proto-ckpt"><span>Operator checkpoint flag (explicit)</span></label>
+        <label class="check"><input type="checkbox" id="proto-light"><span>Allow light (sim/host only)</span></label>
+        <button id="proto-start" class="btn">Start protocol</button>
+      </div>
+      <pre id="proto-plan" class="mono" style="margin-top:8px;white-space:pre-wrap;max-height:180px;overflow:auto">Preview shows duration, exposure bounds, unresolved calibration notes (no device).</pre>
+      <div class="row" style="margin-top:10px;align-items:flex-end;gap:10px;flex-wrap:wrap">
+        <label class="field" style="flex:1;min-width:200px">Derived-out root
+          <input id="derived-root" type="text" placeholder="/tmp/lio_derived" style="width:100%"></label>
+        <button id="derived-list" class="btn">List derived analyses</button>
+      </div>
+      <div id="derived-list-out" class="note" style="margin-top:8px">–</div>
+      <p class="note" style="margin:6px 0 0">Pause / Abort / heartbeat buttons above also apply to a running protocol job.</p>
+    </details>
     <div class="row" style="margin-top:12px;align-items:flex-end">
       <label class="field">Mode <select id="scan-mode"></select></label>
       <label class="field">Sample <select id="scan-sample"></select></label>
@@ -1187,8 +1205,55 @@ function scanSetup() {
   $("scan-preview").onclick = scanPreview;
   $("scan-mode").onchange = () => { $("scan-plan").textContent = "Preview the plan to see the heights, duration and LED duty."; };
   $("scan-start").onclick = scanStart;
-  $("scan-pause").onclick = () => scanAct("/api/scan/pause", { on: !(SC && SC.job && (SC.job.pause_requested || SC.job.paused)) });
-  $("scan-abort").onclick = () => { if (confirm("Abort the scan? Everything is turned off and the motors released; the run can be resumed later.")) scanAct("/api/scan/abort"); };
+  $("scan-pause").onclick = () => scanAct("/api/scan/pause", { on: !(SC && ((SC.job && (SC.job.pause_requested || SC.job.paused)) || (SC.protocol_job && (SC.protocol_job.pause_requested || SC.protocol_job.paused)))) });
+  $("scan-abort").onclick = () => { if (confirm("Abort the scan/protocol? Everything is turned off and the motors released; the run can be resumed later.")) scanAct("/api/scan/abort"); };
+  if ($("proto-preview")) $("proto-preview").onclick = protoPreview;
+  if ($("proto-start")) $("proto-start").onclick = protoStart;
+  if ($("derived-list")) $("derived-list").onclick = derivedList;
+}
+async function protoPreview() {
+  const proto = ($("proto-path").value || "").trim();
+  if (!proto) return toast("protocol path or JSON required");
+  try {
+    const p = await api("/api/scan/protocol/plan?protocol=" + encodeURIComponent(proto));
+    const prev = p.preview || {};
+    $("proto-plan").textContent = [
+      `id=${p.protocol_id || "?"}  steps=${p.n_steps}  duration≈${(prev.duration_s || p.predicted_duration_s || 0).toFixed(1)}s`,
+      `exposure on≈${(prev.exposure_on_ms || p.predicted_on_ms || 0).toFixed(0)} ms`,
+      "unresolved: " + ((prev.unresolved_calibration_notes || p.unresolved || []).join("; ") || "(none)"),
+      "prereq: " + ((prev.physical_prerequisites || p.physical_prerequisites || []).join("; ") || "(none)"),
+      "Layers: historical recorded verdict ≠ current model ≠ quantitative eligibility.",
+    ].join("\n");
+  } catch (e) { toast(e.message, 8000); }
+}
+async function protoStart() {
+  const proto = ($("proto-path").value || "").trim();
+  if (!proto) return toast("protocol path or JSON required");
+  if (!$("proto-ckpt").checked) return toast("tick Operator checkpoint flag (explicit; never invented)");
+  if (!$("proto-light").checked) return toast("tick Allow light");
+  await scanAct("/api/scan/protocol/start", {
+    protocol: proto.startsWith("{") ? JSON.parse(proto) : proto,
+    sample_id: scanSample(),
+    allow_light: true,
+    operator_checkpoint_flag: true,
+    heartbeat: $("scan-hb-on").checked,
+  });
+}
+async function derivedList() {
+  const root = ($("derived-root").value || "").trim();
+  if (!root) return toast("derived-out root required");
+  try {
+    const out = await api("/api/scan/derived?derived_out=" + encodeURIComponent(root));
+    const rows = (out.analyses || []).map((a) => {
+      const s = a.signed_summary || {};
+      return `<tr><td class="mono">${esc(a.analysis_id || "")}</td><td>${esc(a.model || "")}</td>`
+        + `<td>${esc(a.run_id || "")}</td><td>${esc(s.model_verdict || a.status || "")}</td>`
+        + `<td class="note">${esc((a.eligibility_notes || []).slice(0, 1).join(" "))}</td></tr>`;
+    }).join("");
+    $("derived-list-out").innerHTML = rows
+      ? `<p class="note">${esc(out.note || "")}</p><table><tr><th>id</th><th>model</th><th>run</th><th>model verdict</th><th>eligibility</th></tr>${rows}</table>`
+      : `<span class="muted">No analyses under ${esc(root)}</span>`;
+  } catch (e) { toast(e.message, 8000); }
 }
 function scanOverrides() {
   const o = {};
@@ -1278,16 +1343,25 @@ function drawHeat(det, job) {
 }
 function scanRender() {
   if (!SC || !STATIC || !STATIC.scan) return;
-  const job = SC.job, running = !!(job && job.running), connected = !!(S && S.connected), sim = !!(S && S.is_sim);
+  const job = SC.job, pjob = SC.protocol_job;
+  const running = !!(job && job.running) || !!(pjob && pjob.alive);
+  const connected = !!(S && S.connected), sim = !!(S && S.is_sim);
   document.querySelectorAll("#scan-view .sim-only").forEach((e) => e.classList.toggle("hidden", !sim));
   document.querySelectorAll("#scan-view .hw-only").forEach((e) => e.classList.toggle("hidden", sim));
   const otherRun = !!(S && S.running) && !running;
   $("scan-start").disabled = !connected || running || otherRun;
   $("scan-preview").disabled = !connected;
+  if ($("proto-start")) $("proto-start").disabled = !connected || running || otherRun;
   $("scan-pause").disabled = !running;
   $("scan-abort").disabled = !running;
-  $("scan-pause").textContent = job && (job.pause_requested || job.paused) ? "Continue" : "Pause";
-  heartbeat(running && job.heartbeat, job ? Math.round(job.timeout_s) : 90);
+  const pauseSrc = (pjob && pjob.alive) ? pjob : job;
+  $("scan-pause").textContent = pauseSrc && (pauseSrc.pause_requested || pauseSrc.paused) ? "Continue" : "Pause";
+  heartbeat(running && (job && job.heartbeat || pjob), job ? Math.round(job.timeout_s) : 90);
+  if (pjob && pjob.alive && $("proto-plan")) {
+    const pp = pjob.progress || {};
+    $("proto-plan").textContent = `protocol ${pjob.protocol_id || ""} · ${pp.status || ""} · ${pp.done || 0}/${pp.of || pjob.n_steps || 0}`
+      + (pp.cancel_reason ? ` · ${pp.cancel_reason}` : "");
+  }
   const pr = job ? job.progress || {} : {};
   const done = pr.done || 0, of = pr.of || (job ? 1 : 0);
   $("scan-bar").style.width = of ? `${Math.round(100 * done / of)}%` : "0";

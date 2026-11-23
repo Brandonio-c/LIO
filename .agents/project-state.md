@@ -5,8 +5,10 @@
 - Latest audited quick scan: `test_results/20261123-003133_scan_quick` is **NOT FUNCTIONAL** under its saved analysis; h12–h14 and InGaAs electrical/throughput findings require attention. H8/h9 still respond; the detector is not globally dead. This supersedes treating the 20 November snapshot below as the current measurement verdict.
 - Historical `test_results/` are tracked on `main` as of `138a963`; only physical `test_results/stage_position.json` stays local/ignored. Read `test_results/README.md` for the anchors.
 - Research/code/raw-data assessment: [sensor information assessment](../docs/research/LIO_V3_SENSOR_INFORMATION_ASSESSMENT_2026-11-23.md). H16 OPT101 is a reproducible, spectrally unassigned response, not a primary-1850 channel. Nov 19 report/analysis verdicts disagree; preserve provenance.
-- **Sensor-readings M0–M6: code-complete / offline-tested** on `main` ([plan](../docs/SENSOR_READINGS_UPGRADE_PLAN.md), [handoff](../docs/handoffs/2026-11-23_sensor_readings_implementation.md)). Modules: `scan/provenance.py`, `calibration.py`, `ownership.py`, `analysis/coupling.py`, `analysis/uncertainty.py`, `scan/acquisition.py`, `scan/targets.py`, `scan/derived.py`; CLI `lio scan plan|run|audit|analyse|report` with `--protocol` / `--derived-out`. **Not** bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified. No measured SNR / SWIR chemistry claim.
-- Remaining: owner-authorized bench preflight, A0 range qualification, optical-block controls, measured Rf/current provenance, and real targeted acquisition under `--allow-light` on hardware.
+- **Sensor-readings M0–M6: done** (code-complete / offline-tested) on `main` ([plan](../docs/SENSOR_READINGS_UPGRADE_PLAN.md), [handoff](../docs/handoffs/2026-11-23_sensor_readings_implementation.md)). Modules: `scan/provenance.py`, `calibration.py`, `ownership.py`, `analysis/coupling.py`, `analysis/uncertainty.py`, `scan/acquisition.py`, `scan/targets.py`, `scan/derived.py`; CLI `lio scan plan|run|audit|analyse|report` with `--protocol` / `--derived-out`; dashboard protocol preview + derived browser; profile ablation/baseline helpers. Legacy height sweeps now seal NEW runs only.
+- **M7: opt-in code-complete / offline-tested** (`scan/m7_gain.py`): PGA profiles, off–on–off STREAM planner with real timestamps + ownership exposure accounting, GLS stub returns not-identifiable when rank insufficient. Core default remains gain 1. Synthetic different-gain fixtures labelled synthetic. Serial-limited rate documented (not uniform 860 SPS).
+- **Not** bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified. No measured SNR / SWIR chemistry claim.
+- Remaining (bench-only; owner deferred): A0 range qualification, measured Rf/current provenance, optical-block controls, ammeter/voltmeter/Rf bench checks, and real targeted acquisition under `--allow-light` on hardware.
 
 ## Historical commissioning snapshot — 20 November 2026
 
@@ -43,6 +45,7 @@ Latest empty quick scan (via T13): `20261120-012619_scan_quick` → **FUNCTIONAL
 Implemented on `main`: `lio.food_profiles` + dashboard **Profiles** tab + `lio profiles …` CLI.
 Offline Explore/Compare/Food Map, recipes (amplitude/SNV/MSC/reference/O), frozen PCA/distances,
 whole-height fPCA, grouped validation, optional t-SNE/UMAP, ASCA, EWMA trends, portable reports.
+Held-out ablation for `proxy_unassigned:` (h16) via `lio profiles ablate`; baseline selection via `lio profiles baseline`.
 Synthetic fixtures are labeled; **no measured food-discrimination claims**. See `docs/FOOD_PROFILES.md`.
 
 ```bash
@@ -64,4 +67,3 @@ lio profiles fixtures --out /tmp/lio_synth
 - InGaAs weak / low SNR on some SWIR holes (13–14); hole 16 known coupling.
 - Stage mechanically clunky (repeatability WARN by policy).
 - Prefer sealed-top suite vs mid-travel / full-scan heatmaps when judging “LEDs work.”
-
