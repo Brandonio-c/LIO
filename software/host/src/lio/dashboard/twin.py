@@ -175,8 +175,17 @@ def parts(results: Iterable[TestResult], cfg: HwConfig) -> dict[str, Any]:
                 holes[hole].add(r, s.id, status, s.message)
                 if r.id == "T05.2" and path[-1] in DETECTORS and "net" in s.measured:
                     nets.setdefault(hole, {})[path[-1]] = int(s.measured["net"])
-            # Rails = LED drivers (T05). T10.2 uses A/B in the id for its probe hole.
-            if path and path[0] in rails and r.module == "T05":
+            # Rails = LED drivers (T05) plus T13 optical rail findings (…/A/rail).
+            # T10.2 uses A/B in the id for its watchdog probe hole and must not
+            # paint the driver tiles (interlock ≠ driver evidence).
+            if (
+                path
+                and path[0] in rails
+                and (
+                    r.module == "T05"
+                    or (r.module == "T13" and len(path) >= 2 and path[1] == "rail")
+                )
+            ):
                 rails[path[0]].add(r, s.id, s.status, s.message)
             if r.module == "T09" and path and path[0] in motors:
                 motors[path[0]].add(r, s.id, s.status, s.message)

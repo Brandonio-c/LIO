@@ -8,6 +8,7 @@ Historical diagnostic scans, tray_v3 bench artifacts, and related corpora live h
 
 | Path | Role |
 |------|------|
+| `20261123-135504_host_residual_hw/` | Live automatic host suite after residual remediation (NOT FUNCTIONAL; InGaAs dark/optical FAIL; T10.2 SKIP; SWEEP/safety PASS) |
 | `20261123-003133_scan_quick/` | Latest empty quick scan (NOT FUNCTIONAL; h12–14 FAIL; h16 OPT WARN) |
 | `20261120-012619_scan_quick/` | Strong empty FUNCTIONAL baseline |
 | `20261119-152512_scan_quick/` | black_cup FUNCTIONAL (InGaAs 12–14 alive) |
@@ -19,4 +20,4 @@ Historical diagnostic scans, tray_v3 bench artifacts, and related corpora live h
 
 New local runs may be committed when they are needed for a handoff; do not commit secrets or food-library photos here (`data/foods/` stays ignored).
 
-**Remediation (2026-11-23):** host software gates D01–D20 are offline-tested (R0–R8). These historical scans are **not** re-qualified by that work. See `docs/handoffs/2026-11-23_remediation_d01_d20_closure.md`.
+**Remediation (2026-11-23):** host software gates D01–D20 and residual caller repairs are offline-tested; one automatic live-host run is archived above. Historical scans are **not** re-qualified as optical PASS. See `docs/handoffs/2026-11-23_residual_remediation_acceptance.md` (current), research QA prompt `docs/handoffs/2026-11-23_residual_research_qa_prompt.md`, and `docs/handoffs/2026-11-23_remediation_d01_d20_closure.md` (historical).

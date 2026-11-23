@@ -181,9 +181,15 @@ class DutyJournal:
     # Constructors must not rewrite a live owner's journal (CE02). When False,
     # load read-only: no absorb/persist side effects until reload()/reserve().
     mutate_on_construct: bool = True
+    # When True with mutate_on_construct=False: construct with empty in-memory
+    # state and touch neither disk nor live journal until reload() under a lease.
+    defer_load: bool = False
 
     def __post_init__(self) -> None:
         self.path = Path(self.path)
+        if self.defer_load:
+            self._data = self._empty()
+            return
         if self.mutate_on_construct:
             self._load_or_init()
         else:
@@ -217,6 +223,7 @@ class DutyJournal:
         path: Path | None = None,
         mono_now: Callable[[], float] | None = None,
         mutate_on_construct: bool = True,
+        defer_load: bool = False,
     ) -> DutyJournal:
         root = Path(state_root) if state_root is not None else default_state_root()
         if path is None:
@@ -230,7 +237,8 @@ class DutyJournal:
             budget_ms=dict(budget_ms),
             rail_of=rail_of,
             mono_now=mono_now or time.monotonic,
-            mutate_on_construct=mutate_on_construct,
+            mutate_on_construct=mutate_on_construct and not defer_load,
+            defer_load=defer_load,
         )
 
     def _empty(self) -> dict[str, Any]:
@@ -370,28 +378,55 @@ class DutyJournal:
 
     def wait_needed(self, hole: int, on_ms: float, now: float | None = None) -> float:
         """Seconds to wait until ``on_ms`` fits; raises if ``on_ms`` exceeds the budget."""
-        now = self.mono_now() if now is None else now
-        budget = self.budget_for(hole)
-        if on_ms > budget + 1e-9:
-            raise DutyBudgetError(
-                f"request {on_ms:.3f} ms exceeds budget {budget:.3f} ms for hole {hole}"
-            )
-        cool = self._data.get("cooldown_until_mono")
-        if cool is not None and now < float(cool):
-            return float(cool) - now
-        if self.used_ms(hole, now) + on_ms <= budget + 1e-9:
+        return self.wait_needed_many([(hole, on_ms)], now=now)
+
+    def wait_needed_many(self, charges: list[tuple[int, float]], now: float | None = None) -> float:
+        """Seconds to wait until the whole charge set fits under rail budgets.
+
+        Sibling charges on the same rail accumulate (SWEEP x16). Per-hole
+        ``wait_needed`` alone under-counts and can report 0 s while
+        ``reserve_many`` still refuses.
+        """
+        if not charges:
             return 0.0
-        key = self.rail_of(hole)
+        now = self.mono_now() if now is None else now
+        for hole, on_ms in charges:
+            budget = self.budget_for(hole)
+            if on_ms > budget + 1e-9:
+                raise DutyBudgetError(
+                    f"request {on_ms:.3f} ms exceeds budget {budget:.3f} ms for hole {hole}"
+                )
+        cool = self._data.get("cooldown_until_mono")
+        cool_wait = 0.0
+        if cool is not None and now < float(cool):
+            cool_wait = float(cool) - now
+
+        def fits(at: float) -> bool:
+            extra: dict[str, float] = {}
+            for hole, on_ms in charges:
+                key = self.rail_of(hole)
+                budget = self.budget_for(hole)
+                used = self.used_ms(hole, at) + extra.get(key, 0.0)
+                if used + on_ms > budget + 1e-9:
+                    return False
+                extra[key] = extra.get(key, 0.0) + float(on_ms)
+            return True
+
+        if cool_wait <= 0 and fits(now):
+            return 0.0
+        keys = {self.rail_of(h) for h, _ in charges}
         candidates = sorted(
             {
                 float(span["t1"]) + self.window_s - now
+                for key in keys
                 for span in self._data.get("history", {}).get(key, [])
             }
+            | ({cool_wait} if cool_wait > 0 else set())
         )
         for wait in candidates:
-            if wait > 0 and self.used_ms(hole, now + wait) + on_ms <= budget + 1e-9:
+            if wait > 0 and fits(now + wait):
                 return wait
-        return self.window_s
+        return max(cool_wait, self.window_s)
 
     def _clear_uncertain_if_cooled(self) -> None:
         if self._data.get("uncertain") and self._data.get("cooldown_until_mono"):
@@ -524,6 +559,16 @@ class DutyJournal:
             notes = self._data.setdefault("uncertain_reasons", [])
             if isinstance(notes, list):
                 notes.append({"reason": reason, "mono": self.mono_now()})
+        self._persist()
+
+    def drop_pending(self) -> None:
+        """Clear pending without absorbing charge or uncertain cooldown.
+
+        Use when the firmware refused before any emission (e.g. wrong-rail CE):
+        the reservation must not stick, and the suite must not be locked for a
+        full duty window.
+        """
+        self._data["pending"] = None
         self._persist()
 
     def abort_conservative(

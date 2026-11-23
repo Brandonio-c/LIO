@@ -96,7 +96,8 @@ MATRIX = (
     Row("motor_stall", "T09.2", "T09.2/1/up"),
     Row("swapped:3,4", "T04.4", "T04.4/h03/visible"),  # same detector: only the eye sees it
     Row("dead_channel:8", "T04.4", "T04.4/h08/camera"),
-    Row("rail_a_dead", "T05.6", "T05.6/A/h08"),
+    # Configured interactive.meter_holes.A is hole 4 (green), not legacy h08.
+    Row("rail_a_dead", "T05.6", "T05.6/A/h04"),
 )
 
 
@@ -181,7 +182,9 @@ SCAN_MATRIX = (
     ScanRow("pd_disconnected", "optics/ingaas/electrical_only", part="D1"),
     ScanRow("ground_shift:0.2", "elec/ingaas/ground_shift", part="GND star point"),
     ScanRow("leakage:60", "elec/ingaas/dark_offset", part="U5 pin-2 node"),
-    ScanRow("leakage_drift:10", "elec/ingaas/drift", part="U5 pin-2 node"),
+    # Short matrix fixtures cannot meet drift_min_span_s (300 s): see
+    # test_scan_drift_*_long_dark for ≥300 s healthy/fault controls.
+    ScanRow("leakage_drift:10", "elec/ingaas/drift", part="U5 pin-2 node", status=Status.SKIP),
     ScanRow("mains_hum:8", "elec/ingaas/hum", part="earth bond"),
     # judged in continuous mode only (stop-measure-move readings never see it)
     ScanRow("coil_emi", "elec/ingaas/coil_emi", part="motor wiring", mode="matrix_cont"),
@@ -274,6 +277,10 @@ def test_scan_fault_is_detected(scan_analysis: Any, row: ScanRow) -> None:
     assert (a.status == "INCOMPLETE") is row.incomplete, a.summary()
     f = a.get(row.finding)
     assert f.status == row.status, f"{row.finding}: {f.status.value}: {f.detail}\n{a.summary()}"
+    if row.status == Status.SKIP:
+        # Duration-gated short fixtures: SKIP is the contract; long-dark tests
+        # cover explanation + detection when the span is adequate.
+        return
     e = a.explanations.get(row.finding)
     assert e is not None, f"no explanation for {row.finding}"
     assert row.part in e["parts"], f"{row.finding}: explanation names {e['parts']}, not {row.part}"
@@ -295,7 +302,9 @@ def test_scan_healthy_control(scan_analysis: Any, sample: str, reference: str | 
     for row in SCAN_MATRIX:
         if (row.sample == sample and row.reference == reference and not row.healthy_reference
                 and row.mode == "matrix"):  # fmt: skip
-            assert a.get(row.finding).status == Status.PASS, row.finding
+            # Short fixtures intentionally SKIP duration-gated findings (drift).
+            expected = row.status if row.status == Status.SKIP else Status.PASS
+            assert a.get(row.finding).status == expected, row.finding
     if sample == "empty" and reference is None:  # continuous-mode rows: a healthy control
         c = scan_analysis(None, sample, None, False, "matrix_cont")
         for row in SCAN_MATRIX:
@@ -383,7 +392,9 @@ def test_healthy_simulator_is_functional(cfg: HwConfig) -> None:
     ("fault", "verdict"),
     [
         ("dead_channel:3", Verdict.DEGRADED),
-        ("tia_saturated", Verdict.DEGRADED),
+        # T06.2 warns on saturation; WARN-only policy keeps overall FUNCTIONAL
+        # (same as 130dd77). Quantitative clipping is gated separately.
+        ("tia_saturated", Verdict.FUNCTIONAL),
         ("stuck_on:5", Verdict.NOT_FUNCTIONAL),
         # A stuck-on hole 13 (lowest Vf but one on RAIL B) takes the current from
         # the white/pink holes 10-11 and from 12, so 3 counted channels fail:
@@ -431,3 +442,81 @@ def test_scan_verdict(scan_analysis: Any, fault: str, verdict: Verdict) -> None:
     a = scan_analysis(fault, "empty", None)
     assert a.verdict["verdict"] == verdict.value, a.summary()
     assert any(h["health"] == "ACT" for h in a.health)
+
+
+def _synthetic_drift_cube(cfg: HwConfig, tmp_path: Any, *, slope_counts_per_h: float) -> Any:
+    """Saved-data fixture: dark frames spanning ≥300 s with a controlled slope."""
+    from lio.scan.analysis.data import Cube
+    from lio.scan.store import ScanStore
+
+    store = ScanStore.create(
+        tmp_path,
+        "matrix",
+        {"sample_id": "empty", "mode": "matrix", "status": "COMPLETE", "simulated": True},
+    )
+    rows = []
+    # 12 dark samples over 360 s at two heights so time≠height collinear.
+    for i in range(12):
+        t = i * 30.0  # 0..330 s
+        h = -1000.0 if i % 2 == 0 else -5000.0
+        dark = 100.0 + slope_counts_per_h * (t / 3600.0)
+        for det in ("opt101", "ingaas"):
+            rows.append(
+                {
+                    "run_id": store.run_id,
+                    "step": i,
+                    "phase": "P1" if i < 6 else "P4",
+                    "height_hs": h,
+                    "height_mm": h / 4096.0,
+                    "direction": "up",
+                    "rep": 0,
+                    "hole": 0,
+                    "state": "dark",
+                    "detector": det,
+                    "dark_counts": dark,
+                    "lit_counts": dark,
+                    "net_counts": 0.0,
+                    "net_mv": 0.0,
+                    "t_s": t,
+                    "duty_wait_ms": 0,
+                    "settle_ms": 8,
+                    "n": 1,
+                }
+            )
+    store.append_rows(rows, completed_step=11)
+    store.finish("COMPLETE")
+    return Cube(store)
+
+
+def test_scan_drift_healthy_long_dark(cfg: HwConfig, tmp_path: Any) -> None:
+    """≥300 s synthetic healthy darks → drift PASS (threshold preserved)."""
+    from lio.scan.analysis import electrical
+
+    cube = _synthetic_drift_cube(cfg, tmp_path, slope_counts_per_h=0.0)
+    findings = {f.id: f for f in electrical.drift(cube, cfg)}
+    assert findings["elec/ingaas/drift"].status == Status.PASS
+    assert findings["elec/opt101/drift"].status == Status.PASS
+
+
+def test_scan_drift_fault_long_dark(cfg: HwConfig, tmp_path: Any) -> None:
+    """≥300 s synthetic leakage drift → FAIL/WARN (not SKIP)."""
+    from lio.scan.analysis import electrical
+
+    # Large slope in counts/h → mV/h well above fail threshold.
+    cube = _synthetic_drift_cube(cfg, tmp_path, slope_counts_per_h=500.0)
+    findings = {f.id: f for f in electrical.drift(cube, cfg)}
+    assert findings["elec/ingaas/drift"].status in (Status.WARN, Status.FAIL)
+    assert findings["elec/ingaas/drift"].status != Status.SKIP
+
+
+def test_tia_saturated_warns_under_functional_policy(cfg: HwConfig) -> None:
+    """T06.2 saturation WARN is detected; global verdict stays FUNCTIONAL."""
+    catalogue()
+    ctx = sim_context(cfg, "tia_saturated")
+    try:
+        r = run_test(ctx, REGISTRY["T06.2"])
+    finally:
+        ctx.dev.close()
+    sat = [s for s in r.subs if s.id.endswith("/saturation")]
+    assert sat and all(s.status == Status.WARN for s in sat)
+    assert _full_run(cfg, "tia_saturated")["verdict"] == Verdict.FUNCTIONAL.value

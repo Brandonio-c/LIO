@@ -38,7 +38,9 @@ def test_travel_unmeasured_skips(cfg: HwConfig) -> None:
 
 def test_full_travel_lockstep(cfg: HwConfig) -> None:
     catalogue()
-    ctx = sim_context(_with_travel(cfg, 1500))
+    # Production margin_steps is 16384: travel must exceed 2*margin to move.
+    margin = cfg.thresholds.integer("motion.travel.margin_steps")
+    ctx = sim_context(_with_travel(cfg, margin * 2 + 4096))
     try:
         r = run_test(ctx, REGISTRY["T09.6"])
         assert r.status in (Status.PASS, Status.WARN), r.summary()
@@ -52,7 +54,8 @@ def test_full_travel_lockstep(cfg: HwConfig) -> None:
 
 def test_measurements_while_moving(cfg: HwConfig) -> None:
     catalogue()
-    ctx = sim_context(_with_travel(cfg, 1500))
+    margin = cfg.thresholds.integer("motion.travel.margin_steps")
+    ctx = sim_context(_with_travel(cfg, margin * 2 + 4096))
     try:
         r = run_test(ctx, REGISTRY["T09.7"])
         assert r.status in (Status.PASS, Status.WARN), r.summary()
@@ -61,6 +64,18 @@ def test_measurements_while_moving(cfg: HwConfig) -> None:
         assert _sub(r, "T09.7/lockstep").status == Status.PASS
         scan = r.measured["scan"]
         assert scan and {row["dir"] for row in scan} == {"up", "down"}
+    finally:
+        ctx.dev.close()
+
+
+def test_short_travel_skips_when_margin_consumes_range(cfg: HwConfig) -> None:
+    """1500 < margin 16384: truthful SKIP, not a forced PASS."""
+    catalogue()
+    ctx = sim_context(_with_travel(cfg, 1500))
+    try:
+        for tid in ("T09.6", "T09.7"):
+            r = run_test(ctx, REGISTRY[tid])
+            assert r.status == Status.SKIP and "margin" in r.message
     finally:
         ctx.dev.close()
 
@@ -92,7 +107,12 @@ def test_motor_light_gates_meas_during_motion(cfg: HwConfig) -> None:
 def test_long_travel_is_continuous_and_exact(cfg: HwConfig) -> None:
     """A long travel: continuous jog (renewed, no stops), readings all the way, exact ends."""
     catalogue()
-    ctx = sim_context(_with_travel(cfg, 30000))
+    # Soft top = range - margin (16384). 30000 -> ~13616 safe upward target;
+    # do not require >25000 inside that bound (margin preserved).
+    travel = 30000
+    margin = cfg.thresholds.integer("motion.travel.margin_steps")
+    safe_end = travel - margin
+    ctx = sim_context(_with_travel(cfg, travel))
     try:
         sim = ctx.dev.transport.sim  # type: ignore[attr-defined]
         r0 = [m.renewals for m in sim.motors]
@@ -102,7 +122,9 @@ def test_long_travel_is_continuous_and_exact(cfg: HwConfig) -> None:
         assert all(m.renewals - a >= 20 for m, a in zip(sim.motors, r0, strict=True))
         scan = r.measured["scan"]
         ups = sorted(row["pos"] for row in scan if row["dir"] == "up")
-        assert len(scan) > 200 and ups[0] < 2000 and ups[-1] > 25000  # readings span the travel
+        assert len(scan) > 200 and ups[0] < 2000
+        assert ups[-1] > 0.9 * safe_end  # continuous readings near the safe end
+        assert ups[-1] <= safe_end + 256  # stay within soft-limit bound
         st = ctx.dev.status()
         assert (st.as_int("pos1"), st.as_int("pos2")) == (0, 0)
     finally:

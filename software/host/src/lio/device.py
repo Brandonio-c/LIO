@@ -290,13 +290,16 @@ class LIODevice:
         self._pending_reservations: list[Reservation] = []
         self._timing = DEFAULT_TIMING_CAPABILITY
         self._state_root = state_root
+        # Incomplete raw ingress across send_raw calls (cross-call CH assembly).
+        self._raw_open_fragment: bytes = b""
         if isinstance(transport, SerialTransport):
             root = state_root if state_root is not None else default_state_root()
             self._state_root = root
             rig = rig_identity_from_port(transport.port)
             if self.device_lock is None:
                 self.device_lock = DeviceLock(rig, root)
-            # Always attach a journal on real hardware — duty=False is not an escape.
+            # Attach journal object only — no reload/recovery/write until open()
+            # acquires the canonical lease (D03 / CE02).
             if self.journal is None:
                 self.journal = DutyJournal.for_rig(
                     normalize_port_identity(transport.port),
@@ -305,6 +308,7 @@ class LIODevice:
                     budget_ms=cfg.duty_budgets_ms(),
                     rail_of=cfg.duty_key,
                     mono_now=self.transport.now,
+                    defer_load=True,
                 )
             # Keep in-memory tracker for operator UX even when journal is primary.
             if self.duty is None:
@@ -735,6 +739,30 @@ class LIODevice:
 
     def _gate_or_refuse_raw_payload(self, data: bytes) -> None:
         """Refuse multiline / @-prefixed / fragment payloads that can emit (CE01)."""
+        # Cross-call fragment assembly (b'C' then b'H 1 ON ...\\n') is refused:
+        # an incomplete prior write is never forwarded, so sticky host state is
+        # only a belt-and-braces check if a caller cleared the exception.
+        if self._raw_open_fragment:
+            prior = bytes(self._raw_open_fragment)
+            self._raw_open_fragment = b""
+            raise OwnershipError(
+                "refusing cross-call raw fragment assembly "
+                f"(prior {prior!r} + {data!r}): "
+                "one complete LF-terminated command per send_raw"
+            )
+        if not data:
+            return
+        # Lone CR (not part of CRLF) is refused on every path.
+        if b"\r" in data.replace(b"\r\n", b""):
+            raise OwnershipError(
+                "refusing raw payload containing CR: use a single LF-terminated command"
+            )
+        # Incomplete write without a newline: never forward (blocks b'C' + b'H...').
+        if b"\n" not in data:
+            raise OwnershipError(
+                f"refusing incomplete raw fragment {data!r}: "
+                "cross-call assembly blocked; one LF-terminated command per write"
+            )
         text = data.decode("ascii", errors="replace")
         # Real-path transports reject multiline payloads entirely: a PING line
         # must not smuggle a trailing CH/CE/MEAS.
@@ -760,21 +788,15 @@ class LIODevice:
         line = lines[0]
         stripped = line.strip()
         if stripped.startswith("@"):
-            # @seq prefixes belong to encode(); public send_raw must not accept them
-            # as a bypass around typed gating on real transports.
+            # External @seq wrappers: allow non-emitting (PING/INFO) so T02.5 can
+            # exercise sequence echo; refuse light-capable bodies on every path.
             body = self._strip_wire_prefix(stripped)
             kind = self._raw_command_kind(body)
             if kind not in ("safe", "other", "read", "empty"):
                 raise OwnershipError(
                     f"refusing @-prefixed light-capable raw command {stripped!r}: use typed helpers"
                 )
-            # Simulator-only probes may use @seq for non-emitting commands.
-            if self._is_sim():
-                return
-            raise OwnershipError(
-                f"refusing @-prefixed raw command {stripped!r}: "
-                "use typed command()/helpers (seq is assigned by the device)"
-            )
+            return
         self._gate_or_refuse_raw_command(stripped)
 
     # -------------------------------------------------------------- identity
@@ -923,12 +945,27 @@ class LIODevice:
                 raise OwnershipError(
                     "CE on refused: no single selected hole to reserve duty against"
                 )
-        reply = self._command_unguarded(f"CE {rail} {int(on)}")
+        try:
+            reply = self._command_unguarded(f"CE {rail} {int(on)}")
+        except DeviceError:
+            # Firmware refused before emit (wrong-rail CE): drop pending without
+            # a 60 s uncertain lock that would poison the rest of the suite.
+            if on:
+                self._drop_pending()
+            raise
+        except Exception:
+            # Transport/accounting fault after reserve: retain conservative charge.
+            if on:
+                self._abort_pending()
+            raise
         if on:
             hole = self._single_hole(self.status().as_int("mask"))
             until = reply.fields.as_int("until_ms") / 1000.0
             if hole:
                 self._lit = (hole, self.now(), self.now() + until)
+            else:
+                # Reserved but no selectable hole after ACK — drop, no emit.
+                self._drop_pending()
         else:
             self._close_lit(self.now())
         return reply
@@ -1297,22 +1334,21 @@ class LIODevice:
         if not charges:
             return
         if self.journal is not None:
-            # Wait until every charge fits, then atomic multi-reserve.
-            for hole, on_ms in charges:
-                try:
-                    wait = self.journal.wait_needed(hole, on_ms, self.now())
-                except DutyBudgetError:
-                    raise
-                if wait > 0:
-                    log.info(
-                        "duty journal: cooling hole %d for %.1f s before %.0f ms on",
-                        hole,
-                        wait,
-                        on_ms,
-                    )
-                    if self.duty is not None:
-                        self.duty.note_cooldown(hole, wait, f"{on_ms:.0f} ms requested")
-                    self.sleep(wait)
+            # Wait until the whole charge set fits (same-rail siblings accumulate),
+            # then atomic multi-reserve. Per-hole waits alone miss SWEEP x16.
+            wait = self.journal.wait_needed_many(charges, self.now())
+            if wait > 0:
+                hole0, on0 = charges[0]
+                log.info(
+                    "duty journal: cooling %.1f s before %d-charge set (first hole %d, %.0f ms)",
+                    wait,
+                    len(charges),
+                    hole0,
+                    on0,
+                )
+                if self.duty is not None:
+                    self.duty.note_cooldown(hole0, wait, f"{len(charges)}-charge set")
+                self.sleep(wait)
             try:
                 self._pending_reservations = self.journal.reserve_many(charges)
             except (DutyBudgetError, JournalError, OwnershipError):
@@ -1327,6 +1363,13 @@ class LIODevice:
                 log.info("duty: cooling hole %d for %.1f s before %.0f ms on", hole, wait, on_ms)
                 self.duty.note_cooldown(hole, wait, f"{on_ms:.0f} ms requested")
                 self.sleep(wait)
+
+    def _drop_pending(self) -> None:
+        """Clear in-memory and durable pending without uncertain cooldown."""
+        self._pending_reservations = []
+        if self.journal is not None:
+            with contextlib.suppress(Exception):
+                self.journal.drop_pending()
 
     def _abort_pending(self) -> None:
         if self.journal is None or not self._pending_reservations:

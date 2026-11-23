@@ -103,11 +103,17 @@ class TestGating:
 
     def test_wrong_meter_reading_fails(self, cfg: HwConfig) -> None:
         catalogue()
+        # Configured interactive.meter_holes are A→4 (green), B→10 (white).
+        ha = cfg.thresholds.integer("interactive.meter_holes.A")
+        hb = cfg.thresholds.integer("interactive.meter_holes.B")
         c = sim_context(cfg, answers={"meter_ma:A": 12.0, "meter_ma:B": 47.0})
         try:
             r = run_test(c, REGISTRY["T05.6"])
-            assert r.sub("T05.6/A/h08").status == Status.FAIL
-            assert r.sub("T05.6/B/h12").status == Status.PASS
+            assert r.sub(f"T05.6/A/h{ha:02d}").status == Status.FAIL
+            assert r.sub(f"T05.6/B/h{hb:02d}").status == Status.PASS
+            # Stale h08/h12 keys must not be present under the current map.
+            with pytest.raises(KeyError):
+                r.sub("T05.6/A/h08")
         finally:
             c.dev.close()
 

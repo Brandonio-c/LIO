@@ -6,6 +6,8 @@ LEDs, motors, or invented physical confirmations.
 
 from __future__ import annotations
 
+import ast
+import contextlib
 import shutil
 from pathlib import Path
 
@@ -950,3 +952,80 @@ def test_golden_cli_sim_protocol_asks_then_measures(cfg, tmp_path: Path) -> None
         "COMPLETE",
         "INCOMPLETE",
     )
+
+
+# --------------------------------------------------------------------------- residual caller regressions (944a820+)
+
+
+def test_residual_fragmented_send_raw_cannot_emit(cfg, tmp_path: Path) -> None:
+    """dev.send_raw(b'C') then b'H 1 ON 1500\\n' must not emit CH on the wire."""
+    with _sim_dev(cfg, tmp_path, name="frag") as dev:
+        sent: list[bytes] = []
+        orig = dev.transport.write_raw
+
+        def spy(data: bytes) -> None:
+            sent.append(data)
+            return orig(data)
+
+        dev.transport.write_raw = spy  # type: ignore[method-assign]
+        with pytest.raises(OwnershipError, match=r"fragment|incomplete|refus"):
+            dev.send_raw(b"C", timeout=0.001)
+        assert not sent  # incomplete prefix never forwarded
+        with contextlib.suppress(OwnershipError, Exception):
+            dev.send_raw(b"H 1 ON 1500\n", timeout=0.001)
+        assert not any(b"CH 1 ON" in s for s in sent)
+        with pytest.raises(OwnershipError, match=r"refus|light|CH"):
+            dev.send_raw(b"CH 1 ON 1500\n", timeout=0.001)
+        assert not any(b"CH 1 ON" in s for s in sent)
+
+
+def test_residual_second_device_constructor_does_not_mutate_pending_journal(
+    cfg, tmp_path: Path
+) -> None:
+    """Second actual Device constructor must not mutate a live pending journal."""
+    port_id = "synthetic-ce02-dev"
+    state = tmp_path / "state"
+    path = state / "duty" / f"{port_id}.json"
+    clock = {"t": 1000.0}
+
+    j1 = DutyJournal.for_rig(
+        port_id,
+        state_root=state,
+        window_s=60.0,
+        budget_ms=cfg.duty_budgets_ms(),
+        rail_of=cfg.duty_key,
+        synthetic=True,
+        path=path,
+        mono_now=lambda: clock["t"],
+    )
+    res = j1.reserve(3, 500.0)
+    before = path.read_bytes()
+    pending_before = j1._data.get("pending")
+
+    sim = SimulatedLIO(cfg)
+    j2 = DutyJournal.for_rig(
+        port_id,
+        state_root=state,
+        window_s=60.0,
+        budget_ms=cfg.duty_budgets_ms(),
+        rail_of=cfg.duty_key,
+        synthetic=True,
+        path=path,
+        mono_now=lambda: clock["t"],
+        defer_load=True,
+    )
+    _ = LIODevice(SimTransport(sim), cfg, journal=j2, duty=True)
+    assert path.read_bytes() == before
+    assert j1._data.get("pending") == pending_before
+    j1.commit(res, t_on=clock["t"], t_off=clock["t"] + 0.5)
+
+
+def test_residual_t10_2_every_ch_is_admitted(cfg) -> None:
+    """Every actual T10.2 CH must go through admission (no _command_unguarded)."""
+    src = Path(__file__).resolve().parents[2] / "src/lio/suite/checks/t10_safety.py"
+    source = src.read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    fn = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "t10_2")
+    text = ast.get_source_segment(source, fn) or ""
+    assert "_command_unguarded" not in text
+    assert "ch_on" in text or 'command(f"CH' in text

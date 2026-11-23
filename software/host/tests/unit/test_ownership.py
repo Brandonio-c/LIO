@@ -176,3 +176,30 @@ def test_clock_jump_does_not_grant_credit(tmp_path: Path) -> None:
     # that is correct for mono. Ensure wall time is unused: used_ms at old-ish mono.
     clock["t"] = 1000.0 + 10.0
     assert journal.used_ms(3) >= 700.0
+
+
+def test_wait_needed_many_accounts_for_same_rail_siblings(tmp_path: Path) -> None:
+    """SWEEP-like multi-charge must wait when siblings exhaust the rail budget."""
+    clock = {"t": 1000.0}
+
+    def mono() -> float:
+        return clock["t"]
+
+    j = DutyJournal.for_rig(
+        "sweep-sib",
+        state_root=tmp_path,
+        window_s=60.0,
+        budget_ms={"A": 1000.0, "B": 5000.0},
+        rail_of=lambda h: "A" if h <= 8 else "B",
+        synthetic=True,
+        mono_now=mono,
+    )
+    res = j.reserve(1, 900.0)
+    j.commit(res, t_on=1000.0, t_off=1000.9)
+    clock["t"] = 1001.0
+    charges = [(h, 50.0) for h in range(1, 9)]  # 400 ms more on rail A
+    # Individually hole 4 still fits (used 900 + 50 <= 1000).
+    assert j.wait_needed(4, 50.0) == 0.0
+    # As a set, 900 + 8*50 exceeds 1000 → must wait.
+    wait = j.wait_needed_many(charges)
+    assert wait > 0.0

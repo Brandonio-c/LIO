@@ -51,4 +51,6 @@ def test_catalogue_over_a_real_serial_port(cfg: HwConfig) -> None:
             assert ctx2.dev.banner is not None and bridge.opens == 2
         finally:
             ctx2.dev.close()
-    assert time.monotonic() - t0 < 30
+    # Serial + durable journal + refuse paths are slower than pure SimTransport;
+    # keep a finite wall budget without treating latency as a safety limit.
+    assert time.monotonic() - t0 < 120

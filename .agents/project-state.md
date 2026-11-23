@@ -5,11 +5,11 @@
 - Latest audited quick scan: `test_results/20261123-003133_scan_quick` is **NOT FUNCTIONAL** under its saved analysis; h12–h14 and InGaAs electrical/throughput findings require attention. H8/h9 still respond; the detector is not globally dead. This supersedes treating the 20 November snapshot below as the current measurement verdict.
 - Historical `test_results/` are tracked on `main` as of `138a963`; only physical `test_results/stage_position.json` stays local/ignored. Read `test_results/README.md` for the anchors.
 - Research/code/raw-data assessment: [sensor information assessment](../docs/research/LIO_V3_SENSOR_INFORMATION_ASSESSMENT_2026-11-23.md). H16 OPT101 is a reproducible, spectrally unassigned response, not a primary-1850 channel. Nov 19 report/analysis verdicts disagree; preserve provenance.
-- **Full-pass sensor-readings remediation (software-tested candidate):** mandatory counterexamples in `tests/unit/test_fullpass_counterexamples.py` + D01–D20 regressions. Acceptance matrix: [docs/handoffs/2026-11-23_fullpass_acceptance.md](../docs/handoffs/2026-11-23_fullpass_acceptance.md). Plan: [SENSOR_READINGS_REMEDIATION_PLAN.md](../docs/SENSOR_READINGS_REMEDIATION_PLAN.md). Prior closure note is **not** acceptance.
-- **Honest status:** **software-tested candidate only** — not bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified. Do not treat another quick/full scan as upgrade qualification without separate authorization.
+- **Residual remediation (after 944a820 QA):** caller-level repairs + TEN triage + live automatic host run. Acceptance: [docs/handoffs/2026-11-23_residual_remediation_acceptance.md](../docs/handoffs/2026-11-23_residual_remediation_acceptance.md). Research QA: [docs/handoffs/2026-11-23_residual_research_qa_prompt.md](../docs/handoffs/2026-11-23_residual_research_qa_prompt.md). Live report: `test_results/20261123-135504_host_residual_hw/` (**NOT FUNCTIONAL** optically; SWEEP/safety PASS; T10.2 SKIP).
+- **Honest status:** **software-tested candidate**; current-rig automatic catalogue is **NOT FUNCTIONAL** (InGaAs dark/optical). Not bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified.
 - **M7 remains deferred/incomplete experimental helpers**, isolated from core (missing gain readback refuses; never silent default to 1). Not part of M0–M6 acceptance.
-- **M0–M6:** original upgrade-plan contracts software-tested offline; physical acceptance remains open. Canonical D03=ownership, D04=OFF. Cooperative WDT is not a proven wall-clock ceiling — finite real-rig timing may refuse fail-closed.
-- **Release state:** offline/sim software gates green on required host suites; not bench-qualified. No measured SNR or recovered SWIR/1850 chemistry claim.
+- **M0–M6:** original upgrade-plan contracts software-tested offline; physical acceptance remains open. Canonical D03=ownership, D04=OFF. Cooperative WDT is not a proven wall-clock ceiling — **M1 current-rig operational admission blocked** (T10.2 SKIPs when default WDT exceeds duty budget; no invented margin).
+- **Release state (this candidate):** Ruff + format + strict mypy clean; CE/D suites green; `unit or sim` **912 passed / 0 failed / 6 skipped**; protocol/analysis coverage gate **98%** (≥90). No measured SNR or recovered SWIR/1850 chemistry claim.
 - **Still owner-deferred bench work:** A0 operating-range evidence, fitted Rf/Cf and actual accepted current, ammeter/voltmeter checks, unchanged-load optical controls and optical-path qualification. Their absence preserves raw/labelled ADC diagnostics and valid OPT101 quantities, while blocking the specified InGaAs physical/quantitative claims.
 
 ## Historical commissioning snapshot — 20 November 2026
@@ -72,5 +72,6 @@ lio profiles fixtures --out /tmp/lio_synth
 - Stage mechanically clunky (repeatability WARN by policy).
 - Prefer sealed-top suite vs mid-travel / full-scan heatmaps when judging “LEDs work.”
 
-## Full-pass candidate (2026-11-23)
-Uncommitted offline repairs on main@130dd77: ownership/raw gate, fw-matched MEAS timing, typed ScanStore/provenance, protocol ConsoleOperator/SimOperator, CE01–14 + D suites, FWER≥2000 with SciPy. See docs/handoffs/2026-11-23_fullpass_acceptance.md. No push; M7 deferred; A0/Rf owner-deferred; ~11 residual unit/sim fails remain.
+## Residual remediation candidate (2026-11-23)
+
+On `main` after residual push: ownership defer-load, fragment/CR raw refuse, CE `drop_pending`, `wait_needed_many`, T10.2 admitted CH or SKIP, TEN triage. Live host `20261123-135504_host_residual_hw` NOT FUNCTIONAL optically. See acceptance + `docs/handoffs/2026-11-23_residual_research_qa_prompt.md`. M7 deferred; A0/Rf owner-deferred; M1 current-rig T10.2 SKIP semantics.

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import importlib.metadata
 import os
 import platform
@@ -10,6 +11,7 @@ import sys
 from lio.analysis import percentile, stats
 from lio.config import ConfigError, load_config
 from lio.device import NoResponse
+from lio.ownership import OwnershipError
 from lio.protocol import ErrCode, encode, fw_compatible
 from lio.results import Status
 from lio.suite.core import Recorder, SuiteContext, register
@@ -263,16 +265,49 @@ def t02_3(ctx: SuiteContext, rec: Recorder) -> None:
 
 @register("T02.4", "Robustness to bad input")
 def t02_4(ctx: SuiteContext, rec: Recorder) -> None:
+    """Catalogue robustness: non-emitting probes on every path.
+
+    Light-capable malformed strings (``MEAS 99``, bare ``CH``) are injected only
+    through the owned SimTransport harness (``check=False``). On Serial/PTY the
+    production gateway must refuse them before write — that refusal is the pass
+    criterion, not a private emission bypass.
+    """
     dev = ctx.dev
-    cases = (
-        ("unknown", "Unknown command", "FROBNICATE", ErrCode.UNKNOWN),
+    # Always-safe unknown command.
+    r = dev.command("FROBNICATE", check=False).response
+    rec.check(
+        "unknown",
+        "Unknown command",
+        (not r.ok) and r.code == int(ErrCode.UNKNOWN),
+        r.raw,
+        f"ERR code={int(ErrCode.UNKNOWN)}",
+    )
+    light_cases = (
         ("badarg", "Bad argument", "MEAS 99", ErrCode.BAD_ARG),
         ("missing", "Missing argument", "CH", ErrCode.BAD_ARG),
     )
-    for sub, name, cmd, code in cases:
-        r = dev.command(cmd, check=False).response
-        rec.check(sub, name, (not r.ok) and r.code == int(code), r.raw, f"ERR code={int(code)}")
+    if dev._is_sim():
+        for sub, name, cmd, code in light_cases:
+            r = dev.command(cmd, check=False).response
+            rec.check(sub, name, (not r.ok) and r.code == int(code), r.raw, f"ERR code={int(code)}")
+    else:
+        for sub, name, cmd, _code in light_cases:
+            # Probe the raw gate directly — command() would typed-route MEAS
+            # and reserve before the refuse path (no production bypass).
+            refused = False
+            try:
+                dev._gate_or_refuse_raw_command(cmd)
+            except OwnershipError:
+                refused = True
+            rec.check(
+                sub,
+                name,
+                refused,
+                "refused before write" if refused else "emitted or ungated",
+                "OwnershipError refuse (no production light bypass)",
+            )
     line_max = ctx.cfg.limits["line_max"]
+    # Non-emitting overflow: @seq PING body (allowed wrapper for non-light).
     long_line = "@0 PING " + "X" * line_max  # encode() refuses this, so build it by hand
     r2 = dev.send_raw((long_line + "\n").encode("ascii"), timeout=1.0)
     rec.check(
@@ -282,8 +317,13 @@ def t02_4(ctx: SuiteContext, rec: Recorder) -> None:
         r2.raw if r2 else "no response",
         f"ERR code={int(ErrCode.OVERFLOW)}",
     )
-    garbage = bytes(range(1, 32)).replace(b"\n", b"") + b"\xff\xfe\x80garbage\x00\r\n"
-    dev.send_raw(garbage, timeout=0.5)  # any answer (or none) is acceptable
+    # Non-emitting garbage (no light grammar); CRLF terminator is normalized.
+    garbage = (
+        bytes(range(1, 32)).replace(b"\n", b"").replace(b"\r", b"") + b"\xff\xfe\x80garbage\x00\n"
+    )
+    # Refuse is also acceptable; link must still answer PING afterward.
+    with contextlib.suppress(OwnershipError):
+        dev.send_raw(garbage, timeout=0.5)
     dev.drain(0.1)
     try:
         dev.ping()
