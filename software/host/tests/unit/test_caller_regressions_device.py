@@ -501,3 +501,27 @@ def test_ambiguous_mask_ce_refused_before_transmission(cfg: HwConfig, tmp_path: 
         assert dev.light_sends == sends
         assert not any(b"CE 1 1" in w for w in t.writes[n:])
         assert not sim.ce[1]
+
+
+@pytest.mark.parametrize("code,released", [(5, True), (3, False)])
+def test_meas_err_busy_releases_only_when_verified_dark(
+    cfg: HwConfig, tmp_path: Path, code: int, released: bool
+) -> None:
+    """Live finding (T13 closing check -> later protocol locked out): firmware
+    ``do_meas`` returns BUSY before any light, so with STATUS CE-low the unused
+    reservation is released. Code 3 can follow emission ("watchdog fired during
+    measurement"), so it keeps the full charge and the reason is journaled."""
+    with opened(cfg, tmp_path) as (dev, t, _sim):
+
+        def rewrite(line: str) -> str | None:
+            m = re.match(r"^(@\d+ )OK MEAS\b.*$", line)
+            return f"{m.group(1)}ERR MEAS code={code} msg=injected" if m else line
+
+        t.rewrite = rewrite
+        with pytest.raises(Exception):  # noqa: B017
+            dev.meas(3)
+        j = journal_json(dev)
+        assert j["pending"] is None
+        assert (j["uncertain"] is False) is released
+        if not released:
+            assert any("ERR code 3" in r["reason"] for r in j.get("uncertain_reasons", []))

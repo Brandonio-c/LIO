@@ -654,8 +654,13 @@ class DutyJournal:
         reservation: Reservation | None = None,
         *,
         reservations: list[Reservation] | None = None,
+        reason: str = "",
     ) -> None:
         """Retain worst-case charge on crash/timeout/partial acknowledgement."""
+        if reason:
+            notes = self._data.setdefault("uncertain_reasons", [])
+            if isinstance(notes, list):
+                notes.append({"reason": reason, "mono": self.mono_now()})
         if reservations:
             self._data["pending"] = {"items": [self._reservation_dict(r) for r in reservations]}
         elif reservation is not None:

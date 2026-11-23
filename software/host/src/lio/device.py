@@ -1195,9 +1195,13 @@ class LIODevice:
             reply = self._command_unguarded(f"MEAS {hole} {s} {k}", timeout=self.meas_timeout(s, k))
             m = Meas.from_fields(reply.fields)
         except DeviceError as e:
-            # Firmware ERR after MEAS: it may have lit (watchdog fired mid-read).
-            self._abort_pending()
-            log.info("MEAS %d refused/failed (code %s): charge retained", hole, e.code)
+            # BUSY (motor moving) is refused before any light; release the unused
+            # reservation only when STATUS also shows both CE lines low. Any other
+            # ERR (e.g. "watchdog fired during measurement") may follow emission.
+            if e.code == ErrCode.BUSY and self._verify_dark()[0]:
+                self._drop_pending()
+            else:
+                self._abort_pending(reason=f"MEAS {hole} ERR code {e.code}: {e.msg}")
             raise
         except Exception:
             self._abort_pending()
@@ -1616,12 +1620,14 @@ class LIODevice:
             with contextlib.suppress(Exception):
                 self.journal.drop_pending()
 
-    def _abort_pending(self) -> None:
+    def _abort_pending(self, reason: str = "operation failed after reservation") -> None:
         if self.journal is None or not self._pending_reservations:
             self._pending_reservations = []
             return
         try:
-            self.journal.abort_conservative(reservations=list(self._pending_reservations))
+            self.journal.abort_conservative(
+                reservations=list(self._pending_reservations), reason=reason
+            )
         finally:
             self._pending_reservations = []
 
