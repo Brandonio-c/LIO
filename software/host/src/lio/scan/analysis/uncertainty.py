@@ -461,6 +461,9 @@ class FixedPositionBlock:
     net: float
     dark: float | None = None
     lit: float | None = None
+    reading_id: str | None = None
+    position_instance_id: str | None = None
+    setting_id: str | None = None
 
 
 def group_fixed_position_blocks(
@@ -474,44 +477,59 @@ def group_fixed_position_blocks(
     present; height/direction/condition remain part of the block key so visits
     at different heights are not treated as independent repeats of one estimand.
     """
-    # Prefer row-level metadata when available.
+    # The authoritative saved rows (ScanStore.rows), with their identities.
     store = getattr(cube, "store", None)
-    rows = []
-    if store is not None and hasattr(store, "iter_rows"):
-        rows = list(store.iter_rows())
-    if not rows and hasattr(cube, "rows"):
-        rows = list(cube.rows)
+    rows: list[dict[str, Any]] = []
+    if store is not None and hasattr(store, "rows"):
+        rows = list(store.rows())
     by_hole: dict[int, list[FixedPositionBlock]] = {}
+
+    def opt(v: Any) -> str | None:
+        return None if v in (None, "") else str(v)
+
+    def optf(v: Any) -> float | None:
+        return None if v in (None, "") else float(v)
+
     if rows:
         for i, r in enumerate(rows):
             if str(r.get("detector") or "") != detector:
                 continue
+            if str(r.get("state") or "lit") != "lit":
+                continue
             try:
                 hole = int(r["hole"])
-                net = float(r["net_counts"] if "net_counts" in r else r["net"])
+                net_raw = r.get("net_counts") if "net_counts" in r else r.get("net")
+                if net_raw in (None, ""):
+                    continue  # missing stays missing: never zero-filled
+                net = float(net_raw)
             except (KeyError, TypeError, ValueError):
                 continue
-            h = r.get("height_hs")
-            direction = r.get("direction")
-            condition = r.get("condition_id") or r.get("condition")
-            phase = r.get("phase")
-            # Block identity includes geometry — do not collapse heights.
+            h = optf(r.get("height_hs"))
+            if h is not None and h != h:  # NaN is not a position
+                h = None
+            direction = opt(r.get("direction"))
+            condition = opt(r.get("condition_id") or r.get("condition"))
+            phase = opt(r.get("phase"))
+            reading = opt(r.get("reading_id"))
+            # A block groups technical repeats; legacy rows without ids fall back
+            # to a per-row key that still separates heights/directions/phases.
             block_id = str(
-                r.get("block_id")
-                or r.get("reading_id")
-                or f"{hole}:{h}:{direction}:{condition}:{phase}:{i}"
+                r.get("block_id") or reading or f"{hole}:{h}:{direction}:{condition}:{phase}:{i}"
             )
             by_hole.setdefault(hole, []).append(
                 FixedPositionBlock(
                     block_id=block_id,
                     hole=hole,
-                    height_hs=None if h in (None, "") else float(h),
-                    direction=None if direction in (None, "") else str(direction),
-                    condition_id=None if condition in (None, "") else str(condition),
-                    phase=None if phase in (None, "") else str(phase),
+                    height_hs=h,
+                    direction=None if direction in (None, "none") else direction,
+                    condition_id=condition,
+                    phase=phase,
                     net=net,
-                    dark=(None if r.get("dark_counts") is None else float(r["dark_counts"])),
-                    lit=(None if r.get("lit_counts") is None else float(r["lit_counts"])),
+                    dark=optf(r.get("dark_counts")),
+                    lit=optf(r.get("lit_counts")),
+                    reading_id=reading,
+                    position_instance_id=opt(r.get("position_instance_id")),
+                    setting_id=opt(r.get("setting_id")),
                 )
             )
         return by_hole
@@ -596,7 +614,21 @@ def block_drive_response(
         heights = {b.height_hs for b in use_blocks if b.height_hs is not None}
         directions = {b.direction for b in use_blocks if b.direction is not None}
         conditions = {b.condition_id for b in use_blocks if b.condition_id is not None}
-        if len(heights) > 1 or len(directions) > 1 or len(conditions) > 1:
+        settings = {b.setting_id for b in use_blocks if b.setting_id is not None}
+        # Unknown stationary position: rows with no height must share ONE
+        # position instance (same run); unknown != unknown across instances.
+        unknown_pos = [b for b in use_blocks if b.height_hs is None]
+        instances = {b.position_instance_id for b in unknown_pos}
+        mixed_position = bool(unknown_pos) and (
+            None in instances or len(instances) > 1 or bool(heights)
+        )
+        if (
+            len(heights) > 1
+            or len(directions) > 1
+            or len(conditions) > 1
+            or len(settings) > 1
+            or mixed_position
+        ):
             return Estimate(
                 None,
                 ValueKind.UNRESOLVED,
@@ -607,6 +639,8 @@ def block_drive_response(
                     "n_heights": len(heights),
                     "n_directions": len(directions),
                     "n_conditions": len(conditions),
+                    "n_settings": len(settings),
+                    "mixed_unknown_position": mixed_position,
                     "n_rows": len(use_blocks),
                 },
             )

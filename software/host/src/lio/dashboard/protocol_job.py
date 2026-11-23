@@ -86,6 +86,8 @@ class ProtocolJob:
 
         Rejects unknown/stale IDs and duplicate answers — never invents confirmation.
         """
+        if not isinstance(confirmed, bool):
+            raise ValueError("confirmed must be a boolean")
         occ = str(occurrence_id or "").strip()
         if not occ:
             raise ValueError("occurrence_id required")
@@ -109,12 +111,10 @@ class ProtocolJob:
             occurrence = {"n": 0}
 
             def _confirm(msg: str) -> bool:
-                # D13: never reuse the start checkbox for later interventions.
+                # D13 / A16: every checkpoint occurrence, including the first, needs
+                # its own fresh answer. The start flag only permits the run.
                 occurrence["n"] += 1
                 occ_id = f"dashboard:{occurrence['n']}:{msg[:40]}"
-                if occurrence["n"] == 1 and self.operator_checkpoint_flag:
-                    # First protocol-level confirm may use the start flag.
-                    return bool(self.operator_checkpoint_flag)
                 ev = threading.Event()
                 with self._lock:
                     self._answer_events[occ_id] = ev
@@ -125,12 +125,13 @@ class ProtocolJob:
                         "occurrence_id": occ_id,
                     }
                 # Wait until answered or aborted; abort releases without inventing OK.
+                # The worker never beats on the operator's behalf (A17): only the
+                # page's heartbeat keeps a heartbeat-guarded run alive.
                 while not ev.wait(timeout=0.2):
                     if self.control.abort_reason:
                         with self._lock:
                             self._answer_events.pop(occ_id, None)
                         return False
-                    self.control.beat()  # keep view responsive; UI must call beat too
                 with self._lock:
                     self._answer_events.pop(occ_id, None)
                     return bool(self._answers.pop(occ_id, False))

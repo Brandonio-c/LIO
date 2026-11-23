@@ -18,7 +18,12 @@ from lio.food_profiles.schema import (
     DETECTORS,
     CellReason,
 )
-from lio.scan.provenance import resolve_analysis_validity
+from lio.scan.provenance import (
+    ValidityReason,
+    collect_stream_sha256,
+    resolve_analysis_validity,
+    verify_store_seal,
+)
 from lio.scan.store import ScanStore
 
 
@@ -198,13 +203,21 @@ def open_run(folder: Path | str, cfg: HwConfig | None = None) -> RunData:
     if ap.exists():
         try:
             analysis = json.loads(ap.read_text())
+            # A07: hash the LIVE streams/NPZs and re-verify the terminal seal; a
+            # saved product is reusable only if every consumed source still matches.
             ok, reason, detail = resolve_analysis_validity(
                 analysis,
                 cube_sha256=cube_sha,
                 scan_sha256=scan_sha,
                 run_id=str(meta.get("run_id", folder.name)),
                 sample_id=str(meta.get("sample_id")),
+                stream_sha256=collect_stream_sha256(folder),
             )
+            if ok:
+                seal_ok, seal_detail = verify_store_seal(store)
+                if not seal_ok:
+                    ok, detail = False, seal_detail
+                    reason = ValidityReason.SOURCE_CHANGED
             analysis_ok = ok
             analysis_reason = reason.value if ok else f"{reason.value}:{detail}"
         except (OSError, json.JSONDecodeError) as e:

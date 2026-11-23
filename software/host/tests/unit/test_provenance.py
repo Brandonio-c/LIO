@@ -71,6 +71,9 @@ def test_analysis_identity_rejection_when_cube_hash_changes(cfg: HwConfig, tmp_p
         scan_sha256=file_sha256(dest / "scan.json"),
         calibration_id="gain=1:lsb=0.125",
         channel_map_sha256="x",
+        # A08: a complete identity records every consumed source; this copy has
+        # no streams, so the consumed stream set is explicitly empty.
+        consumed_inputs={"stream_sha256": {}},
     ).to_dict()
     analysis = {
         "run_id": dest.name,

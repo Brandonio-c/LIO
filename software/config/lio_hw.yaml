@@ -156,6 +156,17 @@ duty:
   max_on_ms_per_hole:
     9: 1000
 
+# LED exposure bound on a REAL port (M1 / D05). The board's LED watchdog is
+# cooperative (checked by service() in the firmware loop) and this Nano R4 build
+# has no hardware watchdog (INFO hw_wdt=0), so a firmware hang has no proven
+# on-time bound. Default 'refuse': every emission on a real port is refused.
+# 'cooperative_unproven_acknowledged' = the owner accepts the cooperative watchdog
+# WITHOUT a proven hang bound (owner decision 2026-11-23). Runs then record
+# exposure_bound=cooperative_unproven and current-rig M1 stays blocked. This adds
+# no timing margin and changes no duty, watchdog or current limit.
+timing:
+  real_port_admission: cooperative_unproven_acknowledged
+
 # Power bank A alone powers the +5 V bus (ADS1115, LEDs, shift registers, motor
 # boards) and switches itself off when the load is small. The host wakes it with
 # POWER WAKE (both motors' coils held, no steps, ~0.5 A) when the port opens,

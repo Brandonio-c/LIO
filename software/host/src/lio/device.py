@@ -14,6 +14,7 @@ from __future__ import annotations
 import contextlib
 import logging
 import math
+import re
 import threading
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -292,6 +293,12 @@ class LIODevice:
         self._state_root = state_root
         # Incomplete raw ingress across send_raw calls (cross-call CH assembly).
         self._raw_open_fragment: bytes = b""
+        # Set when OFF/CE state could not be verified: no new light until a
+        # verified OFF on this connection (D04 / A03 / A24).
+        self._light_blocked: str | None = None
+        # Light-capable commands written to the transport (CH/CE/MEAS/SWEEP/DBG).
+        self.light_sends = 0
+        self.last_charge_ms = 0.0
         if isinstance(transport, SerialTransport):
             root = state_root if state_root is not None else default_state_root()
             self._state_root = root
@@ -328,29 +335,38 @@ class LIODevice:
         return isinstance(self.transport, SimTransport)
 
     def open(self) -> Event:
-        # Ownership lock BEFORE journal reload / serial open / POWER WAKE (D03).
+        """Acquire ownership, recover the journal, open the port, wait for BOOT.
+
+        Ownership is taken BEFORE journal reload / serial open / POWER WAKE (D03).
+        Every failure after the lease is acquired (journal reload/parse/recovery,
+        transport open, banner, first wake) closes whatever transport was opened
+        and then releases the lease, so a failed open never blocks the next
+        owner (A02). A failed ``__enter__`` does not run ``__exit__``.
+        """
         if self.device_lock is not None:
             self.device_lock.acquire()
-        if self.journal is not None:
-            # Reload durable state under the lease so stale objects cannot erase.
-            self.journal.reload()
-        t0 = self.transport.now()
-        self._expect_boot = True
         try:
-            self.transport.open()
+            if self.journal is not None:
+                # Reload durable state under the lease so stale objects cannot erase.
+                self.journal.reload()
+            t0 = self.transport.now()
+            self._expect_boot = True
             try:
+                self.transport.open()
                 banner = self.wait_banner(self.cfg.section.num("link.boot_timeout_s"))
-            except BaseException:
-                self.transport.close()
-                raise
             finally:
                 self._expect_boot = False
+            self.boot_s = self.transport.now() - t0
+            self.keep_awake(force=True)
         except BaseException:
-            if self.device_lock is not None:
-                self.device_lock.release()
+            try:
+                if self.transport.is_open:
+                    with contextlib.suppress(Exception):
+                        self.transport.close()
+            finally:
+                if self.device_lock is not None:
+                    self.device_lock.release()
             raise
-        self.boot_s = self.transport.now() - t0
-        self.keep_awake(force=True)
         return banner
 
     # ------------------------------------------------------- power bank A
@@ -413,24 +429,45 @@ class LIODevice:
         self.close()
 
     def safe_off(self) -> None:
-        """Same-owner OFF/STOP: cancellation- and ledger-independent (D04)."""
+        """Same-owner OFF/STOP: cancellation- and ledger-independent (D04).
+
+        Accounting is released only after a successful ``OK OFF`` AND a STATUS
+        read showing both CE lines low. ``ERR OFF``, a missing reply or an
+        unreadable/contradictory STATUS retains the full pending charge and
+        marks the journal uncertain (A24): it never becomes safe/COMPLETE.
+        """
         off_ok = False
-        for cmd in ("OFF", "MOTOR STOP"):
-            try:
-                self._command_unguarded(cmd, timeout=1.0, check=False)
-                if cmd == "OFF":
-                    off_ok = True
-            except Exception as e:  # must not mask the original error
-                log.warning("safe_off: %s failed: %s", cmd, e)
-                if cmd == "OFF":
-                    self._retain_uncertain_if_emitting(reason=f"safe_off OFF failed: {e}")
-        with contextlib.suppress(Exception):
-            self._close_lit(self.now())
-        if off_ok:
+        try:
+            off_ok = self._command_unguarded("OFF", timeout=1.0, check=False).response.ok
+        except Exception as e:  # must not mask the original error
+            log.warning("safe_off: OFF failed: %s", e)
+        try:
+            self._command_unguarded("MOTOR STOP", timeout=1.0, check=False)
+        except Exception as e:
+            log.warning("safe_off: MOTOR STOP failed: %s", e)
+        dark, why = self._verify_dark() if off_ok else (False, "OFF not acknowledged")
+        if dark:
+            self._light_blocked = None
             with contextlib.suppress(Exception):
-                st = self.status()
-                if st.as_int("ce1") != 0 or st.as_int("ce2") != 0:
-                    self._retain_uncertain_if_emitting(reason="CE remains high after safe_off OFF")
+                self._close_lit(self.now())
+        else:
+            self._retain_uncertain_if_emitting(reason=f"safe_off unverified: {why}")
+
+    def _verify_dark(self) -> tuple[bool, str]:
+        """STATUS proves both CE lines low (no rail can drive an LED)."""
+        try:
+            st = self._command_unguarded("STATUS", timeout=1.0).fields
+            ce1, ce2 = st.as_int("ce1"), st.as_int("ce2")
+        except Exception as e:
+            return False, f"STATUS unavailable ({e})"
+        if ce1 != 0 or ce2 != 0:
+            return False, f"CE still high after OFF (ce1={ce1} ce2={ce2})"
+        return True, ""
+
+    @property
+    def light_blocked(self) -> str | None:
+        """Why new emission is refused (unverified OFF/CE), or None."""
+        return self._light_blocked
 
     # ------------------------------------------------------------- clock
 
@@ -633,6 +670,10 @@ class LIODevice:
         seq = self._seq
         wire = encode(cmd, seq)
         t_sent = self.now()
+        if self._raw_command_kind(cmd).startswith("light"):
+            # Counted BEFORE the write: a caller comparing counts can tell a
+            # pre-transmission refusal from a failure after possible emission.
+            self.light_sends += 1
         self.transport.write_line(wire)
         to = timeout if timeout is not None else self.cfg.section.num("link.response_timeout_s")
         deadline = t_sent + to
@@ -682,18 +723,29 @@ class LIODevice:
                 return line
 
     @staticmethod
+    def _firmware_tokens(cmd: str) -> list[str]:
+        """Tokens exactly as firmware ``protocol.cpp`` sees one line (A01 / D01).
+
+        The firmware drops every CR, upper-cases, splits on runs of spaces AND
+        tabs, and removes a first token starting with ``@`` (numeric or not) as
+        the sequence wrapper. The gate must classify the same command the board
+        will execute: ``@123<TAB>CH 1 ON`` is ``CH 1 ON``.
+        """
+        text = cmd.replace("\r", "").upper()
+        tokens = [t for t in re.split(r"[ \t]+", text) if t]
+        if tokens and tokens[0].startswith("@"):
+            tokens = tokens[1:]
+        return tokens
+
+    @staticmethod
     def _strip_wire_prefix(cmd: str) -> str:
-        """Strip optional ``@seq`` wire prefix; empty after strip → empty command."""
-        text = cmd.strip()
-        if text.startswith("@"):
-            _head, _, rest = text.partition(" ")
-            return rest.strip()
-        return text
+        """Strip the ``@seq`` wrapper exactly as firmware does; '' if nothing remains."""
+        return " ".join(LIODevice._firmware_tokens(cmd))
 
     @staticmethod
     def _raw_command_kind(cmd: str) -> str:
         """Classify a protocol command for the emission gate."""
-        parts = LIODevice._strip_wire_prefix(cmd).split()
+        parts = LIODevice._firmware_tokens(cmd)
         if not parts:
             return "empty"
         head = parts[0].upper()
@@ -786,7 +838,7 @@ class LIODevice:
         if not lines:
             return
         line = lines[0]
-        stripped = line.strip()
+        stripped = line.strip(" \t")
         if stripped.startswith("@"):
             # External @seq wrappers: allow non-emitting (PING/INFO) so T02.5 can
             # exercise sequence echo; refuse light-capable bodies on every path.
@@ -913,11 +965,16 @@ class LIODevice:
             )
             self._duty_gate(hole, bound)
         per = max(interval_ms / 1000.0, self._conv_s())
-        t0 = self.now()
-        reply = self._command_unguarded(cmd, timeout=2.0 + n * per * 1.5)
+        try:
+            reply = self._command_unguarded(cmd, timeout=2.0 + n * per * 1.5)
+        except Exception:
+            if led is not None:
+                self._abort_pending()
+            raise
         if led is not None:
-            # On-time estimated from the schedule; recorded for the duty budget.
-            self._record_duty(led[0], t0, t0 + (led[2] - led[1]) * per)
+            # The LED edges inside a stream are not reported: keep the full
+            # reserved bound, anchored at the reply (no estimated refund).
+            self._record_duty(led[0], reply.t_done - bound / 1000.0, reply.t_done)
         return [
             StreamSample(e.fields.as_int("i"), e.fields.as_int("t_us"), e.fields.as_int("raw"))
             for e in reply.events
@@ -934,41 +991,79 @@ class LIODevice:
         return self._command_unguarded(f"SR RAW {mask:04X}").fields.as_int("mask")
 
     def ce(self, rail: int, on: bool) -> Reply:
-        if on:
-            # CE high can light a selected hole — reserve conservative WDT bound.
-            hole = self._single_hole(self.status().as_int("mask"))
-            if hole:
-                bound = self._conservative_bound_for_hole(hole)
-                self._duty_gate(hole, bound)
-            elif not self._is_sim() and self.journal is not None:
-                # Ambiguous mask: refuse rather than emit unaccounted light.
-                raise OwnershipError(
-                    "CE on refused: no single selected hole to reserve duty against"
-                )
-        try:
-            reply = self._command_unguarded(f"CE {rail} {int(on)}")
-        except DeviceError:
-            # Firmware refused before emit (wrong-rail CE): drop pending without
-            # a 60 s uncertain lock that would poison the rest of the suite.
-            if on:
-                self._drop_pending()
-            raise
-        except Exception:
-            # Transport/accounting fault after reserve: retain conservative charge.
-            if on:
-                self._abort_pending()
-            raise
-        if on:
-            hole = self._single_hole(self.status().as_int("mask"))
-            until = reply.fields.as_int("until_ms") / 1000.0
-            if hole:
-                self._lit = (hole, self.now(), self.now() + until)
-            else:
-                # Reserved but no selectable hole after ACK — drop, no emit.
-                self._drop_pending()
-        else:
+        """Drive one rail's CE line (D04 / A03).
+
+        CE high can light the selected hole, so the conservative bound is reserved
+        first. Release of that reservation is allowed only for a DEFINITE
+        pre-emission refusal (``ERR code=3``) with STATUS proving the rail low.
+        Any other error, a transport fault, a malformed ACK, or an ACK followed by
+        STATUS that contradicts it (wrong/no selected hole, CE not high) keeps the
+        full charge, marks the journal uncertain and blocks new light.
+        """
+        if not on:
+            reply = self._command_unguarded(f"CE {rail} 0")
             self._close_lit(self.now())
+            return reply
+        hole = self._single_hole(self.status().as_int("mask"))
+        if hole:
+            bound = self._conservative_bound_for_hole(hole)
+            self._duty_gate(hole, bound)
+        elif not self._is_sim() and self.journal is not None:
+            # Ambiguous mask: refuse rather than emit unaccounted light.
+            raise OwnershipError("CE on refused: no single selected hole to reserve duty against")
+        reserved = bool(self._pending_reservations)
+        try:
+            reply = self._command_unguarded(f"CE {rail} 1")
+        except DeviceError as e:
+            low, why = self._rail_low(rail)
+            if e.code == ErrCode.REFUSED and low:
+                # Firmware refused before setting CE, and STATUS agrees: no emission.
+                self._drop_pending()
+            else:
+                self._retain_uncertain_if_emitting(
+                    reason=f"CE {rail} 1 failed (code {e.code}) and rail state unverified: {why}"
+                )
+            raise
+        except Exception as e:
+            self._retain_uncertain_if_emitting(reason=f"CE {rail} 1 transport fault: {e}")
+            raise
+        problem = self._check_ce_ack(reply, rail, hole)
+        if problem:
+            if reserved or not self._is_sim():
+                self._retain_uncertain_if_emitting(reason=f"CE {rail} 1 contradictory: {problem}")
+            raise OwnershipError(f"CE {rail} 1 not verified: {problem}; charge retained")
+        until = reply.fields.as_int("until_ms") / 1000.0
+        self._lit = (hole, self.now(), self.now() + until)
         return reply
+
+    def _rail_low(self, rail: int) -> tuple[bool, str]:
+        try:
+            st = self._command_unguarded("STATUS", timeout=1.0).fields
+            v = st.as_int(f"ce{rail}")
+        except Exception as e:
+            return False, f"STATUS unavailable ({e})"
+        return (v == 0), f"ce{rail}={v}"
+
+    def _check_ce_ack(self, reply: Reply, rail: int, hole: int) -> str:
+        """'' if the ACK and a fresh STATUS agree that ``hole`` is lit on ``rail``."""
+        f = reply.fields
+        try:
+            if reply.response.word != "CE" or f.as_int("rail") != rail or f.as_int("on") != 1:
+                return f"unexpected ACK {reply.response.raw!r}"
+            f.as_int("until_ms")
+        except Exception:
+            return f"malformed ACK {reply.response.raw!r}"
+        try:
+            st = self._command_unguarded("STATUS", timeout=1.0).fields
+            ce_hi = st.as_int(f"ce{rail}")
+            sel = self._single_hole(st.as_int("mask"))
+        except Exception as e:
+            return f"STATUS unavailable after ACK ({e})"
+        if ce_hi != 1:
+            return f"ACK said on but STATUS ce{rail}={ce_hi}"
+        if not hole or sel != hole:
+            return f"reserved hole {hole} but STATUS selects {sel or 'none/several'}"
+        return ""
 
     def ch_on(self, hole: int, ms: int | None = None, *, budget: bool = True) -> int:
         """Light one hole; returns the firmware's (possibly clamped) on-time in ms.
@@ -1000,31 +1095,73 @@ class LIODevice:
         if budget:
             self._duty_gate(hole, bound)
         cmd = f"CH {hole} ON" + (f" {ms}" if ms is not None else "")
-        until = self._command_unguarded(cmd).fields.as_int("until_ms")
+        try:
+            reply = self._command_unguarded(cmd)
+        except DeviceError as e:
+            if e.code in (ErrCode.REFUSED, ErrCode.BAD_ARG, ErrCode.BUSY):
+                low, _why = self._rail_low(1 if rail == "A" else 2)
+                if low:
+                    self._drop_pending()  # definite refusal before light, verified
+                    raise
+            self._retain_uncertain_if_emitting(reason=f"CH {hole} failed: {e}")
+            raise
+        except Exception as e:
+            self._retain_uncertain_if_emitting(reason=f"CH {hole} transport fault: {e}")
+            raise
+        f = reply.fields
+        try:
+            until = f.as_int("until_ms")
+            bad = (
+                reply.response.word != "CH"
+                or f.as_int("ch") != hole
+                or f.as_str("rail").upper() != rail
+            )
+        except ProtocolError:
+            bad, until = True, -1
+        if bad:
+            self._retain_uncertain_if_emitting(reason=f"CH {hole} malformed ACK")
+            raise DutyBudgetError(
+                f"CH {hole} ACK does not match the request ({reply.response.raw!r}); "
+                "worst-case charge retained"
+            )
         abort = validate_reported_on_ms(bound, float(until))
         if abort:
-            self._abort_pending()
+            self._retain_uncertain_if_emitting(reason=f"CH {hole}: {abort}")
             raise DutyBudgetError(f"CH abort retaining worst-case: {abort}")
         self._close_lit(self.now())
         self._lit = (hole, self.now(), self.now() + until / 1000.0)
         return until
 
     def off(self) -> None:
+        """OFF, then verify both CE lines low before releasing accounting (D04).
+
+        A failed OFF or an unverified STATUS keeps the full charge, marks the
+        journal uncertain, blocks new light on this connection and raises.
+        """
         try:
             self._command_unguarded("OFF")
         except Exception:
             self._retain_uncertain_if_emitting(reason="OFF failed")
             raise
+        dark, why = self._verify_dark()
+        if not dark:
+            self._retain_uncertain_if_emitting(reason=f"OFF unverified: {why}")
+            raise OwnershipError(f"OFF not verified: {why}; charge retained, light blocked")
+        self._light_blocked = None
         self._close_lit(self.now())
-        # Verify CE low; retain uncertainty if still high (CE04).
-        with contextlib.suppress(Exception):
-            st = self.status()
-            if st.as_int("ce1") != 0 or st.as_int("ce2") != 0:
-                self._retain_uncertain_if_emitting(reason="CE remains high after OFF")
 
     def _retain_uncertain_if_emitting(self, *, reason: str) -> None:
-        """Failed/unverified OFF with possible emission → uncertain + full charge."""
+        """Failed/unverified OFF or CE state: keep worst-case charge, block light.
+
+        Pending reservations (including the one behind a lit CH/CE) are absorbed
+        at their full reserved bound; the journal goes uncertain with a full
+        cooldown, and this connection refuses new emission until a verified
+        OFF (``_verify_dark``) clears the block.
+        """
+        self._lit = None
+        self._light_blocked = reason
         if self.journal is None:
+            self._pending_reservations = []
             return
         try:
             if self._pending_reservations:
@@ -1054,18 +1191,41 @@ class LIODevice:
         nominal = float(s + 2 * self._mean_ms_fw(k) + 10)
         bound = self._conservative_bound_for_hole(hole, nominal_on_ms=nominal)
         self._duty_gate(hole, bound)
-        t0 = self.now()
         try:
             reply = self._command_unguarded(f"MEAS {hole} {s} {k}", timeout=self.meas_timeout(s, k))
             m = Meas.from_fields(reply.fields)
+        except DeviceError as e:
+            # Firmware ERR after MEAS: it may have lit (watchdog fired mid-read).
+            self._abort_pending()
+            log.info("MEAS %d refused/failed (code %s): charge retained", hole, e.code)
+            raise
         except Exception:
             self._abort_pending()
             raise
+        f = reply.fields
+        try:
+            mismatch = (
+                reply.response.word != "MEAS"
+                or m.hole != hole
+                or f.as_int("settle_ms") != s
+                or f.as_int("n") != k
+            )
+        except ProtocolError:
+            mismatch = True
+        if mismatch:
+            self._abort_pending()
+            raise DutyBudgetError(
+                f"MEAS {hole} reply does not match the request ({reply.response.raw!r}); "
+                "worst-case charge retained"
+            )
         abort = validate_reported_on_ms(bound, float(m.t_on_ms))
         if abort:
             self._abort_pending()
             raise DutyBudgetError(f"MEAS abort retaining worst-case: {abort}")
-        self._record_duty(hole, t0, t0 + m.t_on_ms / 1000.0)
+        # The firmware reports how long the LED was on; the edges are only known
+        # to end by the reply, so the span is anchored there (later = conservative).
+        t_end = reply.t_done
+        self._record_duty(hole, t_end - m.t_on_ms / 1000.0, t_end)
         return m
 
     def sweep(self, settle_ms: int | None = None, n: int | None = None) -> Sweep:
@@ -1078,33 +1238,42 @@ class LIODevice:
             bound = self._conservative_bound_for_hole(hole, nominal_on_ms=per_nominal)
             charges.append((hole, bound))
         self._duty_gate_many(charges)
-        t0 = self.now()
         try:
             reply = self._command_unguarded(f"SWEEP {s} {k}", timeout=16 * self.meas_timeout(s, k))
             records = [Meas.from_fields(e.fields) for e in reply.events if e.name == "M"]
         except Exception:
             self._abort_pending()
             raise
-        if len(records) != 16:
+        f = reply.fields
+        try:
+            header_ok = (
+                reply.response.word == "SWEEP"
+                and f.as_int("n") == 16
+                and f.as_int("settle_ms") == s
+                and f.as_int("samples") == k
+            )
+            dur_ms = f.as_int("dur_ms")
+        except ProtocolError:
+            header_ok, dur_ms = False, -1
+        holes = [m.hole for m in records]
+        if not header_ok or holes != list(range(1, 17)):
             self._abort_pending()
             raise DutyBudgetError(
-                f"SWEEP partial/malformed: {len(records)} records; retaining all charges"
+                f"SWEEP partial/malformed ({len(records)} records, holes {holes}); "
+                "retaining all charges"
             )
-        t = t0
-        by_hole = {m.hole: m for m in records}
-        for hole, bound in charges:
-            m = by_hole.get(hole)
-            if m is None:
-                self._abort_pending()
-                raise DutyBudgetError("SWEEP missing hole; retaining remaining charges")
+        for (_hole, bound), m in zip(charges, records, strict=True):
             abort = validate_reported_on_ms(bound, float(m.t_on_ms))
             if abort:
                 self._abort_pending()
                 raise DutyBudgetError(f"SWEEP abort retaining worst-case: {abort}")
-            dur_s = max(m.t_on_ms, 0) / 1000.0
-            self._record_duty(m.hole, t, t + dur_s)
-            t += dur_s if dur_s > 0 else bound / 1000.0
-        return Sweep(records, reply.fields.as_int("dur_ms"))
+        # Per-hole edges inside a SWEEP are not reported, so no timeline is
+        # invented and nothing is refunded: every hole keeps its full reserved
+        # bound, anchored at the reply (A24).
+        t_end = reply.t_done
+        for hole, bound in charges:
+            self._record_duty(hole, t_end - bound / 1000.0, t_end)
+        return Sweep(records, dur_ms)
 
     def dbg_state(self, state: str, arg: int, settle_ms: int, n: int) -> Fields:
         """Firmware >= 2.5.0 coupling states (``debug_states=1`` in INFO), atomic like MEAS:
@@ -1112,30 +1281,80 @@ class LIODevice:
         ``arg`` selected, the other rail's CE high). A wrong-rail LED should stay dark;
         it is counted against the hole's duty budget anyway, in case it is miswired."""
         word = {"ce_only": "CE_ONLY", "wrong_rail": "WRONG_RAIL"}[state]
-        # Match firmware DBG estimate; charge the hole, bound the energized rail.
         on_ms = float(settle_ms + 2 * self._mean_ms_fw(n) + 10)
+        energized_n = arg
         if state == "wrong_rail":
             hole_rail = self.cfg.channel(arg).rail
             energized = "B" if hole_rail == "A" else "A"
-            # Ensure energized-rail WDT covers before send (wrong-rail CE).
-            need = int(on_ms) if float(on_ms) == int(on_ms) else int(on_ms) + 1
-            need = max(50, need)
-            wdt_e = int(self.info().as_int(f"wdt_{energized.lower()}_ms"))
-            if wdt_e < need:
-                self.wdt_cfg(energized, need)
-            bound = self._conservative_bound_for_hole(arg, nominal_on_ms=on_ms)
+            energized_n = 1 if energized == "A" else 2
+            # Bound by the ENERGIZED rail's verified WDT (A23), charge the hole.
+            bound = self._conservative_bound_for_hole(
+                arg, nominal_on_ms=on_ms, energized_rail=energized
+            )
             self._duty_gate(arg, bound)
-        t0 = self.now()
-        f = self._command_unguarded(
-            f"DBG STATE {word} {arg} {settle_ms} {n}",
-            timeout=self.meas_timeout(settle_ms, n),
-        ).fields
+        try:
+            reply = self._command_unguarded(
+                f"DBG STATE {word} {arg} {settle_ms} {n}",
+                timeout=self.meas_timeout(settle_ms, n),
+            )
+        except Exception:
+            if state == "wrong_rail":
+                self._abort_pending()
+            raise
+        f = reply.fields
+        try:
+            mismatch = (
+                reply.response.word != "DBG"
+                or f.as_str("state") != state
+                or f.as_int("ce") != energized_n
+                or f.as_int("ch") != (arg if state == "wrong_rail" else 0)
+                or f.as_int("settle_ms") != settle_ms
+                or f.as_int("n") != n
+            )
+            t_on = f.as_int("t_on_ms")
+        except ProtocolError:
+            mismatch, t_on = True, -1
         if state == "wrong_rail":
-            self._record_duty(arg, t0, t0 + f.as_int("t_on_ms") / 1000.0)
+            if mismatch or validate_reported_on_ms(bound, float(t_on)):
+                self._abort_pending()
+                raise DutyBudgetError(
+                    f"DBG {state} reply does not match the request ({reply.response.raw!r}); "
+                    "worst-case charge retained"
+                )
+            t_end = reply.t_done
+            self._record_duty(arg, t_end - t_on / 1000.0, t_end)
+        elif mismatch:
+            raise ProtocolError(
+                f"DBG {state} reply does not match the request: {reply.response.raw!r}"
+            )
         return f
 
     def loop_test(self) -> Fields:
         return self.command("LOOP TEST", timeout=3.0).fields
+
+    def _set_wdt_verified(self, rail: str, ms: int) -> int:
+        """WDT CFG with BOTH the ACK fields and a fresh INFO readback verified (A23).
+
+        The firmware ACK is ``OK WDT rail=<A|B> ms=<applied> cap_ms=<cap>``. A
+        missing, malformed or contradictory ACK/readback never defaults to the
+        request: refuse before light.
+        """
+        try:
+            ack = self.wdt_cfg(rail, ms)
+            ack_rail = ack.as_str("rail").upper()
+            ack_ms = ack.as_int("ms")
+        except (KeyError, ValueError, ProtocolError) as e:
+            raise DutyBudgetError(f"refuse before light: WDT CFG ACK malformed ({e})") from e
+        try:
+            rb = int(self.info(refresh=True).as_int(f"wdt_{rail.lower()}_ms"))
+        except Exception as e:
+            raise DutyBudgetError(f"refuse before light: WDT readback unavailable ({e})") from e
+        if ack_rail != rail.upper() or ack_ms != ms or rb != ms:
+            raise DutyBudgetError(
+                f"refuse before light: WDT {rail} request {ms} ms but ACK rail={ack_rail} "
+                f"ms={ack_ms}, readback {rb} ms"
+            )
+        return ms
 
     def wdt_cfg(self, rail: str, ms: int) -> Fields:
         f = self.command(f"WDT CFG {rail} {ms}").fields
@@ -1240,6 +1459,7 @@ class LIODevice:
         *,
         nominal_on_ms: float | None = None,
         may_raise_wdt: bool = True,
+        energized_rail: str | None = None,
     ) -> float:
         """Conservative pulse bound (D05).
 
@@ -1255,7 +1475,9 @@ class LIODevice:
             rail_wdt_cap_ms,
         )
 
-        rail = self.cfg.channel(hole).rail
+        # The rail whose CE is driven bounds the exposure (wrong-rail DBG energizes
+        # the OTHER rail); the hole's own budget is still what gets charged.
+        rail = energized_rail or self.cfg.channel(hole).rail
         try:
             wdt = int(self.info().as_int(f"wdt_{rail.lower()}_ms"))
         except Exception as e:
@@ -1279,30 +1501,10 @@ class LIODevice:
                     f"refuse before light: active WDT {wdt} ms cannot cover "
                     f"need {need} ms (raise not permitted for this operation)"
                 )
-            # Raise to covering need (2→8→8→2); verify ACK/readback.
-            applied = self.wdt_cfg(rail, int(need))
-            try:
-                ack = int(applied.as_int(f"wdt_{rail.lower()}_ms"))
-            except Exception:
-                ack = int(need)
-            rb = int(self.info(refresh=True).as_int(f"wdt_{rail.lower()}_ms"))
-            if min(ack, rb) < need:
-                raise DutyBudgetError(
-                    f"refuse before light: WDT ACK/readback {ack}/{rb} ms < need {need} ms"
-                )
-            wdt = int(rb if rb >= need else ack)
+            # Raise to covering need (2→8→8→2); ACK and readback must both agree.
+            wdt = self._set_wdt_verified(rail, int(need))
         elif wdt > need and may_lower:
-            applied = self.wdt_cfg(rail, int(need))
-            try:
-                ack = int(applied.as_int(f"wdt_{rail.lower()}_ms"))
-            except Exception:
-                ack = int(need)
-            rb = int(self.info(refresh=True).as_int(f"wdt_{rail.lower()}_ms"))
-            if max(ack, rb) < need or (ack != need and rb != need):
-                raise DutyBudgetError(
-                    f"refuse before light: WDT lower ACK/readback {ack}/{rb} ms != need {need} ms"
-                )
-            wdt = int(need)
+            wdt = self._set_wdt_verified(rail, int(need))
         bound, refuse = conservative_pulse_bound_ms(
             nominal_on_ms=nominal,
             active_wdt_ms=wdt,
@@ -1322,6 +1524,46 @@ class LIODevice:
                 ) from e
         return use_bound
 
+    @property
+    def exposure_bound(self) -> str:
+        """How LED on-time is bounded on this connection (recorded with every run).
+
+        ``simulated``: virtual board. ``hardware_watchdog``: the board reports a
+        hardware watchdog (INFO hw_wdt=1) that resets it, dropping CE, if the
+        firmware stops servicing. ``cooperative_unproven``: real board without a
+        hardware watchdog whose owner acknowledged, in lio_hw.yaml
+        ``timing.real_port_admission``, that the cooperative firmware watchdog is
+        accepted WITHOUT a proven bound on a firmware hang. ``refused``: none of
+        these; every emission on this port is refused before transmission.
+        """
+        if self._is_sim():
+            return "simulated"
+        try:
+            hw = int(self.info().as_int("hw_wdt"))
+        except Exception:
+            hw = 0
+        if hw == 1:
+            return "hardware_watchdog"
+        timing = self.cfg.data.get("timing") or {}
+        policy = str(timing.get("real_port_admission") or "refuse")
+        if policy == "cooperative_unproven_acknowledged":
+            return "cooperative_unproven"
+        return "refused"
+
+    def _require_real_port_timing(self) -> None:
+        """Refuse emission on a real port without a supported exposure bound (D05/M1).
+
+        No timing margin is invented: without a hardware watchdog the bound on a
+        firmware hang is unproven, and light is admitted only under the owner's
+        explicit, recorded acknowledgement.
+        """
+        if self.exposure_bound == "refused":
+            raise DutyBudgetError(
+                "refuse before light: no finite exposure bound on this real port "
+                "(INFO hw_wdt=0, and lio_hw.yaml timing.real_port_admission is not "
+                "'cooperative_unproven_acknowledged')"
+            )
+
     def _duty_gate(self, hole: int, on_ms: float) -> None:
         """Gate light through the durable journal when present; else DutyTracker.
 
@@ -1333,6 +1575,12 @@ class LIODevice:
     def _duty_gate_many(self, charges: list[tuple[int, float]]) -> None:
         if not charges:
             return
+        if self._light_blocked:
+            raise OwnershipError(f"light blocked until a verified OFF: {self._light_blocked}")
+        self._require_real_port_timing()
+        # The conservative charge about to be reserved (callers record it as
+        # permanent run cost, also when the operation then fails).
+        self.last_charge_ms = float(sum(on for _h, on in charges))
         if self.journal is not None:
             # Wait until the whole charge set fits (same-rail siblings accumulate),
             # then atomic multi-reserve. Per-hole waits alone miss SWEEP x16.
@@ -1349,11 +1597,8 @@ class LIODevice:
                 if self.duty is not None:
                     self.duty.note_cooldown(hole0, wait, f"{len(charges)}-charge set")
                 self.sleep(wait)
-            try:
-                self._pending_reservations = self.journal.reserve_many(charges)
-            except (DutyBudgetError, JournalError, OwnershipError):
-                self._pending_reservations = []
-                raise
+            # A refused reservation leaves any existing pending tracking intact.
+            self._pending_reservations = self.journal.reserve_many(charges)
             return
         if self.duty is None:
             return

@@ -141,19 +141,66 @@ def proxy_unassigned_feature_id(detector: str, hole: int, kind: str = "net") -> 
     return f"proxy_unassigned:{detector}:h{hole:02d}:{kind}"
 
 
+@dataclass(frozen=True)
+class ControlEvidence:
+    """Scoped evidence that ``hole`` is an optical control for ``detector`` (D11 / A20).
+
+    A control is only valid for the run, load, condition, settings, calibration
+    and assembly epoch it was established under, by a named method (for example
+    an unchanged-load optical block). A bare hole number is never evidence.
+    """
+
+    hole: int
+    detector: str
+    source_run_id: str
+    load_id: str
+    condition_id: str
+    setting_id: str
+    calibration_id: str
+    assembly_epoch: str
+    method: str
+
+    def applies(self, detector: str, run_id: str) -> tuple[bool, str]:
+        if self.detector != detector:
+            return False, f"evidence is for {self.detector}"
+        if self.source_run_id != run_id:
+            return False, f"evidence from run {self.source_run_id}, not {run_id}"
+        for name in ("load_id", "condition_id", "setting_id", "calibration_id",
+                     "assembly_epoch", "method"):  # fmt: skip
+            if not str(getattr(self, name) or "").strip():
+                return False, f"evidence missing {name}"
+        return True, ""
+
+
+def _evidence_holes(evidence: Any, detector: str, run_id: str | None) -> set[int]:
+    """Holes with APPLICABLE scoped evidence; bare ints and out-of-scope records ignored."""
+    out: set[int] = set()
+    for e in evidence or ():
+        if not isinstance(e, ControlEvidence):
+            continue  # a bare hole id confers nothing (A20)
+        if run_id is None:
+            continue
+        ok, _why = e.applies(detector, run_id)
+        if ok:
+            out.add(int(e.hole))
+    return out
+
+
 def guaranteed_blind_holes(
     cfg: HwConfig,
     detector: str,
     *,
-    optical_control_evidence: set[int] | frozenset[int] | None = None,
+    optical_control_evidence: Any = None,
+    run_id: str | None = None,
 ) -> list[int]:
     """Evidence-backed validated-control holes only (D11).
 
-    Expect/range alone never populates this set. Without load-preserving optical
-    control evidence, the list is empty → unidentified C=null. H16 is excluded
-    forever. H6/h7 are never auto-included for InGaAs.
+    Only :class:`ControlEvidence` records that apply to this detector and run
+    count; expect/range or bare hole ids never populate this set. Without such
+    evidence the list is empty → unidentified C=null. H16 is excluded forever.
+    H6/h7 are never auto-included for InGaAs.
     """
-    evidence = set(optical_control_evidence or ())
+    evidence = _evidence_holes(optical_control_evidence, detector, run_id)
     out = []
     for h in sorted(evidence):
         if h == 16:
@@ -231,7 +278,7 @@ def estimate_coupling(
     model: str = MODEL_VALIDATED,
     exclude_holes: set[int] | frozenset[int] | None = None,
     allow_current_scaling: bool = False,
-    optical_control_evidence: set[int] | frozenset[int] | None = None,
+    optical_control_evidence: Any = None,
 ) -> dict[str, CouplingResult]:
     """Estimate C per detector/rail under the requested model.
 
@@ -252,7 +299,10 @@ def estimate_coupling(
             blinds = [
                 h
                 for h in guaranteed_blind_holes(
-                    cfg, det, optical_control_evidence=optical_control_evidence
+                    cfg,
+                    det,
+                    optical_control_evidence=optical_control_evidence,
+                    run_id=str(cube.meta.get("run_id") or ""),
                 )
                 if h not in exclude
             ]
@@ -329,7 +379,7 @@ def estimate_coupling(
                     controls_used=controls,
                     support={"n_rail": n_rail},
                     warnings=warnings,
-                    covariance=_control_covariance_stub(cube, det, controls),
+                    covariance=_control_estimator_covariance(cube, det, controls),
                 )
             continue
 
@@ -381,20 +431,42 @@ def estimate_coupling(
     return out
 
 
-def _control_covariance_stub(
+def _control_estimator_covariance(
     cube: Cube, detector: str, controls: dict[str, list[int]]
 ) -> dict[str, Any]:
-    """Simple within-rail variance of control nets (shared-control awareness)."""
+    """Sampling variance of the per-rail control estimate (D11 / A20).
+
+    The rail's C is estimated from control readings grouped by independent
+    reading (``reading_id`` when stored, else one row = one reading). Its
+    variance is the between-reading sample variance divided by the number of
+    readings. Fewer than two independent readings: unavailable (None), never 0.
+    """
+    rows = list(cube.store.rows())
     cov: dict[str, Any] = {}
-    h_arr, _, net = cube.lit_all(detector)
     for rail, hs in controls.items():
-        if len(hs) < 1:
+        if not hs:
             continue
-        m = np.isin(h_arr, hs)
-        if m.sum() < 2:
-            cov[rail] = {"var": 0.0, "n": int(m.sum())}
+        by_reading: dict[str, list[float]] = {}
+        for i, r in enumerate(rows):
+            if r.get("detector") != detector or str(r.get("state") or "lit") != "lit":
+                continue
+            try:
+                hole = int(r["hole"])
+                net = float(r["net_counts"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            if hole not in hs:
+                continue
+            by_reading.setdefault(str(r.get("reading_id") or f"row{i}"), []).append(net)
+        means = [float(np.mean(v)) for v in by_reading.values()]
+        n = len(means)
+        if n < 2:
+            cov[rail] = {"var_estimate": None, "n_readings": n,
+                         "reason": "fewer than two independent control readings"}  # fmt: skip
             continue
-        cov[rail] = {"var": float(np.var(net[m], ddof=1)), "n": int(m.sum())}
+        var = float(np.var(means, ddof=1))
+        cov[rail] = {"var_estimate": var / n, "sample_var": var, "n_readings": n,
+                     "method": "between-reading sample variance / n"}  # fmt: skip
     return cov
 
 

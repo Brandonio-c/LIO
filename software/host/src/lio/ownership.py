@@ -13,6 +13,7 @@ import contextlib
 import json
 import os
 import re
+import subprocess
 import time
 import uuid
 from collections.abc import Callable
@@ -49,8 +50,16 @@ _TTY_CU = re.compile(r"^(/dev/)(tty|cu)\.(.+)$")
 
 
 def normalize_port_identity(port: str) -> str:
-    """Normalize physical-device aliases (macOS tty/cu → shared identity)."""
+    """Normalize physical-device aliases to one rig identity (D03).
+
+    Filesystem aliases (symlinks such as /dev/serial/by-id/..., ``..`` segments)
+    resolve to the real device node first; macOS ``tty.``/``cu.`` twins of the
+    same device then map to one shared key.
+    """
     p = str(port).strip()
+    if p.startswith("/") and "://" not in p:
+        with contextlib.suppress(OSError):
+            p = os.path.realpath(p)
     m = _TTY_CU.match(p)
     if m:
         return f"{m.group(1)}serial.{m.group(3)}"
@@ -72,11 +81,15 @@ def default_state_root() -> Path:
     return Path.home() / ".lio" / "state"
 
 
-def _boot_id() -> str:
-    """Best-effort boot identity. Never treat AppleSetupDone/root ctime as proof.
+UNKNOWN_BOOT = "unknown-boot"
 
-    Linux: ``/proc/sys/kernel/random/boot_id``. Elsewhere: conservative
-    ``unknown-boot`` so discontinuities fail closed rather than inventing credit.
+
+def _boot_id() -> str:
+    """Boot identity of this host, or ``unknown-boot``.
+
+    Linux: ``/proc/sys/kernel/random/boot_id``. macOS: ``sysctl kern.boottime``.
+    ``unknown-boot`` is never equal to anything: every load is then treated as
+    a possible clock discontinuity (charges carried forward, no credit).
     """
     try:
         path = Path("/proc/sys/kernel/random/boot_id")
@@ -84,7 +97,20 @@ def _boot_id() -> str:
             return path.read_text(encoding="utf-8", errors="replace").strip()[:64]
     except OSError:
         pass
-    return "unknown-boot"
+    try:
+        out = subprocess.run(
+            ["/usr/sbin/sysctl", "-n", "kern.boottime"],
+            capture_output=True,
+            text=True,
+            timeout=2,
+            check=True,
+        ).stdout.strip()
+        m = re.search(r"sec\s*=\s*(\d+)", out)
+        if m:
+            return f"darwin-boottime-{m.group(1)}"
+    except (OSError, ValueError, subprocess.SubprocessError):
+        pass
+    return UNKNOWN_BOOT
 
 
 @dataclass
@@ -268,14 +294,52 @@ class DutyJournal:
                 raise JournalError("journal root is not an object")
         except (OSError, json.JSONDecodeError, JournalError) as e:
             raise JournalError(f"cannot read duty journal {self.path}: {e}") from e
-        # Boot discontinuity: retain conservative cost; require cooldown; no credit.
-        if str(data.get("boot_id", "")) != self._boot_id:
-            data["uncertain"] = True
+        # Clock discontinuity (different/unknown boot, or monotonic time behind
+        # the last write): old monotonic stamps mean nothing in this frame. Carry
+        # every charge from the last window forward as a lump ending now, so no
+        # credit is granted (D03 / D15). A pending set means possible emission.
+        now = self.mono_now()
+        stored_boot = str(data.get("boot_id", ""))
+        last_mono = data.get("last_mono")
+        discontinuous = (
+            stored_boot != self._boot_id
+            or self._boot_id == UNKNOWN_BOOT
+            or (last_mono is not None and now < float(last_mono))
+        )
+        if discontinuous:
+            self._data = data
+            if data.get("pending"):
+                self._absorb_pending_conservative()
+                data["uncertain"] = True
+            ref = float(last_mono) if last_mono is not None else None
+            lumps: dict[str, list[dict[str, Any]]] = {}
+            for key, spans in (data.get("history") or {}).items():
+                total_s = 0.0
+                for span in spans:
+                    t0, t1 = float(span["t0"]), float(span["t1"])
+                    if ref is not None:
+                        t0 = max(t0, ref - self.window_s)
+                    total_s += max(0.0, t1 - t0)
+                if total_s > 0:
+                    # Ends NOW: counted in full immediately, ages out a whole
+                    # window later (as if it had all just happened).
+                    lumps[key] = [
+                        {
+                            "t0": now - total_s,
+                            "t1": now,
+                            "hole": 0,
+                            "reserved_ms": total_s * 1000.0,
+                            "status": "discontinuity-retained",
+                        }
+                    ]
+            data["history"] = lumps
             data["boot_id"] = self._boot_id
-            # Keep history as already-charged cost in the new boot's mono frame by
-            # shifting into the present window as a worst-case lump.
-            data["cooldown_until_mono"] = self.mono_now() + self.window_s
             data["pending"] = None
+            data["last_mono"] = now  # the new monotonic frame starts here
+            if data.get("uncertain"):
+                data["cooldown_until_mono"] = now + self.window_s
+            else:
+                data["cooldown_until_mono"] = None
         self._data = data
         self.owner_generation = str(data.get("owner_generation") or self.owner_generation)
         if data.get("uncertain") or data.get("pending"):
@@ -322,6 +386,9 @@ class DutyJournal:
             )
 
     def _persist(self) -> None:
+        self._data["last_mono"] = max(
+            float(self._data.get("last_mono") or 0.0), float(self.mono_now())
+        )
         self.path.parent.mkdir(parents=True, exist_ok=True)
         tmp = self.path.with_suffix(self.path.suffix + ".tmp")
         payload = json.dumps(self._data, indent=1, sort_keys=True) + "\n"
@@ -351,9 +418,13 @@ class DutyJournal:
         """
         if not self.path.exists():
             self._data = self._empty()
-            self._persist()
-            return
-        self._load_or_init()
+        else:
+            self._load_or_init()
+        # A fresh owner generation per lease: reservations/completions made under
+        # an earlier owner (or a stale object) are refused (D03).
+        self.owner_generation = uuid.uuid4().hex
+        self._data["owner_generation"] = self.owner_generation
+        self._persist()
 
     def used_ms(self, hole: int, now: float | None = None) -> float:
         now = self.mono_now() if now is None else now
@@ -523,6 +594,13 @@ class DutyJournal:
         return provisional
 
     def commit(self, reservation: Reservation, *, t_on: float, t_off: float) -> None:
+        if reservation.owner_generation != self.owner_generation:
+            raise OwnershipError(
+                f"stale completion: reservation generation {reservation.owner_generation!r} "
+                f"is not the current owner {self.owner_generation!r}"
+            )
+        if reservation.id not in {p.get("id") for p in self._pending_items()}:
+            raise OwnershipError(f"completion for unknown reservation {reservation.id!r}")
         key = reservation.rail_key
         hist = self._data.setdefault("history", {})
         spans = hist.setdefault(key, [])

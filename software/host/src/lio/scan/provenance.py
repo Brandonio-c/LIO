@@ -9,6 +9,8 @@ shared validity resolver gate quantitative reuse without rewriting historical fi
 
 from __future__ import annotations
 
+import contextlib
+import copy
 import hashlib
 import json
 from dataclasses import asdict, dataclass, field
@@ -107,10 +109,21 @@ class AcquisitionSnapshot:
     input_range: dict[str, InputRangeEvidence] = field(default_factory=dict)
     # detector -> unverified | verified-in-range | observed-outside-range
 
-    def to_dict(self) -> dict[str, Any]:
+    def __post_init__(self) -> None:
+        # Defensive freeze (A12 / M0): deep-copy every nested container so the
+        # caller's dicts can change afterwards without touching these facts, and
+        # keep the canonical bytes so to_dict()/manifest_hash() never drift.
+        for name in ("config_snapshot", "channel_map_snapshot", "assembly", "planned",
+                     "input_range", "rf", "rail_current"):  # fmt: skip
+            object.__setattr__(self, name, copy.deepcopy(getattr(self, name)))
         d = asdict(self)
         d["adc"]["detector_order"] = list(self.adc.detector_order)
-        return d
+        object.__setattr__(self, "_frozen", _canon(d))
+
+    def to_dict(self) -> dict[str, Any]:
+        frozen: bytes = object.__getattribute__(self, "_frozen")
+        out: dict[str, Any] = json.loads(frozen)
+        return out
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> AcquisitionSnapshot:
@@ -164,7 +177,8 @@ class AcquisitionSnapshot:
         )
 
     def manifest_hash(self) -> str:
-        return content_hash(self.to_dict())
+        frozen: bytes = object.__getattribute__(self, "_frozen")
+        return hashlib.sha256(frozen).hexdigest()
 
 
 def build_acquisition_snapshot(
@@ -203,6 +217,40 @@ def build_acquisition_snapshot(
         planned=dict(planned or {}),
         input_range=dict(input_range or {}),
     )
+
+
+class CorePreflightError(ValueError):
+    """The device's ADC state is not the approved core acquisition profile."""
+
+
+def core_adc_preflight(device: Any, *, mains_hz: int) -> dict[str, Any]:
+    """Core profile on START and RESUME, before any light (D06 / A18).
+
+    Gain must READ BACK as 1 (GAIN_ONE) whatever an old snapshot says; a gain-2
+    device matching a gain-2 snapshot is still refused (M7 stays isolated).
+    With mains integration requested, it is applied and INFO must report the
+    same value; a missing field is never filled from the host cache.
+    """
+    info = device.info(refresh=True)
+    gain = read_info_gain(info)
+    if gain is None or str(gain) not in ("1", "GAIN_ONE", "1.0"):
+        raise CorePreflightError(
+            f"core acquisition requires ADC gain 1; device reports {gain!r} (refusing before light)"
+        )
+    try:
+        rate = int(info.as_int("rate"))
+    except Exception as e:
+        raise CorePreflightError(f"ADC rate readback unavailable ({e})") from e
+    applied = 0
+    if mains_hz > 0:
+        device.adc_mains(int(mains_hz))
+        info = device.info(refresh=True)
+        if "mains" not in info.values:
+            raise CorePreflightError("ADC mains readback missing after ADC CFG MAINS")
+        applied = int(info.as_int("mains"))
+        if applied != int(mains_hz):
+            raise CorePreflightError(f"ADC mains readback {applied} != requested {mains_hz}")
+    return {"gain": "1", "rate_sps": rate, "mains_hz": applied, "source": "INFO readback"}
 
 
 def read_info_gain(info: Any) -> str | None:
@@ -314,17 +362,44 @@ def collect_raw_artifact_bytes(folder: Path | str) -> bytes:
     return b"".join(parts)
 
 
-def seal_store_terminal(
+def store_interpretation(store: Any) -> dict[str, Any]:
+    """How the sealed raw bytes are to be READ (D10 / A11).
+
+    The stream catalogue (which detector/ADC input/settings each NPZ holds), the
+    cube's column schema and the run's channel/ADC mapping. Changing any of these
+    changes what the same bytes mean, so they are part of the seal. The seal
+    itself is never included (no self-reference).
+    """
+    meta = dict(getattr(store, "meta", {}) or {})
+    streams = [
+        {k: v for k, v in dict(e).items() if k != "terminal_source_seal"}
+        for e in (meta.get("streams") or [])
+        if isinstance(e, dict)
+    ]
+    cube_fields: list[str] = []
+    fields_fn = getattr(store, "cube_fields", None)
+    if callable(fields_fn):
+        with contextlib.suppress(OSError, StopIteration):
+            cube_fields = list(fields_fn())
+    snap = meta.get("acquisition_snapshot") or {}
+    adc = snap.get("adc") if isinstance(snap, dict) else {}
+    return {
+        "streams": streams,
+        "cube_fields": cube_fields,
+        "mux_map": (adc or {}).get("mux_map") if isinstance(adc, dict) else None,
+        "detector_order": (adc or {}).get("detector_order") if isinstance(adc, dict) else None,
+        "channel_map_sha256": snap.get("channel_map_sha256") if isinstance(snap, dict) else None,
+        "config_sha256": meta.get("config_sha256"),
+    }
+
+
+def compute_store_seal(
     store: Any,
     *,
     status: str,
     cancel_reason: str | None = None,
 ) -> TerminalSourceSeal | None:
-    """Apply terminal source seal to an open ``ScanStore`` if a snapshot exists.
-
-    No-op (returns None) for historical runs without ``acquisition_snapshot``.
-    Seal covers cube + all raw streams/NPZs/sidecars (D10).
-    """
+    """The terminal seal for the store's CURRENT bytes and interpretation (not saved)."""
     raw_snap = store.meta.get("acquisition_snapshot")
     if not raw_snap or not isinstance(raw_snap, dict):
         return None
@@ -335,16 +410,57 @@ def seal_store_terminal(
         cube = getattr(store, "cube_path", None)
         if cube is not None and Path(cube).exists():
             raw_bytes = Path(cube).read_bytes()
-    seal = seal_terminal_source(
+    return seal_terminal_source(
         snap,
         raw_bytes=raw_bytes,
-        terminal_meta={"status": status, "cancel_reason": cancel_reason},
+        terminal_meta={
+            "status": status,
+            "cancel_reason": cancel_reason,
+            "interpretation": store_interpretation(store),
+        },
         revision="complete" if status == "COMPLETE" else "partial",
         status=status,
     )
+
+
+def seal_store_terminal(
+    store: Any,
+    *,
+    status: str,
+    cancel_reason: str | None = None,
+) -> TerminalSourceSeal | None:
+    """Apply the terminal source seal to an open ``ScanStore`` if a snapshot exists.
+
+    No-op (returns None) for historical runs without ``acquisition_snapshot``.
+    The seal covers cube + all raw streams/NPZs/sidecars (D10) AND their
+    interpretation mapping (A11).
+    """
+    seal = compute_store_seal(store, status=status, cancel_reason=cancel_reason)
+    if seal is None:
+        return None
     store.meta["terminal_source_seal"] = seal.to_dict()
+    store.meta["terminal_source_seal_inputs"] = {"status": status, "cancel_reason": cancel_reason}
     store.save_meta()
     return seal
+
+
+def verify_store_seal(store: Any) -> tuple[bool, str]:
+    """Recompute the seal from live bytes + interpretation and compare (reuse gate)."""
+    saved = store.meta.get("terminal_source_seal")
+    if not isinstance(saved, dict):
+        return True, "no seal (historical run)"
+    inputs = store.meta.get("terminal_source_seal_inputs") or {
+        "status": saved.get("status", "COMPLETE"),
+        "cancel_reason": None,
+    }
+    live = compute_store_seal(
+        store, status=str(inputs.get("status")), cancel_reason=inputs.get("cancel_reason")
+    )
+    if live is None:
+        return False, "seal present but acquisition snapshot missing"
+    if live.combined_sha256 != saved.get("combined_sha256"):
+        return False, "terminal seal no longer matches live bytes/interpretation"
+    return True, "ok"
 
 
 @dataclass(frozen=True)
@@ -459,6 +575,57 @@ def collect_stream_sha256(run_folder: Path | str) -> dict[str, str]:
     return out
 
 
+REQUIRED_IDENTITY_KEYS = (
+    "source_cube_sha256",
+    "source_scan_sha256",
+    "calibration_id",
+    "channel_map_sha256",
+    "estimator_version",
+    "coupling_model_version",
+)
+
+
+def software_identity() -> dict[str, Any]:
+    """Code identity for derived products: commit plus dirty-tree CONTENT hash.
+
+    ``dirty_content_sha256`` hashes the actual uncommitted diff of the host
+    package (not just a 'dirty' flag), so two different dirty trees on the same
+    commit get different identities. Unknown when git is unavailable.
+    """
+    import subprocess
+
+    root = Path(__file__).resolve().parents[4]
+    out: dict[str, Any] = {"package": "lio", "git_commit": None, "dirty": None,
+                           "dirty_content_sha256": None}  # fmt: skip
+    try:
+        head = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "HEAD"],
+            capture_output=True, text=True, timeout=5, check=True,
+        ).stdout.strip()  # fmt: skip
+        diff = subprocess.run(
+            ["git", "-C", str(root), "diff", "HEAD", "--binary", "--", "software/host/src"],
+            capture_output=True, timeout=10, check=True,
+        ).stdout  # fmt: skip
+        untracked = subprocess.run(
+            ["git", "-C", str(root), "ls-files", "--others", "--exclude-standard", "-z",
+             "--", "software/host/src"],
+            capture_output=True, timeout=10, check=True,
+        ).stdout  # fmt: skip
+        h = hashlib.sha256(diff)
+        for rel in sorted(x for x in untracked.split(b"\0") if x):
+            h.update(rel + b"\0")
+            with contextlib.suppress(OSError):
+                h.update((root / rel.decode()).read_bytes())
+        out.update(
+            git_commit=head,
+            dirty=bool(diff or untracked),
+            dirty_content_sha256=h.hexdigest() if (diff or untracked) else None,
+        )
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return out
+
+
 def resolve_analysis_validity(
     analysis: dict[str, Any] | None,
     *,
@@ -495,19 +662,32 @@ def resolve_analysis_validity(
                 return False, ValidityReason.LEGACY_UNVERIFIED, "no source/calibration identity"
             return False, ValidityReason.UNREADABLE, "identity_mismatch"
 
-        stored_cube = str(identity.get("source_cube_sha256") or identity.get("cube_sha256") or "")
-        stored_scan = str(identity.get("source_scan_sha256") or identity.get("scan_sha256") or "")
-        if stored_cube and stored_cube != cube_sha256:
-            return False, ValidityReason.SOURCE_CHANGED, "cube hash mismatch"
-        if stored_scan and stored_scan != scan_sha256:
-            return False, ValidityReason.SOURCE_CHANGED, "scan hash mismatch"
-
-        # CE06: consumed stream/NPZ hashes must still match.
+        # A08: a minimal identity is not verified. Every consumed source and the
+        # estimator/model/calibration/mapping must be recorded.
         consumed = identity.get("consumed_inputs") or {}
         if not isinstance(consumed, dict):
             consumed = {}
-        stored_streams = consumed.get("stream_sha256") or identity.get("stream_sha256") or {}
-        if isinstance(stored_streams, dict) and stored_streams and stream_sha256 is not None:
+        missing = [k for k in REQUIRED_IDENTITY_KEYS if not identity.get(k)]
+        if "stream_sha256" not in consumed or not isinstance(consumed.get("stream_sha256"), dict):
+            missing.append("consumed_inputs.stream_sha256")
+        if missing:
+            return False, ValidityReason.LEGACY_UNVERIFIED, f"incomplete identity: {missing}"
+        if run_id is not None and str(analysis.get("run_id", "")) != str(run_id):
+            return False, ValidityReason.SOURCE_CHANGED, "product belongs to a different run"
+
+        stored_cube = str(identity.get("source_cube_sha256") or "")
+        stored_scan = str(identity.get("source_scan_sha256") or "")
+        if stored_cube != cube_sha256:
+            return False, ValidityReason.SOURCE_CHANGED, "cube hash mismatch"
+        if stored_scan != scan_sha256:
+            return False, ValidityReason.SOURCE_CHANGED, "scan hash mismatch"
+
+        # CE06 / A07: consumed stream/NPZ hashes must match the LIVE files; a
+        # caller that did not hash the live streams cannot verify reuse.
+        if stream_sha256 is None:
+            return False, ValidityReason.UNREADABLE, "live stream hashes not supplied"
+        stored_streams = consumed.get("stream_sha256") or {}
+        if isinstance(stored_streams, dict):
             for rel, digest in stored_streams.items():
                 live = stream_sha256.get(str(rel))
                 if live is None:
@@ -595,6 +775,12 @@ def quantity_eligibility(
         return QuantityEligibility(quantity, True, f"Rf {rf.state}", detector)
 
     if quantity is Quantity.MATCHED_RATIO:
+        # A19: a ratio across runs only cancels Rf when the SAME known Rf applies;
+        # an unknown/conflicting Rf cannot support it.
+        if detector == "ingaas" and (
+            rf is None or rf.value_ohm is None or rf.state in ("unknown", "conflicting")
+        ):
+            return QuantityEligibility(quantity, False, "Rf unknown: ratio not supported", detector)
         if not geometry_compatible:
             return QuantityEligibility(
                 quantity, False, "geometry/acquisition incompatible", detector

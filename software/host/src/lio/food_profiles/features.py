@@ -203,6 +203,22 @@ def signal_hole_mask(
     return out
 
 
+def _ingaas_physical_ok(run: RunData) -> tuple[bool, str]:
+    """InGaAs physical/optical eligibility from the run's FROZEN facts only."""
+    snap = run.meta.get("acquisition_snapshot")
+    if not isinstance(snap, dict):
+        return False, "no acquisition snapshot (A0/Rf unknown)"
+    rng = (snap.get("input_range") or {}).get("ingaas")
+    if rng != "verified-in-range":
+        return False, f"A0 input_range={rng or 'unverified'}"
+    rf = (snap.get("rf") or {}).get("ingaas")
+    if not isinstance(rf, dict) or rf.get("value_ohm") is None or rf.get("state") in (
+        None, "unknown", "conflicting",
+    ):  # fmt: skip
+        return False, "Rf unknown"
+    return True, "ok"
+
+
 def extract_run_vector(
     run: RunData,
     recipe: Recipe | str,
@@ -236,8 +252,17 @@ def extract_run_vector(
                 reasons[0, j] = CellReason.INSUFFICIENT_ANALYSIS.value
             warnings.append(f"analysis_{run.analysis_reason}")
         else:
+            # A19 / D07: O is an optical amplitude. For the InGaAs it depends on the
+            # A0 operating range and the fitted Rf, which must be verified in the
+            # run's frozen facts; otherwise the cell is ineligible (raw counts and
+            # independently valid OPT101 cells are unaffected).
+            ingaas_ok, why = _ingaas_physical_ok(run)
+            if not ingaas_ok:
+                warnings.append(f"o_envelope_ingaas_ineligible:{why}")
             for j, fid in enumerate(fids):
-                if (fid.detector, fid.hole) not in o_map:
+                if fid.detector == "ingaas" and not ingaas_ok:
+                    reasons[0, j] = CellReason.EXCLUDED.value
+                elif (fid.detector, fid.hole) not in o_map:
                     reasons[0, j] = CellReason.MISSING.value
                 else:
                     X[0, j] = o_map[(fid.detector, fid.hole)]

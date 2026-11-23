@@ -24,7 +24,11 @@ from lio.scan.calibration import resolve_calibration
 from lio.scan.provenance import (
     AnalysisIdentityConflict,
     build_analysis_identity,
+    collect_stream_sha256,
     content_hash,
+    resolve_analysis_validity,
+    software_identity,
+    verify_store_seal,
 )
 from lio.scan.provenance import (
     file_sha256 as prov_file_sha256,
@@ -35,6 +39,27 @@ from lio.scan.targets import named_objective, primary_swir_objective
 
 def derived_root(path: Path | str) -> Path:
     return Path(path)
+
+
+class SourceContainmentError(ValueError):
+    """A derived product would be written inside the acquisition it was derived from."""
+
+
+def require_outside_source(run_folder: Path | str, derived_out: Path | str) -> Path:
+    """Refuse derived output inside the source run, including via symlinks (A09 / D09).
+
+    Both paths are canonicalised (symlinks resolved, also for the not-yet-created
+    tail of ``derived_out``) before the containment test. Returns the resolved
+    output root.
+    """
+    src = Path(run_folder).resolve(strict=True)
+    out = Path(derived_out).resolve(strict=False)
+    if out == src or src in out.parents:
+        raise SourceContainmentError(
+            f"refusing derived output {derived_out} inside the source acquisition {run_folder}: "
+            "historical runs are immutable; choose a --derived-out outside the run"
+        )
+    return out
 
 
 def list_derived(root: Path | str, run_id: str | None = None) -> list[dict[str, Any]]:
@@ -143,6 +168,10 @@ def numerical_observations(
                     "phase": r.get("phase"),
                     "block": r.get("rep"),
                     "condition_id": r.get("condition_id"),
+                    "reading_id": r.get("reading_id"),
+                    "block_id": r.get("block_id"),
+                    "setting_id": r.get("setting_id"),
+                    "position_instance_id": r.get("position_instance_id"),
                     "dark_counts": None if dark in ("", None) else float(str(dark)),
                     "lit_counts": None if lit in ("", None) else float(str(lit)),
                     "net_counts": net_f,
@@ -236,7 +265,7 @@ def analyse_model(
 ) -> dict[str, Any]:
     """Offline analysis. ``legacy`` reproduces old analyse(); ``qualified-v2`` uses M2/M3."""
     run_folder = Path(run_folder)
-    derived_out = Path(derived_out)
+    derived_out = require_outside_source(run_folder, derived_out)
     store = ScanStore.open(run_folder)
     cube_sha = file_sha256(run_folder / "cube.csv.gz")
     scan_sha = file_sha256(run_folder / "scan.json")
@@ -307,12 +336,15 @@ def analyse_model(
             "raw_bundle_sha256": raw_bundle_sha,
             "analysis_config": analysis_cfg,
             "config_sha256": cfg.sha256,
+            "model": model,
+            "software": software_identity(),
         },
     )
     payload["identity"] = identity.to_dict()
     analysis_id = identity.identity_hash()[:16]
     payload["analysis_id"] = analysis_id
     out_dir = derived_out / store.run_id / f"{model}_{analysis_id}"
+    require_outside_source(run_folder, out_dir)  # re-check the final, resolved target
     path = _write_derived(out_dir, payload)
     payload["_path"] = str(path)
     return payload
@@ -327,6 +359,7 @@ def audit_run(
 ) -> dict[str, Any]:
     """Read-only audit: provenance, eligibility, model product under derived-out."""
     run_folder = Path(run_folder)
+    require_outside_source(run_folder, derived_out)
     store = ScanStore.open(run_folder)
     cube = Cube.open(run_folder)
     product = analyse_model(run_folder, cfg, model=model, derived_out=derived_out)
@@ -362,15 +395,32 @@ def report_derived(
 ) -> Path:
     """Write a short markdown report for a derived analysis id."""
     run_folder = Path(run_folder)
-    derived_out = Path(derived_out)
-    matches = [
-        p for p in derived_out.glob(f"**/{analysis_id}/analysis.json") if analysis_id in str(p)
-    ]
+    derived_out = require_outside_source(run_folder, derived_out)
+    store = ScanStore.open(run_folder)
+    # A10: only products of THIS run, verified against its live sources.
+    matches = sorted((derived_out / store.run_id).glob(f"*_{analysis_id}/analysis.json"))
     if not matches:
-        matches = list(derived_out.glob(f"**/*{analysis_id}/analysis.json"))
-    if not matches:
-        raise FileNotFoundError(f"analysis_id {analysis_id!r} not under {derived_out}")
+        raise FileNotFoundError(
+            f"analysis_id {analysis_id!r} is not a product of run {store.run_id} under "
+            f"{derived_out}"
+        )
     data = json.loads(matches[0].read_text(encoding="utf-8"))
+    ok, reason, detail = resolve_analysis_validity(
+        data,
+        cube_sha256=file_sha256(run_folder / "cube.csv.gz"),
+        scan_sha256=file_sha256(run_folder / "scan.json"),
+        run_id=store.run_id,
+        stream_sha256=collect_stream_sha256(run_folder),
+    )
+    if ok:
+        seal_ok, seal_detail = verify_store_seal(store)
+        if not seal_ok:
+            ok, detail = False, seal_detail
+    if not ok:
+        raise AnalysisIdentityConflict(
+            f"analysis {analysis_id} cannot be reported for run {store.run_id}: "
+            f"{reason.value}: {detail}"
+        )
     lines = [
         f"# Derived analysis `{analysis_id}`",
         "",
@@ -391,5 +441,4 @@ def report_derived(
     out = matches[0].parent / "report.md"
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     _ = content_hash  # keep import used for future stamping
-    _ = run_folder
     return out

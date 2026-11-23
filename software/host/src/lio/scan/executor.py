@@ -394,8 +394,17 @@ class ScanExecutor:
             self.store.answer(key, ok)
             if not ok:
                 raise ScanAbort(f"preflight: operator answered no to {prompt!r}")
-        if self.capabilities["mains_rejection"]:
-            dev.adc_mains(self.s.mains_hz)
+        # Core ADC profile on start AND resume (A18): gain 1 read back, mains
+        # applied and read back. Refused before any light otherwise.
+        from lio.scan.provenance import CorePreflightError, core_adc_preflight
+
+        try:
+            facts = core_adc_preflight(
+                dev, mains_hz=self.s.mains_hz if self.capabilities["mains_rejection"] else 0
+            )
+        except CorePreflightError as e:
+            raise ScanAbort(f"preflight: {e}") from e
+        self.store.meta.setdefault("adc_preflight", []).append({"resume": resume, **facts})
         self.store.meta["capabilities"] = self.capabilities
         self.store.meta["skipped_checks"] = {
             k: reason

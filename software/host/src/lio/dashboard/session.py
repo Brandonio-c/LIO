@@ -1480,6 +1480,8 @@ class Session:
 
     def protocol_answer_checkpoint(self, occurrence_id: str, confirmed: bool) -> dict[str, Any]:
         """Fresh linked answer for one protocol checkpoint occurrence (D13/D19)."""
+        if not isinstance(confirmed, bool):
+            raise Refused("confirmed must be a boolean")
         job = self.protocol_job
         if job is None or not job.alive:
             raise Refused("no protocol job awaiting a checkpoint")

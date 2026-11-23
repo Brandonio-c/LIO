@@ -81,6 +81,22 @@ def _meta_from_folder(folder: Path) -> dict[str, Any]:
         return {}
 
 
+def _snapshot_quantity_facts(snap: Any) -> dict[str, str | None]:
+    if not isinstance(snap, dict):
+        return {"rf_state": None, "assembly_key": None, "input_range_ingaas": None}
+    rf = (snap.get("rf") or {}).get("ingaas")
+    rf_state = None
+    if isinstance(rf, dict) and rf.get("state") not in (None, "", "unknown"):
+        rf_state = f"{rf.get('state')}:{rf.get('value_ohm')}"
+    assembly = snap.get("assembly") or {}
+    assembly_key = None
+    if isinstance(assembly, dict) and assembly:
+        assembly_key = json.dumps(assembly, sort_keys=True, separators=(",", ":"))
+    rng = (snap.get("input_range") or {}).get("ingaas")
+    input_range = None if rng in (None, "") else str(rng)
+    return {"rf_state": rf_state, "assembly_key": assembly_key, "input_range_ingaas": input_range}
+
+
 def candidate_from_run_folder(
     folder: Path | str,
     *,
@@ -113,6 +129,9 @@ def candidate_from_run_folder(
         geometry_key=geom,
         reference_protocol=str((meta.get("protocol") or {}).get("id") or "") or None,
         incomplete=incomplete,
+        # A19 / CE11: carry the frozen Rf / assembly / A0 facts through; a missing
+        # fact stays None (and refuses quantitative reuse), never a default.
+        **_snapshot_quantity_facts(snap),
         notes=tuple(
             n
             for n in (

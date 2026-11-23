@@ -11,6 +11,7 @@ import contextlib
 import json
 import math
 import time
+import uuid
 from collections.abc import Callable
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -21,10 +22,12 @@ from lio.scan.calibration import resolve_calibration
 from lio.scan.provenance import (
     AcquisitionSnapshot,
     AdcProvenance,
+    CorePreflightError,
     RfProvenance,
     build_acquisition_snapshot,
+    compute_store_seal,
     content_hash,
-    seal_terminal_source,
+    core_adc_preflight,
 )
 from lio.scan.store import ScanStore
 
@@ -727,17 +730,13 @@ def _finalize_protocol(
     observations: list[dict[str, Any]],
 ) -> None:
     """Durable terminal status: never silently promote incomplete → complete."""
-    raw_bytes = b""
-    if store.cube_path.exists():
-        raw_bytes = store.cube_path.read_bytes()
-    seal = seal_terminal_source(
-        snap,
-        raw_bytes=raw_bytes,
-        terminal_meta={"status": status, "cancel_reason": cancel_reason},
-        revision="complete" if status == "COMPLETE" else "partial",
-        status=status,
-    )
+    # Seal cube + streams + their interpretation mapping (D10 / A11).
+    store.meta.setdefault("acquisition_snapshot", snap.to_dict())
+    seal = compute_store_seal(store, status=status, cancel_reason=cancel_reason)
+    if seal is None:  # pragma: no cover - snapshot set just above
+        raise RuntimeError("terminal seal could not be computed")
     store.meta["terminal_source_seal"] = seal.to_dict()
+    store.meta["terminal_source_seal_inputs"] = {"status": status, "cancel_reason": cancel_reason}
     store.meta["observations"] = observations
     # Duty journal charges are retained by the ownership journal independently;
     # never clear them here on cancel.
@@ -754,6 +753,70 @@ def _finalize_protocol(
         store.meta["status"] = "INCOMPLETE"
         store.meta["unresolved"] = True
         store.save_meta()
+
+
+class RunClock:
+    """Persistent elapsed time for a run's wall/cycle limits (D14 / D15 / A17).
+
+    Elapsed time accumulates while measuring, paused, prompting AND between a
+    stop and a resume (downtime counted by the wall clock). Monotonic time going
+    backwards, or a resume whose wall clock went backwards across an unknown
+    boot, grants no time: the run expires with ``clock_discontinuity``.
+    """
+
+    def __init__(
+        self,
+        exposure: dict[str, Any],
+        *,
+        mono: Callable[[], float],
+        wall: Callable[[], float],
+    ) -> None:
+        from lio.ownership import UNKNOWN_BOOT, _boot_id
+
+        self.e = exposure
+        self.mono = mono
+        self.wall = wall
+        self.boot = _boot_id()
+        self.expired_reason: str | None = None
+        now_m, now_w = mono(), wall()
+        elapsed = float(exposure.get("elapsed_s") or 0.0)
+        last_m, last_w = exposure.get("last_mono"), exposure.get("last_wall")
+        if last_w is not None:
+            exposure["deadlines_retained"] = True
+            prev_m = None if last_m is None else float(last_m)
+            same_frame = (
+                exposure.get("clock_boot") == self.boot
+                and self.boot != UNKNOWN_BOOT
+                and prev_m is not None
+                and now_m >= prev_m
+            )
+            if same_frame and prev_m is not None:
+                elapsed += now_m - prev_m
+            else:
+                downtime = now_w - float(last_w)
+                if downtime < 0:
+                    self.expired_reason = "clock_discontinuity"
+                else:
+                    elapsed += downtime
+        self.elapsed = elapsed
+        self.last_m = now_m
+        self.save()
+
+    def tick(self) -> None:
+        now = self.mono()
+        if now < self.last_m:
+            self.expired_reason = "clock_discontinuity"
+            return
+        self.elapsed += now - self.last_m
+        self.last_m = now
+
+    def save(self) -> None:
+        self.e.update(
+            elapsed_s=self.elapsed,
+            last_mono=self.last_m,
+            last_wall=self.wall(),
+            clock_boot=self.boot,
+        )
 
 
 def run_protocol(
@@ -774,6 +837,8 @@ def run_protocol(
     start_step: int = 0,
     control: Any | None = None,
     on_progress: Callable[[dict[str, Any]], None] | None = None,
+    clock: Callable[[], float] | None = None,
+    wall_clock: Callable[[], float] | None = None,
 ) -> AcquisitionResult:
     """Execute a stationary protocol through typed MEAS only.
 
@@ -838,6 +903,7 @@ def run_protocol(
                 "deadlines_retained": False,
             },
         }
+        meta["schedule_sha256"] = content_hash(plan.to_dict()["steps"])
         store = ScanStore.create(root, "protocol", meta)
     else:
         raw = store.meta.get("acquisition_snapshot")
@@ -854,8 +920,6 @@ def run_protocol(
     cal = resolve_calibration(gain=APPROVED_FIXED_GAIN, cfg=cfg, detector="ingaas")
     status = "COMPLETE"
     cancel_reason = None
-    t0 = time.monotonic()
-    cycle_t0 = t0
     max_wall = float(plan.protocol.budgets["max_wall_s"])
     max_cycle = float(plan.protocol.budgets.get("max_cycle_s") or 0)
     max_total_on = float(plan.protocol.budgets["max_total_on_ms"])
@@ -868,34 +932,34 @@ def run_protocol(
             "max_total_on_ms": max_total_on,
             "max_cycle_s": max_cycle,
             "max_wall_s": max_wall,
-            "wall_deadline_mono": None,
-            "cycle_deadline_mono": None,
-            "deadlines_retained": False,
         }
     )
-    # CE09: retain spent costs and original deadlines across resume — never reset
-    # actual_ms to zero or invent fresh wall/cycle deadlines when ones exist.
+    # CE09 / D15: spent costs persist across resume and are never reset.
     actual_on_ms = float(exposure.get("actual_ms") or 0.0)
-    if exposure.get("wall_deadline_mono") is None:
-        exposure["wall_deadline_mono"] = t0 + max_wall
-    else:
-        exposure["deadlines_retained"] = True
-        # Keep original wall deadline; do not restart the clock.
-        t0 = float(exposure["wall_deadline_mono"]) - max_wall
-    if max_cycle > 0:
-        if exposure.get("cycle_deadline_mono") is None:
-            exposure["cycle_deadline_mono"] = cycle_t0 + max_cycle
-        else:
-            exposure["deadlines_retained"] = True
-            cycle_t0 = float(exposure["cycle_deadline_mono"]) - max_cycle
-    exposure["actual_ms"] = actual_on_ms
+    run_clock = RunClock(exposure, mono=clock or time.monotonic, wall=wall_clock or time.time)
+    t0 = run_clock.mono()  # this process's start (for row timestamps only)
     store.meta["exposure_budget"] = dict(exposure)
     store.save_meta()
 
     def _persist_exposure() -> None:
         exposure["actual_ms"] = actual_on_ms
+        run_clock.save()
         store.meta["exposure_budget"] = dict(exposure)
         store.save_meta()
+
+    def _budget_stop(next_on: float) -> str | None:
+        """Re-check every persistent limit for the NEXT operation (after any wait)."""
+        run_clock.tick()
+        if run_clock.expired_reason:
+            return run_clock.expired_reason
+        dur_s = next_on / 1000.0
+        if run_clock.elapsed + dur_s > max_wall:
+            return "max_wall_s"
+        if max_cycle > 0 and run_clock.elapsed + dur_s > max_cycle:
+            return "max_cycle_s"
+        if float(exposure.get("reserved_ms") or 0.0) + next_on > max_total_on + 1e-9:
+            return "max_total_on_ms"
+        return None
 
     def _progress(step: PlannedStep | None, state: str) -> None:
         if on_progress is None and control is None:
@@ -927,6 +991,9 @@ def run_protocol(
                 return "cancelled"
             if control is not None and getattr(control, "abort_reason", None):
                 return str(control.abort_reason)
+            expired = _budget_stop(0.0)  # a pause still spends the run's time
+            if expired:
+                return expired
             pause = False
             if control is not None:
                 pause = bool(getattr(control, "pause_requested", False))
@@ -1004,33 +1071,30 @@ def run_protocol(
                     cancel_reason=cancel_reason,
                 )
 
+    # A18: core ADC profile verified on START and RESUME before any light.
+    core_facts: dict[str, Any] = {}
+    if device is not None and meas is None:
+        mains_req = int(cfg.section.integer("scan.mains_hz"))
+        try:
+            core_facts = core_adc_preflight(device, mains_hz=mains_req)
+        except CorePreflightError as e:
+            store.abort(f"preflight:{e}")
+            raise ProtocolError(f"preflight refused: {e}") from e
+        store.meta.setdefault("adc_preflight", []).append({"resume": start_step > 0, **core_facts})
+        snap_adc = (store.meta.get("acquisition_snapshot") or {}).get("adc")
+        if isinstance(snap_adc, dict) and start_step == 0:
+            snap_adc["mains_hz"] = float(core_facts["mains_hz"])
+            snap_adc["effective_mode"] = "mains" if core_facts["mains_hz"] else "ordinary"
+        store.save_meta()
+
     def _meas(hole: int, settle: int, n: int) -> dict[str, Any]:
         if meas is not None:
             return meas(hole, settle, n)
         if device is None:
             raise ProtocolError("no meas callback or device")
-        from lio.scan.provenance import read_info_gain
-
-        info = device.info(refresh=True)
-        gain_read = read_info_gain(info)
-        if gain_read is None or str(gain_read) not in (APPROVED_FIXED_GAIN, "1", "GAIN_ONE"):
-            raise ProtocolError(
-                f"device gain readback {gain_read!r} ≠ approved {APPROVED_FIXED_GAIN} "
-                "(missing/unexpected gain on non-M7 protocol; missing ≠ 1)"
-            )
-        requested_mains = 60
-        if getattr(device, "mains_hz", 0) != requested_mains:
-            device.adc_mains(requested_mains)
-            info = device.info(refresh=True)
-            got = int(info.values.get("mains", getattr(device, "mains_hz", 0)))
-            if got != requested_mains:
-                raise ProtocolError(f"mains readback {got} ≠ requested {requested_mains}")
-            snap_adc = store.meta.get("acquisition_snapshot", {}).get("adc")
-            if isinstance(snap_adc, dict):
-                snap_adc["mains_hz"] = float(got)
-                snap_adc["effective_mode"] = "mains"
-                store.meta["acquisition_snapshot"]["adc"] = snap_adc
-                store.save_meta()
+        if getattr(device, "mains_hz", 0) != core_facts.get("mains_hz"):
+            # The ADC profile changed under us (reset/reboot): never measure on it.
+            raise ProtocolError("ADC mains state changed since preflight; refusing MEAS")
         m = device.meas(hole, settle_ms=settle, n=n)
         out: dict[str, Any] = {"hole": hole, "t_on_ms": m.t_on_ms}
         for det in plan.protocol.detectors:
@@ -1042,6 +1106,15 @@ def run_protocol(
                 out[f"net_{det}"] = None
         return out
 
+    # The stationary position is unknown (no height): one instance per run, kept
+    # across resume, never comparable to another run's unknown position.
+    position_instance_id = str(
+        store.meta.get("position_instance_id") or f"{store.run_id}:pos:{uuid.uuid4().hex[:12]}"
+    )
+    if store.meta.get("position_instance_id") != position_instance_id:
+        store.meta["position_instance_id"] = position_instance_id
+        store.save_meta()
+
     try:
         # Index loop so D16 can extend plan.steps after measured pilot freeze.
         step_i = start_step
@@ -1052,20 +1125,11 @@ def run_protocol(
                 status = "INCOMPLETE"
                 cancel_reason = reason
                 break
-            if time.monotonic() - t0 > max_wall:
-                status = "INCOMPLETE"
-                cancel_reason = "max_wall_s"
-                break
-            if max_cycle > 0 and time.monotonic() - cycle_t0 > max_cycle:
-                status = "INCOMPLETE"
-                cancel_reason = "max_cycle_s"
-                break
-
-            # D15: refuse next MEAS if cumulative actual exposure would exceed cap.
             next_on = float(step.estimated_on_ms)
-            if actual_on_ms + next_on > max_total_on + 1e-9:
+            reason = _budget_stop(next_on)
+            if reason:
                 status = "INCOMPLETE"
-                cancel_reason = "max_total_on_ms"
+                cancel_reason = reason
                 break
 
             if step.optical_block or step.checkpoint:
@@ -1083,14 +1147,51 @@ def run_protocol(
                     cancel_reason = reason
                     break
 
+            # A17: prompts/pauses take time - re-check every limit right before MEAS.
+            reason = _budget_stop(next_on)
+            if reason:
+                status = "INCOMPLETE"
+                cancel_reason = reason
+                break
+            # A14 / D15: the permanent run cost is reserved and persisted BEFORE the
+            # MEAS is sent; a timeout after transmission keeps it (and counts as
+            # uncertain at the device's conservative charge).
+            exposure["reserved_ms"] = float(exposure.get("reserved_ms") or 0.0) + next_on
+            _persist_exposure()
             _progress(step, "measuring")
-            raw = _meas(step.hole, step.settle_ms, step.mains_periods)
+            try:
+                raw = _meas(step.hole, step.settle_ms, step.mains_periods)
+            except Exception:
+                charge = float(getattr(device, "last_charge_ms", 0.0) or 0.0)
+                exposure["reserved_ms"] = float(exposure["reserved_ms"]) + max(
+                    0.0, charge - next_on
+                )
+                exposure["uncertain_ms"] = float(exposure.get("uncertain_ms") or 0.0) + max(
+                    next_on, charge
+                )
+                _persist_exposure()
+                raise
+            charge = float(getattr(device, "last_charge_ms", 0.0) or 0.0)
+            if charge > next_on:
+                exposure["reserved_ms"] = float(exposure["reserved_ms"]) + (charge - next_on)
             reported = float(raw.get("t_on_ms") or next_on)
             actual_on_ms += reported
-            exposure["reserved_ms"] = float(exposure.get("reserved_ms") or 0.0) + next_on
             _persist_exposure()
 
             rows = []
+            # One firmware MEAS = one operation/reading shared by both detector
+            # rows; a reacquisition after resume gets fresh ids (D12 / D16).
+            op_id = f"{store.run_id}:op:{uuid.uuid4().hex[:12]}"
+            ident = {
+                "operation_id": op_id,
+                "reading_id": op_id,
+                "block_id": f"{step.phase}:{step.condition_id}:h{step.hole}:b{step.block}",
+                "attempt_id": f"s{step.index}:{op_id.rsplit(':', 1)[-1]}",
+                "condition_id": step.condition_id,
+                "setting_id": f"settle{step.settle_ms}:n{step.mains_periods}",
+                "segment": "stationary",
+                "position_instance_id": position_instance_id,
+            }
             for det in plan.protocol.detectors:
                 dark = raw.get(f"dark_{det}")
                 lit = raw.get(f"lit_{det}")
@@ -1113,10 +1214,11 @@ def run_protocol(
                     "lit_counts": lit,
                     "net_counts": net,
                     "net_mv": None if mv is None else round(mv, 4),
-                    "t_s": round(time.monotonic() - t0, 3),
+                    "t_s": round(run_clock.mono() - t0, 3),
                     "duty_wait_ms": 0,
                     "settle_ms": step.settle_ms,
                     "n": step.mains_periods,
+                    **ident,
                 }
                 rows.append(row)
                 observations.append(
@@ -1132,7 +1234,7 @@ def run_protocol(
             _progress(step, "measured")
 
             # Hard stop if reported exposure crossed the cap (D15) — do not continue.
-            if actual_on_ms > max_total_on + 1e-9:
+            if max(actual_on_ms, float(exposure["reserved_ms"])) > max_total_on + 1e-9:
                 status = "INCOMPLETE"
                 cancel_reason = "max_total_on_ms"
                 break
@@ -1170,6 +1272,7 @@ def run_protocol(
                     plan.steps = list(plan.steps[: step_i + 1]) + prod_steps
                     plan.allocation_detail = frozen
                     store.meta["protocol_plan"] = plan.to_dict()
+                    store.meta["schedule_sha256"] = content_hash(plan.to_dict()["steps"])
                     store.meta["production_freeze"] = freeze
                     store.save_meta()
 
@@ -1211,6 +1314,8 @@ def resume_protocol(
     control: Any | None = None,
     on_progress: Callable[[dict[str, Any]], None] | None = None,
     protocol_override: dict[str, Any] | Path | str | None = None,
+    clock: Callable[[], float] | None = None,
+    wall_clock: Callable[[], float] | None = None,
 ) -> AcquisitionResult:
     """Resume an INCOMPLETE protocol run from a completed-block boundary (D15).
 
@@ -1240,23 +1345,44 @@ def resume_protocol(
     ):
         raise ProtocolError("resume refuses changed config_sha256 / calibration facts")
     frozen_hash = store.meta.get("protocol_hash")
-    live_hash = (
-        content_hash(frozen_proto) if not hasattr(type(frozen_proto), "protocol_hash") else None
-    )
-    # Recompute from frozen body.
     plan = plan_protocol(frozen_proto, cfg)
     if frozen_hash and plan.protocol.protocol_hash() != frozen_hash:
         raise ProtocolError("resume refuses changed protocol hash")
-    if proto_plan.get("allocation_detail"):
-        plan.allocation_detail = dict(proto_plan["allocation_detail"])
-        # Prefer frozen step list so production freeze is not recomputed.
-        if proto_plan.get("steps"):
-            plan.steps = [
-                PlannedStep(**{k: s[k] for k in PlannedStep.__dataclass_fields__ if k in s})
-                for s in proto_plan["steps"]
-            ]
+    # D16 / A15: execute the EXACT frozen, ordered schedule - never a re-plan.
+    frozen_steps = proto_plan.get("steps")
+    if not frozen_steps:
+        raise ProtocolError("resume refuses a run without its frozen step schedule")
+    want = store.meta.get("schedule_sha256")
+    if want and content_hash(frozen_steps) != want:
+        raise ProtocolError("resume refuses: frozen schedule changed since it was recorded")
+    plan.allocation_detail = dict(proto_plan.get("allocation_detail") or plan.allocation_detail)
+    plan.steps = [
+        PlannedStep(**{k: s[k] for k in PlannedStep.__dataclass_fields__ if k in s})
+        for s in frozen_steps
+    ]
 
     start = int(store.meta.get("completed_step", -1)) + 1
+    # Validate the durable records against the frozen schedule: exactly steps
+    # 0..completed_step, each with the scheduled hole/phase, nothing else.
+    done: dict[int, set[tuple[int, str]]] = {}
+    for r in store.rows():
+        try:
+            idx = int(r["step"])
+            done.setdefault(idx, set()).add((int(r["hole"]), str(r.get("phase") or "")))
+        except (KeyError, TypeError, ValueError) as e:
+            raise ProtocolError(f"resume refuses an unreadable durable record: {e}") from e
+    if sorted(done) != list(range(start)):
+        raise ProtocolError(
+            f"resume refuses: durable records cover steps {sorted(done)} but the run claims "
+            f"0..{start - 1} complete"
+        )
+    for idx, seen in done.items():
+        st = plan.steps[idx] if idx < len(plan.steps) else None
+        if st is None or seen != {(st.hole, st.phase)}:
+            raise ProtocolError(
+                f"resume refuses: durable record for step {idx} {sorted(seen)} does not match "
+                "the frozen schedule"
+            )
     # Completed-block boundary: if the next step continues a partial condition
     # pair (same block, later condition) after interruption mid-block, reject.
     if start > 0 and start < len(plan.steps):
@@ -1280,7 +1406,6 @@ def resume_protocol(
                     "acquire a whole new block with a new id"
                 )
 
-    _ = live_hash  # reserved for stricter identity checks
     return run_protocol(
         plan,
         cfg=cfg,
@@ -1300,6 +1425,8 @@ def resume_protocol(
         start_step=start,
         control=control,
         on_progress=on_progress,
+        clock=clock,
+        wall_clock=wall_clock,
     )
 
 

@@ -896,10 +896,23 @@ def _scan_protocol_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
         aid = getattr(args, "analysis", None) or getattr(args, "analysis_id", None)
         if not aid:
             raise CliError("--analysis ANALYSIS_ID required with --derived-out")
-        path = report_derived(folder, analysis_id=str(aid), derived_out=derived)
+        try:
+            path = report_derived(folder, analysis_id=str(aid), derived_out=derived)
+        except FileNotFoundError as e:
+            raise CliError(str(e)) from e
         print(f"report -> {path}")
         return 0
     raise CliError(f"unsupported offline scan command {args.scan_command}")
+
+
+def _refuse_legacy_rewrite(folder: Path, names: tuple[str, ...], args: argparse.Namespace) -> None:
+    existing = [n for n in names if (folder / n).exists()]
+    if existing and not getattr(args, "rewrite_legacy", False):
+        raise CliError(
+            f"{folder} already has {', '.join(existing)}: historical products are not "
+            "rewritten. Use --derived-out DIR for a versioned product outside the run, or "
+            "--rewrite-legacy to migrate explicitly."
+        )
 
 
 def _scan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
@@ -915,7 +928,9 @@ def _scan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
         return data
 
     if args.scan_command == "analyse":
-        # Optional derived-out path handled earlier; legacy writes analysis.json in-run.
+        # Legacy in-run write: only a MISSING analysis.json is created. Rewriting
+        # an existing historical product needs the explicit migration flag (D09).
+        _refuse_legacy_rewrite(Path(args.folder), ("analysis.json",), args)
         ref = Path(args.reference) if getattr(args, "reference", None) else None
         a = analyse(Path(args.folder), cfg, ref, None if args.no_baselines else root)
         print(a.summary())
@@ -924,6 +939,7 @@ def _scan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
     if args.scan_command == "report":
         from lio.scan import report as scan_report
 
+        _refuse_legacy_rewrite(Path(args.folder), ("report.html", "report.md"), args)
         ref = Path(args.reference) if getattr(args, "reference", None) else None
         written = scan_report.write(Path(args.folder), cfg, reference=ref,
                                     baselines_root=None if args.no_baselines else root)  # fmt: skip
@@ -1133,6 +1149,9 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--model", choices=["legacy", "qualified-v2"], default=None,
                    help="with --derived-out: write versioned product there")  # fmt: skip
     c.add_argument("--derived-out", help="derived analysis root (offline; leaves run folder raw)")
+    c.add_argument("--rewrite-legacy", action="store_true",
+                   help="explicitly overwrite an existing in-run analysis.json (legacy "
+                   "migration); without it an existing product is never rewritten")  # fmt: skip
     c.set_defaults(fn=cmd_scan)
     c = scsub.add_parser("report", help="write report.html / report.md with plots")
     c.add_argument("folder", help="the run folder")
@@ -1141,6 +1160,8 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--out", help="results root holding scan_baselines/ (default test_results/)")
     c.add_argument("--analysis", help="derived analysis_id (with --derived-out)")
     c.add_argument("--derived-out", help="derived analysis root for --analysis report")
+    c.add_argument("--rewrite-legacy", action="store_true",
+                   help="explicitly overwrite an existing in-run report")  # fmt: skip
     c.set_defaults(fn=cmd_scan)
     c = scsub.add_parser("baseline", help="save a run as a baseline, or list baselines")
     c.add_argument("action", choices=["save", "list"])

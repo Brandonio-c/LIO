@@ -210,13 +210,13 @@ def _assert_gain_matches_snapshot(dev: LIODevice, store: ScanStore) -> None:
     expected_norm = "1" if expected in ("1", "GAIN_ONE", "1.0") else expected
     live = None if gain is None else str(gain)
     live_norm = "1" if live in ("1", "GAIN_ONE", "1.0") else live
-    if live_norm is None or live_norm != expected_norm:
+    # A18 / D06: the core height acquisition is gain 1 on start AND resume. A gain-2
+    # device matching a gain-2 snapshot is still refused (M7 stays isolated).
+    if live_norm != "1" or expected_norm != "1":
         raise PlanError(
-            f"resume/start preflight: device gain {live!r} ≠ snapshot gain {expected!r}; "
-            "reject before light"
+            f"resume/start preflight: core acquisition requires ADC gain 1 (device {live!r}, "
+            f"snapshot {expected!r}); reject before light"
         )
-    if live_norm not in ("1",) and expected_norm == "1":
-        raise PlanError(f"unexpected device gain {live!r}: core height acquisition requires gain=1")
 
 
 def resume(

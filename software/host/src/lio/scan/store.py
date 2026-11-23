@@ -25,11 +25,23 @@ from typing import Any
 
 import numpy as np
 
-CUBE_FIELDS = (
+LEGACY_CUBE_FIELDS = (
     "run_id", "step", "phase", "height_hs", "height_mm", "direction", "rep", "hole", "state",
     "detector", "dark_counts", "lit_counts", "net_counts", "net_mv", "t_s", "duty_wait_ms",
     "settle_ms", "n",
 )  # fmt: skip
+
+# Authoritative per-reading identities (D12 / A06). Both detector rows from one
+# firmware MEAS share ``operation_id``/``reading_id``; technical repeats share a
+# ``block_id``; a reacquired reading gets a fresh ``attempt_id``. An unknown
+# stationary position is ``position_instance_id`` (shared within a run, never
+# equal across runs) with empty height: never NaN geometry or an invented zero.
+IDENTITY_FIELDS = (
+    "operation_id", "reading_id", "block_id", "attempt_id", "condition_id", "setting_id",
+    "segment", "position_instance_id",
+)  # fmt: skip
+
+CUBE_FIELDS = LEGACY_CUBE_FIELDS + IDENTITY_FIELDS
 
 # Reading states (plan §4.1); "coils_moving" stands in for "coils_on" on firmware
 # without a hold-coils command (S0 deviation D2).
@@ -129,19 +141,41 @@ class ScanStore:
     def append_rows(self, rows: Iterable[dict[str, Any]], *, completed_step: int) -> None:
         """Append one completed step's readings and move the resume index on."""
         buf = io.StringIO()
-        w = csv.DictWriter(buf, fieldnames=CUBE_FIELDS, extrasaction="ignore")
         new = not self.cube_path.exists()
+        # Keep the existing file's columns on append (a resumed historical run
+        # keeps its schema); new cubes get the full identity schema.
+        fields = CUBE_FIELDS if new else self.cube_fields()
+        rows = list(rows)
+        if not new:
+            lost = {
+                k for r in rows for k in IDENTITY_FIELDS
+                if k not in fields and r.get(k) not in (None, "")
+            }  # fmt: skip
+            if lost:
+                raise ValueError(
+                    f"{self.cube_path} has no columns for {sorted(lost)}: refusing to drop "
+                    "reading identities silently"
+                )
+        w = csv.DictWriter(buf, fieldnames=fields, extrasaction="ignore")
         if new:
             w.writeheader()
         n = 0
         for r in rows:
-            w.writerow({k: ("" if r.get(k) is None else r.get(k)) for k in CUBE_FIELDS})
+            w.writerow({k: ("" if r.get(k) is None else r.get(k)) for k in fields})
             n += 1
         with gzip.open(self.cube_path, "at", encoding="utf-8", newline="") as f:
             f.write(buf.getvalue())
         self.meta["completed_step"] = completed_step
         self.meta["rows"] = int(self.meta.get("rows", 0)) + n
         self.save_meta()
+
+    def cube_fields(self) -> tuple[str, ...]:
+        """Columns of the cube as written (legacy runs lack the identity columns)."""
+        if not self.cube_path.exists():
+            return CUBE_FIELDS
+        with gzip.open(self.cube_path, "rt", encoding="utf-8", newline="") as f:
+            header = next(csv.reader(f), None)
+        return tuple(header) if header else CUBE_FIELDS
 
     def rows(self) -> Iterator[dict[str, str]]:
         if not self.cube_path.exists():

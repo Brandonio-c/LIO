@@ -17,7 +17,7 @@ from __future__ import annotations
 import contextlib
 from dataclasses import dataclass
 
-from lio.device import DeviceError
+from lio.device import DeviceError, LIODevice
 from lio.ownership import OwnershipError
 from lio.protocol import ErrCode, Event, Fields
 from lio.results import Status
@@ -95,6 +95,20 @@ def _working_hole(ctx: SuiteContext, preferred: int) -> tuple[int, str] | None:
     return None
 
 
+def _post_emission_fail(dev: LIODevice, rec: Recorder, sub: str, name: str, e: Exception) -> None:
+    """A pulse was transmitted and then something failed: FAIL, not SKIP (A13)."""
+    rec.add(
+        sub,
+        name,
+        Status.FAIL,
+        f"failure after the pulse was transmitted: {type(e).__name__}: {e}; worst-case "
+        "charge retained, no further emission in this test",
+        "pulse, OFF and STATUS all verified",
+    )
+    with contextlib.suppress(Exception):
+        dev.safe_off()
+
+
 @register("T10.2", "On-time watchdog")
 def t10_2(ctx: SuiteContext, rec: Recorder) -> None:
     ctx.require_adc()
@@ -119,20 +133,27 @@ def t10_2(ctx: SuiteContext, rec: Recorder) -> None:
         # Restore configured default after channel probes may have lowered WDT.
         dev.wdt_cfg(rail, default)
         # Clamp + observe pulses must be admitted. RAIL A default WDT (2000 ms)
-        # exceeds the 1000 ms/min duty budget: SKIP rather than unguarded bypass.
+        # exceeds the 1000 ms/min duty budget: a refusal BEFORE transmission is an
+        # unsupported SKIP. A failure after the pulse was sent (OFF/status/ACK) is
+        # a FAIL: charge retained, no further emission in this test (A13 / D04).
+        sends = dev.light_sends
         try:
             reply = dev.command(f"CH {hole} ON {ask_ms}")
             dev.off()
         except Exception as e:
-            rec.add(
-                f"{pre}/clamp",
-                f"RAIL {rail} watchdog clamp pulse",
-                Status.SKIP,
-                f"unsupported under approved budgets/capability: {e}",
-            )
-            with contextlib.suppress(Exception):
-                dev.wdt_cfg(rail, default)
-            continue
+            if dev.light_sends == sends:
+                rec.add(
+                    f"{pre}/clamp",
+                    f"RAIL {rail} watchdog clamp pulse",
+                    Status.SKIP,
+                    f"refused before transmission (unsupported under approved "
+                    f"budgets/capability): {e}",
+                )
+                with contextlib.suppress(Exception):
+                    dev.wdt_cfg(rail, default)
+                continue
+            _post_emission_fail(dev, rec, f"{pre}/clamp", f"RAIL {rail} watchdog clamp pulse", e)
+            return
         until, clamped = reply.fields.as_int("until_ms"), reply.fields.as_int("clamped")
         rec.check(
             f"{pre}/clamp",
@@ -144,18 +165,23 @@ def t10_2(ctx: SuiteContext, rec: Recorder) -> None:
         # Observe cut-off under deliberate sub-default WDT.
         dev.wdt_cfg(rail, test_ms)
         n_ev = len(dev.events)
+        sends = dev.light_sends
         try:
             until = int(dev.ch_on(hole, ask_ms))
         except Exception as e:
-            rec.add(
-                f"{pre}/pulse",
-                f"RAIL {rail} watchdog observe pulse",
-                Status.SKIP,
-                f"unsupported under approved budgets/capability: {e}",
-            )
-            with contextlib.suppress(Exception):
-                dev.wdt_cfg(rail, default)
-            continue
+            if dev.light_sends == sends:
+                rec.add(
+                    f"{pre}/pulse",
+                    f"RAIL {rail} watchdog observe pulse",
+                    Status.SKIP,
+                    f"refused before transmission (unsupported under approved "
+                    f"budgets/capability): {e}",
+                )
+                with contextlib.suppress(Exception):
+                    dev.wdt_cfg(rail, default)
+                continue
+            _post_emission_fail(dev, rec, f"{pre}/pulse", f"RAIL {rail} watchdog observe pulse", e)
+            return
         t_on = dev.now()  # the CH reply: the LED has been on for about one round trip
         adc = ctx.adc_channel(det)
         seen_lit = False

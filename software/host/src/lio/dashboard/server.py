@@ -608,12 +608,13 @@ class _Handler(BaseHTTPRequestHandler):
             elif path == "/api/scan/beat":
                 return self._json(s.scan_beat())
             elif path == "/api/scan/protocol/answer":
-                return self._json(
-                    s.protocol_answer_checkpoint(
-                        str(b.get("occurrence_id") or ""),
-                        bool(b.get("confirmed")),
-                    )
-                )
+                # D13 / A16: the answer must be a real JSON Boolean for an issued
+                # occurrence. "false", 1, null or a missing field never confirm.
+                if not isinstance(b.get("occurrence_id"), str):
+                    raise Refused("occurrence_id must be a string")
+                if "confirmed" not in b or not isinstance(b.get("confirmed"), bool):
+                    raise Refused("confirmed must be a JSON boolean (true or false)")
+                return self._json(s.protocol_answer_checkpoint(b["occurrence_id"], b["confirmed"]))
             elif path == "/api/answer":
                 s.answer(int(b["id"]), b.get("value"), bool(b.get("abort")))
             elif path == "/api/measure":
