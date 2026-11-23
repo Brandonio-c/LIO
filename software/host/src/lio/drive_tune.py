@@ -87,7 +87,9 @@ def _judge_ma(ma: float, t: RailTune) -> str:
     return "A bit low — ease UP toward target"
 
 
-def _judge_opt(net: float, sat: float, *, last_ma: float | None = None, t: RailTune | None = None) -> str:
+def _judge_opt(
+    net: float, sat: float, *, last_ma: float | None = None, t: RailTune | None = None
+) -> str:
     """Optical coach. Never tells you to turn UP once ammeter says you're at/above target."""
     if last_ma is not None and t is not None:
         if last_ma > t.safe_max_ma:
@@ -111,7 +113,7 @@ def _judge_opt(net: float, sat: float, *, last_ma: float | None = None, t: RailT
 
 def _bar(net: float, sat: float, width: int = 28) -> str:
     frac = max(0.0, min(1.0, net / max(sat, 1.0)))
-    n = int(round(frac * width))
+    n = round(frac * width)
     return "#" * n + "-" * (width - n)
 
 
@@ -234,10 +236,18 @@ def run_tune(
                 break
             if cmd in ("ok", "accept", "save"):
                 if last_opt_net < 30:
-                    print("  REFUSED: OPT101 still dark — turn pot UP or check the LED", file=stdout, flush=True)
+                    print(
+                        "  REFUSED: OPT101 still dark — turn pot UP or check the LED",
+                        file=stdout,
+                        flush=True,
+                    )
                     continue
                 if last_opt_net >= sat * 0.90:
-                    print("  REFUSED: OPT101 saturating — turn pot DOWN first", file=stdout, flush=True)
+                    print(
+                        "  REFUSED: OPT101 saturating — turn pot DOWN first",
+                        file=stdout,
+                        flush=True,
+                    )
                     continue
                 if readings:
                     last_ma = float(readings[-1]["ma"])  # type: ignore[arg-type]
@@ -253,7 +263,9 @@ def run_tune(
                 accepted_opt = last_opt_net
                 print(
                     f"  accepted OPT101 net {accepted_opt:.0f}"
-                    + (f" · {accepted_ma:.1f} mA" if accepted_ma is not None else " (optical only)"),
+                    + (
+                        f" · {accepted_ma:.1f} mA" if accepted_ma is not None else " (optical only)"
+                    ),
                     file=stdout,
                     flush=True,
                 )
@@ -278,7 +290,11 @@ def run_tune(
             )
             print(f"  ammeter {ma:6.1f} mA  →  {j}", file=stdout, flush=True)
             if ma > t.safe_max_ma:
-                print("  *** TURN THE POT DOWN NOW — do not chase OPT101 with more mA ***", file=stdout, flush=True)
+                print(
+                    "  *** TURN THE POT DOWN NOW — do not chase OPT101 with more mA ***",
+                    file=stdout,
+                    flush=True,
+                )
             elif ma >= t.target_ma and last_opt_net < 150:
                 print(
                     "  Current is already on target but OPT is weak: LED/optics, not the pot.",

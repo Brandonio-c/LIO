@@ -12,8 +12,8 @@ from lio.scan.analysis.coupling import (
     estimate_coupling,
     leave_one_control_out,
     optical_amplitude,
-    primary_1850_feature_id,
     primary_1850_feature_holes,
+    primary_1850_feature_id,
     proxy_unassigned_feature_id,
 )
 from lio.scan.analysis.data import Cube
@@ -109,7 +109,7 @@ def test_h12_o_sensitivity_nov23(cfg) -> None:
     assert sens["C_full"] == pytest.approx(16.0)
     assert sens["exclude_h16"] == pytest.approx(10.0)
     # Use optics curve peak: saved O uses C=16 → ~12.3333; with C=10 → +6.
-    octx, findings = optics.analyse(cube, cfg, ectx_full, None)
+    _octx, findings = optics.analyse(cube, cfg, ectx_full, None)
     h12 = next(f for f in findings if f.id == "optics/ingaas/h12/response")
     assert h12.data["O"] == pytest.approx(12.3333, rel=0, abs=0.01)
     o_alt = float(h12.data["O"]) + (16.0 - 10.0)

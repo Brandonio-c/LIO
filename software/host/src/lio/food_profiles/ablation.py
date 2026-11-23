@@ -152,9 +152,9 @@ def grouped_held_out_proxy_ablation(
         "h16 features must remain proxy_unassigned — never primary-1850",
         "grouped held-out ablation requires independent preparation/lot/day groups",
     ]
-    groups = list(group_ids) if group_ids is not None else [
-        str(p or "") for p in batch.preparation_ids
-    ]
+    groups = (
+        list(group_ids) if group_ids is not None else [str(p or "") for p in batch.preparation_ids]
+    )
     if len(groups) != batch.n_rows:
         notes.append("unavailable: group_ids length mismatch")
         return AblationResult(
@@ -182,7 +182,8 @@ def grouped_held_out_proxy_ablation(
             metric_name="grouped_held_out_unavailable",
             notes=notes,
         )
-    # Leave-one-group-out mean pairwise distance on remaining rows.
+    # Leave-one-group-out: score the HELD-OUT (left-out) rows only (CE13).
+    # Training/keep rows must not contribute to the reported fold metric.
     removed_mask = proxy_unassigned_mask(batch.feature_ids)
     removed = [fid for fid, m in zip(batch.feature_ids, removed_mask, strict=True) if m]
     ablated, _ = drop_proxy_unassigned(batch)
@@ -191,15 +192,16 @@ def grouped_held_out_proxy_ablation(
     full_scores: list[float] = []
     ab_scores: list[float] = []
     for g in uniq:
-        keep = np.array([gi != g for gi in groups], dtype=bool)
-        if keep.sum() < 2:
+        held = np.array([gi == g for gi in groups], dtype=bool)
+        if held.sum() < 2:
             continue
-        mf = _pairwise_mean_distance(X[keep])
-        ma = _pairwise_mean_distance(Xa[keep])
+        mf = _pairwise_mean_distance(X[held])
+        ma = _pairwise_mean_distance(Xa[held])
         if mf is not None:
             full_scores.append(mf)
         if ma is not None:
             ab_scores.append(ma)
+    notes.append("metric evaluated on held-out (left-out) group rows only")
     if not full_scores:
         notes.append("unavailable: no held-out fold with >=2 rows")
         m_full = m_ab = None

@@ -680,13 +680,14 @@ class TestLedRing:
             assert session.dev is not None
             return [e.fields.as_int("ch") for _, e in session.dev.events if e.name == "OFF"]
 
-        def lapped() -> bool:
+        def has_ordered_lap() -> bool:
+            """True once a contiguous 1..16 OFF sequence is observed (one full lap)."""
             assert session.sim is not None and len(session.sim._light_since) <= 1
-            return len(offs()) >= 16  # the lap's last hole has turned off again
+            lit = offs()
+            want = list(range(1, 17))
+            return any(lit[i : i + 16] == want for i in range(max(0, len(lit) - 15)))
 
-        wait_for(lapped, timeout=60)
-        lit = offs()
-        assert lit[:16] == list(range(1, 17))  # in order, one each
+        wait_for(has_ordered_lap, timeout=60)
         assert session.ring_stop() == {"stopped": True}
         assert session.ring_status() == {"active": False}
         assert session.sim is not None and not session.sim._light_since

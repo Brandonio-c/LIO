@@ -630,10 +630,7 @@ class Session:
         if not 1 <= hole <= 16:
             raise Refused(f"hole must be 1-16, got {hole}")
         with self._lock:
-            holding = (
-                self._ring is not None
-                and self._ring.get("holes") == [hole]
-            )
+            holding = self._ring is not None and self._ring.get("holes") == [hole]
         if holding:
             self.ring_stop()
             self.log(f"hold hole {hole}: off")
@@ -819,9 +816,7 @@ class Session:
         if (lim.top if where == "top" else lim.bottom) is None:
             raise Refused(f"the {where} of the travel is not marked")
         speed = self.cfg.thresholds.integer("motion.travel.jog_speed")
-        out = self.jog_start(
-            "both", "up" if where == "top" else "down", speed, soft_limits=True
-        )
+        out = self.jog_start("both", "up" if where == "top" else "down", speed, soft_limits=True)
         with self._lock:
             if self._jog is not None:
                 self._jog["goto"] = where
@@ -1017,7 +1012,11 @@ class Session:
         with self._lock:
             if self._ring is not None:
                 self._ring.update(
-                    on_ms=on_ms, step_ms=step, min_step_ms=min_step, holes=holes, solid=solid,
+                    on_ms=on_ms,
+                    step_ms=step,
+                    min_step_ms=min_step,
+                    holes=holes,
+                    solid=solid,
                 )
                 kind = "solid hold" if solid else "LED ring"
                 self.log(f"{kind}: {on_ms} ms on, one hole every {step} ms, holes {holes}")
@@ -1027,6 +1026,22 @@ class Session:
                 "hole": 0, "state": "starting", "cooling_s": 0.0, "laps": 0, "solid": solid,
             }  # fmt: skip
             ring = self._ring
+        # Pre-align both rail WDTs before the first pulse so the first lap emits
+        # timer OFF (req < wdt) rather than racing mid-pulse WDT lowers.
+        if not solid and self.dev is not None:
+            need = max(50, int(on_ms) + 1)
+            if self._ring_wdt_restore is None:
+                info = self.dev.info()
+                self._ring_wdt_restore = {
+                    "A": info.as_int("wdt_a_ms"),
+                    "B": info.as_int("wdt_b_ms"),
+                }
+            with self._dev_lock:
+                for rail in ("A", "B"):
+                    with contextlib.suppress(Exception):
+                        cur = int(self.dev.info().as_int(f"wdt_{rail.lower()}_ms"))
+                        if cur != need:
+                            self.dev.wdt_cfg(rail, need)
         kind = "solid hold" if solid else "LED ring"
         self.log(f"{kind} started: {on_ms} ms on, renew/step every {step} ms, holes {holes}")
         self._ring_thread = threading.Thread(
@@ -1057,8 +1072,15 @@ class Session:
         if r is None:
             return {"active": False}
         keys = (
-            "on_ms", "step_ms", "min_step_ms", "holes", "hole", "state",
-            "cooling_s", "laps", "solid",
+            "on_ms",
+            "step_ms",
+            "min_step_ms",
+            "holes",
+            "hole",
+            "state",
+            "cooling_s",
+            "laps",
+            "solid",
         )
         return {"active": True, **{k: r[k] for k in keys if k in r}}
 
@@ -1495,7 +1517,7 @@ class Session:
             "analysis_writes": False,
         }
 
-    def protocol_plan_preview(self, protocol: str | dict[str, Any]) -> dict[str, Any]:
+    def protocol_plan_preview(self, protocol: str | Path | dict[str, Any]) -> dict[str, Any]:
         """Offline protocol preview (duration, exposure, unresolved). No device."""
         from lio.scan.acquisition import ProtocolError, plan_protocol
 
@@ -1507,8 +1529,7 @@ class Session:
         d["preview"] = {
             "duration_s": plan.predicted_duration_s,
             "exposure_on_ms": plan.predicted_on_ms,
-            "unresolved_calibration_notes": list(plan.assumptions)
-            + list(plan.unresolved),
+            "unresolved_calibration_notes": list(plan.assumptions) + list(plan.unresolved),
             "physical_prerequisites": list(plan.physical_prerequisites),
             "assumptions": list(plan.assumptions),
         }

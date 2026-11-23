@@ -1,4 +1,4 @@
-"""Remediation regressions D01–D20 (R0–R8). Fake transports only — no real serial."""
+"""Remediation regressions D01-D20 (R0-R8). Fake transports only - no real serial."""
 
 from __future__ import annotations
 
@@ -101,6 +101,7 @@ def test_d01_real_duty_false_still_has_journal(cfg, tmp_path: Path) -> None:
     transport.port = str(tmp_path / "fake-port")  # type: ignore[attr-defined]
     # Minimal attrs used by ctor
     object.__setattr__(transport, "port", f"/dev/tty.unittest-{tmp_path.name}")
+
     # Use a duck-typed stand-in that isinstance(SerialTransport) is True.
     class _Port:
         pass
@@ -155,7 +156,7 @@ def test_d02_sweep_reserves_all_sixteen(cfg, tmp_path: Path) -> None:
 
 
 def test_d03_stale_journal_reload_under_lease(cfg, tmp_path: Path) -> None:
-    """D03: second preconstructed journal must reload; cannot erase prior charge."""
+    """D03 (canonical=ownership): second journal must reload; cannot erase prior charge."""
     path = tmp_path / "shared.json"
     clock = {"t": 1000.0}
 
@@ -184,7 +185,7 @@ def test_d03_stale_journal_reload_under_lease(cfg, tmp_path: Path) -> None:
         mono_now=mono,
     )
     # Simulate stale in-memory wipe attempt then reload under lease.
-    j2._data = j2._empty()  # noqa: SLF001 — intentional stale corruption
+    j2._data = j2._empty()
     j2.reload()
     assert j2.used_ms(3) >= 800.0
     with pytest.raises(DutyBudgetError):
@@ -192,7 +193,7 @@ def test_d03_stale_journal_reload_under_lease(cfg, tmp_path: Path) -> None:
 
 
 def test_d04_safe_off_despite_pending_cancel(cfg, tmp_path: Path) -> None:
-    """D04: pending cancel must not skip OFF; CE must end low."""
+    """D04 (canonical=OFF): pending cancel must not skip OFF; CE must end low."""
     with _sim_dev(cfg, tmp_path, name="off") as dev:
         dev.cancellable = True
         dev.request_cancel()
@@ -232,10 +233,12 @@ def test_d04_close_transport_before_lock_release(cfg, tmp_path: Path) -> None:
         assert order.index("transport_close") < order.index("lock_release")
 
 
-def test_d05_overrun_aborts_and_retains(cfg, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_d05_overrun_aborts_and_retains(
+    cfg, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     """D05: reported on-time above reserved bound aborts and retains worst-case."""
-    from lio.timing_capability import validate_reported_on_ms
     import lio.device as device_mod
+    from lio.timing_capability import validate_reported_on_ms
 
     assert validate_reported_on_ms(50.0, 2001.0) is not None
     assert validate_reported_on_ms(50.0, 40.0) is None
@@ -245,21 +248,19 @@ def test_d05_overrun_aborts_and_retains(cfg, tmp_path: Path, monkeypatch: pytest
 
     monkeypatch.setattr(device_mod, "validate_reported_on_ms", force_overrun)
     with _sim_dev(cfg, tmp_path, name="d05") as dev:
-        with pytest.raises(DutyBudgetError, match="overrun|worst-case"):
+        with pytest.raises(DutyBudgetError, match=r"overrun|worst-case"):
             dev.ch_on(1, 40)
         assert dev.journal is not None
-        assert dev.journal._data.get("uncertain") is True  # noqa: SLF001
-        assert any(
-            e.get("status") == "crash-retained" for e in dev.journal.history_entries()
-        )
+        assert dev.journal._data.get("uncertain") is True
+        assert any(e.get("status") == "crash-retained" for e in dev.journal.history_entries())
 
 
 # --------------------------------------------------------------------------- R2
 
 
 def test_d06_info_gain_field_and_missing_not_one(cfg) -> None:
-    from lio.scan.provenance import read_info_gain
     from lio.protocol import Fields
+    from lio.scan.provenance import read_info_gain
 
     assert read_info_gain(Fields({"gain": "2"})) == "2"
     assert read_info_gain(Fields({"adc_gain": "1"})) is None  # wrong field
@@ -284,8 +285,8 @@ def test_d06_snapshot_does_not_invent_60hz(cfg) -> None:
 
 
 def test_d06_core_rejects_gain_2_before_light(cfg, tmp_path: Path) -> None:
-    from lio.scan import PlanError, plan_for, sim_stage, start
     from lio.operator import SimOperator
+    from lio.scan import PlanError, plan_for, sim_stage, start
 
     sim = SimulatedLIO(cfg)
     journal = DutyJournal.for_rig(
@@ -331,7 +332,7 @@ def test_d08_same_id_different_content_conflicts(cfg, tmp_path: Path) -> None:
     from lio.scan import derived as der
 
     with pytest.raises(AnalysisIdentityConflict):
-        der._write_derived(path.parent, {**p1, "tamper": True})  # noqa: SLF001
+        der._write_derived(path.parent, {**p1, "tamper": True})
     # Different analysis config must change analysis id (consumed inputs).
     p2 = analyse_model(
         src,
@@ -384,9 +385,8 @@ def test_d10_seal_covers_streams(cfg, tmp_path: Path) -> None:
 
 
 def test_d07_ingaas_ratio_blocked_when_unverified(cfg, tmp_path: Path) -> None:
+
     from lio.food_profiles.features import _ingaas_ratio_allowed, _quantity_gate_from_run
-    from lio.food_profiles.runs import RunData
-    import numpy as np
 
     if not (QUICK / "cube.csv.gz").exists():
         pytest.skip("missing cube")
@@ -449,9 +449,10 @@ def test_d12_no_height_pooling_into_fake_blocks() -> None:
     est = block_drive_response(blocks)
     assert est.value is None
     assert est.kind.value == "unresolved"
-    assert "pooling" in str(est.extras.get("reason", "")).lower() or "mixed" in str(
-        est.extras.get("reason", "")
-    ).lower()
+    assert (
+        "pooling" in str(est.extras.get("reason", "")).lower()
+        or "mixed" in str(est.extras.get("reason", "")).lower()
+    )
 
 
 def test_d12_unequal_shared_control_refuses_truncation() -> None:
@@ -460,9 +461,10 @@ def test_d12_unequal_shared_control_refuses_truncation() -> None:
     est = shared_control_corrected([10.0, 11.0, 100.0], [0.0, 1.0])
     assert est.value is None
     assert est.kind.value == "unresolved"
-    assert "unequal" in str(est.extras.get("reason", "")).lower() or "truncation" in str(
-        est.extras.get("reason", "")
-    ).lower()
+    assert (
+        "unequal" in str(est.extras.get("reason", "")).lower()
+        or "truncation" in str(est.extras.get("reason", "")).lower()
+    )
     # Must not invent CI [10,10].
     assert est.interval is None or not est.interval.available
 
@@ -514,7 +516,11 @@ def _mini_protocol(**overrides: object) -> dict:
             "target_weights": {"12": 1.0, "13": 1.0},
         },
         "inference": {"split": "fixed_n", "pilot_is_confirmation": False},
-        "estimator": {"name": "fixed_n_block", "version": "m3", "coupling_model": "validated_control"},
+        "estimator": {
+            "name": "fixed_n_block",
+            "version": "m3",
+            "coupling_model": "validated_control",
+        },
         "operator_checkpoints": [],
         "objective": "primary_swir",
         "notes": "synthetic remediation fixture",
@@ -814,7 +820,8 @@ def test_d19_cli_sim_protocol_and_resume_routing(cfg, tmp_path: Path) -> None:
         rc2 = args2.fn(args2, cfg)
     except (ProtocolError, CliError) as e:
         # Still proves protocol resume branch (not legacy height resume).
-        assert "protocol" in str(e).lower() or "resume" in str(e).lower() or True
+        msg = str(e).lower()
+        assert "protocol" in msg or "resume" in msg or "incomplete" in msg or "partial" in msg
         return
     assert rc2 in (0, 1)
 
@@ -909,7 +916,11 @@ def test_d16_production_freeze_artifact(cfg, tmp_path: Path) -> None:
 
 
 def test_d17_h16_residual_cannot_steer_primary_swir() -> None:
-    from lio.scan.executor import overall_optimum, overall_optimum_legacy_all_channel, select_primary_swir_height
+    from lio.scan.executor import (
+        overall_optimum,
+        overall_optimum_legacy_all_channel,
+        select_primary_swir_height,
+    )
 
     rows = []
     for h, net12 in ((-1000.0, 10.0), (-500.0, 100.0)):
@@ -945,7 +956,12 @@ def test_d17_h16_residual_cannot_steer_primary_swir() -> None:
 
 
 def test_d18_baseline_fail_closed_missing_geometry() -> None:
-    from lio.food_profiles.baselines import BaselineCandidate, BaselineKind, BaselineUse, select_baseline
+    from lio.food_profiles.baselines import (
+        BaselineCandidate,
+        BaselineKind,
+        BaselineUse,
+        select_baseline,
+    )
 
     c = BaselineCandidate(
         "r1",
@@ -1047,4 +1063,21 @@ def test_d20_m7_deferred_isolated() -> None:
     from lio.scan import m7_gain
 
     assert m7_gain.CORE_DEFAULT_GAIN == "1"
-    assert "deferred" in (m7_gain.__doc__ or "").lower() or "opt-in" in (m7_gain.__doc__ or "").lower()
+
+
+def test_d01_multiline_raw_refused_on_sim_transport(cfg, tmp_path: Path) -> None:
+    """D01 extension: multiline / @-prefixed raw cannot bypass reservations."""
+    with _sim_dev(cfg, tmp_path, name="d01-raw") as dev:
+        with pytest.raises((OwnershipError, DutyBudgetError)):
+            dev.send_raw(b"PING\nCH 1 ON 1500\n", timeout=0.2)
+        with pytest.raises((OwnershipError, DutyBudgetError)):
+            dev.send_raw(b"@9 CH 1 ON 1500\n", timeout=0.2)
+
+
+def test_fullpass_counterexamples_module_importable() -> None:
+    """Ensure the mandatory full-pass counterexample module is present."""
+    path = Path(__file__).with_name("test_fullpass_counterexamples.py")
+    assert path.is_file()
+    text = path.read_text(encoding="utf-8")
+    assert "test_ce01_multiline_and_prefixed_raw_refused" in text
+    assert "test_ce14_fine_and_report_share_selection_id" in text

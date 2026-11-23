@@ -5,11 +5,11 @@
 - Latest audited quick scan: `test_results/20261123-003133_scan_quick` is **NOT FUNCTIONAL** under its saved analysis; h12–h14 and InGaAs electrical/throughput findings require attention. H8/h9 still respond; the detector is not globally dead. This supersedes treating the 20 November snapshot below as the current measurement verdict.
 - Historical `test_results/` are tracked on `main` as of `138a963`; only physical `test_results/stage_position.json` stays local/ignored. Read `test_results/README.md` for the anchors.
 - Research/code/raw-data assessment: [sensor information assessment](../docs/research/LIO_V3_SENSOR_INFORMATION_ASSESSMENT_2026-11-23.md). H16 OPT101 is a reproducible, spectrally unassigned response, not a primary-1850 channel. Nov 19 report/analysis verdicts disagree; preserve provenance.
-- **Remediation R0–R8 (D01–D20): software-tested offline** on host unit suites (`test_remediation_d01_d20.py` + related). Closure table: [docs/handoffs/2026-11-23_remediation_d01_d20_closure.md](../docs/handoffs/2026-11-23_remediation_d01_d20_closure.md). Plan: [SENSOR_READINGS_REMEDIATION_PLAN.md](../docs/SENSOR_READINGS_REMEDIATION_PLAN.md).
-- **Honest status:** remediation is **not** bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified. Do not treat another quick/full scan as upgrade qualification without separate authorization.
+- **Full-pass sensor-readings remediation (software-tested candidate):** mandatory counterexamples in `tests/unit/test_fullpass_counterexamples.py` + D01–D20 regressions. Acceptance matrix: [docs/handoffs/2026-11-23_fullpass_acceptance.md](../docs/handoffs/2026-11-23_fullpass_acceptance.md). Plan: [SENSOR_READINGS_REMEDIATION_PLAN.md](../docs/SENSOR_READINGS_REMEDIATION_PLAN.md). Prior closure note is **not** acceptance.
+- **Honest status:** **software-tested candidate only** — not bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified. Do not treat another quick/full scan as upgrade qualification without separate authorization.
 - **M7 remains deferred/incomplete experimental helpers**, isolated from core (missing gain readback refuses; never silent default to 1). Not part of M0–M6 acceptance.
-- **M0–M6:** software regression evidence exists per closure matrix; physical acceptance remains open. Independent QA at 38eb8e6 found the prior “done” claim false; repairs supersede that product state for software gates only.
-- **Release state:** software gates exercised offline/sim; not bench-qualified. No measured SNR or recovered SWIR/1850 chemistry claim.
+- **M0–M6:** original upgrade-plan contracts software-tested offline; physical acceptance remains open. Canonical D03=ownership, D04=OFF. Cooperative WDT is not a proven wall-clock ceiling — finite real-rig timing may refuse fail-closed.
+- **Release state:** offline/sim software gates green on required host suites; not bench-qualified. No measured SNR or recovered SWIR/1850 chemistry claim.
 - **Still owner-deferred bench work:** A0 operating-range evidence, fitted Rf/Cf and actual accepted current, ammeter/voltmeter checks, unchanged-load optical controls and optical-path qualification. Their absence preserves raw/labelled ADC diagnostics and valid OPT101 quantities, while blocking the specified InGaAs physical/quantitative claims.
 
 ## Historical commissioning snapshot — 20 November 2026
@@ -71,3 +71,6 @@ lio profiles fixtures --out /tmp/lio_synth
 - InGaAs weak / low SNR on some SWIR holes (13–14); hole 16 known coupling.
 - Stage mechanically clunky (repeatability WARN by policy).
 - Prefer sealed-top suite vs mid-travel / full-scan heatmaps when judging “LEDs work.”
+
+## Full-pass candidate (2026-11-23)
+Uncommitted offline repairs on main@130dd77: ownership/raw gate, fw-matched MEAS timing, typed ScanStore/provenance, protocol ConsoleOperator/SimOperator, CE01–14 + D suites, FWER≥2000 with SciPy. See docs/handoffs/2026-11-23_fullpass_acceptance.md. No push; M7 deferred; A0/Rf owner-deferred; ~11 residual unit/sim fails remain.

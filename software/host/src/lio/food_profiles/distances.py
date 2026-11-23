@@ -111,5 +111,7 @@ def integrated_curve_distance(
         diff = diff * np.sqrt(np.clip(w, 0, None))
     order = np.argsort(h)
     h, diff = h[order], diff[order]
-    trapz = getattr(np, "trapezoid", None) or np.trapz
-    return float(np.sqrt(trapz(diff**2, h)))
+    trapezoid = getattr(np, "trapezoid", None)
+    if trapezoid is None:
+        trapezoid = np.trapz  # type: ignore[attr-defined]
+    return float(np.sqrt(trapezoid(diff**2, h)))

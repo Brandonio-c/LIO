@@ -1,6 +1,6 @@
 # D01–D20 remediation closure (software-tested)
 
-**Status:** R0–R8 implemented and offline regression-tested. **Not** bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified. **M7 deferred.** No push.
+**Status:** Historical R0–R8 offline evidence. **This document is NOT acceptance.** Prefer [2026-11-23_fullpass_acceptance.md](2026-11-23_fullpass_acceptance.md) for the software-tested candidate matrix (canonical D03=ownership, D04=OFF; original M0–M6). **Not** bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified. **M7 deferred.** No push.
 
 **Evidence command (host):**
 

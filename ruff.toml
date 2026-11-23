@@ -6,6 +6,9 @@ extend-exclude = [
   "CAD",
   "electronics",
   "software/control",
+  # Ad-hoc session scratch / probe scripts (not package code; not acquisition bytes).
+  "test_results/_session",
+  "test_results/opt101_check",
 ]
 
 [lint]

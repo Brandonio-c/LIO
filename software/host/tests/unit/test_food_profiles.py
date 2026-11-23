@@ -10,17 +10,17 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from lio.food_profiles.artifacts import load_bundle, verify_bundle, write_portable_report
+from lio.food_profiles.artifacts import verify_bundle, write_portable_report
 from lio.food_profiles.distances import integrated_curve_distance, pairwise_distances
-from lio.food_profiles.features import aggregate_by_preparation, extract_run_vector, stack_batches
-from lio.food_profiles.fixtures import build_fixture_library, write_synthetic_run
+from lio.food_profiles.features import extract_run_vector, stack_batches
+from lio.food_profiles.fixtures import build_fixture_library
 from lio.food_profiles.functional import fit_fpca, transform_fpca
-from lio.food_profiles.metadata import RunAnnotation, create_dataset, load_dataset
+from lio.food_profiles.metadata import RunAnnotation, create_dataset
 from lio.food_profiles.ordination import fit_pca, transform_pca
 from lio.food_profiles.pipeline import build_feature_batch, fit_dataset_pca, project_dataset_pca
 from lio.food_profiles.preprocessing import fit_preprocess, transform_preprocess
 from lio.food_profiles.runs import discover_runs, heatmap_payload, open_run
-from lio.food_profiles.schema import BUILTIN_RECIPES, CellReason
+from lio.food_profiles.schema import CellReason
 from lio.food_profiles.trends import chronological_ewma
 from lio.food_profiles.validation import assert_no_leakage, validate_grouped
 
@@ -83,7 +83,10 @@ def test_recipes_snv_msc_reference(synth_root: Path) -> None:
     assert ref.reasons.shape == ref.X.shape
     # Missing reference → reason
     bad = extract_run_vector(a, "reference_relative", reference=None)
-    assert CellReason.INCOMPATIBLE_REFERENCE.value in bad.reasons.ravel().tolist() or "reference_required" in bad.warnings
+    assert (
+        CellReason.INCOMPATIBLE_REFERENCE.value in bad.reasons.ravel().tolist()
+        or "reference_required" in bad.warnings
+    )
 
 
 def test_pca_freeze_and_no_leakage(synth_root: Path) -> None:
@@ -100,7 +103,9 @@ def test_pca_freeze_and_no_leakage(synth_root: Path) -> None:
         )
     ds = create_dataset(synth_root, folders, annotations=anns, synthetic=True, dataset_id="ds-pca")
     out = synth_root / "profile_analyses" / "pca1"
-    model, batch, result = fit_dataset_pca(synth_root, ds, "amplitude_raw", out_dir=out, n_components=2)
+    model, batch, result = fit_dataset_pca(
+        synth_root, ds, "amplitude_raw", out_dir=out, n_components=2
+    )
     assert result.scores.shape[0] == batch.n_rows
     # Project same data: coordinates for training rows must match
     again = transform_pca(batch, model)
@@ -141,7 +146,7 @@ def test_fpca_recovers_modes(synth_root: Path) -> None:
     # Quadrature refinement: subsample every other height if enough points
     if len(model.grid.heights_hs) >= 4:
         # Reconstruction close for projectable
-        for i, ok in enumerate(result.projectable):
+        for _i, ok in enumerate(result.projectable):
             if not ok:
                 continue
             # Residual in L2 sense bounded relative to signal

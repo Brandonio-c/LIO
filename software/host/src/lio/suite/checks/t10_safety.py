@@ -114,6 +114,8 @@ def t10_2(ctx: SuiteContext, rec: Recorder) -> None:
         hole, det = pick
         pre = f"{rail}/{hole_id(hole)}"
         default = ctx.cfg.wdt_ms(rail)
+        # Restore configured default after channel probes may have lowered WDT.
+        dev.wdt_cfg(rail, default)
         # Raw command: the LED is turned off again within a round trip, so the
         # duty tracker need not reserve the full clamped on-time.
         reply = dev.command(f"CH {hole} ON {ask_ms}")
@@ -128,7 +130,9 @@ def t10_2(ctx: SuiteContext, rec: Recorder) -> None:
         )
         dev.wdt_cfg(rail, test_ms)
         n_ev = len(dev.events)
-        until = dev.ch_on(hole, ask_ms)  # may first wait out the duty budget
+        # Observe firmware clamp/cut-off at the deliberate sub-default WDT.
+        # Typed ch_on would restore the rail default for over-default asks.
+        until = dev._command_unguarded(f"CH {hole} ON {ask_ms}").fields.as_int("until_ms")
         t_on = dev.now()  # the CH reply: the LED has been on for about one round trip
         adc = ctx.adc_channel(det)
         seen_lit = False

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 
@@ -80,7 +80,8 @@ def write_bundle(
                 flat[f"{k}__{kk}"] = np.asarray(vv)
         else:
             flat[k] = np.asarray(v)
-    np.savez_compressed(out_dir / "arrays.npz", **flat)
+    # NumPy stubs type **kwargs as bool|…; values here are arrays only.
+    np.savez_compressed(out_dir / "arrays.npz", **cast(Any, flat))
     return out_dir
 
 

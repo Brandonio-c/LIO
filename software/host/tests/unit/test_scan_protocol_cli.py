@@ -26,7 +26,9 @@ EXAMPLE = (
 CFG = REPO / "software" / "config" / "lio_hw.yaml"
 
 
-def test_plan_protocol_does_not_open_serial_or_wake(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+def test_plan_protocol_does_not_open_serial_or_wake(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
     opened = {"serial": 0, "wake": 0, "arm": 0, "device": 0}
 
     class BoomSerial:
@@ -88,7 +90,16 @@ def test_legacy_plan_offline_no_device(monkeypatch: pytest.MonkeyPatch, tmp_path
     monkeypatch.setattr("lio.cli.LIODevice", boom_device)
     parser = build_parser()
     args = parser.parse_args(
-        ["--config", str(CFG), "scan", "plan", "--mode", "quick_down", "--json", str(tmp_path / "p.json")]
+        [
+            "--config",
+            str(CFG),
+            "scan",
+            "plan",
+            "--mode",
+            "quick_down",
+            "--json",
+            str(tmp_path / "p.json"),
+        ]
     )
     cfg = load_config(CFG)
     assert args.fn(args, cfg) == 0

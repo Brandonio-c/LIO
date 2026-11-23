@@ -12,6 +12,7 @@ from lio.ownership import (
     DutyBudgetError,
     DutyJournal,
     JournalError,
+    OwnershipError,
     normalize_port_identity,
     rig_identity_from_port,
 )
@@ -119,7 +120,9 @@ def test_over_budget_reject_before_fake_transport_send(tmp_path: Path) -> None:
         assert not any(s.startswith("CH 9 ON") for s in sent[len(before) :])
 
 
-def test_journal_fsync_failure_blocks_light(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_journal_fsync_failure_blocks_light(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     cfg = load_config(CFG)
     journal = DutyJournal.for_rig(
         "fsync-fail-rig",
@@ -142,7 +145,7 @@ def test_device_lock_exclusive(tmp_path: Path) -> None:
     lock1 = DeviceLock("lock-rig", tmp_path)
     lock2 = DeviceLock("lock-rig", tmp_path)
     lock1.acquire()
-    with pytest.raises(Exception):
+    with pytest.raises(OwnershipError):
         lock2.acquire(blocking=False)
     lock1.release()
     lock2.acquire(blocking=False)

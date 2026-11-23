@@ -74,13 +74,13 @@ The `lio` command does the same without pytest (`lio selftest`, `lio --sim selft
 
 ## Sensor-readings upgrade
 
-**R0–R8 software-tested offline (D01–D20).** Not bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified. M7 remains deferred/incomplete. Closure: [D01–D20 table](../../docs/handoffs/2026-11-23_remediation_d01_d20_closure.md).
+**Software-tested candidate (offline unit/sim).** Not bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified. M7 remains deferred/incomplete. Full-pass acceptance: [2026-11-23_fullpass_acceptance.md](../../docs/handoffs/2026-11-23_fullpass_acceptance.md). Earlier D01–D20 closure is superseded for acceptance claims: [closure note](../../docs/handoffs/2026-11-23_remediation_d01_d20_closure.md).
 
 - [Remediation plan](../../docs/SENSOR_READINGS_REMEDIATION_PLAN.md)
 - [Independent QA report](../../docs/research/LIO_V3_SENSOR_READINGS_QA_2026-11-23.md)
-- [Original upgrade specification](../../docs/SENSOR_READINGS_UPGRADE_PLAN.md)
+- [Original upgrade specification](../../docs/SENSOR_READINGS_UPGRADE_PLAN.md) (M0–M6 contracts; §12)
 
-Do not use a new quick/full scan to qualify this build without separate authorization. A0/Rf/ammeter checks remain owner-deferred. Software success cannot establish measured SNR or recovered SWIR/1850 chemistry.
+Do not use a new quick/full scan to qualify this build without separate authorization. A0/Rf/ammeter checks remain owner-deferred. Software success cannot establish measured SNR or recovered SWIR/1850 chemistry. Finite real-rig timing remains fail-closed where cooperative WDT cannot prove a conservative bound.
 
 ### Offline inspection
 

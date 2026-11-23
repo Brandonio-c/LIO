@@ -193,9 +193,7 @@ def plan_off_on_off_stream(
         raise M7Error("non-default gain requires m7_enabled=True")
     on_n = on_end - on_start
     # Effective spacing: max(requested, serial-limited floor).
-    eff_ms = (
-        1000.0 / SERIAL_LIMITED_STREAM_SPS if interval_ms <= 0 else float(interval_ms)
-    )
+    eff_ms = 1000.0 / SERIAL_LIMITED_STREAM_SPS if interval_ms <= 0 else float(interval_ms)
     est_on = on_n * eff_ms
     notes = [
         f"serial-limited sustained rate ≈{SERIAL_LIMITED_STREAM_SPS:.0f} SPS "

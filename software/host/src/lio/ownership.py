@@ -178,10 +178,31 @@ class DutyJournal:
     _boot_id: str = field(default_factory=_boot_id)
     _data: dict[str, Any] = field(default_factory=dict)
     mono_now: Callable[[], float] = field(default=time.monotonic)
+    # Constructors must not rewrite a live owner's journal (CE02). When False,
+    # load read-only: no absorb/persist side effects until reload()/reserve().
+    mutate_on_construct: bool = True
 
     def __post_init__(self) -> None:
         self.path = Path(self.path)
-        self._load_or_init()
+        if self.mutate_on_construct:
+            self._load_or_init()
+        else:
+            self._load_readonly()
+
+    def _load_readonly(self) -> None:
+        """Load durable state without mutating disk (CE02)."""
+        if not self.path.exists():
+            self._data = self._empty()
+            return
+        try:
+            raw = self.path.read_text(encoding="utf-8")
+            data = json.loads(raw)
+            if not isinstance(data, dict):
+                raise JournalError("journal root is not an object")
+        except (OSError, json.JSONDecodeError, JournalError) as e:
+            raise JournalError(f"cannot read duty journal {self.path}: {e}") from e
+        self._data = data
+        self.owner_generation = str(data.get("owner_generation") or self.owner_generation)
 
     @classmethod
     def for_rig(
@@ -195,6 +216,7 @@ class DutyJournal:
         synthetic: bool = False,
         path: Path | None = None,
         mono_now: Callable[[], float] | None = None,
+        mutate_on_construct: bool = True,
     ) -> DutyJournal:
         root = Path(state_root) if state_root is not None else default_state_root()
         if path is None:
@@ -208,6 +230,7 @@ class DutyJournal:
             budget_ms=dict(budget_ms),
             rail_of=rail_of,
             mono_now=mono_now or time.monotonic,
+            mutate_on_construct=mutate_on_construct,
         )
 
     def _empty(self) -> dict[str, Any]:
@@ -425,8 +448,7 @@ class DutyJournal:
         # Validate generation: stale owners cannot spend.
         if owner_generation is not None and owner_generation != self.owner_generation:
             raise OwnershipError(
-                f"stale owner_generation {owner_generation!r} ≠ journal "
-                f"{self.owner_generation!r}"
+                f"stale owner_generation {owner_generation!r} ≠ journal {self.owner_generation!r}"
             )
         # Check each charge fits; accumulate provisional pending for multi-rail.
         provisional: list[Reservation] = []
@@ -491,6 +513,19 @@ class DutyJournal:
             self._data["pending"] = {"items": remaining}
         self._persist()
 
+    def mark_uncertain(self, *, reason: str = "") -> None:
+        """Retain uncertainty after failed/unverified OFF (CE04)."""
+        self._data["uncertain"] = True
+        self._data["cooldown_until_mono"] = max(
+            float(self._data.get("cooldown_until_mono") or 0.0),
+            self.mono_now() + self.window_s,
+        )
+        if reason:
+            notes = self._data.setdefault("uncertain_reasons", [])
+            if isinstance(notes, list):
+                notes.append({"reason": reason, "mono": self.mono_now()})
+        self._persist()
+
     def abort_conservative(
         self,
         reservation: Reservation | None = None,
@@ -499,14 +534,10 @@ class DutyJournal:
     ) -> None:
         """Retain worst-case charge on crash/timeout/partial acknowledgement."""
         if reservations:
-            self._data["pending"] = {
-                "items": [self._reservation_dict(r) for r in reservations]
-            }
+            self._data["pending"] = {"items": [self._reservation_dict(r) for r in reservations]}
         elif reservation is not None:
             # Merge into existing pending set rather than erasing siblings.
-            existing = {
-                p.get("id"): p for p in self._pending_items() if isinstance(p, dict)
-            }
+            existing = {p.get("id"): p for p in self._pending_items() if isinstance(p, dict)}
             existing[reservation.id] = self._reservation_dict(reservation)
             items = list(existing.values())
             self._data["pending"] = items[0] if len(items) == 1 else {"items": items}
@@ -525,4 +556,3 @@ class DutyJournal:
                 row["rail_key"] = key
                 out.append(row)
         return out
-

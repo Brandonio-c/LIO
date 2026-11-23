@@ -68,9 +68,7 @@ def summarize_derived(data: dict[str, Any], *, path: Path | None = None) -> dict
         "historical recorded verdict ≠ current model output ≠ quantitative eligibility",
         "saved-data view: no USB / device open",
     ]
-    holes_with_estimates = sorted(
-        {k.split(":h")[-1] for k in estimates if ":h" in k}
-    )
+    holes_with_estimates = sorted({k.split(":h")[-1] for k in estimates if ":h" in k})
     recorded = data.get("recorded_verdict") or data.get("historical_verdict")
     return {
         "analysis_id": data.get("analysis_id") or (path.parent.name if path else None),
@@ -123,7 +121,7 @@ def numerical_observations(
                 continue
             if block is not None:
                 rep = r.get("rep")
-                rep_i = -1 if rep in ("", None) else int(rep)
+                rep_i = -1 if rep in ("", None) else int(str(rep))
                 if rep_i != int(block):
                     continue
             if condition_id is not None and str(r.get("condition_id") or "") != condition_id:
@@ -133,11 +131,11 @@ def numerical_observations(
             net_raw = r.get("net_counts")
             net_f: float | None
             if net_raw in ("", None) and dark not in ("", None) and lit not in ("", None):
-                net_f = float(lit) - float(dark)
+                net_f = float(str(lit)) - float(str(dark))
             elif net_raw in ("", None):
                 net_f = None
             else:
-                net_f = float(net_raw)
+                net_f = float(str(net_raw))
             rows_out.append(
                 {
                     "hole": r.get("hole"),
@@ -145,8 +143,8 @@ def numerical_observations(
                     "phase": r.get("phase"),
                     "block": r.get("rep"),
                     "condition_id": r.get("condition_id"),
-                    "dark_counts": None if dark in ("", None) else float(dark),
-                    "lit_counts": None if lit in ("", None) else float(lit),
+                    "dark_counts": None if dark in ("", None) else float(str(dark)),
+                    "lit_counts": None if lit in ("", None) else float(str(lit)),
                     "net_counts": net_f,
                     "signed": True,
                 }
@@ -260,8 +258,7 @@ def analyse_model(
         cube = Cube.open(run_folder)
         coupling = estimate_coupling(cube, cfg, model="validated_control")
         sens = {
-            det: leave_one_control_out(cube, cfg, det, rail="B")
-            for det in ("ingaas", "opt101")
+            det: leave_one_control_out(cube, cfg, det, rail="B") for det in ("ingaas", "opt101")
         }
         # D12: fixed-position blocks — do NOT pool heights/directions as independent N.
         hole_estimates: dict[str, Any] = {}
@@ -367,9 +364,7 @@ def report_derived(
     run_folder = Path(run_folder)
     derived_out = Path(derived_out)
     matches = [
-        p
-        for p in derived_out.glob(f"**/{analysis_id}/analysis.json")
-        if analysis_id in str(p)
+        p for p in derived_out.glob(f"**/{analysis_id}/analysis.json") if analysis_id in str(p)
     ]
     if not matches:
         matches = list(derived_out.glob(f"**/*{analysis_id}/analysis.json"))

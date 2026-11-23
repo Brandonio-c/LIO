@@ -102,9 +102,7 @@ def classify_value(
     return ValueKind.POSITIVE
 
 
-def _t_interval(
-    mean: float, se: float, n: int, level: float = 0.95
-) -> Interval:
+def _t_interval(mean: float, se: float, n: int, level: float = 0.95) -> Interval:
     if n < 2 or se is None or not np.isfinite(se):
         return Interval(
             None,
@@ -165,9 +163,7 @@ def drive_response_tau(
     mean = float(np.mean(diffs))
     if n == 1:
         se = None
-        interval = Interval(
-            None, None, level, "t", False, "single block: interval unavailable"
-        )
+        interval = Interval(None, None, level, "t", False, "single block: interval unavailable")
     else:
         se = float(np.std(diffs, ddof=1) / np.sqrt(n))
         interval = _t_interval(mean, se, n, level)
@@ -221,9 +217,7 @@ def paired_optical_contrast(
         se = float(np.std(d, ddof=1) / np.sqrt(n))
         interval = _t_interval(mean, se, n, level)
         if interval.available:
-            interval = Interval(
-                interval.low, interval.high, level, "paired-t", True, None
-            )
+            interval = Interval(interval.low, interval.high, level, "paired-t", True, None)
     return Estimate(
         mean,
         classify_value(mean),
@@ -303,9 +297,7 @@ def shared_control_corrected(
             classify_value(mean),
             1,
             se=None,
-            interval=Interval(
-                None, None, level, "shared-control", False, "single block"
-            ),
+            interval=Interval(None, None, level, "shared-control", False, "single block"),
             assumptions=assumptions,
             extras={"shared_control_var": 0.0, "cov_sc": 0.0},
         )
@@ -518,14 +510,8 @@ def group_fixed_position_blocks(
                     condition_id=None if condition in (None, "") else str(condition),
                     phase=None if phase in (None, "") else str(phase),
                     net=net,
-                    dark=(
-                        None
-                        if r.get("dark_counts") is None
-                        else float(r["dark_counts"])
-                    ),
-                    lit=(
-                        None if r.get("lit_counts") is None else float(r["lit_counts"])
-                    ),
+                    dark=(None if r.get("dark_counts") is None else float(r["dark_counts"])),
+                    lit=(None if r.get("lit_counts") is None else float(r["lit_counts"])),
                 )
             )
         return by_hole
@@ -549,28 +535,67 @@ def group_fixed_position_blocks(
     return by_hole
 
 
+def production_blocks_only(
+    blocks: Sequence[FixedPositionBlock],
+) -> list[FixedPositionBlock]:
+    """Exclude pilot (and non-production) rows from confirmation estimands (CE07)."""
+    out: list[FixedPositionBlock] = []
+    for b in blocks:
+        phase = (b.phase or "").lower()
+        if phase in ("pilot", "scout"):
+            continue
+        if phase in ("", "production", "fixed", "confirmation", "p2", "p3"):
+            # Empty phase kept only when no pilot siblings exist in the set.
+            out.append(b)
+            continue
+        # Unknown labelled phases stay out of production confirmation.
+    # If the input mixed pilot+production, drop empty-phase rows too when pilots present.
+    has_pilot = any((b.phase or "").lower() in ("pilot", "scout") for b in blocks)
+    if has_pilot:
+        out = [b for b in out if (b.phase or "").lower() in ("production", "fixed", "confirmation")]
+    return out
+
+
 def block_drive_response(
     blocks: Sequence[FixedPositionBlock],
     *,
     level: float = 0.95,
     require_fixed_geometry: bool = True,
+    exclude_pilot: bool = True,
 ) -> Estimate:
     """Drive-response estimand at one fixed geometry.
 
     If heights/directions vary across ``blocks`` and ``require_fixed_geometry``,
     return unresolved rather than pooling into fake independent repeats (D12).
+    Pilot rows are excluded from confirmation means by default (CE07).
     """
     assumptions = [
         "fixed-position independent blocks",
         "no height/direction/condition pooling",
         "no stop-when-positive",
+        "pilot excluded from production confirmation",
     ]
-    if not blocks:
+    raw_blocks = list(blocks)
+    if exclude_pilot:
+        use_blocks = production_blocks_only(raw_blocks)
+        has_pilot = any((b.phase or "").lower() in ("pilot", "scout") for b in raw_blocks)
+        # Pooled-with-pilot must not silently become the confirmation mean.
+        if has_pilot and not use_blocks:
+            return Estimate(
+                None,
+                ValueKind.MISSING,
+                0,
+                assumptions=assumptions,
+                extras={"reason": "only pilot blocks; no production confirmation"},
+            )
+    else:
+        use_blocks = raw_blocks
+    if not use_blocks:
         return Estimate(None, ValueKind.MISSING, 0, assumptions=assumptions)
     if require_fixed_geometry:
-        heights = {b.height_hs for b in blocks if b.height_hs is not None}
-        directions = {b.direction for b in blocks if b.direction is not None}
-        conditions = {b.condition_id for b in blocks if b.condition_id is not None}
+        heights = {b.height_hs for b in use_blocks if b.height_hs is not None}
+        directions = {b.direction for b in use_blocks if b.direction is not None}
+        conditions = {b.condition_id for b in use_blocks if b.condition_id is not None}
         if len(heights) > 1 or len(directions) > 1 or len(conditions) > 1:
             return Estimate(
                 None,
@@ -582,18 +607,24 @@ def block_drive_response(
                     "n_heights": len(heights),
                     "n_directions": len(directions),
                     "n_conditions": len(conditions),
-                    "n_rows": len(blocks),
+                    "n_rows": len(use_blocks),
                 },
             )
     # Aggregate technical repeats within the same block_id.
     by_id: dict[str, list[float]] = {}
-    for b in blocks:
+    for b in use_blocks:
         by_id.setdefault(b.block_id, []).append(b.net)
     vals = [float(np.mean(v)) for v in by_id.values()]
     dark = [0.0] * len(vals)
-    return drive_response_tau(vals, dark, level=level)
+    est = drive_response_tau(vals, dark, level=level)
+    est.assumptions = [*assumptions, *est.assumptions]
+    est.extras = {
+        **est.extras,
+        "includes_pilot": False,
+        "n_excluded_pilot": len(raw_blocks) - len(use_blocks),
+    }
+    return est
 
 
 def scipy_available() -> bool:
     return scipy_stats is not None
-

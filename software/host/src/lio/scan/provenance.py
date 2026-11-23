@@ -375,9 +375,7 @@ def seal_terminal_source(
     # Never hash the seal into itself — only caller-supplied terminal facts.
     meta = {k: v for k, v in dict(terminal_meta or {}).items() if k != "terminal_source_seal"}
     meta_sha = content_hash(meta)
-    combined = hashlib.sha256(
-        (manifest_hash + raw_sha + meta_sha).encode("ascii")
-    ).hexdigest()
+    combined = hashlib.sha256((manifest_hash + raw_sha + meta_sha).encode("ascii")).hexdigest()
     return TerminalSourceSeal(
         manifest_hash=manifest_hash,
         raw_sha256=raw_sha,
@@ -447,6 +445,20 @@ def build_analysis_identity(
     )
 
 
+def collect_stream_sha256(run_folder: Path | str) -> dict[str, str]:
+    """Per-stream file hashes under ``run_folder/streams`` (CE06)."""
+    root = Path(run_folder)
+    streams = root / "streams"
+    out: dict[str, str] = {}
+    if not streams.is_dir():
+        return out
+    for path in sorted(streams.rglob("*")):
+        if path.is_file():
+            rel = path.relative_to(root).as_posix()
+            out[rel] = file_sha256(path)
+    return out
+
+
 def resolve_analysis_validity(
     analysis: dict[str, Any] | None,
     *,
@@ -456,11 +468,14 @@ def resolve_analysis_validity(
     sample_id: str | None = None,
     expected_calibration_id: str | None = None,
     expected_estimator_version: str | None = None,
+    stream_sha256: dict[str, str] | None = None,
 ) -> tuple[bool, ValidityReason, str]:
     """Shared validity resolver for report/profile readers.
 
     Returns ``(ok_for_quantitative_reuse, reason, detail)``. Rejected products
     remain inspectable; ``ok`` False means quarantine from quantitative reuse.
+    NPZ/stream mutations invalidate reuse when the analysis identity recorded
+    stream hashes (CE06).
     """
     if analysis is None:
         return False, ValidityReason.UNREADABLE, "missing"
@@ -471,7 +486,10 @@ def resolve_analysis_validity(
         has_source = bool(identity.get("source_cube_sha256") or identity.get("cube_sha256"))
         if not has_source:
             # Weak legacy: run/sample names alone are insufficient for acceptance.
-            rid_ok = str(analysis.get("run_id", "")) in ("", run_id or "",)
+            rid_ok = str(analysis.get("run_id", "")) in (
+                "",
+                run_id or "",
+            )
             sid_ok = str(analysis.get("sample_id", sample_id)) == str(sample_id)
             if rid_ok and sid_ok and (run_id or sample_id):
                 return False, ValidityReason.LEGACY_UNVERIFIED, "no source/calibration identity"
@@ -483,6 +501,35 @@ def resolve_analysis_validity(
             return False, ValidityReason.SOURCE_CHANGED, "cube hash mismatch"
         if stored_scan and stored_scan != scan_sha256:
             return False, ValidityReason.SOURCE_CHANGED, "scan hash mismatch"
+
+        # CE06: consumed stream/NPZ hashes must still match.
+        consumed = identity.get("consumed_inputs") or {}
+        if not isinstance(consumed, dict):
+            consumed = {}
+        stored_streams = consumed.get("stream_sha256") or identity.get("stream_sha256") or {}
+        if isinstance(stored_streams, dict) and stored_streams and stream_sha256 is not None:
+            for rel, digest in stored_streams.items():
+                live = stream_sha256.get(str(rel))
+                if live is None:
+                    return (
+                        False,
+                        ValidityReason.SOURCE_CHANGED,
+                        f"stream missing after mutation: {rel}",
+                    )
+                if str(live) != str(digest):
+                    return (
+                        False,
+                        ValidityReason.SOURCE_CHANGED,
+                        f"stream/npz hash mismatch: {rel}",
+                    )
+            # Extra unexpected streams also invalidate sealed reuse.
+            for rel in stream_sha256:
+                if str(rel) not in {str(k) for k in stored_streams}:
+                    return (
+                        False,
+                        ValidityReason.SOURCE_CHANGED,
+                        f"unexpected stream file: {rel}",
+                    )
 
         cal = str(identity.get("calibration_id") or "")
         if expected_calibration_id is not None and cal and cal != expected_calibration_id:
@@ -553,9 +600,7 @@ def quantity_eligibility(
                 quantity, False, "geometry/acquisition incompatible", detector
             )
         if not control_evidence:
-            return QuantityEligibility(
-                quantity, False, "control evidence missing", detector
-            )
+            return QuantityEligibility(quantity, False, "control evidence missing", detector)
         if detector == "ingaas" and input_range != "verified-in-range":
             return QuantityEligibility(
                 quantity,

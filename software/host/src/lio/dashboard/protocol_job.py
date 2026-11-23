@@ -82,12 +82,21 @@ class ProtocolJob:
             }
 
     def answer_checkpoint(self, occurrence_id: str, confirmed: bool) -> None:
-        """Fresh linked answer for one checkpoint occurrence (D13)."""
+        """Fresh linked answer for one checkpoint occurrence (D13).
+
+        Rejects unknown/stale IDs and duplicate answers — never invents confirmation.
+        """
+        occ = str(occurrence_id or "").strip()
+        if not occ:
+            raise ValueError("occurrence_id required")
         with self._lock:
-            self._answers[occurrence_id] = bool(confirmed)
-            ev = self._answer_events.get(occurrence_id)
-            if ev is not None:
-                ev.set()
+            ev = self._answer_events.get(occ)
+            if ev is None:
+                raise ValueError(f"unknown or stale occurrence_id {occ!r}")
+            if occ in self._answers:
+                raise ValueError(f"duplicate answer for occurrence_id {occ!r}")
+            self._answers[occ] = bool(confirmed)
+            ev.set()
 
     def _run(self) -> None:
         s = self.s

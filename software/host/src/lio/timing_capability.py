@@ -124,6 +124,37 @@ def conservative_pulse_bound_ms(
     return float(wdt), None
 
 
+def admit_pulse_reservation(
+    *,
+    reserved_ms: float,
+    active_wdt_ms: int,
+    rail: str,
+    may_lower_wdt: bool = True,
+    capability: TimingCapability | None = None,
+) -> tuple[bool, str | None]:
+    """Admit a reservation against the active rail WDT (CE03).
+
+    A reservation smaller than the active WDT understates possible exposure
+    unless the caller may lower WDT to the covering quantized need and verify
+    readback. Cooperative WDT is not a wall-clock ceiling inventing margin —
+    either lower+verify, or refuse.
+    """
+    cap = capability or DEFAULT_TIMING_CAPABILITY
+    need = quantize_wdt_ms(reserved_ms, capability=cap)
+    wdt = quantize_wdt_ms(float(active_wdt_ms), capability=cap)
+    rail_cap = rail_wdt_cap_ms(rail, capability=cap)
+    if wdt > rail_cap:
+        return False, f"active WDT {wdt} ms exceeds rail {rail} cap {rail_cap} ms"
+    if wdt < need:
+        return False, f"active WDT {wdt} ms cannot cover need {need} ms"
+    if wdt > need and not may_lower_wdt:
+        return (
+            False,
+            f"refuse: reserved {need} ms < active WDT {wdt} ms without WDT lower+readback",
+        )
+    return True, None
+
+
 def validate_reported_on_ms(
     reserved_ms: float,
     reported_ms: float | None,

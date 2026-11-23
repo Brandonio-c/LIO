@@ -109,7 +109,8 @@ class TestLink:
             dev.command("FROB")
         assert e.value.code == ErrCode.UNKNOWN
         with pytest.raises(DeviceError) as e:
-            dev.command("CH 99 ON")
+            # Simulator fault injection: bypass public light gate (D01).
+            dev._command_unguarded("CH 99 ON")
         assert e.value.code == ErrCode.BAD_ARG
         dev.transport.write_raw(b"X" * 80 + b"\n")
         assert dev.drain(0.1) == []
@@ -242,11 +243,19 @@ class TestOptics:
         assert sw.dur_ms < 2500
 
     def test_meas_refused_beyond_watchdog(self, dev: LIODevice) -> None:
-        dev.meas(3, settle_ms=500, n=64)  # ~1.7 s estimated: inside the 2 s limit
+        # Typed MEAS inside the default 2 s rail-A WDT must succeed.
+        dev.meas(3, settle_ms=500, n=64)
+        # Firmware still refuses when the active WDT is too low. Use the
+        # unguarded sim wire (fault injection): typed admission would raise WDT
+        # to cover (2→8→8→2), which is the required host behavior.
         dev.wdt_cfg("A", 500)
         with pytest.raises(DeviceError) as e:
-            dev.meas(3, settle_ms=200, n=32)  # ~0.8 s estimated > 0.5 s
+            dev._command_unguarded("MEAS 3 200 32", timeout=dev.meas_timeout(200, 32))
         assert e.value.code == ErrCode.REFUSED
+        # Typed path raises WDT to cover rather than under-admitting.
+        m = dev.meas(3, settle_ms=200, n=32)
+        assert m.t_on_ms >= 0
+        assert int(dev.info(refresh=True).as_int("wdt_a_ms")) >= 700
 
     def test_adc_cfg_and_stream(self, dev: LIODevice) -> None:
         assert dev.adc_gain("2") == pytest.approx(0.0625)
@@ -289,9 +298,16 @@ class TestOptics:
         assert dev.send_raw(b"", 0.1) is None
 
     def test_stream_led_schedule_checked(self, dev: LIODevice) -> None:
-        with pytest.raises(DeviceError) as e:
+        from lio.ownership import DutyBudgetError
+
+        # Host refuses before light when STREAM LED schedule exceeds active WDT
+        # (may_raise_wdt=False). Firmware DeviceError remains for unguarded paths.
+        with pytest.raises((DeviceError, DutyBudgetError)) as e:
             dev.adc_stream(1, 400, 10, led=(3, 0, 300))  # 3 s > RAIL A watchdog
-        assert e.value.code == ErrCode.REFUSED
+        if isinstance(e.value, DeviceError):
+            assert e.value.code == ErrCode.REFUSED
+        else:
+            assert "watchdog" in str(e.value).lower() or "wdt" in str(e.value).lower()
 
     def test_i2c_and_loop(self, dev: LIODevice) -> None:
         assert dev.i2c_scan() == [0x48]

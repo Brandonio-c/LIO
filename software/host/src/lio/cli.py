@@ -35,14 +35,14 @@ import json
 import logging
 import sys
 import time
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from pathlib import Path
 from typing import Any
 
 from lio import __version__
 from lio.config import ConfigError, HwConfig, load_config
 from lio.device import DeviceError, LIODevice, NoResponse
-from lio.operator import ConsoleOperator
+from lio.operator import ConsoleOperator, Operator, SimOperator
 from lio.results import Status, TestResult, Verdict
 from lio.sim import Faults, FaultSpecError, SimulatedLIO
 from lio.stage import StageError, tracker_for
@@ -259,8 +259,10 @@ def cmd_drive_tune(args: argparse.Namespace, cfg: HwConfig) -> int:
     """Hold a sacrificial LED solid and coach the LD06 pot from ammeter readings."""
     from lio.drive_tune import run_tune
 
-    out = Path(args.out) if args.out else (
-        REPO_ROOT / "test_results" / "tray_v3" / f"DRIVE_TUNE_{args.rail.upper()}.json"
+    out = (
+        Path(args.out)
+        if args.out
+        else (REPO_ROOT / "test_results" / "tray_v3" / f"DRIVE_TUNE_{args.rail.upper()}.json")
     )
     print(
         "Stop the dashboard first if it has the port (or this will fail to open).\n"
@@ -683,12 +685,17 @@ def cmd_scan(args: argparse.Namespace, cfg: HwConfig) -> int:
 
                 if not getattr(args, "allow_light", False):
                     raise CliError("protocol resume requires --allow-light")
+                op: Operator = SimOperator(sim) if sim is not None else ConsoleOperator()
+
+                def _resume_confirm(msg: str, _op: Operator = op) -> bool:
+                    return bool(_op.confirm("protocol_checkpoint", msg))
+
                 result = resume_protocol(
                     folder,
                     cfg=cfg,
                     allow_light=True,
                     device=dev,
-                    operator_checkpoint_flag=True,
+                    operator_confirm=_resume_confirm,
                 )
                 print(f"{result.status}: {result.folder}")
                 if result.cancel_reason:
@@ -783,6 +790,7 @@ def _scan_legacy_plan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
         print(f"plan -> {args.json}")
     return 0
 
+
 def _scan_protocol_run(args: argparse.Namespace, cfg: HwConfig) -> int:
     """``lio scan run --protocol --allow-light`` — gated emission via journal (D19).
 
@@ -806,9 +814,18 @@ def _scan_protocol_run(args: argparse.Namespace, cfg: HwConfig) -> int:
     if pplan.unresolved:
         raise CliError("protocol plan unresolved: " + "; ".join(pplan.unresolved))
     root = Path(args.out) if args.out else REPO_ROOT / "test_results"
+
+    def _operator_confirm(op: Operator) -> Callable[[str], bool]:
+        # --allow-light / --yes are not physical confirmations (D13/CE08).
+        def _ask(msg: str) -> bool:
+            return bool(op.confirm("protocol_checkpoint", msg))
+
+        return _ask
+
     if args.sim:
         sim = SimulatedLIO(cfg, Faults.parse(args.fault))
         sim.sample = "food" if args.sample.startswith("LIO-F-") else args.sample
+        operator: Operator = SimOperator(sim)
         dev = LIODevice(SimTransport(sim, transcript=sys.stderr if args.verbose else None), cfg)
         with dev:
             stage_dir = Path(tempfile.mkdtemp(prefix="lio_sim_stage_"))
@@ -822,7 +839,7 @@ def _scan_protocol_run(args: argparse.Namespace, cfg: HwConfig) -> int:
                 device=dev,
                 simulated=True,
                 rig_identity="sim",
-                operator_checkpoint_flag=True,
+                operator_confirm=_operator_confirm(operator),
             )
     else:
         # Authorized runtime gates (D19): allow-light + ownership journal + preflight.
@@ -832,6 +849,7 @@ def _scan_protocol_run(args: argparse.Namespace, cfg: HwConfig) -> int:
                 "hardware protocol run requires --port/--url (or --sim); "
                 "ownership journal and --allow-light are mandatory gates"
             )
+        operator = ConsoleOperator()
         dev = LIODevice(_transport(args, cfg), cfg, stage=tracker_for(cfg))
         if dev.journal is None:
             raise CliError("refusing hardware protocol run without duty journal")
@@ -846,7 +864,7 @@ def _scan_protocol_run(args: argparse.Namespace, cfg: HwConfig) -> int:
                 device=dev,
                 simulated=False,
                 rig_identity="host",
-                operator_checkpoint_flag=True,
+                operator_confirm=_operator_confirm(operator),
             )
     print(f"{result.status}: {result.folder}")
     if result.cancel_reason:
@@ -860,7 +878,10 @@ def _scan_protocol_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
 
     derived = Path(args.derived_out)
     model = getattr(args, "model", None) or "qualified-v2"
-    folder = Path(getattr(args, "folder", None) or getattr(args, "run", None))
+    folder_arg = getattr(args, "folder", None) or getattr(args, "run", None)
+    if folder_arg is None:
+        raise CliError("run folder required for offline audit/analyse/report")
+    folder = Path(folder_arg)
     if args.scan_command == "audit":
         out = audit_run(folder, cfg, model=model, derived_out=derived)
         print(json.dumps({k: out[k] for k in out if not k.startswith("_")}, indent=1))

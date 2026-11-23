@@ -194,8 +194,10 @@ def signal_hole_mask(
     out: dict[tuple[str, int], bool] = {}
     for det in recipe.detectors:
         for hole in range(1, 17):
-            if hole == 16 and not include_proxy_h16:
-                out[(det, hole)] = False
+            if hole == 16:
+                # CE12: opt-in extracts proxy_unassigned even when expect=none.
+                # Default path still excludes h16 from primary features.
+                out[(det, hole)] = bool(include_proxy_h16)
                 continue
             out[(det, hole)] = not run.is_blind(hole, det)
     return out
@@ -424,6 +426,13 @@ def _quantity_gate_from_run(run: RunData) -> dict[str, Any]:
         rf = RfProvenance(None, "unknown", "missing")
     input_range = str((snap.get("input_range") or {}).get("ingaas") or "unverified")
     lsb = adc.get("lsb_mv")
+    # Scoped control evidence from snapshot when present — never hardcode False
+    # as a silent bypass of quantity gates.
+    ctrl = snap.get("control_evidence")
+    if isinstance(ctrl, dict):
+        control_evidence = bool(ctrl.get("optical") or ctrl.get("validated"))
+    else:
+        control_evidence = bool(ctrl)
     elig = quantity_eligibility(
         Quantity.MATCHED_RATIO,
         detector="ingaas",
@@ -431,7 +440,7 @@ def _quantity_gate_from_run(run: RunData) -> dict[str, Any]:
         rf=rf,
         input_range=input_range,
         geometry_compatible=bool(snap.get("assembly")),
-        control_evidence=False,
+        control_evidence=control_evidence,
     )
     return {
         "eligible": elig.eligible,

@@ -287,16 +287,18 @@ class TestDebugStates:
             f = dev.dbg_state("ce_only", 2, 8, 2)
             assert f.as_int("ch") == 0 and f.as_str("state") == "ce_only"
             with pytest.raises(DeviceError) as e:
-                dev.command("DBG STATE CE_ONLY 3")
+                # Simulator fault injection: bypass public light gate (D01).
+                dev._command_unguarded("DBG STATE CE_ONLY 3")
             assert e.value.code == 2
             dev.wdt_cfg("B", 50)  # hole 4 is on RAIL A: its wrong-rail state raises CE2
             with pytest.raises(DeviceError) as e:
-                dev.command("DBG STATE WRONG_RAIL 4 45 4")
+                # Typed dbg_state would raise WDT; unguarded proves firmware refuse.
+                dev._command_unguarded("DBG STATE WRONG_RAIL 4 45 4")
             assert e.value.code == 3 and "watchdog" in str(e.value)
             dev.command("VS500")
             dev.command("D")
             with pytest.raises(DeviceError) as e:
-                dev.command("DBG STATE CE_ONLY 1")
+                dev._command_unguarded("DBG STATE CE_ONLY 1")
             assert e.value.code == 5
             dev.command("S")
 
@@ -310,7 +312,8 @@ class TestDebugStates:
         with rig(parse_config(data, cfg.path)) as (dev, _):
             assert "debug_states" not in dev.info(refresh=True).values
             with pytest.raises(DeviceError) as e:
-                dev.command("DBG STATE CE_ONLY 1")
+                # Simulator fault injection: public command() refuses light-capable DBG.
+                dev._command_unguarded("DBG STATE CE_ONLY 1")
             assert e.value.code == 1
 
 

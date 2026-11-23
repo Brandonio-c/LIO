@@ -10,8 +10,8 @@ from lio.scan.analysis.uncertainty import (
     classify_value,
     drive_response_tau,
     paired_optical_contrast,
-    shared_control_corrected,
     scipy_available,
+    shared_control_corrected,
 )
 
 pytestmark = pytest.mark.unit
@@ -80,3 +80,55 @@ def test_no_qualify_by_max_over_heights() -> None:
     assert abs(est.value or 0) < 2.0
     assert float(np.max(noise)) > 2.0  # max would look like a hit
     _ = heights
+
+
+def test_predeclared_null_family_coverage_fwer() -> None:
+    """≥2000 predeclared 32-channel null families: coverage/FWER with MC uncertainty.
+
+    Skips cleanly when SciPy precision extra is absent.
+    """
+    from lio.scan.analysis.uncertainty import bonferroni_level, familywise_intervals
+
+    if not scipy_available():
+        pytest.skip("scipy precision extra absent — interval FWER check unavailable")
+
+    rng = np.random.default_rng(20261123)
+    n_families = 2000
+    n_channels = 32
+    n_blocks = 8
+    alpha = 0.05
+    # Predeclared tolerances (binomial MC uncertainty ~sqrt(p(1-p)/N)).
+    se_fwer = float(np.sqrt(alpha * (1 - alpha) / n_families))
+    fwer_tol = alpha + 3.0 * se_fwer
+    coverage_tol_lo = 0.90
+
+    false_family = 0
+    cover_hits = 0
+    cover_total = 0
+    level = bonferroni_level(n_channels, alpha)
+    for _ in range(n_families):
+        estimates = {}
+        for ch in range(n_channels):
+            diffs = rng.normal(0.0, 1.0, size=n_blocks)
+            dark = np.zeros(n_blocks)
+            lit = diffs
+            est = drive_response_tau(lit, dark, level=level)
+            estimates[f"ch{ch}"] = est
+        fw = familywise_intervals(estimates, family_size=n_channels, alpha=alpha)
+        family_reject = False
+        for est in fw.values():
+            if est.interval is None or not est.interval.available:
+                continue
+            assert est.interval.low is not None and est.interval.high is not None
+            if est.interval.low > 0 or est.interval.high < 0:
+                family_reject = True
+            cover_total += 1
+            if est.interval.low <= 0 <= est.interval.high:
+                cover_hits += 1
+        if family_reject:
+            false_family += 1
+
+    fwer = false_family / n_families
+    coverage = cover_hits / max(cover_total, 1)
+    assert fwer <= fwer_tol, f"FWER {fwer:.4f} exceeds tol {fwer_tol:.4f}"
+    assert coverage >= coverage_tol_lo, f"coverage {coverage:.4f} below {coverage_tol_lo}"

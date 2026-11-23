@@ -186,15 +186,15 @@ class _Handler(BaseHTTPRequestHandler):
                 if not proto:
                     raise ValueError("protocol= path or inline JSON required")
                 return self._json(
-                    s.protocol_plan_preview(
-                        proto if proto.strip().startswith("{") else Path(proto)
-                    )
+                    s.protocol_plan_preview(proto if proto.strip().startswith("{") else Path(proto))
                 )
             if url.path == "/api/scan/derived":
                 q = parse_qs(url.query)
                 root = (q.get("derived_out") or [""])[0]
-                run_id = (q.get("run_id") or [None])[0]
-                analysis_id = (q.get("analysis_id") or [None])[0]
+                run_id_s = (q.get("run_id") or [""])[0]
+                analysis_id_s = (q.get("analysis_id") or [""])[0]
+                run_id = run_id_s or None
+                analysis_id = analysis_id_s or None
                 if not root:
                     raise ValueError("derived_out= required")
                 from lio.scan.derived import get_derived, list_derived
@@ -227,12 +227,14 @@ class _Handler(BaseHTTPRequestHandler):
                 from lio.scan.derived import numerical_observations
 
                 folder = s.results_root / run_id
+                det_s = (q.get("detector") or [""])[0]
+                phase_s = (q.get("phase") or [""])[0]
                 return self._json(
                     numerical_observations(
                         folder,
                         hole=int(q["hole"][0]) if q.get("hole") else None,
-                        detector=(q.get("detector") or [None])[0],
-                        phase=(q.get("phase") or [None])[0],
+                        detector=det_s or None,
+                        phase=phase_s or None,
                         block=int(q["block"][0]) if q.get("block") else None,
                     )
                 )

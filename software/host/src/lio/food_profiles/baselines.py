@@ -41,6 +41,10 @@ class BaselineCandidate:
     reference_protocol: str | None = None
     incomplete: bool = False
     notes: tuple[str, ...] = ()
+    # CE11: quantity-compatibility facts for quantitative reuse.
+    rf_state: str | None = None
+    assembly_key: str | None = None
+    input_range_ingaas: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         d = asdict(self)
@@ -130,6 +134,9 @@ def select_baseline(
     require_model: str | None = None,
     require_geometry_key: str | None = None,
     require_reference_protocol: str | None = None,
+    require_rf_state: str | None = None,
+    require_assembly_key: str | None = None,
+    require_input_range_ingaas: str | None = None,
     allow_incomplete_for_raw: bool = True,
 ) -> BaselineDecision:
     """Pick a baseline for quantitative reuse or raw comparison.
@@ -146,11 +153,7 @@ def select_baseline(
         if use is BaselineUse.QUANTITATIVE and c.incomplete:
             rejects.append(f"{c.run_id}: incomplete status={c.status}")
             continue
-        if (
-            use is BaselineUse.RAW_COMPARE
-            and c.incomplete
-            and not allow_incomplete_for_raw
-        ):
+        if use is BaselineUse.RAW_COMPARE and c.incomplete and not allow_incomplete_for_raw:
             rejects.append(f"{c.run_id}: incomplete (raw compare disallowed)")
             continue
         # D18: fail-closed — required facts that are missing reject quantitative reuse.
@@ -193,6 +196,33 @@ def select_baseline(
                     continue
             elif c.reference_protocol != require_reference_protocol:
                 rejects.append(f"{c.run_id}: reference protocol mismatch")
+                continue
+        # CE11: incompatible / missing Rf, assembly, A0/input-range refuse quantitative.
+        if require_rf_state and use is BaselineUse.QUANTITATIVE:
+            if not c.rf_state:
+                rejects.append(f"{c.run_id}: missing rf_state")
+                continue
+            if c.rf_state != require_rf_state:
+                rejects.append(f"{c.run_id}: rf_state {c.rf_state!r} ≠ {require_rf_state!r}")
+                continue
+        if require_assembly_key and use is BaselineUse.QUANTITATIVE:
+            if not c.assembly_key:
+                rejects.append(f"{c.run_id}: missing assembly")
+                continue
+            if c.assembly_key != require_assembly_key:
+                rejects.append(
+                    f"{c.run_id}: assembly {c.assembly_key!r} ≠ {require_assembly_key!r}"
+                )
+                continue
+        if require_input_range_ingaas and use is BaselineUse.QUANTITATIVE:
+            if not c.input_range_ingaas:
+                rejects.append(f"{c.run_id}: missing A0/input_range_ingaas")
+                continue
+            if c.input_range_ingaas != require_input_range_ingaas:
+                rejects.append(
+                    f"{c.run_id}: input_range_ingaas {c.input_range_ingaas!r} ≠ "
+                    f"{require_input_range_ingaas!r}"
+                )
                 continue
         return BaselineDecision(True, use, "selected", c, rejects)
     return BaselineDecision(

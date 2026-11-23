@@ -279,9 +279,8 @@ def _repeatability(cube: Cube, cfg: HwConfig, refs: dict[tuple[str, int], Ref], 
     st = grade(rep, w, f)
     # V3 stage is known-loose (couplers / nut play); next build will be tighter.
     # Cap at WARN so a large spread does not mark the whole system NOT FUNCTIONAL.
-    detail = (
-        f"spread of repeated visits {rep:.0f} half-steps (RMS over {len(spreads)} groups)"
-        + (f"; above minus below {b:+.0f} half-steps (backlash, direct)" if diffs else "")
+    detail = f"spread of repeated visits {rep:.0f} half-steps (RMS over {len(spreads)} groups)" + (
+        f"; above minus below {b:+.0f} half-steps (backlash, direct)" if diffs else ""
     )
     criteria = f"< {w:g} (WARN), < {f:g} (would FAIL; capped at WARN for V3 mechanics)"
     if st == Status.FAIL:

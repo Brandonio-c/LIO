@@ -115,8 +115,10 @@ def resolve_calibration(
     resolved_lsb = lsb_mv
     if resolved_lsb is None:
         resolved_lsb = _lsb_for_gain(cfg, g)
-        if resolved_lsb is not None and g == "1" and (
-            cfg is None or str(g) not in (cfg.data.get("adc", {}).get("lsb_mv") or {})
+        if (
+            resolved_lsb is not None
+            and g == "1"
+            and (cfg is None or str(g) not in (cfg.data.get("adc", {}).get("lsb_mv") or {}))
         ):
             justified = allow_legacy_gain1
         elif resolved_lsb is not None and g == "1" and allow_legacy_gain1:

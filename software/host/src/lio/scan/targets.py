@@ -144,6 +144,54 @@ def named_objective(name: str, **kwargs: Any) -> TargetObjective:
     raise ValueError(f"unknown objective {name!r}")
 
 
+@dataclass(frozen=True)
+class TargetSelection:
+    """One frozen target-selection consumed by planner/fine/report/UI (CE14)."""
+
+    selection_id: str
+    frozen_height_hs: float | None
+    status: str
+    objective_version: str
+    payload: dict[str, Any] = field(default_factory=dict)
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> TargetSelection:
+        obj = data.get("objective") or {}
+        return cls(
+            selection_id=str(data.get("selection_id") or ""),
+            frozen_height_hs=(
+                None if data.get("frozen_height_hs") is None else float(data["frozen_height_hs"])
+            ),
+            status=str(data.get("status") or ""),
+            objective_version=str(obj.get("version") or data.get("objective_version") or ""),
+            payload=dict(data),
+        )
+
+
+_CONSUMERS = frozenset({"planner", "fine_placement", "report", "ui"})
+
+
+def consume_target_selection(
+    selection: dict[str, Any] | TargetSelection,
+    *,
+    consumer: str,
+) -> str:
+    """Return the shared selection_id; every consumer must see the same ID (CE14)."""
+    if consumer not in _CONSUMERS:
+        raise ValueError(f"unknown target-selection consumer {consumer!r}")
+    if isinstance(selection, TargetSelection):
+        sid = selection.selection_id
+        allowed = selection.payload.get("consumed_by") or list(_CONSUMERS)
+    else:
+        sid = str(selection.get("selection_id") or "")
+        allowed = selection.get("consumed_by") or list(_CONSUMERS)
+    if not sid:
+        raise ValueError("target selection missing selection_id")
+    if consumer not in allowed and str(consumer) not in {str(x) for x in allowed}:
+        raise ValueError(f"consumer {consumer!r} not in selection consumed_by={allowed!r}")
+    return sid
+
+
 def _eligible_holes(obj: TargetObjective, structural_blinds: Sequence[int] | None) -> list[int]:
     blinds = set(structural_blinds or ())
     out = []

@@ -113,9 +113,7 @@ def _soft_electrical_fail(sub_id: str) -> bool:
         return True
     if parts[-1] == "throughput" and ("opt101" in parts or "ingaas" in parts):
         return True
-    if "trend" in parts and parts[-1] == "compare":
-        return True
-    return False
+    return bool("trend" in parts and parts[-1] == "compare")
 
 
 @dataclass(frozen=True)
@@ -148,16 +146,19 @@ def overall_verdict(
     for r in failing:
         if r.id in critical:
             continue
+
         # Soft FAILs: still shown on the twin, but do not alone make the rig NOT FUNCTIONAL.
         # - T06.3 / T07.1 no-step: V3 sealed-top cross-cal / settling
         # - elec/*/coupling|ground_shift (incl. under T13.1): subtracted in software; often
         #   inflated by sample scatter on "blind" LEDs — investigate, don't brick the board.
-        def _soft_sub_fail(s: SubResult) -> bool:
+        rid = r.id
+
+        def _soft_sub_fail(s: SubResult, *, _rid: str = rid) -> bool:
             if s.status.rank < Status.FAIL.rank:
                 return False
-            if r.id == "T06.3":
+            if _rid == "T06.3":
                 return True
-            if r.id == "T07.1" and "no step" in (s.message or "").lower():
+            if _rid == "T07.1" and "no step" in (s.message or "").lower():
                 return True
             return _soft_electrical_fail(s.id)
 
@@ -181,18 +182,23 @@ def overall_verdict(
         if r.id in warns or r.status.rank < Status.FAIL.rank:
             continue
 
-        def _soft_sub_fail(s: SubResult) -> bool:
+        rid = r.id
+
+        def _soft_sub_fail(s: SubResult, *, _rid: str = rid) -> bool:
             if s.status.rank < Status.FAIL.rank:
                 return False
-            if r.id == "T06.3":
+            if _rid == "T06.3":
                 return True
-            if r.id == "T07.1" and "no step" in (s.message or "").lower():
+            if _rid == "T07.1" and "no step" in (s.message or "").lower():
                 return True
             return _soft_electrical_fail(s.id)
 
-        if r.subs and all(s.status.rank < Status.FAIL.rank or _soft_sub_fail(s) for s in r.subs):
-            if r.id not in warns:
-                warns.append(r.id)
+        if (
+            r.subs
+            and all(s.status.rank < Status.FAIL.rank or _soft_sub_fail(s) for s in r.subs)
+            and r.id not in warns
+        ):
+            warns.append(r.id)
     if critical:
         reasons.append(f"failure in a critical module: {', '.join(critical)}")
     if unattributed:

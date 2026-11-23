@@ -347,9 +347,7 @@ def allocate_pilot_frozen(
 
     def marginal_gain(h: int, n: int) -> float:
         """Reduction in objective from n -> n+1, per unit cost."""
-        before = (
-            float("inf") if n < 1 else weights[h] * sigma[h] / math.sqrt(n)
-        )
+        before = float("inf") if n < 1 else weights[h] * sigma[h] / math.sqrt(n)
         after = weights[h] * sigma[h] / math.sqrt(n + 1)
         return (before - after) / max(costs[h], 1e-9)
 
@@ -360,9 +358,7 @@ def allocate_pilot_frozen(
     used = sum(alloc[h] * costs[h] for h in protocol.holes)
     while True:
         candidates = [
-            h
-            for h in protocol.holes
-            if alloc[h] < max_prod and used + costs[h] <= remaining + 1e-9
+            h for h in protocol.holes if alloc[h] < max_prod and used + costs[h] <= remaining + 1e-9
         ]
         if not candidates:
             break
@@ -378,9 +374,7 @@ def allocate_pilot_frozen(
     total_prod_slots = sum(alloc.values())
     n_holes = len(protocol.holes)
     base, rem = divmod(total_prod_slots, n_holes) if n_holes else (0, 0)
-    equal = {
-        h: base + (1 if i < rem else 0) for i, h in enumerate(protocol.holes)
-    }
+    equal = {h: base + (1 if i < rem else 0) for i, h in enumerate(protocol.holes)}
     return {
         "policy": "pilot_frozen",
         "n_pilot_per_hole": {str(h): n_pilot for h in protocol.holes},
@@ -493,11 +487,23 @@ def plan_protocol(
     cfg: HwConfig | None = None,
     *,
     pilot_variance: dict[int, float] | None = None,
+    allocation_override: dict[str, Any] | None = None,
 ) -> ProtocolPlan:
-    """Fully offline protocol plan. Never constructs a device or opens serial."""
+    """Fully offline protocol plan. Never constructs a device or opens serial.
+
+    ``allocation_override`` freezes an immutable production schedule (CE10) so
+    hole→N mappings cannot be silently rebuilt or swapped.
+    """
     protocol = load_protocol(source)
     policy = str(protocol.allocation.get("policy") or "equal_fixed")
-    if policy == "equal_fixed":
+    if allocation_override is not None:
+        allocation = dict(allocation_override)
+        # Preserve explicit per-hole production counts immutably.
+        if "n_production_per_hole" in allocation:
+            allocation["n_production_per_hole"] = {
+                str(k): int(v) for k, v in allocation["n_production_per_hole"].items()
+            }
+    elif policy == "equal_fixed":
         allocation = allocate_equal_fixed(protocol)
     else:
         # Offline plan: use declared pilot_variance or unit defaults.
@@ -546,9 +552,7 @@ def plan_protocol(
     ]
     unresolved: list[str] = []
     if protocol.position_policy == "current_position":
-        assumptions.append(
-            "stage coordinate unknown/current; geometry compatibility limited"
-        )
+        assumptions.append("stage coordinate unknown/current; geometry compatibility limited")
     prereq = [
         "single device owner + duty journal",
         "--allow-light for emission",
@@ -829,6 +833,9 @@ def run_protocol(
                 "max_total_on_ms": float(plan.protocol.budgets["max_total_on_ms"]),
                 "max_cycle_s": float(plan.protocol.budgets.get("max_cycle_s") or 0),
                 "max_wall_s": float(plan.protocol.budgets["max_wall_s"]),
+                "wall_deadline_mono": None,
+                "cycle_deadline_mono": None,
+                "deadlines_retained": False,
             },
         }
         store = ScanStore.create(root, "protocol", meta)
@@ -861,9 +868,29 @@ def run_protocol(
             "max_total_on_ms": max_total_on,
             "max_cycle_s": max_cycle,
             "max_wall_s": max_wall,
+            "wall_deadline_mono": None,
+            "cycle_deadline_mono": None,
+            "deadlines_retained": False,
         }
     )
+    # CE09: retain spent costs and original deadlines across resume — never reset
+    # actual_ms to zero or invent fresh wall/cycle deadlines when ones exist.
     actual_on_ms = float(exposure.get("actual_ms") or 0.0)
+    if exposure.get("wall_deadline_mono") is None:
+        exposure["wall_deadline_mono"] = t0 + max_wall
+    else:
+        exposure["deadlines_retained"] = True
+        # Keep original wall deadline; do not restart the clock.
+        t0 = float(exposure["wall_deadline_mono"]) - max_wall
+    if max_cycle > 0:
+        if exposure.get("cycle_deadline_mono") is None:
+            exposure["cycle_deadline_mono"] = cycle_t0 + max_cycle
+        else:
+            exposure["deadlines_retained"] = True
+            cycle_t0 = float(exposure["cycle_deadline_mono"]) - max_cycle
+    exposure["actual_ms"] = actual_on_ms
+    store.meta["exposure_budget"] = dict(exposure)
+    store.save_meta()
 
     def _persist_exposure() -> None:
         exposure["actual_ms"] = actual_on_ms
@@ -1194,9 +1221,10 @@ def resume_protocol(
     status = store.meta.get("status")
     if status == "COMPLETE":
         raise ProtocolError(f"{folder} is already COMPLETE; refuse silent promote/resume")
-    if status not in ("INCOMPLETE", "RUNNING", "ABORTED") and store.meta.get(
-        "unresolved"
-    ) is not True:
+    if (
+        status not in ("INCOMPLETE", "RUNNING", "ABORTED")
+        and store.meta.get("unresolved") is not True
+    ):
         raise ProtocolError(f"cannot resume protocol with status={status!r}")
     proto_plan = store.meta.get("protocol_plan")
     if not proto_plan:
@@ -1212,9 +1240,9 @@ def resume_protocol(
     ):
         raise ProtocolError("resume refuses changed config_sha256 / calibration facts")
     frozen_hash = store.meta.get("protocol_hash")
-    live_hash = content_hash(frozen_proto) if not hasattr(
-        type(frozen_proto), "protocol_hash"
-    ) else None
+    live_hash = (
+        content_hash(frozen_proto) if not hasattr(type(frozen_proto), "protocol_hash") else None
+    )
     # Recompute from frozen body.
     plan = plan_protocol(frozen_proto, cfg)
     if frozen_hash and plan.protocol.protocol_hash() != frozen_hash:
@@ -1243,9 +1271,7 @@ def resume_protocol(
             # Steps are ordered condition-major within each block.
             cond_ids = [c.id for c in plan.protocol.conditions]
             same_block = (
-                prev.hole == nxt.hole
-                and prev.block == nxt.block
-                and prev.phase == nxt.phase
+                prev.hole == nxt.hole and prev.block == nxt.block and prev.phase == nxt.phase
             )
             # Still inside the same block - only legal if prev was last condition.
             if same_block and prev.condition_id != cond_ids[-1]:

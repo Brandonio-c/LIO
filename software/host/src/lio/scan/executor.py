@@ -345,6 +345,20 @@ class ScanExecutor:
                 raise ScanAbort(f"cannot resume: firmware changed ({was} -> {fw})")
             if meta.get("config_sha256") != self.cfg.sha256:
                 raise ScanAbort("cannot resume: lio_hw.yaml changed since the run started")
+            # CE05: gain must still match frozen snapshot before any light.
+            from lio.scan.provenance import read_info_gain
+
+            live_gain = read_info_gain(info)
+            snap = meta.get("acquisition_snapshot") or {}
+            snap_gain = (snap.get("adc") or {}).get("gain") if isinstance(snap, dict) else None
+            expected = str(snap_gain if snap_gain is not None else "1")
+            exp_n = "1" if expected in ("1", "GAIN_ONE", "1.0") else expected
+            live_n = None if live_gain is None else str(live_gain)
+            live_n = "1" if live_n in ("1", "GAIN_ONE", "1.0") else live_n
+            if live_n != exp_n:
+                raise ScanAbort(
+                    f"cannot resume: device gain {live_gain!r} ≠ snapshot gain {expected!r}"
+                )
         moving = not self.plan.static
         stage = dev.stage
         if moving:

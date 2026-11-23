@@ -410,13 +410,23 @@ class LIODevice:
 
     def safe_off(self) -> None:
         """Same-owner OFF/STOP: cancellation- and ledger-independent (D04)."""
+        off_ok = False
         for cmd in ("OFF", "MOTOR STOP"):
             try:
                 self._command_unguarded(cmd, timeout=1.0, check=False)
+                if cmd == "OFF":
+                    off_ok = True
             except Exception as e:  # must not mask the original error
                 log.warning("safe_off: %s failed: %s", cmd, e)
+                if cmd == "OFF":
+                    self._retain_uncertain_if_emitting(reason=f"safe_off OFF failed: {e}")
         with contextlib.suppress(Exception):
             self._close_lit(self.now())
+        if off_ok:
+            with contextlib.suppress(Exception):
+                st = self.status()
+                if st.as_int("ce1") != 0 or st.as_int("ce2") != 0:
+                    self._retain_uncertain_if_emitting(reason="CE remains high after safe_off OFF")
 
     # ------------------------------------------------------------- clock
 
@@ -554,6 +564,10 @@ class LIODevice:
         routed = self._try_route_light_command(cmd)
         if routed is not None:
             return routed
+        # Simulator robustness probes (T02.4) use check=False with deliberate
+        # bad light-capable strings; real transports still refuse.
+        if self._is_sim() and not check:
+            return self._command_unguarded(cmd, timeout=timeout, check=check)
         self._gate_or_refuse_raw_command(cmd)
         return self._command_unguarded(cmd, timeout=timeout, check=check)
 
@@ -571,7 +585,8 @@ class LIODevice:
                 hole = int(parts[1])
                 ms = int(parts[3]) if len(parts) >= 4 else None
                 until = self.ch_on(hole, ms)
-                return self._synthetic_ok_reply("CH", f"until_ms={until}")
+                clamped = int(ms is not None and ms > until)
+                return self._synthetic_ok_reply("CH", f"until_ms={until} clamped={clamped}")
             if head == "CE" and len(parts) >= 3:
                 return self.ce(int(parts[1]), bool(int(parts[2])))
             if head == "MEAS" and len(parts) >= 2:
@@ -643,12 +658,12 @@ class LIODevice:
     def send_raw(self, data: bytes, timeout: float) -> Response | None:
         """Write raw bytes and return the first response of any sequence number.
 
-        Light-capable / exposure-altering payloads are refused (D01). Suite
-        robustness probes must use non-emitting garbage or typed helpers.
+        Light-capable / exposure-altering payloads are refused (D01 / CE01).
+        Multiline, ``@seq``-prefixed, and fragment payloads that can emit are
+        refused before any transport write. Suite robustness probes must use
+        non-emitting garbage or typed helpers.
         """
-        text = data.decode("ascii", errors="replace").strip()
-        if text:
-            self._gate_or_refuse_raw_command(text.split("\n", 1)[0])
+        self._gate_or_refuse_raw_payload(data)
         self.transport.write_raw(data)
         deadline = self.now() + timeout
         while True:
@@ -663,9 +678,18 @@ class LIODevice:
                 return line
 
     @staticmethod
+    def _strip_wire_prefix(cmd: str) -> str:
+        """Strip optional ``@seq`` wire prefix; empty after strip → empty command."""
+        text = cmd.strip()
+        if text.startswith("@"):
+            _head, _, rest = text.partition(" ")
+            return rest.strip()
+        return text
+
+    @staticmethod
     def _raw_command_kind(cmd: str) -> str:
         """Classify a protocol command for the emission gate."""
-        parts = cmd.strip().split()
+        parts = LIODevice._strip_wire_prefix(cmd).split()
         if not parts:
             return "empty"
         head = parts[0].upper()
@@ -708,6 +732,50 @@ class LIODevice:
             f"refusing ungated light-capable command {cmd!r}: use typed "
             "ch_on/ce/meas/sweep/sr_raw (or shell guarded helpers)"
         )
+
+    def _gate_or_refuse_raw_payload(self, data: bytes) -> None:
+        """Refuse multiline / @-prefixed / fragment payloads that can emit (CE01)."""
+        text = data.decode("ascii", errors="replace")
+        # Real-path transports reject multiline payloads entirely: a PING line
+        # must not smuggle a trailing CH/CE/MEAS.
+        lines = [
+            ln for ln in text.replace("\r\n", "\n").replace("\r", "\n").split("\n") if ln.strip()
+        ]
+        if len(lines) > 1:
+            for ln in lines:
+                kind = self._raw_command_kind(ln)
+                if kind not in ("safe", "other", "read", "empty"):
+                    raise OwnershipError(
+                        f"refusing multiline raw payload containing light-capable "
+                        f"command {ln!r}: use typed helpers"
+                    )
+            # Non-emitting multiline garbage is simulator robustness only (T02.4).
+            if self._is_sim():
+                return
+            raise OwnershipError(
+                "refusing multiline raw payload on real-path transport: one command per write"
+            )
+        if not lines:
+            return
+        line = lines[0]
+        stripped = line.strip()
+        if stripped.startswith("@"):
+            # @seq prefixes belong to encode(); public send_raw must not accept them
+            # as a bypass around typed gating on real transports.
+            body = self._strip_wire_prefix(stripped)
+            kind = self._raw_command_kind(body)
+            if kind not in ("safe", "other", "read", "empty"):
+                raise OwnershipError(
+                    f"refusing @-prefixed light-capable raw command {stripped!r}: use typed helpers"
+                )
+            # Simulator-only probes may use @seq for non-emitting commands.
+            if self._is_sim():
+                return
+            raise OwnershipError(
+                f"refusing @-prefixed raw command {stripped!r}: "
+                "use typed command()/helpers (seq is assigned by the device)"
+            )
+        self._gate_or_refuse_raw_command(stripped)
 
     # -------------------------------------------------------------- identity
 
@@ -774,8 +842,17 @@ class LIODevice:
         return {k: f.as_int(k) for k in I2C_DIAG_KEYS}
 
     def _conv_s(self) -> float:
+        """Host timeout helper (seconds). Prefer ``_mean_ms_fw`` for WDT admission."""
         rate = self.info().as_int("rate") if self._info is not None else 128
         return 1.0 / rate + 0.0005
+
+    def _mean_ms_fw(self, n: int) -> int:
+        """Firmware/sim integer mean duration (ms) — must match ``SimulatedLIO._mean_ms``."""
+        if self.mains_hz:
+            return int(n) * 1000 // int(self.mains_hz) + 4
+        rate = self.info().as_int("rate") if self._info is not None else 128
+        conv_us = 1_000_000 // int(rate)
+        return int(n) * (conv_us // 1000 + 2)
 
     def adc_read(self, ch: int, n: int = 1) -> AdcReading:
         timeout = 1.0 + n * self._conv_s() * 1.5
@@ -803,8 +880,15 @@ class LIODevice:
         if led is not None:
             hole, on_i, off_i = led
             cmd += f" {hole} {on_i} {off_i}"
-            nominal = (off_i - on_i) * max(interval_ms, 2.0)
-            bound = self._conservative_bound_for_hole(hole, nominal_on_ms=nominal)
+            # Match firmware STREAM LED estimate (sim/firmware adc_stream).
+            rate = self.info().as_int("rate") if self._info is not None else 128
+            conv_us = 1_000_000 // int(rate)
+            per_us = max(int(interval_ms) * 1000, conv_us + 500)
+            nominal = float((off_i - on_i) * per_us // 1000 + 20)
+            # STREAM must not silently raise WDT past the active setting.
+            bound = self._conservative_bound_for_hole(
+                hole, nominal_on_ms=nominal, may_raise_wdt=False
+            )
             self._duty_gate(hole, bound)
         per = max(interval_ms / 1000.0, self._conv_s())
         t0 = self.now()
@@ -857,12 +941,25 @@ class LIODevice:
         The firmware watchdog still ends the flash.
         """
         rail = self.cfg.channel(hole).rail
-        limit = self.info().as_int(f"wdt_{rail.lower()}_ms")
-        planned = min(ms, limit) if ms is not None else limit
+        default_wdt = int(self.cfg.wdt_ms(rail))
+        current_wdt = int(self.info().as_int(f"wdt_{rail.lower()}_ms"))
         # Real duty/budget knobs cannot disable accounting (D01).
         if not budget and not (self._is_sim() and self.journal is None):
             budget = True
-        bound = self._conservative_bound_for_hole(hole, nominal_on_ms=float(planned))
+        # Over-default requests: restore configured default when a prior short
+        # pulse left WDT below default (T10.2 clamp). If the operator already
+        # set a deliberate sub-default WDT, clamp to that active setting.
+        # Finite timed pulses keep WDT strictly above on-time (timer OFF path).
+        if ms is None:
+            # Hold until the active WDT (honour a prior wdt_cfg).
+            nominal = float(current_wdt)
+        elif ms >= default_wdt:
+            # Firmware clamps to the active WDT. Callers that need the
+            # configured default after short pulses must wdt_cfg(default) first.
+            nominal = float(current_wdt)
+        else:
+            nominal = float(ms + 1)
+        bound = self._conservative_bound_for_hole(hole, nominal_on_ms=nominal)
         if budget:
             self._duty_gate(hole, bound)
         cmd = f"CH {hole} ON" + (f" {ms}" if ms is not None else "")
@@ -876,14 +973,33 @@ class LIODevice:
         return until
 
     def off(self) -> None:
-        self._command_unguarded("OFF")
+        try:
+            self._command_unguarded("OFF")
+        except Exception:
+            self._retain_uncertain_if_emitting(reason="OFF failed")
+            raise
         self._close_lit(self.now())
+        # Verify CE low; retain uncertainty if still high (CE04).
+        with contextlib.suppress(Exception):
+            st = self.status()
+            if st.as_int("ce1") != 0 or st.as_int("ce2") != 0:
+                self._retain_uncertain_if_emitting(reason="CE remains high after OFF")
+
+    def _retain_uncertain_if_emitting(self, *, reason: str) -> None:
+        """Failed/unverified OFF with possible emission → uncertain + full charge."""
+        if self.journal is None:
+            return
+        try:
+            if self._pending_reservations:
+                self.journal.abort_conservative(reservations=list(self._pending_reservations))
+                self._pending_reservations = []
+            self.journal.mark_uncertain(reason=reason)
+        except Exception as e:
+            log.warning("retain uncertain after %s: %s", reason, e)
 
     def _mean_s(self, n: int) -> float:
-        """Duration of one firmware mean of n: n reads, or n mains periods (2.5.1)."""
-        if self.mains_hz:
-            return n / self.mains_hz + 0.004
-        return n * self._conv_s()
+        """Duration of one firmware mean of n (seconds); WDT uses ``_mean_ms_fw``."""
+        return self._mean_ms_fw(n) / 1000.0
 
     def adc_mains(self, hz: int) -> None:
         """ADC CFG MAINS: MEAS/SWEEP/DBG means integrate whole mains periods (2.5.1)."""
@@ -897,15 +1013,13 @@ class LIODevice:
     def meas(self, hole: int, settle_ms: int | None = None, n: int | None = None) -> Meas:
         s = settle_ms if settle_ms is not None else self.cfg.limits["settle_ms"]
         k = n if n is not None else 1
-        # Match firmware/sim MEAS WDT check: settle + 2*mean + 10 (D05/D19).
-        nominal = s + 2 * self._mean_s(k) * 1000 + 10
+        # Match firmware/sim MEAS WDT check exactly: settle + 2*mean_ms + 10.
+        nominal = float(s + 2 * self._mean_ms_fw(k) + 10)
         bound = self._conservative_bound_for_hole(hole, nominal_on_ms=nominal)
         self._duty_gate(hole, bound)
         t0 = self.now()
         try:
-            reply = self._command_unguarded(
-                f"MEAS {hole} {s} {k}", timeout=self.meas_timeout(s, k)
-            )
+            reply = self._command_unguarded(f"MEAS {hole} {s} {k}", timeout=self.meas_timeout(s, k))
             m = Meas.from_fields(reply.fields)
         except Exception:
             self._abort_pending()
@@ -920,7 +1034,7 @@ class LIODevice:
     def sweep(self, settle_ms: int | None = None, n: int | None = None) -> Sweep:
         s = settle_ms if settle_ms is not None else self.cfg.limits["settle_ms"]
         k = n if n is not None else 1
-        per_nominal = s + 2 * self._mean_s(k) * 1000 + 10  # match firmware MEAS/SWEEP est
+        per_nominal = float(s + 2 * self._mean_ms_fw(k) + 10)  # match firmware MEAS/SWEEP est
         # D02: atomically reserve ALL 16 hole charges before send.
         charges: list[tuple[int, float]] = []
         for hole in range(1, 17):
@@ -929,9 +1043,7 @@ class LIODevice:
         self._duty_gate_many(charges)
         t0 = self.now()
         try:
-            reply = self._command_unguarded(
-                f"SWEEP {s} {k}", timeout=16 * self.meas_timeout(s, k)
-            )
+            reply = self._command_unguarded(f"SWEEP {s} {k}", timeout=16 * self.meas_timeout(s, k))
             records = [Meas.from_fields(e.fields) for e in reply.events if e.name == "M"]
         except Exception:
             self._abort_pending()
@@ -963,8 +1075,17 @@ class LIODevice:
         ``arg`` selected, the other rail's CE high). A wrong-rail LED should stay dark;
         it is counted against the hole's duty budget anyway, in case it is miswired."""
         word = {"ce_only": "CE_ONLY", "wrong_rail": "WRONG_RAIL"}[state]
-        on_ms = settle_ms + 2 * self._mean_s(n) * 1000
+        # Match firmware DBG estimate; charge the hole, bound the energized rail.
+        on_ms = float(settle_ms + 2 * self._mean_ms_fw(n) + 10)
         if state == "wrong_rail":
+            hole_rail = self.cfg.channel(arg).rail
+            energized = "B" if hole_rail == "A" else "A"
+            # Ensure energized-rail WDT covers before send (wrong-rail CE).
+            need = int(on_ms) if float(on_ms) == int(on_ms) else int(on_ms) + 1
+            need = max(50, need)
+            wdt_e = int(self.info().as_int(f"wdt_{energized.lower()}_ms"))
+            if wdt_e < need:
+                self.wdt_cfg(energized, need)
             bound = self._conservative_bound_for_hole(arg, nominal_on_ms=on_ms)
             self._duty_gate(arg, bound)
         t0 = self.now()
@@ -1077,16 +1198,25 @@ class LIODevice:
         return wait
 
     def _conservative_bound_for_hole(
-        self, hole: int, *, nominal_on_ms: float | None = None
+        self,
+        hole: int,
+        *,
+        nominal_on_ms: float | None = None,
+        may_raise_wdt: bool = True,
     ) -> float:
         """Conservative pulse bound (D05).
 
-        Prefer a supported watchdog setting that covers the quantized operation
-        and fits remaining budget. Do not invent latency margins. If the active
-        WDT is larger than needed, lower it to the quantized need (firmware
-        minimum 50 ms) before reserving so budgets remain usable.
+        - Active WDT < need → raise with ACK/readback when ``may_raise_wdt``
+          (MEAS 2→8→8→2); otherwise refuse before light (STREAM over-cap).
+        - Active WDT > need → lower to covering need with ACK/readback so the
+          reserved charge matches possible exposure (CE03 / duty budgets).
+        Firmware-matched ``need`` prevents the old host 52 vs firmware 54 miss.
         """
-        from lio.timing_capability import FW_WDT_MIN_MS, quantize_wdt_ms
+        from lio.timing_capability import (
+            FW_WDT_MIN_MS,
+            quantize_wdt_ms,
+            rail_wdt_cap_ms,
+        )
 
         rail = self.cfg.channel(hole).rail
         try:
@@ -1095,18 +1225,47 @@ class LIODevice:
             raise DutyBudgetError(
                 f"cannot read WDT for hole {hole}: refuse before light ({e})"
             ) from e
-        # When caller omits nominal (e.g. CE), use firmware minimum as the
-        # operation need — then shrink WDT down to that covering setting.
-        nominal = float(nominal_on_ms) if nominal_on_ms is not None else float(FW_WDT_MIN_MS)
+        # CE / unknown duration: lower to firmware minimum so duty budgets fit;
+        # typed MEAS/DBG always pass an explicit firmware-matched nominal and
+        # raise the energized rail as needed afterward.
+        nominal = float(FW_WDT_MIN_MS) if nominal_on_ms is None else float(nominal_on_ms)
+        may_lower = True
         need = quantize_wdt_ms(nominal, capability=self._timing)
-        if wdt < need:
+        rail_cap = rail_wdt_cap_ms(rail, capability=self._timing)
+        if need > rail_cap:
             raise DutyBudgetError(
-                f"refuse before light: active WDT {wdt} ms cannot cover need {need} ms"
+                f"refuse before light: need {need} ms exceeds rail {rail} cap {rail_cap} ms"
             )
-        if wdt > need:
-            self.wdt_cfg(rail, int(need))
+        if wdt < need:
+            if not may_raise_wdt:
+                raise DutyBudgetError(
+                    f"refuse before light: active WDT {wdt} ms cannot cover "
+                    f"need {need} ms (raise not permitted for this operation)"
+                )
+            # Raise to covering need (2→8→8→2); verify ACK/readback.
+            applied = self.wdt_cfg(rail, int(need))
+            try:
+                ack = int(applied.as_int(f"wdt_{rail.lower()}_ms"))
+            except Exception:
+                ack = int(need)
+            rb = int(self.info(refresh=True).as_int(f"wdt_{rail.lower()}_ms"))
+            if min(ack, rb) < need:
+                raise DutyBudgetError(
+                    f"refuse before light: WDT ACK/readback {ack}/{rb} ms < need {need} ms"
+                )
+            wdt = int(rb if rb >= need else ack)
+        elif wdt > need and may_lower:
+            applied = self.wdt_cfg(rail, int(need))
+            try:
+                ack = int(applied.as_int(f"wdt_{rail.lower()}_ms"))
+            except Exception:
+                ack = int(need)
+            rb = int(self.info(refresh=True).as_int(f"wdt_{rail.lower()}_ms"))
+            if max(ack, rb) < need or (ack != need and rb != need):
+                raise DutyBudgetError(
+                    f"refuse before light: WDT lower ACK/readback {ack}/{rb} ms != need {need} ms"
+                )
             wdt = int(need)
-        use_bound = float(wdt)
         bound, refuse = conservative_pulse_bound_ms(
             nominal_on_ms=nominal,
             active_wdt_ms=wdt,
@@ -1165,9 +1324,7 @@ class LIODevice:
         for hole, on_ms in charges:
             wait = self.duty.wait_needed(hole, on_ms, self.now())
             if wait > 0:
-                log.info(
-                    "duty: cooling hole %d for %.1f s before %.0f ms on", hole, wait, on_ms
-                )
+                log.info("duty: cooling hole %d for %.1f s before %.0f ms on", hole, wait, on_ms)
                 self.duty.note_cooldown(hole, wait, f"{on_ms:.0f} ms requested")
                 self.sleep(wait)
 

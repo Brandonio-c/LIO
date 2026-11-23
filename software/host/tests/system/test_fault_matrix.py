@@ -186,11 +186,9 @@ SCAN_MATRIX = (
     # judged in continuous mode only (stop-measure-move readings never see it)
     ScanRow("coil_emi", "elec/ingaas/coil_emi", part="motor wiring", mode="matrix_cont"),
     ScanRow("coil_emi", "elec/opt101/coil_emi", part="motor wiring", mode="matrix_cont"),
-    ScanRow("led_swapped:9,16", "optics/opt101/h16/plausibility", part="LED16",
-            status=Status.WARN),
+    ScanRow("led_swapped:9,16", "optics/opt101/h16/plausibility", part="LED16", status=Status.WARN),
     ScanRow("led_swapped:9,16", "optics/opt101/h09/response", part="LED9"),
-    ScanRow("wrong_led:16=630", "optics/opt101/h16/plausibility", part="LED16",
-            status=Status.WARN),
+    ScanRow("wrong_led:16=630", "optics/opt101/h16/plausibility", part="LED16", status=Status.WARN),
     ScanRow("rail_miswired:12", "optics/ingaas/h12/response", part="rail wiring"),
     ScanRow("rail_miswired:12", "optics/wrong_rail/h12", part="rail wiring"),  # fw 2.5.0
     # a partial loss of light is judged against a baseline of the same sample (absolute
@@ -213,8 +211,9 @@ SCAN_MATRIX = (
         reference="white_ptfe",
         part="chamber walls",
     ),
-    ScanRow("intermittent:6", "optics/h06/intermittent", part="LED6",
-            status=Status.WARN),  # seen on the rig; flaky contact, not a dead LED
+    ScanRow(
+        "intermittent:6", "optics/h06/intermittent", part="LED6", status=Status.WARN
+    ),  # seen on the rig; flaky contact, not a dead LED
     # S4: ambient, mechanics, the run itself
     ScanRow("ambient_leak:-20000", "ambient/opt101/leak", part="shroud"),
     ScanRow("ambient_leak:-20000", "ambient/ingaas/leak", part="shroud"),

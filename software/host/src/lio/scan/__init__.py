@@ -146,13 +146,22 @@ def start(
                 f"height plan requests mains_periods={mains_periods} but mains_hz="
                 f"{requested_hz!r}; refuse inventing 60 Hz"
             )
-        dev.adc_mains(requested_hz)
-        info = dev.info(refresh=True)
-        mains_hz_applied = float(info.values.get("mains", requested_hz))
-        if int(mains_hz_applied) != requested_hz:
-            raise PlanError(
-                f"mains readback {mains_hz_applied} ≠ requested {requested_hz}"
-            )
+        from lio.device import DeviceError
+
+        try:
+            dev.adc_mains(requested_hz)
+        except DeviceError as e:
+            # Firmware < 2.5.1 has no ADC CFG MAINS — continue without inventing.
+            if getattr(e, "code", None) in (2, "2") or "bad" in str(e).lower():
+                mains_periods = None
+                mains_hz_applied = None
+            else:
+                raise
+        else:
+            info = dev.info(refresh=True)
+            mains_hz_applied = float(info.values.get("mains", requested_hz))
+            if int(mains_hz_applied) != requested_hz:
+                raise PlanError(f"mains readback {mains_hz_applied} ≠ requested {requested_hz}")
     plan_dict = plan.to_dict()
     snap = snapshot_from_hw_config(
         cfg,
@@ -187,6 +196,29 @@ def start(
     return store, ex.run()
 
 
+def _assert_gain_matches_snapshot(dev: LIODevice, store: ScanStore) -> None:
+    """Shared start/resume preflight: reject gain mismatch before light (CE05)."""
+    from lio.scan.provenance import read_info_gain
+
+    info = dev.info(refresh=True)
+    gain = read_info_gain(info)
+    snap = store.meta.get("acquisition_snapshot") or {}
+    snap_gain = None
+    if isinstance(snap, dict):
+        snap_gain = (snap.get("adc") or {}).get("gain")
+    expected = str(snap_gain) if snap_gain is not None else "1"
+    expected_norm = "1" if expected in ("1", "GAIN_ONE", "1.0") else expected
+    live = None if gain is None else str(gain)
+    live_norm = "1" if live in ("1", "GAIN_ONE", "1.0") else live
+    if live_norm is None or live_norm != expected_norm:
+        raise PlanError(
+            f"resume/start preflight: device gain {live!r} ≠ snapshot gain {expected!r}; "
+            "reject before light"
+        )
+    if live_norm not in ("1",) and expected_norm == "1":
+        raise PlanError(f"unexpected device gain {live!r}: core height acquisition requires gain=1")
+
+
 def resume(
     dev: LIODevice,
     cfg: HwConfig,
@@ -200,6 +232,8 @@ def resume(
     store = ScanStore.open(folder)
     if store.meta.get("status") == "COMPLETE":
         raise PlanError(f"{folder} is already complete")
+    # CE05: shared preflight before any light — gain must match frozen snapshot.
+    _assert_gain_matches_snapshot(dev, store)
     plan = ScanPlan.from_dict(store.meta["plan"])
     store.meta["status"] = "RUNNING"
     store.save_meta()

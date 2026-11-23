@@ -53,9 +53,7 @@ def test_config_hash_match_verified_without_snapshot(cfg: HwConfig) -> None:
     assert verified is True
 
 
-def test_analysis_identity_rejection_when_cube_hash_changes(
-    cfg: HwConfig, tmp_path: Path
-) -> None:
+def test_analysis_identity_rejection_when_cube_hash_changes(cfg: HwConfig, tmp_path: Path) -> None:
     src = RESULTS / "20261123-003133_scan_quick"
     if not (src / "cube.csv.gz").exists():
         pytest.skip("historical cube not present")
@@ -88,7 +86,8 @@ def test_analysis_identity_rejection_when_cube_hash_changes(
     import csv
     import io
 
-    rows = list(csv.DictReader(gzip.open(dest / "cube.csv.gz", "rt", encoding="utf-8", newline="")))
+    with gzip.open(dest / "cube.csv.gz", "rt", encoding="utf-8", newline="") as gz:
+        rows = list(csv.DictReader(gz))
     touched = False
     for row in rows:
         if row.get("net_counts") not in ("", None):
@@ -126,9 +125,7 @@ def test_calibration_gain1_gain2_volts_agree() -> None:
 def test_rf_not_invented_for_historical() -> None:
     cal = resolve_calibration(gain="1", detector="ingaas", rf=RfProvenance(None, "unknown"))
     assert cal.mv_to_eq_current_na(-41.234375) is None
-    cal2 = resolve_calibration(
-        gain="1", rf=RfProvenance(1.0e6, "declared"), detector="ingaas"
-    )
+    cal2 = resolve_calibration(gain="1", rf=RfProvenance(1.0e6, "declared"), detector="ingaas")
     # -329.875 counts = -41.234375 mV → 41.234375 nA at 1 MΩ
     mv = cal2.counts_to_mv(-329.875)
     assert mv == pytest.approx(-41.234375)
@@ -194,7 +191,7 @@ def test_nov23_h16_opt101_p2_nets() -> None:
     for h, n_down in nets_down:
         if h in nets_up:
             diffs.append(nets_up[h] - n_down)
-    # eight exact-height up-minus-down (P3 up − P2 down)
+    # eight exact-height up-minus-down (P3 up - P2 down)
     assert len(diffs) == 8
     assert diffs == [2, 0, 1, 1, -1, 0, -3, -5]
     import numpy as np
