@@ -30,6 +30,7 @@ from lio import motion
 from lio.config import HwConfig
 from lio.device import DeviceError, LIODevice, NoResponse
 from lio.operator import Abort, Operator
+from lio.ownership import OwnershipError
 from lio.scan.calibration import resolve_calibration
 from lio.scan.plan import ScanPlan, Step
 from lio.scan.store import ScanStore
@@ -715,11 +716,20 @@ class ScanExecutor:
         else:
             results["light_while_moving"] = "SKIP: static mode (no motion)"
         dev.sr_raw(0x0003)  # two holes selected: raising CE must be refused
+        sends = dev.light_sends
         try:
             dev.command("CE 1 1")
             results["single_channel"] = "FAIL: CE accepted with two holes selected"
         except DeviceError as e:
             results["single_channel"] = "PASS" if e.code == 3 else f"FAIL: code {e.code}"
+        except OwnershipError as e:
+            # A managed real port refuses an ambiguous mask BEFORE transmission, so
+            # the firmware interlock is not exercised here (as in T10.4).
+            if dev.light_sends != sends:
+                raise
+            results["single_channel"] = (
+                f"SKIP: host refused before transmission ({e}); firmware interlock not exercised"
+            )
         finally:
             dev.off()
         self.store.meta["interlocks"] = results

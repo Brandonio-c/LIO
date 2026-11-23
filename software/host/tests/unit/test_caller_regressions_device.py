@@ -485,3 +485,19 @@ def test_a24_safe_off_err_and_missing_status_retains(cfg: HwConfig, tmp_path: Pa
     finally:
         t.rewrite = None
         dev.close()
+
+
+def test_ambiguous_mask_ce_refused_before_transmission(cfg: HwConfig, tmp_path: Path) -> None:
+    """Live T13.1 closing check: two holes selected + CE on a managed real port.
+
+    The host refuses before any CE write (firmware interlock not exercised), so
+    the scan's closing check records SKIP instead of crashing the scan.
+    """
+    with opened(cfg, tmp_path) as (dev, t, sim):
+        dev.sr_raw(0x0003)
+        sends, n = dev.light_sends, len(t.writes)
+        with pytest.raises(OwnershipError, match="no single selected hole"):
+            dev.command("CE 1 1")
+        assert dev.light_sends == sends
+        assert not any(b"CE 1 1" in w for w in t.writes[n:])
+        assert not sim.ce[1]
