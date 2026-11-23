@@ -137,6 +137,12 @@ def new_record(ctx: SuiteContext, meta: dict[str, str] | None = None) -> RunReco
         rec.firmware.update(ctx.dev.info().values)
     except Exception as e:  # identity is best effort; T02 reports the failure
         rec.firmware["error"] = str(e)
+    # How LED on-time is bounded on this connection (M1 / D05): simulated,
+    # hardware_watchdog, cooperative_unproven (owner-acknowledged) or refused.
+    try:
+        rec.firmware["exposure_bound"] = ctx.dev.exposure_bound
+    except Exception as e:
+        rec.firmware["exposure_bound"] = f"unknown ({e})"
     return rec
 
 
