@@ -76,6 +76,7 @@ installs; precision (SciPy) tests on 3.10 (SciPy not installed there).
 | Same with `--cov`, Python 3.10.18 | **960 passed, 0 failed, 15 skipped**; skips: scikit-learn, zxing, SciPy (precision) not installed, plus the 6 simulator skips |
 | Coverage gate `protocol.py,analysis.py ≥ 90 %` (3.10 run) | **98 %**, exit 0 |
 | Offline protocol plan (`lio scan plan --protocol …`) while the dashboard owned the port | Planned 6 steps without opening the port |
+| Re-run on the pushed tip `b5b8822`, Python 3.12, with coverage | **971 passed, 1 failed, 6 skipped**; gate 98 %. The failure, `test_fullpass_counterexamples.py::test_golden_dashboard_http_plan_numerical_answer` (real HTTP server), passed 6/6 when run alone, with and without coverage. Its failure output was not captured, so the cause is **unidentified**; treat it as an open intermittent failure, not a pass. |
 
 Skips are recorded, not counted as passes. Historical runs used by the saved-data tests
 were hashed before/after by a module fixture; unchanged.
