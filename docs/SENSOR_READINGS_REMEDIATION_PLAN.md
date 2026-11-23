@@ -1,5 +1,7 @@
 # LIO V3 sensor-readings remediation plan
 
+> **Current follow-up (23 November 2026):** R0–R8 below remain historical requirements, not proof of completion. Independent QA at `a0935fb` found unresolved actual-caller failures despite a green maintained Python 3.12 suite. Use the [caller remediation and full-test plan](SENSOR_READINGS_CALLER_REMEDIATION_PLAN.md), [independent audit](research/LIO_V3_RESIDUAL_REMEDIATION_QA_a0935fb_2026-11-23.md) and [implementation handoff](handoffs/2026-11-23_caller_remediation_implementation.md) for the current work. The owner has subsequently authorized implementation plus supported live full tests under that handoff; earlier offline-only authorization statements below describe the earlier session.
+
 **Status:** implementation specification after independent QA; remediation has not been implemented by publishing this document.  
 **Date:** 23 November 2026.  
 **Audited implementation:** [main at 38eb8e6](https://github.com/Brandonio-c/LIO/commit/38eb8e6240dbbbde9f562c8b4b94ccba564ad8d8). Reconcile newer commits before editing.  

@@ -1,5 +1,7 @@
 # Residual sensor-readings remediation acceptance
 
+> **Historical implementer claim; acceptance superseded by independent QA:** The [a0935fb audit](../research/LIO_V3_RESIDUAL_REMEDIATION_QA_a0935fb_2026-11-23.md) reproduced twelve separate actual-caller acceptance failures and additional residual defects. Original M0–M6 are not accepted as complete; Python 3.10 CI mypy also fails. The archived live measurements and this handoff's historical test counts are preserved below. Use the [current remediation plan](../SENSOR_READINGS_CALLER_REMEDIATION_PLAN.md) and [new implementation handoff](2026-11-23_caller_remediation_implementation.md). Software test passes do not qualify the optics.
+
 **Prepared:** 23 November 2026  
 **Base:** `944a820d2287b6677a0d0fde017b40bbbaff87f6` + residual caller-level repairs (this commit).  
 **Status:** offline host software candidate **plus** one automatic live-host catalogue run. **NOT** bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified. **M7 deferred.** No measured SNR or recovered SWIR/1850 chemistry claim.
