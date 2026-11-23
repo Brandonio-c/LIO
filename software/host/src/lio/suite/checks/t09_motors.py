@@ -361,7 +361,7 @@ def _start_at_bottom(ctx: SuiteContext, tr: dict[str, float]) -> None:
         d1, d2 = bot[0] - a[0], bot[1] - a[1]
         if d1 != d2:
             raise Skip(
-                f"the two sides are not level (left {a[0]}, right {a[1]}): level them "
+                f"the two sides are not level (M1/right {a[0]}, M2/left {a[1]}): level them "
                 "with single-motor moves first"
             )
         if d1:

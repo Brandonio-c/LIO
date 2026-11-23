@@ -16,8 +16,19 @@ import math
 import threading
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
 
 from lio.config import HwConfig
+from lio.ownership import (
+    DeviceLock,
+    DutyBudgetError,
+    DutyJournal,
+    JournalError,
+    default_state_root,
+    normalize_port_identity,
+    rig_identity_from_port,
+)
 from lio.protocol import (
     ErrCode,
     Event,
@@ -30,7 +41,7 @@ from lio.protocol import (
     parse_line,
 )
 from lio.stage import StageError, StageTracker
-from lio.transport import Transport
+from lio.transport import SerialTransport, SimTransport, Transport
 
 log = logging.getLogger(__name__)
 
@@ -227,6 +238,9 @@ class LIODevice:
         *,
         duty: bool = True,
         stage: StageTracker | None = None,
+        journal: DutyJournal | None = None,
+        device_lock: DeviceLock | None = None,
+        state_root: Path | None = None,
     ) -> None:
         self.transport = transport
         self.cfg = cfg
@@ -262,20 +276,50 @@ class LIODevice:
             if duty
             else None
         )
+        # M1: real serial always gets exclusive lock + durable journal. Simulation
+        # keeps the in-process DutyTracker unless a synthetic journal is passed.
+        self.device_lock = device_lock
+        self.journal = journal
+        self._pending_reservation: Any = None
+        if isinstance(transport, SerialTransport):
+            root = state_root if state_root is not None else default_state_root()
+            rig = rig_identity_from_port(transport.port)
+            if self.device_lock is None:
+                self.device_lock = DeviceLock(rig, root)
+            if self.journal is None and duty:
+                self.journal = DutyJournal.for_rig(
+                    normalize_port_identity(transport.port),
+                    state_root=root,
+                    window_s=th.num("duty.window_s"),
+                    budget_ms=cfg.duty_budgets_ms(),
+                    rail_of=cfg.duty_key,
+                    mono_now=self.transport.now,
+                )
 
     # ------------------------------------------------------------ lifecycle
 
+    def _is_sim(self) -> bool:
+        return isinstance(self.transport, SimTransport)
+
     def open(self) -> Event:
+        # Ownership lock BEFORE serial open / POWER WAKE (M1).
+        if self.device_lock is not None:
+            self.device_lock.acquire()
         t0 = self.transport.now()
         self._expect_boot = True
-        self.transport.open()
         try:
-            banner = self.wait_banner(self.cfg.section.num("link.boot_timeout_s"))
+            self.transport.open()
+            try:
+                banner = self.wait_banner(self.cfg.section.num("link.boot_timeout_s"))
+            except BaseException:
+                self.transport.close()
+                raise
+            finally:
+                self._expect_boot = False
         except BaseException:
-            self.transport.close()
+            if self.device_lock is not None:
+                self.device_lock.release()
             raise
-        finally:
-            self._expect_boot = False
         self.boot_s = self.transport.now() - t0
         self.keep_awake(force=True)
         return banner
@@ -317,9 +361,13 @@ class LIODevice:
         return True
 
     def close(self) -> None:
-        if self.transport.is_open:
-            self.safe_off()
-            self.transport.close()
+        try:
+            if self.transport.is_open:
+                self.safe_off()
+                self.transport.close()
+        finally:
+            if self.device_lock is not None:
+                self.device_lock.release()
 
     def __enter__(self) -> LIODevice:
         self.open()
@@ -645,13 +693,17 @@ class LIODevice:
     def ch_on(self, hole: int, ms: int | None = None, *, budget: bool = True) -> int:
         """Light one hole; returns the firmware's (possibly clamped) on-time in ms.
 
-        ``budget=False`` skips the host duty budget for this flash (dashboard LED
-        diagnostics only); the firmware watchdog still ends it.
+        Real hardware always goes through the duty journal (M1): ``budget=False``
+        is not an escape hatch. Simulation without a journal may still skip.
+        The firmware watchdog still ends the flash.
         """
         # Budget what the firmware will allow: the request clamped to the
         # rail's current watchdog limit.
         limit = self.info().as_int(f"wdt_{self.cfg.channel(hole).rail.lower()}_ms")
         planned = min(ms, limit) if ms is not None else limit
+        # Remove unrestricted real-hardware budget=False bypass.
+        if not budget and not (self._is_sim() and self.journal is None):
+            budget = True
         if budget:
             self._duty_gate(hole, planned)
         cmd = f"CH {hole} ON" + (f" {ms}" if ms is not None else "")
@@ -738,9 +790,14 @@ class LIODevice:
         token = self.info(refresh=True).as_int("arm_token")
         return self.command(f"MOTOR ARM {token:04X}").fields
 
-    def motor_step(self, motor: int, steps: int, rpm: int | None = None) -> Fields:
-        """Half-step move; refused before sending if it would leave the marked travel."""
-        if self.stage is not None:
+    def motor_step(
+        self, motor: int, steps: int, rpm: int | None = None, *, soft_limits: bool = True
+    ) -> Fields:
+        """Half-step move; by default refused if it would leave the marked travel.
+
+        Pass ``soft_limits=False`` for operator leveling on the Motors tab (scans and
+        suite motion still use the default)."""
+        if soft_limits and self.stage is not None:
             self.status()  # bring the tracked position up to date
             self.stage.check_move(motor, steps, self.stage_top_margin())
         cmd = f"MOTOR {motor} STEP {steps:+d}" + (f" {rpm}" if rpm is not None else "")
@@ -820,6 +877,27 @@ class LIODevice:
         return wait
 
     def _duty_gate(self, hole: int, on_ms: float) -> None:
+        """Gate light through the durable journal when present; else DutyTracker.
+
+        Over-budget requests (``on_ms`` greater than the absolute budget) are
+        rejected before any transport write. Window-full cases wait, then reserve.
+        """
+        if self.journal is not None:
+            try:
+                wait = self.journal.wait_needed(hole, on_ms, self.now())
+            except DutyBudgetError:
+                raise
+            if wait > 0:
+                log.info("duty journal: cooling hole %d for %.1f s before %.0f ms on", hole, wait, on_ms)
+                if self.duty is not None:
+                    self.duty.note_cooldown(hole, wait, f"{on_ms:.0f} ms requested")
+                self.sleep(wait)
+            try:
+                self._pending_reservation = self.journal.reserve(hole, on_ms)
+            except (DutyBudgetError, JournalError):
+                self._pending_reservation = None
+                raise
+            return
         if self.duty is None:
             return
         wait = self.duty.wait_needed(hole, on_ms, self.now())
@@ -831,6 +909,15 @@ class LIODevice:
     def _record_duty(self, hole: int, t_on: float, t_off: float) -> None:
         if self.duty is not None:
             self.duty.record(hole, t_on, t_off)
+        res = self._pending_reservation
+        if res is not None and self.journal is not None:
+            self._pending_reservation = None
+            try:
+                self.journal.commit(res, t_on=t_on, t_off=t_off)
+            except JournalError:
+                # Accounting failure after light: retain conservative charge.
+                self.journal.abort_conservative(res)
+                raise
 
     def _close_lit(self, now: float) -> None:
         if self._lit is None:

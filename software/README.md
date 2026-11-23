@@ -24,6 +24,8 @@ lio dashboard                 # or: the web dashboard (run tests, digital twin, 
 
 How to test, the full catalogue and the first-hardware-session checklist: [docs/TESTING.md](../docs/TESTING.md).
 
+Sensor-readings upgrade (M0–M6 offline CLI/protocol): see [host/README.md](host/README.md#sensor-readings-upgrade-m0m6-offline-tested) and [docs/SENSOR_READINGS_UPGRADE_PLAN.md](../docs/SENSOR_READINGS_UPGRADE_PLAN.md). Not bench-qualified.
+
 ## Firmware
 
 Build and flash with `arduino-cli`. The board has the new (Optiboot) bootloader; use `cpu=atmega328old` for an old one.
@@ -39,7 +41,7 @@ The Arduino IDE works too: board Arduino Nano, processor ATmega328P. No librarie
 - A0 DATA, A1 CLOCK, A2 LATCH (74HC595 chain)
 - A3 CE1 (DRV1, RAIL A), D10 CE2 (DRV2, RAIL B)
 - D11 SDA, D12 SCL: software I²C to the ADS1115 (ADS A0 = InGaAs, A1 = OPT101), 4.7 kΩ pull-ups to +5 V. A4/A5 are unused
-- D2–D5 motor 1 (left), D6–D9 motor 2 (right)
+- D2–D5 motor 1 (right), D6–D9 motor 2 (left)
 
 **Switching order:** both drivers off, select the MOSFET, then raise that rail's CE. The firmware enforces this, along with one channel at a time and a per-rail on-time watchdog.
 

@@ -37,7 +37,7 @@ The output of every run is a machine-readable result file plus a human-readable 
 | ADC | ADS1115 at I²C 0x48 (A4 SDA, A5 SCL). ADS A0 = InGaAs TIA output (through 10 kΩ); ADS A1 = OPT101; A2/A3 unconnected. GAIN_ONE = ±4.096 V, 125 µV/count. Default 128 SPS (≈8 ms per conversion) |
 | OPT101 | Silicon, ≈300–1100 nm, holes 1–9. Dark ≈ tens of mV. Saturates at ≈3.7 V (≈29,600 counts) |
 | InGaAs + TL072 TIA | ≈800–1750 nm, holes 8–15. Rf = 1 MΩ, Cf = 10 pF, ±5 V. Output **should rise** with light; it saturates at ≈+3.5 V (≈28,000 counts). If it falls with light, the photodiode is reversed (a known historical wiring error), which is a **hard fail with a diagnostic**. If −5 V is lost (bank B asleep), the output becomes erratic |
-| Emitters | 1 = 395 nm, 2 = ≈405, 3 blue, 4 green, 5 yellow, 6 orange, 7 red, 8 = 850, 9 = 940, 10–11 reserved (empty), 12 = 1450, 13 = 1550, 14 = 1650, 15 = 1760 (weak, at InGaAs cutoff), 16 = 1850 (beyond detector range; expect no signal) |
+| Emitters | 1 = 395 nm, 2 = purple (~405 nm), 3 blue, 4 green, 5 yellow, 6 orange, 7 red, 8 = 850, 9 = 940, 10 white, 11 pink, 12 = 1450, 13 = 1550, 14 = 1650, 15 = 1760 (weak, at InGaAs cutoff), 16 = 1850 (beyond detector range; expect no signal) |
 | Motors | 2× 28BYJ-48 through ULN2003. D2–D5 = motor 1 IN1–IN4, D6–D9 = motor 2. **No limit switches** exist: never home automatically and never move unattended |
 | Spare pins | D11, D12 (digital); A6, A7 (analog input only) |
 | Existing host code | `software/control/lio_control.py`: purpose and protocol unknown. **It must be read and understood before any firmware change.** Don't break it without the user's agreement |

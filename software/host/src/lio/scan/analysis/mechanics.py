@@ -301,7 +301,7 @@ def _travel(cube: Cube, cfg: HwConfig) -> list[Finding]:
         return [Finding("mech/travel", "travel (top to bottom)", Status.SKIP,
                         detail="travel limits not tracked")]  # fmt: skip
     want = int(cfg.thresholds.raw("motion.travel.range_steps") or 0)
-    detail = f"tracked range {rng[0]} / {rng[1]} half-steps (left / right)"
+    detail = f"tracked range {rng[0]} / {rng[1]} half-steps (M1/right / M2/left)"
     status = Status.PASS
     if rng[0] != rng[1]:
         status, detail = Status.WARN, detail + ": the two sides differ"

@@ -146,6 +146,8 @@ class Session:
         self._jog_thread: threading.Thread | None = None
         self._ring: dict[str, Any] | None = None  # LED ring in progress (LEDs tab)
         self._ring_thread: threading.Thread | None = None
+        # Watchdog values to restore after a solid single-hole hold raised them to the cap.
+        self._ring_wdt_restore: dict[str, int] | None = None
         self.error = ""
         self._log: collections.deque[str] = collections.deque(maxlen=LOG_LINES)
         self._thread: threading.Thread | None = None
@@ -602,7 +604,11 @@ class Session:
         return sweeps, meta
 
     def flash(self, hole: int, ms: int) -> dict[str, Any]:
-        """Light one hole for ``ms`` (clamped by the firmware watchdog), then off."""
+        """Light one hole for ``ms`` (clamped by the firmware watchdog), then off.
+
+        Kept for timed pulses (tests, meter checks). The dashboard twin uses
+        :meth:`led_hold` so an LED stays solid until the operator turns it off.
+        """
 
         def go(dev: LIODevice) -> dict[str, Any]:
             dev.keep_awake()
@@ -615,6 +621,30 @@ class Session:
             return {"action": "flash", "hole": hole, "on_ms": until}
 
         return self._manual(go)
+
+    def led_hold(self, hole: int) -> dict[str, Any]:
+        """Toggle solid-on for one hole (rail watchdog window, renewed until stop)."""
+        if not 1 <= hole <= 16:
+            raise Refused(f"hole must be 1-16, got {hole}")
+        with self._lock:
+            holding = (
+                self._ring is not None
+                and self._ring.get("holes") == [hole]
+            )
+        if holding:
+            self.ring_stop()
+            self.log(f"hold hole {hole}: off")
+            return {"action": "hold", "hole": hole, "on": False}
+        # on_ms is overridden to the rail watchdog cap inside ring_start for a
+        # one-hole hold when the duty budget is off (the operator default).
+        out = self.ring_start(
+            self.cfg.section.integer("dashboard.ring_on_ms"),
+            0,
+            include_unfitted=False,
+            holes=[hole],
+        )
+        self.log(f"hold hole {hole}: solid on ({out.get('on_ms')} ms window, renewing)")
+        return {**out, "action": "hold", "hole": hole, "on": True}
 
     def wake(self) -> dict[str, Any]:
         """Hold the motor coils (no steps) to wake power bank A, then look for the ADC."""
@@ -716,8 +746,13 @@ class Session:
     # jog_max half-steps, so a jog is re-sent while the page keeps it latched. If the
     # page goes quiet for jog_deadman_s the motors are stopped.
 
-    def jog_start(self, motor: str, direction: str, speed: int) -> dict[str, Any]:
-        """Run one motor, or both, up or down until ``jog_stop`` (or the dead-man)."""
+    def jog_start(
+        self, motor: str, direction: str, speed: int, *, soft_limits: bool = False
+    ) -> dict[str, Any]:
+        """Run one motor, or both, up or down until ``jog_stop`` (or the dead-man).
+
+        Soft limits are off by default so Motors-tab Run up/down can level freely;
+        ``stage_goto`` turns them on so travel stops at the marked ends."""
         lim = self.cfg.limits
         if motor not in ("1", "2", "both"):
             raise Refused("motor must be 1, 2 or both")
@@ -733,7 +768,7 @@ class Session:
         targets = [1, 2] if motor == "both" else [int(motor)]
 
         def go(dev: LIODevice) -> dict[str, Any]:
-            if dev.stage is not None:
+            if soft_limits and dev.stage is not None:
                 dev.status()
                 stop_at = self._jog_stop_room(speed)
                 for m in targets:
@@ -752,10 +787,10 @@ class Session:
                 self._jog = {
                     "motor": motor, "direction": direction, "speed": speed, "cmd": cmd,
                     "targets": targets, "pos0": {m: st.as_int(f"pos{m}") for m in targets},
-                    "sign": sign,
+                    "sign": sign, "soft_limits": soft_limits,
                     "heartbeat": now, "started": now,
                 }  # fmt: skip
-            who = {"both": "both", "1": "left", "2": "right"}[motor]
+            who = {"both": "both", "1": "right (M1)", "2": "left (M2)"}[motor]
             self.log(f"motor {who} running {direction} at {speed} half-steps/s (continuous)")
             return {"jog": motor, "direction": direction, "speed": speed}
 
@@ -781,7 +816,9 @@ class Session:
         if (lim.top if where == "top" else lim.bottom) is None:
             raise Refused(f"the {where} of the travel is not marked")
         speed = self.cfg.thresholds.integer("motion.travel.jog_speed")
-        out = self.jog_start("both", "up" if where == "top" else "down", speed)
+        out = self.jog_start(
+            "both", "up" if where == "top" else "down", speed, soft_limits=True
+        )
         with self._lock:
             if self._jog is not None:
                 self._jog["goto"] = where
@@ -835,7 +872,8 @@ class Session:
                 states = {m: st.as_str(f"motor{m}") for m in jog["targets"]}
                 pos = {m: st.as_int(f"pos{m}") for m in jog["targets"]}
                 stage = self.dev.stage
-                if stage is not None:
+                # Manual Motors-tab Run ignores soft limits; stage_goto keeps them on.
+                if stage is not None and jog.get("soft_limits"):
                     stop_at = self._jog_stop_room(jog["speed"])
                     margin = self.dev.stage_top_margin()
                     rooms = [stage.room(m, jog["sign"], margin) for m in jog["targets"]]
@@ -883,9 +921,12 @@ class Session:
     def ring_min_step_ms(self, on_ms: int, holes: list[int]) -> int:
         """Shortest step that keeps every hole in the ring within its duty budget.
 
-        With ``dashboard.ring_duty_budget: false`` only the dark gap is kept.
+        With ``dashboard.ring_duty_budget: false`` a one-hole hold has no dark gap
+        (solid-on renewals); a multi-hole ring still keeps ``ring_gap_ms``.
         """
         sec = self.cfg.section
+        if len(holes) == 1 and not self._ring_budget:
+            return on_ms  # solid: re-assert as soon as the watchdog window ends
         gap = on_ms + sec.integer("dashboard.ring_gap_ms")
         if not self._ring_budget:
             return gap
@@ -893,6 +934,42 @@ class Session:
         budget = min(self.cfg.duty_budget_ms(h) for h in holes)
         by_duty = on_ms * window_ms / (budget * len(holes))
         return math.ceil(max(by_duty, gap))
+
+    def _solid_hold_on_ms(self, hole: int) -> int:
+        """Raise watchdog for solid renewals; on-time capped to the duty budget (M1).
+
+        Continuous solid light beyond the rolling budget is no longer allowed via
+        ``budget=False``. Renewals reserve within WDT and the per-hole/rail budget.
+        """
+        rail = self.cfg.channel(hole).rail  # "A" or "B"
+        key = rail.lower()
+        cap = int(self.cfg.limits[f"wdt_{key}_cap_ms"])
+        hi = self.cfg.section.integer("dashboard.ring_on_ms_max")
+        duty_cap = int(self.cfg.duty_budget_ms(hole))
+        ms = min(cap, hi, duty_cap)
+        dev = self._device()
+        info = dev.info()
+        if self._ring_wdt_restore is None:
+            self._ring_wdt_restore = {
+                "A": info.as_int("wdt_a_ms"),
+                "B": info.as_int("wdt_b_ms"),
+            }
+        if info.as_int(f"wdt_{key}_ms") != ms:
+            dev.wdt_cfg(rail, ms)
+        return ms
+
+    def _restore_ring_wdt(self) -> None:
+        restore, self._ring_wdt_restore = self._ring_wdt_restore, None
+        if restore is None or self.dev is None:
+            return
+        if not self._dev_lock.acquire(timeout=2.0):
+            return
+        try:
+            for rail, ms in restore.items():
+                with contextlib.suppress(Exception):
+                    self.dev.wdt_cfg(rail, ms)
+        finally:
+            self._dev_lock.release()
 
     def ring_start(
         self,
@@ -903,10 +980,12 @@ class Session:
     ) -> dict[str, Any]:
         """Light the holes one at a time around the ring until ``ring_stop``.
 
-        ``holes`` limits the ring to those holes; one hole "holds" it: that LED is
-        pulsed again and again (as often as its duty budget allows, if enabled). While running, a
-        new call changes the holes and timing in place. The step is raised to the
-        duty-safe minimum when needed (the result says what was used).
+        ``holes`` limits the ring to those holes; one hole "holds" it. With the
+        duty budget off (operator default), a one-hole hold is **solid-on**: the
+        rail watchdog is raised to its cap and the LED is renewed for that full
+        window until stop. With the duty budget on, a held hole is pulsed within
+        its budget. While running, a new call changes the holes and timing in
+        place. The step is raised to the duty-safe minimum when needed.
         """
         sec = self.cfg.section
         lo, hi = sec.integer("dashboard.ring_on_ms_min"), sec.integer("dashboard.ring_on_ms_max")
@@ -919,24 +998,34 @@ class Session:
             holes = list(dict.fromkeys(holes))
         else:
             holes = self.ring_holes(include_unfitted)
-        min_step = self.ring_min_step_ms(on_ms, holes)
-        step = max(step_ms, min_step)
         self._device()
         if self.running:
             raise Busy("a run is using the device")
         if self._jog is not None:
             raise Busy("the motors are running continuously: stop them first")
+        solid = len(holes) == 1 and not self._ring_budget
+        if solid:
+            on_ms = self._solid_hold_on_ms(holes[0])
+        elif self._ring_wdt_restore is not None:
+            # Switched from a solid hold back to a multi-hole ring: restore WDT.
+            self._restore_ring_wdt()
+        min_step = self.ring_min_step_ms(on_ms, holes)
+        step = max(step_ms, min_step)
         with self._lock:
             if self._ring is not None:
-                self._ring.update(on_ms=on_ms, step_ms=step, min_step_ms=min_step, holes=holes)
-                self.log(f"LED ring: {on_ms} ms on, one hole every {step} ms, holes {holes}")
+                self._ring.update(
+                    on_ms=on_ms, step_ms=step, min_step_ms=min_step, holes=holes, solid=solid,
+                )
+                kind = "solid hold" if solid else "LED ring"
+                self.log(f"{kind}: {on_ms} ms on, one hole every {step} ms, holes {holes}")
                 return self._ring_view()
             self._ring = {
                 "on_ms": on_ms, "step_ms": step, "min_step_ms": min_step, "holes": holes,
-                "hole": 0, "state": "starting", "cooling_s": 0.0, "laps": 0,
+                "hole": 0, "state": "starting", "cooling_s": 0.0, "laps": 0, "solid": solid,
             }  # fmt: skip
             ring = self._ring
-        self.log(f"LED ring started: {on_ms} ms on, one hole every {step} ms, holes {holes}")
+        kind = "solid hold" if solid else "LED ring"
+        self.log(f"{kind} started: {on_ms} ms on, renew/step every {step} ms, holes {holes}")
         self._ring_thread = threading.Thread(
             target=self._ring_loop, args=(ring,), name="lio-ring", daemon=True
         )
@@ -955,6 +1044,7 @@ class Session:
                 self.link_lost(e)
             finally:
                 self._dev_lock.release()
+        self._restore_ring_wdt()
         if was is not None:
             self.log(f"LED ring stopped after {was['laps']} laps (everything off)")
         return {"stopped": was is not None}
@@ -963,8 +1053,11 @@ class Session:
         r = self._ring
         if r is None:
             return {"active": False}
-        keys = ("on_ms", "step_ms", "min_step_ms", "holes", "hole", "state", "cooling_s", "laps")
-        return {"active": True, **{k: r[k] for k in keys}}
+        keys = (
+            "on_ms", "step_ms", "min_step_ms", "holes", "hole", "state",
+            "cooling_s", "laps", "solid",
+        )
+        return {"active": True, **{k: r[k] for k in keys if k in r}}
 
     def ring_status(self) -> dict[str, Any]:
         with self._lock:
@@ -1002,8 +1095,10 @@ class Session:
                     with self._lock:
                         if self._ring is not ring:
                             return
-                    # firmware turns it off after on_ms (and at its watchdog limit)
-                    dev.ch_on(hole, on_ms, budget=self._ring_budget)
+                    # firmware turns it off after on_ms (and at its watchdog limit).
+                    # Always gate through duty accounting on real hardware (M1);
+                    # simulation may still honour budget=False when no journal.
+                    dev.ch_on(hole, on_ms, budget=True)
                 with self._lock:
                     ring.update(state="lit", cooling_s=0.0, hole=hole)
                     if (i + 1) % len(holes) == 0:
@@ -1065,7 +1160,10 @@ class Session:
         return self._motor_call(go, wait_s=1.0)
 
     def motor_move(self, motor: str, direction: str, steps: int, rpm: int) -> dict[str, Any]:
-        """Move one motor, or both together, by ``steps`` half-steps up or down."""
+        """Move one motor, or both together, by ``steps`` half-steps up or down.
+
+        Soft limits are not applied here: the Motors tab is for leveling. Scans and
+        suite motion still refuse moves past the marked travel."""
         lim = self.cfg.limits
         targets = {"1": [1], "2": [2], "both": [1, 2]}.get(motor)
         if targets is None:
@@ -1080,24 +1178,23 @@ class Session:
         sign = 1 if (direction == positive) else -1
 
         def go(dev: LIODevice) -> dict[str, Any]:
-            if dev.stage is not None:  # check both sides before either moves
-                dev.status()
-                for m in targets:
-                    try:
-                        dev.stage.check_move(m, sign * steps, dev.stage_top_margin())
-                    except StageError as e:
-                        raise Refused(f"soft limit: {e}") from e
             started: list[int] = []
             try:
                 for m in targets:
-                    dev.motor_step(m, sign * steps, rpm)
+                    # soft_limits=False: operator may raise past the scan keep-out.
+                    dev.motor_step(m, sign * steps, rpm, soft_limits=False)
                     started.append(m)
             except DeviceError:
                 if started:
                     dev.motor_stop()  # never leave one side of the chamber moving alone
                 raise
-            names = {1: "left", 2: "right"}
-            who = "both" if len(targets) == 2 else names[targets[0]]
+            # Physical sides as built: M1 = right, M2 = left (see motors.* in lio_hw.yaml).
+            names = {1: "right", 2: "left"}
+            if len(targets) == 2:
+                who = "both"
+            else:
+                mid = targets[0]
+                who = f"{names[mid]} (M{mid})"
             self.log(f"motor {who} {direction} {steps} half-steps at {rpm} rpm")
             return {"motor": motor, "direction": direction, "steps": steps, "rpm": rpm}
 

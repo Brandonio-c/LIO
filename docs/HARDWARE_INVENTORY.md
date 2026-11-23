@@ -29,7 +29,7 @@ Status as of 2 November 2026. "In build" means it is on the breadboard prototype
 | Wavelength | Package | In hole | Notes |
 |---|---|---|---|
 | 395 nm UV | 5 mm (Chanzon) | 1 | |
-| ≈405 nm violet/purple | 5 mm | 2 | |
+| purple (~405 nm) | 5 mm | 2 | |
 | Blue, green, yellow, orange, red | 5 mm | 3–7 | |
 | 850 nm IR | 5 mm (Chanzon, 100-pack) | 8 | 1.4–1.6 V, 20 mA |
 | 940 nm IR | 5 mm (Chanzon, 100-pack) | 9 | 1.2–1.5 V, 20 mA |

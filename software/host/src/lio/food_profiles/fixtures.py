@@ -10,6 +10,7 @@ from typing import Any
 
 import numpy as np
 
+from lio.food_profiles.runs import file_sha256
 from lio.scan.store import CUBE_FIELDS
 
 # Approximate current map: OPT101 signal 1-11; InGaAs 8,9,12-14 signal, 15 weak.
@@ -172,6 +173,14 @@ def write_synthetic_run(
                 gz.write(buf.getvalue().encode("utf-8"))
 
     meta["rows"] = len(rows)
+
+    # Compact stream for lazy inspection (before analysis so scan hash is final).
+    streams = folder / "streams"
+    streams.mkdir(exist_ok=True)
+    t_us = np.arange(0, 1000, 10, dtype=np.int64)
+    raw = (100 + rng.integers(-5, 5, size=t_us.shape)).astype(np.int32)
+    np.savez_compressed(streams / "dark_long.npz", t_us=t_us, raw=raw)
+    meta["streams"] = [{"name": "dark_long", "file": "streams/dark_long.npz", "synthetic": True}]
     (folder / "scan.json").write_text(json.dumps(meta, indent=1) + "\n")
 
     if with_analysis:
@@ -203,17 +212,17 @@ def write_synthetic_run(
             "health": [],
             "verdict": None,
             "context": {"electrical": {"coupling": {"opt101": {"C": 2.0}, "ingaas": {"C": 1.5}}}},
+            # Stronger identity than run_id/sample_id (sensor-readings M0).
+            "identity": {
+                "source_cube_sha256": file_sha256(cube),
+                "source_scan_sha256": file_sha256(folder / "scan.json"),
+                "calibration_id": "synthetic:gain=1:lsb=0.125",
+                "channel_map_sha256": "synthetic",
+                "estimator_version": "synthetic-fixture",
+                "coupling_model_version": "synthetic-fixture",
+            },
         }
         (folder / "analysis.json").write_text(json.dumps(analysis, indent=1) + "\n")
-
-    # Compact stream for lazy inspection
-    streams = folder / "streams"
-    streams.mkdir(exist_ok=True)
-    t_us = np.arange(0, 1000, 10, dtype=np.int64)
-    raw = (100 + rng.integers(-5, 5, size=t_us.shape)).astype(np.int32)
-    np.savez_compressed(streams / "dark_long.npz", t_us=t_us, raw=raw)
-    meta["streams"] = [{"name": "dark_long", "file": "streams/dark_long.npz", "synthetic": True}]
-    (folder / "scan.json").write_text(json.dumps(meta, indent=1) + "\n")
     return folder
 
 

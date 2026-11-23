@@ -106,18 +106,22 @@ detectors:
 rails:
   # As built: RAIL A = holes 1-8 (U1, red/black leads), RAIL B = holes 9-16 (U2,
   # yellow/white leads). Firmware >= 2.5.2 reports its split as INFO rail_b_first.
-  A: {driver: DRV1, ce: CE1, holes: [1, 2, 3, 4, 5, 6, 7, 8], current_ma: 30, led_rating_ma: 20}
-  B: {driver: DRV2, ce: CE2, holes: [9, 10, 11, 12, 13, 14, 15, 16], current_ma: 45}
+  # current_ma = intended pot setting; led_rating_ma = 5 mm LED absolute rating;
+  # safe_max_ma = hard stop for `lio drive-tune` (firmware cannot clamp the pot).
+  # tune_hole = sacrificial visible LED for pot adjustment (green / white).
+  A: {driver: DRV1, ce: CE1, holes: [1, 2, 3, 4, 5, 6, 7, 8], current_ma: 30, led_rating_ma: 20, safe_max_ma: 30, tune_hole: 4}
+  B: {driver: DRV2, ce: CE2, holes: [9, 10, 11, 12, 13, 14, 15, 16], current_ma: 45, led_rating_ma: 20, safe_max_ma: 50, tune_hole: 11}  # pink; white (10) often first to die
 
 # Channel map (docs/OPTICAL_CHANNEL_MAP.md). `expect` gives, per detector,
 # signal | weak | none. Detectors not listed are expected to see nothing.
 # fitted: false means no emitter is installed: lighting it must give no signal on
 # any detector. All 16 holes are fitted. Holes 10-11 are broadband 5 mm LEDs
-# (white, pink: blue die + phosphor), listed at their 450 nm blue peak. Holes 1-7,
-# 10 and 11 confirmed lit by eye on 2026-11-10.
+# (white, pink: blue die + phosphor), listed at their 450 nm blue peak. Hole 2 is
+# a purple ~405 nm LED (label "purple"). Holes 1-7, 10 and 11 confirmed lit by eye
+# on 2026-11-10.
 channels:
   - {hole: 1,  label: "395",    wavelength_nm: 395,  rail: A, fitted: true,  expect: {opt101: signal}}
-  - {hole: 2,  label: "405",    wavelength_nm: 405,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 2,  label: "purple", wavelength_nm: 405,  rail: A, fitted: true,  expect: {opt101: signal}}
   - {hole: 3,  label: "blue",   wavelength_nm: 465,  rail: A, fitted: true,  expect: {opt101: signal}}
   - {hole: 4,  label: "green",  wavelength_nm: 525,  rail: A, fitted: true,  expect: {opt101: signal}}
   - {hole: 5,  label: "yellow", wavelength_nm: 590,  rail: A, fitted: true,  expect: {opt101: signal}}
@@ -135,8 +139,10 @@ channels:
 
 # Motors (approved M0 answer 8): +steps = the legacy sketch's U direction (up).
 motors:
-  1: {name: left, pins: [D2, D3, D4, D5]}
-  2: {name: right, pins: [D6, D7, D8, D9]}
+  # As built (operator view looking at the chamber): M1 is on the physical right,
+  # M2 on the physical left. Names must match the Motors tab / twin labels.
+  1: {name: right, pins: [D2, D3, D4, D5]}
+  2: {name: left, pins: [D6, D7, D8, D9]}
   positive: up
 
 # Host-side LED duty budget (plan §6 T05.5): RAIL A LEDs run above rating.
@@ -265,7 +271,7 @@ dashboard:
   host: 127.0.0.1            # local only: the page can light LEDs and move motors
   port: 8765
   poll_ms: 700               # how often the page asks for updates
-  flash_ms: 500              # "Flash" on a hole lights it this long (the rail watchdog still clamps)
+  flash_ms: 500              # legacy timed pulse (tests / meter); UI Hold is solid-on
   wake_button_ms: 3000       # "Wake bank A": hold the motor coils this long (no steps)
   # Motors tab, continuous jog: the firmware stops any jog after firmware.limits.jog_max
   # half-steps, so the dashboard re-sends it while the button stays latched.
@@ -278,10 +284,13 @@ dashboard:
   jog_deadman_s: 0
   # LEDs tab, diagnostic ring: lights the holes one at a time around the ring. The
   # step time is raised automatically so no hole exceeds its duty budget (duty:).
-  ring_on_ms: 100            # default on-time per hole
+  # Holding one hole (click / twin Hold) is solid-on: on-time = that rail's watchdog
+  # cap, renewed until Stop — no intentional flicker. Cycling the ring still uses
+  # ring_on_ms below between holes.
+  ring_on_ms: 100            # default on-time per hole when cycling the ring
   ring_on_ms_min: 10
-  ring_on_ms_max: 1000
-  ring_gap_ms: 20            # dark time at least, between one hole and the next
+  ring_on_ms_max: 10000      # allows solid hold up to RAIL B's watchdog cap
+  ring_gap_ms: 20            # dark time at least, between one hole and the next (ring only)
   # true: the ring and hold respect duty: (RAIL A 1 s per LED per minute) and wait
   # between flashes. false (operator, 2026-11-10): no cool-down on this tab; each
   # flash is still cut off by the firmware watchdog (firmware.limits.wdt_*_ms) and
@@ -411,7 +420,7 @@ thresholds:
     walk_ms: 400                 # T04.4: each hole lit this long
     visible_max_nm: 700          # T04.4: seen by eye below this
     camera_max_nm: 1000          # T04.4: seen by a phone camera up to this; beyond: n/a
-    meter_holes: {A: 8, B: 12}   # T05.6: one hole per rail, meter in series with the driver
+    meter_holes: {A: 4, B: 10}   # T05.6 / drive-tune: green + white (easy to replace)
     # RAIL A flashes are capped by its duty budget (1 s per minute), not the plan's 2 s
     meter_flash_ms: {A: 1000, B: 2000}
     meter_attempts: 5

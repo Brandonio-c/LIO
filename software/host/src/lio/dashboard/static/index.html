@@ -528,7 +528,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
       <h2>Motors</h2>
       <span id="mot-arm" class="badge s-SKIP"><span class="ic">–</span>not armed</span>
     </div>
-    <p class="note" style="margin:6px 0 0">No limit switches. <strong>Step</strong> buttons move at most the step size below, then the coils release; they need arming (it lasts <span id="mot-arm-s">60</span> s).
+    <p class="note" style="margin:6px 0 0">No limit switches. Soft limits do not block Step or Run here (scans and Go to top/bottom still use them). <strong>Step</strong> buttons move at most the step size below, then the coils release; they need arming (it lasts <span id="mot-arm-s">60</span> s).
       <strong>Run</strong> buttons keep moving until you press STOP (no arming, like the old motor control); they keep going even if this page is closed: reopen it, or use All off, to stop. Nothing moves while an LED is on. Watch the chamber.</p>
     <div class="row" style="margin-top:12px">
       <label class="field">Step size (half-steps)
@@ -543,8 +543,8 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
       <button id="mot-stop" class="btn danger stop-big">■ STOP</button>
     </div>
     <div class="motor-grid">
-      <div class="mcard" data-motor="1">
-        <h3 class="mname">Left (M1)</h3><span class="mstate" data-state>idle</span>
+      <div class="mcard" data-motor="2">
+        <h3 class="mname">Left (M2)</h3><span class="mstate" data-state>idle</span>
         <div class="pos num" data-pos>–</div><div class="note" data-rev></div>
         <div class="jog"><button class="btn" data-dir="up">▲ Up</button><button class="btn" data-dir="down">▼ Down</button></div>
         <div class="cont"><span class="lbl">continuous, until STOP</span><button class="btn" data-jog="up">Run up</button><button class="btn" data-jog="down">Run down</button></div>
@@ -554,8 +554,8 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
         <div class="jog" style="margin-top:auto"><button class="btn primary" data-dir="up">▲ Both up</button><button class="btn primary" data-dir="down">▼ Both down</button></div>
         <div class="cont"><span class="lbl">continuous, until STOP</span><button class="btn" data-jog="up">Run up</button><button class="btn" data-jog="down">Run down</button></div>
       </div>
-      <div class="mcard" data-motor="2">
-        <h3 class="mname">Right (M2)</h3><span class="mstate" data-state>idle</span>
+      <div class="mcard" data-motor="1">
+        <h3 class="mname">Right (M1)</h3><span class="mstate" data-state>idle</span>
         <div class="pos num" data-pos>–</div><div class="note" data-rev></div>
         <div class="jog"><button class="btn" data-dir="up">▲ Up</button><button class="btn" data-dir="down">▼ Down</button></div>
         <div class="cont"><span class="lbl">continuous, until STOP</span><button class="btn" data-jog="up">Run up</button><button class="btn" data-jog="down">Run down</button></div>
@@ -582,7 +582,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
     <h2>LED ring (diagnostic)</h2>
     <p class="note" style="margin:6px 0 0">Lights the holes one at a time, clockwise from hole 1, round and round until you press Stop. Use it to check from the chamber which LEDs really light.
       One hole at a time, always<span id="ring-budget"></span>. Motors and the other LED tools are locked while it runs.<br>
-      <strong>Click a hole</strong> to hold just that one: it is re-lit again and again. Click it again (or Stop) to end; click another hole to switch.</p>
+      <strong>Click a hole</strong> to hold just that one <strong>solid on</strong> (full rail watchdog window, renewed until you stop — no flicker). Click it again (or Stop / All off) to end; click another hole to switch.</p>
     <div class="row" style="margin-top:12px">
       <label class="field">On-time per hole (ms)
         <input id="ring-on" type="number" step="10" style="width:110px"></label>
@@ -611,6 +611,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
       <span id="scan-hb" class="hb" title="The page tells the dashboard every few seconds that someone is here; if it goes quiet for longer than the timeout, the scan pauses safely (everything off) until it comes back"><span class="dot"></span><span>heartbeat off</span></span>
     </div>
     <p class="note" style="margin:6px 0 0">Moves the chamber top through its travel and, at every height, measures every LED on both detectors (one LED at a time, stop–measure–move; RAIL A within 1 s on-time per LED per minute). Any abort turns everything off, stops and releases the motors, and records why. The travel limits must be marked on the <a href="#motors">Motors</a> tab.</p>
+    <p class="note" style="margin:6px 0 0">Targeted stationary protocols (sensor-readings M4–M6) are CLI-first and offline for plan/audit: <code>lio scan plan --protocol …</code>, <code>lio scan audit … --derived-out …</code>. API: <code>GET /api/scan/protocol/plan</code>, <code>GET /api/scan/derived</code>. Not bench-qualified; no SNR/SWIR chemistry claim.</p>
     <div class="row" style="margin-top:12px;align-items:flex-end">
       <label class="field">Mode <select id="scan-mode"></select></label>
       <label class="field">Sample <select id="scan-sample"></select></label>
@@ -809,8 +810,8 @@ const BOXES = [
   { key: "rail:B", x: 20, y: 412, w: 160, h: 54, title: "DRV2 · Rail B", sub: "CE2 · holes 10–16" },
   { key: "safety", x: 236, y: 24, w: 196, h: 54, title: "Safety interlocks", sub: "watchdogs · failsafe" },
   { key: "adc", x: 236, y: 120, w: 196, h: 60, title: "ADS1115 ADC", sub: "I²C 0x48 · inputs A0, A1" },
-  { key: "motor:1", x: 236, y: 412, w: 196, h: 54, title: "Motor 1 · left", sub: "28BYJ-48 · D2–D5" },
-  { key: "motor:2", x: 236, y: 486, w: 196, h: 54, title: "Motor 2 · right", sub: "28BYJ-48 · D6–D9" },
+  { key: "motor:2", x: 236, y: 412, w: 196, h: 54, title: "Motor 2 · left", sub: "28BYJ-48 · D6–D9" },
+  { key: "motor:1", x: 236, y: 486, w: 196, h: 54, title: "Motor 1 · right", sub: "28BYJ-48 · D2–D5" },
 ];
 const DET_W = 84;
 const DETS = [ { key: "det:opt101", det: "opt101", x: RING.cx - DET_W - 4, title: "OPT101", sub: "300–1100 nm" },
@@ -949,22 +950,29 @@ function renderDetails() {
     const net = Object.keys(h.net).length ? Object.entries(h.net).map(([d, v]) => `<span><span class="dot" style="background:var(--${d})"></span>${d === "opt101" ? "OPT101" : "InGaAs"} <strong class="num">${v > 0 ? "+" : ""}${v}</strong> counts</span>`).join(" &nbsp; ") : `<span class="muted">run LED channels (T05)</span>`;
     facts = `<dl class="facts"><dt>Wavelength</dt><dd>${h.wavelength_nm ? h.wavelength_nm + " nm" : "—"}</dd><dt>Rail</dt><dd>${h.rail} (${h.rail === "A" ? "DRV1 · CE1" : "DRV2 · CE2"})</dd>
       <dt>Register</dt><dd>${h.register}</dd><dt>Expected</dt><dd>${exp}</dd><dt>Net signal (T05.2)</dt><dd>${net}</dd></dl>`;
+    const holding = !!(R && R.active && R.holes && R.holes.length === 1 && R.holes[0] === h.hole);
     actions = `<div class="row"><button class="btn small" ${canUse ? "" : "disabled"} onclick="measure(${h.hole})">Measure</button>
-      <button class="btn small" ${canUse ? "" : "disabled"} onclick="flash(${h.hole})">Flash ${STATIC ? STATIC.flash_ms : ""} ms</button>
-      <span class="note">${canUse ? "one MEAS: dark, lit, net on both detectors" : S.connected ? "busy: a run is using the device" : "connect first"}</span></div>`;
+      <button class="btn small${holding ? " primary" : ""}" ${canUse ? "" : "disabled"} onclick="holdLed(${h.hole})">${holding ? "Holding — click to off" : "Hold solid"}</button>
+      <span class="note">${canUse ? "Measure = one dark/lit sample · Hold = solid on until you turn it off" : S.connected ? "busy: a run is using the device" : "connect first"}</span></div>`;
     const m = S.manual; if (m && m.action === "measure" && m.hole === h.hole)
       actions += `<div class="meas">${["opt101", "ingaas"].map((d) => `<span><span class="dot" style="background:var(--${d})"></span>${d === "opt101" ? "OPT101" : "InGaAs"}: dark <span class="num">${m.dark[d]}</span>, lit <span class="num">${m.lit[d]}</span>, net <strong class="num">${m.net[d] > 0 ? "+" : ""}${m.net[d]}</strong> (${(m.net[d] * m.lsb_mv).toFixed(1)} mV)</span>`).join("")}</div>`;
   } else {
     const names = { host: "Mac (host)", nano: "Arduino Nano · USB link and firmware", sr: "Shift registers (74HC595 × 2)", adc: "ADS1115 ADC (I²C)", safety: "Safety interlocks",
       "rail:A": "Rail A · DRV1 (CE1, holes 1–9)", "rail:B": "Rail B · DRV2 (CE2, holes 10–16)", "det:opt101": "OPT101 detector (silicon)", "det:ingaas": "InGaAs detector (TIA)",
-      "motor:1": "Motor 1 · left", "motor:2": "Motor 2 · right" };
+      "motor:1": "Motor 1 · right", "motor:2": "Motor 2 · left" };
     title = names[selected] || selected;
     if (selected === "nano" && S.connected) facts = `<dl class="facts">${Object.entries(S.firmware).filter(([k]) => ["fw", "proto", "build", "adc_ok", "wdt_a_ms", "wdt_b_ms", "comms_ms"].includes(k)).map(([k, v]) => `<dt>${esc(k)}</dt><dd class="mono">${esc(v)}</dd>`).join("")}</dl>`;
   }
   box.innerHTML = `<h3>${esc(title)} ${badge(info.status)}</h3>${facts}${actions}<h3 style="margin-top:12px">Evidence</h3>${evidence(info.items)}`;
 }
 async function measure(h) { await act("/api/measure", { hole: h }); }
-async function flash(h) { await act("/api/flash", { hole: h }, `hole ${h} flashed`); }
+async function holdLed(h) {
+  try {
+    const out = await api("/api/flash", { hole: h });
+    toast(out.on ? `hole ${h} solid on` : `hole ${h} off`, 2500);
+  } catch (e) { toast(e.message, 7000); }
+  await ringPoll(); poll(true);
+}
 
 /* ------------------------------------------------------------- verdict etc */
 function fmtTime(iso) {
@@ -1373,7 +1381,8 @@ function renderStage() {
   if (!st.known) { box.innerHTML = "<b>Position unknown.</b> Raise the top to its highest light-tight height (sleeves overlapping) and press <b>Set top here</b>."; return; }
   const lead = STATIC.scan && STATIC.scan.lead_mm_per_rev, hpr = STATIC.motors.half_steps_per_rev;
   const mm = (v) => lead ? ` (${(v / hpr * lead).toFixed(2)} mm)` : "";
-  const f = (a) => a ? `left ${a[0]}${mm(a[0])} · right ${a[1]}${mm(a[1])}` : "not marked";
+  // abs[0]=M1 (physical right), abs[1]=M2 (physical left) — see motors.* in lio_hw.yaml.
+  const f = (a) => a ? `left ${a[1]}${mm(a[1])} · right ${a[0]}${mm(a[0])}` : "not marked";
   box.innerHTML = `<b>Now:</b> ${f(st.abs)}<br><b>Top:</b> ${f(st.top)} &nbsp; <b>Bottom:</b> ${f(st.bottom)}`
     + (st.range ? `<br><b>Travel:</b> ${st.range[0]} / ${st.range[1]} half-steps` : "")
     + (st.below_top ? ` &nbsp; <b>below top:</b> ${st.below_top.join(" / ")}` : "")
@@ -1468,7 +1477,9 @@ async function ringMinUpdate() {
     if (Number($("ring-step").value) < min_step_ms) $("ring-step").value = min_step_ms;
     const n = ringCh().filter((c) => c.fitted || $("ring-unfitted").checked).length;
     $("ring-min").textContent = ringHeld()
-      ? (STATIC.ring.duty_budget ? `Holding hole ${ringHeld()}: at ${on} ms on it can flash at most once every ${(min_step_ms / 1000).toFixed(1)} s (duty budget).` : `Holding hole ${ringHeld()}: ${on} ms on, re-lit every ${min_step_ms} ms (on almost all the time with a long on-time).`)
+      ? (STATIC.ring.duty_budget
+        ? `Holding hole ${ringHeld()}: at ${on} ms on it can flash at most once every ${(min_step_ms / 1000).toFixed(1)} s (duty budget).`
+        : `Holding hole ${ringHeld()} solid: full rail watchdog window, renewed until Stop (on-time field applies to Start ring only).`)
       : `Fastest allowed at ${on} ms on: one hole every ${min_step_ms} ms (a full lap in ${(n * min_step_ms / 1000).toFixed(1)} s).`;
   } catch (e) { /* not connected yet */ }
 }
@@ -1510,8 +1521,12 @@ function renderRing() {
   const ch = active && ringCh().find((c) => c.hole === R.hole);
   $("ring-c1").textContent = active && ch ? `Hole ${ch.hole}` : "–";
   $("ring-c2").textContent = active && ch ? `${ch.label}${ch.nm ? "" : ""} · ${seeHow(ch.nm)}` : "";
-  $("ring-state").textContent = !on ? ((S && S.error) ? `Not connected: ${S.error} (System tab → Connect)` : "Not connected: connect on the System tab") : !active ? "Stopped" : R.state === "cooling" ? `${held ? "Holding" : "Cooling"} hole ${R.hole}: dark for ${R.cooling_s} s more (duty budget)` : held ? `Holding hole ${held}: lit` : `Running: hole ${R.hole} lit`;
-  $("ring-detail").textContent = held ? `${R.on_ms} ms flash, every ${(R.step_ms / 1000).toFixed(1)} s · flash ${R.laps + 1}. Click it again to stop.` : active ? `${R.on_ms} ms on, one hole every ${R.step_ms} ms · lap ${R.laps + 1}` + (R.step_ms > Number($("ring-step").value) ? ` (step raised to the duty-safe ${R.min_step_ms} ms)` : "") : "";
+  $("ring-state").textContent = !on ? ((S && S.error) ? `Not connected: ${S.error} (System tab → Connect)` : "Not connected: connect on the System tab") : !active ? "Stopped" : R.state === "cooling" ? `${held ? "Holding" : "Cooling"} hole ${R.hole}: dark for ${R.cooling_s} s more (duty budget)` : held ? `Holding hole ${held} solid` : `Running: hole ${R.hole} lit`;
+  $("ring-detail").textContent = held
+    ? (R.solid
+      ? `Solid on · ${R.on_ms} ms watchdog window, renewed · renew ${R.laps + 1}. Click it again (or Stop) to off.`
+      : `${R.on_ms} ms on, every ${(R.step_ms / 1000).toFixed(1)} s · pulse ${R.laps + 1}. Click it again to stop.`)
+    : active ? `${R.on_ms} ms on, one hole every ${R.step_ms} ms · lap ${R.laps + 1}` + (R.step_ms > Number($("ring-step").value) ? ` (step raised to the duty-safe ${R.min_step_ms} ms)` : "") : "";
 }
 setInterval(ringPoll, 250);
 

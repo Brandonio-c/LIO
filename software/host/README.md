@@ -71,3 +71,24 @@ How the catalogue works:
 - `tests/system/test_fault_matrix.py` injects every simulator fault, requires its intended test to detect it, and runs the same check on a healthy simulator as a control.
 
 The `lio` command does the same without pytest (`lio selftest`, `lio --sim selftest`); see [docs/TESTING.md](../../docs/TESTING.md) for the catalogue, the report and the hardware checklist.
+
+## Sensor-readings upgrade (M0–M6, offline-tested)
+
+Specification: [docs/SENSOR_READINGS_UPGRADE_PLAN.md](../../docs/SENSOR_READINGS_UPGRADE_PLAN.md).
+**Code-complete / offline-tested ≠ bench-qualified.** Do not treat these commands as measured SNR or SWIR chemistry improvement.
+
+```bash
+# Offline plan (no device, serial, POWER WAKE, or light)
+lio scan plan --protocol src/lio/scan/examples/stationary_targeted_h12.json --json /tmp/plan.json
+
+# Offline audit / versioned analysis under a derived root (run folder raw bytes untouched)
+lio scan audit test_results/20261123-003133_scan_quick --model qualified-v2 --derived-out /tmp/lio_derived
+lio scan analyse test_results/20261123-003133_scan_quick --model qualified-v2 --derived-out /tmp/lio_derived
+lio scan report test_results/20261123-003133_scan_quick --analysis <ANALYSIS_ID> --derived-out /tmp/lio_derived
+
+# Simulator protocol run (explicit light permission; still no real hardware)
+lio --sim scan run --protocol src/lio/scan/examples/stationary_targeted_h12.json \
+    --allow-light --sample empty --out /tmp/lio_proto_out
+```
+
+`--protocol` is mutually exclusive with legacy `--mode`. Legacy `lio scan plan --mode …` is also offline (planning envelope from config; no POWER WAKE). Example protocol: `src/lio/scan/examples/stationary_targeted_h12.json` (also under `docs/examples/`).

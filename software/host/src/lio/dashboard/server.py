@@ -179,6 +179,28 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json(s.motor_status())
             if url.path == "/api/scan":
                 return self._json(s.scan_view())
+            if url.path == "/api/scan/protocol/plan":
+                # Offline protocol preview (no device / light). CLI remains primary.
+                q = parse_qs(url.query)
+                proto = (q.get("protocol") or [""])[0]
+                if not proto:
+                    raise ValueError("protocol= path or inline JSON required")
+                from lio.scan.acquisition import ProtocolError, plan_protocol
+
+                try:
+                    plan = plan_protocol(proto if proto.strip().startswith("{") else Path(proto), s.cfg)
+                except ProtocolError as e:
+                    raise ValueError(str(e)) from e
+                return self._json(plan.to_dict())
+            if url.path == "/api/scan/derived":
+                q = parse_qs(url.query)
+                root = (q.get("derived_out") or [""])[0]
+                run_id = (q.get("run_id") or [None])[0]
+                if not root:
+                    raise ValueError("derived_out= required")
+                from lio.scan.derived import list_derived
+
+                return self._json({"analyses": list_derived(root, run_id)})
             if url.path == "/api/ring":
                 return self._json(s.ring_status())
             if url.path.startswith("/api/profiles/"):
@@ -538,7 +560,8 @@ class _Handler(BaseHTTPRequestHandler):
             elif path == "/api/measure":
                 return self._json(s.measure(_hole(b)))
             elif path == "/api/flash":
-                return self._json(s.flash(_hole(b), s.cfg.section.integer("dashboard.flash_ms")))
+                # Twin "Hold": solid-on toggle (legacy timed flash stays on session.flash).
+                return self._json(s.led_hold(_hole(b)))
             elif path == "/api/wake":
                 return self._json(s.wake())
             elif path == "/api/stage/set_top":

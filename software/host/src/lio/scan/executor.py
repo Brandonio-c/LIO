@@ -30,7 +30,8 @@ from lio.config import HwConfig
 from lio.device import DeviceError, LIODevice, NoResponse
 from lio.operator import Abort, Operator
 from lio.scan.plan import ScanPlan, Step
-from lio.scan.store import MV_PER_COUNT, ScanStore
+from lio.scan.calibration import resolve_calibration
+from lio.scan.store import ScanStore
 from lio.stage import StageError
 
 MIN_FIRMWARE = (2, 4, 0)
@@ -422,6 +423,11 @@ class ScanExecutor:
         h = self._height()
         mm = self.plan.mm(h)
         net = kw.get("net_counts")
+        net_mv = None
+        if net is not None:
+            cal = resolve_calibration(cfg=self.cfg, detector=str(kw.get("detector") or "ingaas"))
+            mv = cal.counts_to_mv(float(net))
+            net_mv = None if mv is None else round(mv, 4)
         return {
             "run_id": self.store.run_id,
             "step": st.index,
@@ -431,7 +437,7 @@ class ScanExecutor:
             "direction": st.direction,
             "rep": st.rep,
             "t_s": round(self.dev.now() - self._t_start, 3),
-            "net_mv": None if net is None else round(float(net) * MV_PER_COUNT, 4),
+            "net_mv": net_mv,
             **kw,
         }
 

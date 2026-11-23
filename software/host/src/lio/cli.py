@@ -13,9 +13,14 @@
     lio shell                      # keep the port open and type protocol commands
     lio sim-serve                  # simulated LIO on a pseudo-terminal, for practice
     lio dashboard [--sim]          # web page: run the tests, digital twin, overall verdict
+    lio drive-tune A|B             # hold green/white solid; coach LD06 pot via ammeter
     lio scan plan --mode full      # diagnostic height sweep: plan, run, resume
+    lio scan plan --protocol protocol.json --json plan.json   # offline targeted plan
     lio scan run --mode quick --sample empty --allow-motion
+    lio scan run --protocol protocol.json --allow-light --sim --sample empty
+    lio scan audit RUN --model legacy|qualified-v2 --derived-out DIR
     lio scan analyse test_results/<ts>_scan_quick [--reference <white run>]
+    lio scan analyse RUN --model qualified-v2 --derived-out DERIVED_ROOT
     lio scan report <run>; lio scan baseline save|list ...; lio scan compare <runA> <runB>
 
 Opening the serial port resets the Nano (about 2 s), so each one-shot command
@@ -248,6 +253,26 @@ def cmd_watch(args: argparse.Namespace, cfg: HwConfig) -> int:
         except KeyboardInterrupt:
             print()
     return 0
+
+
+def cmd_drive_tune(args: argparse.Namespace, cfg: HwConfig) -> int:
+    """Hold a sacrificial LED solid and coach the LD06 pot from ammeter readings."""
+    from lio.drive_tune import run_tune
+
+    out = Path(args.out) if args.out else (
+        REPO_ROOT / "test_results" / "tray_v3" / f"DRIVE_TUNE_{args.rail.upper()}.json"
+    )
+    print(
+        "Stop the dashboard first if it has the port (or this will fail to open).\n"
+        "Live OPT101 feedback while you turn the pot; optional ammeter mA. "
+        "Firmware cannot clamp current.",
+        file=sys.stderr,
+    )
+    with _device(args, cfg) as dev:
+        result = run_tune(
+            dev, cfg, args.rail, hole=args.hole, out_path=out, stdin=sys.stdin, stdout=sys.stdout
+        )
+    return 0 if result.get("accepted_ma") is not None else 1
 
 
 def cmd_stage(args: argparse.Namespace, cfg: HwConfig) -> int:
@@ -590,17 +615,38 @@ def _scan_overrides(items: list[str] | None) -> dict[str, str]:
 
 
 def cmd_scan(args: argparse.Namespace, cfg: HwConfig) -> int:
-    """The diagnostic height sweep (docs/DIAGNOSTIC_SWEEP.md)."""
+    """Diagnostic height sweep and targeted protocol commands.
+
+    Protocol plan/audit/analyse/report paths are offline (no device, serial,
+    POWER WAKE or light). Legacy ``plan`` without ``--protocol`` also plans
+    offline when stage limits are not required.
+    """
     import tempfile
 
     from lio import scan
     from lio.operator import SimOperator
 
+    protocol = getattr(args, "protocol", None)
+    mode = getattr(args, "mode", None)
+    if protocol and mode:
+        raise CliError("--protocol is mutually exclusive with legacy --mode")
+
+    # Truly offline commands — never construct LIODevice / open serial.
+    if args.scan_command == "audit" or (
+        args.scan_command in ("analyse", "report") and getattr(args, "derived_out", None)
+    ):
+        return _scan_protocol_offline(args, cfg)
+    if args.scan_command == "plan" and protocol:
+        return _scan_protocol_plan(args, cfg)
+    if args.scan_command == "plan" and not protocol:
+        return _scan_legacy_plan_offline(args, cfg)
     if args.scan_command in ("analyse", "baseline", "compare", "report"):
         return _scan_offline(args, cfg)
+    if args.scan_command == "run" and protocol:
+        return _scan_protocol_run(args, cfg)
 
-    overrides = _scan_overrides(args.set)
-    mode = args.mode or str(cfg.section.raw("scan.default_mode"))
+    overrides = _scan_overrides(getattr(args, "set", None))
+    mode = mode or str(cfg.section.raw("scan.default_mode"))
     out = getattr(args, "out", None)
     root = Path(out) if out else REPO_ROOT / "test_results"
     if args.sim:
@@ -618,13 +664,6 @@ def cmd_scan(args: argparse.Namespace, cfg: HwConfig) -> int:
             scan.sim_stage(dev, stage_dir / "stage.json", int(sim.travel_hs))
         else:
             dev.check_compatible()
-        if args.scan_command == "plan":
-            plan = scan.plan_for(cfg, mode, dev.stage, dev.stage_top_margin(), overrides)
-            print(plan.summary())
-            if args.json:
-                Path(args.json).write_text(json.dumps(plan.to_dict(), indent=1) + "\n")
-                print(f"plan -> {args.json}")
-            return 0
         operator = SimOperator(sim) if sim is not None else ConsoleOperator()
         if args.scan_command == "resume":
             folder = Path(args.folder)
@@ -660,6 +699,137 @@ def cmd_scan(args: argparse.Namespace, cfg: HwConfig) -> int:
     return 0 if status == "COMPLETE" else 1
 
 
+def _scan_protocol_plan(args: argparse.Namespace, cfg: HwConfig) -> int:
+    """``lio scan plan --protocol`` — offline; no device construction."""
+    from lio.scan.acquisition import ProtocolError, plan_protocol
+
+    try:
+        plan = plan_protocol(Path(args.protocol), cfg)
+    except ProtocolError as e:
+        raise CliError(str(e)) from e
+    d = plan.to_dict()
+    print(
+        f"protocol {plan.protocol.id} v{plan.protocol.version}  "
+        f"{len(plan.steps)} steps  on≈{plan.predicted_on_ms:.0f} ms  "
+        f"eta≈{plan.predicted_duration_s / 60:.1f} min  stationary (no motors)"
+    )
+    for u in plan.unresolved:
+        print(f"  unresolved: {u}")
+    if args.json:
+        Path(args.json).write_text(json.dumps(d, indent=1) + "\n")
+        print(f"plan -> {args.json}")
+    return 0
+
+
+def _scan_legacy_plan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
+    """Legacy mode plan without opening a device (no POWER WAKE / serial)."""
+    from lio import scan
+    from lio.scan.plan import PlanError, build
+
+    overrides = _scan_overrides(getattr(args, "set", None))
+    mode = args.mode or str(cfg.section.raw("scan.default_mode"))
+    top_margin = 0
+    try:
+        top_margin = cfg.section.integer("stage.top_margin_steps")
+    except Exception:
+        pass
+    # Offline travel: use sim travel as a declared planning envelope (not a measured stage).
+    try:
+        travel = int(cfg.section.raw("sim.height.travel_hs"))
+    except Exception:
+        travel = 286884
+    try:
+        plan = build(
+            cfg,
+            mode,
+            top_limit=0,
+            bottom_limit=-travel,
+            current=0,
+            top_margin=top_margin,
+            overrides=overrides,
+        )
+    except PlanError as e:
+        raise CliError(str(e)) from e
+    print(plan.summary())
+    print("(offline plan: no device / POWER WAKE; travel from config sim envelope)")
+    if args.json:
+        Path(args.json).write_text(json.dumps(plan.to_dict(), indent=1) + "\n")
+        print(f"plan -> {args.json}")
+    return 0
+
+def _scan_protocol_run(args: argparse.Namespace, cfg: HwConfig) -> int:
+    """``lio scan run --protocol --allow-light`` — gated emission via journal."""
+    import tempfile
+
+    from lio import scan
+    from lio.operator import SimOperator
+    from lio.scan.acquisition import ProtocolError, plan_protocol, run_protocol
+
+    if not getattr(args, "allow_light", False):
+        raise CliError("protocol run requires --allow-light")
+    if not args.sample:
+        raise CliError("--sample is required for protocol run")
+    try:
+        pplan = plan_protocol(Path(args.protocol), cfg)
+    except ProtocolError as e:
+        raise CliError(str(e)) from e
+    root = Path(args.out) if args.out else REPO_ROOT / "test_results"
+    if args.sim:
+        sim = SimulatedLIO(cfg, Faults.parse(args.fault))
+        sim.sample = "food" if args.sample.startswith("LIO-F-") else args.sample
+        dev = LIODevice(SimTransport(sim, transcript=sys.stderr if args.verbose else None), cfg)
+        with dev:
+            stage_dir = Path(tempfile.mkdtemp(prefix="lio_sim_stage_"))
+            scan.sim_stage(dev, stage_dir / "stage.json", int(sim.travel_hs))
+            result = run_protocol(
+                pplan,
+                cfg=cfg,
+                root=root,
+                sample_id=args.sample,
+                allow_light=True,
+                device=dev,
+                simulated=True,
+                rig_identity="sim",
+                operator_confirm=lambda _m: True,
+            )
+    else:
+        raise CliError(
+            "hardware protocol run is implemented but not authorized in this session; "
+            "use --sim for offline verification"
+        )
+    print(f"{result.status}: {result.folder}")
+    if result.cancel_reason:
+        print(f"  unresolved: {result.cancel_reason}")
+    return 0 if result.status == "COMPLETE" else 1
+
+
+def _scan_protocol_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
+    """audit / analyse / report with --derived-out (offline)."""
+    from lio.scan.derived import analyse_model, audit_run, report_derived
+
+    derived = Path(args.derived_out)
+    model = getattr(args, "model", None) or "qualified-v2"
+    folder = Path(getattr(args, "folder", None) or getattr(args, "run", None))
+    if args.scan_command == "audit":
+        out = audit_run(folder, cfg, model=model, derived_out=derived)
+        print(json.dumps({k: out[k] for k in out if not k.startswith("_")}, indent=1))
+        print(f"audit -> {out.get('_path')}")
+        return 0
+    if args.scan_command == "analyse":
+        out = analyse_model(folder, cfg, model=model, derived_out=derived)
+        print(f"model={out.get('model')} analysis_id={out.get('analysis_id')}")
+        print(f"analysis -> {out.get('_path')}")
+        return 0
+    if args.scan_command == "report":
+        aid = getattr(args, "analysis", None) or getattr(args, "analysis_id", None)
+        if not aid:
+            raise CliError("--analysis ANALYSIS_ID required with --derived-out")
+        path = report_derived(folder, analysis_id=str(aid), derived_out=derived)
+        print(f"report -> {path}")
+        return 0
+    raise CliError(f"unsupported offline scan command {args.scan_command}")
+
+
 def _scan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
     """lio scan analyse / baseline / compare: on run folders, no connection."""
     from lio.scan.analysis import analyse, trend
@@ -673,7 +843,8 @@ def _scan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
         return data
 
     if args.scan_command == "analyse":
-        ref = Path(args.reference) if args.reference else None
+        # Optional derived-out path handled earlier; legacy writes analysis.json in-run.
+        ref = Path(args.reference) if getattr(args, "reference", None) else None
         a = analyse(Path(args.folder), cfg, ref, None if args.no_baselines else root)
         print(a.summary())
         print(f"analysis -> {Path(args.folder) / 'analysis.json'}")
@@ -681,7 +852,7 @@ def _scan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
     if args.scan_command == "report":
         from lio.scan import report as scan_report
 
-        ref = Path(args.reference) if args.reference else None
+        ref = Path(args.reference) if getattr(args, "reference", None) else None
         written = scan_report.write(Path(args.folder), cfg, reference=ref,
                                     baselines_root=None if args.no_baselines else root)  # fmt: skip
         print(f"report -> {written['html']}")
@@ -763,6 +934,21 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--scale", type=float, default=10.0, help="counts per # in the bar")
     s.set_defaults(fn=cmd_watch)
 
+    s = sub.add_parser(
+        "drive-tune",
+        help="hold green (A) / white (B) solid; coach LD06 pot from ammeter readings",
+    )
+    s.add_argument("rail", choices=["A", "B", "a", "b"], help="which constant-current driver")
+    s.add_argument(
+        "--hole",
+        type=int,
+        default=None,
+        metavar="N",
+        help="override tune LED (default: rails.*.tune_hole — 4 green / 11 pink)",
+    )
+    s.add_argument("--out", default=None, help="JSON log path (default test_results/tray_v3/...)")
+    s.set_defaults(fn=cmd_drive_tune)
+
     s = sub.add_parser("stage", help="chamber-top position and travel limits")
     ssub = s.add_subparsers(dest="stage_command", required=True)
     ssub.add_parser("show", help="tracked position and limits (no connection)")
@@ -826,17 +1012,19 @@ def build_parser() -> argparse.ArgumentParser:
 
     build_profiles_parser(sub, fn=cmd_profiles)
 
-    s = sub.add_parser("scan", help="diagnostic height sweep: plan / run / resume")
+    s = sub.add_parser("scan", help="diagnostic height sweep / targeted protocol: plan / run / resume")
     scsub = s.add_subparsers(dest="scan_command", required=True)
-    for name, hlp in (("plan", "show the plan and its ETA (no motion, no light)"),
+    for name, hlp in (("plan", "show the plan and its ETA (offline; no motion, no light)"),
                       ("run", "run a scan (asks first; --allow-motion for moving modes)"),
                       ("resume", "carry on an INCOMPLETE run from its next step")):  # fmt: skip
         c = scsub.add_parser(name, help=hlp)
         if name == "resume":
             c.add_argument("folder", help="the run folder (test_results/<ts>_scan_<mode>)")
         else:
-            c.add_argument("--mode", help="quick_down, quick, full, fine, repeatability, "
-                           "electrical, continuous (default: scan.default_mode)")  # fmt: skip
+            c.add_argument("--mode", help="legacy: quick_down, quick, full, fine, ... "
+                           "(mutually exclusive with --protocol)")  # fmt: skip
+            c.add_argument("--protocol", help="targeted stationary protocol JSON "
+                           "(mutually exclusive with --mode)")  # fmt: skip
             c.add_argument("--set", action="append", metavar="KEY=VALUE",
                            help="override a scan setting, e.g. sweep_n=4")  # fmt: skip
         if name == "plan":
@@ -848,19 +1036,31 @@ def build_parser() -> argparse.ArgumentParser:
             c.add_argument("--sample", help="sample in the chamber: empty, white_ptfe, black_cup, "
                            "food, or LIO-F-...")  # fmt: skip
             c.add_argument("--out", help="results root (default test_results/)")
+            c.add_argument("--allow-light", action="store_true",
+                           help="required for --protocol runs (emission permission)")  # fmt: skip
         c.set_defaults(fn=cmd_scan)
+    c = scsub.add_parser("audit", help="offline provenance/model audit into --derived-out")
+    c.add_argument("folder", help="the run folder")
+    c.add_argument("--model", choices=["legacy", "qualified-v2"], default="qualified-v2")
+    c.add_argument("--derived-out", required=True, help="derived analysis root (not the run folder)")
+    c.set_defaults(fn=cmd_scan)
     c = scsub.add_parser("analyse", help="compute the metrics of a run (writes analysis.json)")
     c.add_argument("folder", help="the run folder")
     c.add_argument("--reference", help="a reference run: white_ptfe for stray light, or a "
                    "baseline of the same sample for effectiveness")  # fmt: skip
     c.add_argument("--no-baselines", action="store_true", help="skip trend and control charts")
     c.add_argument("--out", help="results root holding scan_baselines/ (default test_results/)")
+    c.add_argument("--model", choices=["legacy", "qualified-v2"], default=None,
+                   help="with --derived-out: write versioned product there")  # fmt: skip
+    c.add_argument("--derived-out", help="derived analysis root (offline; leaves run folder raw)")
     c.set_defaults(fn=cmd_scan)
     c = scsub.add_parser("report", help="write report.html / report.md with plots")
     c.add_argument("folder", help="the run folder")
     c.add_argument("--reference", help="a reference run (as for analyse)")
     c.add_argument("--no-baselines", action="store_true", help="skip trend and control charts")
     c.add_argument("--out", help="results root holding scan_baselines/ (default test_results/)")
+    c.add_argument("--analysis", help="derived analysis_id (with --derived-out)")
+    c.add_argument("--derived-out", help="derived analysis root for --analysis report")
     c.set_defaults(fn=cmd_scan)
     c = scsub.add_parser("baseline", help="save a run as a baseline, or list baselines")
     c.add_argument("action", choices=["save", "list"])

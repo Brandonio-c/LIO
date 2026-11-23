@@ -164,16 +164,11 @@ def parts(results: Iterable[TestResult], cfg: HwConfig) -> dict[str, Any]:
             status = s.status
             # Hole 16 (and any other limited hole): a wrong-LED plausibility hit is
             # known and accepted — show WARN, never paint the hole FAIL for it.
-            if (
-                hole in limited
-                and "plausibility" in s.id
-                and status.rank >= Status.FAIL.rank
-            ):
+            if hole in limited and "plausibility" in s.id and status.rank >= Status.FAIL.rank:
                 status = Status.WARN
             # V3 at the sealed top: weak InGaAs / no settling step is not a dead LED.
             if status.rank >= Status.FAIL.rank and (
-                r.id == "T06.3"
-                or (r.id == "T07.1" and "no step" in (s.message or "").lower())
+                r.id == "T06.3" or (r.id == "T07.1" and "no step" in (s.message or "").lower())
             ):
                 status = Status.WARN
             if hole is not None:

@@ -18,6 +18,7 @@ from lio.food_profiles.schema import (
     DETECTORS,
     CellReason,
 )
+from lio.scan.provenance import resolve_analysis_validity
 from lio.scan.store import ScanStore
 
 
@@ -160,8 +161,8 @@ def _resolve_channel_map(
             )
         return out, True
     # Legacy: config hash only - use current config but mark unverified if hash differs.
-    sha_fn = getattr(cfg, "sha256", None)
-    cfg_hash = str(sha_fn()) if callable(sha_fn) else ""
+    # HwConfig.sha256 is a string attribute (not a callable); compare as string.
+    cfg_hash = str(getattr(cfg, "sha256", "") or "")
     stored = str(meta.get("config_sha256") or "")
     if (stored and cfg_hash and stored != cfg_hash) or not stored:
         verified = False
@@ -188,6 +189,8 @@ def open_run(folder: Path | str, cfg: HwConfig | None = None) -> RunData:
     step_kinds = [str(s.get("kind", "")) for s in steps]
     cfg = cfg or load_config()
     channel_map, verified = _resolve_channel_map(cfg, meta)
+    cube_sha = file_sha256(folder / "cube.csv.gz")
+    scan_sha = file_sha256(folder / "scan.json")
     analysis = None
     analysis_ok = False
     analysis_reason = "missing"
@@ -195,13 +198,15 @@ def open_run(folder: Path | str, cfg: HwConfig | None = None) -> RunData:
     if ap.exists():
         try:
             analysis = json.loads(ap.read_text())
-            if str(analysis.get("run_id", "")) in ("", meta.get("run_id"), folder.name) and str(
-                analysis.get("sample_id", meta.get("sample_id"))
-            ) == str(meta.get("sample_id")):
-                analysis_ok = True
-                analysis_reason = "ok"
-            else:
-                analysis_reason = "identity_mismatch"
+            ok, reason, detail = resolve_analysis_validity(
+                analysis,
+                cube_sha256=cube_sha,
+                scan_sha256=scan_sha,
+                run_id=str(meta.get("run_id", folder.name)),
+                sample_id=str(meta.get("sample_id")),
+            )
+            analysis_ok = ok
+            analysis_reason = reason.value if ok else f"{reason.value}:{detail}"
         except (OSError, json.JSONDecodeError) as e:
             analysis_reason = f"unreadable:{e}"
     return RunData(
@@ -214,8 +219,8 @@ def open_run(folder: Path | str, cfg: HwConfig | None = None) -> RunData:
         analysis=analysis,
         analysis_ok=analysis_ok,
         analysis_reason=analysis_reason,
-        cube_sha256=file_sha256(folder / "cube.csv.gz"),
-        scan_sha256=file_sha256(folder / "scan.json"),
+        cube_sha256=cube_sha,
+        scan_sha256=scan_sha,
         cfg=cfg,
     )
 
@@ -329,7 +334,8 @@ def curve_payload(
 
 
 def findings_payload(run: RunData) -> dict[str, Any]:
-    if not run.analysis_ok or not run.analysis:
+    """Rejected analyses remain inspectable; ``available`` gates quantitative reuse."""
+    if not run.analysis:
         return {
             "available": False,
             "reason": run.analysis_reason,
@@ -338,8 +344,8 @@ def findings_payload(run: RunData) -> dict[str, Any]:
             "verdict": None,
         }
     return {
-        "available": True,
-        "reason": "ok",
+        "available": run.analysis_ok,
+        "reason": run.analysis_reason,
         "findings": run.analysis.get("findings") or [],
         "health": run.analysis.get("health") or [],
         "verdict": run.analysis.get("verdict"),

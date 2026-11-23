@@ -35,7 +35,10 @@ CUBE_FIELDS = (
 # without a hold-coils command (S0 deviation D2).
 STATES = ("dark", "lit", "select_only", "ce_only", "wrong_rail", "coils_off", "coils_moving")
 
-MV_PER_COUNT = 0.125  # GAIN_ONE
+# Legacy gain-1 LSB only (ADS1115 GAIN_ONE). New writers should use
+# ``lio.scan.calibration.resolve_calibration`` / ``CalibrationResolver.counts_to_mv``.
+# Do not rewrite historical cubes; unknown LSB must disable physical units.
+MV_PER_COUNT = 0.125  # see lio.scan.calibration.LEGACY_GAIN1_LSB_MV
 
 
 def _now_iso() -> str:

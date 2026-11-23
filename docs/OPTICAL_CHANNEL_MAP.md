@@ -4,7 +4,7 @@ Holes are numbered clockwise from 12 o'clock on the 35 mm emitter ring of the op
 
 ```
                         1 (395)
-            16 (1850)             2 (405)
+            16 (1850)             2 (purple)
        15 (1760)                       3 (blue)
      14 (1650)                           4 (green)
     13 (1550)        [ OPT101 | InGaAs ]   5 (yellow)
@@ -19,7 +19,7 @@ Holes are numbered clockwise from 12 o'clock on the 35 mm emitter ring of the op
 | Hole / CH | Emitter | Register output (pin) | Rail / driver | Detector |
 |---|---|---|---|---|
 | 1 | 395 nm UV | U1 Q0 (15) | A / DRV1 | OPT101 |
-| 2 | ≈405 nm violet | U1 Q1 (1) | A / DRV1 | OPT101 |
+| 2 | purple (~405 nm) | U1 Q1 (1) | A / DRV1 | OPT101 |
 | 3 | Blue ≈465 nm | U1 Q2 (2) | A / DRV1 | OPT101 |
 | 4 | Green ≈525 nm | U1 Q3 (3) | A / DRV1 | OPT101 |
 | 5 | Yellow ≈590 nm | U1 Q4 (4) | A / DRV1 | OPT101 |

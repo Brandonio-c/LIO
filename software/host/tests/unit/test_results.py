@@ -74,6 +74,18 @@ class TestVerdict:
         v, reasons = _verdict(_r("T06.2", ("polarity/gate", Status.FAIL)))
         assert v == Verdict.NOT_FUNCTIONAL and "not tied to a channel" in reasons[0]
 
+    def test_detector_coupling_fail_is_soft(self) -> None:
+        # T13.1 from a food scan: InGaAs coupling FAIL must not brick the overall board.
+        r = _r(
+            "T13.1",
+            ("system/link", Status.PASS),
+            ("elec/ingaas/coupling", Status.FAIL),
+            ("elec/ingaas/ground_shift", Status.WARN),
+        )
+        r.kind = "M"
+        v, reasons = _verdict(r)
+        assert v == Verdict.FUNCTIONAL and "T13.1" in reasons[0] and "warnings" in reasons[0]
+
     def test_few_channel_fails_degraded(self) -> None:
         v, reasons = _verdict(_r("T05.2", ("h03/opt101", Status.FAIL), ("h08/ingaas", Status.FAIL)))
         assert v == Verdict.DEGRADED and "3, 8" in reasons[0]

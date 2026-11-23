@@ -52,7 +52,11 @@ class FeatureId:
 
     @property
     def key(self) -> str:
-        base = f"{self.detector}:h{self.hole:02d}:{self.kind}"
+        # H16 proxy uses unassigned proxy namespace — never primary-1850 (M6).
+        if self.hole == 16:
+            base = f"proxy_unassigned:{self.detector}:h{self.hole:02d}:{self.kind}"
+        else:
+            base = f"{self.detector}:h{self.hole:02d}:{self.kind}"
         if self.height_hs is not None:
             base += f":h{self.height_hs:g}"
         if self.recipe:

@@ -1,6 +1,6 @@
 hole_ch,led,register,output,pin,rail,driver,detector,mosfet,gate_resistor,pulldown
 1,395 nm UV,U1,Q0,15,A,"DRV1 (CE1, Nano A3)",OPT101,Q1 2N7000,R1 220R,R17 10k
-2,~405 nm violet,U1,Q1,1,A,"DRV1 (CE1, Nano A3)",OPT101,Q2 2N7000,R2 220R,R18 10k
+2,purple (~405 nm),U1,Q1,1,A,"DRV1 (CE1, Nano A3)",OPT101,Q2 2N7000,R2 220R,R18 10k
 3,blue ~465 nm,U1,Q2,2,A,"DRV1 (CE1, Nano A3)",OPT101,Q3 2N7000,R3 220R,R19 10k
 4,green ~525 nm,U1,Q3,3,A,"DRV1 (CE1, Nano A3)",OPT101,Q4 2N7000,R4 220R,R20 10k
 5,yellow ~590 nm,U1,Q4,4,A,"DRV1 (CE1, Nano A3)",OPT101,Q5 2N7000,R5 220R,R21 10k

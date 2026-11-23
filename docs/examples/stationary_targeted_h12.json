@@ -1,0 +1,66 @@
+{
+  "id": "stationary_targeted_h12_v1",
+  "version": "1",
+  "schema": 1,
+  "kind": "stationary_targeted",
+  "sample": {
+    "sample_id": "empty",
+    "declared": true
+  },
+  "assembly": {
+    "tray": "v3",
+    "lid": "closed",
+    "notes": "current-position stationary; geometry compatibility limited"
+  },
+  "holes": [8, 9, 12, 13, 14, 15],
+  "detectors": ["ingaas", "opt101"],
+  "position_policy": "current_position",
+  "gain": "1",
+  "conditions": [
+    {
+      "id": "unblocked",
+      "label": "chamber unblocked",
+      "settle_ms": 8,
+      "mains_periods": 2,
+      "optical_block": false
+    }
+  ],
+  "blocks": {
+    "n_production": 4,
+    "n_pilot": 2,
+    "n_production_min": 1,
+    "n_production_max": 8
+  },
+  "budgets": {
+    "max_wall_s": 600,
+    "max_cycle_s": 120,
+    "max_total_on_ms": 120000
+  },
+  "allocation": {
+    "policy": "equal_fixed",
+    "control_holes": [8, 9],
+    "target_weights": {
+      "12": 2.0,
+      "13": 1.0,
+      "14": 1.0,
+      "15": 1.0,
+      "8": 0.5,
+      "9": 0.5
+    }
+  },
+  "inference": {
+    "split": "fixed_n",
+    "pilot_is_confirmation": false
+  },
+  "estimator": {
+    "name": "fixed_n_block",
+    "version": "m3-fixed-n-block-1",
+    "coupling_model": "validated_control"
+  },
+  "operator_checkpoints": [
+    "Confirm lid closed and chamber clear before first MEAS",
+    "All LEDs off before any optical_block condition"
+  ],
+  "objective": "primary_swir",
+  "notes": "Documented example for offline plan/run. Not bench-qualified. H16 omitted from primary-SWIR. Use allocation.policy=pilot_frozen with prior_variance for pilot-then-freeze."
+}

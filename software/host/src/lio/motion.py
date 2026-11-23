@@ -194,5 +194,5 @@ def move_to(
     a = dev.stage.abs
     assert a is not None
     if a[0] != a[1]:
-        raise RuntimeError(f"the two sides are not level (left {a[0]}, right {a[1]})")
+        raise RuntimeError(f"the two sides are not level (M1/right {a[0]}, M2/left {a[1]})")
     return move_both(dev, cfg, height - a[0], settings=settings, during=during)

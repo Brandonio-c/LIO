@@ -101,6 +101,23 @@ def hole_of(sub_id: str) -> int | None:
     return None
 
 
+def _soft_electrical_fail(sub_id: str) -> bool:
+    """Detector-level FAILs that stay on the twin but do not brick the T11 overall.
+
+    Coupling / ground-shift are subtracted in software. Throughput and trend/compare
+    are often sample- or geometry-driven (empty tray vs food, sealed V3 path) rather
+    than a dead channel — keep them visible, but not as unattributed NOT FUNCTIONAL.
+    """
+    parts = sub_id.split("/")
+    if "elec" in parts and parts[-1] in ("coupling", "ground_shift"):
+        return True
+    if parts[-1] == "throughput" and ("opt101" in parts or "ingaas" in parts):
+        return True
+    if "trend" in parts and parts[-1] == "compare":
+        return True
+    return False
+
+
 @dataclass(frozen=True)
 class OverallVerdict:
     verdict: Verdict
@@ -131,18 +148,25 @@ def overall_verdict(
     for r in failing:
         if r.id in critical:
             continue
-        # V3 sealed-top soft fails: weak cross-cal / no settling step — not dead LEDs.
-        def _counts_as_channel_fail(s: SubResult) -> bool:
+        # Soft FAILs: still shown on the twin, but do not alone make the rig NOT FUNCTIONAL.
+        # - T06.3 / T07.1 no-step: V3 sealed-top cross-cal / settling
+        # - elec/*/coupling|ground_shift (incl. under T13.1): subtracted in software; often
+        #   inflated by sample scatter on "blind" LEDs — investigate, don't brick the board.
+        def _soft_sub_fail(s: SubResult) -> bool:
             if s.status.rank < Status.FAIL.rank:
                 return False
             if r.id == "T06.3":
-                return False
+                return True
             if r.id == "T07.1" and "no step" in (s.message or "").lower():
-                return False
-            return True
+                return True
+            return _soft_electrical_fail(s.id)
+
+        def _counts_as_channel_fail(s: SubResult) -> bool:
+            return s.status.rank >= Status.FAIL.rank and not _soft_sub_fail(s)
 
         bad = [hole_of(s.id) for s in r.subs if _counts_as_channel_fail(s)]
-        if not bad and r.subs and any(s.status.rank >= Status.FAIL.rank for s in r.subs):
+        hard = [s for s in r.subs if _counts_as_channel_fail(s)]
+        if not hard and r.subs and any(s.status.rank >= Status.FAIL.rank for s in r.subs):
             # Only soft FAILs on this test — treat like a WARN for the verdict.
             continue
         if bad and all(h is not None for h in bad):
@@ -152,18 +176,21 @@ def overall_verdict(
     real = sorted(h for h in holes if h not in limited_holes)
     limited = sorted(h for h in holes if h in limited_holes)
     warns = [r.id for r in results if r.status == Status.WARN]
-    # Soft channel FAILs (T06.3 / T07.1 no-step) surface as warnings, not fails.
+    # Soft FAILs (T06.3 / T07.1 no-step / detector coupling) surface as warnings, not fails.
     for r in results:
         if r.id in warns or r.status.rank < Status.FAIL.rank:
             continue
-        if r.id == "T06.3" or (
-            r.id == "T07.1"
-            and r.subs
-            and all(
-                s.status.rank < Status.FAIL.rank or "no step" in (s.message or "").lower()
-                for s in r.subs
-            )
-        ):
+
+        def _soft_sub_fail(s: SubResult) -> bool:
+            if s.status.rank < Status.FAIL.rank:
+                return False
+            if r.id == "T06.3":
+                return True
+            if r.id == "T07.1" and "no step" in (s.message or "").lower():
+                return True
+            return _soft_electrical_fail(s.id)
+
+        if r.subs and all(s.status.rank < Status.FAIL.rank or _soft_sub_fail(s) for s in r.subs):
             if r.id not in warns:
                 warns.append(r.id)
     if critical:

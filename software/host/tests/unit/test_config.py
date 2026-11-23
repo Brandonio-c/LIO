@@ -118,8 +118,8 @@ class TestShippedConfig:
             cfg.section.mapping("schema_version")
 
     def test_integer_keys(self, cfg: HwConfig) -> None:
-        assert cfg.section.raw("motors.1.name") == "left"
-        assert cfg.section.raw("motors.2.name") == "right"
+        assert cfg.section.raw("motors.1.name") == "right"
+        assert cfg.section.raw("motors.2.name") == "left"
 
     def test_channel_range(self, cfg: HwConfig) -> None:
         with pytest.raises(ConfigError):

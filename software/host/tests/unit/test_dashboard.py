@@ -707,7 +707,7 @@ class TestLedRing:
 
     def test_on_time_is_checked(self, session: Session) -> None:
         session.connect("sim")
-        for on in (0, 5, 5000):
+        for on in (0, 5, 20000):  # max is the RAIL B watchdog cap (10 s)
             with pytest.raises(Refused):
                 session.ring_start(on, 0, include_unfitted=False)
 
@@ -755,21 +755,34 @@ class TestHoldOneHole:
         session.ring_stop()
         assert session.sim is not None and not session.sim._light_since
 
-    def test_without_budget_a_held_hole_is_relit_straight_away(self, session: Session) -> None:
+    def test_without_budget_a_held_hole_is_solid_on(self, session: Session) -> None:
         assert not session.cfg.section.raw("dashboard.ring_duty_budget")
         session.connect("sim")
-        out = session.ring_start(1000, 0, include_unfitted=False, holes=[7])
-        gap = session.cfg.section.integer("dashboard.ring_gap_ms")
-        assert out["step_ms"] == out["min_step_ms"] == 1000 + gap  # no cool-down
+        # M1: solid hold renews within the rail duty budget (not a budget=False WDT bypass).
+        out = session.ring_start(100, 0, include_unfitted=False, holes=[7])
+        duty_a = int(session.cfg.duty_budget_ms(7))
+        assert out["solid"] is True
+        assert out["on_ms"] == out["step_ms"] == out["min_step_ms"] == duty_a
 
         def relit() -> bool:
             assert session.sim is not None and len(session.sim._light_since) <= 1
-            return bool(session.ring_status().get("laps", 0) >= 3)
+            return bool(session.ring_status().get("laps", 0) >= 2)
 
         wait_for(relit, timeout=60)
-        assert session.ring_status()["state"] != "cooling"
         session.ring_stop()
         assert session.sim is not None and not session.sim._light_since
+        # Watchdog restored to the boot default after solid hold.
+        assert session.dev is not None
+        assert session.dev.info().as_int("wdt_a_ms") == session.cfg.limits["wdt_a_ms"]
+
+    def test_led_hold_toggles_solid(self, session: Session) -> None:
+        session.connect("sim")
+        on = session.led_hold(10)
+        assert on["on"] and on["solid"] and on["holes"] == [10]
+        assert on["on_ms"] == int(session.cfg.duty_budget_ms(10))
+        off = session.led_hold(10)
+        assert off == {"action": "hold", "hole": 10, "on": False}
+        assert session.ring_status() == {"active": False}
 
     def test_bad_hole_is_refused(self, session: Session) -> None:
         session.connect("sim")
