@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261123-060720_sim</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261123-060720_sim</code> on <code>sim</code>
+,
+2026-11-23T06:07:20-05:00 to 2026-11-23T06:07:21-05:00</p>
+<div class="verdict" style="background: #d03b3b">NOT FUNCTIONAL</div>
+<ul><li>failure in a critical module: T10.2</li></ul>
+
+<table>
+<tr><th>Sample</th><td>none-empty-chamber</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td>2.5.2 (proto 1, build 2026-11-16)</td>
+    <th>Config</th><td><code>e29964e36d34</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.11</td>
+    <th>Software</th><td>lio 0.2.0, git <code>130dd7707a</code> (dirty)</td></tr>
+<tr><th>Results</th><td colspan="3">FAIL 1</td></tr>
+<tr><th>LED duty</th><td colspan="3">0.0 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T10.2">T10.2</a></td><td>On-time watchdog</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ FAIL</span></td>
+<td></td></tr>
+
+</table>
+
+
+
+
+<h2>T10</h2>
+
+<h3 id="T10.2">T10.2 On-time watchdog <span class="badge" style="border-color: #d03b3b">✕ FAIL</span></h3>
+
+
+<details open>
+<summary>8 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>CH 3 ON 60000 clamped to RAIL A limit<br><code>T10.2/A/h03/clamp</code></td>
+<td><span class="badge" style="border-color: #d03b3b">✕ FAIL</span></td>
+<td>until_ms=90 clamped=1</td><td>until_ms=2000 clamped=1</td></tr>
+
+<tr><td>CH 13 ON 60000 clamped to RAIL B limit<br><code>T10.2/B/h13/clamp</code></td>
+<td><span class="badge" style="border-color: #d03b3b">✕ FAIL</span></td>
+<td>until_ms=90 clamped=1</td><td>until_ms=5000 clamped=1</td></tr>
+
+<tr><td>Hole 3 lit before the watchdog<br><code>T10.2/A/h03/lit</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>light seen</td><td>light seen</td></tr>
+
+<tr><td>Light gone after the watchdog limit<br><code>T10.2/A/h03/off</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>dark after 311 ms</td><td>&lt;= 352 ms: limit 300 + tolerance 50 + detector settling 2.0 ms</td></tr>
+
+<tr><td>&#39;# WDT&#39; received<br><code>T10.2/A/h03/event</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># WDT ch=3 on_ms=300 off</td><td>&#39;# WDT&#39; with on_ms &lt;= 350</td></tr>
+
+<tr><td>Hole 13 lit before the watchdog<br><code>T10.2/B/h13/lit</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>light seen</td><td>light seen</td></tr>
+
+<tr><td>Light gone after the watchdog limit<br><code>T10.2/B/h13/off</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>dark after 316 ms</td><td>&lt;= 351 ms: limit 300 + tolerance 50 + detector settling 0.7 ms</td></tr>
+
+<tr><td>&#39;# WDT&#39; received<br><code>T10.2/B/h13/event</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># WDT ch=13 on_ms=300 off</td><td>&#39;# WDT&#39; with on_ms &lt;= 350</td></tr>
+
+</table>
+</details>
+
+
+
+</body>
+</html>
