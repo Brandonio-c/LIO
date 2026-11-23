@@ -73,17 +73,18 @@ def default_state_root() -> Path:
 
 
 def _boot_id() -> str:
-    for path in (Path("/proc/sys/kernel/random/boot_id"), Path("/var/db/.AppleSetupDone")):
-        try:
-            if path.is_file():
-                return path.read_text(encoding="utf-8", errors="replace")[:64]
-        except OSError:
-            continue
-    # macOS / other: boot-time approximation that changes across reboot.
+    """Best-effort boot identity. Never treat AppleSetupDone/root ctime as proof.
+
+    Linux: ``/proc/sys/kernel/random/boot_id``. Elsewhere: conservative
+    ``unknown-boot`` so discontinuities fail closed rather than inventing credit.
+    """
     try:
-        return str(int(os.stat("/").st_ctime))
+        path = Path("/proc/sys/kernel/random/boot_id")
+        if path.is_file():
+            return path.read_text(encoding="utf-8", errors="replace").strip()[:64]
     except OSError:
-        return "unknown-boot"
+        pass
+    return "unknown-boot"
 
 
 @dataclass
@@ -216,6 +217,7 @@ class DutyJournal:
             "boot_id": self._boot_id,
             "owner_generation": self.owner_generation,
             "history": {},  # rail_key -> list[{t0, t1, hole, reserved_ms, status}]
+            # pending: None | single dict (legacy) | {"items": [dict, ...]} atomic set
             "pending": None,
             "uncertain": False,
             "cooldown_until_mono": None,
@@ -256,25 +258,37 @@ class DutyJournal:
             self._data["pending"] = None
             self._persist()
 
+    def _pending_items(self) -> list[dict[str, Any]]:
+        pending = self._data.get("pending")
+        if pending is None:
+            return []
+        if isinstance(pending, dict) and isinstance(pending.get("items"), list):
+            return [p for p in pending["items"] if isinstance(p, dict)]
+        if isinstance(pending, dict):
+            return [pending]
+        return []
+
     def _absorb_pending_conservative(self) -> None:
         pending = self._data.get("pending")
-        if not isinstance(pending, dict):
+        if pending is None:
             return
-        key = str(pending.get("rail_key") or "")
-        t0 = float(pending.get("reserved_at_mono") or self.mono_now())
-        on_s = float(pending.get("on_ms") or 0.0) / 1000.0
-        hole = int(pending.get("hole") or 0)
+        items = self._pending_items()
         hist = self._data.setdefault("history", {})
-        spans = hist.setdefault(key, [])
-        spans.append(
-            {
-                "t0": t0,
-                "t1": t0 + on_s,
-                "hole": hole,
-                "reserved_ms": float(pending.get("on_ms") or 0.0),
-                "status": "crash-retained",
-            }
-        )
+        for item in items:
+            key = str(item.get("rail_key") or "")
+            t0 = float(item.get("reserved_at_mono") or self.mono_now())
+            on_s = float(item.get("on_ms") or 0.0) / 1000.0
+            hole = int(item.get("hole") or 0)
+            spans = hist.setdefault(key, [])
+            spans.append(
+                {
+                    "t0": t0,
+                    "t1": t0 + on_s,
+                    "hole": hole,
+                    "reserved_ms": float(item.get("on_ms") or 0.0),
+                    "status": "crash-retained",
+                }
+            )
 
     def _persist(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -298,6 +312,18 @@ class DutyJournal:
                     tmp.unlink()
             raise JournalError(f"duty journal fsync/replace failed: {e}") from e
 
+    def reload(self) -> None:
+        """Reload durable journal from disk under the current owner lease.
+
+        Stale preconstructed journal objects must call this after lock acquire
+        so prior charges cannot be erased from outdated in-memory state.
+        """
+        if not self.path.exists():
+            self._data = self._empty()
+            self._persist()
+            return
+        self._load_or_init()
+
     def used_ms(self, hole: int, now: float | None = None) -> float:
         now = self.mono_now() if now is None else now
         key = self.rail_of(hole)
@@ -306,6 +332,11 @@ class DutyJournal:
         for span in self._data.get("history", {}).get(key, []):
             t0, t1 = float(span["t0"]), float(span["t1"])
             total += max(0.0, min(t1, now) - max(t0, lo))
+        # Pending reservations count fully against remaining budget.
+        for item in self._pending_items():
+            if str(item.get("rail_key") or "") != key:
+                continue
+            total += float(item.get("on_ms") or 0.0) / 1000.0
         return total * 1000.0
 
     def budget_for(self, hole: int) -> float:
@@ -339,6 +370,26 @@ class DutyJournal:
                 return wait
         return self.window_s
 
+    def _clear_uncertain_if_cooled(self) -> None:
+        if self._data.get("uncertain") and self._data.get("cooldown_until_mono"):
+            now = self.mono_now()
+            if now < float(self._data["cooldown_until_mono"]):
+                raise DutyBudgetError(
+                    "uncertain recovery: conservative cooldown active; no auto-resume emit"
+                )
+            self._data["uncertain"] = False
+            self._data["cooldown_until_mono"] = None
+
+    def _reservation_dict(self, res: Reservation) -> dict[str, Any]:
+        return {
+            "id": res.id,
+            "hole": res.hole,
+            "on_ms": res.on_ms,
+            "rail_key": res.rail_key,
+            "reserved_at_mono": res.reserved_at_mono,
+            "owner_generation": res.owner_generation,
+        }
+
     def reserve(
         self, hole: int, on_ms: float, *, owner_generation: str | None = None
     ) -> Reservation:
@@ -348,41 +399,71 @@ class DutyJournal:
         ``DutyBudgetError`` if ``on_ms`` exceeds the absolute budget or still
         does not fit after waiting.
         """
-        if self._data.get("uncertain") and self._data.get("cooldown_until_mono"):
-            now = self.mono_now()
-            if now < float(self._data["cooldown_until_mono"]):
-                raise DutyBudgetError(
-                    "uncertain recovery: conservative cooldown active; no auto-resume emit"
-                )
-            self._data["uncertain"] = False
-            self._data["cooldown_until_mono"] = None
-        now = self.mono_now()
-        # wait_needed raises if on_ms > absolute budget.
-        wait = self.wait_needed(hole, on_ms, now)
-        if wait > 0:
+        return self.reserve_many([(hole, on_ms)], owner_generation=owner_generation)[0]
+
+    def reserve_many(
+        self,
+        charges: list[tuple[int, float]],
+        *,
+        owner_generation: str | None = None,
+    ) -> list[Reservation]:
+        """Atomically reserve every potential exposure before send (e.g. SWEEP).
+
+        All charges are validated against remaining budget (including prior
+        pending items), then persisted as one pending set. Partial overwrite of
+        a single pending slot is not permitted.
+        """
+        if not charges:
+            raise DutyBudgetError("reserve_many requires at least one charge")
+        if self._pending_items():
             raise DutyBudgetError(
-                f"insufficient remaining duty for {on_ms:.3f} ms on hole {hole}; "
-                f"need wait {wait:.3f} s first (request never auto-clamped)"
+                "cannot reserve while another pending set exists; commit or abort first"
             )
+        self._clear_uncertain_if_cooled()
+        now = self.mono_now()
         gen = owner_generation or self.owner_generation
-        res = Reservation(
-            id=uuid.uuid4().hex,
-            hole=hole,
-            on_ms=float(on_ms),
-            rail_key=self.rail_of(hole),
-            reserved_at_mono=now,
-            owner_generation=gen,
-        )
-        self._data["pending"] = {
-            "id": res.id,
-            "hole": res.hole,
-            "on_ms": res.on_ms,
-            "rail_key": res.rail_key,
-            "reserved_at_mono": res.reserved_at_mono,
-            "owner_generation": res.owner_generation,
-        }
+        # Validate generation: stale owners cannot spend.
+        if owner_generation is not None and owner_generation != self.owner_generation:
+            raise OwnershipError(
+                f"stale owner_generation {owner_generation!r} ≠ journal "
+                f"{self.owner_generation!r}"
+            )
+        # Check each charge fits; accumulate provisional pending for multi-rail.
+        provisional: list[Reservation] = []
+        # Simulate pending contribution for sequential same-rail checks.
+        extra_used: dict[str, float] = {}
+        for hole, on_ms in charges:
+            budget = self.budget_for(hole)
+            if on_ms > budget + 1e-9:
+                raise DutyBudgetError(
+                    f"request {on_ms:.3f} ms exceeds budget {budget:.3f} ms for hole {hole}"
+                )
+            key = self.rail_of(hole)
+            used = self.used_ms(hole, now) + extra_used.get(key, 0.0)
+            if used + on_ms > budget + 1e-9:
+                wait = self.wait_needed(hole, on_ms, now)
+                raise DutyBudgetError(
+                    f"insufficient remaining duty for {on_ms:.3f} ms on hole {hole}; "
+                    f"need wait {wait:.3f} s first (request never auto-clamped)"
+                )
+            res = Reservation(
+                id=uuid.uuid4().hex,
+                hole=int(hole),
+                on_ms=float(on_ms),
+                rail_key=key,
+                reserved_at_mono=now,
+                owner_generation=gen,
+            )
+            provisional.append(res)
+            extra_used[key] = extra_used.get(key, 0.0) + float(on_ms)
+
+        items = [self._reservation_dict(r) for r in provisional]
+        if len(items) == 1:
+            self._data["pending"] = items[0]
+        else:
+            self._data["pending"] = {"items": items}
         self._persist()
-        return res
+        return provisional
 
     def commit(self, reservation: Reservation, *, t_on: float, t_off: float) -> None:
         key = reservation.rail_key
@@ -400,25 +481,48 @@ class DutyJournal:
         # Prune old spans outside 2 windows.
         cutoff = self.mono_now() - 2 * self.window_s
         hist[key] = [s for s in spans if float(s["t1"]) >= cutoff]
-        if self._data.get("pending") and self._data["pending"].get("id") == reservation.id:
+        items = self._pending_items()
+        remaining = [p for p in items if p.get("id") != reservation.id]
+        if not remaining:
             self._data["pending"] = None
+        elif len(remaining) == 1:
+            self._data["pending"] = remaining[0]
+        else:
+            self._data["pending"] = {"items": remaining}
         self._persist()
 
-    def abort_conservative(self, reservation: Reservation | None = None) -> None:
+    def abort_conservative(
+        self,
+        reservation: Reservation | None = None,
+        *,
+        reservations: list[Reservation] | None = None,
+    ) -> None:
         """Retain worst-case charge on crash/timeout/partial acknowledgement."""
-        pending = self._data.get("pending")
-        if reservation is not None:
+        if reservations:
             self._data["pending"] = {
-                "id": reservation.id,
-                "hole": reservation.hole,
-                "on_ms": reservation.on_ms,
-                "rail_key": reservation.rail_key,
-                "reserved_at_mono": reservation.reserved_at_mono,
-                "owner_generation": reservation.owner_generation,
+                "items": [self._reservation_dict(r) for r in reservations]
             }
+        elif reservation is not None:
+            # Merge into existing pending set rather than erasing siblings.
+            existing = {
+                p.get("id"): p for p in self._pending_items() if isinstance(p, dict)
+            }
+            existing[reservation.id] = self._reservation_dict(reservation)
+            items = list(existing.values())
+            self._data["pending"] = items[0] if len(items) == 1 else {"items": items}
         self._absorb_pending_conservative()
         self._data["pending"] = None
         self._data["uncertain"] = True
         self._data["cooldown_until_mono"] = self.mono_now() + self.window_s
         self._persist()
-        _ = pending  # retained via absorb
+
+    def history_entries(self) -> list[dict[str, Any]]:
+        """Flat list of committed/retained history spans (for tests/inspection)."""
+        out: list[dict[str, Any]] = []
+        for key, spans in (self._data.get("history") or {}).items():
+            for span in spans:
+                row = dict(span)
+                row["rail_key"] = key
+                out.append(row)
+        return out
+

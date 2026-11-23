@@ -108,6 +108,31 @@ def test_select_baseline_rejects_calibration_mismatch() -> None:
     assert any("calibration" in r for r in d.rejects)
 
 
+def test_select_baseline_fail_closed_missing_required_facts() -> None:
+    c = BaselineCandidate(
+        "r1",
+        "/tmp/r1",
+        BaselineKind.SCAN_BASELINE,
+        "COMPLETE",
+        config_sha256="abc",
+        calibration_id="gain:1",
+        model=None,
+        geometry_key=None,
+        reference_protocol=None,
+        incomplete=False,
+    )
+    d = select_baseline(
+        [c],
+        use=BaselineUse.QUANTITATIVE,
+        require_geometry_key="top=0|bottom=-1",
+        require_model="qualified-v2",
+        require_reference_protocol="white",
+    )
+    assert d.ok is False
+    text = " ".join(d.rejects).lower()
+    assert "missing" in text
+
+
 def test_candidate_from_run_folder(tmp_path: Path) -> None:
     folder = tmp_path / "run"
     folder.mkdir()

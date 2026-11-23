@@ -76,8 +76,14 @@ class Analysis:
 
 
 def analyse(
-    folder: Path, cfg: HwConfig, reference: Path | None = None, baselines_root: Path | None = None
+    folder: Path,
+    cfg: HwConfig,
+    reference: Path | None = None,
+    baselines_root: Path | None = None,
+    *,
+    write: bool = True,
 ) -> Analysis:
+    """Run analysis. When ``write=False``, compute only (D09: derived-out isolation)."""
     cube = Cube.open(folder)
     ref = Cube.open(reference) if reference is not None else None
     a = Analysis(cube.store.run_id, cube.sample_id, cube.mode, str(cube.meta.get("status")))
@@ -103,7 +109,8 @@ def analyse(
     a.explanations = {k: e.to_dict() for k, e in explain_all(a.findings).items()}
     a.health = system.health_table(a.findings)
     a.verdict = system.verdict(cfg, a.findings)
-    (Path(folder) / "analysis.json").write_text(
-        json.dumps(a.to_dict(), indent=1, default=float) + "\n"
-    )
+    if write:
+        (Path(folder) / "analysis.json").write_text(
+            json.dumps(a.to_dict(), indent=1, default=float) + "\n"
+        )
     return a

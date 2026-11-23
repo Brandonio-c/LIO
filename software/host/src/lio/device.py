@@ -11,13 +11,13 @@ including on exceptions and Ctrl-C::
 
 from __future__ import annotations
 
+import contextlib
 import logging
 import math
 import threading
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 from lio.config import HwConfig
 from lio.ownership import (
@@ -25,6 +25,8 @@ from lio.ownership import (
     DutyBudgetError,
     DutyJournal,
     JournalError,
+    OwnershipError,
+    Reservation,
     default_state_root,
     normalize_port_identity,
     rig_identity_from_port,
@@ -41,6 +43,11 @@ from lio.protocol import (
     parse_line,
 )
 from lio.stage import StageError, StageTracker
+from lio.timing_capability import (
+    DEFAULT_TIMING_CAPABILITY,
+    conservative_pulse_bound_ms,
+    validate_reported_on_ms,
+)
 from lio.transport import SerialTransport, SimTransport, Transport
 
 log = logging.getLogger(__name__)
@@ -276,17 +283,21 @@ class LIODevice:
             if duty
             else None
         )
-        # M1: real serial always gets exclusive lock + durable journal. Simulation
-        # keeps the in-process DutyTracker unless a synthetic journal is passed.
+        # M1 / R1: real serial always gets exclusive lock + durable journal.
+        # Real duty=False / budget=False cannot disable accounting (D01).
         self.device_lock = device_lock
         self.journal = journal
-        self._pending_reservation: Any = None
+        self._pending_reservations: list[Reservation] = []
+        self._timing = DEFAULT_TIMING_CAPABILITY
+        self._state_root = state_root
         if isinstance(transport, SerialTransport):
             root = state_root if state_root is not None else default_state_root()
+            self._state_root = root
             rig = rig_identity_from_port(transport.port)
             if self.device_lock is None:
                 self.device_lock = DeviceLock(rig, root)
-            if self.journal is None and duty:
+            # Always attach a journal on real hardware — duty=False is not an escape.
+            if self.journal is None:
                 self.journal = DutyJournal.for_rig(
                     normalize_port_identity(transport.port),
                     state_root=root,
@@ -295,6 +306,17 @@ class LIODevice:
                     rail_of=cfg.duty_key,
                     mono_now=self.transport.now,
                 )
+            # Keep in-memory tracker for operator UX even when journal is primary.
+            if self.duty is None:
+                self.duty = DutyTracker(
+                    window_s=th.num("duty.window_s"),
+                    budget_ms=cfg.duty_budgets_ms(),
+                    rail_of=cfg.duty_key,
+                )
+        # Journal mono clock must match transport time (sim or serial), else
+        # commits at t≈0 are pruned against wall monotonic.
+        if self.journal is not None:
+            self.journal.mono_now = self.transport.now
 
     # ------------------------------------------------------------ lifecycle
 
@@ -302,9 +324,12 @@ class LIODevice:
         return isinstance(self.transport, SimTransport)
 
     def open(self) -> Event:
-        # Ownership lock BEFORE serial open / POWER WAKE (M1).
+        # Ownership lock BEFORE journal reload / serial open / POWER WAKE (D03).
         if self.device_lock is not None:
             self.device_lock.acquire()
+        if self.journal is not None:
+            # Reload durable state under the lease so stale objects cannot erase.
+            self.journal.reload()
         t0 = self.transport.now()
         self._expect_boot = True
         try:
@@ -361,13 +386,20 @@ class LIODevice:
         return True
 
     def close(self) -> None:
+        """Always close transport before releasing ownership (D04)."""
         try:
             if self.transport.is_open:
-                self.safe_off()
-                self.transport.close()
+                try:
+                    self.safe_off()
+                except Exception as e:
+                    log.warning("close: safe_off failed: %s", e)
+                finally:
+                    with contextlib.suppress(Exception):
+                        self.transport.close()
         finally:
             if self.device_lock is not None:
-                self.device_lock.release()
+                with contextlib.suppress(Exception):
+                    self.device_lock.release()
 
     def __enter__(self) -> LIODevice:
         self.open()
@@ -377,13 +409,14 @@ class LIODevice:
         self.close()
 
     def safe_off(self) -> None:
-        """Best effort: LEDs off and motors stopped/released. Never raises."""
+        """Same-owner OFF/STOP: cancellation- and ledger-independent (D04)."""
         for cmd in ("OFF", "MOTOR STOP"):
             try:
-                self.command(cmd, timeout=1.0)
+                self._command_unguarded(cmd, timeout=1.0, check=False)
             except Exception as e:  # must not mask the original error
                 log.warning("safe_off: %s failed: %s", cmd, e)
-        self._close_lit(self.now())
+        with contextlib.suppress(Exception):
+            self._close_lit(self.now())
 
     # ------------------------------------------------------------- clock
 
@@ -516,8 +549,67 @@ class LIODevice:
                 got.append(line)
 
     def command(self, cmd: str, *, timeout: float | None = None, check: bool = True) -> Reply:
-        """Send one command and return its response plus the events seen meanwhile."""
+        """Send one command; light-capable raw/shell cmds are gated or refused (D01)."""
         self._check_cancel()
+        routed = self._try_route_light_command(cmd)
+        if routed is not None:
+            return routed
+        self._gate_or_refuse_raw_command(cmd)
+        return self._command_unguarded(cmd, timeout=timeout, check=check)
+
+    def _try_route_light_command(self, cmd: str) -> Reply | None:
+        """Map shell CH/CE/MEAS/SWEEP/OFF/SR onto typed gated operations."""
+        parts = cmd.strip().split()
+        if not parts:
+            return None
+        head = parts[0].upper()
+        try:
+            if head == "OFF":
+                self.off()
+                return self._synthetic_ok_reply("OFF", "")
+            if head == "CH" and len(parts) >= 3 and parts[2].upper() == "ON":
+                hole = int(parts[1])
+                ms = int(parts[3]) if len(parts) >= 4 else None
+                until = self.ch_on(hole, ms)
+                return self._synthetic_ok_reply("CH", f"until_ms={until}")
+            if head == "CE" and len(parts) >= 3:
+                return self.ce(int(parts[1]), bool(int(parts[2])))
+            if head == "MEAS" and len(parts) >= 2:
+                hole = int(parts[1])
+                settle = int(parts[2]) if len(parts) >= 3 else None
+                n = int(parts[3]) if len(parts) >= 4 else None
+                m = self.meas(hole, settle_ms=settle, n=n)
+                return self._synthetic_ok_reply("MEAS", f"hole={m.hole} t_on_ms={m.t_on_ms}")
+            if head == "SWEEP":
+                settle = int(parts[1]) if len(parts) >= 2 else None
+                n = int(parts[2]) if len(parts) >= 3 else None
+                sw = self.sweep(settle_ms=settle, n=n)
+                return self._synthetic_ok_reply("SWEEP", f"dur_ms={sw.dur_ms} n={len(sw.records)}")
+            if head == "SR" and len(parts) >= 3 and parts[1].upper() == "RAW":
+                raw_mask = parts[2]
+                mask = int(raw_mask, 16)
+                got = self.sr_raw(mask)
+                return self._synthetic_ok_reply("SR", f"mask={got}")
+        except (ValueError, IndexError, TypeError):
+            return None
+        return None
+
+    def _synthetic_ok_reply(self, word: str, fields: str) -> Reply:
+        """Local OK after a typed op already performed the transport write."""
+        vals = {k: v for k, v in (p.split("=", 1) for p in fields.split() if "=" in p)}
+        resp = Response(
+            ok=True,
+            word=word,
+            fields=Fields(vals),
+            seq=self._seq,
+            raw=f"OK {word}" + (f" {fields}" if fields else ""),
+        )
+        return Reply(resp, [], self.now(), self.now())
+
+    def _command_unguarded(
+        self, cmd: str, *, timeout: float | None = None, check: bool = True
+    ) -> Reply:
+        """Transport write without cancel check or raw light re-gate (safe_off / typed)."""
         self._seq = (self._seq + 1) % 100000
         seq = self._seq
         wire = encode(cmd, seq)
@@ -551,9 +643,12 @@ class LIODevice:
     def send_raw(self, data: bytes, timeout: float) -> Response | None:
         """Write raw bytes and return the first response of any sequence number.
 
-        For robustness tests (T02.4): an over-length or garbage line is answered
-        without the ``@seq`` prefix, which :meth:`command` would discard.
+        Light-capable / exposure-altering payloads are refused (D01). Suite
+        robustness probes must use non-emitting garbage or typed helpers.
         """
+        text = data.decode("ascii", errors="replace").strip()
+        if text:
+            self._gate_or_refuse_raw_command(text.split("\n", 1)[0])
         self.transport.write_raw(data)
         deadline = self.now() + timeout
         while True:
@@ -566,6 +661,53 @@ class LIODevice:
             line = self._dispatch(raw)
             if isinstance(line, Response):
                 return line
+
+    @staticmethod
+    def _raw_command_kind(cmd: str) -> str:
+        """Classify a protocol command for the emission gate."""
+        parts = cmd.strip().split()
+        if not parts:
+            return "empty"
+        head = parts[0].upper()
+        if head in ("OFF", "MOTOR") and (
+            head == "OFF" or (len(parts) > 1 and parts[1].upper() in ("STOP", "RELEASE"))
+        ):
+            return "safe"
+        if head == "CH":
+            return "light_ch"
+        if head == "CE":
+            return "light_ce"
+        if head == "SR":
+            return "select"
+        if head in ("MEAS", "SWEEP"):
+            return "light_meas"
+        if head == "DBG" and len(parts) > 1 and parts[1].upper() == "STATE":
+            return "light_dbg"
+        if head == "ADC" and len(parts) > 1 and parts[1].upper() == "STREAM":
+            # STREAM with LED schedule args is light-capable.
+            return "light_stream" if len(parts) >= 7 else "read"
+        if head in ("WDT",) or (head == "ADC" and len(parts) > 1 and parts[1].upper() == "CFG"):
+            return "config_exposure"
+        return "other"
+
+    def _gate_or_refuse_raw_command(self, cmd: str) -> None:
+        """Public raw/shell paths must not bypass typed light accounting (D01)."""
+        kind = self._raw_command_kind(cmd)
+        if kind in ("safe", "other", "read", "empty"):
+            return
+        if kind == "config_exposure":
+            # WDT / ADC CFG can alter exposure limits — require ownership context.
+            if self.journal is None and not self._is_sim():
+                raise OwnershipError(
+                    f"refusing {cmd!r}: real hardware requires duty journal for "
+                    "exposure-limit changes"
+                )
+            return
+        # Light / select / CE: refuse raw path — callers must use typed ops.
+        raise OwnershipError(
+            f"refusing ungated light-capable command {cmd!r}: use typed "
+            "ch_on/ce/meas/sweep/sr_raw (or shell guarded helpers)"
+        )
 
     # -------------------------------------------------------------- identity
 
@@ -661,10 +803,12 @@ class LIODevice:
         if led is not None:
             hole, on_i, off_i = led
             cmd += f" {hole} {on_i} {off_i}"
-            self._duty_gate(hole, (off_i - on_i) * max(interval_ms, 2.0))
+            nominal = (off_i - on_i) * max(interval_ms, 2.0)
+            bound = self._conservative_bound_for_hole(hole, nominal_on_ms=nominal)
+            self._duty_gate(hole, bound)
         per = max(interval_ms / 1000.0, self._conv_s())
         t0 = self.now()
-        reply = self.command(cmd, timeout=2.0 + n * per * 1.5)
+        reply = self._command_unguarded(cmd, timeout=2.0 + n * per * 1.5)
         if led is not None:
             # On-time estimated from the schedule; recorded for the duty budget.
             self._record_duty(led[0], t0, t0 + (led[2] - led[1]) * per)
@@ -677,10 +821,25 @@ class LIODevice:
     # ------------------------------------------------------------ channels
 
     def sr_raw(self, mask: int) -> int:
-        return self.command(f"SR RAW {mask:04X}").fields.as_int("mask")
+        # Selection alone does not light, but with CE it can — require journal
+        # presence on real HW so SR+CE cannot escape accounting (D01).
+        if not self._is_sim() and self.journal is None:
+            raise OwnershipError("SR RAW refused: real hardware requires duty journal")
+        return self._command_unguarded(f"SR RAW {mask:04X}").fields.as_int("mask")
 
     def ce(self, rail: int, on: bool) -> Reply:
-        reply = self.command(f"CE {rail} {int(on)}")
+        if on:
+            # CE high can light a selected hole — reserve conservative WDT bound.
+            hole = self._single_hole(self.status().as_int("mask"))
+            if hole:
+                bound = self._conservative_bound_for_hole(hole)
+                self._duty_gate(hole, bound)
+            elif not self._is_sim() and self.journal is not None:
+                # Ambiguous mask: refuse rather than emit unaccounted light.
+                raise OwnershipError(
+                    "CE on refused: no single selected hole to reserve duty against"
+                )
+        reply = self._command_unguarded(f"CE {rail} {int(on)}")
         if on:
             hole = self._single_hole(self.status().as_int("mask"))
             until = reply.fields.as_int("until_ms") / 1000.0
@@ -697,23 +856,27 @@ class LIODevice:
         is not an escape hatch. Simulation without a journal may still skip.
         The firmware watchdog still ends the flash.
         """
-        # Budget what the firmware will allow: the request clamped to the
-        # rail's current watchdog limit.
-        limit = self.info().as_int(f"wdt_{self.cfg.channel(hole).rail.lower()}_ms")
+        rail = self.cfg.channel(hole).rail
+        limit = self.info().as_int(f"wdt_{rail.lower()}_ms")
         planned = min(ms, limit) if ms is not None else limit
-        # Remove unrestricted real-hardware budget=False bypass.
+        # Real duty/budget knobs cannot disable accounting (D01).
         if not budget and not (self._is_sim() and self.journal is None):
             budget = True
+        bound = self._conservative_bound_for_hole(hole, nominal_on_ms=float(planned))
         if budget:
-            self._duty_gate(hole, planned)
+            self._duty_gate(hole, bound)
         cmd = f"CH {hole} ON" + (f" {ms}" if ms is not None else "")
-        until = self.command(cmd).fields.as_int("until_ms")
+        until = self._command_unguarded(cmd).fields.as_int("until_ms")
+        abort = validate_reported_on_ms(bound, float(until))
+        if abort:
+            self._abort_pending()
+            raise DutyBudgetError(f"CH abort retaining worst-case: {abort}")
         self._close_lit(self.now())
         self._lit = (hole, self.now(), self.now() + until / 1000.0)
         return until
 
     def off(self) -> None:
-        self.command("OFF")
+        self._command_unguarded("OFF")
         self._close_lit(self.now())
 
     def _mean_s(self, n: int) -> float:
@@ -734,30 +897,64 @@ class LIODevice:
     def meas(self, hole: int, settle_ms: int | None = None, n: int | None = None) -> Meas:
         s = settle_ms if settle_ms is not None else self.cfg.limits["settle_ms"]
         k = n if n is not None else 1
-        self._duty_gate(hole, s + 2 * self._mean_s(k) * 1000)
+        # Match firmware/sim MEAS WDT check: settle + 2*mean + 10 (D05/D19).
+        nominal = s + 2 * self._mean_s(k) * 1000 + 10
+        bound = self._conservative_bound_for_hole(hole, nominal_on_ms=nominal)
+        self._duty_gate(hole, bound)
         t0 = self.now()
-        reply = self.command(f"MEAS {hole} {s} {k}", timeout=self.meas_timeout(s, k))
-        m = Meas.from_fields(reply.fields)
+        try:
+            reply = self._command_unguarded(
+                f"MEAS {hole} {s} {k}", timeout=self.meas_timeout(s, k)
+            )
+            m = Meas.from_fields(reply.fields)
+        except Exception:
+            self._abort_pending()
+            raise
+        abort = validate_reported_on_ms(bound, float(m.t_on_ms))
+        if abort:
+            self._abort_pending()
+            raise DutyBudgetError(f"MEAS abort retaining worst-case: {abort}")
         self._record_duty(hole, t0, t0 + m.t_on_ms / 1000.0)
         return m
 
     def sweep(self, settle_ms: int | None = None, n: int | None = None) -> Sweep:
         s = settle_ms if settle_ms is not None else self.cfg.limits["settle_ms"]
         k = n if n is not None else 1
-        per_ms = s + 2 * self._mean_s(k) * 1000
+        per_nominal = s + 2 * self._mean_s(k) * 1000 + 10  # match firmware MEAS/SWEEP est
+        # D02: atomically reserve ALL 16 hole charges before send.
+        charges: list[tuple[int, float]] = []
         for hole in range(1, 17):
-            self._duty_gate(hole, per_ms)
+            bound = self._conservative_bound_for_hole(hole, nominal_on_ms=per_nominal)
+            charges.append((hole, bound))
+        self._duty_gate_many(charges)
         t0 = self.now()
-        reply = self.command(f"SWEEP {s} {k}", timeout=16 * self.meas_timeout(s, k))
-        records = [Meas.from_fields(e.fields) for e in reply.events if e.name == "M"]
-        # Attribute on-time sequentially: sharing one t0 for every hole made the
-        # end-of-run "max ms/min" look like the whole-run total (all flashes piled
-        # into one window) and defeated cool-down once wall time left that pile.
+        try:
+            reply = self._command_unguarded(
+                f"SWEEP {s} {k}", timeout=16 * self.meas_timeout(s, k)
+            )
+            records = [Meas.from_fields(e.fields) for e in reply.events if e.name == "M"]
+        except Exception:
+            self._abort_pending()
+            raise
+        if len(records) != 16:
+            self._abort_pending()
+            raise DutyBudgetError(
+                f"SWEEP partial/malformed: {len(records)} records; retaining all charges"
+            )
         t = t0
-        for m in records:
+        by_hole = {m.hole: m for m in records}
+        for hole, bound in charges:
+            m = by_hole.get(hole)
+            if m is None:
+                self._abort_pending()
+                raise DutyBudgetError("SWEEP missing hole; retaining remaining charges")
+            abort = validate_reported_on_ms(bound, float(m.t_on_ms))
+            if abort:
+                self._abort_pending()
+                raise DutyBudgetError(f"SWEEP abort retaining worst-case: {abort}")
             dur_s = max(m.t_on_ms, 0) / 1000.0
             self._record_duty(m.hole, t, t + dur_s)
-            t += dur_s if dur_s > 0 else per_ms / 1000.0
+            t += dur_s if dur_s > 0 else bound / 1000.0
         return Sweep(records, reply.fields.as_int("dur_ms"))
 
     def dbg_state(self, state: str, arg: int, settle_ms: int, n: int) -> Fields:
@@ -768,10 +965,13 @@ class LIODevice:
         word = {"ce_only": "CE_ONLY", "wrong_rail": "WRONG_RAIL"}[state]
         on_ms = settle_ms + 2 * self._mean_s(n) * 1000
         if state == "wrong_rail":
-            self._duty_gate(arg, on_ms)
+            bound = self._conservative_bound_for_hole(arg, nominal_on_ms=on_ms)
+            self._duty_gate(arg, bound)
         t0 = self.now()
-        f = self.command(f"DBG STATE {word} {arg} {settle_ms} {n}",
-                         timeout=self.meas_timeout(settle_ms, n)).fields  # fmt: skip
+        f = self._command_unguarded(
+            f"DBG STATE {word} {arg} {settle_ms} {n}",
+            timeout=self.meas_timeout(settle_ms, n),
+        ).fields
         if state == "wrong_rail":
             self._record_duty(arg, t0, t0 + f.as_int("t_on_ms") / 1000.0)
         return f
@@ -876,48 +1076,131 @@ class LIODevice:
             self.sleep(wait)
         return wait
 
+    def _conservative_bound_for_hole(
+        self, hole: int, *, nominal_on_ms: float | None = None
+    ) -> float:
+        """Conservative pulse bound (D05).
+
+        Prefer a supported watchdog setting that covers the quantized operation
+        and fits remaining budget. Do not invent latency margins. If the active
+        WDT is larger than needed, lower it to the quantized need (firmware
+        minimum 50 ms) before reserving so budgets remain usable.
+        """
+        from lio.timing_capability import FW_WDT_MIN_MS, quantize_wdt_ms
+
+        rail = self.cfg.channel(hole).rail
+        try:
+            wdt = int(self.info().as_int(f"wdt_{rail.lower()}_ms"))
+        except Exception as e:
+            raise DutyBudgetError(
+                f"cannot read WDT for hole {hole}: refuse before light ({e})"
+            ) from e
+        # When caller omits nominal (e.g. CE), use firmware minimum as the
+        # operation need — then shrink WDT down to that covering setting.
+        nominal = float(nominal_on_ms) if nominal_on_ms is not None else float(FW_WDT_MIN_MS)
+        need = quantize_wdt_ms(nominal, capability=self._timing)
+        if wdt < need:
+            raise DutyBudgetError(
+                f"refuse before light: active WDT {wdt} ms cannot cover need {need} ms"
+            )
+        if wdt > need:
+            self.wdt_cfg(rail, int(need))
+            wdt = int(need)
+        use_bound = float(wdt)
+        bound, refuse = conservative_pulse_bound_ms(
+            nominal_on_ms=nominal,
+            active_wdt_ms=wdt,
+            rail=rail,
+            capability=self._timing,
+        )
+        if refuse:
+            raise DutyBudgetError(f"refuse before light: {refuse}")
+        use_bound = float(bound)
+        if self.journal is not None:
+            try:
+                self.journal.wait_needed(hole, use_bound, self.now())
+            except DutyBudgetError as e:
+                raise DutyBudgetError(
+                    f"refuse before light: conservative bound {use_bound} ms "
+                    f"unsupported by budget ({e})"
+                ) from e
+        return use_bound
+
     def _duty_gate(self, hole: int, on_ms: float) -> None:
         """Gate light through the durable journal when present; else DutyTracker.
 
         Over-budget requests (``on_ms`` greater than the absolute budget) are
         rejected before any transport write. Window-full cases wait, then reserve.
         """
+        self._duty_gate_many([(hole, on_ms)])
+
+    def _duty_gate_many(self, charges: list[tuple[int, float]]) -> None:
+        if not charges:
+            return
         if self.journal is not None:
+            # Wait until every charge fits, then atomic multi-reserve.
+            for hole, on_ms in charges:
+                try:
+                    wait = self.journal.wait_needed(hole, on_ms, self.now())
+                except DutyBudgetError:
+                    raise
+                if wait > 0:
+                    log.info(
+                        "duty journal: cooling hole %d for %.1f s before %.0f ms on",
+                        hole,
+                        wait,
+                        on_ms,
+                    )
+                    if self.duty is not None:
+                        self.duty.note_cooldown(hole, wait, f"{on_ms:.0f} ms requested")
+                    self.sleep(wait)
             try:
-                wait = self.journal.wait_needed(hole, on_ms, self.now())
-            except DutyBudgetError:
-                raise
-            if wait > 0:
-                log.info("duty journal: cooling hole %d for %.1f s before %.0f ms on", hole, wait, on_ms)
-                if self.duty is not None:
-                    self.duty.note_cooldown(hole, wait, f"{on_ms:.0f} ms requested")
-                self.sleep(wait)
-            try:
-                self._pending_reservation = self.journal.reserve(hole, on_ms)
-            except (DutyBudgetError, JournalError):
-                self._pending_reservation = None
+                self._pending_reservations = self.journal.reserve_many(charges)
+            except (DutyBudgetError, JournalError, OwnershipError):
+                self._pending_reservations = []
                 raise
             return
         if self.duty is None:
             return
-        wait = self.duty.wait_needed(hole, on_ms, self.now())
-        if wait > 0:
-            log.info("duty: cooling hole %d for %.1f s before %.0f ms on", hole, wait, on_ms)
-            self.duty.note_cooldown(hole, wait, f"{on_ms:.0f} ms requested")
-            self.sleep(wait)
+        for hole, on_ms in charges:
+            wait = self.duty.wait_needed(hole, on_ms, self.now())
+            if wait > 0:
+                log.info(
+                    "duty: cooling hole %d for %.1f s before %.0f ms on", hole, wait, on_ms
+                )
+                self.duty.note_cooldown(hole, wait, f"{on_ms:.0f} ms requested")
+                self.sleep(wait)
+
+    def _abort_pending(self) -> None:
+        if self.journal is None or not self._pending_reservations:
+            self._pending_reservations = []
+            return
+        try:
+            self.journal.abort_conservative(reservations=list(self._pending_reservations))
+        finally:
+            self._pending_reservations = []
 
     def _record_duty(self, hole: int, t_on: float, t_off: float) -> None:
         if self.duty is not None:
             self.duty.record(hole, t_on, t_off)
-        res = self._pending_reservation
-        if res is not None and self.journal is not None:
-            self._pending_reservation = None
-            try:
-                self.journal.commit(res, t_on=t_on, t_off=t_off)
-            except JournalError:
-                # Accounting failure after light: retain conservative charge.
-                self.journal.abort_conservative(res)
-                raise
+        if not self._pending_reservations or self.journal is None:
+            return
+        # Commit the matching hole reservation (SWEEP retains siblings until done).
+        match_i = next(
+            (i for i, r in enumerate(self._pending_reservations) if r.hole == hole),
+            None,
+        )
+        if match_i is None:
+            return
+        res = self._pending_reservations.pop(match_i)
+        try:
+            self.journal.commit(res, t_on=t_on, t_off=t_off)
+        except JournalError:
+            # Accounting failure after light: retain conservative charge for all pending.
+            remaining = [res, *self._pending_reservations]
+            self._pending_reservations = []
+            self.journal.abort_conservative(reservations=remaining)
+            raise
 
     def _close_lit(self, now: float) -> None:
         if self._lit is None:

@@ -307,11 +307,14 @@ def allocate_pilot_frozen(
     *,
     pilot_variance: dict[int, float],
     pilot_cost_ms: dict[int, float] | None = None,
+    production_budget_ms: float | None = None,
 ) -> dict[str, Any]:
-    """Freeze production allocation from pilot variance + weights + costs.
+    """Freeze production allocation from measured pilot variance + weights + costs (D16).
 
-    Optimizes absolute uncertainty (weight * sigma / sqrt(n)), not relative error.
-    Pilot observations do not count as confirmation.
+    Minimizes ``sum w * sigma / sqrt(n)`` under the on-time cap by greedy marginal
+    improvement (depends on current N). Equal costs/weights/variances therefore
+    balance (e.g. 3,3 not 5,1). Includes an equal-allocation comparator under the
+    same total cost. Pilot observations are never confirmation.
     """
     weights = {
         int(k): float(v) for k, v in (protocol.allocation.get("target_weights") or {}).items()
@@ -321,51 +324,140 @@ def allocate_pilot_frozen(
     n_pilot = int(protocol.blocks.get("n_pilot", 2))
     min_prod = int(protocol.blocks.get("n_production_min", 1))
     max_prod = int(protocol.blocks.get("n_production_max", 16))
-    # Remaining on-time after pilot.
     cond0 = protocol.conditions[0]
     default_cost = _on_ms_for(cond0) * len(protocol.conditions)
     costs = {h: float((pilot_cost_ms or {}).get(h, default_cost)) for h in protocol.holes}
     max_on = float(protocol.budgets["max_total_on_ms"])
     pilot_on = sum(n_pilot * costs[h] for h in protocol.holes)
-    remaining = max(0.0, max_on - pilot_on)
-    # Control holes get a minimum floor.
-    controls = set(int(h) for h in (protocol.allocation.get("control_holes") or [8, 9]))
-    # Score ∝ w * sigma (absolute SE focus); allocate proportional under remaining budget.
-    scores = {}
+    remaining = (
+        float(production_budget_ms)
+        if production_budget_ms is not None
+        else max(0.0, max_on - pilot_on)
+    )
+    controls = {int(h) for h in (protocol.allocation.get("control_holes") or [8, 9])}
+    sigma = {}
     for h in protocol.holes:
-        sig = float(pilot_variance.get(h, 1.0))
-        if not math.isfinite(sig) or sig < 0:
-            sig = 1.0
-        scores[h] = max(1e-6, weights[h] * math.sqrt(max(sig, 1e-12)))
-    # Greedy integer allocation.
+        v = float(pilot_variance.get(h, 1.0))
+        if not math.isfinite(v) or v < 0:
+            v = 1.0
+        sigma[h] = math.sqrt(max(v, 1e-12))
+
+    def objective(alloc: dict[int, int]) -> float:
+        return allocation_objective(alloc, {h: sigma[h] ** 2 for h in alloc}, weights)
+
+    def marginal_gain(h: int, n: int) -> float:
+        """Reduction in objective from n -> n+1, per unit cost."""
+        before = (
+            float("inf") if n < 1 else weights[h] * sigma[h] / math.sqrt(n)
+        )
+        after = weights[h] * sigma[h] / math.sqrt(n + 1)
+        return (before - after) / max(costs[h], 1e-9)
+
     alloc = {h: min_prod for h in protocol.holes}
     for h in controls:
         if h in alloc:
             alloc[h] = max(alloc[h], min_prod)
     used = sum(alloc[h] * costs[h] for h in protocol.holes)
-    # Fill remaining by highest score/cost efficiency.
     while True:
         candidates = [
-            h for h in protocol.holes if alloc[h] < max_prod and used + costs[h] <= remaining + 1e-9
+            h
+            for h in protocol.holes
+            if alloc[h] < max_prod and used + costs[h] <= remaining + 1e-9
         ]
         if not candidates:
             break
-        h_best = max(candidates, key=lambda h: scores[h] / max(costs[h], 1e-9))
+        # Marginal improvement; ties break toward lower current n then hole id.
+        h_best = max(
+            candidates,
+            key=lambda h: (marginal_gain(h, alloc[h]), -alloc[h], -h),
+        )
         alloc[h_best] += 1
         used += costs[h_best]
 
+    # Equal-allocation comparator under identical total production cost.
+    total_prod_slots = sum(alloc.values())
+    n_holes = len(protocol.holes)
+    base, rem = divmod(total_prod_slots, n_holes) if n_holes else (0, 0)
+    equal = {
+        h: base + (1 if i < rem else 0) for i, h in enumerate(protocol.holes)
+    }
     return {
         "policy": "pilot_frozen",
         "n_pilot_per_hole": {str(h): n_pilot for h in protocol.holes},
         "n_production_per_hole": {str(h): int(alloc[h]) for h in protocol.holes},
+        "equal_allocation_comparator": {str(h): int(equal[h]) for h in protocol.holes},
+        "objective_value": objective(alloc),
+        "equal_objective_value": objective(equal),
         "pilot_variance": {str(k): float(v) for k, v in pilot_variance.items()},
         "weights": {str(k): float(v) for k, v in weights.items()},
         "costs_ms": {str(k): float(v) for k, v in costs.items()},
         "remaining_on_ms": remaining,
         "used_production_on_ms": used,
-        "reason": "frozen from pilot variance; pilot excluded from confirmation",
+        "reason": "frozen from measured pilot variance; pilot excluded from confirmation",
         "objective": "minimize sum_i w_i * sigma_i / sqrt(n_i) under on-time cap",
+        "measured_pilot": True,
     }
+
+
+def write_production_freeze(
+    store: Any,
+    *,
+    pilot_observations: list[dict[str, Any]],
+    allocation: dict[str, Any],
+    protocol_hash: str,
+) -> dict[str, Any]:
+    """Immutable production-freeze artifact after pilot (D16). Does not mutate snapshot."""
+    from lio.scan.provenance import content_hash as _ch
+
+    freeze = {
+        "schema": 1,
+        "kind": "production_freeze",
+        "protocol_hash": protocol_hash,
+        "pilot_observation_ids": [
+            f"{o.get('step')}:{o.get('hole')}:{o.get('condition_id')}:{o.get('block')}"
+            for o in pilot_observations
+        ],
+        "pilot_n": len(pilot_observations),
+        "allocation": dict(allocation),
+        "schedule_hash": _ch(allocation),
+        "pilot_excluded_from_confirmation": True,
+    }
+    store.meta["production_freeze"] = freeze
+    store.save_meta()
+    path = store.folder / "production_freeze.json"
+    path.write_text(json.dumps(freeze, indent=1) + "\n", encoding="utf-8")
+    return freeze
+
+
+def measure_pilot_variance(
+    observations: list[dict[str, Any]], *, detector: str = "ingaas"
+) -> dict[int, float]:
+    """Sample variance of pilot nets per hole (measured, not prior=1)."""
+    by_hole: dict[int, list[float]] = {}
+    for o in observations:
+        if o.get("phase") != "pilot":
+            continue
+        if o.get("detector") and o.get("detector") != detector:
+            continue
+        try:
+            h = int(o["hole"])
+            raw_net = o.get("net_counts")
+            if raw_net is None:
+                continue
+            net = float(raw_net)
+        except (KeyError, TypeError, ValueError):
+            continue
+        if not math.isfinite(net):
+            continue
+        by_hole.setdefault(h, []).append(net)
+    out: dict[int, float] = {}
+    for h, vals in by_hole.items():
+        if len(vals) < 2:
+            out[h] = 1.0  # insufficient — explicit unit default, labelled by caller
+        else:
+            mean = sum(vals) / len(vals)
+            out[h] = sum((v - mean) ** 2 for v in vals) / (len(vals) - 1)
+    return out
 
 
 def _build_steps(protocol: ProtocolSpec, allocation: dict[str, Any]) -> list[PlannedStep]:
@@ -448,13 +540,15 @@ def plan_protocol(
         "stationary: no MOTOR ARM",
         f"allocation={policy}",
         "pilot blocks are not confirmation" if policy == "pilot_frozen" else "fixed allocation",
-    ]
-    unresolved = [
+        # Soft calibration caveats (D19): do not block authorized sim/gated runs.
         "A0 input-range unverified until bench qualification",
         "Rf/current provenance may be declared-only",
     ]
+    unresolved: list[str] = []
     if protocol.position_policy == "current_position":
-        unresolved.append("stage coordinate unknown/current; geometry compatibility limited")
+        assumptions.append(
+            "stage coordinate unknown/current; geometry compatibility limited"
+        )
     prereq = [
         "single device owner + duty journal",
         "--allow-light for emission",
@@ -495,8 +589,9 @@ def _snapshot_for_plan(
             gain=APPROVED_FIXED_GAIN,
             fsr_v=4.096,
             lsb_mv=0.125,
-            effective_mode="mains",
-            mains_hz=60.0,
+            # Applied mains_hz is filled after device configure/readback (D06).
+            effective_mode="mains_pending_apply",
+            mains_hz=None,
             mains_periods=plan.protocol.conditions[0].mains_periods,
             settle_ms=float(plan.protocol.conditions[0].settle_ms),
             detector_order=plan.protocol.detectors,
@@ -537,17 +632,27 @@ def record_operator_checkpoint(
     no_motion: bool,
     condition_id: str | None = None,
     step_index: int | None = None,
+    occurrence_id: str | None = None,
+    safe_state_verified: bool | None = None,
 ) -> dict[str, Any]:
     """Record a checkpoint event from software-visible state + explicit operator flag.
 
     Does **not** invent human confirmation: ``operator_confirmed`` must be supplied
-    by the caller. ``all_off`` / ``no_motion`` are software assertions only.
+    by the caller for *this occurrence*. ``all_off`` / ``no_motion`` are software
+    assertions only. A start checkbox must not confirm later interventions (D13).
     """
+    verified = (
+        bool(safe_state_verified)
+        if safe_state_verified is not None
+        else (bool(all_off) and bool(no_motion))
+    )
     event = {
         "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "checkpoint_id": checkpoint_id,
+        "occurrence_id": occurrence_id or checkpoint_id,
         "message": message,
         "operator_confirmed": bool(operator_confirmed),
+        "safe_state_verified": verified,
         "software_state": {
             CHECKPOINT_ALL_OFF: bool(all_off),
             CHECKPOINT_NO_MOTION: bool(no_motion),
@@ -560,33 +665,53 @@ def record_operator_checkpoint(
     store.event(
         "operator_checkpoint",
         checkpoint_id=checkpoint_id,
+        occurrence_id=event["occurrence_id"],
         operator_confirmed=bool(operator_confirmed),
         all_off=bool(all_off),
         no_motion=bool(no_motion),
+        safe_state_verified=verified,
     )
     return event
 
 
-def _software_all_off(device: Any | None) -> bool:
+def _software_all_off(device: Any | None) -> bool | None:
+    """True/False when known; None when state cannot be verified (D13 fail-closed)."""
     if device is None:
         return True  # offline/fake meas: no lit channel asserted
     try:
         st = device.status()
+        ch = st.values.get("ch", "0")
+        if str(ch).lower() in ("none", ""):
+            return True
         return int(st.as_int("ch")) == 0
     except Exception:
-        return False
+        return None
 
 
-def _software_no_motion(device: Any | None) -> bool:
+def _software_no_motion(device: Any | None) -> bool | None:
     if device is None:
         return True
     try:
         if getattr(device, "_motor_armed", False):
             return False
         st = device.status()
-        return st.as_str("motor1") != "run" and st.as_str("motor2") != "run"
+        idle = st.as_str("motor1") != "run" and st.as_str("motor2") != "run"
+        return bool(idle)
     except Exception:
-        return False
+        return None
+
+
+def _establish_safe_state(device: Any | None) -> tuple[bool, bool | None, bool | None]:
+    """OFF then re-read. Returns (ok, all_off, no_motion). Unknown → not ok (D13)."""
+    if device is not None:
+        with contextlib.suppress(Exception):
+            device.off()
+            if hasattr(device, "motor_stop"):
+                device.motor_stop()
+    all_off = _software_all_off(device)
+    no_motion = _software_no_motion(device)
+    ok = all_off is True and no_motion is True
+    return ok, all_off, no_motion
 
 
 def _finalize_protocol(
@@ -643,21 +768,18 @@ def run_protocol(
     operator_checkpoint_flag: bool | None = None,
     store: ScanStore | None = None,
     start_step: int = 0,
+    control: Any | None = None,
+    on_progress: Callable[[dict[str, Any]], None] | None = None,
 ) -> AcquisitionResult:
     """Execute a stationary protocol through typed MEAS only.
 
-    Requires ``allow_light``. Never arms motors. ``meas(hole, settle_ms, n)`` may
-    be injected for tests; otherwise ``device.meas`` is used (must already be open
-    and journal-gated).
-
-    When the protocol declares checkpoints / optical_block conditions, an explicit
-    operator confirmation is required (``operator_confirm`` returning True, or
-    ``operator_checkpoint_flag=True``). Software records all-off / no-motion state
-    without inventing human OK.
+    Requires ``allow_light``. Never arms motors. Checkpoints require verified
+    all_off AND no_motion before prompting; each occurrence needs a fresh answer
+    (D13). Pause/heartbeat hold at verified OFF with no MEAS (D14). Cumulative
+    total/cycle/wall exposure budgets are enforced (D15).
     """
     if not allow_light:
         raise ProtocolError("run requires --allow-light (no silent emission)")
-    # Stationary: refuse if something tried to arm.
     if device is not None and getattr(device, "_motor_armed", False):
         raise ProtocolError("stationary protocol must not run while motors armed")
 
@@ -670,12 +792,22 @@ def run_protocol(
             "or operator_checkpoint_flag=True (explicit; never invented)"
         )
 
-    def _operator_says_ok(msg: str) -> bool:
+    # Occurrence-scoped answers: start checkbox alone cannot confirm later prompts.
+    _answered: set[str] = set()
+
+    def _operator_says_ok(msg: str, *, occurrence_id: str) -> bool:
+        if occurrence_id in _answered:
+            return False  # stale reuse rejected
         if operator_confirm is not None:
-            return bool(operator_confirm(msg))
-        if operator_checkpoint_flag is not None:
-            return bool(operator_checkpoint_flag)
-        return False
+            ok = bool(operator_confirm(msg))
+        elif operator_checkpoint_flag is not None and occurrence_id.startswith("protocol:"):
+            # Start/protocol flags may confirm protocol:* only — never step:* (D13).
+            ok = bool(operator_checkpoint_flag)
+        else:
+            ok = False
+        if ok:
+            _answered.add(occurrence_id)
+        return ok
 
     if store is None:
         snap = _snapshot_for_plan(plan, cfg, simulated=simulated, rig_identity=rig_identity)
@@ -690,6 +822,14 @@ def run_protocol(
             "config_sha256": cfg.sha256,
             "stationary": True,
             "arms_motors": False,
+            "exposure_budget": {
+                "reserved_ms": 0.0,
+                "actual_ms": 0.0,
+                "uncertain_ms": 0.0,
+                "max_total_on_ms": float(plan.protocol.budgets["max_total_on_ms"]),
+                "max_cycle_s": float(plan.protocol.budgets.get("max_cycle_s") or 0),
+                "max_wall_s": float(plan.protocol.budgets["max_wall_s"]),
+            },
         }
         store = ScanStore.create(root, "protocol", meta)
     else:
@@ -708,26 +848,120 @@ def run_protocol(
     status = "COMPLETE"
     cancel_reason = None
     t0 = time.monotonic()
+    cycle_t0 = t0
     max_wall = float(plan.protocol.budgets["max_wall_s"])
+    max_cycle = float(plan.protocol.budgets.get("max_cycle_s") or 0)
+    max_total_on = float(plan.protocol.budgets["max_total_on_ms"])
+    exposure = dict(
+        store.meta.get("exposure_budget")
+        or {
+            "reserved_ms": 0.0,
+            "actual_ms": 0.0,
+            "uncertain_ms": 0.0,
+            "max_total_on_ms": max_total_on,
+            "max_cycle_s": max_cycle,
+            "max_wall_s": max_wall,
+        }
+    )
+    actual_on_ms = float(exposure.get("actual_ms") or 0.0)
 
-    # Protocol-level checkpoints at start (explicit operator flag; software state only).
-    if start_step == 0 and proto_checkpoints:
-        for i, msg in enumerate(proto_checkpoints):
-            confirmed = _operator_says_ok(msg)
-            if device is not None:
-                with contextlib.suppress(Exception):
-                    device.off()
+    def _persist_exposure() -> None:
+        exposure["actual_ms"] = actual_on_ms
+        store.meta["exposure_budget"] = dict(exposure)
+        store.save_meta()
+
+    def _progress(step: PlannedStep | None, state: str) -> None:
+        if on_progress is None and control is None:
+            return
+        payload = {
+            "status": state,
+            "done": int(store.meta.get("completed_step", -1)) + 1,
+            "of": len(plan.steps),
+            "kind": "protocol",
+            "paused": bool(getattr(control, "paused", False)) if control else False,
+            "step": None if step is None else step.index,
+            "phase": None if step is None else step.phase,
+            "actual_on_ms": actual_on_ms,
+        }
+        if control is not None:
+            with contextlib.suppress(Exception):
+                control.progress = dict(payload)
+                paused_now = bool(getattr(control, "pause_requested", False))
+                control.paused = paused_now and state == "paused"
+        if on_progress is not None:
+            on_progress(payload)
+
+    def _await_running(step: PlannedStep | None) -> str | None:
+        """Honor pause/heartbeat; return cancel reason or None. No MEAS while paused."""
+        if control is None and cancel_check is None:
+            return None
+        while True:
+            if cancel_check and cancel_check():
+                return "cancelled"
+            if control is not None and getattr(control, "abort_reason", None):
+                return str(control.abort_reason)
+            pause = False
+            if control is not None:
+                pause = bool(getattr(control, "pause_requested", False))
+                if getattr(control, "heartbeat_required", False) and not control.heartbeat_ok():
+                    pause = True
+            if not pause:
+                if control is not None:
+                    control.paused = False
+                return None
+            # D14: pause at verified OFF; no MEAS while paused/prompting.
+            _establish_safe_state(device)
+            if control is not None:
+                control.paused = True
+            _progress(step, "paused")
+            time.sleep(0.05)
+
+    def _checkpoint(msg: str, *, occurrence_id: str, step: PlannedStep | None = None) -> str | None:
+        """Returns cancel_reason or None. Refuses MEAS on failed/unknown safe state."""
+        ok, all_off, no_motion = _establish_safe_state(device)
+        if not ok:
             record_operator_checkpoint(
                 store,
-                checkpoint_id=f"protocol:{i}",
+                checkpoint_id=occurrence_id.split(":")[0],
+                occurrence_id=occurrence_id,
                 message=msg,
-                operator_confirmed=confirmed,
-                all_off=_software_all_off(device),
-                no_motion=_software_no_motion(device),
+                operator_confirmed=False,
+                all_off=bool(all_off),
+                no_motion=bool(no_motion),
+                condition_id=None if step is None else step.condition_id,
+                step_index=None if step is None else step.index,
+                safe_state_verified=False,
             )
-            if not confirmed:
+            return "unsafe_state_before_checkpoint"
+        # Prompt only after verified safe state (D13).
+        confirmed = _operator_says_ok(msg, occurrence_id=occurrence_id)
+        # Re-verify after prompt (operator may have intervened).
+        ok2, all_off2, no_motion2 = _establish_safe_state(device)
+        record_operator_checkpoint(
+            store,
+            checkpoint_id=occurrence_id.split(":")[0],
+            occurrence_id=occurrence_id,
+            message=msg,
+            operator_confirmed=confirmed,
+            all_off=bool(all_off2) if all_off2 is not None else False,
+            no_motion=bool(no_motion2) if no_motion2 is not None else False,
+            condition_id=None if step is None else step.condition_id,
+            step_index=None if step is None else step.index,
+            safe_state_verified=ok2,
+        )
+        if not ok2:
+            return "unsafe_state_after_checkpoint"
+        if not confirmed:
+            return "checkpoint_refused"
+        return None
+
+    # Protocol-level checkpoints at start.
+    if start_step == 0 and proto_checkpoints:
+        for i, msg in enumerate(proto_checkpoints):
+            reason = _checkpoint(msg, occurrence_id=f"protocol:{i}")
+            if reason:
                 status = "INCOMPLETE"
-                cancel_reason = "checkpoint_refused"
+                cancel_reason = reason
                 _finalize_protocol(
                     store,
                     snap,
@@ -748,16 +982,28 @@ def run_protocol(
             return meas(hole, settle, n)
         if device is None:
             raise ProtocolError("no meas callback or device")
-        # Enforce gain readback if available (core default gain 1; M7 opt-in elsewhere).
+        from lio.scan.provenance import read_info_gain
+
         info = device.info(refresh=True)
-        gain_read = str(
-            info.values.get("adc_gain") or info.values.get("gain") or APPROVED_FIXED_GAIN
-        )
-        if gain_read not in (APPROVED_FIXED_GAIN, "1", "GAIN_ONE"):
+        gain_read = read_info_gain(info)
+        if gain_read is None or str(gain_read) not in (APPROVED_FIXED_GAIN, "1", "GAIN_ONE"):
             raise ProtocolError(
                 f"device gain readback {gain_read!r} ≠ approved {APPROVED_FIXED_GAIN} "
-                "(unexpected gain on non-M7 protocol)"
+                "(missing/unexpected gain on non-M7 protocol; missing ≠ 1)"
             )
+        requested_mains = 60
+        if getattr(device, "mains_hz", 0) != requested_mains:
+            device.adc_mains(requested_mains)
+            info = device.info(refresh=True)
+            got = int(info.values.get("mains", getattr(device, "mains_hz", 0)))
+            if got != requested_mains:
+                raise ProtocolError(f"mains readback {got} ≠ requested {requested_mains}")
+            snap_adc = store.meta.get("acquisition_snapshot", {}).get("adc")
+            if isinstance(snap_adc, dict):
+                snap_adc["mains_hz"] = float(got)
+                snap_adc["effective_mode"] = "mains"
+                store.meta["acquisition_snapshot"]["adc"] = snap_adc
+                store.save_meta()
         m = device.meas(hole, settle_ms=settle, n=n)
         out: dict[str, Any] = {"hole": hole, "t_on_ms": m.t_on_ms}
         for det in plan.protocol.detectors:
@@ -770,37 +1016,53 @@ def run_protocol(
         return out
 
     try:
-        for step in plan.steps[start_step:]:
-            if cancel_check and cancel_check():
+        # Index loop so D16 can extend plan.steps after measured pilot freeze.
+        step_i = start_step
+        while step_i < len(plan.steps):
+            step = plan.steps[step_i]
+            reason = _await_running(step)
+            if reason:
                 status = "INCOMPLETE"
-                cancel_reason = "cancelled"
+                cancel_reason = reason
                 break
             if time.monotonic() - t0 > max_wall:
                 status = "INCOMPLETE"
                 cancel_reason = "max_wall_s"
                 break
+            if max_cycle > 0 and time.monotonic() - cycle_t0 > max_cycle:
+                status = "INCOMPLETE"
+                cancel_reason = "max_cycle_s"
+                break
+
+            # D15: refuse next MEAS if cumulative actual exposure would exceed cap.
+            next_on = float(step.estimated_on_ms)
+            if actual_on_ms + next_on > max_total_on + 1e-9:
+                status = "INCOMPLETE"
+                cancel_reason = "max_total_on_ms"
+                break
+
             if step.optical_block or step.checkpoint:
                 msg = step.checkpoint or f"optical_block condition {step.condition_id}"
-                confirmed = _operator_says_ok(msg)
-                if device is not None:
-                    with contextlib.suppress(Exception):
-                        device.off()
-                record_operator_checkpoint(
-                    store,
-                    checkpoint_id=step.checkpoint or step.condition_id,
-                    message=msg,
-                    operator_confirmed=confirmed,
-                    all_off=_software_all_off(device),
-                    no_motion=_software_no_motion(device),
-                    condition_id=step.condition_id,
-                    step_index=step.index,
-                )
-                if not confirmed:
+                occ = f"step:{step.index}:{step.condition_id}:{step.block}"
+                reason = _checkpoint(msg, occurrence_id=occ, step=step)
+                if reason:
                     status = "INCOMPLETE"
-                    cancel_reason = "checkpoint_refused"
+                    cancel_reason = reason
+                    break
+                # Re-check pause after prompting.
+                reason = _await_running(step)
+                if reason:
+                    status = "INCOMPLETE"
+                    cancel_reason = reason
                     break
 
+            _progress(step, "measuring")
             raw = _meas(step.hole, step.settle_ms, step.mains_periods)
+            reported = float(raw.get("t_on_ms") or next_on)
+            actual_on_ms += reported
+            exposure["reserved_ms"] = float(exposure.get("reserved_ms") or 0.0) + next_on
+            _persist_exposure()
+
             rows = []
             for det in plan.protocol.detectors:
                 dark = raw.get(f"dark_{det}")
@@ -836,9 +1098,55 @@ def run_protocol(
                         "condition_id": step.condition_id,
                         "optical_block": step.optical_block,
                         "block": step.block,
+                        "t_on_ms": reported,
                     }
                 )
             store.append_rows(rows, completed_step=step.index)
+            _progress(step, "measured")
+
+            # Hard stop if reported exposure crossed the cap (D15) — do not continue.
+            if actual_on_ms > max_total_on + 1e-9:
+                status = "INCOMPLETE"
+                cancel_reason = "max_total_on_ms"
+                break
+
+            # D16: after last pilot block, freeze production from MEASURED variance.
+            if (
+                str(plan.allocation_detail.get("policy") or "") == "pilot_frozen"
+                and step.phase == "pilot"
+                and not store.meta.get("production_freeze")
+            ):
+                nxt = plan.steps[step_i + 1] if step_i + 1 < len(plan.steps) else None
+                if nxt is None or nxt.phase != "pilot":
+                    pilot_obs = [o for o in observations if o.get("phase") == "pilot"]
+                    measured = measure_pilot_variance(pilot_obs)
+                    frozen = allocate_pilot_frozen(
+                        plan.protocol,
+                        pilot_variance=measured,
+                    )
+                    freeze = write_production_freeze(
+                        store,
+                        pilot_observations=pilot_obs,
+                        allocation=frozen,
+                        protocol_hash=plan.protocol.protocol_hash(),
+                    )
+                    prod_only = {
+                        "policy": "pilot_frozen",
+                        "n_pilot_per_hole": {str(h): 0 for h in plan.protocol.holes},
+                        "n_production_per_hole": frozen["n_production_per_hole"],
+                    }
+                    prod_steps = _build_steps(plan.protocol, prod_only)
+                    base = step.index + 1
+                    for i, ps in enumerate(prod_steps):
+                        ps.index = base + i
+                    # Keep completed prefix; replace any prior-variance production.
+                    plan.steps = list(plan.steps[: step_i + 1]) + prod_steps
+                    plan.allocation_detail = frozen
+                    store.meta["protocol_plan"] = plan.to_dict()
+                    store.meta["production_freeze"] = freeze
+                    store.save_meta()
+
+            step_i += 1
     except Exception as e:
         status = "INCOMPLETE"
         cancel_reason = f"error:{type(e).__name__}:{e}"
@@ -847,10 +1155,12 @@ def run_protocol(
         if device is not None:
             with contextlib.suppress(Exception):
                 device.off()
+        _persist_exposure()
 
     _finalize_protocol(
         store, snap, status=status, cancel_reason=cancel_reason, observations=observations
     )
+    _progress(None, status.lower())
 
     return AcquisitionResult(
         store=store,
@@ -871,17 +1181,19 @@ def resume_protocol(
     cancel_check: Callable[[], bool] | None = None,
     operator_confirm: Callable[[str], bool] | None = None,
     operator_checkpoint_flag: bool | None = None,
+    control: Any | None = None,
+    on_progress: Callable[[dict[str, Any]], None] | None = None,
+    protocol_override: dict[str, Any] | Path | str | None = None,
 ) -> AcquisitionResult:
-    """Resume an INCOMPLETE protocol run from the next step.
+    """Resume an INCOMPLETE protocol run from a completed-block boundary (D15).
 
-    Refuses COMPLETE folders (no silent promote). Retains prior observations and
-    relies on the ownership journal to keep duty charges.
+    Refuses COMPLETE folders, changed frozen facts, and partial condition blocks.
+    Preserves spent exposure budgets and ownership journal charges.
     """
     store = ScanStore.open(Path(folder))
     status = store.meta.get("status")
     if status == "COMPLETE":
         raise ProtocolError(f"{folder} is already COMPLETE; refuse silent promote/resume")
-    # Allow resume from durable incomplete-like states only.
     if status not in ("INCOMPLETE", "RUNNING", "ABORTED") and store.meta.get(
         "unresolved"
     ) is not True:
@@ -889,14 +1201,60 @@ def resume_protocol(
     proto_plan = store.meta.get("protocol_plan")
     if not proto_plan:
         raise ProtocolError("store missing protocol_plan")
-    if not store.meta.get("protocol"):
+    frozen_proto = store.meta.get("protocol")
+    if not frozen_proto:
         raise ProtocolError("store missing frozen protocol")
-    # Rebuild from frozen protocol body (dict); refuse if COMPLETE (checked above).
-    plan = plan_protocol(store.meta["protocol"], cfg)
-    # Prefer frozen allocation detail from the original plan when present.
+    # D15: changed protocol/config facts cannot resume as valid.
+    if protocol_override is not None:
+        raise ProtocolError("resume refuses protocol overrides; use frozen protocol only")
+    if str(store.meta.get("config_sha256") or "") and str(store.meta.get("config_sha256")) != str(
+        cfg.sha256
+    ):
+        raise ProtocolError("resume refuses changed config_sha256 / calibration facts")
+    frozen_hash = store.meta.get("protocol_hash")
+    live_hash = content_hash(frozen_proto) if not hasattr(
+        type(frozen_proto), "protocol_hash"
+    ) else None
+    # Recompute from frozen body.
+    plan = plan_protocol(frozen_proto, cfg)
+    if frozen_hash and plan.protocol.protocol_hash() != frozen_hash:
+        raise ProtocolError("resume refuses changed protocol hash")
     if proto_plan.get("allocation_detail"):
         plan.allocation_detail = dict(proto_plan["allocation_detail"])
+        # Prefer frozen step list so production freeze is not recomputed.
+        if proto_plan.get("steps"):
+            plan.steps = [
+                PlannedStep(**{k: s[k] for k in PlannedStep.__dataclass_fields__ if k in s})
+                for s in proto_plan["steps"]
+            ]
+
     start = int(store.meta.get("completed_step", -1)) + 1
+    # Completed-block boundary: if the next step continues a partial condition
+    # pair (same block, later condition) after interruption mid-block, reject.
+    if start > 0 and start < len(plan.steps):
+        prev = plan.steps[start - 1]
+        nxt = plan.steps[start]
+        # A complete block means all conditions for (phase, hole, block) finished.
+        # If prev and nxt share hole/block but we're mid-condition list after a
+        # cancel, that is only OK when prev completed the last condition of the set.
+        n_cond = len(plan.protocol.conditions)
+        if n_cond > 1:
+            # Index within the condition cycle for this hole/block.
+            # Steps are ordered condition-major within each block.
+            cond_ids = [c.id for c in plan.protocol.conditions]
+            same_block = (
+                prev.hole == nxt.hole
+                and prev.block == nxt.block
+                and prev.phase == nxt.phase
+            )
+            # Still inside the same block - only legal if prev was last condition.
+            if same_block and prev.condition_id != cond_ids[-1]:
+                raise ProtocolError(
+                    "resume refuses partial condition block; "
+                    "acquire a whole new block with a new id"
+                )
+
+    _ = live_hash  # reserved for stricter identity checks
     return run_protocol(
         plan,
         cfg=cfg,
@@ -914,6 +1272,8 @@ def resume_protocol(
         operator_checkpoint_flag=operator_checkpoint_flag,
         store=store,
         start_step=start,
+        control=control,
+        on_progress=on_progress,
     )
 
 

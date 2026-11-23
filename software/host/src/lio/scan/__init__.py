@@ -126,9 +126,33 @@ def start(
     receive a terminal source seal on finish/abort. Historical folders without
     those fields stay untouched.
     """
-    from lio.scan.provenance import content_hash, snapshot_from_hw_config
+    from lio.scan.provenance import content_hash, read_info_gain, snapshot_from_hw_config
 
     info = dev.info(refresh=True)
+    gain = read_info_gain(info)
+    # D06: core new acquisition rejects non-1 / missing gain before light.
+    if gain is None or str(gain) not in ("1", "GAIN_ONE"):
+        raise PlanError(
+            f"unexpected or missing device gain {gain!r}: core height acquisition "
+            "requires INFO gain=1 before light (missing ≠ 1)"
+        )
+    # Apply/read back mains when the plan requests periods (D06).
+    mains_periods = getattr(plan.settings, "mains_periods", None)
+    mains_hz_applied: float | None = None
+    if mains_periods:
+        requested_hz = int(getattr(plan.settings, "mains_hz", 0) or 0)
+        if requested_hz not in (50, 60):
+            raise PlanError(
+                f"height plan requests mains_periods={mains_periods} but mains_hz="
+                f"{requested_hz!r}; refuse inventing 60 Hz"
+            )
+        dev.adc_mains(requested_hz)
+        info = dev.info(refresh=True)
+        mains_hz_applied = float(info.values.get("mains", requested_hz))
+        if int(mains_hz_applied) != requested_hz:
+            raise PlanError(
+                f"mains readback {mains_hz_applied} ≠ requested {requested_hz}"
+            )
     plan_dict = plan.to_dict()
     snap = snapshot_from_hw_config(
         cfg,
@@ -140,7 +164,9 @@ def start(
         },
         simulated=sim,
         rig_identity="sim" if sim else "host",
-        mains_periods=getattr(plan.settings, "mains_periods", None),
+        gain=str(gain),
+        mains_periods=mains_periods,
+        mains_hz=mains_hz_applied,
         settle_ms=float(getattr(plan.settings, "optical_settle_ms", 0) or 0),
         acquisition_version="m0-height-scan",
     )

@@ -69,7 +69,12 @@ class CouplingResult:
 
 
 def channel_role(cfg: HwConfig, hole: int, detector: str) -> ChannelRole:
-    """Independent role metadata (expect remains for diagnostic policy only)."""
+    """Independent role metadata (expect remains for diagnostic policy only).
+
+    D11: expect/range alone do **not** make a validated electrical control.
+    ``electrical_control_eligible`` stays False unless optical-control evidence
+    is supplied separately. H16 is forever proxy_unassigned / not a control.
+    """
     ch = cfg.channel(hole)
     expect = ch.expect_for(detector)
     wl = ch.wavelength_nm
@@ -80,19 +85,30 @@ def channel_role(cfg: HwConfig, hole: int, detector: str) -> ChannelRole:
             detector=detector,
             nominal_band="1850_nominal" if wl else None,
             primary_eligible=False,  # OPT101/InGaAs h16 not primary-1850 chemistry
-            electrical_control_eligible=False,  # not guaranteed-blind
+            electrical_control_eligible=False,  # never guaranteed-blind
             diagnostic_role="unassigned",
             evidence_source="plan.m2.h16_unassigned",
         )
     primary = expect in ("signal", "weak") and not broadband
-    # Guaranteed-blind defaults exclude h16 and broadband.
-    control = expect == "none" and ch.fitted and wl is not None and not broadband and hole != 16
-    if detector in cfg.detectors and wl is not None:
+    # Diagnostic "candidate blind" from expect/range — NOT validated-control evidence.
+    candidate_blind = (
+        expect == "none" and ch.fitted and wl is not None and not broadband and hole != 16
+    )
+    if detector in cfg.detectors and wl is not None and candidate_blind:
         lo, hi = cfg.detectors[detector].range_nm
-        if control and lo <= wl <= hi:
-            control = False
-    proxy = broadband or (hole == 15 and detector == "ingaas")
-    role = "primary" if primary else ("control" if control else ("proxy" if proxy else "none"))
+        if lo <= wl <= hi:
+            candidate_blind = False
+    # h6/h7 (605/630 nm) are never auto validated controls for InGaAs (D11).
+    if detector == "ingaas" and hole in (6, 7):
+        candidate_blind = False
+    proxy = broadband or (hole == 15 and detector == "ingaas") or hole == 16
+    # Validated electrical control requires explicit evidence — never expect alone.
+    control = False
+    role = (
+        "primary"
+        if primary
+        else ("proxy" if proxy else ("candidate_blind" if candidate_blind else "none"))
+    )
     return ChannelRole(
         hole=hole,
         detector=detector,
@@ -100,6 +116,7 @@ def channel_role(cfg: HwConfig, hole: int, detector: str) -> ChannelRole:
         primary_eligible=primary and hole != 16,
         electrical_control_eligible=control,
         diagnostic_role=role,
+        evidence_source="config.expect_diagnostic_only",
     )
 
 
@@ -124,23 +141,32 @@ def proxy_unassigned_feature_id(detector: str, hole: int, kind: str = "net") -> 
     return f"proxy_unassigned:{detector}:h{hole:02d}:{kind}"
 
 
-def guaranteed_blind_holes(cfg: HwConfig, detector: str) -> list[int]:
-    """Default guaranteed-blind control set: legacy blinds minus h16 and broadband."""
+def guaranteed_blind_holes(
+    cfg: HwConfig,
+    detector: str,
+    *,
+    optical_control_evidence: set[int] | frozenset[int] | None = None,
+) -> list[int]:
+    """Evidence-backed validated-control holes only (D11).
+
+    Expect/range alone never populates this set. Without load-preserving optical
+    control evidence, the list is empty → unidentified C=null. H16 is excluded
+    forever. H6/h7 are never auto-included for InGaAs.
+    """
+    evidence = set(optical_control_evidence or ())
     out = []
-    for h in electrical.blind_holes(cfg, detector):
+    for h in sorted(evidence):
+        if h == 16:
+            continue
+        if detector == "ingaas" and h in (6, 7):
+            continue
+        if (cfg.channel(h).label or "").lower() in ("white", "pink"):
+            continue
         role = channel_role(cfg, h, detector)
-        if role.electrical_control_eligible:
-            out.append(h)
-        elif h != 16 and (cfg.channel(h).label or "").lower() not in ("white", "pink"):
-            # Keep non-broadband expect=none fitted blinds that pass wavelength gate.
-            ch = cfg.channel(h)
-            wl = ch.wavelength_nm
-            if ch.fitted and ch.expect_for(detector) == "none" and wl is not None:
-                lo, hi = cfg.detectors[detector].range_nm
-                if not lo <= wl <= hi:
-                    out.append(h)
-    # Explicit h16 exclusion even if somehow listed.
-    return [h for h in out if h != 16]
+        if role.diagnostic_role == "unassigned":
+            continue
+        out.append(h)
+    return out
 
 
 def candidate_control_holes(cfg: HwConfig, detector: str) -> list[int]:
@@ -205,8 +231,14 @@ def estimate_coupling(
     model: str = MODEL_VALIDATED,
     exclude_holes: set[int] | frozenset[int] | None = None,
     allow_current_scaling: bool = False,
+    optical_control_evidence: set[int] | frozenset[int] | None = None,
 ) -> dict[str, CouplingResult]:
-    """Estimate C per detector/rail under the requested model."""
+    """Estimate C per detector/rail under the requested model.
+
+    ``validated_control`` requires evidence-backed controls (D11). Without
+    ``optical_control_evidence``, C stays null (unidentified) — never inferred
+    from expect/range alone (h6/h7 are not auto controls).
+    """
     if model == MODEL_LEGACY and not exclude_holes:
         return legacy_blind_median(cube, cfg)
 
@@ -214,12 +246,16 @@ def estimate_coupling(
     out: dict[str, CouplingResult] = {}
     for det in DETECTORS:
         if model == MODEL_LEGACY:
-            # Leave-one-out style on the legacy blind pool.
+            # Leave-one-out style on the legacy blind pool (sensitivity / reproduction).
             blinds = [h for h in electrical.blind_holes(cfg, det) if h not in exclude]
         else:
-            blinds = [h for h in guaranteed_blind_holes(cfg, det) if h not in exclude]
-            # For sensitivity studies on real records, also allow candidate pool
-            # when explicitly using legacy membership via exclude on candidates.
+            blinds = [
+                h
+                for h in guaranteed_blind_holes(
+                    cfg, det, optical_control_evidence=optical_control_evidence
+                )
+                if h not in exclude
+            ]
             if model == MODEL_VALIDATED and not blinds:
                 # Fall through to unidentified rather than inventing C=0.
                 pass

@@ -17,6 +17,7 @@ interrupted run resumes from the next step (§5.3).
 from __future__ import annotations
 
 import contextlib
+import json
 import math
 import statistics
 import threading
@@ -43,9 +44,60 @@ class ScanAbort(Exception):
     """Stop the run now (safely); the message is the recorded reason."""
 
 
+def select_primary_swir_height(
+    rows: Iterable[dict[str, str]],
+) -> tuple[int, dict[str, Any]]:
+    """One frozen primary-SWIR target-selection result (D17).
+
+    Shared by fine placement, report and UI. Not the legacy all-channel noise max.
+    H16 residuals cannot change the primary-SWIR optimum.
+    """
+    from lio.scan.provenance import content_hash
+    from lio.scan.targets import primary_swir_objective, scout_height
+
+    by_h: dict[float, dict[int, float]] = {}
+    for r in rows:
+        if r.get("state") != "lit" or r.get("phase") != "P2" or not r.get("net_counts"):
+            continue
+        if r.get("detector") not in (None, "", "ingaas"):
+            continue
+        try:
+            height = float(r["height_hs"])
+            hole = int(r["hole"])
+            net = float(r["net_counts"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        by_h.setdefault(height, {})[hole] = net
+    if not by_h:
+        raise ScanAbort("fine mode: no down-pass data to place the points around the optimum")
+    obj = primary_swir_objective()
+    scout = scout_height(sorted(by_h.keys()), by_h, objective=obj)
+    if scout.status != "selected" or scout.frozen_height_hs is None:
+        raise ScanAbort(
+            f"fine mode: primary-SWIR scout {scout.status}: {scout.detail or 'unresolved'}"
+        )
+    height = round(float(scout.frozen_height_hs))
+    payload = scout.to_dict()
+    payload["selection_id"] = content_hash(
+        {
+            "objective": obj.version,
+            "frozen_height_hs": height,
+            "status": scout.status,
+            "exclusions": scout.exclusions,
+        }
+    )
+    payload["consumed_by"] = ["planner", "fine_placement", "report", "ui"]
+    return height, payload
+
+
 def overall_optimum(rows: Iterable[dict[str, str]]) -> int:
-    """The down-pass height where the summed, per-channel-normalised net signal is
-    largest. Places the fine-mode points (S0 deviation D7)."""
+    """Fine-mode height from the shared primary-SWIR objective (D17)."""
+    height, _ = select_primary_swir_height(rows)
+    return height
+
+
+def overall_optimum_legacy_all_channel(rows: Iterable[dict[str, str]]) -> int:
+    """Labelled legacy reproduction only — all-channel normalised peak (not qualified)."""
     by: dict[tuple[str, str], dict[int, float]] = {}
     for r in rows:
         if r.get("state") != "lit" or r.get("phase") != "P2" or not r.get("net_counts"):
@@ -706,7 +758,14 @@ class ScanExecutor:
         return int(extra[st.rep % len(extra)])
 
     def _plan_extras(self) -> list[int]:
-        opt = overall_optimum(self.store.rows())
+        opt, selection = select_primary_swir_height(self.store.rows())
+        # D17: one frozen target-selection drives fine placement / report / UI.
+        self.store.meta["target_selection"] = selection
+        self.store.meta["target_selection_id"] = selection.get("selection_id")
+        (self.store.folder / "target_selection.json").write_text(
+            json.dumps(selection, indent=1) + "\n", encoding="utf-8"
+        )
+        self.store.save_meta()
         hd = self.plan.heights_down
         step = abs(hd[1] - hd[0]) if len(hd) > 1 else 4096
         n = self.plan.extra_near_optimum

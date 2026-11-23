@@ -91,17 +91,20 @@ def _pairwise_mean_distance(X: np.ndarray) -> float | None:
     return float(np.mean(vals))
 
 
-def held_out_proxy_ablation(
+def full_batch_distance_ablation(
     batch: FeatureBatch,
     *,
     metric: str = "mean_pairwise_distance",
 ) -> AblationResult:
-    """Compare a simple held-out metric with vs without ``proxy_unassigned:`` features.
+    """Honest full-batch pairwise distance with vs without proxy columns (D18).
 
-    ``metric=mean_pairwise_distance`` uses an existing distance idea (no new classifier).
+    This is **not** held-out predictive value — dropping dimensions changes
+    Euclidean distance mechanically. Prefer ``grouped_held_out_proxy_ablation``
+    when independent group labels exist.
     """
     notes = [
         "h16 features must remain proxy_unassigned — never primary-1850",
+        "FULL-BATCH distance ablation (not held-out predictive value)",
         "ablation is a software helper; not a measured food-discrimination claim",
     ]
     removed_mask = proxy_unassigned_mask(batch.feature_ids)
@@ -121,6 +124,99 @@ def held_out_proxy_ablation(
         X_ablated=np.asarray(ablated.X),
         metric_full=m_full,
         metric_ablated=m_ab,
-        metric_name=metric,
+        metric_name=f"full_batch_{metric}",
+        notes=notes,
+    )
+
+
+def held_out_proxy_ablation(
+    batch: FeatureBatch,
+    *,
+    metric: str = "mean_pairwise_distance",
+) -> AblationResult:
+    """Backward-compatible alias — delegates to honest full-batch distance (D18)."""
+    return full_batch_distance_ablation(batch, metric=metric)
+
+
+def grouped_held_out_proxy_ablation(
+    batch: FeatureBatch,
+    *,
+    group_ids: list[str] | None = None,
+    metric: str = "mean_pairwise_distance",
+) -> AblationResult:
+    """Grouped held-out proxy ablation when independent groups are labelled (D18).
+
+    Requires equal support across groups. Insufficient groups → unavailable notes.
+    """
+    notes = [
+        "h16 features must remain proxy_unassigned — never primary-1850",
+        "grouped held-out ablation requires independent preparation/lot/day groups",
+    ]
+    groups = list(group_ids) if group_ids is not None else [
+        str(p or "") for p in batch.preparation_ids
+    ]
+    if len(groups) != batch.n_rows:
+        notes.append("unavailable: group_ids length mismatch")
+        return AblationResult(
+            feature_ids_full=list(batch.feature_ids),
+            feature_ids_ablated=list(batch.feature_ids),
+            removed=[],
+            X_full=np.asarray(batch.X),
+            X_ablated=np.asarray(batch.X),
+            metric_full=None,
+            metric_ablated=None,
+            metric_name="grouped_held_out_unavailable",
+            notes=notes,
+        )
+    uniq = sorted({g for g in groups if g})
+    if len(uniq) < 2:
+        notes.append("unavailable: fewer than 2 labelled independent groups")
+        return AblationResult(
+            feature_ids_full=list(batch.feature_ids),
+            feature_ids_ablated=list(batch.feature_ids),
+            removed=[],
+            X_full=np.asarray(batch.X),
+            X_ablated=np.asarray(batch.X),
+            metric_full=None,
+            metric_ablated=None,
+            metric_name="grouped_held_out_unavailable",
+            notes=notes,
+        )
+    # Leave-one-group-out mean pairwise distance on remaining rows.
+    removed_mask = proxy_unassigned_mask(batch.feature_ids)
+    removed = [fid for fid, m in zip(batch.feature_ids, removed_mask, strict=True) if m]
+    ablated, _ = drop_proxy_unassigned(batch)
+    X = np.asarray(batch.X, dtype=float)
+    Xa = np.asarray(ablated.X, dtype=float)
+    full_scores: list[float] = []
+    ab_scores: list[float] = []
+    for g in uniq:
+        keep = np.array([gi != g for gi in groups], dtype=bool)
+        if keep.sum() < 2:
+            continue
+        mf = _pairwise_mean_distance(X[keep])
+        ma = _pairwise_mean_distance(Xa[keep])
+        if mf is not None:
+            full_scores.append(mf)
+        if ma is not None:
+            ab_scores.append(ma)
+    if not full_scores:
+        notes.append("unavailable: no held-out fold with >=2 rows")
+        m_full = m_ab = None
+        name = "grouped_held_out_unavailable"
+    else:
+        m_full = float(np.mean(full_scores))
+        m_ab = float(np.mean(ab_scores)) if ab_scores else None
+        name = f"grouped_held_out_{metric}"
+        notes.append(f"n_groups={len(uniq)} n_folds={len(full_scores)}")
+    return AblationResult(
+        feature_ids_full=list(batch.feature_ids),
+        feature_ids_ablated=list(ablated.feature_ids),
+        removed=removed,
+        X_full=X,
+        X_ablated=Xa,
+        metric_full=m_full,
+        metric_ablated=m_ab,
+        metric_name=name,
         notes=notes,
     )

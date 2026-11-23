@@ -213,6 +213,29 @@ class _Handler(BaseHTTPRequestHandler):
                         ),
                     }
                 )
+            if url.path == "/api/scan/saved":
+                q = parse_qs(url.query)
+                run_id = (q.get("run_id") or [""])[0]
+                if not run_id:
+                    raise ValueError("run_id= required")
+                return self._json(s.saved_run_view(run_id))
+            if url.path == "/api/scan/numerical":
+                q = parse_qs(url.query)
+                run_id = (q.get("run_id") or [""])[0]
+                if not run_id:
+                    raise ValueError("run_id= required")
+                from lio.scan.derived import numerical_observations
+
+                folder = s.results_root / run_id
+                return self._json(
+                    numerical_observations(
+                        folder,
+                        hole=int(q["hole"][0]) if q.get("hole") else None,
+                        detector=(q.get("detector") or [None])[0],
+                        phase=(q.get("phase") or [None])[0],
+                        block=int(q["block"][0]) if q.get("block") else None,
+                    )
+                )
             if url.path == "/api/ring":
                 return self._json(s.ring_status())
             if url.path.startswith("/api/profiles/"):
@@ -582,6 +605,13 @@ class _Handler(BaseHTTPRequestHandler):
                 s.scan_abort()
             elif path == "/api/scan/beat":
                 return self._json(s.scan_beat())
+            elif path == "/api/scan/protocol/answer":
+                return self._json(
+                    s.protocol_answer_checkpoint(
+                        str(b.get("occurrence_id") or ""),
+                        bool(b.get("confirmed")),
+                    )
+                )
             elif path == "/api/answer":
                 s.answer(int(b["id"]), b.get("value"), bool(b.get("abort")))
             elif path == "/api/measure":

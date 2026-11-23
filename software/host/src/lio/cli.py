@@ -578,10 +578,19 @@ def cmd_shell(args: argparse.Namespace, cfg: HwConfig) -> int:
                 )
                 continue
             try:
+                # Light-capable lines are routed through guarded typed ops (D01)
+                # or refused — never a raw transport bypass.
                 reply = dev.command(line, timeout=30.0, check=False)
             except NoResponse as e:
                 print(f"no response: {e}")
                 continue
+            except Exception as e:
+                from lio.ownership import DutyBudgetError, OwnershipError
+
+                if isinstance(e, (DutyBudgetError, OwnershipError, DeviceError)):
+                    print(f"refused: {e}")
+                    continue
+                raise
             for ev in reply.events:
                 print(ev.raw)
             print(reply.response.raw)
@@ -667,7 +676,25 @@ def cmd_scan(args: argparse.Namespace, cfg: HwConfig) -> int:
         operator = SimOperator(sim) if sim is not None else ConsoleOperator()
         if args.scan_command == "resume":
             folder = Path(args.folder)
-            mode_of = json.loads((folder / "scan.json").read_text()).get("plan", {})
+            meta = json.loads((folder / "scan.json").read_text())
+            # D19: protocol runs resume through resume_protocol, not height-scan resume.
+            if meta.get("mode") == "protocol" or meta.get("protocol_plan"):
+                from lio.scan.acquisition import resume_protocol
+
+                if not getattr(args, "allow_light", False):
+                    raise CliError("protocol resume requires --allow-light")
+                result = resume_protocol(
+                    folder,
+                    cfg=cfg,
+                    allow_light=True,
+                    device=dev,
+                    operator_checkpoint_flag=True,
+                )
+                print(f"{result.status}: {result.folder}")
+                if result.cancel_reason:
+                    print(f"  unresolved: {result.cancel_reason}")
+                return 0 if result.status == "COMPLETE" else 1
+            mode_of = meta.get("plan", {})
             static = bool(mode_of.get("static"))
         else:
             plan = scan.plan_for(cfg, mode, dev.stage, dev.stage_top_margin(), overrides)
@@ -723,16 +750,15 @@ def _scan_protocol_plan(args: argparse.Namespace, cfg: HwConfig) -> int:
 
 def _scan_legacy_plan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
     """Legacy mode plan without opening a device (no POWER WAKE / serial)."""
-    from lio import scan
+    import contextlib
+
     from lio.scan.plan import PlanError, build
 
     overrides = _scan_overrides(getattr(args, "set", None))
     mode = args.mode or str(cfg.section.raw("scan.default_mode"))
     top_margin = 0
-    try:
+    with contextlib.suppress(Exception):
         top_margin = cfg.section.integer("stage.top_margin_steps")
-    except Exception:
-        pass
     # Offline travel: use sim travel as a declared planning envelope (not a measured stage).
     try:
         travel = int(cfg.section.raw("sim.height.travel_hs"))
@@ -758,11 +784,15 @@ def _scan_legacy_plan_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
     return 0
 
 def _scan_protocol_run(args: argparse.Namespace, cfg: HwConfig) -> int:
-    """``lio scan run --protocol --allow-light`` — gated emission via journal."""
+    """``lio scan run --protocol --allow-light`` — gated emission via journal (D19).
+
+    Real CLI branch is offline-testable with fake transports. Hardware requires
+    --allow-light plus ownership/duty journal (always attached on SerialTransport)
+    and compatible firmware preflight — not a hard-coded session refusal.
+    """
     import tempfile
 
     from lio import scan
-    from lio.operator import SimOperator
     from lio.scan.acquisition import ProtocolError, plan_protocol, run_protocol
 
     if not getattr(args, "allow_light", False):
@@ -773,6 +803,8 @@ def _scan_protocol_run(args: argparse.Namespace, cfg: HwConfig) -> int:
         pplan = plan_protocol(Path(args.protocol), cfg)
     except ProtocolError as e:
         raise CliError(str(e)) from e
+    if pplan.unresolved:
+        raise CliError("protocol plan unresolved: " + "; ".join(pplan.unresolved))
     root = Path(args.out) if args.out else REPO_ROOT / "test_results"
     if args.sim:
         sim = SimulatedLIO(cfg, Faults.parse(args.fault))
@@ -793,10 +825,29 @@ def _scan_protocol_run(args: argparse.Namespace, cfg: HwConfig) -> int:
                 operator_checkpoint_flag=True,
             )
     else:
-        raise CliError(
-            "hardware protocol run is implemented but not authorized in this session; "
-            "use --sim for offline verification"
-        )
+        # Authorized runtime gates (D19): allow-light + ownership journal + preflight.
+        # Offline tests inject a fake transport via LIODevice; never auto-emit.
+        if not getattr(args, "port", None) and not getattr(args, "url", None):
+            raise CliError(
+                "hardware protocol run requires --port/--url (or --sim); "
+                "ownership journal and --allow-light are mandatory gates"
+            )
+        dev = LIODevice(_transport(args, cfg), cfg, stage=tracker_for(cfg))
+        if dev.journal is None:
+            raise CliError("refusing hardware protocol run without duty journal")
+        with dev:
+            dev.check_compatible()
+            result = run_protocol(
+                pplan,
+                cfg=cfg,
+                root=root,
+                sample_id=args.sample,
+                allow_light=True,
+                device=dev,
+                simulated=False,
+                rig_identity="host",
+                operator_checkpoint_flag=True,
+            )
     print(f"{result.status}: {result.folder}")
     if result.cancel_reason:
         print(f"  unresolved: {result.cancel_reason}")
@@ -1012,7 +1063,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     build_profiles_parser(sub, fn=cmd_profiles)
 
-    s = sub.add_parser("scan", help="diagnostic height sweep / targeted protocol: plan / run / resume")
+    s = sub.add_parser(
+        "scan",
+        help="diagnostic height sweep / targeted protocol: plan / run / resume",
+    )
     scsub = s.add_subparsers(dest="scan_command", required=True)
     for name, hlp in (("plan", "show the plan and its ETA (offline; no motion, no light)"),
                       ("run", "run a scan (asks first; --allow-motion for moving modes)"),
@@ -1036,13 +1090,18 @@ def build_parser() -> argparse.ArgumentParser:
             c.add_argument("--sample", help="sample in the chamber: empty, white_ptfe, black_cup, "
                            "food, or LIO-F-...")  # fmt: skip
             c.add_argument("--out", help="results root (default test_results/)")
+        if name in ("run", "resume"):
             c.add_argument("--allow-light", action="store_true",
-                           help="required for --protocol runs (emission permission)")  # fmt: skip
+                           help="required for protocol emission / protocol resume")  # fmt: skip
         c.set_defaults(fn=cmd_scan)
     c = scsub.add_parser("audit", help="offline provenance/model audit into --derived-out")
     c.add_argument("folder", help="the run folder")
     c.add_argument("--model", choices=["legacy", "qualified-v2"], default="qualified-v2")
-    c.add_argument("--derived-out", required=True, help="derived analysis root (not the run folder)")
+    c.add_argument(
+        "--derived-out",
+        required=True,
+        help="derived analysis root (not the run folder)",
+    )
     c.set_defaults(fn=cmd_scan)
     c = scsub.add_parser("analyse", help="compute the metrics of a run (writes analysis.json)")
     c.add_argument("folder", help="the run folder")

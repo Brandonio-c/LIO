@@ -43,6 +43,13 @@ def test_reject_unexpected_gain_on_non_m7() -> None:
     validate_gain_readback("2", "2", m7_enabled=True)
 
 
+def test_missing_readback_never_defaults_to_one() -> None:
+    with pytest.raises(M7Error, match="missing"):
+        validate_gain_readback("1", None, m7_enabled=False)
+    with pytest.raises(M7Error, match="missing"):
+        validate_gain_readback("1", "  ", m7_enabled=True)
+
+
 def test_block_calibration_identity() -> None:
     p = load_gain_profile("1")
     ident = block_calibration_identity(p, block_index=3, detector="ingaas")

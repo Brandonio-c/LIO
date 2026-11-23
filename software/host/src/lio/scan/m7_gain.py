@@ -1,5 +1,8 @@
 """M7 opt-in PGA profiles, off-on-off STREAM planner, and GLS interface stubs.
 
+Deferred / incomplete experimental helpers - not part of core M0-M6 acceptance.
+Missing gain readback is never silently defaulted to 1.
+
 Core acquisition remains gain 1. Non-M7 protocols reject unexpected gain.
 Different-gain fixtures used in tests must be labelled ``synthetic``.
 
@@ -101,7 +104,10 @@ def validate_gain_readback(
         raise M7Error(
             f"unexpected gain {req.gain!r} on non-M7 protocol; core default is {CORE_DEFAULT_GAIN}"
         )
-    rb = str(readback or CORE_DEFAULT_GAIN).replace("GAIN_", "")
+    # D20 / R8: missing readback is never silently defaulted to gain 1.
+    if readback is None or str(readback).strip() == "":
+        raise M7Error("gain readback missing; refuse (missing ≠ 1; no silent default)")
+    rb = str(readback).replace("GAIN_", "")
     if rb not in (req.gain, f"GAIN_{req.gain}", req.gain.lstrip("0") or "0"):
         # Normalise "1" vs "GAIN_ONE" style
         aliases = {CORE_DEFAULT_GAIN, "1", "GAIN_ONE", "GAIN_1"}

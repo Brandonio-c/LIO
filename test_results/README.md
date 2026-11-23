@@ -18,3 +18,5 @@ Historical diagnostic scans, tray_v3 bench artifacts, and related corpora live h
 | `tray_v3/LED_REPLACE_SWEEP.json` | Pre-replace dead-LED sweep |
 
 New local runs may be committed when they are needed for a handoff; do not commit secrets or food-library photos here (`data/foods/` stays ignored).
+
+**Remediation (2026-11-23):** host software gates D01–D20 are offline-tested (R0–R8). These historical scans are **not** re-qualified by that work. See `docs/handoffs/2026-11-23_remediation_d01_d20_closure.md`.

@@ -1456,6 +1456,45 @@ class Session:
             self.protocol_job.control.beat()
         return {"ok": True, "running": self.scanning}
 
+    def protocol_answer_checkpoint(self, occurrence_id: str, confirmed: bool) -> dict[str, Any]:
+        """Fresh linked answer for one protocol checkpoint occurrence (D13/D19)."""
+        job = self.protocol_job
+        if job is None or not job.alive:
+            raise Refused("no protocol job awaiting a checkpoint")
+        job.answer_checkpoint(occurrence_id, confirmed)
+        self.log(f"protocol checkpoint answer: {occurrence_id}={confirmed}")
+        self._changed()
+        return {"ok": True, "occurrence_id": occurrence_id, "confirmed": bool(confirmed)}
+
+    def saved_run_view(self, run_id: str) -> dict[str, Any]:
+        """Saved-data view only: no USB, no analysis writes, no device open (D19)."""
+        if "/" in run_id or ".." in run_id:
+            raise Refused("invalid run_id")
+        folder = self.results_root / run_id
+        meta_path = folder / "scan.json"
+        if not meta_path.is_file():
+            raise Refused(f"no saved run {run_id!r}")
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        from lio.scan.derived import numerical_observations
+
+        nums = numerical_observations(folder, limit=50)
+        return {
+            "run_id": run_id,
+            "status": meta.get("status"),
+            "mode": meta.get("mode"),
+            "sample_id": meta.get("sample_id"),
+            "target_selection_id": meta.get("target_selection_id"),
+            "historical_recorded_verdict": meta.get("verdict") or meta.get("recorded_verdict"),
+            "eligibility_notes": [
+                "saved view: no USB / analysis writes",
+                "h8/h9 SNR PASS does not certify h12-h15",
+                "historical verdict ≠ current model ≠ quantitative eligibility",
+            ],
+            "numerical_preview": nums,
+            "usb": False,
+            "analysis_writes": False,
+        }
+
     def protocol_plan_preview(self, protocol: str | dict[str, Any]) -> dict[str, Any]:
         """Offline protocol preview (duration, exposure, unresolved). No device."""
         from lio.scan.acquisition import ProtocolError, plan_protocol
@@ -1468,7 +1507,8 @@ class Session:
         d["preview"] = {
             "duration_s": plan.predicted_duration_s,
             "exposure_on_ms": plan.predicted_on_ms,
-            "unresolved_calibration_notes": list(plan.unresolved),
+            "unresolved_calibration_notes": list(plan.assumptions)
+            + list(plan.unresolved),
             "physical_prerequisites": list(plan.physical_prerequisites),
             "assumptions": list(plan.assumptions),
         }

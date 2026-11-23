@@ -205,6 +205,25 @@ def build_acquisition_snapshot(
     )
 
 
+def read_info_gain(info: Any) -> str | None:
+    """INFO field is ``gain`` (not ``adc_gain``). Missing gain is not gain 1 (D06)."""
+    if info is None:
+        return None
+    values = getattr(info, "values", None)
+    if isinstance(values, dict):
+        if "gain" in values and values["gain"] not in (None, ""):
+            return str(values["gain"])
+        # adc_gain is not a real INFO field — ignore if present.
+        return None
+    if hasattr(info, "as_str"):
+        try:
+            if "gain" in info:
+                return str(info.as_str("gain"))
+        except Exception:
+            return None
+    return None
+
+
 def snapshot_from_hw_config(
     cfg: Any,
     *,
@@ -212,17 +231,22 @@ def snapshot_from_hw_config(
     planned: dict[str, Any] | None = None,
     simulated: bool = False,
     rig_identity: str = "unknown",
-    gain: str = "1",
+    gain: str | None = "1",
     detectors: tuple[str, ...] = ("opt101", "ingaas"),
     mains_periods: int | None = None,
+    mains_hz: float | None = None,
     settle_ms: float | None = None,
     assembly: dict[str, Any] | None = None,
     acquisition_version: str = "m0-height-scan",
+    input_range: dict[str, InputRangeEvidence] | None = None,
 ) -> AcquisitionSnapshot:
     """Build an initial snapshot from ``HwConfig`` for height-scan or protocol runs.
 
     Historical Nov23 (and earlier) runs are left untouched; only NEW runs that call
     this helper receive ``acquisition_snapshot`` / terminal seal fields.
+
+    Applied mains/gain must be passed from acknowledged device facts — do not
+    invent 60 Hz when the plan only supplies a period count (D06).
     """
     rf: dict[str, RfProvenance] = {}
     for d in detectors:
@@ -236,17 +260,28 @@ def snapshot_from_hw_config(
         holes = [int(ch.hole) for ch in cfg.channels]
     except Exception:
         holes = list(range(1, 17))
+    gain_s = None if gain is None else str(gain)
+    if mains_hz is not None and float(mains_hz) > 0:
+        effective_mode = "mains"
+        recorded_hz: float | None = float(mains_hz)
+    elif mains_periods:
+        # Periods requested but applied Hz unknown — do not invent 60.
+        effective_mode = "mains_requested_hz_unknown"
+        recorded_hz = None
+    else:
+        effective_mode = "ordinary"
+        recorded_hz = None
     return build_acquisition_snapshot(
         protocol_hash=protocol_hash,
         config_snapshot={"sha256": cfg.sha256, "path": str(getattr(cfg, "path", ""))},
         config_sha256=cfg.sha256,
         channel_map_snapshot={"source": "config", "holes": holes},
         adc=AdcProvenance(
-            gain=str(gain),
-            fsr_v=4.096,
-            lsb_mv=0.125 if str(gain) in ("1", "GAIN_ONE") else None,
-            effective_mode="mains" if mains_periods else "ordinary",
-            mains_hz=60.0 if mains_periods else None,
+            gain=gain_s,
+            fsr_v=4.096 if gain_s in ("1", "GAIN_ONE") else None,
+            lsb_mv=0.125 if gain_s in ("1", "GAIN_ONE") else None,
+            effective_mode=effective_mode,
+            mains_hz=recorded_hz,
             mains_periods=mains_periods,
             settle_ms=settle_ms,
             detector_order=detectors,
@@ -255,10 +290,28 @@ def snapshot_from_hw_config(
         simulated=simulated,
         rig_identity=rig_identity,
         planned=dict(planned or {}),
-        input_range={d: "unverified" for d in detectors},
+        input_range=dict(input_range)
+        if input_range is not None
+        else {d: "unverified" for d in detectors},
         assembly=dict(assembly or {}),
         acquisition_version=acquisition_version,
     )
+
+
+def collect_raw_artifact_bytes(folder: Path | str) -> bytes:
+    """Concatenate cube + every streams/*.npz (+ sidecars) in stable path order (D10)."""
+    root = Path(folder)
+    parts: list[bytes] = []
+    cube = root / "cube.csv.gz"
+    if cube.exists():
+        parts.append(b"cube:" + cube.read_bytes())
+    streams = root / "streams"
+    if streams.is_dir():
+        for p in sorted(streams.rglob("*")):
+            if p.is_file():
+                rel = p.relative_to(root).as_posix()
+                parts.append(rel.encode("utf-8") + b":" + p.read_bytes())
+    return b"".join(parts)
 
 
 def seal_store_terminal(
@@ -270,15 +323,18 @@ def seal_store_terminal(
     """Apply terminal source seal to an open ``ScanStore`` if a snapshot exists.
 
     No-op (returns None) for historical runs without ``acquisition_snapshot``.
+    Seal covers cube + all raw streams/NPZs/sidecars (D10).
     """
     raw_snap = store.meta.get("acquisition_snapshot")
     if not raw_snap or not isinstance(raw_snap, dict):
         return None
     snap = AcquisitionSnapshot.from_dict(raw_snap)
-    raw_bytes = b""
-    cube = getattr(store, "cube_path", None)
-    if cube is not None and Path(cube).exists():
-        raw_bytes = Path(cube).read_bytes()
+    folder = getattr(store, "folder", None)
+    raw_bytes = collect_raw_artifact_bytes(folder) if folder is not None else b""
+    if not raw_bytes:
+        cube = getattr(store, "cube_path", None)
+        if cube is not None and Path(cube).exists():
+            raw_bytes = Path(cube).read_bytes()
     seal = seal_terminal_source(
         snap,
         raw_bytes=raw_bytes,
@@ -316,7 +372,8 @@ def seal_terminal_source(
 ) -> TerminalSourceSeal:
     manifest_hash = snapshot.manifest_hash()
     raw_sha = hashlib.sha256(raw_bytes).hexdigest()
-    meta = dict(terminal_meta or {})
+    # Never hash the seal into itself — only caller-supplied terminal facts.
+    meta = {k: v for k, v in dict(terminal_meta or {}).items() if k != "terminal_source_seal"}
     meta_sha = content_hash(meta)
     combined = hashlib.sha256(
         (manifest_hash + raw_sha + meta_sha).encode("ascii")
@@ -345,6 +402,8 @@ class AnalysisIdentity:
     protocol_hash: str | None = None
     reference_sources: tuple[str, ...] = ()
     numerical_settings: dict[str, Any] = field(default_factory=dict)
+    # Extra consumed inputs (stream hashes, analysis config, control IDs, …).
+    consumed_inputs: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         d = asdict(self)
@@ -353,6 +412,10 @@ class AnalysisIdentity:
 
     def identity_hash(self) -> str:
         return content_hash(self.to_dict())
+
+
+class AnalysisIdentityConflict(ValueError):
+    """Same analysis id already exists with different content (D08)."""
 
 
 def build_analysis_identity(
@@ -367,6 +430,7 @@ def build_analysis_identity(
     protocol_hash: str | None = None,
     reference_sources: tuple[str, ...] | list[str] | None = None,
     numerical_settings: dict[str, Any] | None = None,
+    consumed_inputs: dict[str, Any] | None = None,
 ) -> AnalysisIdentity:
     return AnalysisIdentity(
         source_cube_sha256=cube_sha256,
@@ -379,6 +443,7 @@ def build_analysis_identity(
         protocol_hash=protocol_hash,
         reference_sources=tuple(reference_sources or ()),
         numerical_settings=dict(numerical_settings or {}),
+        consumed_inputs=dict(consumed_inputs or {}),
     )
 
 

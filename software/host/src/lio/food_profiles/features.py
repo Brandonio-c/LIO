@@ -156,12 +156,19 @@ def feature_ids_for_recipe(
     heights: list[float] | None = None,
     *,
     include_hole: dict[tuple[str, int], bool] | None = None,
+    include_proxy_h16: bool = False,
 ) -> list[FeatureId]:
-    """Feature schema. Structural blinds are omitted (masked), not stored as NaN zeros."""
+    """Feature schema. Structural blinds are omitted (masked), not stored as NaN zeros.
+
+    H16 is excluded from the primary feature schema by default (D18). Pass
+    ``include_proxy_h16=True`` for explicit opt-in ``proxy_unassigned:`` extraction.
+    """
     ids: list[FeatureId] = []
     if recipe.representation == "o_envelope":
         for det in recipe.detectors:
             for hole in range(1, 17):
+                if hole == 16 and not include_proxy_h16:
+                    continue
                 if include_hole is not None and not include_hole.get((det, hole), True):
                     continue
                 ids.append(FeatureId(det, hole, kind="o_envelope", recipe=recipe.name))
@@ -170,18 +177,28 @@ def feature_ids_for_recipe(
     h0 = h_list[0] if h_list else 0.0
     for det in recipe.detectors:
         for hole in range(1, 17):
+            if hole == 16 and not include_proxy_h16:
+                continue
             if include_hole is not None and not include_hole.get((det, hole), True):
                 continue
             ids.append(FeatureId(det, hole, kind="net", height_hs=h0, recipe=recipe.name))
     return ids
 
 
-def signal_hole_mask(run: RunData, recipe: Recipe) -> dict[tuple[str, int], bool]:
-    return {
-        (det, hole): not run.is_blind(hole, det)
-        for det in recipe.detectors
-        for hole in range(1, 17)
-    }
+def signal_hole_mask(
+    run: RunData,
+    recipe: Recipe,
+    *,
+    include_proxy_h16: bool = False,
+) -> dict[tuple[str, int], bool]:
+    out: dict[tuple[str, int], bool] = {}
+    for det in recipe.detectors:
+        for hole in range(1, 17):
+            if hole == 16 and not include_proxy_h16:
+                out[(det, hole)] = False
+                continue
+            out[(det, hole)] = not run.is_blind(hole, det)
+    return out
 
 
 def extract_run_vector(
@@ -190,18 +207,25 @@ def extract_run_vector(
     *,
     reference: RunData | None = None,
     preparation_id: str | None = None,
+    include_proxy_h16: bool = False,
 ) -> FeatureBatch:
     if isinstance(recipe, str):
         recipe = BUILTIN_RECIPES[recipe]
     warnings: list[str] = []
     if not run.channel_map_verified:
         warnings.append("channel_map_unverified")
+    if include_proxy_h16:
+        warnings.append("h16_proxy_opt_in:proxy_unassigned_never_primary1850")
+    else:
+        warnings.append("h16_excluded_from_primary_features")
 
-    holes = signal_hole_mask(run, recipe)
+    holes = signal_hole_mask(run, recipe, include_proxy_h16=include_proxy_h16)
 
     if recipe.representation == "o_envelope":
         o_map = _o_from_analysis(run)
-        fids = feature_ids_for_recipe(recipe, include_hole=holes)
+        fids = feature_ids_for_recipe(
+            recipe, include_hole=holes, include_proxy_h16=include_proxy_h16
+        )
         X = np.full((1, len(fids)), np.nan)
         reasons = np.empty((1, len(fids)), dtype=object)
         links: list[dict[str, Any]] = [{}]
@@ -235,7 +259,9 @@ def extract_run_vector(
     if locked is not None:
         h0 = float(locked)
         if not heights or min(abs(h - h0) for h in heights) > 1e-9:
-            fids = feature_ids_for_recipe(recipe, [h0], include_hole=holes)
+            fids = feature_ids_for_recipe(
+                recipe, [h0], include_hole=holes, include_proxy_h16=include_proxy_h16
+            )
             X = np.full((1, len(fids)), np.nan)
             reasons = np.full((1, len(fids)), CellReason.UNSUPPORTED_HEIGHT.value, dtype=object)
             return FeatureBatch(
@@ -250,7 +276,9 @@ def extract_run_vector(
                 [*warnings, "height_not_in_run"],
             )
     elif not heights:
-        fids = feature_ids_for_recipe(recipe, [0.0], include_hole=holes)
+        fids = feature_ids_for_recipe(
+            recipe, [0.0], include_hole=holes, include_proxy_h16=include_proxy_h16
+        )
         X = np.full((1, len(fids)), np.nan)
         reasons = np.full((1, len(fids)), CellReason.MISSING.value, dtype=object)
         return FeatureBatch(
@@ -267,7 +295,9 @@ def extract_run_vector(
     else:
         # Default fingerprint height: median of common heights (stable geometric mid-travel)
         h0 = float(heights[len(heights) // 2])
-    fids = feature_ids_for_recipe(recipe, [h0], include_hole=holes)
+    fids = feature_ids_for_recipe(
+        recipe, [h0], include_hole=holes, include_proxy_h16=include_proxy_h16
+    )
     fids = [
         FeatureId(f.detector, f.hole, kind=f.kind, height_hs=h0, recipe=recipe.name) for f in fids
     ]
@@ -286,6 +316,8 @@ def extract_run_vector(
     X = np.full((1, len(fids)), np.nan)
     reasons = np.empty((1, len(fids)), dtype=object)
     link: dict[str, Any] = {"height_hs": h0, "rows": {}}
+    # D07: InGaAs physical/quantitative/reference gated when Rf unknown or A0 unverified.
+    quant_gate = _quantity_gate_from_run(run)
     for j, fid in enumerate(fids):
         key = (fid.detector, fid.hole)
         if key not in nets:
@@ -299,6 +331,13 @@ def extract_run_vector(
                 continue
             if key not in ref_nets:
                 reasons[0, j] = CellReason.INCOMPATIBLE_REFERENCE.value
+                continue
+            if not _ingaas_ratio_allowed(fid.detector, quant_gate):
+                reasons[0, j] = CellReason.DESIGN_UNSUPPORTED.value
+                warnings.append(
+                    f"{fid.key}: InGaAs quantitative/reference blocked "
+                    f"({quant_gate.get('reason', 'unverified')})"
+                )
                 continue
             c_s = c_map.get(fid.detector, 0.0) if recipe.coupling_policy == "analysis_c" else 0.0
             c_r = ref_c.get(fid.detector, 0.0) if recipe.coupling_policy == "analysis_c" else 0.0
@@ -318,6 +357,14 @@ def extract_run_vector(
             if recipe.coupling_policy == "analysis_c":
                 if fid.detector not in c_map:
                     reasons[0, j] = CellReason.INSUFFICIENT_ANALYSIS.value
+                    continue
+                if not _ingaas_ratio_allowed(fid.detector, quant_gate):
+                    # Preserve raw counts path: fall back to net, mark unsupported for O.
+                    reasons[0, j] = CellReason.DESIGN_UNSUPPORTED.value
+                    warnings.append(
+                        f"{fid.key}: InGaAs physical current/optics blocked; raw counts retained"
+                    )
+                    X[0, j] = net
                     continue
                 X[0, j] = net - c_map[fid.detector]
             else:
@@ -358,6 +405,46 @@ def stack_batches(batches: list[FeatureBatch]) -> FeatureBatch:
         warnings=[w for b in batches for w in b.warnings],
         units=batches[0].units,
     )
+
+
+def _quantity_gate_from_run(run: RunData) -> dict[str, Any]:
+    """Collect Rf / A0 facts for quantity eligibility (D07)."""
+    from lio.scan.provenance import Quantity, RfProvenance, quantity_eligibility
+
+    snap = (run.meta or {}).get("acquisition_snapshot") or {}
+    adc = snap.get("adc") or {}
+    rf_raw = (snap.get("rf") or {}).get("ingaas") or {}
+    if isinstance(rf_raw, dict):
+        rf = RfProvenance(
+            rf_raw.get("value_ohm"),
+            str(rf_raw.get("state") or "unknown"),
+            str(rf_raw.get("note") or ""),
+        )
+    else:
+        rf = RfProvenance(None, "unknown", "missing")
+    input_range = str((snap.get("input_range") or {}).get("ingaas") or "unverified")
+    lsb = adc.get("lsb_mv")
+    elig = quantity_eligibility(
+        Quantity.MATCHED_RATIO,
+        detector="ingaas",
+        lsb_mv=None if lsb is None else float(lsb),
+        rf=rf,
+        input_range=input_range,
+        geometry_compatible=bool(snap.get("assembly")),
+        control_evidence=False,
+    )
+    return {
+        "eligible": elig.eligible,
+        "reason": elig.reason,
+        "input_range": input_range,
+        "rf_state": rf.state,
+    }
+
+
+def _ingaas_ratio_allowed(detector: str, gate: dict[str, Any]) -> bool:
+    if detector != "ingaas":
+        return True  # OPT101 remains independently available
+    return bool(gate.get("eligible"))
 
 
 def aggregate_by_preparation(batch: FeatureBatch) -> FeatureBatch:

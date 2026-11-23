@@ -1,7 +1,9 @@
-"""Targeted stationary protocol runs from the dashboard (M6).
+"""Targeted stationary protocol runs from the dashboard (M6 / R5).
 
 Reuses ScanJob Control patterns for pause/abort/heartbeat. Offline plan preview
 stays on ``plan_protocol`` (no device). Emission still requires ``allow_light``.
+Progress updates during acquisition; each checkpoint needs a fresh linked answer
+(D13/D14/D19) — a start checkbox cannot confirm later interventions.
 """
 
 from __future__ import annotations
@@ -50,6 +52,8 @@ class ProtocolJob:
         self.error = ""
         self.started = time.time()
         self._lock = threading.Lock()
+        self._answers: dict[str, bool] = {}
+        self._answer_events: dict[str, threading.Event] = {}
         self.thread = threading.Thread(target=self._run, name="lio-protocol", daemon=True)
 
     @property
@@ -74,7 +78,16 @@ class ProtocolJob:
                 "n_steps": len(self.plan.steps),
                 "predicted_duration_s": self.plan.predicted_duration_s,
                 "unresolved": list(self.plan.unresolved),
+                "pending_prompts": list(self._answer_events.keys()),
             }
+
+    def answer_checkpoint(self, occurrence_id: str, confirmed: bool) -> None:
+        """Fresh linked answer for one checkpoint occurrence (D13)."""
+        with self._lock:
+            self._answers[occurrence_id] = bool(confirmed)
+            ev = self._answer_events.get(occurrence_id)
+            if ev is not None:
+                ev.set()
 
     def _run(self) -> None:
         s = self.s
@@ -84,8 +97,38 @@ class ProtocolJob:
         try:
             cancel_check = lambda: bool(self.control.abort_reason)  # noqa: E731
 
+            occurrence = {"n": 0}
+
             def _confirm(msg: str) -> bool:
-                return bool(self.operator_checkpoint_flag)
+                # D13: never reuse the start checkbox for later interventions.
+                occurrence["n"] += 1
+                occ_id = f"dashboard:{occurrence['n']}:{msg[:40]}"
+                if occurrence["n"] == 1 and self.operator_checkpoint_flag:
+                    # First protocol-level confirm may use the start flag.
+                    return bool(self.operator_checkpoint_flag)
+                ev = threading.Event()
+                with self._lock:
+                    self._answer_events[occ_id] = ev
+                    self.progress = {
+                        **self.progress,
+                        "status": "awaiting_checkpoint",
+                        "prompt": msg,
+                        "occurrence_id": occ_id,
+                    }
+                # Wait until answered or aborted; abort releases without inventing OK.
+                while not ev.wait(timeout=0.2):
+                    if self.control.abort_reason:
+                        with self._lock:
+                            self._answer_events.pop(occ_id, None)
+                        return False
+                    self.control.beat()  # keep view responsive; UI must call beat too
+                with self._lock:
+                    self._answer_events.pop(occ_id, None)
+                    return bool(self._answers.pop(occ_id, False))
+
+            def _on_progress(p: dict[str, Any]) -> None:
+                with self._lock:
+                    self.progress = dict(p)
 
             if self.resume is not None:
                 result = resume_protocol(
@@ -95,6 +138,8 @@ class ProtocolJob:
                     device=s._device(),
                     cancel_check=cancel_check,
                     operator_confirm=_confirm,
+                    control=self.control,
+                    on_progress=_on_progress,
                 )
             else:
                 result = run_protocol(
@@ -108,6 +153,8 @@ class ProtocolJob:
                     rig_identity="sim" if s.sim is not None else "host",
                     cancel_check=cancel_check,
                     operator_confirm=_confirm,
+                    control=self.control,
+                    on_progress=_on_progress,
                 )
             self.folder = result.folder
             with self._lock:

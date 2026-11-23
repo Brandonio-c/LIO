@@ -153,32 +153,47 @@ def select_baseline(
         ):
             rejects.append(f"{c.run_id}: incomplete (raw compare disallowed)")
             continue
-        if require_config_sha256 and c.config_sha256 and c.config_sha256 != require_config_sha256:
-            rejects.append(f"{c.run_id}: config_sha256 mismatch")
-            continue
-        if require_config_sha256 and not c.config_sha256:
-            rejects.append(f"{c.run_id}: missing config_sha256")
-            continue
-        if require_calibration_id and c.calibration_id != require_calibration_id:
-            why = "missing calibration_id" if not c.calibration_id else "calibration mismatch"
-            if not c.calibration_id and use is not BaselineUse.QUANTITATIVE:
-                pass  # raw compare may proceed without calibration id
-            else:
-                rejects.append(f"{c.run_id}: {why}")
+        # D18: fail-closed — required facts that are missing reject quantitative reuse.
+        # unknown==unknown is not compatible when a requirement is stated.
+        if require_config_sha256:
+            if not c.config_sha256:
+                rejects.append(f"{c.run_id}: missing config_sha256")
                 continue
-        if require_model and c.model and c.model != require_model:
-            rejects.append(f"{c.run_id}: model mismatch")
-            continue
-        if require_geometry_key and c.geometry_key and c.geometry_key != require_geometry_key:
-            rejects.append(f"{c.run_id}: geometry mismatch")
-            continue
-        if (
-            require_reference_protocol
-            and c.reference_protocol
-            and c.reference_protocol != require_reference_protocol
-        ):
-            rejects.append(f"{c.run_id}: reference protocol mismatch")
-            continue
+            if c.config_sha256 != require_config_sha256:
+                rejects.append(f"{c.run_id}: config_sha256 mismatch")
+                continue
+        if require_calibration_id:
+            if not c.calibration_id:
+                if use is BaselineUse.QUANTITATIVE:
+                    rejects.append(f"{c.run_id}: missing calibration_id")
+                    continue
+            elif c.calibration_id != require_calibration_id:
+                rejects.append(f"{c.run_id}: calibration mismatch")
+                continue
+        if require_model:
+            if not c.model:
+                if use is BaselineUse.QUANTITATIVE:
+                    rejects.append(f"{c.run_id}: missing model")
+                    continue
+            elif c.model != require_model:
+                rejects.append(f"{c.run_id}: model mismatch")
+                continue
+        if require_geometry_key:
+            if not c.geometry_key:
+                if use is BaselineUse.QUANTITATIVE:
+                    rejects.append(f"{c.run_id}: missing geometry")
+                    continue
+            elif c.geometry_key != require_geometry_key:
+                rejects.append(f"{c.run_id}: geometry mismatch")
+                continue
+        if require_reference_protocol:
+            if not c.reference_protocol:
+                if use is BaselineUse.QUANTITATIVE:
+                    rejects.append(f"{c.run_id}: missing reference protocol")
+                    continue
+            elif c.reference_protocol != require_reference_protocol:
+                rejects.append(f"{c.run_id}: reference protocol mismatch")
+                continue
         return BaselineDecision(True, use, "selected", c, rejects)
     return BaselineDecision(
         False,

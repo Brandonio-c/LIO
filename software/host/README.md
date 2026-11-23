@@ -74,29 +74,23 @@ The `lio` command does the same without pytest (`lio selftest`, `lio --sim selft
 
 ## Sensor-readings upgrade
 
-**Remediation required.** Independent QA of 38eb8e6 found M0–M6 incomplete, including exposure/stop defects, inaccurate acquisition facts and unqualified quantitative reuse. M7 is isolated experimental code, not a completed gain/STREAM workflow. The earlier completion claims are superseded.
+**R0–R8 software-tested offline (D01–D20).** Not bench-acquisition-qualified, optical-control-qualified, or quantitative-reference-qualified. M7 remains deferred/incomplete. Closure: [D01–D20 table](../../docs/handoffs/2026-11-23_remediation_d01_d20_closure.md).
 
-- [Current remediation plan](../../docs/SENSOR_READINGS_REMEDIATION_PLAN.md): D01–D20, repair order and acceptance gates.
-- [Independent QA report](../../docs/research/LIO_V3_SENSOR_READINGS_QA_2026-11-23.md): reproduced failures and code/test evidence.
-- [Implementation handoff](../../docs/handoffs/2026-11-23_sensor_readings_remediation.md).
-- [Original upgrade specification](../../docs/SENSOR_READINGS_UPGRADE_PLAN.md): M0–M6 contracts and numerical anchors.
+- [Remediation plan](../../docs/SENSOR_READINGS_REMEDIATION_PLAN.md)
+- [Independent QA report](../../docs/research/LIO_V3_SENSOR_READINGS_QA_2026-11-23.md)
+- [Original upgrade specification](../../docs/SENSOR_READINGS_UPGRADE_PLAN.md)
 
-Do not use a new quick/full scan to qualify this build before the software safety fixes and tests. A0/Rf/ammeter checks remain owner-deferred bench work. Code/simulator success cannot establish measured SNR improvement or recovered SWIR/1850 chemistry.
+Do not use a new quick/full scan to qualify this build without separate authorization. A0/Rf/ammeter checks remain owner-deferred. Software success cannot establish measured SNR or recovered SWIR/1850 chemistry.
 
 ### Offline inspection
 
-The protocol planner is offline. The qualified-v2 product currently remains unresolved and has known estimator/eligibility integration gaps; it is not accepted quantitative analysis.
-
-From the repository root:
+Protocol plan/run/resume (sim + `--allow-light`), audit/analyse/report with `--derived-out`, and saved/numerical views are offline-testable. Soft calibration caveats stay in plan assumptions; hard unresolved items still block. Quantitative InGaAs claims remain gated without A0/Rf evidence.
 
 ```bash
 lio scan plan --protocol software/host/src/lio/scan/examples/stationary_targeted_h12.json --json /tmp/plan.json
+lio scan run --protocol … --allow-light --sim --sample empty --out /tmp/lio_out
 lio scan audit test_results/20261123-003133_scan_quick --model qualified-v2 --derived-out /tmp/lio_derived
 ```
-
-At the audited commit, the new --model legacy analysis path still writes source analysis.json despite --derived-out. Use a disposable copy for investigating that failure until remediation makes all new audit/analysis/report modes source-safe. Historical records must remain unchanged.
-
-The Scan UI has protocol preview and a derived-summary browser. Actual pause/heartbeat, per-occurrence checkpoints, progress and numerical qualification inspection need the documented repairs. The real CLI protocol run is currently unconditionally disabled. Treat these as implementation gaps, not bench-only tasks.
 
 ### Optional extras
 
