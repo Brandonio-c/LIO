@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="29b3ae6b-a098-f62c-e063-6294a90a150b"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Muscle Rub Cream</title>
+   <effectiveTime value="20241220"/>
+   <setId root="44d3638d-f29b-0e01-e054-00144ff88e88"/>
+   <versionNumber value="5"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="079424163"/>
+            <name>Trifecta Pharmaceuticals USA, LLC.</name>
+            <assignedEntity>
+               <assignedOrganization/>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="29b3b28d-7491-ea18-e063-6394a90a01c2"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20241220"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="69396-024" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Muscle Rub Cream</name>
+                        <formCode code="C28944" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CREAM"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Menthol 10%, Methyl Salicylate 15%</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="0.1"/>
+                              <denominator unit="g" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="L7T10EIP3A" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MENTHOL</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="L7T10EIP3A" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>MENTHOL</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="0.15"/>
+                              <denominator unit="g" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="LAV5U5022Y" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>METHYL SALICYLATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="O414PZ4LPZ" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>SALICYLIC ACID</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6OZP39ZG8H" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POLYSORBATE 80</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="9O3K93S3TK" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TROLAMINE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="Z8IX2SC1OH" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPYLPARABEN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="4Q93RCW27E" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CARBOMER 940</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="936JST6JCN" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CETYL ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="230OU9XXE4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERYL MONOSTEARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="A2I8C7HI9T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>METHYLPARABEN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="4ELV7Z65AP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>STEARIC ACID</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="15" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C42794" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TUBE"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="1" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="69396-024-05" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20161229"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M017" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20161229"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d411ab-2caf-3345-e054-00144ff88e88">
+               <id root="5e6ceae2-c7fc-7268-e053-2a91aa0a6f15"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Drug Facts</content>
+                  </content>
+               </title>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d411ab-2cb1-3345-e054-00144ff88e88">
+               <id root="5e6ceae2-c7fd-7268-e053-2a91aa0a6f15"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Active Ingredient</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>Menthol 10%</paragraph>
+               </text>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d411ab-2cb5-3345-e054-00144ff88e88">
+               <id root="5e6ceae2-c7fe-7268-e053-2a91aa0a6f15"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Active Ingredient</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>Methyl Salicylate 15%</paragraph>
+               </text>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d36ff8-564d-0af4-e054-00144ff88e88">
+               <id root="5e6ceae2-c7ff-7268-e053-2a91aa0a6f15"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <text>
+                  <paragraph>Topical Analgesic</paragraph>
+               </text>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d411ab-2cbb-3345-e054-00144ff88e88">
+               <id root="5e6ceae2-c800-7268-e053-2a91aa0a6f15"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <text>
+                  <paragraph>For the temporary relief of minor aches and pains of muscles and joints associated with simple backache, arthritis, strains, bruises and sprains</paragraph>
+               </text>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d3967f-cf79-6bdf-e054-00144ff8d46c">
+               <id root="5e6ceae2-c801-7268-e053-2a91aa0a6f15"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Warnings</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">For external use only</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Do not use:</content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>On wounds or damaged, broken, (open) or irritated skin</item>
+                     <item>With a heating pad</item>
+                  </list>
+                  <paragraph/>
+                  <paragraph>
+                     <content styleCode="bold">Ask a doctor before use if you are </content>pregnant or breast feeding.
+ </paragraph>
+                  <paragraph/>
+                  <paragraph>
+                     <content styleCode="bold">When using this product </content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>Avoid contact with eyes or mucous membrane</item>
+                     <item>Do not bandage tightly</item>
+                  </list>
+               </text>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d40cff-c20e-0b6a-e054-00144ff8d46c">
+               <id root="5e6ceae2-c802-7268-e053-2a91aa0a6f15"/>
+               <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Stop Use and ask a doctor</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>Conditions worsens or does not improve within 7 days</item>
+                     <item>Symptoms clear up and occur again within a few days</item>
+                     <item>Excessive skin irritation develops</item>
+                  </list>
+                  <paragraph>A temporary burning sensation may occur upon application, but generally disappears in a few days</paragraph>
+               </text>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d40cff-c210-0b6a-e054-00144ff8d46c">
+               <id root="5e6ceae2-c803-7268-e053-2a91aa0a6f15"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Keep out of the reach of Children</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>If swallowed, get medical help or contact a Poison Control Center immediately</paragraph>
+               </text>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d411ab-2d10-3345-e054-00144ff88e88">
+               <id root="5e6ceae2-c7f7-7268-e053-2a91aa0a6f15"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Directions</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>Adults and children 12 years of age or older. Apply to the affected area not more than 3 to 4 times daily.</item>
+                  </list>
+                  <paragraph>Children under 12 years of age. consult a doctor</paragraph>
+                  <list listType="unordered">
+                     <item>Unless treating hands, wash hands thoroughly with soap and water immediately after use.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d3967f-cf7e-6bdf-e054-00144ff8d46c">
+               <id root="5e6ceae2-c7f8-7268-e053-2a91aa0a6f15"/>
+               <code code="44425-7" codeSystem="2.16.840.1.113883.6.1" displayName="STORAGE AND HANDLING SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Other Information</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>Store at controlled room temperature 20º-25ºC (68º-77ºF)</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">Questions ?</content> Call 1-888-296-9067
+ </paragraph>
+               </text>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d40cff-c213-0b6a-e054-00144ff8d46c">
+               <id root="5e6ceae2-c7f9-7268-e053-2a91aa0a6f15"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Inactive Ingredients</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>Carbomer 940, Cetyl alcohol, Glycerol, Glyceryl monostearate, Methylparaben, Polysorbate 80, Propylparaben, Purified Water, Stearic acid, Trolamine</paragraph>
+               </text>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d40cff-c215-0b6a-e054-00144ff8d46c">
+               <id root="5e6ceae2-c7fa-7268-e053-2a91aa0a6f15"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Distributed By</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Trifecta Pharmaceuticals USA, LLC.</content>
+                  </paragraph>
+                  <paragraph>101 NE Third Avenue, Suite 1500 </paragraph>
+                  <paragraph>Ft. Lauderdale, FL. 33301</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">www.trifecta-pharma.com</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20161229"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_44d5fc3e-df94-6d52-e054-00144ff8d46c">
+               <id root="5e6ceae2-c7fb-7268-e053-2a91aa0a6f15"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>
+                  <content styleCode="bold">Packaging</content>
+               </title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_44d5eda0-1084-6a20-e054-00144ff8d46c"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20161229"/>
+               <component>
+                  <observationMedia ID="img_44d5eda0-1084-6a20-e054-00144ff8d46c">
+                     <text>Globe Muscle Cream</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="globe muscle cream.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

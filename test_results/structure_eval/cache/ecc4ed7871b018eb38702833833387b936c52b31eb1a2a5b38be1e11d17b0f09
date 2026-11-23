@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 24153,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "2% MINOXIDIL SERUM FOR WOMEN 2% MINOXIDIL SERUM FOR WOMEN MINOXIDIL MINOXIDIL WATER ARGININE PANAX GINSENG ROOT BIOTIN CALYCOPHYLLUM MULTIFLORUM WHOLE ZINGIBER OFFICINALE (GINGER) ROOT OIL PINUS MASSONIANA LEAF CITRIC ACID GLYCERIN VITAMIN E POLYETHYLENE GLYCOL SUCCINATE PHENOXYETHANOL"
+      ],
+      "dosage_and_administration": [
+        "DOSAGE ADMINISTRATION SECTION DOSAGE ADMINISTRATION SECTION DOSAGE ADMINISTRATION SECTION"
+      ],
+      "inactive_ingredient": [
+        "INACTIVE INGREDIENT SECTION INACTIVE INGREDIENT SECTION INACTIVE INGREDIENT SECTION"
+      ],
+      "warnings": [
+        "WARNINGS SECTION WARNINGS SECTION WARNINGS SECTION"
+      ],
+      "indications_and_usage": [
+        "INDICATIONS USAGE SECTION INDICATIONS USAGE SECTION INDICATIONS USAGE SECTION"
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP OUT OF REACH OF CHILDREN SECTION KEEP OUT OF REACH OF CHILDREN SECTION KEEP OUT OF REACH OF CHILDREN SECTION"
+      ],
+      "purpose": [
+        "PURPOSE SECTION PURPOSE SECTION PURPOSE SECTION"
+      ],
+      "package_label_principal_display_panel": [
+        "2%MINOXIDIL SERUM FOR WOMEN 2%MINOXIDIL SERUM FOR WOMEN PACKAGE LABEL.PRINCIPAL DISPLAY PANEL 2%MINOXIDIL SERUM FOR WOMEN PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"
+      ],
+      "set_id": "5d4feaaf-0586-77d5-e063-6394a90a359b",
+      "id": "5d4feaaf-0587-77d5-e063-6394a90a359b",
+      "effective_time": "20261008",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "505G(a)(3)"
+        ],
+        "brand_name": [
+          "2% MINOXIDIL SERUM FOR WOMEN"
+        ],
+        "generic_name": [
+          "2% MINOXIDIL SERUM FOR WOMEN"
+        ],
+        "manufacturer_name": [
+          "Lance (Guangzhou) Biological Technology Co., Ltd."
+        ],
+        "product_ndc": [
+          "87593-103"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "CUTANEOUS"
+        ],
+        "substance_name": [
+          "MINOXIDIL"
+        ],
+        "rxcui": [
+          "311723"
+        ],
+        "spl_id": [
+          "5d4feaaf-0587-77d5-e063-6394a90a359b"
+        ],
+        "spl_set_id": [
+          "5d4feaaf-0586-77d5-e063-6394a90a359b"
+        ],
+        "package_ndc": [
+          "87593-103-50"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000175379",
+          "N0000175564"
+        ],
+        "pharm_class_pe": [
+          "Arteriolar Vasodilation [PE]"
+        ],
+        "pharm_class_epc": [
+          "Arteriolar Vasodilator [EPC]"
+        ],
+        "unii": [
+          "5965120SH1"
+        ]
+      }
+    }
+  ]
+}

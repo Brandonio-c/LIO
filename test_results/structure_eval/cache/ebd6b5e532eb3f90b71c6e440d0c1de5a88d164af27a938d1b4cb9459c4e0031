@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="373546ee-c8d7-45cd-a7c5-591e24c5b8bb"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Drug Mart Extra Strength Antacid Tablets Freshmint Flavor </title>
+   <effectiveTime value="20260911"/>
+   <setId root="59382400-cde6-4234-b570-1580a8177279"/>
+   <versionNumber value="8"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id extension="047741335" root="1.3.6.1.4.1.519.1"/>
+            <name>DISCOUNT DRUG MART</name>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="9afcb7f7-42ab-44b4-8845-5572190db751"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20260911"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="53943-108" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Extra Strength Antacid<suffix>Freshmint</suffix>
+                        </name>
+                        <formCode code="C42893" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TABLET, CHEWABLE"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Calcium Carbonate, Magnesium Hydroxide</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mg" value="675"/>
+                              <denominator unit="1" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="H0G9379FGK" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CALCIUM CARBONATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="2M83C4R6ZB" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>CALCIUM CATION</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mg" value="135"/>
+                              <denominator unit="1" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="NBZ3QY004S" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MAGNESIUM HYDROXIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="T6V3LHY838" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>MAGNESIUM CATION</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="O8232NY3SJ" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>STARCH, CORN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="IY9XDZ35W2" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DEXTROSE, UNSPECIFIED FORM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="70097M6I30" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MAGNESIUM STEARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="7CVR7L4A2D" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MALTODEXTRIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="96K6UQ3ZD4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SUCRALOSE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator unit="1" value="100"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="53943-108-10" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43173" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE, PLASTIC"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20190515"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M001" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20190515"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLCOLOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48325" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="WHITE" xsi:type="CE"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSIZE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value unit="mm" value="16" xsi:type="PQ"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSHAPE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48348" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ROUND" xsi:type="CE"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSCORE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value value="1" xsi:type="INT"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLIMPRINT" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value xsi:type="ST">RP107</value>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLFLAVOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C73404" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="MINT" xsi:type="CE"/>
+                        </characteristic>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38288" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ORAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_15cef2ca-9ead-4ecf-85b3-924f31eb1038">
+               <id root="e72a1e2d-270e-4b71-bbee-21424459e674"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Drug Facts</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20190716"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_92b1d71a-890c-4713-a0d9-5e47dfe3c633">
+               <id root="b4135e7b-5e50-4440-be39-5a697fa0b024"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="italics">Active ingredients </content>(in each tablet)</title>
+               <text>
+                  <paragraph>Calcium Carbonate USP 675 mg<br/>Magnesium hydroxide USP 135 mg</paragraph>
+               </text>
+               <effectiveTime value="20190716"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_18bc82ee-24c7-4405-a7b5-198de93a62f1">
+               <id root="61549cae-4181-4889-a4a0-defd9576ccea"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>
+                  <content styleCode="italics">Purpose</content>
+               </title>
+               <text>
+                  <paragraph>Antacid</paragraph>
+                  <paragraph>Antacid</paragraph>
+               </text>
+               <effectiveTime value="20190716"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_19983504-b8fa-424c-b8eb-2103571feab4">
+               <id root="03fa2a2b-5e1e-4b03-8eb5-c120581621b5"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>
+                  <content styleCode="italics">Uses</content>
+               </title>
+               <text>
+                  <paragraph>relieves:</paragraph>
+                  <list listType="unordered">
+                     <item>
+                        <caption>▪</caption>heartburn</item>
+                     <item>
+                        <caption>▪</caption>sour stomach</item>
+                     <item>
+                        <caption>▪</caption>acid indigestion</item>
+                     <item>
+                        <caption>▪</caption>upset stomach due to these symptoms</item>
+                  </list>
+               </text>
+               <effectiveTime value="20190716"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_73f19315-4222-485f-920e-a3881b3b0d64">
+               <id root="608b278a-197d-4d59-b9c1-3f88e22d687d"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>
+                  <content styleCode="italics">Warnings</content>
+               </title>
+               <effectiveTime value="20260911"/>
+               <component>
+                  <section ID="ID_a3d25d29-0888-4b73-84eb-0b5b651817fa">
+                     <id root="3b99bac3-d058-47fe-84d0-bde390aea835"/>
+                     <code code="50568-5" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR/PHARMACIST SECTION"/>
+                     <title>Ask a doctor or pharmacist before use if you are </title>
+                     <text>
+                        <paragraph>presently taking a prescription drug. Antacids may interact with certain prescription drugs.</paragraph>
+                     </text>
+                     <effectiveTime value="20260911"/>
+                     <component>
+                        <section ID="ID_78582aa4-c7d8-4c43-b268-1925bb2fd3dd">
+                           <id root="35c0f5fc-9c60-42ab-bb63-4dee82736d62"/>
+                           <code code="50567-7" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - WHEN USING SECTION"/>
+                           <title>
+                              <content styleCode="bold">When using this product</content>
+                           </title>
+                           <text>
+                              <list listType="unordered">
+                                 <item>
+                                    <caption>▪</caption>do not take more than 10 tablets in a 24-hour period</item>
+                                 <item>
+                                    <caption>▪</caption>do not use the maximum dosage for more than 2 weeks</item>
+                              </list>
+                           </text>
+                           <effectiveTime value="20260911"/>
+                        </section>
+                     </component>
+                  </section>
+               </component>
+               <component>
+                  <section ID="ID_cf9a3189-b9ab-45d8-8cbf-39e178e94a21">
+                     <id root="2e957847-cd98-4191-9110-eb1a5b370bd1"/>
+                     <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+                     <title>Keep out of reach of children.</title>
+                     <effectiveTime value="20190716"/>
+                  </section>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_a92bb949-61df-4e5f-9298-9a544e970c7a">
+               <id root="a27a9d6b-157e-4c5c-acc2-c64cbdc89057"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>
+                  <content styleCode="italics">Directions</content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>
+                        <caption>▪</caption>chew 2-4 tablets completely as symptoms occur or as directed by a doctor. Do not swallow tablets whole.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20260911"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_73ace243-f590-4272-ac1f-78dfb4a79fad">
+               <id root="7556cc46-ce28-4808-8a12-edc934d83505"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <title>
+                  <content styleCode="italics">Other information</content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>
+                        <caption>▪</caption>
+                        <content styleCode="bold">each tablet contains:</content> calcium 270 mg, magnesium 55 mg</item>
+                     <item>
+                        <caption>▪</caption>store at room temperature. Avoid high humidity.</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">CALCIUM SUPPLEMENT</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">USES</content>
+                  </paragraph>
+                  <paragraph>As a daily source of extra calcium and magnesium chew 2 tablets, completely twice daily.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Supplement Facts</content>
+                  </paragraph>
+                  <paragraph>Serving Size: 2 Tablets</paragraph>
+                  <paragraph>Servings Per Container: 50</paragraph>
+                  <table styleCode="Noautorules" width="100%">
+                     <col width="50%"/>
+                     <col width="50%"/>
+                     <tbody>
+                        <tr>
+                           <td styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>
+                                 <content styleCode="bold">Amount Per Serving</content>
+                              </paragraph>
+                           </td>
+                           <td styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>
+                                 <content styleCode="bold">% Daily Value</content>
+                              </paragraph>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td styleCode="Rrule Lrule Botrule " valign="top">
+                              <paragraph>Calories 8</paragraph>
+                           </td>
+                           <td styleCode="Rrule Lrule Toprule Botrule " valign="top"/>
+                        </tr>
+                        <tr>
+                           <td styleCode="Rrule Lrule Botrule " valign="top">
+                              <paragraph>Total Carbohydrate 2g</paragraph>
+                           </td>
+                           <td styleCode="Rrule Lrule Toprule Botrule " valign="top">
+                              <paragraph>1%</paragraph>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td styleCode="Rrule Lrule Botrule " valign="top">
+                              <paragraph>Total Sugars 2g</paragraph>
+                              <paragraph>Includes 2 g Added Sugars</paragraph>
+                           </td>
+                           <td styleCode="Rrule Lrule Toprule Botrule " valign="top">
+                              <paragraph>†</paragraph>
+                              <paragraph>4%</paragraph>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td styleCode="Rrule Lrule Botrule " valign="top">
+                              <paragraph>Calcium 540 mg</paragraph>
+                           </td>
+                           <td styleCode="Rrule Lrule Toprule Botrule " valign="top">
+                              <paragraph>42%</paragraph>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>Magnesium 110 mg</paragraph>
+                           </td>
+                           <td styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>26%</paragraph>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </text>
+               <effectiveTime value="20260911"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_4991d5cd-ac57-4737-8fca-e373c569f5f0">
+               <id root="cd83b933-117f-4b67-9b64-1a57d020a216"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="italics">Inactive ingredients </content>
+               </title>
+               <text>
+                  <paragraph>corn starch, dextrose, flavor, magnesium stearate, maltodextrin, sucralose.</paragraph>
+               </text>
+               <effectiveTime value="20190716"/>
+               <component>
+                  <section ID="ID_4012fda3-5dab-4fd3-9790-8d3ee3a66e03">
+                     <id root="148e7b48-696a-4dd5-9740-5d8284e52e33"/>
+                     <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+                     <title>Questions?</title>
+                     <text>
+                        <paragraph>
+                           <content styleCode="bold">1-866-467-2748</content>
+                        </paragraph>
+                     </text>
+                     <effectiveTime value="20190716"/>
+                  </section>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_7a7ca5fb-10f8-4555-8fc7-8a33e62ce2fa">
+               <id root="b675d47f-ac55-4018-bbb2-925370cf3842"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>PRINCIPAL DISPLAY PANEL</title>
+               <text>
+                  <paragraph>DISCOUNT drug mart</paragraph>
+                  <paragraph>FOOD FAIR</paragraph>
+                  <paragraph>NDC# 53943-108-10</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Compare to the active ingredients Extra Strength Rolaids®</content>
+                  </paragraph>
+                  <paragraph>Extra Strength</paragraph>
+                  <paragraph>Antacid Tablets</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Calcium &amp; magnesium Supplement</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Relieves:</content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>
+                        <content styleCode="bold">Heartburn</content>
+                     </item>
+                     <item>
+                        <caption>•</caption>
+                        <content styleCode="bold">Acid Indigestion</content>
+                     </item>
+                  </list>
+                  <paragraph>100 CHEWABLE TABLETS</paragraph>
+                  <paragraph>Freshmint</paragraph>
+                  <paragraph>Naturally and artificially flavored</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">GLUTEN-FREE</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">TAMPER EVIDENT: DO NOT USE IF PRINTED INNER SEAL UNDER CAP IS TORN OR MISSING.</content>
+                  </paragraph>
+                  <paragraph>*This product is not manufactured or distributed by Chattem Inc., owner of the registered trademark Extra Strength Rolaids<sup>®</sup>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Distributed By:</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Drug Mart-Food Fair</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">211 Commerce Dr., Medina, Ohio 44256</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">www.discount-drugmart.com</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Questions?: 866-467-2748</content>
+                  </paragraph>
+                  <renderMultiMedia ID="id653" referencedObject="D9001C82-E26A-42FC-9311-311A304B4566"/>
+               </text>
+               <effectiveTime value="20260911"/>
+               <component>
+                  <observationMedia ID="D9001C82-E26A-42FC-9311-311A304B4566">
+                     <text>Drug Mart Extra Strength Antacid Tablets</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="rolaids-regular-strength-tablets-mint-01.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

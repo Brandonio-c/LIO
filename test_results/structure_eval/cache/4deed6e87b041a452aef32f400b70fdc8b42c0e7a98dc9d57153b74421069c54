@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl"?>
+<document xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="eb3ecda3-180e-4a04-9089-5cceabe22724"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>
+      <content styleCode="italics">Drug Facts</content>
+   </title>
+   <effectiveTime value="20260603"/>
+   <setId root="3877a88d-9546-48ce-ad6b-3c2a115e3eaf"/>
+   <versionNumber value="9"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id extension="122720675" root="1.3.6.1.4.1.519.1"/>
+            <name>Kramer Laboratories</name>
+            <assignedEntity>
+               <assignedOrganization/>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="5da341a1-7fe1-4f51-932f-5e4062edd803"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL PRODUCT DATA ELEMENTS SECTION"/>
+               <effectiveTime value="20250820"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="55505-197" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Kaopectate</name>
+                        <formCode code="C42897" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TABLET, COATED"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Bismuth subsalicylate</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mg" value="262"/>
+                              <denominator unit="1" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="62TEY51RR1" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Bismuth Subsalicylate</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="ZS9CD1I8YE" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>Bismuth Cation</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="M28OL1HH48" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Croscarmellose Sodium</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2S7830E561" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Crospovidone</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="Y6O7T4G8P9" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Hydrated Silica</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3NXW29V3WO" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Hypromellose, Unspecified</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="70097M6I30" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Magnesium Stearate</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="OP1R32D61U" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Microcrystalline Cellulose</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="T5L8T28FGP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Mineral Oil</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="FZ989GH94E" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Povidone, Unspecified</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="368GB5141J" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Sodium Lauryl Sulfate</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="4ELV7Z65AP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Stearic Acid</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="7SEV7J4R1U" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Talc</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="15FIX9V2JP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Titanium Dioxide</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="XHX3C3X673" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>Triacetin</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator unit="1" value="28"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43169" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator unit="1" value="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="55505-197-07" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43182" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CARTON"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20201001"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator unit="1" value="42"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43169" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator unit="1" value="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="55505-197-70" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43182" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CARTON"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20210201"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator unit="1" value="42"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43169" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator unit="1" value="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43182" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CARTON"/>
+                                    <asContent>
+                                       <quantity>
+                                          <numerator unit="1" value="2"/>
+                                          <denominator value="1"/>
+                                       </quantity>
+                                       <containerPackagedProduct>
+                                          <code code="55505-197-78" codeSystem="2.16.840.1.113883.6.69"/>
+                                          <formCode code="C43233" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="PACKAGE"/>
+                                       </containerPackagedProduct>
+                                       <subjectOf>
+                                          <marketingAct>
+                                             <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                             <statusCode code="active"/>
+                                             <effectiveTime>
+                                                <low value="20250423"/>
+                                             </effectiveTime>
+                                          </marketingAct>
+                                       </subjectOf>
+                                    </asContent>
+                                 </containerPackagedProduct>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator unit="1" value="84"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43169" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator unit="1" value="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="55505-197-77" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43182" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CARTON"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20251115"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M008" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20201001"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLCOLOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48325" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="WHITE" xsi:type="CV"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLIMPRINT" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value xsi:type="ST">K</value>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSCORE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value value="1" xsi:type="INT"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSHAPE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48345" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OVAL" xsi:type="CV">
+                              <originalText>caplet</originalText>
+                           </value>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSIZE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value unit="mm" value="17" xsi:type="PQ"/>
+                        </characteristic>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38288" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ORAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+               <component>
+                  <observationMedia ID="MM72681">
+                     <text>Front Label Image</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="front.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+               <component>
+                  <observationMedia ID="MM72683">
+                     <text>Rear Label Image</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="rear.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+               <component>
+                  <observationMedia ID="MM72684">
+                     <text>Bottle</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="bottle.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+               <component>
+                  <observationMedia ID="MM90108">
+                     <text>84ct front</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="84-front.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+               <component>
+                  <observationMedia ID="MM90109">
+                     <text>84ct rear</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="84-rear.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section>
+               <id root="c886d6da-4865-43d7-82cb-eb52ea6a6b67"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <text/>
+               <effectiveTime value="20200928"/>
+               <component>
+                  <section ID="ID_2b733267-56fa-40a4-9ca0-7f77b35f378e">
+                     <id root="df266025-3feb-4e83-88cc-3e27a4323c52"/>
+                     <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+                     <text>
+                        <table cellpadding="4" width="40%">
+                           <tbody>
+                              <tr>
+                                 <td styleCode="Botrule Lrule Rrule Toprule">
+                                    <content styleCode="bold">Active ingredient (per caplet)</content>
+                                 </td>
+                                 <td align="right" styleCode="Botrule Lrule Rrule Toprule" valign="top">
+                                    <content styleCode="bold">
+                                       <content styleCode="italics">Purposes</content>
+                                    </content>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td styleCode="Botrule Lrule Rrule Toprule" valign="top">Bismuth subsalicylate 262 mg</td>
+                                 <td align="right" styleCode="Botrule Lrule Rrule Toprule" valign="top">Anti-diarrheal, Upset stomach reliever </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </text>
+                     <effectiveTime value="20200928"/>
+                  </section>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section>
+               <id root="e3a93837-7d60-4656-94c6-73e317d5dfc5"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">
+                        <content styleCode="italics">Uses</content>
+                     </content> relieves:</paragraph>
+                  <list listType="unordered" styleCode="Disc">
+                     <item>traveler’s diarrhea<br/>
+                     </item>
+                     <item>diarrhea</item>
+                     <item>upset stomach due to overindulgence in food and drink, including:<list listType="unordered" styleCode="Disc">
+                           <item>heartburn</item>
+                           <item>indigestion<br/>
+                           </item>
+                           <item>nausea<br/>
+                           </item>
+                           <item>gas<br/>
+                           </item>
+                           <item>belching<br/>
+                           </item>
+                           <item>fullness<br/>
+                           </item>
+                        </list>
+                        <br/>
+                        <br/>
+                     </item>
+                  </list>
+               </text>
+               <effectiveTime value="20201001"/>
+            </section>
+         </component>
+         <component>
+            <section>
+               <id root="0f515411-e04c-4fd7-b59f-24986673a44a"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Warnings</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Reye’s syndrome: </content>Children and teenagers who have or are recovering from chicken pox or flu-like symptoms should not use this product. When using this product, if changes in behavior with nausea and vomiting occur, consult a doctor because these symptoms could be an early sign of Reye’s syndrome, a rare but serious illness. </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Allergy Alert: Contains salicylate. </content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20201001"/>
+               <component>
+                  <section>
+                     <id root="6c82e87d-a9c6-4265-83d0-12e13dc7a848"/>
+                     <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+                     <title>
+                        <content styleCode="bold">Do not take if you are</content>
+                     </title>
+                     <text>
+                        <list listType="unordered" styleCode="Disc">
+                           <item>allergic to salicylates (including aspirin)<br/>
+                           </item>
+                           <item>taking other salicylate products</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20200928"/>
+                  </section>
+               </component>
+               <component>
+                  <section>
+                     <id root="c6d1e530-d525-4944-a3e5-05dc0962e638"/>
+                     <code code="50570-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - DO NOT USE SECTION"/>
+                     <title>
+                        <content styleCode="bold">Do not use if you have </content>
+                     </title>
+                     <text>
+                        <list listType="unordered" styleCode="Disc">
+                           <item>an ulcer<br/>
+                           </item>
+                           <item>a bleeding problem<br/>
+                           </item>
+                           <item>bloody or black stool</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20200928"/>
+                  </section>
+               </component>
+               <component>
+                  <section>
+                     <id root="519dccf2-88ef-4e36-9008-649a223e7db8"/>
+                     <code code="50569-3" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR SECTION"/>
+                     <title>
+                        <content styleCode="bold">Ask a doctor before use if you have</content>
+                     </title>
+                     <text>
+                        <list listType="unordered" styleCode="Disc">
+                           <item>fever<br/>
+                           </item>
+                           <item>mucus in the stool</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20200928"/>
+                  </section>
+               </component>
+               <component>
+                  <section>
+                     <id root="f24d32e1-8056-4385-8885-cb139b2754e2"/>
+                     <code code="50568-5" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR/PHARMACIST SECTION"/>
+                     <text>
+                        <paragraph>
+                           <content styleCode="bold">Ask a doctor or pharmacist before use if you are</content> taking any drug for</paragraph>
+                        <list listType="unordered" styleCode="Disc">
+                           <item>anticoagulation (thinning the blood)<br/>
+                           </item>
+                           <item>diabetes<br/>
+                           </item>
+                           <item>gout<br/>
+                           </item>
+                           <item>arthritis</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20200928"/>
+                  </section>
+               </component>
+               <component>
+                  <section>
+                     <id root="0c64b497-422a-4207-99d9-4e6779d0ebac"/>
+                     <code code="50567-7" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - WHEN USING SECTION"/>
+                     <text>
+                        <paragraph>
+                           <content styleCode="bold">When using this product</content> a temporary, but harmless, darkening of the stool and/or tongue may occur</paragraph>
+                     </text>
+                     <effectiveTime value="20200928"/>
+                  </section>
+               </component>
+               <component>
+                  <section>
+                     <id root="959dd431-2f6b-4dbf-b9e6-e42eb4a9a4f0"/>
+                     <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+                     <title>
+                        <content styleCode="bold">Stop use and ask a doctor if</content>
+                     </title>
+                     <text>
+                        <list listType="unordered" styleCode="Disc">
+                           <item>symptoms get worse<br/>
+                           </item>
+                           <item>ringing in the ears or loss of hearing occurs<br/>
+                           </item>
+                           <item>diarrhea lasts more than 2 days</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20200928"/>
+                  </section>
+               </component>
+               <component>
+                  <section>
+                     <id root="f56f91aa-86d5-4e96-b4a8-ad6e7550134a"/>
+                     <code code="53414-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PREGNANCY OR BREAST FEEDING SECTION"/>
+                     <text>
+                        <paragraph>
+                           <content styleCode="bold">If pregnant or breast-feeding,</content> ask a health professional before use.</paragraph>
+                     </text>
+                     <effectiveTime value="20200928"/>
+                  </section>
+               </component>
+               <component>
+                  <section>
+                     <id root="54c28fd3-b1f1-442c-8c0c-87f554dfd263"/>
+                     <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+                     <text>
+                        <paragraph>
+                           <content styleCode="bold">Keep out of reach of children.</content> In case of overdose, get medical help or contact a Poison Control Center right away.</paragraph>
+                     </text>
+                     <effectiveTime value="20200930"/>
+                  </section>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section>
+               <id root="3065ae9e-4731-4769-8f95-0a4d61996447"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Directions</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered" styleCode="Disc">
+                     <item>
+                        <content styleCode="bold">adults and children 12 years of age and older:</content> 2 caplets (1 dose)<br/>
+                     </item>
+                     <item>swallow caplets with water; do not chew<br/>
+                     </item>
+                     <item>repeat dose every 1/2 hour to 1 hour as needed<br/>
+                     </item>
+                     <item>do not exceed 8 doses in 24 hours<br/>
+                     </item>
+                     <item>use until diarrhea stops but not more than 2 days<br/>
+                     </item>
+                     <item>
+                        <content styleCode="bold">children under 12 years:</content> ask a doctor<br/>
+                     </item>
+                     <item>drink plenty of clear fluids to help prevent dehydration caused by diarrhea</item>
+                  </list>
+               </text>
+               <effectiveTime value="20200928"/>
+            </section>
+         </component>
+         <component>
+            <section>
+               <id root="79200975-ed47-432e-8c45-72defcc5aec0"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Other information</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered" styleCode="Disc">
+                     <item>Each caplet contains very low sodium            <br/>
+                     </item>
+                     <item>
+                        <content styleCode="bold">do not use if carton was opened or if printed foil inner seal under bottle cap is torn or missing</content>
+                        <br/>
+                     </item>
+                     <item>store at room temperature 20º-25º C (68º-77º F)</item>
+                  </list>
+               </text>
+               <effectiveTime value="20200928"/>
+            </section>
+         </component>
+         <component>
+            <section>
+               <id root="aadf3f08-079a-418e-aff9-b4f7200f3428"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Inactive ingredients</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>croscarmellose sodium, crospovidone, hydrated silica, hypromellose, magnesium stearate, microcrystalline cellulose, mineral oil, povidone, sodium lauryl sulfate, stearic acid, talc, titanium dioxide, triacetin</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">  </content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20200928"/>
+            </section>
+         </component>
+         <component>
+            <section>
+               <id root="65a7fc7d-0269-45f1-958a-7ec53308ae05"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>
+                  <content styleCode="bold">Principal Display Panel</content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">
+                        <content styleCode="italics">FAST &amp; EFFECTIVE RELIEF</content>
+                     </content>
+                     <content styleCode="bold">
+                        <br/>Kaopectate</content>
+                     <sup>®</sup>
+                     <br/>
+                     <content styleCode="italics">Bismuth Subsalicylate</content>
+                     <br/>
+                     <content styleCode="italics">
+                        <br/>• Anti-Diarrheal <content styleCode="italics">• </content>Upset Stomach Reliver</content>
+                     <br/>
+                     <br/>
+                     <content styleCode="bold">Diarrhea &amp; <br/>Upset Stomach</content>
+                     <br/>
+                     <br/>✓ Begins controlling symptoms from the first dose<br/>✓ Quickly relieves urgency, gas, and cramping<br/>✓ Effective on diarrhea from bacteria, viruses, and other causes<br/>
+                     <br/>CLINICALLY PROVEN MEDICINE<br/>
+                     <br/>28 Coated Caplets<br/>
+                  </paragraph>
+                  <renderMultiMedia referencedObject="MM72681"/>
+                  <paragraph>
+                     <content styleCode="bold">LOT</content>
+                     <br/>
+                     <br/>
+                     <content styleCode="bold">EXP</content>
+                     <br/>
+                     <br/>
+                     <content styleCode="bold">Do not use if foil seal under cap, printed with "SEALED for YOUR PROTECTION" is missing, open or broken.</content>
+                     <br/>
+                     <br/>
+                     <content styleCode="bold">Kramer Laboratories, Inc.</content>
+                     <br/>Bridgewater, NJ 08807<br/>
+                     <content styleCode="bold">1-800-824-4894</content>
+                     <br/>
+                     <br/>14711-07-20_K0720</paragraph>
+                  <renderMultiMedia referencedObject="MM72683"/>
+                  <paragraph>
+                     <content styleCode="bold">
+                        <content styleCode="bold">Kaopectate</content>
+                        <content styleCode="bold">
+                           <sup>®</sup>
+                        </content>
+                        <br/>Bismuth Subsalicylate<br/>
+                     </content>
+                  </paragraph>
+                  <list listType="unordered" styleCode="Disc">
+                     <item>
+                        <content styleCode="bold">Anti-Diarrheal</content>
+                     </item>
+                     <item>
+                        <content styleCode="bold">Upset Stomach Reliever</content>
+                     </item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">Diarrhea &amp;  Upset Stomach</content>
+                     <br/>
+                     <content styleCode="bold">
+                        <br/>28 Coated Caplets<br/>
+                        <br/>Do not use if foil seal under cap, printed with "SEALED for YOUR PROTECTION" is missing, open or broken.<br/>
+                        <br/>KEEP CARTON AS IT CONTAINS IMPORTANT INFORMATION</content>
+                     <br/>
+                     <br/>
+                     <content styleCode="bold">Kramer Laboratories, Inc.</content>
+                     <br/>Bridgewater, NJ 08807<br/>
+                     <content styleCode="bold">1-800-824-4894</content>
+                     <br/>
+                     <br/>14712-07-20_K0720</paragraph>
+                  <renderMultiMedia referencedObject="MM72684"/>
+                  <paragraph>
+                     <content styleCode="bold">FAST &amp; EFFECTIVE RELIEF</content>
+                     <br/>
+                     <br/>
+                     <content styleCode="bold">
+                        <content styleCode="bold">Kaopectate</content>
+                        <content styleCode="bold">
+                           <sup>®</sup>
+                        </content>
+                        <br/>Bismuth Subsalicylate<br/>
+                     </content>
+                  </paragraph>
+                  <list listType="unordered" styleCode="Disc">
+                     <item>
+                        <content styleCode="bold">Anti-Diarrheal</content>
+                     </item>
+                     <item>
+                        <content styleCode="bold">Upset Stomach Reliever</content>
+                     </item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">Diarrhea &amp;<br/>Upset Stomach</content>
+                     <br/>
+                     <content styleCode="bold">
+                        <br/>84 Coated Caplets<br/>
+                        <br/>Do not use if foil seal under cap, printed with "SEALED for YOUR PROTECTION" is missing, open or broken.</content>
+                     <br/>
+                     <br/>K0426<br/>
+                     <br/>LOT:<br/>
+                     <br/>EXP:<br/>
+                     <br/>R55002<br/>
+                  </paragraph>
+                  <renderMultiMedia referencedObject="MM90108"/>
+                  <paragraph>Kramer Laboratories, Inc. Bridgewater, NJ 08807<br/>1-800-824-4894 </paragraph>
+                  <renderMultiMedia referencedObject="MM90109"/>
+               </text>
+               <effectiveTime value="20260603"/>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

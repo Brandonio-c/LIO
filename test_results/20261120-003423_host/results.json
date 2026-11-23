@@ -1,0 +1,242 @@
+{
+  "run_id": "20261120-003423_host",
+  "target": "/dev/cu.usbmodem101",
+  "started": "2026-11-20T00:34:23-05:00",
+  "environment": {
+    "os": "macOS-27.0.1-x86_64-i386-64bit",
+    "python": "3.12.11",
+    "lio_package": "0.2.0",
+    "git_commit": "226efcf6de1e72ae16e7af7d85845758838cad5b",
+    "git_dirty": true,
+    "host": "lhc-mac-colelou.nlm.nih.gov",
+    "user": "coleloughbc"
+  },
+  "firmware": {
+    "banner": "# BOOT name=lio fw=2.5.2 proto=1 build=2026-11-17 adc_ok=1 hw_wdt=0",
+    "fw": "2.5.2",
+    "proto": "1",
+    "build": "2026-11-17",
+    "adc_addr": "0x48",
+    "adc_ok": "1",
+    "gain": "1",
+    "rate": "128",
+    "settle_ms": "8",
+    "wdt_a_ms": "2000",
+    "wdt_b_ms": "5000",
+    "wdt_a_cap_ms": "5000",
+    "wdt_b_cap_ms": "10000",
+    "comms_ms": "10000",
+    "arm_ms": "60000",
+    "step_max": "2048",
+    "jog_max": "2048",
+    "jog_v_max": "1000",
+    "jog_acc_max": "1000",
+    "wake_ms_max": "3000",
+    "motion_armed": "0",
+    "debug_states": "1",
+    "mains": "0",
+    "rail_b_first": "9",
+    "light_in_motion": "0",
+    "arm_token": "0x868B",
+    "hw_wdt": "0"
+  },
+  "config": {
+    "path": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
+    "sha256": "ed3b4ba8e1856a2995a3b49e5790e02724f99a20099d761d6d6cfda9457c9ea0",
+    "provisional": true
+  },
+  "metadata": {
+    "sample_id": "none-empty-chamber",
+    "operator": "unknown"
+  },
+  "faults": [],
+  "results": [
+    {
+      "id": "T01.1",
+      "name": "Python and dependency versions",
+      "module": "T01",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.047518916999251815,
+      "subs": [
+        {
+          "id": "T01.1/python",
+          "name": "Python version",
+          "status": "PASS",
+          "message": "3.12.11",
+          "criteria": ">= 3.10",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/pyserial",
+          "name": "pyserial installed",
+          "status": "PASS",
+          "message": "3.5",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/pyyaml",
+          "name": "pyyaml installed",
+          "status": "PASS",
+          "message": "6.0.3",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/numpy",
+          "name": "numpy installed",
+          "status": "PASS",
+          "message": "2.5.4",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/matplotlib",
+          "name": "matplotlib installed",
+          "status": "PASS",
+          "message": "3.11.2",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/jinja2",
+          "name": "jinja2 installed",
+          "status": "PASS",
+          "message": "3.1.6",
+          "criteria": "importable",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "python": "3.12.11",
+        "platform": "macOS-27.0.1-x86_64-i386-64bit",
+        "pyserial": "3.5",
+        "pyyaml": "6.0.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "jinja2": "3.1.6"
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T01.2",
+      "name": "Serial port discovery",
+      "module": "T01",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.029254875000333413,
+      "subs": [
+        {
+          "id": "T01.2/port",
+          "name": "Selected port is present",
+          "status": "PASS",
+          "message": "/dev/cu.usbmodem101: present",
+          "criteria": "--lio-port names an existing serial port",
+          "measured": {}
+        },
+        {
+          "id": "T01.2/chip",
+          "name": "USB-serial chip recognised",
+          "status": "PASS",
+          "message": "VID:PID 2341:0074 (Arduino Nano R4 (native USB))",
+          "criteria": "one of link.usb_ids",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "ports": [
+          {
+            "device": "/dev/cu.usbmodem101",
+            "vid": 9025,
+            "pid": 116,
+            "chip": "Arduino Nano R4 (native USB)"
+          },
+          {
+            "device": "/dev/cu.Bluetooth-Incoming-Port",
+            "vid": null,
+            "pid": null,
+            "chip": null
+          },
+          {
+            "device": "/dev/cu.debug-console",
+            "vid": null,
+            "pid": null,
+            "chip": null
+          }
+        ],
+        "auto_pick": "/dev/cu.usbmodem101"
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T01.3",
+      "name": "Configuration loads and is self-consistent",
+      "module": "T01",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.05840512500071782,
+      "subs": [
+        {
+          "id": "T01.3/load",
+          "name": "Config validates",
+          "status": "PASS",
+          "message": "lio_hw.yaml sha256 ed3b4ba8e185",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T01.3/holes",
+          "name": "16 holes",
+          "status": "PASS",
+          "message": "16 entries",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T01.3/rails",
+          "name": "Rails split A = 1-8, B = 9-16 (as built)",
+          "status": "PASS",
+          "message": "A=[1, 2, 3, 4, 5, 6, 7, 8] B=[9, 10, 11, 12, 13, 14, 15, 16]",
+          "criteria": "",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "config": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
+        "sha256": "ed3b4ba8e1856a2995a3b49e5790e02724f99a20099d761d6d6cfda9457c9ea0",
+        "provisional": true,
+        "thresholds_provisional": true
+      },
+      "artefacts": []
+    }
+  ],
+  "duty": {
+    "window_s": 60.0,
+    "budget_ms": {
+      "A": 1000.0,
+      "B": 5000.0,
+      "h9": 1000.0
+    },
+    "total_cooldown_s": 0,
+    "cooldowns": [],
+    "over_budget": []
+  },
+  "finished": "2026-11-20T00:34:24-05:00",
+  "verdict": {
+    "verdict": "FUNCTIONAL",
+    "reasons": [
+      "no failures or warnings"
+    ],
+    "counts": {
+      "PASS": 3,
+      "WARN": 0,
+      "FAIL": 0,
+      "SKIP": 0,
+      "ERROR": 0
+    }
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 19666,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Good Neighbor Pharmacy Triple Antibiotic Plus Pain Relief Bacitracin zinc, Neomycin sulfate, Polymyxin B sulfate, and Pramoxine hydrochloride BACITRACIN ZINC BACITRACIN NEOMYCIN SULFATE NEOMYCIN POLYMYXIN B SULFATE POLYMYXIN B PRAMOXINE HYDROCHLORIDE PRAMOXINE PETROLATUM"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts",
+        "Distributed By AmerisourceBergen 1 West First Ave. Conshohocken, PA 19428 Questions or Concerns? www.mygnp.com Manufactured in India MH/DRUGS/28-KD/503"
+      ],
+      "active_ingredient": [
+        "Active ingredients (in each gram) Purposes Bacitracin zinc USP 500 units First aid antibiotic Neomycin sulfate USP 3.5 mg First aid antibiotic Polymyxin B sulfate USP 10,000 units First aid antibiotic Pramoxine HCl USP 10 mg External analgesic"
+      ],
+      "active_ingredient_table": [
+        "<table> <tbody> <tr> <th>Active ingredients (in each gram)</th> <th>Purposes</th> </tr> <tr> <td>Bacitracin zinc USP 500 units</td> <td>First aid antibiotic</td> </tr> <tr> <td>Neomycin sulfate USP 3.5 mg</td> <td>First aid antibiotic</td> </tr> <tr> <td>Polymyxin B sulfate USP 10,000 units</td> <td>First aid antibiotic</td> </tr> <tr> <td>Pramoxine HCl USP 10 mg</td> <td>External analgesic</td> </tr> </tbody> </table>"
+      ],
+      "purpose": [
+        "Active ingredients (in each gram) Purposes Bacitracin zinc USP 500 units First aid antibiotic Neomycin sulfate USP 3.5 mg First aid antibiotic Polymyxin B sulfate USP 10,000 units First aid antibiotic Pramoxine HCl USP 10 mg External analgesic"
+      ],
+      "purpose_table": [
+        "<table> <tbody> <tr> <th>Active ingredients (in each gram)</th> <th>Purposes</th> </tr> <tr> <td>Bacitracin zinc USP 500 units</td> <td>First aid antibiotic</td> </tr> <tr> <td>Neomycin sulfate USP 3.5 mg</td> <td>First aid antibiotic</td> </tr> <tr> <td>Polymyxin B sulfate USP 10,000 units</td> <td>First aid antibiotic</td> </tr> <tr> <td>Pramoxine HCl USP 10 mg</td> <td>External analgesic</td> </tr> </tbody> </table>"
+      ],
+      "indications_and_usage": [
+        "Uses first aid to help prevent infection and for the temporary relief of pain or discomfort in minor: cuts scrapes burns"
+      ],
+      "warnings": [
+        "Warnings For external use only. Do not use if you are allergic to any of the ingredients in the eyes over large areas of the body Ask a doctor before use if you have deep or puncture wounds animal bites serious burns Stop use and ask a doctor if you need to use longer than 1 week condition persists or gets worse symptoms persist for more than 1 week, or clear up and occur again within a few days a rash or other allergic reaction develops Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "do_not_use": [
+        "Do not use if you are allergic to any of the ingredients in the eyes over large areas of the body"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have deep or puncture wounds animal bites serious burns"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if you need to use longer than 1 week condition persists or gets worse symptoms persist for more than 1 week, or clear up and occur again within a few days a rash or other allergic reaction develops"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions Adults and children 2 years of age and older: clean the affected area and dry thoroughly apply a small amount of this product (an amount equal to the surface area of the tip of a finger) on the area 1 to 3 times daily may be covered with a sterile bandage Children under 2 years of age: ask a doctor"
+      ],
+      "storage_and_handling": [
+        "Other information TAMPER EVIDENT: DO NOT USE IF THE SEAL ON THE TUBE IS PUNCTURED OR NOT VISIBLE. to open: unscrew cap, pull tab to remove foil seal store at 20° to 25°C (68° to 77°F) see carton or tube crimp for lot number and expiration date"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredient white petrolatum"
+      ],
+      "questions": [
+        "Questions? Call 1-866-923-4914"
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPAL DISPLAY PANEL - 28.4 g Tube Carton GOOD NEIGHBOR PHARMACY ® Compare to Neosporin ® + Pain Relief active ingredients* NDC 24385-143-03 Triple Antibiotic Ointment + Pain Relief Bacitracin Zinc • Neomycin Sulfate • Polymyxin B Sulfate • Pramoxine Hydrochloride First Aid Antibiotic / Pain Relieving Ointment NET WT 1 oz (28.4 g) Carton"
+      ],
+      "set_id": "4ed52cb6-75aa-41ed-ba65-fb9dce2e4b46",
+      "id": "5c51d6c9-7439-bcde-e063-6394a90ab796",
+      "effective_time": "20260925",
+      "version": "6",
+      "openfda": {
+        "application_number": [
+          "M004"
+        ],
+        "brand_name": [
+          "Good Neighbor Pharmacy Triple Antibiotic Plus Pain Relief"
+        ],
+        "generic_name": [
+          "BACITRACIN ZINC, NEOMYCIN SULFATE, POLYMYXIN B SULFATE, AND PRAMOXINE HYDROCHLORIDE"
+        ],
+        "manufacturer_name": [
+          "Amerisource Bergen"
+        ],
+        "product_ndc": [
+          "24385-143"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "BACITRACIN ZINC",
+          "NEOMYCIN SULFATE",
+          "POLYMYXIN B SULFATE",
+          "PRAMOXINE HYDROCHLORIDE"
+        ],
+        "rxcui": [
+          "1359350"
+        ],
+        "spl_id": [
+          "5c51d6c9-7439-bcde-e063-6394a90ab796"
+        ],
+        "spl_set_id": [
+          "4ed52cb6-75aa-41ed-ba65-fb9dce2e4b46"
+        ],
+        "package_ndc": [
+          "24385-143-03"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "89Y4M234ES",
+          "057Y626693",
+          "19371312D4",
+          "88AYB867L5"
+        ]
+      }
+    }
+  ]
+}

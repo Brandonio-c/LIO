@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261120-003228_host</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261120-003228_host</code> on <code>/dev/cu.usbmodem101</code>
+,
+2026-11-20T00:32:28-05:00 to 2026-11-20T00:32:28-05:00</p>
+<div class="verdict" style="background: #d03b3b">NOT FUNCTIONAL</div>
+<ul><li>failure in a critical module: T02.1, T02.2, T02.3, T02.4, T02.5, T02.6, T03.1, T03.2, T03.3, T03.4, T03.5, T04.1, T04.2, T04.3, T10.1, T10.2, T10.3, T10.4, T10.5</li><li>failures not tied to a channel: T01.1, T01.2, T01.3, T05.1, T05.2, T05.3, T05.4, T05.5, T06.1, T06.2, T06.3, T07.1, T07.2, T07.3, T08.1, T08.2, T08.3, T08.4, T11.1</li></ul>
+
+<table>
+<tr><th>Sample</th><td>none-empty-chamber</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td> (proto , build )</td>
+    <th>Config</th><td><code>ed3b4ba8e185</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.11</td>
+    <th>Software</th><td>lio 0.2.0, git <code>226efcf6de</code> (dirty)</td></tr>
+<tr><th>Results</th><td colspan="3">ERROR 38</td></tr>
+<tr><th>LED duty</th><td colspan="3">0.0 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T01.1">T01.1</a></td><td>Python and dependency versions</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T01.2">T01.2</a></td><td>Serial port discovery</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T01.3">T01.3</a></td><td>Configuration loads and is self-consistent</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T02.1">T02.1</a></td><td>Port open and boot banner</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T02.2">T02.2</a></td><td>PING round-trip latency</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T02.3">T02.3</a></td><td>INFO fields, versions and safety limits</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T02.4">T02.4</a></td><td>Robustness to bad input</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T02.5">T02.5</a></td><td>Sequence numbers and interleaved events</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T02.6">T02.6</a></td><td>RESET restores the boot state</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T03.1">T03.1</a></td><td>I2C scan finds the ADS1115</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T03.2">T03.2</a></td><td>Dark ADC noise, all inputs</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T03.3">T03.3</a></td><td>Gain sweep on dark inputs</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T03.4">T03.4</a></td><td>ADC data rate</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T03.5">T03.5</a></td><td>Long-term dark stability</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T04.1">T04.1</a></td><td>Shift-register patterns with CE low</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T04.2">T04.2</a></td><td>Shift-register loopback (optional jumper)</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T04.3">T04.3</a></td><td>Optical address verification</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T05.1">T05.1</a></td><td>Rail gating by CE1 / CE2</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T05.2">T05.2</a></td><td>Per-channel response</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T05.3">T05.3</a></td><td>Channel address and isolation</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T05.4">T05.4</a></td><td>Off-state return after each MEAS</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T05.5">T05.5</a></td><td>Repeatability (interleaved MEAS)</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T06.1">T06.1</a></td><td>OPT101</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T06.2">T06.2</a></td><td>InGaAs TIA</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T06.3">T06.3</a></td><td>Cross-calibration on the shared holes</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T07.1">T07.1</a></td><td>Step response and settling time</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T07.2">T07.2</a></td><td>Recommended settle time</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T07.3">T07.3</a></td><td>MEAS timing</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T08.1">T08.1</a></td><td>SWEEP completes with a valid schema</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T08.2">T08.2</a></td><td>Repeated sweeps</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T08.3">T08.3</a></td><td>Sweep agrees with MEAS</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T08.4">T08.4</a></td><td>CSV output format</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T10.1">T10.1</a></td><td>Power-up dark state</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T10.2">T10.2</a></td><td>On-time watchdog</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T10.3">T10.3</a></td><td>Comms-loss failsafe</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T10.4">T10.4</a></td><td>Single-channel invariant</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T10.5">T10.5</a></td><td>Motion disarmed after comms loss</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+<tr><td><a href="#T11.1">T11.1</a></td><td>Comparison with the baseline</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</td></tr>
+
+</table>
+
+
+
+
+<h2>T01</h2>
+
+<h3 id="T01.1">T01.1 Python and dependency versions <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T01.2">T01.2 Serial port discovery <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T01.3">T01.3 Configuration loads and is self-consistent <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+
+<h2>T02</h2>
+
+<h3 id="T02.1">T02.1 Port open and boot banner <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T02.2">T02.2 PING round-trip latency <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T02.3">T02.3 INFO fields, versions and safety limits <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T02.4">T02.4 Robustness to bad input <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T02.5">T02.5 Sequence numbers and interleaved events <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T02.6">T02.6 RESET restores the boot state <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+
+<h2>T03</h2>
+
+<h3 id="T03.1">T03.1 I2C scan finds the ADS1115 <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T03.2">T03.2 Dark ADC noise, all inputs <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T03.3">T03.3 Gain sweep on dark inputs <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T03.4">T03.4 ADC data rate <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T03.5">T03.5 Long-term dark stability <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+
+<h2>T04</h2>
+
+<h3 id="T04.1">T04.1 Shift-register patterns with CE low <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T04.2">T04.2 Shift-register loopback (optional jumper) <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T04.3">T04.3 Optical address verification <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+
+<h2>T05</h2>
+
+<h3 id="T05.1">T05.1 Rail gating by CE1 / CE2 <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T05.2">T05.2 Per-channel response <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T05.3">T05.3 Channel address and isolation <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T05.4">T05.4 Off-state return after each MEAS <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T05.5">T05.5 Repeatability (interleaved MEAS) <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+
+<h2>T06</h2>
+
+<h3 id="T06.1">T06.1 OPT101 <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T06.2">T06.2 InGaAs TIA <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T06.3">T06.3 Cross-calibration on the shared holes <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+
+<h2>T07</h2>
+
+<h3 id="T07.1">T07.1 Step response and settling time <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T07.2">T07.2 Recommended settle time <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T07.3">T07.3 MEAS timing <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+
+<h2>T08</h2>
+
+<h3 id="T08.1">T08.1 SWEEP completes with a valid schema <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T08.2">T08.2 Repeated sweeps <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T08.3">T08.3 Sweep agrees with MEAS <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T08.4">T08.4 CSV output format <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+
+<h2>T10</h2>
+
+<h3 id="T10.1">T10.1 Power-up dark state <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T10.2">T10.2 On-time watchdog <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T10.3">T10.3 Comms-loss failsafe <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T10.4">T10.4 Single-channel invariant <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+<h3 id="T10.5">T10.5 Motion disarmed after comms loss <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+
+<h2>T11</h2>
+
+<h3 id="T11.1">T11.1 Comparison with the baseline <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">TransportError: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured; could not restore the safe state afterwards: write failed on /dev/cu.usbmodem101: write failed: [Errno 6] Device not configured</p>
+
+
+
+</body>
+</html>

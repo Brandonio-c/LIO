@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 3114,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Pugan vegan White Tomato formula Cleansing Gel Niacinamide NIACINAMIDE NIACINAMIDE WATER SOLANUM LYCOPERSICUM"
+      ],
+      "active_ingredient": [
+        "Niacinamide"
+      ],
+      "inactive_ingredient": [
+        "Water Sodium C14-16 Olefin Sulfonate Glycerin Lauryl Hydroxysultaine Coco-Betaine Cocamidopropyl Betaine Solanum Lycopersicum (Tomato) Fruit Extract Sodium Citrate Panthenol Sodium Chloride Glyceryl Caprylate Disodium EDTA Citric Acid Allantoin Polyquaternium-10 Decylene Glycol Dipropylene Glycol Caprylyl Glycol Hydroxyacetophenone 1,2-Hexanediol Lactic Acid Sodium Hyaluronate Caprylic/Capric Triglyceride Hydrogenated Lecithin Ceramide NP Ethylhexylglycerin Fragrance"
+      ],
+      "purpose": [
+        "skin protect"
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP OUT OF REACH OF THE CHILDREN"
+      ],
+      "indications_and_usage": [
+        "When washing the face, take an appropriate amount and foam, then gently cleanse as if massaging and rinse thoroughly."
+      ],
+      "warnings": [
+        "abno rmal symptoms or side effects on the application area due to direct sunlight during or af ter cosmetic use, consult with a specialist. 2) Refrain from using on areas with wounds or injuries. 3 ) Storage and Handling Precautio ns a) Store in a place inacces sible to children. b) Store away from di rect sunlight."
+      ],
+      "dosage_and_administration": [
+        "topical use only"
+      ],
+      "recent_major_changes": [
+        ""
+      ],
+      "package_label_principal_display_panel": [
+        "1"
+      ],
+      "set_id": "0fbc61a2-88ef-08db-e063-6394a90a5b1e",
+      "id": "0fbc4837-0718-d3f5-e063-6294a90a3e44",
+      "effective_time": "20240124",
+      "version": "1",
+      "openfda": {
+        "brand_name": [
+          "Pugan vegan White Tomato formula Cleansing Gel"
+        ],
+        "generic_name": [
+          "NIACINAMIDE"
+        ],
+        "manufacturer_name": [
+          "LAON COMMERCE co ltd"
+        ],
+        "product_ndc": [
+          "82083-0029"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "NIACINAMIDE"
+        ],
+        "spl_id": [
+          "0fbc4837-0718-d3f5-e063-6294a90a3e44"
+        ],
+        "spl_set_id": [
+          "0fbc61a2-88ef-08db-e063-6394a90a5b1e"
+        ],
+        "package_ndc": [
+          "82083-0029-1"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "8809713362021"
+        ],
+        "unii": [
+          "25X51I8RD4"
+        ]
+      }
+    }
+  ]
+}

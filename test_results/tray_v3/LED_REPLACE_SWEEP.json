@@ -1,0 +1,362 @@
+{
+  "at": "2026-11-21T15:36:19-05:00",
+  "note": "Full MEAS sweep after pots ~50 mA both rails; classify LED replace list",
+  "settle_ms": 40,
+  "n": 8,
+  "reps": 3,
+  "holes": [
+    {
+      "hole": 1,
+      "label": "395",
+      "rail": "A",
+      "opt_net": 59,
+      "opt_mv": 7.38,
+      "ing_net": 7,
+      "ing_mv": 0.88,
+      "flags": [
+        "OPT_WEAK"
+      ],
+      "verdict": "REPLACE",
+      "reason": "OPT101 very weak for a visible LED",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 2,
+      "label": "405",
+      "rail": "A",
+      "opt_net": 73,
+      "opt_mv": 9.12,
+      "ing_net": 1,
+      "ing_mv": 0.12,
+      "flags": [
+        "OPT_WEAK"
+      ],
+      "verdict": "REPLACE",
+      "reason": "OPT101 very weak for a visible LED",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 3,
+      "label": "blue",
+      "rail": "A",
+      "opt_net": 0,
+      "opt_mv": 0.0,
+      "ing_net": 2,
+      "ing_mv": 0.25,
+      "flags": [
+        "OPT_DEAD"
+      ],
+      "verdict": "REPLACE",
+      "reason": "no OPT101 return (open/dead LED likely)",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 4,
+      "label": "green",
+      "rail": "A",
+      "opt_net": 13,
+      "opt_mv": 1.62,
+      "ing_net": 3,
+      "ing_mv": 0.38,
+      "flags": [
+        "OPT_DEAD"
+      ],
+      "verdict": "REPLACE",
+      "reason": "no OPT101 return (open/dead LED likely)",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 5,
+      "label": "yellow",
+      "rail": "A",
+      "opt_net": 6,
+      "opt_mv": 0.75,
+      "ing_net": -4,
+      "ing_mv": -0.5,
+      "flags": [
+        "OPT_DEAD"
+      ],
+      "verdict": "REPLACE",
+      "reason": "no OPT101 return (open/dead LED likely)",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 6,
+      "label": "orange",
+      "rail": "A",
+      "opt_net": 12,
+      "opt_mv": 1.5,
+      "ing_net": -1,
+      "ing_mv": -0.12,
+      "flags": [
+        "OPT_DEAD"
+      ],
+      "verdict": "REPLACE",
+      "reason": "no OPT101 return (open/dead LED likely)",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 7,
+      "label": "red",
+      "rail": "A",
+      "opt_net": 0,
+      "opt_mv": 0.0,
+      "ing_net": 4,
+      "ing_mv": 0.5,
+      "flags": [
+        "OPT_DEAD"
+      ],
+      "verdict": "REPLACE",
+      "reason": "no OPT101 return (open/dead LED likely)",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 8,
+      "label": "850",
+      "rail": "A",
+      "opt_net": 19,
+      "opt_mv": 2.38,
+      "ing_net": 8,
+      "ing_mv": 1.0,
+      "flags": [
+        "OPT_DEAD",
+        "ING_DEAD"
+      ],
+      "verdict": "REPLACE",
+      "reason": "IR LED looks dead on both detectors",
+      "expect": {
+        "opt101": "signal",
+        "ingaas": "signal"
+      }
+    },
+    {
+      "hole": 9,
+      "label": "940",
+      "rail": "B",
+      "opt_net": 124,
+      "opt_mv": 15.5,
+      "ing_net": -5,
+      "ing_mv": -0.62,
+      "flags": [
+        "OPT_WEAK",
+        "ING_DEAD"
+      ],
+      "verdict": "REPLACE",
+      "reason": "marginal \u2014 replace if you have a spare",
+      "expect": {
+        "opt101": "signal",
+        "ingaas": "signal"
+      }
+    },
+    {
+      "hole": 10,
+      "label": "white",
+      "rail": "B",
+      "opt_net": 1,
+      "opt_mv": 0.12,
+      "ing_net": 1,
+      "ing_mv": 0.12,
+      "flags": [
+        "OPT_DEAD"
+      ],
+      "verdict": "REPLACE",
+      "reason": "no OPT101 return (open/dead LED likely)",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 11,
+      "label": "pink",
+      "rail": "B",
+      "opt_net": 76,
+      "opt_mv": 9.5,
+      "ing_net": 9,
+      "ing_mv": 1.12,
+      "flags": [
+        "OPT_WEAK"
+      ],
+      "verdict": "REPLACE",
+      "reason": "OPT101 very weak for a visible LED",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 12,
+      "label": "1450",
+      "rail": "B",
+      "opt_net": 22,
+      "opt_mv": 2.75,
+      "ing_net": -6,
+      "ing_mv": -0.75,
+      "flags": [
+        "ING_DEAD"
+      ],
+      "verdict": "SUSPECT",
+      "reason": "SWIR weak \u2014 could be aim/InGaAs; defer until visibles fixed",
+      "expect": {
+        "ingaas": "signal"
+      }
+    },
+    {
+      "hole": 13,
+      "label": "1550",
+      "rail": "B",
+      "opt_net": 15,
+      "opt_mv": 1.88,
+      "ing_net": -7,
+      "ing_mv": -0.88,
+      "flags": [
+        "ING_DEAD"
+      ],
+      "verdict": "SUSPECT",
+      "reason": "SWIR weak \u2014 could be aim/InGaAs; defer until visibles fixed",
+      "expect": {
+        "ingaas": "signal"
+      }
+    },
+    {
+      "hole": 14,
+      "label": "1650",
+      "rail": "B",
+      "opt_net": 20,
+      "opt_mv": 2.5,
+      "ing_net": -1,
+      "ing_mv": -0.12,
+      "flags": [
+        "ING_DEAD"
+      ],
+      "verdict": "SUSPECT",
+      "reason": "SWIR weak \u2014 could be aim/InGaAs; defer until visibles fixed",
+      "expect": {
+        "ingaas": "signal"
+      }
+    },
+    {
+      "hole": 15,
+      "label": "1760",
+      "rail": "B",
+      "opt_net": 20,
+      "opt_mv": 2.5,
+      "ing_net": -28,
+      "ing_mv": -3.5,
+      "flags": [
+        "ING_DEAD"
+      ],
+      "verdict": "SUSPECT",
+      "reason": "SWIR weak \u2014 could be aim/InGaAs; defer until visibles fixed",
+      "expect": {
+        "ingaas": "weak"
+      }
+    },
+    {
+      "hole": 16,
+      "label": "1850",
+      "rail": "B",
+      "opt_net": 319,
+      "opt_mv": 39.88,
+      "ing_net": 23,
+      "ing_mv": 2.88,
+      "flags": [
+        "UNEXPECTED_SIGNAL"
+      ],
+      "verdict": "OK",
+      "reason": "",
+      "expect": {}
+    }
+  ],
+  "replace": [
+    {
+      "hole": 1,
+      "label": "395",
+      "reason": "OPT101 very weak for a visible LED"
+    },
+    {
+      "hole": 2,
+      "label": "405",
+      "reason": "OPT101 very weak for a visible LED"
+    },
+    {
+      "hole": 3,
+      "label": "blue",
+      "reason": "no OPT101 return (open/dead LED likely)"
+    },
+    {
+      "hole": 4,
+      "label": "green",
+      "reason": "no OPT101 return (open/dead LED likely)"
+    },
+    {
+      "hole": 5,
+      "label": "yellow",
+      "reason": "no OPT101 return (open/dead LED likely)"
+    },
+    {
+      "hole": 6,
+      "label": "orange",
+      "reason": "no OPT101 return (open/dead LED likely)"
+    },
+    {
+      "hole": 7,
+      "label": "red",
+      "reason": "no OPT101 return (open/dead LED likely)"
+    },
+    {
+      "hole": 8,
+      "label": "850",
+      "reason": "IR LED looks dead on both detectors"
+    },
+    {
+      "hole": 9,
+      "label": "940",
+      "reason": "marginal \u2014 replace if you have a spare"
+    },
+    {
+      "hole": 10,
+      "label": "white",
+      "reason": "no OPT101 return (open/dead LED likely)"
+    },
+    {
+      "hole": 11,
+      "label": "pink",
+      "reason": "OPT101 very weak for a visible LED"
+    }
+  ],
+  "suspect": [
+    {
+      "hole": 12,
+      "label": "1450",
+      "reason": "SWIR weak \u2014 could be aim/InGaAs; defer until visibles fixed"
+    },
+    {
+      "hole": 13,
+      "label": "1550",
+      "reason": "SWIR weak \u2014 could be aim/InGaAs; defer until visibles fixed"
+    },
+    {
+      "hole": 14,
+      "label": "1650",
+      "reason": "SWIR weak \u2014 could be aim/InGaAs; defer until visibles fixed"
+    },
+    {
+      "hole": 15,
+      "label": "1760",
+      "reason": "SWIR weak \u2014 could be aim/InGaAs; defer until visibles fixed"
+    }
+  ]
+}

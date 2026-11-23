@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="47e362c2-c357-adbe-e063-6294a90a6043"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <effectiveTime value="20260108"/>
+   <setId root="60cbd3aa-9ad7-24e4-e053-2a91aa0ab05f"/>
+   <versionNumber value="3"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="078656000"/>
+            <name>The Podiatree Company</name>
+            <assignedEntity>
+               <assignedOrganization/>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="47e3e717-101b-6d4a-e063-6394a90a92f4"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20260108"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="54633-017" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Fortinia OF</name>
+                        <formCode code="C42986" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="SOLUTION"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>clotrimazole 1%</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6DC9Q167V3" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPYLENE GLYCOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3K9958V90M" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="1"/>
+                              <denominator unit="mL" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="G07GZ97H65" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CLOTRIMAZOLE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="G07GZ97H65" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>CLOTRIMAZOLE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="29.57" unit="mL"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="54633-017-01" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43172" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE, GLASS"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20170705"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M005" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20170705"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="L717f7c28-e040-42b7-9f47-dc746c2e77a0">
+               <id root="60cba334-786c-24e8-e053-2a91aa0a72e2"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>Active Ingredient</title>
+               <text>
+                  <paragraph>Clotrimazole 1%</paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Le978e1be-bb21-4002-be60-71b3388609fb">
+               <id root="60cba334-786d-24e8-e053-2a91aa0a72e2"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>Purpose</title>
+               <text>
+                  <paragraph>Antifungal</paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L529ec204-7462-4929-855c-62b9d5717703">
+               <id root="60cba334-7874-24e8-e053-2a91aa0a72e2"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>Uses</title>
+               <text>
+                  <paragraph>• cures most athlete’s foot infections and ringworm infections
+  <br/>
+                     <br/>
+• relieves itching, burning, cracking, scaling and discomfort which accompany these conditions
+  <br/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L5550ad57-70c0-480d-9f58-b66fd1ea5d39">
+               <id root="60cba334-7875-24e8-e053-2a91aa0a72e2"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>Warnings
+ <br/>
+               </title>
+               <text>
+                  <paragraph>For external use only</paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_60cb9e21-d4b6-210d-e053-2a91aa0ace8b">
+               <id root="60cb9e21-d4b7-210d-e053-2a91aa0ace8b"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>Flammable</title>
+               <text>
+                  <paragraph>Do not use near heat or ame, or while smoking. Cap tightly and store at room temperature away from heat.</paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L631f8ae0-e667-4abd-aa2c-a3e150491333">
+               <id root="60cb9e21-d4b3-210d-e053-2a91aa0ace8b"/>
+               <code code="50570-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - DO NOT USE SECTION"/>
+               <title>Do not use</title>
+               <text>
+                  <paragraph>on children under 2 years of age unless directed by a doctor.
+  <br/>
+                     <br/>
+                     <br/>
+                     <br/>
+When using this product, avoid contact with eyes. If contact occurs, rinse eyes thoroughly with water.
+ </paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L3d49a745-d606-4e90-b9e3-e57e91d8c988">
+               <id root="60cb9e21-d4b8-210d-e053-2a91aa0ace8b"/>
+               <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+               <title>Stop use and ask a doctor or pharmacist if</title>
+               <text>
+                  <paragraph>• irritation occurs
+  <br/>
+                     <br/>
+• there is no improvement within 4 weeks
+ </paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lf1791d11-62dd-43f1-9cc6-f1ea9bcbb712">
+               <id root="60cb9e21-d4b9-210d-e053-2a91aa0ace8b"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <title>KEEP OUT OF REACH OF CHILDREN.</title>
+               <text>
+                  <paragraph>In case of accidental ingestion, seek medical help or contact a Poison Control Center immediately.</paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="La3c733d6-545c-44de-9795-8e4a51f67cae">
+               <id root="60cb9e21-d4ba-210d-e053-2a91aa0ace8b"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>Directions</title>
+               <text>
+                  <paragraph>• wash affected area and dry thoroughly
+  <br/>
+                     <br/>
+• apply one drop to the affected area twice daily (morning and night) or as directed by your doctor
+  <br/>
+                     <br/>
+• using a disposable cotton swab, spread a thin layer over the affected area
+  <br/>
+                     <br/>
+• discard cotton swab
+  <br/>
+                     <br/>
+• supervise children in the use of this product
+  <br/>
+                     <br/>
+• for athlete’s foot: pay special attention to spaces between toes; wear well-fitting, ventilated shoes and change shoes and socks at least once daily
+  <br/>
+                     <br/>
+• for athlete’s foot and ringworm infections, use daily for 4 weeks
+  <br/>
+                     <br/>
+• this product is not effective on scalp or nails
+  <br/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lca0b4ec5-c8e3-4385-87ef-ea37b92db5e0">
+               <id root="60cb9e21-d4bb-210d-e053-2a91aa0ace8b"/>
+               <code code="60561-8" codeSystem="2.16.840.1.113883.6.1" displayName="OTHER SAFETY INFORMATION"/>
+               <title>Other Information</title>
+               <text>
+                  <paragraph>Store at controlled room temperature.</paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="La426c429-585c-4a52-9b3f-58651b6a8f39">
+               <id root="60cb9cd7-9874-cadb-e053-2991aa0aaa9e"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>Inactive Ingredients</title>
+               <text>
+                  <paragraph>Ethyl Alcohol (79%), Propylene Glycol</paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L0abf1902-9027-4174-a1e4-8127ed3f63e0">
+               <id root="60cbb965-0f0a-442a-e053-2a91aa0aa7bf"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>Questions or Suggestions?</title>
+               <text>
+                  <paragraph>1.855.763.8733 or visit us at www.thepodiatreecompany.com</paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L3388aacc-a3b4-4843-b41d-41663ef11046">
+               <id root="60cbe11b-eef7-448a-e053-2991aa0a2d09"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>PRINCIPAL DISPLAY PANEL</title>
+               <text>
+                  <paragraph/>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_60cbded5-6982-0bdd-e053-2a91aa0a3470"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20170705"/>
+               <component>
+                  <observationMedia ID="img_60cbded5-6982-0bdd-e053-2a91aa0a3470">
+                     <text>label</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="fortinia OF solution 5-2017_r2.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

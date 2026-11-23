@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 9379,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "QC Anti Dandruff T Plus Coal Tar SODIUM LAURETH SULFATE BUTYL ACRYLATE/METHYL METHACRYLATE/METHACRYLIC ACID COPOLYMER (18000 MW) COCAMIDE DEA SODIUM BENZOATE WATER TRIDECETH-12 PHENOXYETHANOL CITRIC ACID PEG-40 HYDROGENATED CASTOR OIL EDETATE DISODIUM CI 17200 CARBON BLACK SODIUM CHLORIDE PEG-150 DISTEARATE SODIUM LAURYL SULFATE ALCOHOL CI 19140 GUAR HYDROXYPROPYLTRIMONIUM CHLORIDE QUATERNIUM-16 GLYCERIN COCAMIDOPROPYL BETAINE COAL TAR COAL TAR"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts"
+      ],
+      "active_ingredient": [
+        "Active ingredient Coal tar 0.5% (2% solubilized coal tar extract)"
+      ],
+      "purpose": [
+        "Purposes Antidandruff, Seborrhic dematitis, Psoriasis"
+      ],
+      "indications_and_usage": [
+        "Uses Controls the symptoms of dandruf seborrheic dermatitis psoriasis"
+      ],
+      "warnings": [
+        "Warnings For external use only Do not use for prolonged periods without consulting a doctor this product with other forms of psoriasis therapy such as ultraviolet radiation or prescription drugs unless directed to do so by a doctor Ask a doctor before use if you have a condition that covers a large area of the body When using this product avoid contact with the eyes. If contact occurs, rinse eyes thoroughly with water use caution in exposing skin to sunlight after applying this product. It may increase your tendency to sunburn for up to 24 hours after application Stop use and ask a doctor if condition worsens or does not improve after regular use of this product as directed Keep out of reach of children If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "do_not_use": [
+        "Do not use for prolonged periods without consulting a doctor this product with other forms of psoriasis therapy such as ultraviolet radiation or prescription drugs unless directed to do so by a doctor"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor before use if you have a condition that covers a large area of the body"
+      ],
+      "when_using": [
+        "When using this product avoid contact with the eyes. If contact occurs, rinse eyes thoroughly with water use caution in exposing skin to sunlight after applying this product. It may increase your tendency to sunburn for up to 24 hours after application"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if condition worsens or does not improve after regular use of this product as directed"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions wet hair thoroughly massage shampoo into your scalp lather, leaving on your hair and scalp for a few minutes rinse and repeat for best results use at least twice a week or as directed by a doctor"
+      ],
+      "other_safety_information": [
+        "Other information store away from direct sunlight, excessive heat, and freezing conditions"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingedients water, sodium laureth sulfate, cocamidopropyl betaine, acrylates copolymer, cocamide DEA, sodium lauryl sulfate, alcohol, silicone quaternium-16, PEG-150 distearate, fragrance, trideceth-12, phenoxyethanol, sodium chloride, sodium benzoate, guar hydroxypropyltrimonium chloride, citric acid, glycerin, PEG-40 hydrogenated castor oil, disodium EDTA, CI 19140, CI 17200, carbon black"
+      ],
+      "questions": [
+        "Questions? +1-800-935-2362 You may also report serious side effects to this phone number. Monday-Friday 9AM-5PM EST"
+      ],
+      "package_label_principal_display_panel": [
+        "16 oz shampoo",
+        "8 oz Shampoo"
+      ],
+      "set_id": "2c7630ab-b7fa-462c-e063-6394a90a30bb",
+      "id": "2c760cbd-b88a-df5a-e063-6394a90a5d1a",
+      "effective_time": "20250124",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M032"
+        ],
+        "brand_name": [
+          "QC Anti Dandruff T Plus"
+        ],
+        "generic_name": [
+          "COAL TAR"
+        ],
+        "manufacturer_name": [
+          "Guangzhou Danting Bath&Body Care Industry Co. Ltd."
+        ],
+        "product_ndc": [
+          "75376-286"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "COAL TAR"
+        ],
+        "rxcui": [
+          "309381"
+        ],
+        "spl_id": [
+          "2c760cbd-b88a-df5a-e063-6394a90a5d1a"
+        ],
+        "spl_set_id": [
+          "2c7630ab-b7fa-462c-e063-6394a90a30bb"
+        ],
+        "package_ndc": [
+          "75376-286-08",
+          "75376-286-16"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0635515999824",
+          "0635515992566"
+        ],
+        "unii": [
+          "R533ESO2EC"
+        ]
+      }
+    }
+  ]
+}

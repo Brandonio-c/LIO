@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261116-124222_sim</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261116-124222_sim</code> on <code>sim</code>
+,
+2026-11-16T12:42:22-05:00 to 2026-11-16T12:42:23-05:00</p>
+<div class="verdict" style="background: #0ca30c">FUNCTIONAL</div>
+<ul><li>no failures or warnings</li></ul>
+
+<table>
+<tr><th>Sample</th><td>none-empty-chamber</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td>2.4.0 (proto 1, build 2026-11-03)</td>
+    <th>Config</th><td><code>c3d525e8d31a</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.11</td>
+    <th>Software</th><td>lio 0.2.0, git <code>d6cf0b7dff</code> (dirty)</td></tr>
+<tr><th>Results</th><td colspan="3">PASS 4, SKIP 2</td></tr>
+<tr><th>LED duty</th><td colspan="3">0.0 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T09.1">T09.1</a></td><td>Motion arming</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T09.2">T09.2</a></td><td>Each motor moves both ways</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T09.3">T09.3</a></td><td>MOTOR STOP latency</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T09.4">T09.4</a></td><td>Detector noise while a motor moves</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T09.6">T09.6</a></td><td>Full travel, both motors in lockstep</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>travel not measured: mark the top and bottom (Motors tab, or lio stage set-top / mark-bottom), or set thresholds.motion.travel.range_steps</td></tr>
+
+<tr><td><a href="#T09.7">T09.7</a></td><td>Detectors while the chamber moves</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>travel not measured: mark the top and bottom (Motors tab, or lio stage set-top / mark-bottom), or set thresholds.motion.travel.range_steps</td></tr>
+
+</table>
+
+
+
+
+<h2>T09</h2>
+
+<h3 id="T09.1">T09.1 Motion arming <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>5 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>MOTOR STEP without ARM is refused<br><code>T09.1/unarmed</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@4 ERR MOTOR code=3 msg=not armed</td><td>ERR code=3 (not armed)</td></tr>
+
+<tr><td>ARM with the wrong token is refused<br><code>T09.1/wrong_token</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@6 ERR MOTOR code=3 msg=wrong token</td><td>ERR code=3</td></tr>
+
+<tr><td>ARM with the INFO token<br><code>T09.1/armed</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>armed=1 armed_ms=59996</td><td>armed=1, armed_ms &lt;= 60000</td></tr>
+
+<tr><td>Arming expires after 60 s<br><code>T09.1/expired</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>armed=0 failsafe_trips=0</td><td>armed=0 without a failsafe</td></tr>
+
+<tr><td>MOTOR STEP after expiry is refused<br><code>T09.1/after_expiry</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@42 ERR MOTOR code=3 msg=not armed</td><td>ERR code=3 (not armed)</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T09.2">T09.2 Each motor moves both ways <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>10 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Motor 1 +64 half-steps completes<br><code>T09.2/1/plus</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># MOTOR m=1 steps=64 pos=64 done</td><td>&#39;# MOTOR m=1 steps=64 ... done&#39;</td></tr>
+
+<tr><td>Operator saw motor 1 (LEFT) move up<br><code>T09.2/1/up</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>confirmed</td><td>+steps = up (legacy U direction)</td></tr>
+
+<tr><td>Motor 1 -64 half-steps completes<br><code>T09.2/1/minus</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># MOTOR m=1 steps=64 pos=0 done</td><td>&#39;# MOTOR m=1 steps=64 ... done&#39;</td></tr>
+
+<tr><td>Operator saw motor 1 (LEFT) move back down<br><code>T09.2/1/down</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>confirmed</td><td>returned</td></tr>
+
+<tr><td>Motor 1 idle, coils released, back at start<br><code>T09.2/1/released</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>motor1=idle pos1=0</td><td>idle, pos1=0</td></tr>
+
+<tr><td>Motor 2 +64 half-steps completes<br><code>T09.2/2/plus</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># MOTOR m=2 steps=64 pos=64 done</td><td>&#39;# MOTOR m=2 steps=64 ... done&#39;</td></tr>
+
+<tr><td>Operator saw motor 2 (RIGHT) move up<br><code>T09.2/2/up</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>confirmed</td><td>+steps = up (legacy U direction)</td></tr>
+
+<tr><td>Motor 2 -64 half-steps completes<br><code>T09.2/2/minus</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># MOTOR m=2 steps=64 pos=0 done</td><td>&#39;# MOTOR m=2 steps=64 ... done&#39;</td></tr>
+
+<tr><td>Operator saw motor 2 (RIGHT) move back down<br><code>T09.2/2/down</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>confirmed</td><td>returned</td></tr>
+
+<tr><td>Motor 2 idle, coils released, back at start<br><code>T09.2/2/released</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>motor2=idle pos2=0</td><td>idle, pos2=0</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T09.3">T09.3 MOTOR STOP latency <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>MOTOR STOP answered<br><code>T09.3/latency</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>4.9 ms</td><td>&lt; 50 ms</td></tr>
+
+<tr><td>Motor stopped and stays stopped<br><code>T09.3/stopped</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>moved 32 of 2048 half-steps; motor1=idle</td><td>idle, position frozen, move cut short</td></tr>
+
+<tr><td>Motor 1 returned to the start<br><code>T09.3/returned</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># MOTOR m=1 steps=32 pos=0 done</td><td>pos1=0</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T09.4">T09.4 Detector noise while a motor moves <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Streams taken while the motor was moving<br><code>T09.4/during</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>motor still running after both streams</td><td>motor1=run</td></tr>
+
+<tr><td>ingaas noise during motion<br><code>T09.4/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sigma 4.34 moving vs 3.46 at rest (x1.25)</td><td>ratio &lt;= 3</td></tr>
+
+<tr><td>opt101 noise during motion<br><code>T09.4/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sigma 3.04 moving vs 2.98 at rest (x1.02)</td><td>ratio &lt;= 3</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T09.6">T09.6 Full travel, both motors in lockstep <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">travel not measured: mark the top and bottom (Motors tab, or lio stage set-top / mark-bottom), or set thresholds.motion.travel.range_steps</p>
+
+
+<h3 id="T09.7">T09.7 Detectors while the chamber moves <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">travel not measured: mark the top and bottom (Motors tab, or lio stage set-top / mark-bottom), or set thresholds.motion.travel.range_steps</p>
+
+
+
+</body>
+</html>

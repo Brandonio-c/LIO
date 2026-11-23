@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 605,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Sinus Relief, Caseys 4good acetaminophen, guaifenesin, phenylephrine hcl caplet, film-coated CROSPOVIDONE SODIUM STARCH GLYCOLATE TYPE A POTATO TALC TITANIUM DIOXIDE POLYVINYL ALCOHOL, UNSPECIFIED POLYETHYLENE GLYCOL, UNSPECIFIED STARCH, CORN MAGNESIUM STEARATE ACETAMINOPHEN ACETAMINOPHEN POVIDONE, UNSPECIFIED SILICON DIOXIDE GUAIFENESIN GUAIFENESIN PHENYLEPHRINE HYDROCHLORIDE PHENYLEPHRINE MALTODEXTRIN CELLULOSE, MICROCRYSTALLINE STEARIC ACID SUCRALOSE 44;527"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts ​Drug Facts",
+        "Other information Other information store at 25°C (77°F); excursions permitted between 15°-30°C (59°-86°F) see end flap for expiration date and lot number"
+      ],
+      "active_ingredient": [
+        "Active ingredient Active ingredients (in each caplet) Acetaminophen 325 mg. Guaifenesin 200 mg Phenylephrine HCl 5 mg"
+      ],
+      "purpose": [
+        "Purpose Purpose Pain reliever/fever reducer Expectorant Nasal decongestant"
+      ],
+      "indications_and_usage": [
+        "Uses Uses temporarily relieves these symptoms associated with hay fever or other respiratory allergies, and the common cold: headache nasal congestion minor aches and pains sinus congestion and pressure helps loosen phlegm (mucus) and thin bronchial secretions to make coughs more productive temporarily reduces fever"
+      ],
+      "recent_major_changes": [
+        ""
+      ],
+      "warnings": [
+        "Warnings ​Warnings Liver warning Liver warning: This product contains acetaminophen. Severe liver damage may occur if you take more than 4,000 mg of acetaminophen in 24 hours with other drugs containing acetaminophen 3 or more alcoholic drinks every day while using this product Allergy alert Allergy alert: Acetaminophen may cause severe skin reactions. Symptoms may include: blisters rash skin reddening If a skin reaction occurs, stop use and seek medical help right away. Do not use Do not use with any other drug containing acetaminophen (prescription or nonprescription). If you are not sure whether a drug contains acetaminophen, ask a doctor or pharmacist. if you are now taking a prescription monoamine oxidase inhibitor (MAOI) (certain drugs for depression, psychiatric or emotional conditions, or Parkinson’s disease), or for 2 weeks after stopping the MAOI drug. If you do not know if your prescription drug contains an MAOI, ask a doctor or pharmacist before taking this product. if you have ever had an allergic reaction to this product or any of its ingredients Ask a doctor before use if you have Ask a doctor before use if you have cough that occurs with too much phlegm (mucus) persistent or chronic cough such as occurs with smoking, asthma, chronic bronchitis, or emphysema heart disease thyroid disease diabetes liver disease high blood pressure difficulty in urination due to enlargement of the prostate gland Ask a doctor or pharmacist before use if you are Ask a doctor or pharmacist before use if you are taking the blood thinning drug warfarin. ​When using this product When using this product do not exceed recommended dosage. Stop use and ask a doctor if Stop use and ask a doctor if nervousness, dizziness, or sleeplessness occur pain, nasal congestion, or cough gets worse or lasts more than 7 days fever gets worse or lasts more than 3 days redness or swelling is present new symptoms occur cough comes back or occurs with rash or headache that lasts. These could be signs of a serious condition. If pregnant or breast-feeding If pregnant or breast-feeding, ask a health professional before use. Keep out of reach of children. Keep out of reach of children. In case of accidental overdose, get medical help or contact a Poison Control Center right away. Prompt medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms."
+      ],
+      "do_not_use": [
+        "Do not use Do not use with any other drug containing acetaminophen (prescription or nonprescription). If you are not sure whether a drug contains acetaminophen, ask a doctor or pharmacist. if you are now taking a prescription monoamine oxidase inhibitor (MAOI) (certain drugs for depression, psychiatric or emotional conditions, or Parkinson’s disease), or for 2 weeks after stopping the MAOI drug. If you do not know if your prescription drug contains an MAOI, ask a doctor or pharmacist before taking this product. if you have ever had an allergic reaction to this product or any of its ingredients"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have Ask a doctor before use if you have cough that occurs with too much phlegm (mucus) persistent or chronic cough such as occurs with smoking, asthma, chronic bronchitis, or emphysema heart disease thyroid disease diabetes liver disease high blood pressure difficulty in urination due to enlargement of the prostate gland"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor or pharmacist before use if you are Ask a doctor or pharmacist before use if you are taking the blood thinning drug warfarin."
+      ],
+      "when_using": [
+        "​When using this product When using this product do not exceed recommended dosage."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if Stop use and ask a doctor if nervousness, dizziness, or sleeplessness occur pain, nasal congestion, or cough gets worse or lasts more than 7 days fever gets worse or lasts more than 3 days redness or swelling is present new symptoms occur cough comes back or occurs with rash or headache that lasts. These could be signs of a serious condition."
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. Keep out of reach of children. In case of accidental overdose, get medical help or contact a Poison Control Center right away. Prompt medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms."
+      ],
+      "dosage_and_administration": [
+        "Directions Directions do not take more than directed adults and children 12 years and over take 2 caplets every 4 hours swallow whole - do not crush, chew, or dissolve do not take more than 10 caplets in 24 hours children under 12 years: ask a doctor"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Inactive ingredients corn starch, crospovidone, flavor, magnesium stearate, maltodextrin, microcrystalline cellulose, polyethylene glycol,polyvinyl alcohol, povidone, silicon dioxide, sodium starch glycolate, stearic acid, sucralose, talc, titanium dioxide"
+      ],
+      "questions": [
+        "Questions or comments Questions or comments? 1-877-507-6516 (M-F 8AM-4:30PM CST)"
+      ],
+      "package_label_principal_display_panel": [
+        "Sinus Relief 6ct, Casey's 4good TM Compare to the active ingredients in Tylenol ® Sinus Severe* MULTI-SYMPTOM Sinus Relief Acetaminophen Pain Reliever Guaifenesin Expectorant Phenylephrine HCl Nasal Decongestant Non-Drowsy Relief of: Chest Congestion Nasal Congestion Sinus Pressure [Casey's 4good TM logo] [caplet image] actual size 6 CAPLETS PDP/Package"
+      ],
+      "set_id": "033837c0-fa68-a38d-e063-6394a90a9832",
+      "id": "2969d0ce-b0d9-7011-e063-6394a90a01b9",
+      "effective_time": "20241216",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M012"
+        ],
+        "brand_name": [
+          "Sinus Relief, Caseys 4good"
+        ],
+        "generic_name": [
+          "ACETAMINOPHEN, GUAIFENESIN, PHENYLEPHRINE HCL CAPLET, FILM-COATED"
+        ],
+        "manufacturer_name": [
+          "Lil' Drug Store Products, Inc."
+        ],
+        "product_ndc": [
+          "66715-6332"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "ACETAMINOPHEN",
+          "GUAIFENESIN",
+          "PHENYLEPHRINE HYDROCHLORIDE"
+        ],
+        "rxcui": [
+          "1243679"
+        ],
+        "spl_id": [
+          "2969d0ce-b0d9-7011-e063-6394a90a01b9"
+        ],
+        "spl_set_id": [
+          "033837c0-fa68-a38d-e063-6394a90a9832"
+        ],
+        "package_ndc": [
+          "66715-6332-3"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000193956",
+          "N0000008867",
+          "N0000009560"
+        ],
+        "pharm_class_epc": [
+          "Expectorant [EPC]"
+        ],
+        "pharm_class_pe": [
+          "Decreased Respiratory Secretion Viscosity [PE]",
+          "Increased Respiratory Secretions [PE]"
+        ],
+        "unii": [
+          "362O9ITL9D",
+          "495W7451VQ",
+          "04JA59TNSJ"
+        ]
+      }
+    }
+  ]
+}

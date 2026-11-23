@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 2491,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Sheer Mineral Sunscreen Broad Spectrum SPF 30 Zinc Oxide WATER POLYGLYCERYL-3 POLYDIMETHYLSILOXYETHYL DIMETHICONE (4000 MPA.S) TRIETHOXYSILYLETHYL POLYDIMETHYLSILOXYETHYL HEXYL DIMETHICONE LECITHIN, SOYBEAN ARABIDOPSIS THALIANA BUTYLENE GLYCOL SORBITAN MONOSTEARATE DIMETHICONE MEDIUM-CHAIN TRIGLYCERIDES ASCORBYL PALMITATE CYCLOMETHICONE 6 DATE POLYGONUM AVICULARE TOP TEPRENONE POLYACRYLAMIDE (CROSSLINKED; 2 MOLE PERCENT BISACRYLAMIDE) CARBOMER HOMOPOLYMER, UNSPECIFIED TYPE POLYETHYLENE GLYCOL 400 CETYL ALCOHOL PEG-100 STEARATE TOCOPHEROL .ALPHA.-TOCOPHEROL ACETATE, DL- IMPERATA CYLINDRICA ROOT LAURETH-7 CITRIC ACID MONOHYDRATE SODIUM LACTATE, L- CAPRYLYL GLYCOL CYCLOMETHICONE 5 ZINC OXIDE ZINC OXIDE GLYCERYL MONOSTEARATE LINOLEIC ACID ETHYLHEXYLGLYCERIN EDETATE DISODIUM ANHYDROUS GLYCYRRHIZINATE DIPOTASSIUM MICROCOCCUS LUTEUS C13-14 ISOPARAFFIN PHENOXYETHANOL HEXYLENE GLYCOL XANTHAN GUM GLYCERIN ASCORBIC ACID"
+      ],
+      "active_ingredient": [
+        "Active Ingredients: Zinc Oxide 18.6%"
+      ],
+      "purpose": [
+        "Purpose: Sunscreen"
+      ],
+      "indications_and_usage": [
+        "Uses • helps to prevent sunburn • if used as directed with other sun protection measures (see Directions), decreases the risk of skin cancer and early skin aging caused by the sun."
+      ],
+      "warnings": [
+        "Warnings For external use only"
+      ],
+      "do_not_use": [
+        "Do not use • on damaged or broken skin."
+      ],
+      "when_using": [
+        "When using this product • keep out of eyes. Rinse with warm water to remove."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if rash occurs."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If product is swallowed, get medical help, or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions • Apply liberally 15 minutes before sun exposure. • Children under 6 months: Ask a doctor • Reapply: at least every 2 hours Sun Protection Measures • Spending time in the sun increases your risk of skin cancer and early skin aging. To decrease this risk, regularly use a sunscreen with a broad-spectrum SPF of 15 or higher and other sun protection measures including: • limit time in the sun, especially from 10 a.m. – 2 p.m. • wear long-sleeve shirts, pants, hats, and sunglasses."
+      ],
+      "other_safety_information": [
+        "Other information • Protect this product from excessive heat or direct sun."
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredients: Water (Aqua),Cyclopentasiloxane, Butylene Glycol, Glycerin, Glyceryl Stearate, PEG-100 Stearate, Cyclohexasiloxane, Polyglyceryl-3 Polydimethylsiloxyethyl Dimethicone, Sorbitan Stearate, Dimethicone,Ascorbic Acid, Plankton Extract, Tocopherol, caprylyl Glycol, Caprylic/Capric Triglyceride, Phoenix Dactylifera ( Date) Fruit Extract, Imperata Cylindrica Root Extract, Arabidopsis Thaliana Extract, Ascorbyl Palmitate, Polygonum Aviculare Extract,Tocopheryl Linoleate/Oleate, Teprenone, Xanthan Gum,Polyacrylamide, C13-14 Isoparaffin, Laureth-7, Phenoxyethanol, Ethylhexylglycerin, Hexylene Glycol, PEG-8, Carbomer, Triethoxysilylethyl Polydimethylsiloxyethyl Hexyl Dimethicone, Cetyl Alcohol, Lecithin, Citric Acid, Sodium Lactate, Disodium EDTA, Dipotassium Glycyrrhizate, Micrococcus Lysate."
+      ],
+      "package_label_principal_display_panel": [
+        "Sheer Mineral Sunscreen BS SPF 30"
+      ],
+      "set_id": "0c6ac094-cb5b-0f09-e063-6394a90a9eed",
+      "id": "0c6ac094-cb5c-0f09-e063-6394a90a9eed",
+      "effective_time": "20231213",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "Sheer Mineral Sunscreen Broad Spectrum SPF 30"
+        ],
+        "generic_name": [
+          "ZINC OXIDE"
+        ],
+        "manufacturer_name": [
+          "Allure Labs"
+        ],
+        "product_ndc": [
+          "62742-4242"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ZINC OXIDE"
+        ],
+        "spl_id": [
+          "0c6ac094-cb5c-0f09-e063-6394a90a9eed"
+        ],
+        "spl_set_id": [
+          "0c6ac094-cb5b-0f09-e063-6394a90a9eed"
+        ],
+        "package_ndc": [
+          "62742-4242-1"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0703546617434"
+        ],
+        "unii": [
+          "SOI2LOH54Z"
+        ]
+      }
+    }
+  ]
+}

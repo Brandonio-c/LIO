@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 20241,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "PRVWORA Ultra Defense Sunscreen Avobenzone, Octinoxate, Octisalate, Octocrylene WATER SILICON DIOXIDE PROPANEDIOL BUTYLOCTYL SALICYLATE ETHYLHEXYL METHOXYCRYLENE BUTYLENE GLYCOL 1,2-HEXANEDIOL SODIUM STEAROYL GLUTAMATE POLYGLYCERYL-6 STEARATE DIMETHICONE, UNSPECIFIED STEARYL DIMETHICONE (400 MPA.S AT 50C) SODIUM ACRYLATE/SODIUM ACRYLOYLDIMETHYLTAURATE COPOLYMER (4000000 MW) POLYGLYCERYL-3 METHYLGLUCOSE DISTEARATE 1-OCTADECENE AMMONIUM ACRYLOYLDIMETHYLTAURATE/BEHENETH-25 METHACRYLATE CROSSPOLYMER (52000 MPA.S) MICROCRYSTALLINE CELLULOSE ISOHEXADECANE BEHENYL ACRYLATE POLYMER ETHYLHEXYLGLYCERIN AMMONIUM ACRYLOYLDIMETHYLTAURATE, DIMETHYLACRYLAMIDE, LAURYL METHACRYLATE AND LAURETH-4 METHACRYLATE COPOLYMER, TRIMETHYLOLPROPANE TRIACRYLATE CROSSLINKED (45000 MPA.S) EDETATE DISODIUM XANTHAN GUM POLYSORBATE 80 POLYGLYCERYL-6 BEHENATE CARBOXYMETHYLCELLULOSE SODIUM, UNSPECIFIED NIACINAMIDE TRANEXAMIC ACID 4-BUTYLRESORCINOL GLUCONOLACTONE MANDELIC ACID FYTIC ACID OCTINOXATE ETHYLHEXYL METHOXYCINNAMATE OCTISALATE ETHYLHEXYL SALICYLATE OCTOCRYLENE OCTOCRYLENE AVOBENZONE AVOBENZONE"
+      ],
+      "active_ingredient": [
+        "Avobenzone 2.85% Octinoxate 7.25% Octisalate 4.50% Octocrylene 9.50%"
+      ],
+      "purpose": [
+        "Sunscreen"
+      ],
+      "indications_and_usage": [
+        "Helps prevent sunburn If used as directed with other sun protection measures (see Directions) decrease the risk of skin cancer and early skin aging caused by the sun"
+      ],
+      "dosage_and_administration": [
+        "For sunscreen use: Apply liberally 15 minutes before sun exposure Reapply at least every two hours Use a water-resistant sunscreen if swimming or sweating Sun protection measures. Spending time in the sun increases your risk of skin cancer and early skin aging. To decrease this risk, regularly use a sunscreen with a broad spectrum SPF value of 15 or higher and other sun protection measures including: 1) Limit time in the sun, especially from 10 a.m. to 2 p.m. 2) Wear long-sleeved shirts, pants, hats, and sunglasses"
+      ],
+      "warnings": [
+        "For external use only. Do not use on damaged or broken skin. When using this product keep out of eyes. Rinse with water to remove. Stop use and ask a doctor if rash occurs."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away"
+      ],
+      "inactive_ingredient": [
+        "Water, Silica, Propanediol, Butyloctyl Salicylate, Ethylhexyl Methoxycrylene, Butylene Glycol, 1,2-Hexanediol, Sodium Stearoyl Glutamate, Polyglyceryl-6 Stearate, Dimethicone, Stearyl Dimethicone, Sodium Acrylate/Sodium Acryloyldimethyl Taurate Copolymer, Hydrolyzed Sclerotium Gum, Polyglyceryl-3 Methylglucose Distearate, Octadecene, Ammonium Acryloyldimethyltaurate/Beheneth-25 Methacrylate Crosspolymer, Microcrystalline Cellulose, Isohexadecane, Poly C10-30 Alkyl Acrylate, Ethylhexylglycerin, Polyacrylate Crosspolymer-6, Fragrance, Disodium EDTA, Xanthan Gum, Polysorbate 80, Polyglyceryl-6 Behenate, Cellulose Gum, Niacinamide, Tranexamic Acid, 4-Butylresorcinol, Gluconolactone, Mandelic Acid, D-Pentapeptide-1, Phytic Acid"
+      ],
+      "other_safety_information": [
+        "Protect the product in the container from excessive heat and direct sun."
+      ],
+      "package_label_principal_display_panel": [
+        "image description"
+      ],
+      "set_id": "50cf1d88-3e7e-47b7-816a-3d579bde0a6a",
+      "id": "4e9f781d-6b07-b69a-e063-6394a90a36c8",
+      "effective_time": "20260404",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "PRVWORA Ultra Defense Sunscreen"
+        ],
+        "generic_name": [
+          "AVOBENZONE, OCTINOXATE, OCTISALATE, OCTOCRYLENE"
+        ],
+        "manufacturer_name": [
+          "Cellarkbio Inc."
+        ],
+        "product_ndc": [
+          "87482-001"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "OCTINOXATE",
+          "OCTISALATE",
+          "OCTOCRYLENE",
+          "AVOBENZONE"
+        ],
+        "spl_id": [
+          "4e9f781d-6b07-b69a-e063-6394a90a36c8"
+        ],
+        "spl_set_id": [
+          "50cf1d88-3e7e-47b7-816a-3d579bde0a6a"
+        ],
+        "package_ndc": [
+          "87482-001-01",
+          "87482-001-02"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "4Y5P7MUD51",
+          "4X49Y0596W",
+          "5A68WGF6WM",
+          "G63QQF2NOX"
+        ]
+      }
+    }
+  ]
+}

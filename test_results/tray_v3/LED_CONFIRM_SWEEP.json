@@ -1,0 +1,548 @@
+{
+  "at": "2026-11-21T17:38:36-05:00",
+  "note": "Post visible-LED replace confirm; both rails ~30 mA; OPT101+InGaAs MEAS",
+  "settle_ms": 40,
+  "n": 8,
+  "reps": 3,
+  "thresholds": {
+    "opt_dead": 15,
+    "opt_weak": 100,
+    "ing_dead": 15,
+    "ing_weak": 40
+  },
+  "holes": [
+    {
+      "hole": 1,
+      "label": "395",
+      "rail": "A",
+      "opt_net": 42.0,
+      "opt_mv": 5.25,
+      "ing_net": 5.0,
+      "ing_mv": 0.62,
+      "opt_reps": [
+        42.0,
+        42.0,
+        41.0
+      ],
+      "ing_reps": [
+        4.0,
+        5.0,
+        5.0
+      ],
+      "flags": [
+        "OPT_WEAK",
+        "ING_NA"
+      ],
+      "verdict": "WEAK",
+      "reason": "OPT101 weak",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 2,
+      "label": "purple",
+      "rail": "A",
+      "opt_net": 45.0,
+      "opt_mv": 5.62,
+      "ing_net": 2.0,
+      "ing_mv": 0.25,
+      "opt_reps": [
+        45.0,
+        45.0,
+        44.0
+      ],
+      "ing_reps": [
+        2.0,
+        2.0,
+        3.0
+      ],
+      "flags": [
+        "OPT_WEAK",
+        "ING_NA"
+      ],
+      "verdict": "WEAK",
+      "reason": "OPT101 weak",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 3,
+      "label": "blue",
+      "rail": "A",
+      "opt_net": 32.0,
+      "opt_mv": 4.0,
+      "ing_net": 2.0,
+      "ing_mv": 0.25,
+      "opt_reps": [
+        31.0,
+        32.0,
+        32.0
+      ],
+      "ing_reps": [
+        3.0,
+        1.0,
+        2.0
+      ],
+      "flags": [
+        "OPT_WEAK",
+        "ING_NA"
+      ],
+      "verdict": "WEAK",
+      "reason": "OPT101 weak",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 4,
+      "label": "green",
+      "rail": "A",
+      "opt_net": 57.0,
+      "opt_mv": 7.12,
+      "ing_net": 0.0,
+      "ing_mv": 0.0,
+      "opt_reps": [
+        57.0,
+        57.0,
+        56.0
+      ],
+      "ing_reps": [
+        2.0,
+        0.0,
+        0.0
+      ],
+      "flags": [
+        "OPT_WEAK",
+        "ING_NA"
+      ],
+      "verdict": "WEAK",
+      "reason": "OPT101 weak",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 5,
+      "label": "yellow",
+      "rail": "A",
+      "opt_net": 28.0,
+      "opt_mv": 3.5,
+      "ing_net": 7.0,
+      "ing_mv": 0.88,
+      "opt_reps": [
+        29.0,
+        28.0,
+        28.0
+      ],
+      "ing_reps": [
+        7.0,
+        6.0,
+        7.0
+      ],
+      "flags": [
+        "OPT_WEAK",
+        "ING_NA"
+      ],
+      "verdict": "WEAK",
+      "reason": "OPT101 weak",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 6,
+      "label": "orange",
+      "rail": "A",
+      "opt_net": 24.0,
+      "opt_mv": 3.0,
+      "ing_net": 6.0,
+      "ing_mv": 0.75,
+      "opt_reps": [
+        26.0,
+        24.0,
+        24.0
+      ],
+      "ing_reps": [
+        6.0,
+        6.0,
+        6.0
+      ],
+      "flags": [
+        "OPT_WEAK",
+        "ING_NA"
+      ],
+      "verdict": "WEAK",
+      "reason": "OPT101 weak",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 7,
+      "label": "red",
+      "rail": "A",
+      "opt_net": 32.0,
+      "opt_mv": 4.0,
+      "ing_net": 6.0,
+      "ing_mv": 0.75,
+      "opt_reps": [
+        32.0,
+        32.0,
+        32.0
+      ],
+      "ing_reps": [
+        7.0,
+        6.0,
+        6.0
+      ],
+      "flags": [
+        "OPT_WEAK",
+        "ING_NA"
+      ],
+      "verdict": "WEAK",
+      "reason": "OPT101 weak",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 8,
+      "label": "850",
+      "rail": "A",
+      "opt_net": 170.0,
+      "opt_mv": 21.25,
+      "ing_net": 32.0,
+      "ing_mv": 4.0,
+      "opt_reps": [
+        168.0,
+        170.0,
+        171.0
+      ],
+      "ing_reps": [
+        31.0,
+        32.0,
+        33.0
+      ],
+      "flags": [
+        "OPT_OK",
+        "ING_WEAK"
+      ],
+      "verdict": "WEAK",
+      "reason": "InGaAs weak",
+      "expect": {
+        "opt101": "signal",
+        "ingaas": "signal"
+      }
+    },
+    {
+      "hole": 9,
+      "label": "940",
+      "rail": "B",
+      "opt_net": 119.0,
+      "opt_mv": 14.88,
+      "ing_net": 30.0,
+      "ing_mv": 3.75,
+      "opt_reps": [
+        119.0,
+        118.0,
+        119.0
+      ],
+      "ing_reps": [
+        30.0,
+        30.0,
+        30.0
+      ],
+      "flags": [
+        "OPT_OK",
+        "ING_WEAK"
+      ],
+      "verdict": "WEAK",
+      "reason": "InGaAs weak",
+      "expect": {
+        "opt101": "signal",
+        "ingaas": "signal"
+      }
+    },
+    {
+      "hole": 10,
+      "label": "white",
+      "rail": "B",
+      "opt_net": 60.0,
+      "opt_mv": 7.5,
+      "ing_net": 1.0,
+      "ing_mv": 0.12,
+      "opt_reps": [
+        60.0,
+        60.0,
+        60.0
+      ],
+      "ing_reps": [
+        2.0,
+        1.0,
+        1.0
+      ],
+      "flags": [
+        "OPT_WEAK",
+        "ING_NA"
+      ],
+      "verdict": "WEAK",
+      "reason": "OPT101 weak",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 11,
+      "label": "pink",
+      "rail": "B",
+      "opt_net": 151.0,
+      "opt_mv": 18.88,
+      "ing_net": 11.0,
+      "ing_mv": 1.38,
+      "opt_reps": [
+        151.0,
+        150.0,
+        151.0
+      ],
+      "ing_reps": [
+        11.0,
+        11.0,
+        10.0
+      ],
+      "flags": [
+        "OPT_OK",
+        "ING_NA"
+      ],
+      "verdict": "OK",
+      "reason": "expected detector(s) responding",
+      "expect": {
+        "opt101": "signal"
+      }
+    },
+    {
+      "hole": 12,
+      "label": "1450",
+      "rail": "B",
+      "opt_net": 14.0,
+      "opt_mv": 1.75,
+      "ing_net": 10.0,
+      "ing_mv": 1.25,
+      "opt_reps": [
+        14.0,
+        14.0,
+        14.0
+      ],
+      "ing_reps": [
+        12.0,
+        10.0,
+        9.0
+      ],
+      "flags": [
+        "OPT_NA",
+        "ING_DEAD"
+      ],
+      "verdict": "SUSPECT",
+      "reason": "SWIR weak/absent \u2014 may be aim/InGaAs, not dead LED",
+      "expect": {
+        "ingaas": "signal"
+      }
+    },
+    {
+      "hole": 13,
+      "label": "1550",
+      "rail": "B",
+      "opt_net": 2.0,
+      "opt_mv": 0.25,
+      "ing_net": 1.0,
+      "ing_mv": 0.12,
+      "opt_reps": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "ing_reps": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "flags": [
+        "OPT_NA",
+        "ING_DEAD"
+      ],
+      "verdict": "SUSPECT",
+      "reason": "SWIR weak/absent \u2014 may be aim/InGaAs, not dead LED",
+      "expect": {
+        "ingaas": "signal"
+      }
+    },
+    {
+      "hole": 14,
+      "label": "1650",
+      "rail": "B",
+      "opt_net": 2.0,
+      "opt_mv": 0.25,
+      "ing_net": 1.0,
+      "ing_mv": 0.12,
+      "opt_reps": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "ing_reps": [
+        1.0,
+        1.0,
+        3.0
+      ],
+      "flags": [
+        "OPT_NA",
+        "ING_DEAD"
+      ],
+      "verdict": "SUSPECT",
+      "reason": "SWIR weak/absent \u2014 may be aim/InGaAs, not dead LED",
+      "expect": {
+        "ingaas": "signal"
+      }
+    },
+    {
+      "hole": 15,
+      "label": "1760",
+      "rail": "B",
+      "opt_net": 2.0,
+      "opt_mv": 0.25,
+      "ing_net": 6.0,
+      "ing_mv": 0.75,
+      "opt_reps": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "ing_reps": [
+        6.0,
+        6.0,
+        7.0
+      ],
+      "flags": [
+        "OPT_NA",
+        "ING_DEAD"
+      ],
+      "verdict": "SUSPECT",
+      "reason": "SWIR weak/absent \u2014 may be aim/InGaAs, not dead LED",
+      "expect": {
+        "ingaas": "weak"
+      }
+    },
+    {
+      "hole": 16,
+      "label": "1850",
+      "rail": "B",
+      "opt_net": 209.0,
+      "opt_mv": 26.12,
+      "ing_net": 29.0,
+      "ing_mv": 3.62,
+      "opt_reps": [
+        209.0,
+        210.0,
+        208.0
+      ],
+      "ing_reps": [
+        29.0,
+        29.0,
+        29.0
+      ],
+      "flags": [
+        "OPT_UNEXPECTED",
+        "ING_NA"
+      ],
+      "verdict": "OK",
+      "reason": "no detector expect (absence OK)",
+      "expect": {}
+    }
+  ],
+  "dead": [],
+  "weak": [
+    {
+      "hole": 1,
+      "label": "395",
+      "reason": "OPT101 weak"
+    },
+    {
+      "hole": 2,
+      "label": "purple",
+      "reason": "OPT101 weak"
+    },
+    {
+      "hole": 3,
+      "label": "blue",
+      "reason": "OPT101 weak"
+    },
+    {
+      "hole": 4,
+      "label": "green",
+      "reason": "OPT101 weak"
+    },
+    {
+      "hole": 5,
+      "label": "yellow",
+      "reason": "OPT101 weak"
+    },
+    {
+      "hole": 6,
+      "label": "orange",
+      "reason": "OPT101 weak"
+    },
+    {
+      "hole": 7,
+      "label": "red",
+      "reason": "OPT101 weak"
+    },
+    {
+      "hole": 8,
+      "label": "850",
+      "reason": "InGaAs weak"
+    },
+    {
+      "hole": 9,
+      "label": "940",
+      "reason": "InGaAs weak"
+    },
+    {
+      "hole": 10,
+      "label": "white",
+      "reason": "OPT101 weak"
+    }
+  ],
+  "suspect": [
+    {
+      "hole": 12,
+      "label": "1450",
+      "reason": "SWIR weak/absent \u2014 may be aim/InGaAs, not dead LED"
+    },
+    {
+      "hole": 13,
+      "label": "1550",
+      "reason": "SWIR weak/absent \u2014 may be aim/InGaAs, not dead LED"
+    },
+    {
+      "hole": 14,
+      "label": "1650",
+      "reason": "SWIR weak/absent \u2014 may be aim/InGaAs, not dead LED"
+    },
+    {
+      "hole": 15,
+      "label": "1760",
+      "reason": "SWIR weak/absent \u2014 may be aim/InGaAs, not dead LED"
+    }
+  ],
+  "ok": [
+    {
+      "hole": 11,
+      "label": "pink"
+    },
+    {
+      "hole": 16,
+      "label": "1850"
+    }
+  ]
+}

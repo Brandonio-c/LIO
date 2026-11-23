@@ -1,0 +1,477 @@
+{
+ "run_id": "20261117-153234_scan_quick",
+ "status": "INCOMPLETE",
+ "started": "2026-11-17T15:32:34-05:00",
+ "finished": null,
+ "completed_step": 7,
+ "events": [
+  {
+   "at": "2026-11-17T15:34:58-05:00",
+   "kind": "start",
+   "mode": "quick",
+   "sample_id": "empty"
+  },
+  {
+   "kind": "relabel",
+   "detail": "sample was black_cup; the suite passed its default sample id (operator answered for the wrong label)"
+  }
+ ],
+ "aborts": [
+  {
+   "at": "2026-11-17T16:12:21-05:00",
+   "reason": "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)",
+   "step": 8
+  }
+ ],
+ "answers": {
+  "sample_id": "empty",
+  "chamber_clear": true,
+  "scan_lid_closed": true,
+  "scan_earth_bond": true,
+  "scan_sample": true
+ },
+ "phases": {
+  "P0": 144.05,
+  "P1": 949.278,
+  "P2": 592.136
+ },
+ "streams": [
+  {
+   "name": "s000_coils_off_opt101",
+   "file": "streams/s000_coils_off_opt101.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -4096,
+   "rate_setting": 860
+  },
+  {
+   "name": "s000_coils_off_ingaas",
+   "file": "streams/s000_coils_off_ingaas.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -4096,
+   "rate_setting": 860
+  },
+  {
+   "name": "long_dark_opt101",
+   "file": "streams/long_dark_opt101.npz",
+   "state": "dark",
+   "detector": "opt101",
+   "height_hs": -4096,
+   "rate_setting": 8
+  },
+  {
+   "name": "long_dark_ingaas",
+   "file": "streams/long_dark_ingaas.npz",
+   "state": "dark",
+   "detector": "ingaas",
+   "height_hs": -4096,
+   "rate_setting": 8
+  },
+  {
+   "name": "s001_coils_off_opt101",
+   "file": "streams/s001_coils_off_opt101.npz",
+   "step": 1,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -4096,
+   "rate_setting": 860
+  },
+  {
+   "name": "s001_coils_off_ingaas",
+   "file": "streams/s001_coils_off_ingaas.npz",
+   "step": 1,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -4096,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_6_opt101",
+   "file": "streams/emi_6_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": 415920,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_7_ingaas",
+   "file": "streams/emi_7_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": 415920,
+   "rate_setting": 860
+  },
+  {
+   "name": "s005_coils_off_opt101",
+   "file": "streams/s005_coils_off_opt101.npz",
+   "step": 5,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -212056,
+   "rate_setting": 860
+  },
+  {
+   "name": "s005_coils_off_ingaas",
+   "file": "streams/s005_coils_off_ingaas.npz",
+   "step": 5,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -212056,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_10_opt101",
+   "file": "streams/emi_10_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": 207960,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_11_ingaas",
+   "file": "streams/emi_11_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": 207960,
+   "rate_setting": 860
+  }
+ ],
+ "mode": "quick",
+ "sample_id": "black_cup",
+ "simulated": false,
+ "host": {
+  "lio": "0.2.0",
+  "python": "3.12.4"
+ },
+ "firmware": {
+  "fw": "2.5.1",
+  "proto": "1",
+  "build": "2026-11-16",
+  "adc_addr": "0x48",
+  "adc_ok": "1",
+  "gain": "1",
+  "rate": "128",
+  "settle_ms": "8",
+  "wdt_a_ms": "2000",
+  "wdt_b_ms": "5000",
+  "wdt_a_cap_ms": "5000",
+  "wdt_b_cap_ms": "10000",
+  "comms_ms": "10000",
+  "arm_ms": "60000",
+  "step_max": "2048",
+  "jog_max": "2048",
+  "jog_v_max": "1000",
+  "jog_acc_max": "1000",
+  "wake_ms_max": "3000",
+  "motion_armed": "0",
+  "debug_states": "1",
+  "mains": "0",
+  "light_in_motion": "0",
+  "arm_token": "0x0EB3",
+  "hw_wdt": "0"
+ },
+ "config_sha256": "795e6bf0787df66b2d875853751606696dc877503458fa1a98060b79fbeed2d0",
+ "plan": {
+  "mode": "quick",
+  "label": "routine, back to the top, measured both ways (~31 min)",
+  "top": -4096,
+  "bottom": -420017,
+  "settings": {
+   "jog_speed": 500,
+   "settle_ms_mech": 300,
+   "dark_agree_sigma": 3.0,
+   "dark_agree_tries": 5,
+   "dark_n": 8,
+   "optical_settle_ms": 8,
+   "sweep_n": 2,
+   "hum_every_k": 4,
+   "hum_bursts": 17,
+   "long_dark_s": 30.0,
+   "ref_offset_steps": 4096,
+   "arm_renew_s": 40.0,
+   "heartbeat_timeout_s": 90.0,
+   "abort_on_saturation": true,
+   "lead_mm_per_rev": 1.0,
+   "mains_hz": 60,
+   "mains_periods": 2
+  },
+  "steps": [
+   {
+    "index": 0,
+    "phase": "P1",
+    "kind": "static",
+    "height": -4096,
+    "direction": "none",
+    "rep": 0,
+    "hum": false,
+    "label": "electrical characterisation (no motion)"
+   },
+   {
+    "index": 1,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -4096,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 2,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -56086,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 3,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -108076,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 4,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -160066,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 5,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -212056,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 6,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -264047,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 7,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -316037,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 8,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -368027,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 9,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -420017,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 10,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -368027,
+    "direction": "up",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 11,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -316037,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 12,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -264047,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 13,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -212056,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 14,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -160066,
+    "direction": "up",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 15,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -108076,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 16,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -56086,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 17,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -4096,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 18,
+    "phase": "P4",
+    "kind": "closing",
+    "height": -4096,
+    "direction": "none",
+    "rep": 0,
+    "hum": false,
+    "label": "closing checks at the top"
+   }
+  ],
+  "heights_down": [
+   -4096,
+   -56086,
+   -108076,
+   -160066,
+   -212056,
+   -264047,
+   -316037,
+   -368027,
+   -420017
+  ],
+  "heights_up": [
+   -368027,
+   -316037,
+   -264047,
+   -212056,
+   -160066,
+   -108076,
+   -56086,
+   -4096
+  ],
+  "ref_heights": [],
+  "repeats": 1,
+  "extra_near_optimum": 0,
+  "static": false,
+  "continuous": false,
+  "return_top": true,
+  "eta_s": 1927.8750034453308,
+  "eta_parts": {
+   "P0": 30.0,
+   "P1": 71.69813333333335,
+   "P2": 905.771235055999,
+   "P3": 897.7603017226651,
+   "P4": 22.645333333333383
+  },
+  "duty": {
+   "on_ms_per_sweep": 82.7,
+   "max_on_ms_per_min_A": 165.3,
+   "budget_A": 1000.0,
+   "waits_s": 0.0
+  }
+ },
+ "stage": {
+  "known": true,
+  "valid": true,
+  "invalid_reason": null,
+  "abs": [
+   -420017,
+   -420017
+  ],
+  "top": [
+   0,
+   0
+  ],
+  "bottom": [
+   -420017,
+   -420017
+  ],
+  "updated": "2026-11-17T15:31:54-05:00",
+  "file": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/stage_position.json",
+  "range": [
+   420017,
+   420017
+  ],
+  "below_top": [
+   420017,
+   420017
+  ],
+  "above_bottom": [
+   0,
+   0
+  ]
+ },
+ "capabilities": {
+  "coupling_states": true,
+  "mains_rejection": true,
+  "rail_monitor": false,
+  "home_sensors": false
+ },
+ "skipped_checks": {
+  "rail_monitor": "A2/A3 not wired for rail and ground monitoring",
+  "home_sensors": "no home sensors fitted"
+ },
+ "rows": 362
+}

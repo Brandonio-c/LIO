@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 459,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Equate Cortisone Hydrocortisone 1% WATER HYDROCORTISONE HYDROCORTISONE ALCOHOL DIMETHYL ISOSORBIDE GLYCERIN"
+      ],
+      "active_ingredient": [
+        "Hydrocortisone 1%"
+      ],
+      "purpose": [
+        "Anti-itch"
+      ],
+      "indications_and_usage": [
+        "For the temporary relief of itching associated with minor skin irritation and rashes due to eczema poison ivy, oak, and sumac cosmetics soaps and detergents jewelry insect bites Other uses of this product should be only under advice and supervision of a doctor."
+      ],
+      "warnings": [
+        "For external use only. Flammable. Keep away from fire or flame. Do not use for the treatment of diaper rash. Consult a doctor. When using this product avoid contact with eyes. In case of contact with eyes, flush thoroughly with water avoid contact with broken skin do not inhale or ingest contents under pressure. Do not puncture or incinerate. Do not store at temperature above 120F. Stop use and ask a doctor if condition worsens symptoms last more than 7 days or clear up and occur again within a few days."
+      ],
+      "keep_out_of_reach_of_children": [
+        "If product is swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Adults and children 2 years or older: apply to affected area not more than 3 to 4 times daily Children under 2 years of age: ask a doctor To apply to face, spray into palm of hand and gently apply."
+      ],
+      "inactive_ingredient": [
+        "Alcohol denat., dimethyl isosorbide, glycerin, water."
+      ],
+      "package_label_principal_display_panel": [
+        "Label"
+      ],
+      "set_id": "027fae33-93a0-a61f-e063-6294a90a990f",
+      "id": "0d80b13c-e446-6bb5-e063-6394a90a2aca",
+      "effective_time": "20231227",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M017"
+        ],
+        "brand_name": [
+          "Equate Cortisone"
+        ],
+        "generic_name": [
+          "HYDROCORTISONE 1%"
+        ],
+        "manufacturer_name": [
+          "Walmart Inc"
+        ],
+        "product_ndc": [
+          "79903-213"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "HYDROCORTISONE"
+        ],
+        "rxcui": [
+          "317564"
+        ],
+        "spl_id": [
+          "0d80b13c-e446-6bb5-e063-6394a90a2aca"
+        ],
+        "spl_set_id": [
+          "027fae33-93a0-a61f-e063-6294a90a990f"
+        ],
+        "package_ndc": [
+          "79903-213-03"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0194346121618"
+        ],
+        "nui": [
+          "N0000175576",
+          "N0000175450"
+        ],
+        "pharm_class_epc": [
+          "Corticosteroid [EPC]"
+        ],
+        "pharm_class_moa": [
+          "Corticosteroid Hormone Receptor Agonists [MoA]"
+        ],
+        "unii": [
+          "WI4X0X7BPJ"
+        ]
+      }
+    }
+  ]
+}

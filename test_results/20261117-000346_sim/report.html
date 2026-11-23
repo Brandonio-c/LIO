@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261117-000346_sim</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261117-000346_sim</code> on <code>sim</code>
+,
+2026-11-17T00:03:46-05:00 to 2026-11-17T00:04:01-05:00</p>
+<div class="verdict" style="background: #0ca30c">FUNCTIONAL</div>
+<ul><li>no failures or warnings</li></ul>
+
+<table>
+<tr><th>Sample</th><td>none-empty-chamber</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td>2.5.1 (proto 1, build 2026-11-16)</td>
+    <th>Config</th><td><code>a6884745c280</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.4</td>
+    <th>Software</th><td>lio 0.2.0, git <code>8b1b33f855</code> (dirty)</td></tr>
+<tr><th>Results</th><td colspan="3">PASS 3</td></tr>
+<tr><th>LED duty</th><td colspan="3">0.0 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T07.1">T07.1</a></td><td>Step response and settling time</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T07.2">T07.2</a></td><td>Recommended settle time</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T07.3">T07.3</a></td><td>MEAS timing</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+</table>
+
+<h2>Plots</h2>
+<h3>Step responses</h3><img src="plots/settling.png" alt="Step responses">
+
+
+
+<h2>T07</h2>
+
+<h3 id="T07.1">T07.1 Step response and settling time <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Hole 3 (opt101) step response<br><code>T07.1/h03</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>settled within a few samples: t99 &lt;= 2.04 ms (upper bound, limited by the sample interval)</td><td>time to 99 % recorded</td></tr>
+
+<tr><td>Hole 8 (opt101) step response<br><code>T07.1/h08</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>settled within a few samples: t99 &lt;= 2.04 ms (upper bound, limited by the sample interval)</td><td>time to 99 % recorded</td></tr>
+
+<tr><td>Hole 13 (ingaas) step response<br><code>T07.1/h13</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>settled within one sample: t99 &lt;= 0.68 ms (upper bound, limited by the sample interval)</td><td>time to 99 % recorded</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T07.2">T07.2 Recommended settle time <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>1 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Configured settle_ms is long enough<br><code>T07.2/settle</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>recommended 4 ms (max 2.04 ms x 1.5), configured 8 ms</td><td>recommended &lt;= 8 ms</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T07.3">T07.3 MEAS timing <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>MEAS 3 8 1 on-time<br><code>T07.3/s8n1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>t_on_ms 24</td><td>21.3-32.0 ms and &lt;= watchdog 2000 ms</td></tr>
+
+<tr><td>MEAS 3 20 4 on-time<br><code>T07.3/s20n4</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>t_on_ms 84</td><td>73.1-106.9 ms and &lt;= watchdog 2000 ms</td></tr>
+
+</table>
+</details>
+
+
+
+</body>
+</html>

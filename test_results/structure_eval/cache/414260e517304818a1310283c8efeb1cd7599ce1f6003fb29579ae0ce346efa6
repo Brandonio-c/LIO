@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 14237,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Claritin loratadine LACTOSE MONOHYDRATE MICROCRYSTALLINE CELLULOSE MAGNESIUM STEARATE SODIUM STARCH GLYCOLATE TYPE A CORN LORATADINE LORATADINE Claritin;10;458"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts",
+        ""
+      ],
+      "active_ingredient": [
+        "Active ingredient (in each tablet) Loratadine, 10 mg USP"
+      ],
+      "purpose": [
+        "Purpose Antihistamine"
+      ],
+      "indications_and_usage": [
+        "Uses Temporarily relieves these symptoms due to hay fever or other upper respiratory allergies: ■ runny nose ■ sneezing ■ itchy, watery eyes ■ itching of the nose or throat"
+      ],
+      "warnings": [
+        "Warnings Do not use if you have ever had an allergic reaction to this product or any of its ingredients. Ask a doctor Ask a doctor before use if you have liver or kidney disease. Your doctor should determine if you need a different dose. When using this product When using this product do not take more than directed. Taking more than directed may cause drowsiness. Stop use Stop use and ask a doctor if an allergic reaction to this product occurs. Seek medical help right away. If pregnant or breast-feeding If pregnant or breast-feeding , ask a health professional before use. Keep out of reach of children Keep out of reach of children . In case of overdose, get medical help or contact a Poison Control Center right away (1-800-222-1222)."
+      ],
+      "do_not_use": [
+        "Do not use if you have ever had an allergic reaction to this product or any of its ingredients."
+      ],
+      "ask_doctor": [
+        "Ask a doctor Ask a doctor before use if you have liver or kidney disease. Your doctor should determine if you need a different dose."
+      ],
+      "when_using": [
+        "When using this product When using this product do not take more than directed. Taking more than directed may cause drowsiness."
+      ],
+      "stop_use": [
+        "Stop use Stop use and ask a doctor if an allergic reaction to this product occurs. Seek medical help right away."
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding If pregnant or breast-feeding , ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children Keep out of reach of children . In case of overdose, get medical help or contact a Poison Control Center right away (1-800-222-1222)."
+      ],
+      "dosage_and_administration": [
+        "Directions Directions adults and children 6 years and over 1 tablet daily; not more than 1 tablet in 24 hours children under 6 years of age ask a doctor consumers with liver or kidney disease ask a doctor"
+      ],
+      "dosage_and_administration_table": [
+        "<table border=\"0\" width=\"100%\"><tbody><tr><td>adults and children 6 years and over</td><td>1 tablet daily; not more than 1 tablet in 24 hours</td></tr><tr><td>children under 6 years of age</td><td>ask a doctor</td></tr><tr><td>consumers with liver or kidney disease</td><td>ask a doctor</td></tr></tbody></table>"
+      ],
+      "other_safety_information": [
+        "Other information ■ store at 20º -25º C (68º -77º F) (see USP Controlled Room Temperature)"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients lactose monohydrate, magnesium stearate, microcrystalline cellulose, sodium starch glycolate"
+      ],
+      "questions": [
+        "Questions or comments? 1-800-CLARITIN (1-800-252-7484) or www.claritin.com"
+      ],
+      "package_label_principal_display_panel": [
+        "Claritin 1 pouch claritin1",
+        "claritin20",
+        "claritin 25 claritin25"
+      ],
+      "set_id": "3c9ad1f8-e8ef-bcd0-e063-6394a90ac20e",
+      "id": "46fe1007-0c18-a3ba-e063-6394a90a7b11",
+      "effective_time": "20251228",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "ANDA075209"
+        ],
+        "brand_name": [
+          "Claritin"
+        ],
+        "generic_name": [
+          "LORATADINE"
+        ],
+        "manufacturer_name": [
+          "Select Consumer Group"
+        ],
+        "product_ndc": [
+          "85237-1630"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "LORATADINE"
+        ],
+        "rxcui": [
+          "206805",
+          "311372"
+        ],
+        "spl_id": [
+          "46fe1007-0c18-a3ba-e063-6394a90a7b11"
+        ],
+        "spl_set_id": [
+          "3c9ad1f8-e8ef-bcd0-e063-6394a90ac20e"
+        ],
+        "package_ndc": [
+          "85237-1630-1",
+          "85237-1630-3",
+          "85237-1630-4"
+        ],
+        "original_packager_product_ndc": [
+          "11523-0800"
+        ],
+        "unii": [
+          "7AJO3BO7QN"
+        ]
+      }
+    }
+  ]
+}

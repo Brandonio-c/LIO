@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 22137,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "PHYLA ACNE PHAGE SERUM Salicylic Acid CAFFEINE CALCIUM CHLORIDE POLYDEXTROSE GLYCERIN SCLEROTIUM GUM NIACINAMIDE MAGNESIUM SULFATE BUTYLENE GLYCOL WATER HYDROXYETHYLCELLULOSE LISTERIA VIRUS P100 SODIUM PHOSPHATE SODIUM CHLORIDE PHENOXYETHANOL SALICYLIC ACID SALICYLIC ACID"
+      ],
+      "active_ingredient": [
+        "Active ingredient Salicilic Acid 0.5%"
+      ],
+      "purpose": [
+        "Purpose Acne Treatment"
+      ],
+      "indications_and_usage": [
+        "USES Uses for the treatment of acne helps clear up acne blemishes and allows skin to heal"
+      ],
+      "warnings": [
+        "WARNINGS For external use only When using this product skin irritation and dryness is more likely to occur if you use another topical acne medication at the same time. If irritation occurs, only use one topical acne medication at a time. Keep out of reach of children. If swallowed get medical help or contact a Poison Control Center right away."
+      ],
+      "when_using": [
+        "When using this product skin irritation and dryness is more likely to occur if you use another topical acne medication at the same time. If irritation occurs, only use one topical acne medication at a time."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "DIRECTIONS Directions clean the skin thoroughly before applying product cover the entire affected area with a thin layer one to three times daily because excessive drying of the skin may occur, start with one application daily, then gradually increase to two three times daily or as directed by a doctor if bothersome dryness or peeling occurs, reduce application to once a day or every other day"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Water, Glycerin, Butylene Glycol, Hydroxyethylcellulose, C. Acnes Bacteriophage, Sodium Phosphate, Sodium Chloride, Phenoxyethanol, Polydextrose, Sclerotium Gum, Niacinamide, Magnesium Sulfate, Caffeine, Calcium Chloride."
+      ],
+      "other_safety_information": [
+        "OTHER INFORMATION Other information store at room temperature avoid high temperatures protect from freezing keep away from flame, fire and heat"
+      ],
+      "questions": [
+        "Questions or comments? visit phyla.com"
+      ],
+      "package_label_principal_display_panel": [
+        "Bottle carton"
+      ],
+      "set_id": "564abe82-c983-6a98-e063-6394a90a14a0",
+      "id": "564aabca-ad9c-5257-e063-6394a90a413e",
+      "effective_time": "20260710",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M006"
+        ],
+        "brand_name": [
+          "PHYLA ACNE PHAGE SERUM"
+        ],
+        "generic_name": [
+          "SALICYLIC ACID"
+        ],
+        "manufacturer_name": [
+          "COSMAX USA, CORP"
+        ],
+        "product_ndc": [
+          "68577-286"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "SALICYLIC ACID"
+        ],
+        "spl_id": [
+          "564aabca-ad9c-5257-e063-6394a90a413e"
+        ],
+        "spl_set_id": [
+          "564abe82-c983-6a98-e063-6394a90a14a0"
+        ],
+        "package_ndc": [
+          "68577-286-00"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "O414PZ4LPZ"
+        ]
+      }
+    }
+  ]
+}

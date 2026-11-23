@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 22946,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Extra Strength Antacid Freshmint Calcium Carbonate, Magnesium Hydroxide CALCIUM CARBONATE CALCIUM CATION MAGNESIUM HYDROXIDE MAGNESIUM CATION STARCH, CORN DEXTROSE, UNSPECIFIED FORM MAGNESIUM STEARATE MALTODEXTRIN SUCRALOSE RP107"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts",
+        "Other information ▪ each tablet contains: calcium 270 mg, magnesium 55 mg ▪ store at room temperature. Avoid high humidity. CALCIUM SUPPLEMENT USES As a daily source of extra calcium and magnesium chew 2 tablets, completely twice daily. Supplement Facts Serving Size: 2 Tablets Servings Per Container: 50 Amount Per Serving % Daily Value Calories 8 Total Carbohydrate 2g 1% Total Sugars 2g Includes 2 g Added Sugars † 4% Calcium 540 mg 42% Magnesium 110 mg 26%"
+      ],
+      "active_ingredient": [
+        "Active ingredients (in each tablet) Calcium Carbonate USP 675 mg Magnesium hydroxide USP 135 mg"
+      ],
+      "purpose": [
+        "Purpose Antacid Antacid"
+      ],
+      "indications_and_usage": [
+        "Uses relieves: ▪ heartburn ▪ sour stomach ▪ acid indigestion ▪ upset stomach due to these symptoms"
+      ],
+      "warnings": [
+        "Warnings Ask a doctor or pharmacist before use if you are presently taking a prescription drug. Antacids may interact with certain prescription drugs. When using this product ▪ do not take more than 10 tablets in a 24-hour period ▪ do not use the maximum dosage for more than 2 weeks Keep out of reach of children."
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor or pharmacist before use if you are presently taking a prescription drug. Antacids may interact with certain prescription drugs. When using this product ▪ do not take more than 10 tablets in a 24-hour period ▪ do not use the maximum dosage for more than 2 weeks"
+      ],
+      "when_using": [
+        "When using this product ▪ do not take more than 10 tablets in a 24-hour period ▪ do not use the maximum dosage for more than 2 weeks"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children."
+      ],
+      "dosage_and_administration": [
+        "Directions ▪ chew 2-4 tablets completely as symptoms occur or as directed by a doctor. Do not swallow tablets whole."
+      ],
+      "spl_unclassified_section_table": [
+        "<table styleCode=\"Noautorules\" width=\"100%\"> <col width=\"50%\"/> <col width=\"50%\"/> <tbody> <tr> <td styleCode=\"Rrule Botrule Lrule Toprule \" valign=\"top\"> <paragraph> <content styleCode=\"bold\">Amount Per Serving</content> </paragraph> </td> <td styleCode=\"Rrule Botrule Lrule Toprule \" valign=\"top\"> <paragraph> <content styleCode=\"bold\">% Daily Value</content> </paragraph> </td> </tr> <tr> <td styleCode=\"Rrule Lrule Botrule \" valign=\"top\"> <paragraph>Calories 8</paragraph> </td> <td styleCode=\"Rrule Lrule Toprule Botrule \" valign=\"top\"/> </tr> <tr> <td styleCode=\"Rrule Lrule Botrule \" valign=\"top\"> <paragraph>Total Carbohydrate 2g</paragraph> </td> <td styleCode=\"Rrule Lrule Toprule Botrule \" valign=\"top\"> <paragraph>1%</paragraph> </td> </tr> <tr> <td styleCode=\"Rrule Lrule Botrule \" valign=\"top\"> <paragraph>Total Sugars 2g</paragraph> <paragraph>Includes 2 g Added Sugars</paragraph> </td> <td styleCode=\"Rrule Lrule Toprule Botrule \" valign=\"top\"> <paragraph>&#x2020;</paragraph> <paragraph>4%</paragraph> </td> </tr> <tr> <td styleCode=\"Rrule Lrule Botrule \" valign=\"top\"> <paragraph>Calcium 540 mg</paragraph> </td> <td styleCode=\"Rrule Lrule Toprule Botrule \" valign=\"top\"> <paragraph>42%</paragraph> </td> </tr> <tr> <td styleCode=\"Rrule Botrule Lrule Toprule \" valign=\"top\"> <paragraph>Magnesium 110 mg</paragraph> </td> <td styleCode=\"Rrule Botrule Lrule Toprule \" valign=\"top\"> <paragraph>26%</paragraph> </td> </tr> </tbody> </table>"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients corn starch, dextrose, flavor, magnesium stearate, maltodextrin, sucralose. Questions? 1-866-467-2748"
+      ],
+      "questions": [
+        "Questions? 1-866-467-2748"
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPAL DISPLAY PANEL DISCOUNT drug mart FOOD FAIR NDC# 53943-108-10 Compare to the active ingredients Extra Strength Rolaids® Extra Strength Antacid Tablets Calcium & magnesium Supplement Relieves: • Heartburn • Acid Indigestion 100 CHEWABLE TABLETS Freshmint Naturally and artificially flavored GLUTEN-FREE TAMPER EVIDENT: DO NOT USE IF PRINTED INNER SEAL UNDER CAP IS TORN OR MISSING. *This product is not manufactured or distributed by Chattem Inc., owner of the registered trademark Extra Strength Rolaids ® Distributed By: Drug Mart-Food Fair 211 Commerce Dr., Medina, Ohio 44256 www.discount-drugmart.com Questions?: 866-467-2748 Drug Mart Extra Strength Antacid Tablets"
+      ],
+      "set_id": "59382400-cde6-4234-b570-1580a8177279",
+      "id": "373546ee-c8d7-45cd-a7c5-591e24c5b8bb",
+      "effective_time": "20260911",
+      "version": "8",
+      "openfda": {
+        "application_number": [
+          "M001"
+        ],
+        "brand_name": [
+          "Extra Strength Antacid Freshmint"
+        ],
+        "generic_name": [
+          "CALCIUM CARBONATE, MAGNESIUM HYDROXIDE"
+        ],
+        "manufacturer_name": [
+          "DISCOUNT DRUG MART"
+        ],
+        "product_ndc": [
+          "53943-108"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "CALCIUM CARBONATE",
+          "MAGNESIUM HYDROXIDE"
+        ],
+        "rxcui": [
+          "476549"
+        ],
+        "spl_id": [
+          "373546ee-c8d7-45cd-a7c5-591e24c5b8bb"
+        ],
+        "spl_set_id": [
+          "59382400-cde6-4234-b570-1580a8177279"
+        ],
+        "package_ndc": [
+          "53943-108-10"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "H0G9379FGK",
+          "NBZ3QY004S"
+        ]
+      }
+    }
+  ]
+}

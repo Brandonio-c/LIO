@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="5cff7314-8a85-2de2-e063-6294a90ac6b9"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <effectiveTime value="20261004"/>
+   <setId root="5cff7314-8a84-2de2-e063-6294a90ac6b9"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="456645111"/>
+            <name>Guchutang Biotechnology (Longyan) Co.,Ltd.</name>
+            <assignedEntity>
+               <assignedOrganization/>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="5d290aee-265c-6b6b-e063-6294a90a88d9"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20261004"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="87083-016" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>ZKBB ARTHRITIS PAIN RELIEF</name>
+                        <formCode code="C28944" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CREAM"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Methyl Salicylate, Camphor and Capsaicin</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="10"/>
+                              <denominator unit="g" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="LAV5U5022Y" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>METHYL SALICYLATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="O414PZ4LPZ" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>SALICYLIC ACID</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="5"/>
+                              <denominator unit="g" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="213N3S8275" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CAMPHOR, (-)-</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="213N3S8275" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>CAMPHOR, (-)-</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="0.025"/>
+                              <denominator unit="g" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="S07O44R1ZM" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CAPSAICIN</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="S07O44R1ZM" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>CAPSAICIN</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="0V73PIX5YC" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PEG-120 STEARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="230OU9XXE4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERYL MONOSTEARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2DMT128M1S" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CETOSTEARYL ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="HIE492ZZ3T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PHENOXYETHANOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="25IH6R4SGF" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>EDETATE CALCIUM DISODIUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="344S277G0Z" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALLANTOIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="55X04QC32I" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM HYDROXIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="4Q93RCW27E" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CARBOMER 940</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="92RU3N3Y1O" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DIMETHICONE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="50" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="87083-016-01" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43195" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="JAR"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20261005"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M017" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20261005"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d262efb-dd86-190f-e063-6394a90aa09a">
+               <id root="5d262efb-dd85-190f-e063-6394a90aa09a"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Purpose</content>
+                  </paragraph>
+                  <paragraph>Methyl salicylate 10%   Counterirritant
+  <br/>
+Camphor 5%   Counterirritant
+  <br/>
+Capsaicin 0.025%   Counterirritant
+ </paragraph>
+               </text>
+               <effectiveTime value="20261005"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d263106-f61c-0c57-e063-6294a90ac02e">
+               <id root="5d263106-f61b-0c57-e063-6294a90ac02e"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Uses</content>
+                  </paragraph>
+                  <paragraph>Temporarily relieves minor aches and pains of muscles and joints associated with:</paragraph>
+                  <paragraph>arthritis
+  <br/>
+simple backache
+  <br/>
+strains
+  <br/>
+bruises
+  <br/>
+sprains
+ </paragraph>
+                  <paragraph>Temporarily relieves muscle soreness and stiffness of joints.</paragraph>
+               </text>
+               <effectiveTime value="20261005"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d2632df-b1bc-1e8c-e063-6394a90aa55c">
+               <id root="5d2632df-b1bb-1e8c-e063-6394a90aa55c"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Warnings</content>
+                  </paragraph>
+                  <paragraph>For external use only.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Do not use:</content>
+                     <br/>
+on wounds or damaged skin
+  <br/>
+with a heating pad or device
+  <br/>
+with other ointments, creams, sprays, or liniments
+  <br/>
+if you are allergic to any ingredients of this product
+ </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Ask a doctor before use</content> if you have redness or irritated skin.
+ </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">When using this product:</content>
+                     <br/>
+avoid contact with eyes and mucous membranes
+  <br/>
+do not bandage tightly or use with a heating pad
+  <br/>
+capsaicin may cause a burning sensation; wash hands after applying, except when treating the hands
+ </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Stop use and ask a doctor if:</content>
+                     <br/>
+the condition worsens or symptoms persist for more than 7 days
+  <br/>
+excessive skin irritation, burning, or redness occurs
+ </paragraph>
+                  <paragraph>If pregnant or breast-feeding, ask a health professional before use.</paragraph>
+               </text>
+               <effectiveTime value="20261005"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d263494-c39a-1f76-e063-6394a90a15fd">
+               <id root="5d263494-c399-1f76-e063-6394a90a15fd"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Directions</content>
+                  </paragraph>
+                  <paragraph>Adults and children 12 years of age and older: rub a thin film over the affected area not more than 3 to 4 times daily; massage is not necessary.</paragraph>
+                  <paragraph>Children under 12 years of age: consult a physician.</paragraph>
+                  <paragraph>Wash hands after use with cool water, except when treating the hands.</paragraph>
+                  <paragraph>Avoid contact with eyes and mucous membranes.</paragraph>
+               </text>
+               <effectiveTime value="20261005"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d263643-024b-1d14-e063-6394a90a15d8">
+               <id root="5d263643-024a-1d14-e063-6394a90a15d8"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Inactive ingredients</content>
+                  </paragraph>
+                  <paragraph>PEG-120 stearate, glyceryl monostearate, cetostearyl alcohol, water, phenoxyethanol, edetate calcium disodium, allantoin, sodium hydroxide, carbomer 940, dimethicone.</paragraph>
+               </text>
+               <effectiveTime value="20261005"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d2637f9-ec38-13ea-e063-6294a90aa3d0">
+               <id root="5d2637f9-ec37-13ea-e063-6294a90aa3d0"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <text>
+                  <paragraph>Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away.</paragraph>
+               </text>
+               <effectiveTime value="20261005"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d1b2b7a-6782-b9ce-e063-6394a90a7333">
+               <id root="5d2624cf-9e72-1400-e063-6394a90a6b54"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_5d2623c6-1f2f-1352-e063-6394a90ab2ee"/>
+                  </paragraph>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20261005"/>
+               <component>
+                  <observationMedia ID="img_5d2623c6-1f2f-1352-e063-6394a90ab2ee">
+                     <text>PDParthritis</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="PDP_arthritis_87083-004.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

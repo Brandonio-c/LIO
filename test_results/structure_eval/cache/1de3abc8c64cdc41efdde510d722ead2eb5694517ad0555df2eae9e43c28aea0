@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 20887,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Guaifenesin Guaifenesin 400 mg GUAIFENESIN GUAIFENESIN MALTODEXTRIN POVIDONE K30 SILICON DIOXIDE STEARIC ACID ZN;07"
+      ],
+      "active_ingredient": [
+        "Active ingredient (in each tablet) Guaifenesin 400 mg"
+      ],
+      "purpose": [
+        "Purpose Expectorant"
+      ],
+      "indications_and_usage": [
+        "Uses Temporary symptomatic relief from congested chests and cough."
+      ],
+      "warnings": [
+        "Warnings A persistent cough maybe a sign of a serious condition. If cough persists for more than 1 week, tends to recur, or is accompanied by a fever, rash or persistent headache, consult a doctor. Do not use - For children under 12 years of age ASK A DOCTOR BEFORE USE IF YOU HAVE Persistent or chronic cough such as occurs with smoking, asthma, chronic bronchitis or emphysema. Cough accompanied by too much phlegm (mucus). STOP USE AND ASK A DOCTOR IF if cough lasts more than 7 days, please consult your physician or healthcare provider. When using this product Do not exceed recommended dosage. Do not consume alcohol, benzodiazepines or opioids. KEEP OUT OF REACH OF CHILDREN In case of overdose, get medical help or contact a Poison Control Center (1-800-222-1222) right away. IF PREGNANT OR BREAST-FEEDING ask a health professional before use"
+      ],
+      "ask_doctor": [
+        "ASK A DOCTOR BEFORE USE IF YOU HAVE Persistent or chronic cough such as occurs with smoking, asthma, chronic bronchitis or emphysema. Cough accompanied by too much phlegm (mucus)."
+      ],
+      "stop_use": [
+        "STOP USE AND ASK A DOCTOR IF if cough lasts more than 7 days, please consult your physician or healthcare provider."
+      ],
+      "when_using": [
+        "When using this product Do not exceed recommended dosage. Do not consume alcohol, benzodiazepines or opioids."
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP OUT OF REACH OF CHILDREN In case of overdose, get medical help or contact a Poison Control Center (1-800-222-1222) right away."
+      ],
+      "pregnancy_or_breast_feeding": [
+        "IF PREGNANT OR BREAST-FEEDING ask a health professional before use"
+      ],
+      "dosage_and_administration": [
+        "Directions: Adults and children 12 years of age and over: take 1 tablet a day. children under 12 years : do not use. Do not exceed 4 doses in 24 hours."
+      ],
+      "questions": [
+        "Questions or Comments Call toll free 1-888-572-7085, 8.30 am-4.30 pm ET, Monday - Friday TAMPER EVIDENT: DO NOT USE IF IMPRINTED SAFETY SEAL UNDER CAP IS BROKEN OR MISSING"
+      ],
+      "other_safety_information": [
+        "OTHER INFORMATION Store at 25°C (77°F) excursions between 15°-30°C (59°-86°F). Keep in a dry place and do not expose to heat. Read all product information before use. TAMPER EVIDENT: DO NOT USE IF IMPRINTED SAFETY SEAL UNDER CAP IS BROKEN OR MISSING"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Maltodextrin, Povidone K30, Colloidal Silicon Dioxide, Silicon Dioxide, Stearic Acid"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal Display Panel Guaifenesin 400 mg 14 count carton Guaifenesin 400 mg 14 ct label",
+        "100 ct Labeling 100 ct carton 100 ct label",
+        "300 ct labeling 300 ct carton 300 ct label"
+      ],
+      "set_id": "52f5cda7-382e-199a-e063-6294a90ab75b",
+      "id": "5dcf0b44-f146-e929-e063-6394a90a345d",
+      "effective_time": "20261014",
+      "version": "3",
+      "openfda": {
+        "application_number": [
+          "M012"
+        ],
+        "brand_name": [
+          "Guaifenesin"
+        ],
+        "generic_name": [
+          "GUAIFENESIN 400 MG"
+        ],
+        "manufacturer_name": [
+          "Zennova LLC"
+        ],
+        "product_ndc": [
+          "81993-002"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "GUAIFENESIN"
+        ],
+        "rxcui": [
+          "359601"
+        ],
+        "spl_id": [
+          "5dcf0b44-f146-e929-e063-6394a90a345d"
+        ],
+        "spl_set_id": [
+          "52f5cda7-382e-199a-e063-6294a90ab75b"
+        ],
+        "package_ndc": [
+          "81993-002-01",
+          "81993-002-02",
+          "81993-002-03",
+          "81993-002-04",
+          "81993-002-05"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000193956",
+          "N0000008867",
+          "N0000009560"
+        ],
+        "pharm_class_epc": [
+          "Expectorant [EPC]"
+        ],
+        "pharm_class_pe": [
+          "Decreased Respiratory Secretion Viscosity [PE]",
+          "Increased Respiratory Secretions [PE]"
+        ],
+        "unii": [
+          "495W7451VQ"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 16500,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Muscle Rub Cream Menthol 10%, Methyl Salicylate 15% MENTHOL MENTHOL METHYL SALICYLATE SALICYLIC ACID POLYSORBATE 80 TROLAMINE PROPYLPARABEN CARBOMER 940 CETYL ALCOHOL GLYCERYL MONOSTEARATE METHYLPARABEN WATER STEARIC ACID GLYCERIN"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts",
+        "Distributed By Trifecta Pharmaceuticals USA, LLC. 101 NE Third Avenue, Suite 1500 Ft. Lauderdale, FL. 33301 www.trifecta-pharma.com"
+      ],
+      "active_ingredient": [
+        "Active Ingredient Menthol 10%",
+        "Active Ingredient Methyl Salicylate 15%"
+      ],
+      "purpose": [
+        "Topical Analgesic"
+      ],
+      "indications_and_usage": [
+        "For the temporary relief of minor aches and pains of muscles and joints associated with simple backache, arthritis, strains, bruises and sprains"
+      ],
+      "warnings": [
+        "Warnings For external use only Do not use: On wounds or damaged, broken, (open) or irritated skin With a heating pad Ask a doctor before use if you are pregnant or breast feeding. When using this product Avoid contact with eyes or mucous membrane Do not bandage tightly"
+      ],
+      "stop_use": [
+        "Stop Use and ask a doctor Conditions worsens or does not improve within 7 days Symptoms clear up and occur again within a few days Excessive skin irritation develops A temporary burning sensation may occur upon application, but generally disappears in a few days"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of the reach of Children If swallowed, get medical help or contact a Poison Control Center immediately"
+      ],
+      "dosage_and_administration": [
+        "Directions Adults and children 12 years of age or older. Apply to the affected area not more than 3 to 4 times daily. Children under 12 years of age. consult a doctor Unless treating hands, wash hands thoroughly with soap and water immediately after use."
+      ],
+      "storage_and_handling": [
+        "Other Information Store at controlled room temperature 20º-25ºC (68º-77ºF) Questions ? Call 1-888-296-9067"
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredients Carbomer 940, Cetyl alcohol, Glycerol, Glyceryl monostearate, Methylparaben, Polysorbate 80, Propylparaben, Purified Water, Stearic acid, Trolamine"
+      ],
+      "package_label_principal_display_panel": [
+        "Packaging Globe Muscle Cream"
+      ],
+      "set_id": "44d3638d-f29b-0e01-e054-00144ff88e88",
+      "id": "29b3ae6b-a098-f62c-e063-6294a90a150b",
+      "effective_time": "20241220",
+      "version": "5",
+      "openfda": {
+        "application_number": [
+          "M017"
+        ],
+        "brand_name": [
+          "Muscle Rub Cream"
+        ],
+        "generic_name": [
+          "MENTHOL 10%, METHYL SALICYLATE 15%"
+        ],
+        "manufacturer_name": [
+          "Trifecta Pharmaceuticals USA, LLC."
+        ],
+        "product_ndc": [
+          "69396-024"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "MENTHOL",
+          "METHYL SALICYLATE"
+        ],
+        "rxcui": [
+          "311498"
+        ],
+        "spl_id": [
+          "29b3ae6b-a098-f62c-e063-6294a90a150b"
+        ],
+        "spl_set_id": [
+          "44d3638d-f29b-0e01-e054-00144ff88e88"
+        ],
+        "package_ndc": [
+          "69396-024-05"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "L7T10EIP3A",
+          "LAV5U5022Y"
+        ]
+      }
+    }
+  ]
+}

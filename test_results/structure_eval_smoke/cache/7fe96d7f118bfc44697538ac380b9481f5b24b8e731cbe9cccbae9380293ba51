@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 597,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Kroger Hot and Cold Medicated Patch MENTHOL MINERAL OIL CARBOXYMETHYLCELLULOSE DIHYDROXYALUMINUM AMINOACETATE GLYCERIN KAOLIN METHYLPARABEN SODIUM POLYACRYLATE (2500000 MW) POLYACRYLIC ACID (250000 MW) POLYSORBATE 80 PROPYLENE GLYCOL PROPYLPARABEN POVIDONE, UNSPECIFIED TARTARIC ACID TITANIUM DIOXIDE WATER MENTHOL MENTHOL PETROLATUM"
+      ],
+      "active_ingredient": [
+        "ACTIVE INGREDIENT Active Ingredient ...............................................................................................Purpose Menthol 5%...............................................................................................Topical Analgesic"
+      ],
+      "inactive_ingredient": [
+        "INACTIVE INGREDIENT CMC, Dihydroxy aluminum Aminoacetate, Glycerin, Kaolin, Mineral Oil, Methylparaben, Petrolatum, Polyacrylic Acid, Polysorbate 80, Propylene Glycol, Propylparaben, PVP, Sodium Polyacrylate, Tartaric Acid, Titanium Dioxide, Water"
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP OUT OF REACH OF CHILDREN Do not use on infants. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "indications_and_usage": [
+        "INDICATIONS & USAGE Temporarily relieves minor aches and pains of muscles and joins associated with: ■ arthritis ■ simple backache ■ bursitis ■ tendonitis ■ strains ■ sprains ■ bruises ■ cramps"
+      ],
+      "warnings": [
+        "WARNINGS For External Use Only."
+      ],
+      "dosage_and_administration": [
+        "DOSAGE & ADMINISTRATION Adults and children 12 years of age and over: Carefully remove backing from patch. Apply sticky side of patch to affected area. Wear one patch up to 8 hours. Repeat as necessary, but no more than 4 times daily. Reseal pouch after opening. Children under 12 years of age: Consult a physician."
+      ],
+      "purpose": [
+        "PURPOSE Topical Analgesic"
+      ],
+      "when_using": [
+        "When using this product Use only as directed ■ Don’t bandage tightly or use with heating pad ■ Avoid contact with eyes and mucous membranes ■ Don’t apply to wounds or damaged skin."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor If condition worsens ■ If redness is present ■ If irritation develops ■ If symptoms persist for more than 7 days or clear up and occur again within a few days."
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breastfeeding ask a health professional before use."
+      ],
+      "package_label_principal_display_panel": [
+        "label"
+      ],
+      "set_id": "0331c1dd-fe30-421a-85a7-6c6886e7ab27",
+      "id": "472da107-fddb-3694-e063-6394a90a0918",
+      "effective_time": "20251230",
+      "version": "6",
+      "openfda": {
+        "application_number": [
+          "M017"
+        ],
+        "brand_name": [
+          "Kroger Hot and Cold Medicated Patch"
+        ],
+        "generic_name": [
+          "MENTHOL"
+        ],
+        "manufacturer_name": [
+          "Kroger Company"
+        ],
+        "product_ndc": [
+          "30142-979"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "MENTHOL"
+        ],
+        "rxcui": [
+          "420222"
+        ],
+        "spl_id": [
+          "472da107-fddb-3694-e063-6394a90a0918"
+        ],
+        "spl_set_id": [
+          "0331c1dd-fe30-421a-85a7-6c6886e7ab27"
+        ],
+        "package_ndc": [
+          "30142-979-05"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "L7T10EIP3A"
+        ]
+      }
+    }
+  ]
+}

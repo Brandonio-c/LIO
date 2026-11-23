@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 9988,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "CAN ALBEX 30X Candida albicans CANDIDA ALBICANS CANDIDA ALBICANS ALCOHOL WATER"
+      ],
+      "active_ingredient": [
+        "Active ingredients Candida albicans 30X"
+      ],
+      "purpose": [
+        "Uses Helps promote and maintain natural resistance to thrush and alleviates symptoms associated with yeast infections."
+      ],
+      "warnings": [
+        "Warnings Stop use and ask a doctor if symptoms persist or worsen. Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away. If pregnant or breastfeeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children."
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breastfeeding, ask a health professional before use."
+      ],
+      "other_safety_information": [
+        "Other information Store in a cool, dry place."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Ethanol (beet), purified water"
+      ],
+      "do_not_use": [
+        "Do not use if seal is missing or broken."
+      ],
+      "indications_and_usage": [
+        "Uses Helps promote and maintain natural resistance to thrush and alleviates symptoms associated with yeast infections. Directions To be taken 20 minutes away from food. Place drops directly under the tongue or into ¼ oz of water. Adults and adolescents (12 years and older) Take 10 drops two to three times daily or as recommended by your healthcare practitioner. Children (under 12 years) Take under the direction of your healthcare practitioner."
+      ],
+      "dosage_and_administration": [
+        "Directions To be taken 20 minutes away from food. Place drops directly under the tongue or into ¼ oz of water. Adults and adolescents (12 years and older) Take 10 drops two to three times daily or as recommended by your healthcare practitioner. Children (under 12 years) Take under the direction of your healthcare practitioner."
+      ],
+      "package_label_principal_display_panel": [
+        "Genestra Brands NDC 62106-2612-0 Can Albex 30X Homeopathic Preparation Temporarily alleviates mild yeast infection symptoms. Contains 31% Alcohol 1 fl oz (30 mL) 62106-2612"
+      ],
+      "set_id": "2f0efb57-63b0-38b0-e054-00144ff8d46c",
+      "id": "ed11f0cb-f2b3-732a-e053-2a95a90a6c45",
+      "effective_time": "20221109",
+      "version": "5",
+      "openfda": {
+        "brand_name": [
+          "CAN ALBEX 30X"
+        ],
+        "generic_name": [
+          "CANDIDA ALBICANS"
+        ],
+        "manufacturer_name": [
+          "Seroyal USA"
+        ],
+        "product_ndc": [
+          "62106-2612"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "SUBLINGUAL"
+        ],
+        "substance_name": [
+          "CANDIDA ALBICANS"
+        ],
+        "spl_id": [
+          "ed11f0cb-f2b3-732a-e053-2a95a90a6c45"
+        ],
+        "spl_set_id": [
+          "2f0efb57-63b0-38b0-e054-00144ff8d46c"
+        ],
+        "package_ndc": [
+          "62106-2612-0"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000185372",
+          "N0000175629",
+          "N0000184306",
+          "N0000185001",
+          "M0008890",
+          "M0000728"
+        ],
+        "pharm_class_epc": [
+          "Non-Standardized Fungal Allergenic Extract [EPC]"
+        ],
+        "pharm_class_pe": [
+          "Increased Histamine Release [PE]",
+          "Cell-mediated Immunity [PE]",
+          "Increased IgG Production [PE]"
+        ],
+        "pharm_class_cs": [
+          "Fungal Proteins [CS]",
+          "Allergens [CS]"
+        ],
+        "unii": [
+          "4D7G21HDBC"
+        ]
+      }
+    }
+  ]
+}

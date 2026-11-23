@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 17200,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Equate Cold Therapy Pain Relieving Menthol MENTHOL, UNSPECIFIED FORM MENTHOL, UNSPECIFIED FORM ECHINACEA ANGUSTIFOLIA LEAF GREEN TEA LEAF ISOPROPYL MYRISTATE CHAMOMILE ALCOHOL WATER ARNICA MONTANA FLOWER WATER ILEX PARAGUARIENSIS LEAF DIMETHYL SULFONE JUNIPER BERRY"
+      ],
+      "active_ingredient": [
+        "Active ingredient Menthol 10.5%"
+      ],
+      "purpose": [
+        "Purpose Topical Analgesic"
+      ],
+      "indications_and_usage": [
+        "Uses For the temporary relief of minor aches and pains of muscles and joints associated with simple backache arthritis strains bruises sprains"
+      ],
+      "warnings": [
+        "Warnings For external use only. Flammable: Keep away from excessive heat or open flame When using this product avoid contact with the eyes or on mucous membranes do no apply to wounds or damaged skin do not apply to irritated skin or if excessive irritation develops do not bandage tightly or use with heating pad or device Stop use and ask a doctor if you experience pain, swelling or blistering of the skin condition worsens, or if symptoms persist for more than 7 days or clear up and occur again within a few days If pregnant or breast-feeding, ask a health professional before use. Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "when_using": [
+        "When using this product avoid contact with the eyes or on mucous membranes do no apply to wounds or damaged skin do not apply to irritated skin or if excessive irritation develops do not bandage tightly or use with heating pad or device"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if you experience pain, swelling or blistering of the skin condition worsens, or if symptoms persist for more than 7 days or clear up and occur again within a few days"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions Adults and children 12 years of age and older: Spray on affected area not more than 4 times daily. Children under 12 years of age: Consult a physician."
+      ],
+      "other_safety_information": [
+        "Other information store at 20-25°C (68-77°F) store in a cool dry place away from direct sunlight"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Arnica Montana Flower Extract, Calendula Officinalis Flower Extract, Camellia Sinensis Extract, Chamomilla Recutita (Matricaria) Flower Extract, Echinacea Angustifolia Extract, Ilex Paraguariensis Leaf Extract, Isopropyl Myristate, Juniperus Communis Fruit Extract, Methylsulfonylmethane, SDS Alcohol 40-B, Water."
+      ],
+      "questions": [
+        "Questions or comments? 1-888-287-1915"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal Dispal Panel - 85 g Can equate TM NDC 79903-430-03 Compare to Biofreeze® Spray active ingredient* Cold Therapy Pain Relieving Spray Menthol 10.5%/Topical Analgesic For the temporary relief of arthritis, back pain, sore muscle & joints Soothing menthol Continuous spray Paraben Free 360° Spray NET WT 3 OZ (85 g) Can Label"
+      ],
+      "set_id": "46a3c9e9-5cd3-4bc4-e063-6394a90a7178",
+      "id": "4b2fa14f-446e-64d3-e063-6394a90a774a",
+      "effective_time": "20260219",
+      "version": "3",
+      "openfda": {
+        "application_number": [
+          "M017"
+        ],
+        "brand_name": [
+          "Equate Cold Therapy Pain Relieving"
+        ],
+        "generic_name": [
+          "MENTHOL"
+        ],
+        "manufacturer_name": [
+          "Walmart Inc"
+        ],
+        "product_ndc": [
+          "79903-430"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "MENTHOL, UNSPECIFIED FORM"
+        ],
+        "rxcui": [
+          "1489073"
+        ],
+        "spl_id": [
+          "4b2fa14f-446e-64d3-e063-6394a90a774a"
+        ],
+        "spl_set_id": [
+          "46a3c9e9-5cd3-4bc4-e063-6394a90a7178"
+        ],
+        "package_ndc": [
+          "79903-430-03"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0194346608157"
+        ],
+        "unii": [
+          "L7T10EIP3A"
+        ]
+      }
+    }
+  ]
+}

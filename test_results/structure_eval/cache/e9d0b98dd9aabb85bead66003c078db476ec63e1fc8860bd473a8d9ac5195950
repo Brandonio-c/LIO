@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 17069,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Le Mieux Naked Glow Bronzer SPF 50 Sunscreen MICA CI 77891 TIN OXIDE CAPRYLYL GLYCOL CAPRYLOYL GLYCINE NEOPENTYL GLYCOL DIHEPTANOATE POLYMETHYLSILSESQUIOXANE (11 MICRONS) CAPRYLOYL GLYCERIN/SEBACIC ACID COPOLYMER (2000 MPA.S) COPRINUS COMATUS FRUITING BODY GRIFOLA FRONDOSA WHOLE HOMOSALATE HOMOSALATE OCTOCRYLENE OCTOCRYLENE ISOHEXADECANE PALMITOYL TRIPEPTIDE-1 ISODODECANE C18-36 ACID TRIGLYCERIDE ETHYLHEXYL METHOXYCRYLENE ACETYL HEXAPEPTIDE-1 C12-15 ALKYL BENZOATE GANODERMA LUCIDUM WHOLE OCTYLDODECYL NEOPENTANOATE PALMITOYL TETRAPEPTIDE-7 UNDECYLENOYL GLYCINE CI 77491 DIMETHICONE CROSSPOLYMER (180000 MPA.S) DICAPRYLYL CARBONATE OPHIOCORDYCEPS SINENSIS TETRAHEXYLDECYL ASCORBATE POLYGLUTAMIC ACID (1200 MW) TERMINALIA CHEBULA FRUIT AVOBENZONE AVOBENZONE OCTISALATE OCTISALATE ETHYLHEXYLGLYCERIN GLYCERIN ISOPROPYL PALMITATE MEADOWFOAM ESTOLIDE RHODODENDRON FERRUGINEUM WHOLE SORBITAN LAURATE DIMETHICONE/BIS-ISOBUTYL PPG-20 CROSSPOLYMER LECITHIN, SUNFLOWER WATER .ALPHA.-TOCOPHEROL ACETATE, D- Bronze to Brown"
+      ],
+      "active_ingredient": [
+        "ACTIVE INGREDIENTS Drug Facts Active Ingredients ……………….….. Purpose Avobenzone 3.0% ………………...... Sunscreen Homosalate 8.0% …………….......… Sunscreen Octisalate 5.0% ……………..........… Sunscreen Octocrylene 4.0% …………….......... Sunscreen"
+      ],
+      "purpose": [
+        "USES Helps prevent sunburn If used as directed, with other sun protection measures (see Directions), decreases the risk of skin cancer and early skin aging caused by the sun"
+      ],
+      "warnings": [
+        "WARNINGS For external use only Do not use on damaged or broken skin Stop use and ask a doctor if rash occurs When using this product keep out of eyes. Rinse with water to remove."
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP OUT OF REACH Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "DIRECTIONS Apply liberally 15 minutes before sun exposure Rub in well. Reapply at least every 2 hours Children under 6 months: Ask a doctor Sun Protection Measures: Spending time in the sun increases your risk of skin cancer and early skin aging. To decrease the risk, regularly use a sunscreen with Broad Spectrum SPF of 15 or higher and other sun protection measures including: Limit time in the sun, especially 10 a.m. to 2 p.m. Wear long-sleeved shirts, pants, hats, and sunglasses."
+      ],
+      "other_safety_information": [
+        "OTHER INFORMATION Protect the product in this container from excessive heat and direct sunlight"
+      ],
+      "inactive_ingredient": [
+        "INACTIVE INGREDIENTS Acetyl Hexapeptide-1, C12-15 Alkyl Benzoate, C18-36 Acid Glycol Ester, C18-36 Acid Triglyceride, Capryloyl Glycerin/Sebacic Acid Copolymer, Capryloyl Glycine, Caprylyl Glycol, Coprinus Comatus (Mushroom) Extract, Cordyceps Sinensis Extract, Dicaprylyl Carbonate, Dimethicone Crosspolymer-3, Dimethicone/Bis-Isobutyl PPG-20 Crosspolymer, Ethylhexyl Methoxycrylene, Ethylhexylglycerin, Ganoderma Lucidum (Reishi Mushroom) Extract, Glycerin, Grifola Frondosa (Mushroom) Extract, Isododecane, Isohexadecane, Isopropyl Palmitate, Lecithin, Meadowfoam Estolide, Neopentyl Glycol Diheptanoate, Octyldodecyl Neopentanoate, Palmitoyl Tetrapeptide-7, Palmitoyl Tripeptide-1, Polyglutamic Acid, Polymethylsilsesquioxane, Rhododendron Ferrugineum Extract, Sorbitan Laurate, Terminalia Chebula (Haritaki) Fruit Extract, Tetrahexyldecyl Ascorbate, Tocopheryl Acetate, Undecylenoyl Glycine, Water. May contain: Calcium Sodium Borosilicate, Iron Oxides, Mica, Synthetic Fluorphlogopite and Titanium Dioxide."
+      ],
+      "indications_and_usage": [
+        "INDICATIONS & USAGE Helps prevent sunburn. If used as directed with other sun protection measures (see Directions), decreases the risk of skin cancer and early skin aging caused by the sun."
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPAL DISPLAY PANEL UNIT CARTON"
+      ],
+      "set_id": "46465db7-c1f0-6980-e063-6294a90a3ed8",
+      "id": "46465db7-c1f1-6980-e063-6294a90a3ed8",
+      "effective_time": "20250214",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "Le Mieux Naked Glow Bronzer SPF 50"
+        ],
+        "generic_name": [
+          "SUNSCREEN"
+        ],
+        "manufacturer_name": [
+          "YB CHEMIA LLC"
+        ],
+        "product_ndc": [
+          "81208-206"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "HOMOSALATE",
+          "OCTOCRYLENE",
+          "AVOBENZONE",
+          "OCTISALATE"
+        ],
+        "spl_id": [
+          "46465db7-c1f1-6980-e063-6294a90a3ed8"
+        ],
+        "spl_set_id": [
+          "46465db7-c1f0-6980-e063-6294a90a3ed8"
+        ],
+        "package_ndc": [
+          "81208-206-02"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0850051361076"
+        ],
+        "unii": [
+          "V06SV4M95S",
+          "5A68WGF6WM",
+          "G63QQF2NOX",
+          "4X49Y0596W"
+        ]
+      }
+    }
+  ]
+}

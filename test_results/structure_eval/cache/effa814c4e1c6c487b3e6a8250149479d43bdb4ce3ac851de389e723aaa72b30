@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 24,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Dove Even Tone plus Niacinamide Apple Blossom and Mango Butter Dry Spray 72H Antiperspirant Deodorant CALCIUM CHLORIDE 1,1-DIFLUOROETHANE GLYCINE BUTANE CYCLOMETHICONE 5 ISOBUTANE PPG-14 BUTYL ETHER SUNFLOWER OIL DISTEARDIMONIUM HECTORITE ALKYL (C12-15) BENZOATE PROPANE BUTYLATED HYDROXYTOLUENE OCTYLDODECANOL PROPYLENE CARBONATE DIMETHICONOL (40 CST) ALUMINUM SESQUICHLOROHYDRATE ALUMINUM SESQUICHLOROHYDRATE ISOPROPYL ISOSTEARATE NIACINAMIDE"
+      ],
+      "description": [
+        "DOVE EVEN TONE+ NIACINAMIDE APPLE BLOSSOM & MANGO BUTTER DRY SPRAY 72H ANTIPERSPIRANT DEODORANT - aluminum sesquichlorohydrate aerosol, spray"
+      ],
+      "active_ingredient": [
+        "Drug Facts Active ingredient Aluminum Sesquichlorohydrate (12.2)"
+      ],
+      "purpose": [
+        "Purpose antiperspirant"
+      ],
+      "indications_and_usage": [
+        "Uses • reduces underarm wetness"
+      ],
+      "warnings": [
+        "Warnings • FLAMMABLE. DO NOT USE NEAR HEAT, FLAME, OR WHILE SMOKING. CAN CAUSE SERIOUS INJURY OR DEATH • Keep away from face and mouth to avoid breathing in. • Avoid spraying in eyes. Contents under pressure. Do not puncture or incinerate. Do not expose to heat or store at temperatures above 120°F/50°C or in enclosed places that could overheat • Do not use on broken skin. Stop use if rash or irritation occurs. • Ask a doctor before using if you have kidney disease. • USE ONLY AS DIRECTED. INTENTIONAL MISUSE BY DELIBERATELY CONCENTRATING AND INHALING THE CONTENTS CAN BE HARMFUL OR FATAL. Help stop inhalation abuse. For information visit www.inhalant.org"
+      ],
+      "keep_out_of_reach_of_children": [
+        "• KEEP OUT OF REACH OF CHILDREN"
+      ],
+      "dosage_and_administration": [
+        "Directions apply to underarms only"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Butane, Hydrofluorocarbon 152a, Cyclopentasiloxane, Isobutane, PPG-14 Butyl Ether, Isopropyl Isostearate, Glycine, Helianthus Annuus (Sunflower) Seed Oil, C12-15 Alkyl Benzoate, Disteardimonium Hectorite, Fragrance (Parfum), Calcium Chloride, Propane, BHT, Octyldodecanol, Propylene Carbonate, Dimethiconol, Niacinamide"
+      ],
+      "questions": [
+        "Questions? Call 1-800-761-3683"
+      ],
+      "package_label_principal_display_panel": [
+        "Dove Apple Blossom Dry Spray AP"
+      ],
+      "set_id": "0024658a-0b42-790f-e063-6294a90aefe8",
+      "id": "26454eb2-2efd-f603-e063-6394a90a76d5",
+      "effective_time": "20241106",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M019"
+        ],
+        "brand_name": [
+          "Dove"
+        ],
+        "generic_name": [
+          "EVEN TONE PLUS NIACINAMIDE APPLE BLOSSOM AND MANGO BUTTER DRY SPRAY 72H ANTIPERSPIRANT DEODORANT"
+        ],
+        "manufacturer_name": [
+          "Conopco, Inc. d/b/a Unilever"
+        ],
+        "product_ndc": [
+          "64942-2138"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ALUMINUM SESQUICHLOROHYDRATE"
+        ],
+        "spl_id": [
+          "26454eb2-2efd-f603-e063-6394a90a76d5"
+        ],
+        "spl_set_id": [
+          "0024658a-0b42-790f-e063-6294a90aefe8"
+        ],
+        "package_ndc": [
+          "64942-2138-1"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "UCN889409V"
+        ]
+      }
+    }
+  ]
+}

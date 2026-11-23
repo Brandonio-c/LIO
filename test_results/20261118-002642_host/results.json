@@ -1,0 +1,1197 @@
+{
+  "run_id": "20261118-002642_host",
+  "target": "/dev/cu.usbmodem1101",
+  "started": "2026-11-18T00:26:42-05:00",
+  "environment": {
+    "os": "macOS-27.0.1-x86_64-i386-64bit",
+    "python": "3.12.4",
+    "lio_package": "0.2.0",
+    "git_commit": "f05f1f2b10e2108666cbf72ea6f8b0835971bccf",
+    "git_dirty": true,
+    "host": "lhc-mac-colelou.nlm.nih.gov",
+    "user": "coleloughbc"
+  },
+  "firmware": {
+    "banner": "# BOOT name=lio fw=2.5.2 proto=1 build=2026-11-17 adc_ok=1 hw_wdt=0",
+    "fw": "2.5.2",
+    "proto": "1",
+    "build": "2026-11-17",
+    "adc_addr": "0x48",
+    "adc_ok": "1",
+    "gain": "1",
+    "rate": "128",
+    "settle_ms": "8",
+    "wdt_a_ms": "2000",
+    "wdt_b_ms": "5000",
+    "wdt_a_cap_ms": "5000",
+    "wdt_b_cap_ms": "10000",
+    "comms_ms": "10000",
+    "arm_ms": "60000",
+    "step_max": "2048",
+    "jog_max": "2048",
+    "jog_v_max": "1000",
+    "jog_acc_max": "1000",
+    "wake_ms_max": "3000",
+    "motion_armed": "0",
+    "debug_states": "1",
+    "mains": "0",
+    "rail_b_first": "9",
+    "light_in_motion": "0",
+    "arm_token": "0xC9E2",
+    "hw_wdt": "0"
+  },
+  "config": {
+    "path": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
+    "sha256": "eb4a5aa9ccb1d787ad86893878c06656b81267ed508e5557611ff713af477470",
+    "provisional": true
+  },
+  "metadata": {
+    "sample_id": "empty",
+    "operator": "unknown",
+    "notes": "no-prompt full run after rail split fix (fw 2.5.2), hole 9 reworked"
+  },
+  "faults": [],
+  "results": [
+    {
+      "id": "T01.1",
+      "name": "Python and dependency versions",
+      "module": "T01",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.019818540895357728,
+      "subs": [
+        {
+          "id": "T01.1/python",
+          "name": "Python version",
+          "status": "PASS",
+          "message": "3.12.4",
+          "criteria": ">= 3.10",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/pyserial",
+          "name": "pyserial installed",
+          "status": "PASS",
+          "message": "3.5",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/pyyaml",
+          "name": "pyyaml installed",
+          "status": "PASS",
+          "message": "6.0.3",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/numpy",
+          "name": "numpy installed",
+          "status": "PASS",
+          "message": "2.5.4",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/matplotlib",
+          "name": "matplotlib installed",
+          "status": "PASS",
+          "message": "3.11.2",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/jinja2",
+          "name": "jinja2 installed",
+          "status": "PASS",
+          "message": "3.1.6",
+          "criteria": "importable",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "python": "3.12.4",
+        "platform": "macOS-27.0.1-x86_64-i386-64bit",
+        "pyserial": "3.5",
+        "pyyaml": "6.0.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "jinja2": "3.1.6"
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T01.2",
+      "name": "Serial port discovery",
+      "module": "T01",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.01993045792914927,
+      "subs": [
+        {
+          "id": "T01.2/port",
+          "name": "Selected port is present",
+          "status": "PASS",
+          "message": "/dev/cu.usbmodem1101: present",
+          "criteria": "--lio-port names an existing serial port",
+          "measured": {}
+        },
+        {
+          "id": "T01.2/chip",
+          "name": "USB-serial chip recognised",
+          "status": "PASS",
+          "message": "VID:PID 2341:0074 (Arduino Nano R4 (native USB))",
+          "criteria": "one of link.usb_ids",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "ports": [
+          {
+            "device": "/dev/cu.usbmodem1101",
+            "vid": 9025,
+            "pid": 116,
+            "chip": "Arduino Nano R4 (native USB)"
+          },
+          {
+            "device": "/dev/cu.Bluetooth-Incoming-Port",
+            "vid": null,
+            "pid": null,
+            "chip": null
+          },
+          {
+            "device": "/dev/cu.debug-console",
+            "vid": null,
+            "pid": null,
+            "chip": null
+          }
+        ],
+        "auto_pick": "/dev/cu.usbmodem1101"
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T01.3",
+      "name": "Configuration loads and is self-consistent",
+      "module": "T01",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.04783308401238173,
+      "subs": [
+        {
+          "id": "T01.3/load",
+          "name": "Config validates",
+          "status": "PASS",
+          "message": "lio_hw.yaml sha256 eb4a5aa9ccb1",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T01.3/holes",
+          "name": "16 holes",
+          "status": "PASS",
+          "message": "16 entries",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T01.3/rails",
+          "name": "Rails split A = 1-8, B = 9-16 (as built)",
+          "status": "PASS",
+          "message": "A=[1, 2, 3, 4, 5, 6, 7, 8] B=[9, 10, 11, 12, 13, 14, 15, 16]",
+          "criteria": "",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "config": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
+        "sha256": "eb4a5aa9ccb1d787ad86893878c06656b81267ed508e5557611ff713af477470",
+        "provisional": true,
+        "thresholds_provisional": true
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T02.1",
+      "name": "Port open and boot banner",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.008445125073194504,
+      "subs": [
+        {
+          "id": "T02.1/banner",
+          "name": "Boot banner within the timeout",
+          "status": "PASS",
+          "message": "0.06 s",
+          "criteria": "<= 3 s",
+          "measured": {
+            "boot_s": 0.06002299999818206
+          }
+        },
+        {
+          "id": "T02.1/identity",
+          "name": "Banner identifies LIO firmware",
+          "status": "PASS",
+          "message": "# BOOT name=lio fw=2.5.2 proto=1 build=2026-11-17 adc_ok=1 hw_wdt=0",
+          "criteria": "name=lio, fw and proto present",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "boot_s": 0.06002299999818206,
+        "banner": "# BOOT name=lio fw=2.5.2 proto=1 build=2026-11-17 adc_ok=1 hw_wdt=0"
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T02.2",
+      "name": "PING round-trip latency",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.09595595800783485,
+      "subs": [
+        {
+          "id": "T02.2/answered",
+          "name": "Every PING answered",
+          "status": "PASS",
+          "message": "100/100 answered",
+          "criteria": "all",
+          "measured": {
+            "lost": 0
+          }
+        },
+        {
+          "id": "T02.2/p99",
+          "name": "p99 round trip",
+          "status": "PASS",
+          "message": "median 0.87 ms, p99 0.94 ms, max 0.99 ms",
+          "criteria": "p99 < 50 ms",
+          "measured": {
+            "median_ms": 0.87102095130831,
+            "p99_ms": 0.9442210150882604,
+            "max_ms": 0.9867920307442546
+          }
+        }
+      ],
+      "measured": {
+        "rtt_ms": [
+          0.842,
+          0.85,
+          0.888,
+          0.87,
+          0.878,
+          0.863,
+          0.878,
+          0.841,
+          0.833,
+          0.861,
+          0.874,
+          0.89,
+          0.871,
+          0.869,
+          0.836,
+          0.844,
+          0.877,
+          0.923,
+          0.892,
+          0.868,
+          0.871,
+          0.862,
+          0.832,
+          0.855,
+          0.835,
+          0.889,
+          0.895,
+          0.943,
+          0.859,
+          0.885,
+          0.843,
+          0.83,
+          0.842,
+          0.896,
+          0.889,
+          0.881,
+          0.869,
+          0.93,
+          0.853,
+          0.851,
+          0.852,
+          0.853,
+          0.89,
+          0.882,
+          0.864,
+          0.873,
+          0.841,
+          0.909,
+          0.86,
+          0.853,
+          0.89,
+          0.88,
+          0.865,
+          0.879,
+          0.824,
+          0.824,
+          0.878,
+          0.881,
+          0.901,
+          0.87,
+          0.867,
+          0.871,
+          0.853,
+          0.858,
+          0.897,
+          0.931,
+          0.875,
+          0.88,
+          0.859,
+          0.874,
+          0.833,
+          0.824,
+          0.873,
+          0.897,
+          0.888,
+          0.932,
+          0.931,
+          0.921,
+          0.882,
+          0.855,
+          0.85,
+          0.854,
+          0.909,
+          0.886,
+          0.894,
+          0.926,
+          0.867,
+          0.846,
+          0.857,
+          0.854,
+          0.923,
+          0.892,
+          0.936,
+          0.987,
+          0.944,
+          0.868,
+          0.941,
+          0.921,
+          0.848,
+          0.859
+        ]
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T02.3",
+      "name": "INFO fields, versions and safety limits",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.015796208987012506,
+      "subs": [
+        {
+          "id": "T02.3/fields",
+          "name": "INFO fields present",
+          "status": "PASS",
+          "message": "21 fields",
+          "criteria": "all protocol-1 INFO fields",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/version",
+          "name": "Firmware compatible with this host package",
+          "status": "PASS",
+          "message": "fw 2.5.2 proto 1",
+          "criteria": ">= 2.0.0, proto 1",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/settle_ms",
+          "name": "settle_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "8",
+          "criteria": "8",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/wdt_a_ms",
+          "name": "wdt_a_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "2000",
+          "criteria": "2000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/wdt_b_ms",
+          "name": "wdt_b_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "5000",
+          "criteria": "5000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/wdt_a_cap_ms",
+          "name": "wdt_a_cap_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "5000",
+          "criteria": "5000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/wdt_b_cap_ms",
+          "name": "wdt_b_cap_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "10000",
+          "criteria": "10000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/comms_ms",
+          "name": "comms_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "10000",
+          "criteria": "10000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/arm_ms",
+          "name": "arm_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "60000",
+          "criteria": "60000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/step_max",
+          "name": "step_max matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "2048",
+          "criteria": "2048",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/jog_max",
+          "name": "jog_max matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "2048",
+          "criteria": "2048",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/jog_v_max",
+          "name": "jog_v_max matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "1000",
+          "criteria": "1000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/jog_acc_max",
+          "name": "jog_acc_max matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "1000",
+          "criteria": "1000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/wake_ms_max",
+          "name": "wake_ms_max matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "3000",
+          "criteria": "3000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/adc/addr",
+          "name": "ADC address matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "0x48",
+          "criteria": "0x48",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/adc/gain",
+          "name": "ADC gain matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "1",
+          "criteria": "1",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/adc/rate",
+          "name": "ADC rate matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "128",
+          "criteria": "128",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "info": {
+          "fw": "2.5.2",
+          "proto": "1",
+          "build": "2026-11-17",
+          "adc_addr": "0x48",
+          "adc_ok": "1",
+          "gain": "1",
+          "rate": "128",
+          "settle_ms": "8",
+          "wdt_a_ms": "2000",
+          "wdt_b_ms": "5000",
+          "wdt_a_cap_ms": "5000",
+          "wdt_b_cap_ms": "10000",
+          "comms_ms": "10000",
+          "arm_ms": "60000",
+          "step_max": "2048",
+          "jog_max": "2048",
+          "jog_v_max": "1000",
+          "jog_acc_max": "1000",
+          "wake_ms_max": "3000",
+          "motion_armed": "0",
+          "debug_states": "1",
+          "mains": "0",
+          "rail_b_first": "9",
+          "light_in_motion": "0",
+          "arm_token": "0xC9E2",
+          "hw_wdt": "0"
+        }
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T02.4",
+      "name": "Robustness to bad input",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.12008608307223767,
+      "subs": [
+        {
+          "id": "T02.4/unknown",
+          "name": "Unknown command",
+          "status": "PASS",
+          "message": "@140 ERR FROBNICATE code=1 msg=unknown command",
+          "criteria": "ERR code=1",
+          "measured": {}
+        },
+        {
+          "id": "T02.4/badarg",
+          "name": "Bad argument",
+          "status": "PASS",
+          "message": "@141 ERR MEAS code=2 msg=usage: MEAS <1-16> [settle_ms] [n]",
+          "criteria": "ERR code=2",
+          "measured": {}
+        },
+        {
+          "id": "T02.4/missing",
+          "name": "Missing argument",
+          "status": "PASS",
+          "message": "@142 ERR CH code=2 msg=usage: CH <1-16> ON [ms]",
+          "criteria": "ERR code=2",
+          "measured": {}
+        },
+        {
+          "id": "T02.4/overflow",
+          "name": "Line over 64 characters",
+          "status": "PASS",
+          "message": "ERR ? code=6 msg=line too long",
+          "criteria": "ERR code=6",
+          "measured": {}
+        },
+        {
+          "id": "T02.4/garbage",
+          "name": "Garbage bytes, then PING",
+          "status": "PASS",
+          "message": "PING OK",
+          "criteria": "PING still answered",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T02.5",
+      "name": "Sequence numbers and interleaved events",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.34360837494023144,
+      "subs": [
+        {
+          "id": "T02.5/seq/1",
+          "name": "@1 echoed",
+          "status": "PASS",
+          "message": "@1 OK PING uptime_ms=1315204",
+          "criteria": "@1 OK PING",
+          "measured": {}
+        },
+        {
+          "id": "T02.5/seq/4242",
+          "name": "@4242 echoed",
+          "status": "PASS",
+          "message": "@4242 OK PING uptime_ms=1315205",
+          "criteria": "@4242 OK PING",
+          "measured": {}
+        },
+        {
+          "id": "T02.5/seq/99999",
+          "name": "@99999 echoed",
+          "status": "PASS",
+          "message": "@99999 OK PING uptime_ms=1315206",
+          "criteria": "@99999 OK PING",
+          "measured": {}
+        },
+        {
+          "id": "T02.5/noseq",
+          "name": "No @seq, none echoed",
+          "status": "PASS",
+          "message": "OK PING uptime_ms=1315206",
+          "criteria": "OK PING",
+          "measured": {}
+        },
+        {
+          "id": "T02.5/stream",
+          "name": "Response found after interleaved events",
+          "status": "PASS",
+          "message": "20 '# S' events then OK",
+          "criteria": "20 events",
+          "measured": {}
+        },
+        {
+          "id": "T02.5/async",
+          "name": "Asynchronous '# OFF' does not desynchronise",
+          "status": "PASS",
+          "message": "10/10 PINGs matched; 1 timer event(s) seen",
+          "criteria": "all PINGs answered in order, one '# OFF'",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T02.6",
+      "name": "RESET restores the boot state",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.028927833889611065,
+      "subs": [
+        {
+          "id": "T02.6/banner",
+          "name": "Banner after RESET",
+          "status": "PASS",
+          "message": "0.01 s",
+          "criteria": "<= 3 s",
+          "measured": {}
+        },
+        {
+          "id": "T02.6/safe",
+          "name": "STATUS shows the safe state",
+          "status": "PASS",
+          "message": "ch=0 ce1=0 ce2=0 mask=0x0000 armed=0",
+          "criteria": "ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle",
+          "measured": {}
+        },
+        {
+          "id": "T02.6/defaults",
+          "name": "Settings back to defaults",
+          "status": "PASS",
+          "message": "wdt_a_ms=2000 (was set to 200)",
+          "criteria": "2000",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T03.1",
+      "name": "I2C scan finds the ADS1115",
+      "module": "T03",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.02966362505685538,
+      "subs": [
+        {
+          "id": "T03.1/adc",
+          "name": "ADS1115 at 0x48",
+          "status": "PASS",
+          "message": "found ['0x48']",
+          "criteria": "0x48 acknowledges",
+          "measured": {}
+        },
+        {
+          "id": "T03.1/bus",
+          "name": "I2C lines (SDA, SCL)",
+          "status": "PASS",
+          "message": "lines idle high with pull-ups, not bridged; 0x48 answers at 166.666 kHz",
+          "criteria": "both idle high, rise on external pull-ups, not joined",
+          "measured": {}
+        },
+        {
+          "id": "T03.1/only",
+          "name": "No unexpected I2C devices",
+          "status": "PASS",
+          "message": "none",
+          "criteria": "only the ADS1115",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "addresses": [
+          "0x48"
+        ],
+        "i2c_diag": {
+          "sda": 1,
+          "scl": 1,
+          "sda_pu": 1,
+          "scl_pu": 1,
+          "bridge": 0,
+          "ack_slow": 0,
+          "ack_fast": 0,
+          "slow_hz": 166666,
+          "fast_hz": 166666,
+          "hz": 166666,
+          "present": 1
+        }
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T03.2",
+      "name": "Dark ADC noise, all inputs",
+      "module": "T03",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 2.2909334579017013,
+      "subs": [
+        {
+          "id": "T03.2/a0",
+          "name": "ADS A0 (ingaas) dark noise",
+          "status": "PASS",
+          "message": "mean -167.4, sigma 2.89 counts (n=64)",
+          "criteria": "sigma <= 20 counts",
+          "measured": {
+            "mean": -167.37,
+            "sigma": 2.89
+          }
+        },
+        {
+          "id": "T03.2/a1",
+          "name": "ADS A1 (opt101) dark noise",
+          "status": "PASS",
+          "message": "mean 57.0, sigma 0.40 counts (n=64)",
+          "criteria": "sigma <= 20 counts",
+          "measured": {
+            "mean": 57.0,
+            "sigma": 0.4
+          }
+        },
+        {
+          "id": "T03.2/a2",
+          "name": "ADS A2 (unconnected)",
+          "status": "PASS",
+          "message": "recorded only: mean 4570.2, sigma 9.10",
+          "criteria": "floating input",
+          "measured": {
+            "mean": 4570.23,
+            "sigma": 9.1
+          }
+        },
+        {
+          "id": "T03.2/a3",
+          "name": "ADS A3 (unconnected)",
+          "status": "PASS",
+          "message": "recorded only: mean 2733.6, sigma 2.06",
+          "criteria": "floating input",
+          "measured": {
+            "mean": 2733.58,
+            "sigma": 2.06
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T03.3",
+      "name": "Gain sweep on dark inputs",
+      "module": "T03",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 1.7743130410090089,
+      "subs": [
+        {
+          "id": "T03.3/ingaas/g2/3/lsb",
+          "name": "GAIN 2/3 accepted",
+          "status": "PASS",
+          "message": "lsb 0.1875 mV",
+          "criteria": "0.1875 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g1/lsb",
+          "name": "GAIN 1 accepted",
+          "status": "PASS",
+          "message": "lsb 0.125 mV",
+          "criteria": "0.125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g2/lsb",
+          "name": "GAIN 2 accepted",
+          "status": "PASS",
+          "message": "lsb 0.0625 mV",
+          "criteria": "0.0625 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g4/lsb",
+          "name": "GAIN 4 accepted",
+          "status": "PASS",
+          "message": "lsb 0.03125 mV",
+          "criteria": "0.03125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g8/lsb",
+          "name": "GAIN 8 accepted",
+          "status": "PASS",
+          "message": "lsb 0.015625 mV",
+          "criteria": "0.015625 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g16/lsb",
+          "name": "GAIN 16 accepted",
+          "status": "PASS",
+          "message": "lsb 0.0078125 mV",
+          "criteria": "0.0078125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g2/3",
+          "name": "ingaas at GAIN 2/3 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-20.95 mV vs -20.95 mV",
+          "criteria": "within 6.19 mV",
+          "measured": {
+            "mv": -20.953125
+          }
+        },
+        {
+          "id": "T03.3/ingaas/g1",
+          "name": "ingaas at GAIN 1 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-20.95 mV vs -20.95 mV",
+          "criteria": "within 6.04 mV",
+          "measured": {
+            "mv": -20.945
+          }
+        },
+        {
+          "id": "T03.3/ingaas/g2",
+          "name": "ingaas at GAIN 2 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-20.88 mV vs -20.95 mV",
+          "criteria": "within 6.09 mV",
+          "measured": {
+            "mv": -20.875
+          }
+        },
+        {
+          "id": "T03.3/ingaas/g4",
+          "name": "ingaas at GAIN 4 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-20.88 mV vs -20.95 mV",
+          "criteria": "within 6.05 mV",
+          "measured": {
+            "mv": -20.8809375
+          }
+        },
+        {
+          "id": "T03.3/ingaas/g8",
+          "name": "ingaas at GAIN 8 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-20.88 mV vs -20.95 mV",
+          "criteria": "within 6.04 mV",
+          "measured": {
+            "mv": -20.88484375
+          }
+        },
+        {
+          "id": "T03.3/ingaas/g16",
+          "name": "ingaas at GAIN 16 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-20.90 mV vs -20.95 mV",
+          "criteria": "within 6.05 mV",
+          "measured": {
+            "mv": -20.895546875
+          }
+        },
+        {
+          "id": "T03.3/opt101/g2/3/lsb",
+          "name": "GAIN 2/3 accepted",
+          "status": "PASS",
+          "message": "lsb 0.1875 mV",
+          "criteria": "0.1875 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g1/lsb",
+          "name": "GAIN 1 accepted",
+          "status": "PASS",
+          "message": "lsb 0.125 mV",
+          "criteria": "0.125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g2/lsb",
+          "name": "GAIN 2 accepted",
+          "status": "PASS",
+          "message": "lsb 0.0625 mV",
+          "criteria": "0.0625 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g4/lsb",
+          "name": "GAIN 4 accepted",
+          "status": "PASS",
+          "message": "lsb 0.03125 mV",
+          "criteria": "0.03125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g8/lsb",
+          "name": "GAIN 8 accepted",
+          "status": "PASS",
+          "message": "lsb 0.015625 mV",
+          "criteria": "0.015625 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g16/lsb",
+          "name": "GAIN 16 accepted",
+          "status": "PASS",
+          "message": "lsb 0.0078125 mV",
+          "criteria": "0.0078125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g2/3",
+          "name": "opt101 at GAIN 2/3 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "7.29 mV vs 7.11 mV",
+          "criteria": "within 5.28 mV",
+          "measured": {
+            "mv": 7.290000000000001
+          }
+        },
+        {
+          "id": "T03.3/opt101/g1",
+          "name": "opt101 at GAIN 1 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "7.11 mV vs 7.11 mV",
+          "criteria": "within 5.13 mV",
+          "measured": {
+            "mv": 7.11
+          }
+        },
+        {
+          "id": "T03.3/opt101/g2",
+          "name": "opt101 at GAIN 2 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "7.12 mV vs 7.11 mV",
+          "criteria": "within 5.13 mV",
+          "measured": {
+            "mv": 7.116875
+          }
+        },
+        {
+          "id": "T03.3/opt101/g4",
+          "name": "opt101 at GAIN 4 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "6.84 mV vs 7.11 mV",
+          "criteria": "within 5.13 mV",
+          "measured": {
+            "mv": 6.8378125
+          }
+        },
+        {
+          "id": "T03.3/opt101/g8",
+          "name": "opt101 at GAIN 8 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "7.53 mV vs 7.11 mV",
+          "criteria": "within 5.13 mV",
+          "measured": {
+            "mv": 7.5253125
+          }
+        },
+        {
+          "id": "T03.3/opt101/g16",
+          "name": "opt101 at GAIN 16 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "7.53 mV vs 7.11 mV",
+          "criteria": "within 5.13 mV",
+          "measured": {
+            "mv": 7.528828125
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T03.4",
+      "name": "ADC data rate",
+      "module": "T03",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 3.032244333997369,
+      "subs": [
+        {
+          "id": "T03.4/r8",
+          "name": "8 SPS conversion interval",
+          "status": "PASS",
+          "message": "120.742 ms (nominal 125.000 ms, overhead -4.258 ms)",
+          "criteria": "106.250-145.250 ms",
+          "measured": {
+            "interval_ms": 120.742,
+            "nominal_ms": 125.0
+          }
+        },
+        {
+          "id": "T03.4/r16",
+          "name": "16 SPS conversion interval",
+          "status": "PASS",
+          "message": "61.184 ms (nominal 62.500 ms, overhead -1.316 ms)",
+          "criteria": "53.125-73.375 ms",
+          "measured": {
+            "interval_ms": 61.184,
+            "nominal_ms": 62.5
+          }
+        },
+        {
+          "id": "T03.4/r32",
+          "name": "32 SPS conversion interval",
+          "status": "PASS",
+          "message": "31.242 ms (nominal 31.250 ms, overhead -0.008 ms)",
+          "criteria": "26.562-37.438 ms",
+          "measured": {
+            "interval_ms": 31.242,
+            "nominal_ms": 31.25
+          }
+        },
+        {
+          "id": "T03.4/r64",
+          "name": "64 SPS conversion interval",
+          "status": "PASS",
+          "message": "16.433 ms (nominal 15.625 ms, overhead +0.808 ms)",
+          "criteria": "13.281-19.469 ms",
+          "measured": {
+            "interval_ms": 16.433,
+            "nominal_ms": 15.625
+          }
+        },
+        {
+          "id": "T03.4/r128",
+          "name": "128 SPS conversion interval",
+          "status": "PASS",
+          "message": "8.863 ms (nominal 7.812 ms, overhead +1.050 ms)",
+          "criteria": "6.641-10.484 ms",
+          "measured": {
+            "interval_ms": 8.863,
+            "nominal_ms": 7.8125
+          }
+        },
+        {
+          "id": "T03.4/r250",
+          "name": "250 SPS conversion interval",
+          "status": "PASS",
+          "message": "5.288 ms (nominal 4.000 ms, overhead +1.288 ms)",
+          "criteria": "3.400-6.100 ms",
+          "measured": {
+            "interval_ms": 5.288,
+            "nominal_ms": 4.0
+          }
+        },
+        {
+          "id": "T03.4/r475",
+          "name": "475 SPS conversion interval",
+          "status": "PASS",
+          "message": "3.342 ms (nominal 2.105 ms, overhead +1.237 ms)",
+          "criteria": "1.789-3.921 ms",
+          "measured": {
+            "interval_ms": 3.342,
+            "nominal_ms": 2.1052631578947367
+          }
+        },
+        {
+          "id": "T03.4/r860",
+          "name": "860 SPS conversion interval",
+          "status": "PASS",
+          "message": "2.537 ms (nominal 1.163 ms, overhead +1.374 ms)",
+          "criteria": "0.988-2.837 ms",
+          "measured": {
+            "interval_ms": 2.537,
+            "nominal_ms": 1.1627906976744187
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T03.5",
+      "name": "Long-term dark stability",
+      "module": "T03",
+      "kind": "A",
+      "status": "SKIP",
+      "message": "stopped by the operator",
+      "duration_s": 44.32065808400512,
+      "subs": [],
+      "measured": {},
+      "artefacts": []
+    }
+  ],
+  "duty": {
+    "window_s": 60.0,
+    "budget_ms": {
+      "A": 1000.0,
+      "B": 5000.0,
+      "h9": 1000.0
+    },
+    "total_cooldown_s": 0,
+    "cooldowns": [],
+    "over_budget": []
+  },
+  "finished": "2026-11-18T00:27:35-05:00",
+  "verdict": {
+    "verdict": "FUNCTIONAL",
+    "reasons": [
+      "no failures or warnings"
+    ],
+    "counts": {
+      "PASS": 13,
+      "WARN": 0,
+      "FAIL": 0,
+      "SKIP": 1,
+      "ERROR": 0
+    }
+  }
+}

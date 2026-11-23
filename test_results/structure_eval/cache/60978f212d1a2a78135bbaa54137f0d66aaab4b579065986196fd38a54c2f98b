@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 23340,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "BMNP AESCULUS HIPPOCASTANUM AESCULUS HIPPOCASTANUM HORSE CHESTNUT HORSE CHESTNUT SILICON DIOXIDE SUCROSE MAGNESIUM STEARATE POVIDONE K30 WHITE DISSOLVABLE TABLETS ROUND DISSOLVABLE TABLETS"
+      ],
+      "warnings": [
+        "Keep out of reach of children. If pregnant or breastfeeding, ask a health professional before use. Stop use and ask a doctor if symptoms persist or worsen. If you have severe symptoms, consult a doctor before use."
+      ],
+      "dosage_and_administration": [
+        "Use as directed. Take with water, 3-4 times daily. Ages 12 and older: 2 pellets. Ages 3 to 11: 1 pellet. Ages below 3: consult your doctor."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If pregnant or breastfeeding, ask a health professional before use. Stop use and ask a doctor if symptoms persist or worsen. If you have severe symptoms, consult a doctor before use."
+      ],
+      "indications_and_usage": [
+        "Helps temporarily relieve: lower back discomfort, leg discomfort from prolonged standing, circulatory discomfort, fullness or pressure sensations"
+      ],
+      "purpose": [
+        "Aesculus Hippocastanum 30C (HPUS)......circulatory discomfort, lower back heaviness, leg discomfort, fullness or pressure sensations \"HPUS\" is the Homeopathic Pharmacopoeia of the United States."
+      ],
+      "active_ingredient": [
+        "AESCULUS HIPPOCASTANUM 30C"
+      ],
+      "inactive_ingredient": [
+        "Sucrose, PVP K 30, Magnesium Stearate, Aerosil"
+      ],
+      "package_label_principal_display_panel": [
+        "Package 2 ACIDUM NIT"
+      ],
+      "set_id": "5a59ad36-d9c4-6310-e063-6394a90a0780",
+      "id": "5a59ad40-6dc0-62dc-e063-6394a90af7b8",
+      "effective_time": "20260831",
+      "version": "1",
+      "openfda": {
+        "brand_name": [
+          "BMNP AESCULUS HIPPOCASTANUM"
+        ],
+        "generic_name": [
+          "AESCULUS HIPPOCASTANUM"
+        ],
+        "manufacturer_name": [
+          "Total Operations Management LLC DBA:Bestmade Natural Products Micro"
+        ],
+        "product_ndc": [
+          "82969-5220"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "HORSE CHESTNUT"
+        ],
+        "spl_id": [
+          "5a59ad40-6dc0-62dc-e063-6394a90af7b8"
+        ],
+        "spl_set_id": [
+          "5a59ad36-d9c4-6310-e063-6394a90a0780"
+        ],
+        "package_ndc": [
+          "82969-5220-1",
+          "82969-5220-2"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "3C18L6RJAZ"
+        ]
+      }
+    }
+  ]
+}

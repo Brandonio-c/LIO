@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="44e665c5-e536-a6bc-e063-6294a90a8386"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Renes (Kidney) 14X</title>
+   <effectiveTime value="20251201"/>
+   <setId root="44e65fc6-639f-b2f3-e063-6294a90a2949"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="182071519"/>
+            <name>True Botanica, LLC</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <assignedEntity>
+                     <assignedOrganization>
+                        <id root="1.3.6.1.4.1.519.1" extension="182071519"/>
+                        <name>True Botanica, LLC</name>
+                     </assignedOrganization>
+                     <performance>
+                        <actDefinition>
+                           <code code="C43360" displayName="manufacture" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="53645-2481" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                  </assignedEntity>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="4572be7e-69ec-b8e2-e063-6394a90a2d8e"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20251201"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="53645-2481" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Renes (Kidney) 14X</name>
+                        <formCode code="C42953" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="LIQUID"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Renes (Kidney) 14X</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="1VPU26JZZ4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POTASSIUM SORBATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2968PHW8QP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CITRIC ACID MONOHYDRATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="[hp_X]" value="14"/>
+                              <denominator unit="mL" value="30"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="5HOC10FSIC" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BEEF KIDNEY</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="5HOC10FSIC" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>BEEF KIDNEY</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="30" unit="mL"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="53645-2481-6" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43169" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20251201"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <code code="C73614" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="unapproved homeopathic"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20251201"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38288" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ORAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75952a-f7f7-d2e7-e053-2a91aa0a85d7">
+               <id root="44e659bf-6a8c-95d2-e063-6394a90a5800"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <text>
+                  <paragraph>Bovine Kidney 14X</paragraph>
+               </text>
+               <effectiveTime value="20251201"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e750a62-73bd-0868-e053-2a91aa0a97d2">
+               <id root="44e66558-1681-9b46-e063-6294a90ab192"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <text>
+                  <paragraph>For constitutional treatments based on homeopathic and anthroposophic indications or as directed by your physician.</paragraph>
+               </text>
+               <effectiveTime value="20250325"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e750a62-73bb-0868-e053-2a91aa0a97d2">
+               <id root="44e66558-1682-9b46-e063-6294a90ab192"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>Use:</title>
+               <text>
+                  <paragraph>For constitutional treatments based on homeopathic and anthroposophic indications or as directed by your physician.</paragraph>
+               </text>
+               <effectiveTime value="20250325"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75cb69-e02d-91b9-e053-2991aa0aaaea">
+               <id root="44e66558-1683-9b46-e063-6294a90ab192"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>Warnings:</title>
+               <text>
+                  <paragraph>Consult your health care provider if symptoms persist more than 5 days or worsen.</paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75cb69-e02f-91b9-e053-2991aa0aaaea">
+               <id root="44e66558-1684-9b46-e063-6294a90ab192"/>
+               <code code="53414-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PREGNANCY OR BREAST FEEDING SECTION"/>
+               <text>
+                  <paragraph>If pregnant or breastfeeding ask a health professional before use. 
+  <br/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e759ff1-82be-f49d-e053-2a91aa0a10ba">
+               <id root="44e66558-1685-9b46-e063-6294a90ab192"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <text>
+                  <paragraph>Keep out of the reach of children. 
+  <br/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75a407-bad4-fdfc-e053-2a91aa0af957">
+               <id root="44e66558-1686-9b46-e063-6294a90ab192"/>
+               <code code="50570-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - DO NOT USE SECTION"/>
+               <text>
+                  <paragraph>TAMPER EVIDENT: Do not use if safety seal is broken before first use. 
+  <br/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75a407-bad6-fdfc-e053-2a91aa0af957">
+               <id root="44e66558-1687-9b46-e063-6294a90ab192"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>Directions for Use:</title>
+               <text>
+                  <paragraph>Place drops under tongue for 30 seconds. Adults 7 drops 3 times a day. Children 2-12 years, 7 drops 3 times a day. Under 2 years, consult your doctor. Use until symptoms are relieved or as directed by your health care provider.</paragraph>
+               </text>
+               <effectiveTime value="20230914"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75952a-f7fa-d2e7-e053-2a91aa0a85d7">
+               <id root="44e66558-1688-9b46-e063-6294a90ab192"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>Other Ingredients:</title>
+               <text>
+                  <paragraph>Citric Acid, Potassium Sorbate, Water</paragraph>
+               </text>
+               <effectiveTime value="20230914"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75952a-f7fc-d2e7-e053-2a91aa0a85d7">
+               <id root="44e66558-1689-9b46-e063-6294a90ab192"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <text>
+                  <paragraph>Developed and Made by</paragraph>
+                  <paragraph>True Botanica, LLC</paragraph>
+                  <paragraph>1005 Richards Rd., Suite D</paragraph>
+                  <paragraph>Hartland, WI 53029</paragraph>
+                  <paragraph>800-315-8783</paragraph>
+                  <paragraph>www.truebotanica.com</paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e750a62-73bf-0868-e053-2a91aa0a97d2">
+               <id root="44e71706-0d60-d5de-e063-6294a90a70b5"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>Principal Display Panel</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_44e716d3-e3c1-a987-e063-6294a90a4c29"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20251201"/>
+               <component>
+                  <observationMedia ID="img_44e716d3-e3c1-a987-e063-6294a90a4c29">
+                     <text>Renes (Kidney) 14X_30ml_V1</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="Renes (Kidney) 14X_30ml_V1 jpg.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

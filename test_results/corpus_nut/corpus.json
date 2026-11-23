@@ -1,0 +1,2870 @@
+{
+ "seed": 20261112,
+ "ocr_engine": "tesseract",
+ "items": [
+  {
+   "kind": "nutrition_facts",
+   "id": "0021788916291",
+   "fdc_id": 2675216,
+   "image_url": "https://images.openfoodfacts.org/images/products/002/178/891/6291/nutrition_en.22.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "754a6ab2582dcb45a87a4cc2a8f16f59bbe2ce717a18c0bf53b146a9a5ed4760",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0070038600367",
+   "fdc_id": 2478674,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/003/860/0367/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "aa20a9878be3f82219331406c82e2df3a23883045a02ab4579202e6e08c943d3",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0078742372228",
+   "fdc_id": 2524890,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/874/237/2228/nutrition_en.7.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "d3bec6922b71a00bd70013bbb10350f8fc092a71021b4e0e5b3128fde0fe108f",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0000001326901",
+   "fdc_id": 2617320,
+   "image_url": "https://images.openfoodfacts.org/images/products/000/000/132/6901/nutrition_en.8.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "a915bd35e96c0529bbaad846e80102ce878dbbd98f518aa766e26e6e5c2cc572",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0044400191005",
+   "fdc_id": 2601635,
+   "image_url": "https://images.openfoodfacts.org/images/products/004/440/019/1005/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "9fe8a56dcf12078bc1eb51f577c651516a9827bd0bdffa218e29eb2e22994a31",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0075131027646",
+   "fdc_id": 2655339,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/513/102/7646/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "ac0f721a6ae6fc07d09a7906f2f98088b88b27861a6d72fa066da0f703e9524a",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": true,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0094776081318",
+   "fdc_id": 2538224,
+   "image_url": "https://images.openfoodfacts.org/images/products/009/477/608/1318/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "713a8e2168914e6103a79c1f67dd2ffd4f7255543e0a329295a8cac4fbc3944e",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": true,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0727915173314",
+   "fdc_id": 2538592,
+   "image_url": "https://images.openfoodfacts.org/images/products/072/791/517/3314/nutrition_en.31.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "71479167aaadb3dbd6c5b55253bb7b9c82c109eab43f2520a357167c0678f2b2",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0740247020590",
+   "fdc_id": 2218795,
+   "image_url": "https://images.openfoodfacts.org/images/products/074/024/702/0590/nutrition_en.6.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "e864134952034123274490ad66105bfe6b6c5a1d651a3f6241da393bc3bd9efb",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0072036734372",
+   "fdc_id": 2444412,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/203/673/4372/nutrition_en.9.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "6133ea1197143ef28563f0151c2d89d8f6d7fa97e819e2df281b5258ec0c6f2f",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0074465332020",
+   "fdc_id": 2443240,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/446/533/2020/nutrition_en.6.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "479ae618bdb642f6a18a4fd51a79cdeea4b330256b002eaa356be0efe5e04efc",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0076183202111",
+   "fdc_id": 2243921,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/618/320/2111/nutrition_en.9.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "bfd20845b6bdec933d2d2cb3db0da626290fe8320705c5f87bd412fce327827c",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0639277952349",
+   "fdc_id": 2275582,
+   "image_url": "https://images.openfoodfacts.org/images/products/063/927/795/2349/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "a4a2f9c5d1b82c73fcba2ce2611267c71cb9a29bf2a884af1308766bb4c8e3a4",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": true,
+     "proposed": true
+    }
+   ],
+   "complete_panel": true
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0075925401423",
+   "fdc_id": 2139467,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/592/540/1423/nutrition_en.6.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "209f400111bb110b24b2df1ac08ee6c111ff2dcaa697993e04bdf2ecdec08344",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0086106152683",
+   "fdc_id": 2525037,
+   "image_url": "https://images.openfoodfacts.org/images/products/008/610/615/2683/nutrition_en.7.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "1af572d194da708b99adf8f4b8cec71263374aa5eb484919a376555c21365d9f",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0711747017243",
+   "fdc_id": 2057779,
+   "image_url": "https://images.openfoodfacts.org/images/products/071/174/701/7243/nutrition_en.10.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "77c1c06f806f2e04f5da7d1350a97de5cf56481bf1ea7ab5be3661ccdca79ebf",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0030800633009",
+   "fdc_id": 2652327,
+   "image_url": "https://images.openfoodfacts.org/images/products/003/080/063/3009/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "853ae5844741fdf72b97923175a260d8ce98b7c51869cdffca7d12f7447c42cb",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0038000249877",
+   "fdc_id": 2171100,
+   "image_url": "https://images.openfoodfacts.org/images/products/003/800/024/9877/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "41911f62af2a8665bae165b91991fcdfbe8372f5e204cfa59b660e70c003ff06",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": true
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "9556390198168",
+   "fdc_id": 2089635,
+   "image_url": "https://images.openfoodfacts.org/images/products/955/639/019/8168/nutrition_en.6.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "4802abf8a243c2c2420a8645883446d63caf16d86ab48ab7ed7485b76deb7c7c",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": true
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0035600055341",
+   "fdc_id": 2497718,
+   "image_url": "https://images.openfoodfacts.org/images/products/003/560/005/5341/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "2dc3897d19fd87eb2f9f3cb84c3480148fd94341ee2012a01b38f26f3b741016",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0859581006907",
+   "fdc_id": 2659066,
+   "image_url": "https://images.openfoodfacts.org/images/products/085/958/100/6907/nutrition_en.13.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "5c145e339e7d6529552e9cf6af19ea74057372fbaf937685b3df33135cb45b3a",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0817142020168",
+   "fdc_id": 2664194,
+   "image_url": "https://images.openfoodfacts.org/images/products/081/714/202/0168/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "d839a57dff09d2756bd73a8c179161ef184d702ef2cc79be95443674d55af317",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "total_sugars",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": true
+    }
+   ],
+   "complete_panel": true
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0078742181530",
+   "fdc_id": 2524472,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/874/218/1530/nutrition_en.41.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "1d5ec09bc557677a60e0ff1a389ec1048f22043a47b243ed70a37463fc30e4a4",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0898559002510",
+   "fdc_id": 2607792,
+   "image_url": "https://images.openfoodfacts.org/images/products/089/855/900/2510/nutrition_en.10.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "8185692ac7ec6255c97ece92a4a130fde74d0f77684e8f33e8ade3a5a41525ab",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0011156058050",
+   "fdc_id": 2560144,
+   "image_url": "https://images.openfoodfacts.org/images/products/001/115/605/8050/nutrition_en.11.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "60e7df71ca93160c015c94514dd1ba99eb5f57b737364e4a49abfd676555c42e",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0058449771753",
+   "fdc_id": 370663,
+   "image_url": "https://images.openfoodfacts.org/images/products/005/844/977/1753/nutrition_en.6.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "4f9d53cd769b6527ef59e6947a7c6d9f868becb60697aaf89441335e06eade25",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": true
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0041190068937",
+   "fdc_id": 2619809,
+   "image_url": "https://images.openfoodfacts.org/images/products/004/119/006/8937/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "bd2c94985b326d7d8430468282e78ce9eb9e779790a06b289b738812e42428df",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0709434151196",
+   "fdc_id": 2280916,
+   "image_url": "https://images.openfoodfacts.org/images/products/070/943/415/1196/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "71bed8e36d22d08552dfcc42247a3c085aae5eb96b444b8d01b92625ed65a5f1",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0000007215551",
+   "fdc_id": 2116582,
+   "image_url": "https://images.openfoodfacts.org/images/products/000/000/721/5551/nutrition_en.21.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "42ad228bd18907abbe60ab36aca5d96b7cb69cdbc9594ca6e53026ad676d93e5",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": true,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0041512161834",
+   "fdc_id": 2633559,
+   "image_url": "https://images.openfoodfacts.org/images/products/004/151/216/1834/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "0338a4d27fab10c7461127ea80463944ef0aac543dcd960c3865f1bfe6d1b45b",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": true
+    }
+   ],
+   "complete_panel": true
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0041735043283",
+   "fdc_id": 1977099,
+   "image_url": "https://images.openfoodfacts.org/images/products/004/173/504/3283/nutrition_en.10.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "2f059146da2274d6433290a8ca7b00a94f362a325c9e6689b25dc04316a8e732",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "total_sugars",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0078742372228",
+   "fdc_id": 2524890,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/874/237/2228/nutrition_en.7.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "d3bec6922b71a00bd70013bbb10350f8fc092a71021b4e0e5b3128fde0fe108f",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0041196123487",
+   "fdc_id": 2564688,
+   "image_url": "https://images.openfoodfacts.org/images/products/004/119/612/3487/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "aa7688c367b8a0b990ebf00f4695487d5f5e0022ec9bb749c6e177a552d7d3bf",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0044400191005",
+   "fdc_id": 2601635,
+   "image_url": "https://images.openfoodfacts.org/images/products/004/440/019/1005/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "9fe8a56dcf12078bc1eb51f577c651516a9827bd0bdffa218e29eb2e22994a31",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0851209008102",
+   "fdc_id": 2165314,
+   "image_url": "https://images.openfoodfacts.org/images/products/085/120/900/8102/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "e1f9b8a0da140569b3291d96a30a805dd8d49a2b92a7817b5dbff46cae927c17",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": true,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0807176713952",
+   "fdc_id": 2373585,
+   "image_url": "https://images.openfoodfacts.org/images/products/080/717/671/3952/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "e57801958b1f2b2bc26d76e411263ba57b67f799e2fa37c99692c36c272cbd83",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "total_sugars",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0096619783953",
+   "fdc_id": 2072562,
+   "image_url": "https://images.openfoodfacts.org/images/products/009/661/978/3953/nutrition_en.36.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "7437debf88c92d1dd2a4df3ee52c9011b1dd83491958027e686e687290b3da7c",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "total_sugars",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": true
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0078742021256",
+   "fdc_id": 2549732,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/874/202/1256/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "c001b5ae727f2949099832f7551dc341b471cd65f17772c4e0aef990b8117d3c",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0605388186942",
+   "fdc_id": 2506786,
+   "image_url": "https://images.openfoodfacts.org/images/products/060/538/818/6942/nutrition_en.18.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "42ca6a8794d7f0990e511038c763407e0365e3e6648baf15982d276a22773d93",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": true,
+     "proposed": true
+    }
+   ],
+   "complete_panel": true
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0021788506058",
+   "fdc_id": 2157574,
+   "image_url": "https://images.openfoodfacts.org/images/products/002/178/850/6058/nutrition_en.9.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "a3c26c333ef2c85f9eca4a6c0949afe54829d34e27b00440a2b3d8ab4f264174",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0070038618393",
+   "fdc_id": 2483611,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/003/861/8393/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "ea98dcf271518a071e61e6f9e1d2f9a6b0cb410f4b947ddc0cc0878ca218eaf8",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "total_sugars",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": true
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0020000001999",
+   "fdc_id": 1634831,
+   "image_url": "https://images.openfoodfacts.org/images/products/002/000/000/1999/nutrition_en.6.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "51c49c71df93a263987232934c9013b106cc378a443f1da0dbffec242ef4df6b",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": true,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0038000596582",
+   "fdc_id": 2671976,
+   "image_url": "https://images.openfoodfacts.org/images/products/003/800/059/6582/nutrition_en.9.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "b89ff1ebdd00d9877f126044d9692a5e408b5692ff88ab900f6f68cbe8833fcd",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0020000001999",
+   "fdc_id": 1634831,
+   "image_url": "https://images.openfoodfacts.org/images/products/002/000/000/1999/nutrition_en.6.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "51c49c71df93a263987232934c9013b106cc378a443f1da0dbffec242ef4df6b",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": true,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0807176713952",
+   "fdc_id": 2373585,
+   "image_url": "https://images.openfoodfacts.org/images/products/080/717/671/3952/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "e57801958b1f2b2bc26d76e411263ba57b67f799e2fa37c99692c36c272cbd83",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "total_sugars",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0619159877069",
+   "fdc_id": 2049023,
+   "image_url": "https://images.openfoodfacts.org/images/products/061/915/987/7069/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "67c4b0c292b500817c70d9b020d001dba20ca073a6f4806ba32adfa231409838",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0639277952349",
+   "fdc_id": 2275582,
+   "image_url": "https://images.openfoodfacts.org/images/products/063/927/795/2349/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "a4a2f9c5d1b82c73fcba2ce2611267c71cb9a29bf2a884af1308766bb4c8e3a4",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "saturated_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": true,
+     "proposed": true
+    }
+   ],
+   "complete_panel": true
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0047416029775",
+   "fdc_id": 2679337,
+   "image_url": "https://images.openfoodfacts.org/images/products/004/741/602/9775/nutrition_en.14.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "8e7ccadf52165f29364baa743ee6b1e9d9764c05cc415220ff85ed3d25a1fd4b",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0814910010895",
+   "fdc_id": 2542719,
+   "image_url": "https://images.openfoodfacts.org/images/products/081/491/001/0895/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "dbdc8a3b8edebd46a1ffbbc7a0827291dcd50e03eea4eec91157e49ce3c1d859",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0030800633009",
+   "fdc_id": 2652327,
+   "image_url": "https://images.openfoodfacts.org/images/products/003/080/063/3009/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "853ae5844741fdf72b97923175a260d8ce98b7c51869cdffca7d12f7447c42cb",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  }
+ ]
+}

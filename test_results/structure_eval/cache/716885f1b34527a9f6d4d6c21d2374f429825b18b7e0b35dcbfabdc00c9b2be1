@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 10670,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Listarfe Anti-Dandruff Shampoo. Anti-Dandruff Shampoo C12-15 ALKYL ETHYLHEXANOATE PIROCTONE OLAMINE GLYCOL DISTEARATE GLYCERIN EDETATE DISODIUM COPTIS CHINENSIS WHOLE RHEUM OFFICINALE WHOLE WATER SODIUM LAURETH SULFATE DIHYDROGENATED TALLOW PHTHALIC ACID AMIDE MENTHOL FALLOPIA MULTIFLORA ROOT HOUTTUYNIA CORDATA FLOWERING TOP FOENICULUM VULGARE LEAF ASIAN GINSENG TEA TREE OIL CETOSTEARYL ALCOHOL DIMETHICONE TARAXACUM MONGOLICUM SALICYLIC ACID SALICYLIC ACID SODIUM LAUROAMPHOACETATE GUAR HYDROXYPROPYLTRIMONIUM CHLORIDE CITRIC ACID GLYCOL STEARATE NYMPHAEA ALBA FLOWER"
+      ],
+      "active_ingredient": [
+        "Active Ingredient SALICYLIC ACID 3% W/W"
+      ],
+      "purpose": [
+        "Purpose Scalp treatment, fights itching and flaking."
+      ],
+      "indications_and_usage": [
+        "Use Controls and relives symptoms of Dandruff, Psoriasis, Folliculitis and Seborrheic Dermatitis."
+      ],
+      "warnings": [
+        "Warnings ■ For external use only. ■ Ask a doctore before use if you are allergic to ingredients in this products. ■ When using this product avoid contact with eyes. If contact occurs, flush eyes with copious amounts of cold tap water. ■ Stop use and ask a doctor if condition worsens or does not improve after regular use as directed."
+      ],
+      "do_not_use": [
+        "Do not use If pregnant or breast-feeding ask a health professional before use. This product is not recommended for individuals under 18 years of age."
+      ],
+      "when_using": [
+        "When Using When using this product avoid contact with eyes. If contact occurs, flush eyes with copious amounts of cold tap water"
+      ],
+      "stop_use": [
+        "Stop Use if condition worsens or does not improve after regular use as directed."
+      ],
+      "ask_doctor": [
+        "Ask Doctor If pregnant or breast-feeding ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep Oot Of Reach Of Children Keep out of reach of children If swallowed, get medical help or contact a poison control center (1-800-222-1222) right away."
+      ],
+      "dosage_and_administration": [
+        "Directions ■ Apply shampoo and massage into the scalp. ■ Leave in hair for 3-5 minutes to allow maximum absorption. ■ Rinse thoroughly with water. ■ Use 2-4 times per week or as needed."
+      ],
+      "storage_and_handling": [
+        "Other information ■Read all information on package before use. ■Save the box. Contains important information. ■Store at controlled room temperature 20-25°C (68-77°F)."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Water, Sodium Laureth Sulfate, Cetearyl Alcohol, Dimethicone, Glycol Distearate, Glycol Stearate, Sodium Lauroamphoacetate, Di(Hydrogenated Tallow) Phthalic Acid Amide, C12-15 Alkyl Eth-3, Menthol, Piroctone Olamine, Glycerin, Guar Hydroxypropyltrimonium Chloride, Coptis Chinensis Extract, Rheum Officinale Extract, Polygonum Multiflorum Root Extract, Houttuynia Cordata Extract, Foeniculum Vulgaris Extract, Taraxacum Mongolicum Extract, Nymphea Alba Flower Extract, Panax Ginseng Root Extract, Tea Tree Essential Oil, Citric Acid, Disodium EDTA."
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPAL DISPLAY PANEL 1"
+      ],
+      "set_id": "3163eee0-379f-1f88-e063-6294a90a58ce",
+      "id": "3163eee0-37a0-1f88-e063-6294a90a58ce",
+      "effective_time": "20250328",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M032"
+        ],
+        "brand_name": [
+          "Listarfe Anti-Dandruff Shampoo."
+        ],
+        "generic_name": [
+          "ANTI-DANDRUFF SHAMPOO"
+        ],
+        "manufacturer_name": [
+          "Guangzhou Zanming Trading Co., Ltd."
+        ],
+        "product_ndc": [
+          "85150-005"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "SALICYLIC ACID"
+        ],
+        "rxcui": [
+          "205023"
+        ],
+        "spl_id": [
+          "3163eee0-37a0-1f88-e063-6294a90a58ce"
+        ],
+        "spl_set_id": [
+          "3163eee0-379f-1f88-e063-6294a90a58ce"
+        ],
+        "package_ndc": [
+          "85150-005-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "O414PZ4LPZ"
+        ]
+      }
+    }
+  ]
+}

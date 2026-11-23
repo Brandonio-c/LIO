@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 8573,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Right Guard Sport Antiperspirant Deodorant Gel Cool Right Guard Sport Antiperspirant Deodorant Gel Cool ALUMINUM ZIRCONIUM OCTACHLOROHYDREX GLY ALUMINUM ZIRCONIUM OCTACHLOROHYDREX GLY CYCLOMETHICONE Cool"
+      ],
+      "dosage_and_administration": [
+        "Dosage & Administration"
+      ],
+      "warnings": [
+        "Warnings"
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredient"
+      ],
+      "indications_and_usage": [
+        "Indications & Usage"
+      ],
+      "active_ingredient": [
+        "OTC-Active Ingredient"
+      ],
+      "ask_doctor": [
+        "OTC-Ask Doctor"
+      ],
+      "keep_out_of_reach_of_children": [
+        "OTC Keep out of the reach of children"
+      ],
+      "do_not_use": [
+        "OTC Do Not Use"
+      ],
+      "purpose": [
+        "OTC Purpose"
+      ],
+      "package_label_principal_display_panel": [
+        "Package Label Principal Display Panel"
+      ],
+      "set_id": "298f6219-ef4f-0aca-e063-6294a90ad434",
+      "id": "49790d16-607a-e086-e063-6394a90a3ed9",
+      "effective_time": "20260128",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M019"
+        ],
+        "brand_name": [
+          "Right Guard Sport Antiperspirant Deodorant Gel Cool"
+        ],
+        "generic_name": [
+          "RIGHT GUARD SPORT ANTIPERSPIRANT DEODORANT GEL COOL"
+        ],
+        "manufacturer_name": [
+          "Thriving Brands LLC"
+        ],
+        "product_ndc": [
+          "82699-111"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ALUMINUM ZIRCONIUM OCTACHLOROHYDREX GLY"
+        ],
+        "spl_id": [
+          "49790d16-607a-e086-e063-6394a90a3ed9"
+        ],
+        "spl_set_id": [
+          "298f6219-ef4f-0aca-e063-6294a90ad434"
+        ],
+        "package_ndc": [
+          "82699-111-02"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "P9D3YP29MY"
+        ]
+      }
+    }
+  ]
+}

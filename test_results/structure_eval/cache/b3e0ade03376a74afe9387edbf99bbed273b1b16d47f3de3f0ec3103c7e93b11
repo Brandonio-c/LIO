@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="1c81582c-7ecf-182f-e063-6294a90a8fbc"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Bunnies Bum Creme Soothing Hemorrhoidal</title>
+   <effectiveTime value="20240705"/>
+   <setId root="1c81582c-7ece-182f-e063-6294a90a8fbc"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="128775688"/>
+            <name>FloCal Distributors LLC</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <id root="1.3.6.1.4.1.519.1" extension="116817470"/>
+                  <name>Derma Care Research Labs LLC</name>
+                  <assignedEntity>
+                     <assignedOrganization>
+                        <id root="1.3.6.1.4.1.519.1" extension="116817470"/>
+                        <name>Derma Care Research Labs LLC</name>
+                     </assignedOrganization>
+                     <performance>
+                        <actDefinition>
+                           <code code="C43360" displayName="manufacture" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="84308-161" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                  </assignedEntity>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="1cac8b63-523c-28f2-e063-6394a90a5e6a"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20240705"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="84308-161" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Bunnies Bum Soothing Hemorrhoidal</name>
+                        <formCode code="C28944" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CREAM"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Glycerin, Lidocaine, Petrolatum, Phenylephrine HCl</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="14.4"/>
+                              <denominator unit="g" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERIN</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>GLYCERIN</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="15"/>
+                              <denominator unit="g" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="4T6H12BN9U" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PETROLATUM</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="4T6H12BN9U" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PETROLATUM</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2968PHW8QP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CITRIC ACID MONOHYDRATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="8D4SNN7V92" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPYL GALLATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="7FLD91C86K" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>EDETATE DISODIUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="T5L8T28FGP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MINERAL OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="0.25"/>
+                              <denominator unit="g" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="04JA59TNSJ" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PHENYLEPHRINE HYDROCHLORIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="1WS297W6MV" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PHENYLEPHRINE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="5SL0G7R0OK" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ANHYDROUS DEXTROSE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="230OU9XXE4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERYL MONOSTEARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="1P9D0Z171K" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BUTYLATED HYDROXYTOLUENE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="WV9CM0O67Z" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PANTHENOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2KR89I4H1Y" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>STEARYL ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="K679OBS311" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CARBOXYMETHYLCELLULOSE SODIUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="R0ZB2556P8" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TOCOPHEROL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="936JST6JCN" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CETYL ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="HIE492ZZ3T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PHENOXYETHANOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="5"/>
+                              <denominator unit="g" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="98PI200987" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>LIDOCAINE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="98PI200987" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>LIDOCAINE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="ZY81Z83H0X" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALOE VERA LEAF</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PQ6CK8PD0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ASCORBIC ACID</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="4PW41QCO2M" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>INDIAN FRANKINCENSE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="9E8X80D2L0" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>.ALPHA.-TOCOPHEROL ACETATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="856YO1Z64F" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TURMERIC</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6DC9Q167V3" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPYLENE GLYCOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="CUQ3A77YXI" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ASIAN GINSENG</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="MDL271E3GR" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SORBITAN OLIVATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="53J3F32P58" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>STEARETH-21</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="147D247K3P" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ETHYLHEXYLGLYCERIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="TTV12P4NEE" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>XANTHAN GUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="U182GP2CF3" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BROMELAINS</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="205MXS71H7" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SALIX ALBA BARK</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="57" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="84308-161-02" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C42794" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TUBE"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20240708"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M015" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20240708"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_1c80e924-cf5c-e8b1-e063-6394a90a58db">
+               <id root="1cac3cf1-7344-a297-e063-6394a90a0179"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <text>
+                  <paragraph>Glycerin 14.4%, Lidocaine 5%, Petrolatum 15%, Phenylephrine HCl 0.25%</paragraph>
+               </text>
+               <effectiveTime value="20240705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_1c80ec37-3cbe-5104-e063-6294a90a2632">
+               <id root="1cac4153-33c9-6767-e063-6294a90a6034"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <text>
+                  <paragraph>Glycerin-Protectant</paragraph>
+                  <paragraph>Lidocaine-Local anesthetic</paragraph>
+                  <paragraph>Petrolatum-Protectant</paragraph>
+                  <paragraph>Phenylephrine HCl Vasoconstrictor</paragraph>
+               </text>
+               <effectiveTime value="20240705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_1c80bb9f-2ba3-c4e8-e063-6394a90a86d1">
+               <id root="1cac4153-33ca-6767-e063-6294a90a6034"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <text>
+                  <list listType="unordered">
+                     <item>For the temporary relief of pain, soreness, and burning</item>
+                     <item>Helps relieve the local itching and discomfort associated with hemorrhoids</item>
+                     <item>Temporarily shrinks hemorrhoidal tissue</item>
+                     <item>Temporarily provides a costing for the relief of anorectal discomforts</item>
+                     <item>Temporarily protects the inflamed, irritated anorectal surface to help make bowel movements less painful</item>
+                  </list>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20240705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_1c80e107-c9ea-e3d1-e063-6394a90a1344">
+               <id root="1cac1648-bd67-05e4-e063-6294a90aadb3"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">For external use only.</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Ask a doctor before use if you have</content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>heart disease</item>
+                     <item>high blood pressure</item>
+                     <item>thyroid disease</item>
+                     <item>diabetes</item>
+                     <item>difficulty in urination due to enlargement of the prostate gland</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">Ask a doctor or pharmacist before use if you are </content>presently taking a prescription drug for high blood pressure or depression
+ </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">When using this product</content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>avoid contact with eyes</item>
+                     <item>do not exceed recommended dosage unless directed by a doctor</item>
+                     <item>do not put this into the rectum by using fingers or any mechanical device or applicator</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">Stop use and ask a doctor if</content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>rectal bleeding occurs</item>
+                     <item>condition worsens or does not improve within 7 days</item>
+                     <item>allergic reaction occurs to ingredients in this product</item>
+                     <item>symptom being treated does not subside or if redness, irritation, swelling, pain or other symptoms develop or increase</item>
+                     <item>symptoms clear up and return within a few days</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_1c80c9a7-efe6-4d76-e063-6294a90ae5da">
+               <id root="1c80c9a7-efe5-4d76-e063-6294a90ae5da"/>
+               <code code="53414-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PREGNANCY OR BREAST FEEDING SECTION"/>
+               <text>
+                  <paragraph>Ask a health professional before use. </paragraph>
+               </text>
+               <effectiveTime value="20240705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_1c80ec37-3cc0-5104-e063-6294a90a2632">
+               <id root="1c80ec37-3cbf-5104-e063-6294a90a2632"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <text>
+                  <paragraph>If swallowed, get medical help or contact a Poison Control Center right away. </paragraph>
+               </text>
+               <effectiveTime value="20240705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_1c80e107-c9ec-e3d1-e063-6394a90a1344">
+               <id root="1cac558e-ffb9-25b3-e063-6294a90a3297"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <text>
+                  <list listType="unordered">
+                     <item>Adults: when practical, clean area with mild soap and warm water and rinse thoroughly. Gently dry by patting or blotting with toilet tissue or soft cloth before applying.</item>
+                     <item>Adults and children 12 years and older: apply externally to the affected area up to 4 times a day, especially at night, in the morning, or after each bowel movement.</item>
+                     <item>Children under 12 years of age: consult a doctor.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_1c80ec37-3cc4-5104-e063-6294a90a2632">
+               <id root="1cabe4f7-4b65-fd20-e063-6394a90a05a6"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <text>
+                  <paragraph>Aloe barbadensis leaf extract, ascorbic acid, BHT, boswellia serrata extract, bromelain, cellulose gum, cetyl alcohol, citric acid, curcuma long (turmeric) root extract, disodium EDTA, ethylhexylglycerin, glucose, glyceryl stearate, mineral oil, panax ginseng root extract, panthenol, phenoxyethanol, propyl gallate, propylene glycol, salix alba (willow) bark extract, sorbitan olivate, steareth-21, stearyl alcohol, tocopherol, tocopheryl acetate, water, xanthan gum.</paragraph>
+               </text>
+               <effectiveTime value="20240705"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_1c80c0d1-7fb2-d5e4-e063-6394a90a5bfa">
+               <id root="1cac6cd4-78a7-81af-e063-6294a90a5ad6"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_1cac6a0e-46f0-5900-e063-6294a90a8a17"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20240705"/>
+               <component>
+                  <observationMedia ID="img_1cac6a0e-46f0-5900-e063-6294a90a8a17">
+                     <text>Label</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="FCL-PREPH-25 APPROVED copy.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

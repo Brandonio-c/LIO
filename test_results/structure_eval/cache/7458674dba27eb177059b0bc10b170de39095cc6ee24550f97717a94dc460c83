@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="5128d628-794b-e999-e063-6294a90a65e0"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Scentfull Whipped Coconut Hand Sanitizer Spray (76891-150-35)</title>
+   <effectiveTime value="20260506"/>
+   <setId root="3cfaadb3-1881-2dd9-e063-6394a90abcb4"/>
+   <versionNumber value="2"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="101216246"/>
+            <name>Scent Theory Products LLC</name>
+            <assignedEntity>
+               <assignedOrganization/>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="5129013f-b4c3-7133-e063-6294a90a2330"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20260506"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="76891-150" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Scentfull Hand Sanitizer<suffix>Whipped Coconut</suffix>
+                        </name>
+                        <formCode code="C42989" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="SPRAY"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Alcohol</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mL" value="62"/>
+                              <denominator unit="mL" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="3K9958V90M" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALCOHOL</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="3K9958V90M" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>ALCOHOL</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="ZY81Z83H0X" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALOE VERA LEAF</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="H3R47K3TBD" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BLUE 1</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="I753WB2F1M" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>YELLOW 5</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="WZB9127XOA" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>RED 40</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="4YK5Z54AT2" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DENATONIUM BENZOATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="7YC686GQ8F" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PEG-40 HYDROGENATED CASTOR OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="35" unit="mL"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="76891-150-35" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43200" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="POUCH"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20250212"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M003" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20250212"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_3cfac053-e2b0-9058-e063-6294a90a374b">
+               <id root="3cfac053-e2af-9058-e063-6294a90a374b"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>Drug Facts</title>
+               <text>
+                  <paragraph>Drug Facts</paragraph>
+               </text>
+               <effectiveTime value="20250822"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_3cfab749-6458-833b-e063-6294a90a4cf7">
+               <id root="3cfab749-6457-833b-e063-6294a90a4cf7"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>Active ingredients</title>
+               <text>
+                  <paragraph>Ethyl Alcohol 62% V/V</paragraph>
+               </text>
+               <effectiveTime value="20250822"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_3cfac43d-5a8b-4e9f-e063-6394a90a309f">
+               <id root="3cfac43d-5a8a-4e9f-e063-6394a90a309f"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>Purpose</title>
+               <text>
+                  <paragraph>Antiseptic</paragraph>
+               </text>
+               <effectiveTime value="20250822"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_3cfad24a-5f40-8fce-e063-6294a90a82e4">
+               <id root="3cfad24a-5f3f-8fce-e063-6294a90a82e4"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>Uses</title>
+               <text>
+                  <paragraph>For handwashing to decrease bacteria on the skin.</paragraph>
+               </text>
+               <effectiveTime value="20250822"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_3cfad334-ab0c-6a11-e063-6394a90a8fc2">
+               <id root="3cfad334-ab0b-6a11-e063-6394a90a8fc2"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>Warnings</title>
+               <text>
+                  <paragraph>For external use only: hands
+  <br/>
+ Flammable, keep away from fire or flame.
+ </paragraph>
+               </text>
+               <effectiveTime value="20250822"/>
+               <component>
+                  <section ID="id_link_3cfad334-ab0e-6a11-e063-6394a90a8fc2">
+                     <id root="3cfad334-ab0d-6a11-e063-6394a90a8fc2"/>
+                     <code code="50567-7" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - WHEN USING SECTION"/>
+                     <title> When using this product 
+ <br/>
+                     </title>
+                     <text>
+                        <paragraph> - keep out of eyes. In case of contact with eyes, flush thoroughly with water.
+  <br/>
+ - avoid contact with broken skin.
+  <br/>
+ - do not inhale or ingest.
+ </paragraph>
+                     </text>
+                     <effectiveTime value="20250822"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="id_link_3cfad67d-65ba-b095-e063-6294a90adb39">
+                     <id root="3cfad67d-65b9-b095-e063-6294a90adb39"/>
+                     <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+                     <title> Stop use and ask a doctor if
+ <br/>
+                     </title>
+                     <text>
+                        <paragraph> - irritation and redness develop
+  <br/>
+ - condition persists for more than 72 hours
+ </paragraph>
+                     </text>
+                     <effectiveTime value="20250822"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="id_link_3cfad8eb-8320-b457-e063-6294a90a51c8">
+                     <id root="3cfad8eb-831f-b457-e063-6294a90a51c8"/>
+                     <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+                     <title> keep out of reach of children.
+ <br/>
+                     </title>
+                     <text>
+                        <paragraph> If swallowed, get medical help or contact a poison control center right away.</paragraph>
+                     </text>
+                     <effectiveTime value="20250822"/>
+                  </section>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_3cfad9ce-2bec-a721-e063-6294a90a59f2">
+               <id root="3cfad9ce-2beb-a721-e063-6294a90a59f2"/>
+               <code code="59845-8" codeSystem="2.16.840.1.113883.6.1" displayName="INSTRUCTIONS FOR USE SECTION"/>
+               <title>Directions</title>
+               <text>
+                  <paragraph>Spray hands with product and allow to dry without wiping
+  <br/>
+For children under 6, use only under adult supervision
+  <br/>
+Not recommended for infants
+ </paragraph>
+               </text>
+               <effectiveTime value="20250822"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_3cfada92-f331-8883-e063-6294a90a1815">
+               <id root="3cfada92-f330-8883-e063-6294a90a1815"/>
+               <code code="60561-8" codeSystem="2.16.840.1.113883.6.1" displayName="OTHER SAFETY INFORMATION"/>
+               <title>Other information</title>
+               <text>
+                  <paragraph>Do not store above 105°f
+  <br/>
+may discolor some fabrics
+  <br/>
+harmful to wood finishes and plastics
+ </paragraph>
+               </text>
+               <effectiveTime value="20250822"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_3cfad334-ab10-6a11-e063-6394a90a8fc2">
+               <id root="5128e0ba-4c56-9f54-e063-6394a90a51f1"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>Inactive ingredients</title>
+               <text>
+                  <paragraph>Water (Aqua), Fragrance (Parfum), Glycerin, Peg-40 Hydrogenated Castor Oil, Aloe Barbadensis Leaf Juice, Denatonium Benzoate,  Red 40, Yellow 5, Blue 1</paragraph>
+               </text>
+               <effectiveTime value="20250822"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_3cfade50-9266-a862-e063-6294a90a8956">
+               <id root="5128dd98-0a45-ea16-e063-6294a90abe91"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_5128e6c1-a9cf-aad8-e063-6394a90a3b0d"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250822"/>
+               <component>
+                  <observationMedia ID="img_5128e6c1-a9cf-aad8-e063-6394a90a3b0d">
+                     <text>SANITIZERS_SECONDBATCH_TECHPACKS_PRINT__Whipped Coconut-R-OL</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="SANITIZERS_SECONDBATCH_TECHPACKS_PRINT__Whipped Coconut-R-OL.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

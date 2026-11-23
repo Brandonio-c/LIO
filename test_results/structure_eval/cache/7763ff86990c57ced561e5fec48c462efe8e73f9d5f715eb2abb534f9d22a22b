@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 15005,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Earache Relief Belladonna, Calcarea Carbonica, Chamomilla, Hepar Sulphuris Calcareum, Kali Bichromicum, Lycopodium Clavatum, Plantago Major, Pulsatilla (Vulgaris) ATROPA BELLADONNA ATROPA BELLADONNA OYSTER SHELL CALCIUM CARBONATE, CRUDE OYSTER SHELL CALCIUM CARBONATE, CRUDE MATRICARIA CHAMOMILLA WHOLE MATRICARIA CHAMOMILLA CALCIUM SULFIDE CALCIUM SULFIDE POTASSIUM DICHROMATE DICHROMATE ION LYCOPODIUM CLAVATUM SPORE LYCOPODIUM CLAVATUM SPORE PLANTAGO MAJOR WHOLE PLANTAGO MAJOR PULSATILLA VULGARIS WHOLE ANEMONE PULSATILLA LACTOSE MAGNESIUM STEARATE CELLULOSE, MICROCRYSTALLINE Convex ML"
+      ],
+      "active_ingredient": [
+        "ACTIVE INGREDIENTS: Belladonna 12X, Calcarea Carbonica 12X, Chamomilla 12X, Hepar Sulphuris Calcareum 12X, Kali Bichromicum 12X, Lycopodium Clavatum 12X, Plantago Major 12X, Pulsatilla (Vulgaris) 12X."
+      ],
+      "purpose": [
+        "USES: For temporary relief of earache symptoms, such as pain, pressure, congestion, itching, sleeplessness, and headaches, after diagnosis by a physician."
+      ],
+      "warnings": [
+        "WARNINGS: • If pregnant or breastfeeding, ask a health professional before use. • Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away. • Stop use and ask a doctor if you experience worsening symptoms or if symptoms last longer than 7 days."
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP OUT OF REACH OF CHILDREN: Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away."
+      ],
+      "other_safety_information": [
+        "OTHER INFORMATION: • Store tightly closed in a cool, dry place (59° - 86°F) • Tamper sealed: Sealed for your protection. Do not use if seal is broken or missing • The letters \"HPUS\" indicate that the components in this product are officially monographed in the Homeopathic Pharmacopeia of the United States • These statements are supported by the traditional homeopathic principles"
+      ],
+      "dosage_and_administration": [
+        "DIRECTIONS: Adults and children 12 years and above: dissolve 1-2 tablets under tongue, 2 to 3 times daily or as directed by a physician. Children under 12 years, consult a physician."
+      ],
+      "indications_and_usage": [
+        "INDICATIONS: For temporary relief of earache symptoms, such as pain, pressure, congestion, itching, sleeplessness, and headaches, after diagnosis by a physician."
+      ],
+      "inactive_ingredient": [
+        "INACTIVE INGREDIENTS: Lactose, Magnesium Stearate, Microcrystalline Cellulose"
+      ],
+      "questions": [
+        "QUESTIONS: Dist. by: The Magni Group, Inc. McKinney, TX 75071 USA www.magnilife.com 1-800-645-9199"
+      ],
+      "package_label_principal_display_panel": [
+        "PACKAGE LABEL DISPLAY: MAGNILIFE Homeopathic NDC 43689-0020-1 EARACHE RELIEF Targets ear pain for fast relief Soothes ear pain and discomfort due to: √ Allergy √ Cold & Flu √ Congestion √Swimmer's Ear 90 Dissolving Tablets Earache Relief lbl Earache Relief ctn"
+      ],
+      "set_id": "3f62001a-27b5-43cb-8006-110943facf87",
+      "id": "32934d7c-c3dc-4bfc-8b8c-ffbbc39768de",
+      "effective_time": "20241105",
+      "version": "4",
+      "openfda": {
+        "brand_name": [
+          "Earache Relief"
+        ],
+        "generic_name": [
+          "BELLADONNA, CALCAREA CARBONICA, CHAMOMILLA, HEPAR SULPHURIS CALCAREUM, KALI BICHROMICUM, LYCOPODIUM CLAVATUM, PLANTAGO MAJOR, PULSATILLA (VULGARIS)"
+        ],
+        "manufacturer_name": [
+          "The Magni Company"
+        ],
+        "product_ndc": [
+          "43689-0020"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "ATROPA BELLADONNA",
+          "OYSTER SHELL CALCIUM CARBONATE, CRUDE",
+          "MATRICARIA CHAMOMILLA WHOLE",
+          "CALCIUM SULFIDE",
+          "POTASSIUM DICHROMATE",
+          "LYCOPODIUM CLAVATUM SPORE",
+          "PLANTAGO MAJOR WHOLE",
+          "PULSATILLA VULGARIS WHOLE"
+        ],
+        "spl_id": [
+          "32934d7c-c3dc-4bfc-8b8c-ffbbc39768de"
+        ],
+        "spl_set_id": [
+          "3f62001a-27b5-43cb-8006-110943facf87"
+        ],
+        "package_ndc": [
+          "43689-0020-1",
+          "43689-0020-2"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "WQZ3G9PF0H",
+          "2E32821G6I",
+          "G0R4UBI2ZZ",
+          "1MBW07J51Q",
+          "T4423S18FM",
+          "C88X29Y479",
+          "W2469WNO6U",
+          "I76KB35JEV"
+        ]
+      }
+    }
+  ]
+}

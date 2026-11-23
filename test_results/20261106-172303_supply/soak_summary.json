@@ -1,0 +1,21 @@
+{
+ "samples": 600,
+ "abort": null,
+ "duration_s": 599.08,
+ "A0": {
+  "mean": 26932.55,
+  "sigma": 85.37,
+  "min": 26690,
+  "max": 27018,
+  "drift_counts": 267.83,
+  "drift_mv": 33.479
+ },
+ "A1": {
+  "mean": 4481.73,
+  "sigma": 146.61,
+  "min": 4296,
+  "max": 4749,
+  "drift_counts": -72.0,
+  "drift_mv": -9.0
+ }
+}

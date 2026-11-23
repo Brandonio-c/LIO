@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261117-012457_host</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261117-012457_host</code> on <code>/dev/cu.usbmodem1101</code>
+,
+2026-11-17T01:24:57-05:00 to 2026-11-17T01:25:04-05:00</p>
+<div class="verdict" style="background: #fab219">DEGRADED</div>
+<ul><li>failing channels: 8, 9</li></ul>
+
+<table>
+<tr><th>Sample</th><td>none-empty-chamber</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td>2.5.1 (proto 1, build 2026-11-16)</td>
+    <th>Config</th><td><code>795e6bf0787d</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.4</td>
+    <th>Software</th><td>lio 0.2.0, git <code>33dbb29085</code> (dirty)</td></tr>
+<tr><th>Results</th><td colspan="3">PASS 2, FAIL 1</td></tr>
+<tr><th>LED duty</th><td colspan="3">0.0 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T06.1">T06.1</a></td><td>OPT101</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T06.2">T06.2</a></td><td>InGaAs TIA</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T06.3">T06.3</a></td><td>Cross-calibration on the shared holes</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ FAIL</span></td>
+<td></td></tr>
+
+</table>
+
+
+
+
+<h2>T06</h2>
+
+<h3 id="T06.1">T06.1 OPT101 <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>11 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>opt101 dark offset<br><code>T06.1/dark</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>56.9 counts</td><td>0 to 800 counts</td></tr>
+
+<tr><td>Responds to hole 1 (395)<br><code>T06.1/h01/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +76</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 2 (405)<br><code>T06.1/h02/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +59</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 3 (blue)<br><code>T06.1/h03/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +41</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 4 (green)<br><code>T06.1/h04/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +43</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 5 (yellow)<br><code>T06.1/h05/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +20</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 6 (orange)<br><code>T06.1/h06/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +21</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 7 (red)<br><code>T06.1/h07/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +27</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 10 (white)<br><code>T06.1/h10/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +68</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 11 (pink)<br><code>T06.1/h11/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +136</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Not saturated<br><code>T06.1/saturation</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>peak 359</td><td>&lt; 29000 counts</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T06.2">T06.2 InGaAs TIA <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>8 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Dark signal steady<br><code>T06.2/erratic</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>dark mean -168, sigma 6.9</td><td>sigma &lt;= 100 and mean &gt;= -1500</td></tr>
+
+<tr><td>ingaas dark offset<br><code>T06.2/dark</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-168.0 counts</td><td>-400 to 2000 counts</td></tr>
+
+<tr><td>Polarity gate (hole 8)<br><code>T06.2/polarity/gate</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +16</td><td>net &gt;= -5 sigma</td></tr>
+
+<tr><td>Hole 9 InGaAs polarity<br><code>T06.2/h09/polarity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net -1</td><td>net not negative</td></tr>
+
+<tr><td>Hole 12 InGaAs polarity<br><code>T06.2/h12/polarity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +11</td><td>net not negative</td></tr>
+
+<tr><td>Hole 13 InGaAs polarity<br><code>T06.2/h13/polarity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +17</td><td>net not negative</td></tr>
+
+<tr><td>Hole 14 InGaAs polarity<br><code>T06.2/h14/polarity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +108</td><td>net not negative</td></tr>
+
+<tr><td>InGaAs not saturated<br><code>T06.2/saturation</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>no hole saturates</td><td>&lt; 27000 counts</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T06.3">T06.3 Cross-calibration on the shared holes <span class="badge" style="border-color: #d03b3b">✕ FAIL</span></h3>
+
+
+<details open>
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Hole 8 seen by both detectors<br><code>T06.3/h08</code></td>
+<td><span class="badge" style="border-color: #d03b3b">✕ FAIL</span></td>
+<td>one detector does not respond</td><td>both above the detection threshold</td></tr>
+
+<tr><td>Hole 9 seen by both detectors<br><code>T06.3/h09</code></td>
+<td><span class="badge" style="border-color: #d03b3b">✕ FAIL</span></td>
+<td>one detector does not respond</td><td>both above the detection threshold</td></tr>
+
+</table>
+</details>
+
+
+
+</body>
+</html>

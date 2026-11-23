@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 2077,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Aplicare Povidone-Iodine DODECAMETHYLPENTASILOXANE SODIUM PHOSPHATE, DIBASIC, ANHYDROUS HYDROXYETHYL CELLULOSE, UNSPECIFIED WATER POVIDONE-IODINE IODINE NONOXYNOL-2 GLYCERIN"
+      ],
+      "active_ingredient": [
+        "Active ingredient Povidone-iodine USP 10%"
+      ],
+      "purpose": [
+        "Purpose Antiseptic"
+      ],
+      "indications_and_usage": [
+        "Use helps reduce bacteria that potentially can cause skin infection"
+      ],
+      "warnings": [
+        "Warnings For external use only Do not use if allergic to iodine in the eyes Stop use and ask a doctor if redness, irritation, swelling or pain develops or persists for more than 72 hours infection occurs Keep out of reach of children. In case of accidental ingestion, seek professional assistance or consult a poison control center immediately.",
+        "Stop use and ask a doctor if redness, irritation, swelling or pain develops or persists for more than 72 hours infection occurs"
+      ],
+      "do_not_use": [
+        "Do not use if allergic to iodine in the eyes"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. In case of accidental ingestion, seek professional assistance or consult a poison control center immediately."
+      ],
+      "dosage_and_administration": [
+        "Directions apply locally as needed"
+      ],
+      "spl_unclassified_section": [
+        "Other information 1% w/w titratable iodine not made with natural rubber latex for hospital or professional use only protect from freezing, avoid excessive heat store at room temperature",
+        "Manufacturing information www.medline.com ©2024 Medline Industries, LP Aplicare is a registered trademark of Medline Industries, LP. Manufactured for Medline Industries, LP, Three Lakes Drive, Northfield, IL 60093 USA 1-800-MEDLINE. Made in China."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients disodium phosphate, dodecamethylpentasiloxane, glycerol, hydroxyethylcellulose, nonylphenoxypoly (ethyleneoxy) ethanol-10, water"
+      ],
+      "package_label_principal_display_panel": [
+        "Package label each label box label"
+      ],
+      "set_id": "0a48b8ef-f2d6-ed50-e063-6394a90a8ebe",
+      "id": "4640ae81-0ef8-0677-e063-6394a90a5a89",
+      "effective_time": "20251218",
+      "version": "3",
+      "openfda": {
+        "application_number": [
+          "505G(a)(3)"
+        ],
+        "brand_name": [
+          "Aplicare"
+        ],
+        "generic_name": [
+          "POVIDONE-IODINE"
+        ],
+        "manufacturer_name": [
+          "Aplicare Products LLC"
+        ],
+        "product_ndc": [
+          "52380-0138"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "POVIDONE-IODINE"
+        ],
+        "rxcui": [
+          "1300277"
+        ],
+        "spl_id": [
+          "4640ae81-0ef8-0677-e063-6394a90a5a89"
+        ],
+        "spl_set_id": [
+          "0a48b8ef-f2d6-ed50-e063-6394a90a8ebe"
+        ],
+        "package_ndc": [
+          "52380-0138-1",
+          "52380-0138-2"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000175486",
+          "M0011640"
+        ],
+        "pharm_class_epc": [
+          "Antiseptic [EPC]"
+        ],
+        "pharm_class_cs": [
+          "Iodine [CS]"
+        ],
+        "unii": [
+          "85H0HZU99M"
+        ]
+      }
+    }
+  ]
+}

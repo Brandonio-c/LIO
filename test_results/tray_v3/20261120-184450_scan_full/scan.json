@@ -1,0 +1,1304 @@
+{
+ "run_id": "20261120-184450_scan_full",
+ "status": "COMPLETE",
+ "started": "2026-11-20T18:44:50-05:00",
+ "finished": "2026-11-20T19:19:17-05:00",
+ "completed_step": 62,
+ "events": [
+  {
+   "at": "2026-11-20T18:44:50-05:00",
+   "kind": "start",
+   "mode": "full",
+   "sample_id": "LIO-F-00001"
+  },
+  {
+   "at": "2026-11-20T19:19:17-05:00",
+   "kind": "complete"
+  }
+ ],
+ "aborts": [],
+ "answers": {
+  "sample_id": "LIO-F-00001",
+  "chamber_clear": true,
+  "scan_lid_closed": true,
+  "scan_earth_bond": true,
+  "scan_sample": true,
+  "holder": "LIO_V3_Simple_Circular_Tray_v3",
+  "tray_lid_off": true,
+  "cup_nest": "removed",
+  "contents": "citrucel_orange",
+  "food_sample_code": "LIO-F-00001",
+  "gtin14": "00300680418301",
+  "lot": "211407"
+ },
+ "phases": {
+  "P0": 0.032,
+  "P1": 113.416,
+  "P2": 807.676,
+  "P3": 1142.625,
+  "P4": 3.723
+ },
+ "streams": [
+  {
+   "name": "s000_coils_off_opt101",
+   "file": "streams/s000_coils_off_opt101.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "s000_coils_off_ingaas",
+   "file": "streams/s000_coils_off_ingaas.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "long_dark_opt101",
+   "file": "streams/long_dark_opt101.npz",
+   "state": "dark",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 8
+  },
+  {
+   "name": "long_dark_ingaas",
+   "file": "streams/long_dark_ingaas.npz",
+   "state": "dark",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 8
+  },
+  {
+   "name": "s001_coils_off_opt101",
+   "file": "streams/s001_coils_off_opt101.npz",
+   "step": 1,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "s001_coils_off_ingaas",
+   "file": "streams/s001_coils_off_ingaas.npz",
+   "step": 1,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_6_opt101",
+   "file": "streams/emi_6_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -6524,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_7_ingaas",
+   "file": "streams/emi_7_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -6524,
+   "rate_setting": 860
+  },
+  {
+   "name": "s005_coils_off_opt101",
+   "file": "streams/s005_coils_off_opt101.npz",
+   "step": 5,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -47504,
+   "rate_setting": 860
+  },
+  {
+   "name": "s005_coils_off_ingaas",
+   "file": "streams/s005_coils_off_ingaas.npz",
+   "step": 5,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -47504,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_10_opt101",
+   "file": "streams/emi_10_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -37644,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_11_ingaas",
+   "file": "streams/emi_11_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -37644,
+   "rate_setting": 860
+  },
+  {
+   "name": "s009_coils_off_opt101",
+   "file": "streams/s009_coils_off_opt101.npz",
+   "step": 9,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -78624,
+   "rate_setting": 860
+  },
+  {
+   "name": "s009_coils_off_ingaas",
+   "file": "streams/s009_coils_off_ingaas.npz",
+   "step": 9,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -78624,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_14_opt101",
+   "file": "streams/emi_14_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -68764,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_15_ingaas",
+   "file": "streams/emi_15_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -68764,
+   "rate_setting": 860
+  },
+  {
+   "name": "s013_coils_off_opt101",
+   "file": "streams/s013_coils_off_opt101.npz",
+   "step": 13,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -109745,
+   "rate_setting": 860
+  },
+  {
+   "name": "s013_coils_off_ingaas",
+   "file": "streams/s013_coils_off_ingaas.npz",
+   "step": 13,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -109745,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_18_opt101",
+   "file": "streams/emi_18_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -99885,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_19_ingaas",
+   "file": "streams/emi_19_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -99885,
+   "rate_setting": 860
+  },
+  {
+   "name": "s017_coils_off_opt101",
+   "file": "streams/s017_coils_off_opt101.npz",
+   "step": 17,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -140865,
+   "rate_setting": 860
+  },
+  {
+   "name": "s017_coils_off_ingaas",
+   "file": "streams/s017_coils_off_ingaas.npz",
+   "step": 17,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -140865,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_22_opt101",
+   "file": "streams/emi_22_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -131005,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_23_ingaas",
+   "file": "streams/emi_23_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -131005,
+   "rate_setting": 860
+  },
+  {
+   "name": "s021_coils_off_opt101",
+   "file": "streams/s021_coils_off_opt101.npz",
+   "step": 21,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -171985,
+   "rate_setting": 860
+  },
+  {
+   "name": "s021_coils_off_ingaas",
+   "file": "streams/s021_coils_off_ingaas.npz",
+   "step": 21,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -171985,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_26_opt101",
+   "file": "streams/emi_26_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -162125,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_27_ingaas",
+   "file": "streams/emi_27_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -162125,
+   "rate_setting": 860
+  },
+  {
+   "name": "s025_coils_off_opt101",
+   "file": "streams/s025_coils_off_opt101.npz",
+   "step": 25,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -203106,
+   "rate_setting": 860
+  },
+  {
+   "name": "s025_coils_off_ingaas",
+   "file": "streams/s025_coils_off_ingaas.npz",
+   "step": 25,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -203106,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_30_opt101",
+   "file": "streams/emi_30_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -193246,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_31_ingaas",
+   "file": "streams/emi_31_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -193246,
+   "rate_setting": 860
+  },
+  {
+   "name": "s029_coils_off_opt101",
+   "file": "streams/s029_coils_off_opt101.npz",
+   "step": 29,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -234226,
+   "rate_setting": 860
+  },
+  {
+   "name": "s029_coils_off_ingaas",
+   "file": "streams/s029_coils_off_ingaas.npz",
+   "step": 29,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -234226,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_34_opt101",
+   "file": "streams/emi_34_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -224366,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_35_ingaas",
+   "file": "streams/emi_35_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -224366,
+   "rate_setting": 860
+  },
+  {
+   "name": "s033_coils_off_opt101",
+   "file": "streams/s033_coils_off_opt101.npz",
+   "step": 33,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -265346,
+   "rate_setting": 860
+  },
+  {
+   "name": "s033_coils_off_ingaas",
+   "file": "streams/s033_coils_off_ingaas.npz",
+   "step": 33,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -265346,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_38_opt101",
+   "file": "streams/emi_38_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -255484,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_39_ingaas",
+   "file": "streams/emi_39_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -255484,
+   "rate_setting": 860
+  },
+  {
+   "name": "s034_coils_off_opt101",
+   "file": "streams/s034_coils_off_opt101.npz",
+   "step": 34,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -234226,
+   "rate_setting": 860
+  },
+  {
+   "name": "s034_coils_off_ingaas",
+   "file": "streams/s034_coils_off_ingaas.npz",
+   "step": 34,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -234226,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_42_opt101",
+   "file": "streams/emi_42_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -224364,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_43_ingaas",
+   "file": "streams/emi_43_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -224364,
+   "rate_setting": 860
+  },
+  {
+   "name": "s050_coils_off_opt101",
+   "file": "streams/s050_coils_off_opt101.npz",
+   "step": 50,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -109745,
+   "rate_setting": 860
+  },
+  {
+   "name": "s050_coils_off_ingaas",
+   "file": "streams/s050_coils_off_ingaas.npz",
+   "step": 50,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -109745,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_46_opt101",
+   "file": "streams/emi_46_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -99883,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_47_ingaas",
+   "file": "streams/emi_47_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -99883,
+   "rate_setting": 860
+  }
+ ],
+ "mode": "full",
+ "sample_id": "LIO-F-00001",
+ "simulated": false,
+ "host": {
+  "lio": "0.2.0",
+  "python": "3.12.11"
+ },
+ "firmware": {
+  "fw": "2.5.2",
+  "proto": "1",
+  "build": "2026-11-17",
+  "adc_addr": "0x48",
+  "adc_ok": "1",
+  "gain": "1",
+  "rate": "128",
+  "settle_ms": "8",
+  "wdt_a_ms": "2000",
+  "wdt_b_ms": "5000",
+  "wdt_a_cap_ms": "5000",
+  "wdt_b_cap_ms": "10000",
+  "comms_ms": "10000",
+  "arm_ms": "60000",
+  "step_max": "2048",
+  "jog_max": "2048",
+  "jog_v_max": "1000",
+  "jog_acc_max": "1000",
+  "wake_ms_max": "3000",
+  "motion_armed": "0",
+  "debug_states": "1",
+  "mains": "0",
+  "rail_b_first": "9",
+  "light_in_motion": "0",
+  "arm_token": "0xF927",
+  "hw_wdt": "0"
+ },
+ "config_sha256": "82201cb43d998b883df5719f7b8e8591f15e41e9921218bcd4e3707f1a455aa9",
+ "plan": {
+  "mode": "full",
+  "label": "commissioning, after rewiring (~44 min)",
+  "top": -16384,
+  "bottom": -265346,
+  "settings": {
+   "jog_speed": 500,
+   "settle_ms_mech": 300,
+   "dark_agree_sigma": 3.0,
+   "dark_agree_tries": 5,
+   "dark_n": 8,
+   "optical_settle_ms": 8,
+   "sweep_n": 2,
+   "hum_every_k": 4,
+   "hum_bursts": 17,
+   "long_dark_s": 30.0,
+   "ref_offset_steps": 4096,
+   "arm_renew_s": 40.0,
+   "heartbeat_timeout_s": 90.0,
+   "abort_on_saturation": true,
+   "lead_mm_per_rev": 1.0,
+   "mains_hz": 60,
+   "mains_periods": 2
+  },
+  "steps": [
+   {
+    "index": 0,
+    "phase": "P1",
+    "kind": "static",
+    "height": -16384,
+    "direction": "none",
+    "rep": 0,
+    "hum": false,
+    "label": "electrical characterisation (no motion)"
+   },
+   {
+    "index": 1,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -16384,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 2,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -24164,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 3,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -31944,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 4,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -39724,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 5,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -47504,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 6,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -55284,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 7,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -63064,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 8,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -70844,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 9,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -78624,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 10,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -86405,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 11,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -94185,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 12,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -101965,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 13,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -109745,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 14,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -117525,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 15,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -125305,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 16,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -133085,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 17,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -140865,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 18,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -148645,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 19,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -156425,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 20,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -164205,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 21,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -171985,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 22,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -179765,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 23,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -187545,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 24,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -195325,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 25,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -203106,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 26,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -210886,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 27,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -218666,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 28,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -226446,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 29,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -234226,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 30,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -242006,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 31,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -249786,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 32,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -257566,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 33,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -265346,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 34,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -234226,
+    "direction": "up",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 35,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -223852,
+    "direction": "down",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 36,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -223852,
+    "direction": "up",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 37,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -223852,
+    "direction": "down",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 38,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -223852,
+    "direction": "up",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 39,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -203106,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 40,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -182359,
+    "direction": "down",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 41,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -182359,
+    "direction": "up",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 42,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -182359,
+    "direction": "down",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 43,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -182359,
+    "direction": "up",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 44,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -171985,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 45,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -140865,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 46,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -140865,
+    "direction": "down",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 47,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -140865,
+    "direction": "up",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 48,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -140865,
+    "direction": "down",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 49,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -140865,
+    "direction": "up",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 50,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -109745,
+    "direction": "up",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 51,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -99371,
+    "direction": "down",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 52,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -99371,
+    "direction": "up",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 53,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -99371,
+    "direction": "down",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 54,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -99371,
+    "direction": "up",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 55,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -78624,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 56,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -57878,
+    "direction": "down",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 57,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -57878,
+    "direction": "up",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 58,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -57878,
+    "direction": "down",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 59,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -57878,
+    "direction": "up",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 60,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -47504,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 61,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -16384,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 62,
+    "phase": "P4",
+    "kind": "closing",
+    "height": -16384,
+    "direction": "none",
+    "rep": 0,
+    "hum": false,
+    "label": "closing checks at the top"
+   }
+  ],
+  "heights_down": [
+   -16384,
+   -24164,
+   -31944,
+   -39724,
+   -47504,
+   -55284,
+   -63064,
+   -70844,
+   -78624,
+   -86405,
+   -94185,
+   -101965,
+   -109745,
+   -117525,
+   -125305,
+   -133085,
+   -140865,
+   -148645,
+   -156425,
+   -164205,
+   -171985,
+   -179765,
+   -187545,
+   -195325,
+   -203106,
+   -210886,
+   -218666,
+   -226446,
+   -234226,
+   -242006,
+   -249786,
+   -257566,
+   -265346
+  ],
+  "heights_up": [
+   -234226,
+   -203106,
+   -171985,
+   -140865,
+   -109745,
+   -78624,
+   -47504,
+   -16384
+  ],
+  "ref_heights": [
+   -57878,
+   -99371,
+   -140865,
+   -182359,
+   -223852
+  ],
+  "repeats": 2,
+  "extra_near_optimum": 0,
+  "static": false,
+  "continuous": false,
+  "return_top": true,
+  "eta_s": 1995.6467505599871,
+  "eta_parts": {
+   "P0": 30.0,
+   "P1": 71.69813333333335,
+   "P2": 769.6081402239951,
+   "P3": 1101.6951436693255,
+   "P4": 22.645333333333383
+  },
+  "duty": {
+   "on_ms_per_sweep": 82.7,
+   "max_on_ms_per_min_A": 330.7,
+   "budget_A": 1000.0,
+   "waits_s": 0.0
+  }
+ },
+ "stage": {
+  "known": true,
+  "valid": true,
+  "invalid_reason": null,
+  "abs": [
+   0,
+   0
+  ],
+  "top": [
+   0,
+   0
+  ],
+  "bottom": [
+   -265346,
+   -307493
+  ],
+  "updated": "2026-11-20T18:42:20-05:00",
+  "file": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/stage_position.json",
+  "range": [
+   265346,
+   307493
+  ],
+  "below_top": [
+   0,
+   0
+  ],
+  "above_bottom": [
+   265346,
+   307493
+  ]
+ },
+ "capabilities": {
+  "coupling_states": true,
+  "mains_rejection": true,
+  "rail_monitor": false,
+  "home_sensors": false
+ },
+ "skipped_checks": {
+  "rail_monitor": "A2/A3 not wired for rail and ground monitoring",
+  "home_sensors": "no home sensors fitted"
+ },
+ "rows": 2360,
+ "interlocks": {
+  "light_while_moving": "PASS",
+  "single_channel": "PASS"
+ },
+ "health": {
+  "unexpected_boots": 0,
+  "duty": {
+   "max_rail_a_ms_per_min": 420.0,
+   "budget_a_ms": 1000.0,
+   "over_budget": [],
+   "cooldown_s": 0,
+   "cooldowns": 0
+  },
+  "moves": 84,
+  "unlevel": [],
+  "stage_end": {
+   "known": true,
+   "valid": true,
+   "invalid_reason": null,
+   "abs": [
+    -16384,
+    -16384
+   ],
+   "top": [
+    0,
+    0
+   ],
+   "bottom": [
+    -265346,
+    -307493
+   ],
+   "updated": "2026-11-20T19:19:17-05:00",
+   "file": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/stage_position.json",
+   "range": [
+    265346,
+    307493
+   ],
+   "below_top": [
+    16384,
+    16384
+   ],
+   "above_bottom": [
+    248962,
+    291109
+   ]
+  }
+ }
+}

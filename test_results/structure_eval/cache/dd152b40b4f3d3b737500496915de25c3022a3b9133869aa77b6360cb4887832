@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 7918,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Meijer Bismuth Stomach Relief Bismuth CALCIUM CARBONATE BISMUTH SUBSALICYLATE BISMUTH CATION SR"
+      ],
+      "active_ingredient": [
+        "Active ingredient (in each chewable tablet) Bismuth subsalicylate 262 mg"
+      ],
+      "purpose": [
+        "Purpose Upset stomach reliever and antidiarrheal"
+      ],
+      "indications_and_usage": [
+        "Uses relieves Traveler's diarrhea Diarrhea Upset stomach due to overindulgence in food and drink, including Heartburn Indigestion Nausea Gas Belching Fullness"
+      ],
+      "warnings": [
+        "Warnings Reye's syndrome: Children and teenagers who have or are recovering from chicken pox or flu-like symptoms should not use this product. When using this product, if changes in behavior with nausea and vomiting occur, consult a doctor because these symptoms could be an early sign of Reye's syndrome, a rare but serious illness. Allergy alert: Contains salicylate. Do not take if you are Allergic to salicylates (including aspirin) taking other salicylates products"
+      ],
+      "do_not_use": [
+        "Do not use if you have An ulcer A bleeding problem Bloody or black stool"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have Fever Mucus in the stool"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor or pharmacist before use if you are taking any drug for Anticoagulation (thinning the blood) Diabetes Gout Arthritis"
+      ],
+      "when_using": [
+        "When using this product a temporary, but harmless, darkening of the stool and/or tongue may occur"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if Symptoms get worse or last more than 2 days Ringing in the ears or loss of hearing occurs Diarrhea lasts more than 2 days"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding , ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children."
+      ],
+      "overdosage": [
+        "In case of overdose, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions Fully chew before swallowing Adults and children 12 years abd over: 2 chewable tablets every 1/2 hour or 4 chewable tablets every hour as needed for diarrhea. 2 chewable tablets every 1/2 hour to 1 hour as needed for overindulgence (upset stomach, heartburn, indigenstion, nausea). Do not exceed 8 doses (16 chewable tablets) in 24 hours. Use until diarrhea stops but not more than 2 days Children under 12 years: ask a doctor. Drink plenty of clear fluids to help prevent dehydration caused by diarrhea."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients: Beeswax, calcium carbonate, carmine, carnauba wax, citric acid, corn starch, corn syrup, dextrin, ethyl acetate, FD&C blue no. 1 aluminum lake, FD&C blue no. 2 aluminum lake, FD&C red no. 40 aluminum lake, FD&C yellow no. 6 aluminum lake, glycerin, gum arabic, hydrogenated coconut oil, maltodextrin, medium chain triglycerides, natural and artificial flavors, phosphoric acid, propylene glycol, shellac, sodium benzoate, sorbic acid, sorbitol, soy lecithin, soybean oil, sucrose, titanium dioxide, vegetable oil (coconut and/or canola oil), water."
+      ],
+      "other_safety_information": [
+        "Other information Each chewable tablet contains: Calcium 50mg Salicylate 123 mg Contains soy Store between 20° to 25°C (68° to 77°F) in a dry place. Avoid excessive heat (over40°C)."
+      ],
+      "questions": [
+        "Questions? Call 1-800-245-2898 Mon - Fri, 9AM - 4PM EST"
+      ],
+      "package_label_principal_display_panel": [
+        "Meijer Bismuth Stomach Relief 24ct"
+      ],
+      "set_id": "26a65c79-3bc1-a424-e063-6394a90a848e",
+      "id": "4641a38b-0b86-49ea-e063-6294a90a6895",
+      "effective_time": "20251218",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M008"
+        ],
+        "brand_name": [
+          "Meijer Bismuth Stomach Relief"
+        ],
+        "generic_name": [
+          "BISMUTH"
+        ],
+        "manufacturer_name": [
+          "Meijer"
+        ],
+        "product_ndc": [
+          "79481-0097"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "BISMUTH SUBSALICYLATE"
+        ],
+        "rxcui": [
+          "308761"
+        ],
+        "spl_id": [
+          "4641a38b-0b86-49ea-e063-6294a90a6895"
+        ],
+        "spl_set_id": [
+          "26a65c79-3bc1-a424-e063-6394a90a848e"
+        ],
+        "package_ndc": [
+          "79481-0097-1"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0713733779913"
+        ],
+        "nui": [
+          "M0002611",
+          "N0000180183"
+        ],
+        "pharm_class_cs": [
+          "Bismuth [CS]"
+        ],
+        "pharm_class_epc": [
+          "Bismuth [EPC]"
+        ],
+        "unii": [
+          "62TEY51RR1"
+        ]
+      }
+    }
+  ]
+}

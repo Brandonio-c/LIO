@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261118-002642_host</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261118-002642_host</code> on <code>/dev/cu.usbmodem1101</code>
+,
+2026-11-18T00:26:42-05:00 to 2026-11-18T00:27:35-05:00</p>
+<div class="verdict" style="background: #0ca30c">FUNCTIONAL</div>
+<ul><li>no failures or warnings</li></ul>
+
+<table>
+<tr><th>Sample</th><td>empty</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td>2.5.2 (proto 1, build 2026-11-17)</td>
+    <th>Config</th><td><code>eb4a5aa9ccb1</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.4</td>
+    <th>Software</th><td>lio 0.2.0, git <code>f05f1f2b10</code> (dirty)</td></tr>
+<tr><th>Results</th><td colspan="3">PASS 13, SKIP 1</td></tr>
+<tr><th>LED duty</th><td colspan="3">0.0 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+<tr><th>Notes</th><td colspan="3">no-prompt full run after rail split fix (fw 2.5.2), hole 9 reworked</td></tr>
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T01.1">T01.1</a></td><td>Python and dependency versions</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T01.2">T01.2</a></td><td>Serial port discovery</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T01.3">T01.3</a></td><td>Configuration loads and is self-consistent</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.1">T02.1</a></td><td>Port open and boot banner</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.2">T02.2</a></td><td>PING round-trip latency</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.3">T02.3</a></td><td>INFO fields, versions and safety limits</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.4">T02.4</a></td><td>Robustness to bad input</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.5">T02.5</a></td><td>Sequence numbers and interleaved events</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.6">T02.6</a></td><td>RESET restores the boot state</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.1">T03.1</a></td><td>I2C scan finds the ADS1115</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.2">T03.2</a></td><td>Dark ADC noise, all inputs</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.3">T03.3</a></td><td>Gain sweep on dark inputs</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.4">T03.4</a></td><td>ADC data rate</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.5">T03.5</a></td><td>Long-term dark stability</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>stopped by the operator</td></tr>
+
+</table>
+
+
+
+
+<h2>T01</h2>
+
+<h3 id="T01.1">T01.1 Python and dependency versions <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>6 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Python version<br><code>T01.1/python</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.12.4</td><td>&gt;= 3.10</td></tr>
+
+<tr><td>pyserial installed<br><code>T01.1/pyserial</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.5</td><td>importable</td></tr>
+
+<tr><td>pyyaml installed<br><code>T01.1/pyyaml</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>6.0.3</td><td>importable</td></tr>
+
+<tr><td>numpy installed<br><code>T01.1/numpy</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2.5.4</td><td>importable</td></tr>
+
+<tr><td>matplotlib installed<br><code>T01.1/matplotlib</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.11.2</td><td>importable</td></tr>
+
+<tr><td>jinja2 installed<br><code>T01.1/jinja2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.1.6</td><td>importable</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T01.2">T01.2 Serial port discovery <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Selected port is present<br><code>T01.2/port</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>/dev/cu.usbmodem1101: present</td><td>--lio-port names an existing serial port</td></tr>
+
+<tr><td>USB-serial chip recognised<br><code>T01.2/chip</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>VID:PID 2341:0074 (Arduino Nano R4 (native USB))</td><td>one of link.usb_ids</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T01.3">T01.3 Configuration loads and is self-consistent <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Config validates<br><code>T01.3/load</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lio_hw.yaml sha256 eb4a5aa9ccb1</td><td></td></tr>
+
+<tr><td>16 holes<br><code>T01.3/holes</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>16 entries</td><td></td></tr>
+
+<tr><td>Rails split A = 1-8, B = 9-16 (as built)<br><code>T01.3/rails</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>A=[1, 2, 3, 4, 5, 6, 7, 8] B=[9, 10, 11, 12, 13, 14, 15, 16]</td><td></td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T02</h2>
+
+<h3 id="T02.1">T02.1 Port open and boot banner <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Boot banner within the timeout<br><code>T02.1/banner</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0.06 s</td><td>&lt;= 3 s</td></tr>
+
+<tr><td>Banner identifies LIO firmware<br><code>T02.1/identity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># BOOT name=lio fw=2.5.2 proto=1 build=2026-11-17 adc_ok=1 hw_wdt=0</td><td>name=lio, fw and proto present</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.2">T02.2 PING round-trip latency <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Every PING answered<br><code>T02.2/answered</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>100/100 answered</td><td>all</td></tr>
+
+<tr><td>p99 round trip<br><code>T02.2/p99</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>median 0.87 ms, p99 0.94 ms, max 0.99 ms</td><td>p99 &lt; 50 ms</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.3">T02.3 INFO fields, versions and safety limits <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>17 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>INFO fields present<br><code>T02.3/fields</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>21 fields</td><td>all protocol-1 INFO fields</td></tr>
+
+<tr><td>Firmware compatible with this host package<br><code>T02.3/version</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>fw 2.5.2 proto 1</td><td>&gt;= 2.0.0, proto 1</td></tr>
+
+<tr><td>settle_ms matches lio_hw.yaml<br><code>T02.3/limit/settle_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>8</td><td>8</td></tr>
+
+<tr><td>wdt_a_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_a_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2000</td><td>2000</td></tr>
+
+<tr><td>wdt_b_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_b_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5000</td><td>5000</td></tr>
+
+<tr><td>wdt_a_cap_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_a_cap_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5000</td><td>5000</td></tr>
+
+<tr><td>wdt_b_cap_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_b_cap_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>10000</td><td>10000</td></tr>
+
+<tr><td>comms_ms matches lio_hw.yaml<br><code>T02.3/limit/comms_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>10000</td><td>10000</td></tr>
+
+<tr><td>arm_ms matches lio_hw.yaml<br><code>T02.3/limit/arm_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>60000</td><td>60000</td></tr>
+
+<tr><td>step_max matches lio_hw.yaml<br><code>T02.3/limit/step_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2048</td><td>2048</td></tr>
+
+<tr><td>jog_max matches lio_hw.yaml<br><code>T02.3/limit/jog_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2048</td><td>2048</td></tr>
+
+<tr><td>jog_v_max matches lio_hw.yaml<br><code>T02.3/limit/jog_v_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1000</td><td>1000</td></tr>
+
+<tr><td>jog_acc_max matches lio_hw.yaml<br><code>T02.3/limit/jog_acc_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1000</td><td>1000</td></tr>
+
+<tr><td>wake_ms_max matches lio_hw.yaml<br><code>T02.3/limit/wake_ms_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3000</td><td>3000</td></tr>
+
+<tr><td>ADC address matches lio_hw.yaml<br><code>T02.3/adc/addr</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0x48</td><td>0x48</td></tr>
+
+<tr><td>ADC gain matches lio_hw.yaml<br><code>T02.3/adc/gain</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1</td><td>1</td></tr>
+
+<tr><td>ADC rate matches lio_hw.yaml<br><code>T02.3/adc/rate</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>128</td><td>128</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.4">T02.4 Robustness to bad input <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>5 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Unknown command<br><code>T02.4/unknown</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@140 ERR FROBNICATE code=1 msg=unknown command</td><td>ERR code=1</td></tr>
+
+<tr><td>Bad argument<br><code>T02.4/badarg</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@141 ERR MEAS code=2 msg=usage: MEAS &lt;1-16&gt; [settle_ms] [n]</td><td>ERR code=2</td></tr>
+
+<tr><td>Missing argument<br><code>T02.4/missing</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@142 ERR CH code=2 msg=usage: CH &lt;1-16&gt; ON [ms]</td><td>ERR code=2</td></tr>
+
+<tr><td>Line over 64 characters<br><code>T02.4/overflow</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR ? code=6 msg=line too long</td><td>ERR code=6</td></tr>
+
+<tr><td>Garbage bytes, then PING<br><code>T02.4/garbage</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>PING OK</td><td>PING still answered</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.5">T02.5 Sequence numbers and interleaved events <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>6 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>@1 echoed<br><code>T02.5/seq/1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@1 OK PING uptime_ms=1315204</td><td>@1 OK PING</td></tr>
+
+<tr><td>@4242 echoed<br><code>T02.5/seq/4242</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@4242 OK PING uptime_ms=1315205</td><td>@4242 OK PING</td></tr>
+
+<tr><td>@99999 echoed<br><code>T02.5/seq/99999</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@99999 OK PING uptime_ms=1315206</td><td>@99999 OK PING</td></tr>
+
+<tr><td>No @seq, none echoed<br><code>T02.5/noseq</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>OK PING uptime_ms=1315206</td><td>OK PING</td></tr>
+
+<tr><td>Response found after interleaved events<br><code>T02.5/stream</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>20 &#39;# S&#39; events then OK</td><td>20 events</td></tr>
+
+<tr><td>Asynchronous &#39;# OFF&#39; does not desynchronise<br><code>T02.5/async</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>10/10 PINGs matched; 1 timer event(s) seen</td><td>all PINGs answered in order, one &#39;# OFF&#39;</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.6">T02.6 RESET restores the boot state <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Banner after RESET<br><code>T02.6/banner</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0.01 s</td><td>&lt;= 3 s</td></tr>
+
+<tr><td>STATUS shows the safe state<br><code>T02.6/safe</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ch=0 ce1=0 ce2=0 mask=0x0000 armed=0</td><td>ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle</td></tr>
+
+<tr><td>Settings back to defaults<br><code>T02.6/defaults</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>wdt_a_ms=2000 (was set to 200)</td><td>2000</td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T03</h2>
+
+<h3 id="T03.1">T03.1 I2C scan finds the ADS1115 <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>ADS1115 at 0x48<br><code>T03.1/adc</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>found [&#39;0x48&#39;]</td><td>0x48 acknowledges</td></tr>
+
+<tr><td>I2C lines (SDA, SCL)<br><code>T03.1/bus</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lines idle high with pull-ups, not bridged; 0x48 answers at 166.666 kHz</td><td>both idle high, rise on external pull-ups, not joined</td></tr>
+
+<tr><td>No unexpected I2C devices<br><code>T03.1/only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>none</td><td>only the ADS1115</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T03.2">T03.2 Dark ADC noise, all inputs <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>4 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>ADS A0 (ingaas) dark noise<br><code>T03.2/a0</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean -167.4, sigma 2.89 counts (n=64)</td><td>sigma &lt;= 20 counts</td></tr>
+
+<tr><td>ADS A1 (opt101) dark noise<br><code>T03.2/a1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 57.0, sigma 0.40 counts (n=64)</td><td>sigma &lt;= 20 counts</td></tr>
+
+<tr><td>ADS A2 (unconnected)<br><code>T03.2/a2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>recorded only: mean 4570.2, sigma 9.10</td><td>floating input</td></tr>
+
+<tr><td>ADS A3 (unconnected)<br><code>T03.2/a3</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>recorded only: mean 2733.6, sigma 2.06</td><td>floating input</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T03.3">T03.3 Gain sweep on dark inputs <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>24 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>GAIN 2/3 accepted<br><code>T03.3/ingaas/g2/3/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.1875 mV</td><td>0.1875 mV</td></tr>
+
+<tr><td>GAIN 1 accepted<br><code>T03.3/ingaas/g1/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.125 mV</td><td>0.125 mV</td></tr>
+
+<tr><td>GAIN 2 accepted<br><code>T03.3/ingaas/g2/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.0625 mV</td><td>0.0625 mV</td></tr>
+
+<tr><td>GAIN 4 accepted<br><code>T03.3/ingaas/g4/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.03125 mV</td><td>0.03125 mV</td></tr>
+
+<tr><td>GAIN 8 accepted<br><code>T03.3/ingaas/g8/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.015625 mV</td><td>0.015625 mV</td></tr>
+
+<tr><td>GAIN 16 accepted<br><code>T03.3/ingaas/g16/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.0078125 mV</td><td>0.0078125 mV</td></tr>
+
+<tr><td>ingaas at GAIN 2/3 agrees with GAIN 1<br><code>T03.3/ingaas/g2/3</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-20.95 mV vs -20.95 mV</td><td>within 6.19 mV</td></tr>
+
+<tr><td>ingaas at GAIN 1 agrees with GAIN 1<br><code>T03.3/ingaas/g1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-20.95 mV vs -20.95 mV</td><td>within 6.04 mV</td></tr>
+
+<tr><td>ingaas at GAIN 2 agrees with GAIN 1<br><code>T03.3/ingaas/g2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-20.88 mV vs -20.95 mV</td><td>within 6.09 mV</td></tr>
+
+<tr><td>ingaas at GAIN 4 agrees with GAIN 1<br><code>T03.3/ingaas/g4</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-20.88 mV vs -20.95 mV</td><td>within 6.05 mV</td></tr>
+
+<tr><td>ingaas at GAIN 8 agrees with GAIN 1<br><code>T03.3/ingaas/g8</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-20.88 mV vs -20.95 mV</td><td>within 6.04 mV</td></tr>
+
+<tr><td>ingaas at GAIN 16 agrees with GAIN 1<br><code>T03.3/ingaas/g16</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-20.90 mV vs -20.95 mV</td><td>within 6.05 mV</td></tr>
+
+<tr><td>GAIN 2/3 accepted<br><code>T03.3/opt101/g2/3/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.1875 mV</td><td>0.1875 mV</td></tr>
+
+<tr><td>GAIN 1 accepted<br><code>T03.3/opt101/g1/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.125 mV</td><td>0.125 mV</td></tr>
+
+<tr><td>GAIN 2 accepted<br><code>T03.3/opt101/g2/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.0625 mV</td><td>0.0625 mV</td></tr>
+
+<tr><td>GAIN 4 accepted<br><code>T03.3/opt101/g4/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.03125 mV</td><td>0.03125 mV</td></tr>
+
+<tr><td>GAIN 8 accepted<br><code>T03.3/opt101/g8/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.015625 mV</td><td>0.015625 mV</td></tr>
+
+<tr><td>GAIN 16 accepted<br><code>T03.3/opt101/g16/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.0078125 mV</td><td>0.0078125 mV</td></tr>
+
+<tr><td>opt101 at GAIN 2/3 agrees with GAIN 1<br><code>T03.3/opt101/g2/3</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>7.29 mV vs 7.11 mV</td><td>within 5.28 mV</td></tr>
+
+<tr><td>opt101 at GAIN 1 agrees with GAIN 1<br><code>T03.3/opt101/g1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>7.11 mV vs 7.11 mV</td><td>within 5.13 mV</td></tr>
+
+<tr><td>opt101 at GAIN 2 agrees with GAIN 1<br><code>T03.3/opt101/g2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>7.12 mV vs 7.11 mV</td><td>within 5.13 mV</td></tr>
+
+<tr><td>opt101 at GAIN 4 agrees with GAIN 1<br><code>T03.3/opt101/g4</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>6.84 mV vs 7.11 mV</td><td>within 5.13 mV</td></tr>
+
+<tr><td>opt101 at GAIN 8 agrees with GAIN 1<br><code>T03.3/opt101/g8</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>7.53 mV vs 7.11 mV</td><td>within 5.13 mV</td></tr>
+
+<tr><td>opt101 at GAIN 16 agrees with GAIN 1<br><code>T03.3/opt101/g16</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>7.53 mV vs 7.11 mV</td><td>within 5.13 mV</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T03.4">T03.4 ADC data rate <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>8 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>8 SPS conversion interval<br><code>T03.4/r8</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>120.742 ms (nominal 125.000 ms, overhead -4.258 ms)</td><td>106.250-145.250 ms</td></tr>
+
+<tr><td>16 SPS conversion interval<br><code>T03.4/r16</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>61.184 ms (nominal 62.500 ms, overhead -1.316 ms)</td><td>53.125-73.375 ms</td></tr>
+
+<tr><td>32 SPS conversion interval<br><code>T03.4/r32</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>31.242 ms (nominal 31.250 ms, overhead -0.008 ms)</td><td>26.562-37.438 ms</td></tr>
+
+<tr><td>64 SPS conversion interval<br><code>T03.4/r64</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>16.433 ms (nominal 15.625 ms, overhead +0.808 ms)</td><td>13.281-19.469 ms</td></tr>
+
+<tr><td>128 SPS conversion interval<br><code>T03.4/r128</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>8.863 ms (nominal 7.812 ms, overhead +1.050 ms)</td><td>6.641-10.484 ms</td></tr>
+
+<tr><td>250 SPS conversion interval<br><code>T03.4/r250</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5.288 ms (nominal 4.000 ms, overhead +1.288 ms)</td><td>3.400-6.100 ms</td></tr>
+
+<tr><td>475 SPS conversion interval<br><code>T03.4/r475</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.342 ms (nominal 2.105 ms, overhead +1.237 ms)</td><td>1.789-3.921 ms</td></tr>
+
+<tr><td>860 SPS conversion interval<br><code>T03.4/r860</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2.537 ms (nominal 1.163 ms, overhead +1.374 ms)</td><td>0.988-2.837 ms</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T03.5">T03.5 Long-term dark stability <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">stopped by the operator</p>
+
+
+
+</body>
+</html>

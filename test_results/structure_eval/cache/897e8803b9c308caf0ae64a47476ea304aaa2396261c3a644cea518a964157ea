@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 1018,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Degree Advanced Extreme Dry Spray 72H Antiperspirant Deodorant ALUMINUM SESQUICHLOROHYDRATE ALUMINUM SESQUICHLOROHYDRATE MALTODEXTRIN PROPYLENE CARBONATE SILICON DIOXIDE GLYCINE LIMONENE, (+)- ISOBUTANE .BETA.-CITRONELLOL, (R)- BUTANE 1,1-DIFLUOROETHANE CYCLOMETHICONE 5 PPG-14 BUTYL ETHER DISTEARDIMONIUM HECTORITE CALCIUM CHLORIDE LINALOOL, (+/-)- PROPANE BUTYLATED HYDROXYTOLUENE GERANIOL ISOMETHYL-.ALPHA.-IONONE BENZYL ALCOHOL BENZYL SALICYLATE COUMARIN"
+      ],
+      "description": [
+        "DEGREE ADVANCED EXTREME DRY SPRAY 72H ANTIPERSPIRANT DEODORANT - aluminum Sesquichlorohydrate aerosol, spray"
+      ],
+      "active_ingredient": [
+        "Drug Facts Active ingredient Aluminum Sesquichlorohydrate (17.6%)"
+      ],
+      "purpose": [
+        "Purpose antiperspirant"
+      ],
+      "indications_and_usage": [
+        "Uses reduces underarm wetness"
+      ],
+      "dosage_and_administration": [
+        "Directions For underarms use only"
+      ],
+      "warnings": [
+        "Warnings"
+      ],
+      "keep_out_of_reach_of_children": [
+        ""
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Butane, Cyclopentasiloxane, Hydrofluorocarbon 152a, Isobutane, PPG-14 Butyl Ether, Glycine, Fragrance (Parfum), Disteardimonium Hectorite, Calcium Chloride, Propane, Sodium Starch Octenylsuccinate, BHT, Propylene Carbonate, Maltodextrin, Hydrolyzed Corn Starch Octenylsuccinate, Silica, Alpha-Isomethyl Ionone, Benzyl Alcohol, Benzyl Salicylate, Citronellol, Coumarin, Geraniol, Limonene, Linalool"
+      ],
+      "questions": [
+        "Questions? Call toll-free 1-866-334-7331"
+      ],
+      "package_label_principal_display_panel": [
+        "Packaging Degree Extreme Dry Spray AP"
+      ],
+      "set_id": "05189814-6b7b-6d4a-e063-6394a90a14e2",
+      "id": "264b5242-046c-a856-e063-6394a90abf7f",
+      "effective_time": "20241106",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M019"
+        ],
+        "brand_name": [
+          "Degree"
+        ],
+        "generic_name": [
+          "ADVANCED EXTREME DRY SPRAY 72H ANTIPERSPIRANT DEODORANT"
+        ],
+        "manufacturer_name": [
+          "Conopco, Inc. d/b/a Unilever"
+        ],
+        "product_ndc": [
+          "64942-2204"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ALUMINUM SESQUICHLOROHYDRATE"
+        ],
+        "spl_id": [
+          "264b5242-046c-a856-e063-6394a90abf7f"
+        ],
+        "spl_set_id": [
+          "05189814-6b7b-6d4a-e063-6394a90a14e2"
+        ],
+        "package_ndc": [
+          "64942-2204-1"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "UCN889409V"
+        ]
+      }
+    }
+  ]
+}

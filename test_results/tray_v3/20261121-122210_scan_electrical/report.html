@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO diagnostic sweep 20261121-122210_scan_electrical</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  .card { border: 1px solid var(--rule); border-radius: 6px; padding: .6rem .9rem; margin: .6rem 0; }
+  .card dl { display: grid; grid-template-columns: 7rem 1fr; gap: .2rem .8rem; margin: .4rem 0 0; }
+  .card dt { color: var(--ink2); font-weight: 600; }
+  .card dd { margin: 0; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+  .note { color: var(--ink2); font-size: 12px; }
+  @media (max-width: 640px) { .card dl { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>LIO diagnostic sweep</h1>
+<p class="meta">Run <code>20261121-122210_scan_electrical</code>,
+mode <strong>electrical</strong>, sample <strong>empty</strong>,
+2026-11-21T12:22:10-05:00 to 2026-11-21T12:23:29-05:00: <strong>COMPLETE</strong></p>
+<div class="verdict" style="background: #0ca30c">FUNCTIONAL</div>
+<ul><li>warnings: T13.T09</li></ul>
+<p class="note">Thresholds are provisional (set on the simulator), to be calibrated at commissioning.</p>
+
+<table>
+<tr><th>Firmware</th><td>2.5.2 (proto 1)</td>
+    <th>Config</th><td><code>82201cb43d99</code></td></tr>
+<tr><th>Lead screw</th><td>M6 x 1.0 threaded rod, 304 stainless steel, 255 mm (10 in), x4</td><th>Coupler</th><td>5 mm to 6 mm shaft coupler, aluminium alloy, 25 mm long, 20 mm diameter</td></tr>
+<tr><th>Motors</th><td>28BYJ-48 5 V stepper (64:1 gearbox), ULN2003 driver boards, x2</td><th>Plan</th>
+    <td>2 steps, 0 heights down,
+        ETA 3 min</td></tr>
+
+</table>
+
+<h2>Subsystem health</h2>
+<table>
+<tr><th>Subsystem</th><th>Parts</th><th>Health</th><th>Reason</th></tr>
+
+<tr><td>Link / firmware</td><td>Nano R4, USB, firmware</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>1 checks pass</td></tr>
+
+<tr><td>ADC / I²C</td><td>ADS1115, software I²C D11/D12</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>1 checks pass</td></tr>
+
+<tr><td>Shift registers</td><td>U1, U2</td>
+<td><span class="badge" style="border-color: #8a8984">- n/a</span></td>
+<td>not measured: no optical response to compare</td></tr>
+
+<tr><td>LED drivers / rails</td><td>DRV1 (RAIL A), DRV2 (RAIL B)</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>2 checks pass</td></tr>
+
+<tr><td>LED / MOSFET channels</td><td>LED1-16, Q1-16</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>17 checks pass</td></tr>
+
+<tr><td>OPT101</td><td>OPT101 (A1)</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>1 checks pass</td></tr>
+
+<tr><td>InGaAs TIA</td><td>D1, U5, Rf, Cf (A0)</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>1 checks pass</td></tr>
+
+<tr><td>Motors / lead screws</td><td>M1, M2, ULN2003, couplers, M6 rods</td>
+<td><span class="badge" style="border-color: #fab219">! WATCH</span></td>
+<td>mech/travel: tracked range 260400 / 333677 half-steps (M1/right / M2/left): the two sides differ (thresholds.motion.travel.range_steps not set: not compared)</td></tr>
+
+<tr><td>Stage tracking</td><td>lio.stage, soft limits</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>1 checks pass</td></tr>
+
+<tr><td>Safety</td><td>interlocks, duty budget</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>2 checks pass</td></tr>
+
+<tr><td>Power / earthing</td><td>supplies, GND, earth bond</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>2 checks pass</td></tr>
+
+<tr><td>Optical path / ambient</td><td>window, shroud, lid, sample</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>3 checks pass</td></tr>
+
+<tr><td>Run</td><td>the scan itself</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>1 checks pass</td></tr>
+
+</table>
+
+
+<h2>Findings to act on</h2>
+
+<div class="card">
+<div><span class="badge" style="border-color: #fab219">! WARN</span>
+<strong>travel (top to bottom)</strong> <code>mech/travel</code></div>
+<div class="meta">tracked range 260400 / 333677 half-steps (M1/right / M2/left): the two sides differ (thresholds.motion.travel.range_steps not set: not compared)</div>
+<dl>
+<dt>Why</dt><dd>The tracked travel differs from the configured one (or between the sides).</dd>
+<dt>Parts</dt><dd>stage limits</dd>
+<dt>Next check</dt><dd>Re-mark the top and bottom.</dd>
+</dl>
+</div>
+
+
+<h2>Plots</h2>
+<h3>Dark level vs height (light leak) and over time (drift)</h3><img src="plots/dark.png" alt="Dark level vs height (light leak) and over time (drift)"><h3>Dark noise: mains harmonics and broadband</h3><img src="plots/spectra.png" alt="Dark noise: mains harmonics and broadband">
+
+
+
+<h2>System</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>link and firmware (no unexpected reset, no lost replies)<br><code>system/link</code></td>
+<td>0 unexpected boots</td>
+<td>firmware 2.5.2, no unexpected # BOOT</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ADC / I²C (every reading answered)<br><code>system/adc</code></td>
+<td>142 readings</td>
+<td>142 readings, no dropout</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>addressing (each hole distinct)<br><code>system/addressing</code></td>
+<td></td>
+<td>no optical response to compare</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>P4 interlock re-checks<br><code>system/interlocks</code></td>
+<td>0 failed</td>
+<td>light_while_moving: SKIP: static mode (no motion); single_channel: PASS</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>LED duty (RAIL A &lt;= budget per LED per minute)<br><code>system/duty</code></td>
+<td>252 ms/min</td>
+<td>max 252 ms of 1000 ms; 0 cool-down waits, 0 s in all</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>stage tracking (position trusted, soft limits respected)<br><code>system/stage</code></td>
+<td></td>
+<td>position [0, 0], limits respected</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>run complete<br><code>system/run</code></td>
+<td></td>
+<td>COMPLETE</td><td></td></tr>
+
+</table>
+
+<h2>Optics</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>response curves vs height<br><code>optics/curves</code></td>
+<td></td>
+<td>no down pass in this mode (no height data)</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 1 dark with only RAIL B enabled<br><code>optics/wrong_rail/h01</code></td>
+<td>0 counts</td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 2 dark with only RAIL B enabled<br><code>optics/wrong_rail/h02</code></td>
+<td>0 counts</td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 3 dark with only RAIL B enabled<br><code>optics/wrong_rail/h03</code></td>
+<td>0 counts</td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 4 dark with only RAIL B enabled<br><code>optics/wrong_rail/h04</code></td>
+<td>-1 counts</td>
+<td>-1 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 5 dark with only RAIL B enabled<br><code>optics/wrong_rail/h05</code></td>
+<td>0 counts</td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 6 dark with only RAIL B enabled<br><code>optics/wrong_rail/h06</code></td>
+<td>0 counts</td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 7 dark with only RAIL B enabled<br><code>optics/wrong_rail/h07</code></td>
+<td>0 counts</td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 8 dark with only RAIL B enabled<br><code>optics/wrong_rail/h08</code></td>
+<td>0 counts</td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 9 dark with only RAIL A enabled<br><code>optics/wrong_rail/h09</code></td>
+<td>0 counts</td>
+<td>+0 counts on opt101 with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 10 dark with only RAIL A enabled<br><code>optics/wrong_rail/h10</code></td>
+<td>0 counts</td>
+<td>+0 counts on opt101 with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 11 dark with only RAIL A enabled<br><code>optics/wrong_rail/h11</code></td>
+<td>1 counts</td>
+<td>+1 counts on opt101 with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 12 dark with only RAIL A enabled<br><code>optics/wrong_rail/h12</code></td>
+<td>0 counts</td>
+<td>+0 counts on ingaas with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 13 dark with only RAIL A enabled<br><code>optics/wrong_rail/h13</code></td>
+<td>0 counts</td>
+<td>+0 counts on ingaas with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 14 dark with only RAIL A enabled<br><code>optics/wrong_rail/h14</code></td>
+<td>1 counts</td>
+<td>+1 counts on ingaas with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole 15 dark with only RAIL A enabled<br><code>optics/wrong_rail/h15</code></td>
+<td>-1 counts</td>
+<td>-1 counts on ingaas with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+</table>
+
+<h2>Electrical</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: electrical coupling<br><code>elec/opt101/coupling</code></td>
+<td></td>
+<td>no blind channels measured</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: electrical coupling<br><code>elec/ingaas/coupling</code></td>
+<td></td>
+<td>no blind channels measured</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101: dark offset / leakage<br><code>elec/opt101/dark_offset</code></td>
+<td>8.921 mV</td>
+<td>+71.4 counts (+8.92 mV)</td><td>0 to 800 counts (thresholds.dark)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas: dark offset / leakage<br><code>elec/ingaas/dark_offset</code></td>
+<td>-20.992 mV</td>
+<td>-167.9 counts (-20.99 mV); equivalent input current +21.0 nA (Rf 1 MΩ)</td><td>-400 to 2000 counts (thresholds.dark)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: dark drift<br><code>elec/opt101/drift</code></td>
+<td></td>
+<td>under 5 min of dark frames: too short for a drift estimate</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: dark drift<br><code>elec/ingaas/drift</code></td>
+<td></td>
+<td>under 5 min of dark frames: too short for a drift estimate</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101: mains hum (coils off)<br><code>elec/opt101/hum</code></td>
+<td>0.034 mV</td>
+<td>60/120/180 Hz: 0.034 / 0.051 / 0.042 mV; 18% of the variance at mains harmonics; broadband sigma 0.113 mV; readings integrate whole mains periods, so it cancels in the measurements</td><td>60 Hz amplitude &lt; 0.3 mV (WARN; not when the readings reject it), &lt; 1 (FAIL); mains fraction &lt; 0.5</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas: mains hum (coils off)<br><code>elec/ingaas/hum</code></td>
+<td>0.9277 mV</td>
+<td>60/120/180 Hz: 0.928 / 0.709 / 0.115 mV; 88% of the variance at mains harmonics; broadband sigma 0.301 mV; readings integrate whole mains periods, so it cancels in the measurements</td><td>60 Hz amplitude &lt; 1 mV (WARN; not when the readings reject it), &lt; 3 (FAIL); mains fraction &lt; 0.5</td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: coil interference<br><code>elec/opt101/coil_emi</code></td>
+<td></td>
+<td>needs hum records, coils off and moving</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: coil interference<br><code>elec/ingaas/coil_emi</code></td>
+<td></td>
+<td>needs hum records, coils off and moving</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101: select-only coupling (MOSFET on, CE low)<br><code>elec/opt101/h08/select_only</code></td>
+<td>0.5 counts</td>
+<td>largest on hole 8: +0.5 counts</td><td>&lt; 8 counts (WARN); FAIL capped to WARN (gate coupling, LED off)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas: select-only coupling (MOSFET on, CE low)<br><code>elec/ingaas/h07/select_only</code></td>
+<td>0.9 counts</td>
+<td>largest on hole 7: +0.9 counts</td><td>&lt; 8 counts (WARN); FAIL capped to WARN (gate coupling, LED off)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101: CE-only coupling (driver enabled, no LED)<br><code>elec/opt101/ce_only</code></td>
+<td>1 counts</td>
+<td>CE1: +0.0, CE2: -1.0</td><td>&lt; 8 counts (WARN), &lt; 20 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas: CE-only coupling (driver enabled, no LED)<br><code>elec/ingaas/ce_only</code></td>
+<td>1 counts</td>
+<td>CE1: -1.0, CE2: +0.0</td><td>&lt; 8 counts (WARN), &lt; 20 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>supply rails and ground (A2/A3)<br><code>elec/rails</code></td>
+<td></td>
+<td>A2/A3 not wired for rail and ground monitoring</td><td></td></tr>
+
+</table>
+
+<h2>Mechanics</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>home sensors<br><code>mech/home_sensors</code></td>
+<td></td>
+<td>no home sensors fitted</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #fab219">! WARN</span></td>
+<td>travel (top to bottom)<br><code>mech/travel</code></td>
+<td>260400 half-steps</td>
+<td>tracked range 260400 / 333677 half-steps (M1/right / M2/left): the two sides differ (thresholds.motion.travel.range_steps not set: not compared)</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lockstep (firmware positions level after every move)<br><code>mech/lockstep</code></td>
+<td>0 moves</td>
+<td>0 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>settle time after a move (dark-read convergence)<br><code>mech/settle</code></td>
+<td>601 ms</td>
+<td>median 601 ms, max 602 ms (mechanical wait 300 ms)</td><td>max - median &lt; 500 ms (WARN), &lt; 1500 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>backlash<br><code>mech/backlash</code></td>
+<td></td>
+<td>no down-pass reference curves (static or continuous mode, or no strong channel)</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>step loss<br><code>mech/step_loss</code></td>
+<td></td>
+<td>no down-pass reference curves (static or continuous mode, or no strong channel)</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>repeatability<br><code>mech/repeatability</code></td>
+<td></td>
+<td>no down-pass reference curves (static or continuous mode, or no strong channel)</td><td></td></tr>
+
+</table>
+
+<h2>Ambient</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: dark vs height (light leak)<br><code>ambient/opt101/leak</code></td>
+<td></td>
+<td>needs dark frames at 4+ heights</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: dark vs height (light leak)<br><code>ambient/ingaas/leak</code></td>
+<td></td>
+<td>needs dark frames at 4+ heights</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101: room-light flicker (120 Hz)<br><code>ambient/opt101/flicker</code></td>
+<td>0.0511 mV</td>
+<td>120 Hz amplitude in the dark streams 0.051 mV; readings integrate whole mains periods, so it cancels</td><td>&lt; 0.4 mV (WARN), &lt; 1.2 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas: room-light flicker (120 Hz)<br><code>ambient/ingaas/flicker</code></td>
+<td>0.7091 mV</td>
+<td>120 Hz amplitude in the dark streams 0.709 mV; readings integrate whole mains periods, so it cancels</td><td>&lt; 0.4 mV (WARN), &lt; 1.2 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>lid sensitivity<br><code>ambient/lid</code></td>
+<td></td>
+<td>optional operator step (lid ajar at two heights)</td><td></td></tr>
+
+</table>
+
+<h2>Trend</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>20261121-122210_scan_electrical vs 20261120-173515_scan_full<br><code>trend/compare</code></td>
+<td>1 x (furthest per-hole ratio)</td>
+<td>no change beyond the band</td><td>per-hole ratio within ±0.1 (WARN), ±0.25 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>control charts vs baselines<br><code>trend/control</code></td>
+<td></td>
+<td>needs 5 baselines of empty (have 1)</td><td></td></tr>
+
+</table>
+
+
+<h2>Not measured (capability)</h2>
+<ul><li><code>rail_monitor</code>: A2/A3 not wired for rail and ground monitoring</li><li><code>home_sensors</code>: no home sensors fitted</li></ul>
+</body>
+</html>

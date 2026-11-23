@@ -1,0 +1,104 @@
+{
+  "at": "2026-11-21T13:36:30-05:00",
+  "setup": {
+    "Rf": "2 M\u03a9 (replaced 1 M\u03a9)",
+    "InGaAs": "handheld, pointed at LEDs (removed from deck mount)",
+    "chamber_door": "open",
+    "motion": "none \u2014 operator holding detector"
+  },
+  "holes": {
+    "8": {
+      "label": "850",
+      "ingaas_dark": -326,
+      "ingaas_lit": 7567,
+      "ingaas_net": 7909,
+      "opt101_net": 285,
+      "ingaas_net_reps": [
+        7934,
+        7909,
+        7804
+      ]
+    },
+    "9": {
+      "label": "940",
+      "ingaas_dark": -380,
+      "ingaas_lit": 16510,
+      "ingaas_net": 16890,
+      "opt101_net": 191,
+      "ingaas_net_reps": [
+        16840,
+        16890,
+        16948
+      ]
+    },
+    "12": {
+      "label": "1450",
+      "ingaas_dark": -322,
+      "ingaas_lit": 3775,
+      "ingaas_net": 4107,
+      "opt101_net": 23,
+      "ingaas_net_reps": [
+        4012,
+        4107,
+        4123
+      ]
+    },
+    "13": {
+      "label": "1550",
+      "ingaas_dark": -288,
+      "ingaas_lit": 574,
+      "ingaas_net": 862,
+      "opt101_net": 3,
+      "ingaas_net_reps": [
+        1003,
+        841,
+        862
+      ]
+    },
+    "14": {
+      "label": "1650",
+      "ingaas_dark": -357,
+      "ingaas_lit": 700,
+      "ingaas_net": 1057,
+      "opt101_net": 19,
+      "ingaas_net_reps": [
+        1057,
+        1016,
+        1076
+      ]
+    },
+    "15": {
+      "label": "1760",
+      "ingaas_dark": -328,
+      "ingaas_lit": 351,
+      "ingaas_net": 679,
+      "opt101_net": 18,
+      "ingaas_net_reps": [
+        689,
+        679,
+        628
+      ]
+    },
+    "16": {
+      "label": "1850",
+      "ingaas_dark": -277,
+      "ingaas_lit": 7688,
+      "ingaas_net": 7965,
+      "opt101_net": 376,
+      "ingaas_net_reps": [
+        7965,
+        8004,
+        7928
+      ]
+    }
+  },
+  "prior_mounted_1M_ingaas_net": {
+    "8": -37,
+    "9": 10,
+    "12": 41,
+    "13": 29,
+    "14": 16,
+    "15": 6,
+    "16": 16
+  }
+}

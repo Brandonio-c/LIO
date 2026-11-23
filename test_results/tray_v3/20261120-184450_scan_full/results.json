@@ -1,0 +1,1282 @@
+{
+  "run_id": "20261120-184450_scan_full",
+  "target": "/dev/cu.usbmodem101",
+  "started": "2026-11-20T18:44:50-05:00",
+  "environment": {},
+  "firmware": {
+    "fw": "2.5.2",
+    "proto": "1",
+    "build": "2026-11-17",
+    "adc_addr": "0x48",
+    "adc_ok": "1",
+    "gain": "1",
+    "rate": "128",
+    "settle_ms": "8",
+    "wdt_a_ms": "2000",
+    "wdt_b_ms": "5000",
+    "wdt_a_cap_ms": "5000",
+    "wdt_b_cap_ms": "10000",
+    "comms_ms": "10000",
+    "arm_ms": "60000",
+    "step_max": "2048",
+    "jog_max": "2048",
+    "jog_v_max": "1000",
+    "jog_acc_max": "1000",
+    "wake_ms_max": "3000",
+    "motion_armed": "0",
+    "debug_states": "1",
+    "mains": "0",
+    "rail_b_first": "9",
+    "light_in_motion": "0",
+    "arm_token": "0xF927",
+    "hw_wdt": "0"
+  },
+  "config": {
+    "path": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
+    "sha256": "82201cb43d998b883df5719f7b8e8591f15e41e9921218bcd4e3707f1a455aa9",
+    "provisional": true
+  },
+  "metadata": {
+    "sample_id": "LIO-F-00001",
+    "kind": "scan",
+    "mode": "full",
+    "scan_status": "COMPLETE"
+  },
+  "faults": [],
+  "results": [
+    {
+      "id": "T13.1",
+      "name": "Diagnostic height sweep",
+      "module": "T13",
+      "kind": "M",
+      "status": "FAIL",
+      "message": "full scan COMPLETE: FUNCTIONAL (20261120-184450_scan_full)",
+      "duration_s": 0.0,
+      "subs": [
+        {
+          "id": "T13.1/system/link",
+          "name": "link and firmware (no unexpected reset, no lost replies)",
+          "status": "PASS",
+          "message": "firmware 2.5.2, no unexpected # BOOT",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "unexpected boots"
+          }
+        },
+        {
+          "id": "T13.1/system/adc",
+          "name": "ADC / I\u00b2C (every reading answered)",
+          "status": "PASS",
+          "message": "2360 readings, no dropout",
+          "criteria": "",
+          "measured": {
+            "value": 2360.0,
+            "unit": "readings"
+          }
+        },
+        {
+          "id": "T13.1/system/addressing",
+          "name": "addressing (each hole lights its own LED)",
+          "status": "PASS",
+          "message": "13 responding holes, all distinct",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "pairs"
+          }
+        },
+        {
+          "id": "T13.1/A/rail",
+          "name": "RAIL A (driver gates the LEDs)",
+          "status": "PASS",
+          "message": "8/8 holes respond",
+          "criteria": "",
+          "measured": {
+            "value": 8.0,
+            "unit": "holes"
+          }
+        },
+        {
+          "id": "T13.1/B/rail",
+          "name": "RAIL B (driver gates the LEDs)",
+          "status": "PASS",
+          "message": "4/8 holes respond",
+          "criteria": "",
+          "measured": {
+            "value": 4.0,
+            "unit": "holes"
+          }
+        },
+        {
+          "id": "T13.1/system/interlocks",
+          "name": "P4 interlock re-checks",
+          "status": "PASS",
+          "message": "light_while_moving: PASS; single_channel: PASS",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "failed"
+          }
+        },
+        {
+          "id": "T13.1/system/duty",
+          "name": "LED duty (RAIL A <= budget per LED per minute)",
+          "status": "PASS",
+          "message": "max 420 ms of 1000 ms; 0 cool-down waits, 0 s in all",
+          "criteria": "",
+          "measured": {
+            "value": 420.0,
+            "unit": "ms/min"
+          }
+        },
+        {
+          "id": "T13.1/system/stage",
+          "name": "stage tracking (position trusted, soft limits respected)",
+          "status": "PASS",
+          "message": "position [-16384, -16384], limits respected",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/system/run",
+          "name": "run complete",
+          "status": "PASS",
+          "message": "COMPLETE",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/optics/opt101/h01/response",
+          "name": "hole 1 (395) on opt101",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+          "measured": {
+            "value": 228.7,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h02/response",
+          "name": "hole 2 (405) on opt101",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+          "measured": {
+            "value": 214.8,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h03/response",
+          "name": "hole 3 (blue) on opt101",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+          "measured": {
+            "value": 153.8,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h04/response",
+          "name": "hole 4 (green) on opt101",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+          "measured": {
+            "value": 256.2,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h05/response",
+          "name": "hole 5 (yellow) on opt101",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+          "measured": {
+            "value": 144.7,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h06/response",
+          "name": "hole 6 (orange) on opt101",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+          "measured": {
+            "value": 129.7,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h07/response",
+          "name": "hole 7 (red) on opt101",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+          "measured": {
+            "value": 311.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h08/response",
+          "name": "hole 8 (850) on opt101",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+          "measured": {
+            "value": 2135.2,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h09/response",
+          "name": "hole 9 (940) on opt101",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+          "measured": {
+            "value": 1995.2,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h10/response",
+          "name": "hole 10 (white) on opt101",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+          "measured": {
+            "value": 908.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h11/response",
+          "name": "hole 11 (pink) on opt101",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+          "measured": {
+            "value": 2349.3,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h12/plausibility",
+          "name": "hole 12 (1450) seen by opt101?",
+          "status": "PASS",
+          "message": "opt101 cannot see 1450 nm; residual +3 counts over C +15.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 2.7,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h13/plausibility",
+          "name": "hole 13 (1550) seen by opt101?",
+          "status": "PASS",
+          "message": "opt101 cannot see 1550 nm; residual -1 counts over C +15.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": -0.8,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h14/plausibility",
+          "name": "hole 14 (1650) seen by opt101?",
+          "status": "PASS",
+          "message": "opt101 cannot see 1650 nm; residual +1 counts over C +15.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.8,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h15/plausibility",
+          "name": "hole 15 (1760) seen by opt101?",
+          "status": "PASS",
+          "message": "opt101 cannot see 1760 nm; residual +1 counts over C +15.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.6,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/h16/plausibility",
+          "name": "hole 16 (1850) seen by opt101?",
+          "status": "WARN",
+          "message": "opt101 cannot see 1850 nm; residual +3571 counts over C +15.0; height-dependent (optical) | why: A detector responds, with a height-dependent (optical) signal, to a hole whose wavelength it cannot see: the LED in this hole is not the one in the channel map (swapped with another hole, or the wrong part). | parts: LED16",
+          "criteria": "< 30 counts (WARN); FAIL capped to WARN: no in-range detector for this hole",
+          "measured": {
+            "value": 3571.5,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/electrical_only",
+          "name": "opt101: signal electrical only (no light)?",
+          "status": "PASS",
+          "message": "0/11 expected holes show no optical response; coupling present",
+          "criteria": "FAIL when >= 75% of expected holes have O < 6 while |C| >= 8",
+          "measured": {
+            "value": 0.0,
+            "unit": "fraction"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/throughput",
+          "name": "opt101: optical throughput (window, alignment)",
+          "status": "SKIP",
+          "message": "median O over 11 expected holes; spread (CV) 107% across holes",
+          "criteria": "sample 'LIO-F-00001': judged against its baseline only",
+          "measured": {
+            "value": 256.2,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h01/plausibility",
+          "name": "hole 1 (395) seen by ingaas?",
+          "status": "PASS",
+          "message": "ingaas cannot see 395 nm; residual +2 counts over C +5.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 1.7,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h02/plausibility",
+          "name": "hole 2 (405) seen by ingaas?",
+          "status": "PASS",
+          "message": "ingaas cannot see 405 nm; residual -3 counts over C +5.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": -2.7,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h03/plausibility",
+          "name": "hole 3 (blue) seen by ingaas?",
+          "status": "PASS",
+          "message": "ingaas cannot see 465 nm; residual -3 counts over C +5.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": -2.8,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h04/plausibility",
+          "name": "hole 4 (green) seen by ingaas?",
+          "status": "PASS",
+          "message": "ingaas cannot see 525 nm; residual -1 counts over C +5.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": -1.4,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h05/plausibility",
+          "name": "hole 5 (yellow) seen by ingaas?",
+          "status": "PASS",
+          "message": "ingaas cannot see 590 nm; residual +17 counts over C +5.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 16.7,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h06/plausibility",
+          "name": "hole 6 (orange) seen by ingaas?",
+          "status": "PASS",
+          "message": "ingaas cannot see 605 nm; residual +15 counts over C +5.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 14.8,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h07/plausibility",
+          "name": "hole 7 (red) seen by ingaas?",
+          "status": "PASS",
+          "message": "ingaas cannot see 630 nm; residual +13 counts over C +5.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 13.2,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h08/response",
+          "name": "hole 8 (850) on ingaas",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 18.9042 (WARN below), >= 9.45212 (FAIL below)",
+          "measured": {
+            "value": 139.3,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h09/response",
+          "name": "hole 9 (940) on ingaas",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 18.9042 (WARN below), >= 9.45212 (FAIL below)",
+          "measured": {
+            "value": 125.8,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h10/plausibility",
+          "name": "hole 10 (white) seen by ingaas?",
+          "status": "PASS",
+          "message": "ingaas cannot see 450 nm; residual -39 counts over C +61.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": -39.3,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h11/plausibility",
+          "name": "hole 11 (pink) seen by ingaas?",
+          "status": "PASS",
+          "message": "ingaas cannot see 450 nm; residual +28 counts over C +61.0",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 28.5,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h12/response",
+          "name": "hole 12 (1450) on ingaas",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 18.9042 (WARN below), >= 9.45212 (FAIL below)",
+          "measured": {
+            "value": 16.3,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h13/response",
+          "name": "hole 13 (1550) on ingaas",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 18.9042 (WARN below), >= 9.45212 (FAIL below)",
+          "measured": {
+            "value": -32.9,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h14/response",
+          "name": "hole 14 (1650) on ingaas",
+          "status": "SKIP",
+          "message": "sample 'LIO-F-00001' is not judged against absolute levels",
+          "criteria": "O >= 18.9042 (WARN below), >= 9.45212 (FAIL below)",
+          "measured": {
+            "value": -40.8,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/h16/plausibility",
+          "name": "hole 16 (1850) seen by ingaas?",
+          "status": "WARN",
+          "message": "ingaas cannot see 1850 nm; residual +129 counts over C +61.0; height-dependent (optical) | why: A detector responds, with a height-dependent (optical) signal, to a hole whose wavelength it cannot see: the LED in this hole is not the one in the channel map (swapped with another hole, or the wrong part). | parts: LED16",
+          "criteria": "< 30 counts (WARN); FAIL capped to WARN: no in-range detector for this hole",
+          "measured": {
+            "value": 129.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/electrical_only",
+          "name": "ingaas: signal electrical only (no light)?",
+          "status": "PASS",
+          "message": "2/5 expected holes show no optical response; coupling present",
+          "criteria": "FAIL when >= 75% of expected holes have O < 9.45212 while |C| >= 8",
+          "measured": {
+            "value": 0.4,
+            "unit": "fraction"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/throughput",
+          "name": "ingaas: optical throughput (window, alignment)",
+          "status": "SKIP",
+          "message": "median O over 5 expected holes; spread (CV) 185% across holes",
+          "criteria": "sample 'LIO-F-00001': judged against its baseline only",
+          "measured": {
+            "value": 16.3,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/h01/intermittent",
+          "name": "hole 1 (395) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h02/intermittent",
+          "name": "hole 2 (405) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h03/intermittent",
+          "name": "hole 3 (blue) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h04/intermittent",
+          "name": "hole 4 (green) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h05/intermittent",
+          "name": "hole 5 (yellow) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h06/intermittent",
+          "name": "hole 6 (orange) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h07/intermittent",
+          "name": "hole 7 (red) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h08/intermittent",
+          "name": "hole 8 (850) intermittent",
+          "status": "WARN",
+          "message": "down and up readings disagree on both detectors at once at 3 height(s): -234226, -109745, -78624 | why: This hole's readings jump on both detectors at the same moment: an electrical event (a joint opening for an instant, or an intermittent short), not light. | parts: LED8, Q8, solder joints, breadboard contacts",
+          "criteria": "both detectors within max(5 x noise floor, 0.1 x reading) of each other",
+          "measured": {
+            "value": 3.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h09/intermittent",
+          "name": "hole 9 (940) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h10/intermittent",
+          "name": "hole 10 (white) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h11/intermittent",
+          "name": "hole 11 (pink) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h12/intermittent",
+          "name": "hole 12 (1450) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h13/intermittent",
+          "name": "hole 13 (1550) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h14/intermittent",
+          "name": "hole 14 (1650) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h15/intermittent",
+          "name": "hole 15 (1760) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/h16/intermittent",
+          "name": "hole 16 (1850) intermittent",
+          "status": "PASS",
+          "message": "down and up agree at 8 heights",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "heights"
+          }
+        },
+        {
+          "id": "T13.1/optics/optimum",
+          "name": "optimum height (all holes)",
+          "status": "WARN",
+          "message": "-265346 half-steps (-64.78 mm); weakest normalised response there 0.97; at an end of the travel: the true peak may lie beyond | why: The best height is at an end of the travel: the true optimum may lie beyond it. | parts: geometry",
+          "criteria": "",
+          "measured": {
+            "value": -265346.0,
+            "unit": "half-steps"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/snr",
+          "name": "opt101: signal-to-noise at the optimum",
+          "status": "PASS",
+          "message": "weakest hole 6: 42.2 dB (noise sigma 0.126 mV)",
+          "criteria": ">= 20 dB",
+          "measured": {
+            "value": 42.2,
+            "unit": "dB"
+          }
+        },
+        {
+          "id": "T13.1/optics/opt101/headroom",
+          "name": "opt101: saturation headroom",
+          "status": "PASS",
+          "message": "highest lit reading 3648 of 29600 counts",
+          "criteria": ">= 10%",
+          "measured": {
+            "value": 87.7,
+            "unit": "%"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/snr",
+          "name": "ingaas: signal-to-noise at the optimum",
+          "status": "PASS",
+          "message": "weakest hole 12: 16.8 dB (noise sigma 0.295 mV)",
+          "criteria": ">= 20 dB",
+          "measured": {
+            "value": 16.8,
+            "unit": "dB"
+          }
+        },
+        {
+          "id": "T13.1/optics/ingaas/headroom",
+          "name": "ingaas: saturation headroom",
+          "status": "PASS",
+          "message": "highest lit reading 22 of 28000 counts",
+          "criteria": ">= 10%",
+          "measured": {
+            "value": 99.9,
+            "unit": "%"
+          }
+        },
+        {
+          "id": "T13.1/optics/stray",
+          "name": "stray light",
+          "status": "SKIP",
+          "message": "needs a black_cup run (with a white_ptfe reference)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/optics/effectiveness",
+          "name": "effectiveness vs reference",
+          "status": "SKIP",
+          "message": "needs a reference (baseline) of the same sample",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/opt101/coupling",
+          "name": "opt101: electrical coupling (height-invariant, LED on)",
+          "status": "PASS",
+          "message": "rail A: +10.0 counts (+1.25 mV) inferred, rail B: +15.0 counts (+1.88 mV) from 5 blind holes",
+          "criteria": "corrected in software below 20 counts (FAIL at or above)",
+          "measured": {
+            "value": 15.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/elec/opt101/ground_shift",
+          "name": "opt101: ground shift (coupling vs rail current)",
+          "status": "PASS",
+          "message": "+0.333 counts/mA",
+          "criteria": "corrected in software below 0.08 mV/mA (FAIL at or above)",
+          "measured": {
+            "value": 0.0417,
+            "unit": "mV/mA"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/coupling",
+          "name": "ingaas: electrical coupling (height-invariant, LED on)",
+          "status": "FAIL",
+          "message": "rail A: +5.0 counts (+0.62 mV) from 7 blind holes, rail B: +61.0 counts (+7.62 mV) from 3 blind holes | why: The detector output changes when an LED is on even though it cannot see that light: electrical coupling from the LED drive (shared ground return, or capacitive pick-up). | parts: GND star point, SUM/TIA_REF routing, LED drive wiring",
+          "criteria": "corrected in software below 20 counts (FAIL at or above)",
+          "measured": {
+            "value": 61.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/ground_shift",
+          "name": "ingaas: ground shift (coupling vs rail current)",
+          "status": "WARN",
+          "message": "+0.990 counts/mA; does not scale with the rail current | why: The coupling scales with the rail current: LED current through a shared ground resistance shifts the detector's reference (ground shift). | parts: GND star point, TIA_REF, rail returns",
+          "criteria": "corrected in software below 0.08 mV/mA (FAIL at or above)",
+          "measured": {
+            "value": 0.1237,
+            "unit": "mV/mA"
+          }
+        },
+        {
+          "id": "T13.1/elec/opt101/dark_offset",
+          "name": "opt101: dark offset / leakage",
+          "status": "PASS",
+          "message": "+59.6 counts (+7.45 mV)",
+          "criteria": "0 to 800 counts (thresholds.dark)",
+          "measured": {
+            "value": 7.454,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/dark_offset",
+          "name": "ingaas: dark offset / leakage",
+          "status": "PASS",
+          "message": "-168.4 counts (-21.05 mV); equivalent input current +21.1 nA (Rf 1 M\u03a9)",
+          "criteria": "-400 to 2000 counts (thresholds.dark)",
+          "measured": {
+            "value": -21.054,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/elec/opt101/drift",
+          "name": "opt101: dark drift over the run",
+          "status": "PASS",
+          "message": "+0.02 \u00b1 0.03 mV/h; P4 - P1 +0.03 mV",
+          "criteria": "|slope| < 3 mV/h (WARN), < 8 (FAIL)",
+          "measured": {
+            "value": 0.024,
+            "unit": "mV/h"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/drift",
+          "name": "ingaas: dark drift over the run",
+          "status": "PASS",
+          "message": "-0.02 \u00b1 0.03 mV/h (+0.0 nA/h); P4 - P1 +0.00 mV",
+          "criteria": "|slope| < 3 mV/h (WARN), < 8 (FAIL)",
+          "measured": {
+            "value": -0.018,
+            "unit": "mV/h"
+          }
+        },
+        {
+          "id": "T13.1/elec/opt101/hum",
+          "name": "opt101: mains hum (coils off)",
+          "status": "PASS",
+          "message": "60/120/180 Hz: 0.039 / 0.049 / 0.041 mV; 15% of the variance at mains harmonics; broadband sigma 0.126 mV; readings integrate whole mains periods, so it cancels in the measurements",
+          "criteria": "60 Hz amplitude < 0.3 mV (WARN; not when the readings reject it), < 1 (FAIL); mains fraction < 0.5",
+          "measured": {
+            "value": 0.0393,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/hum",
+          "name": "ingaas: mains hum (coils off)",
+          "status": "PASS",
+          "message": "60/120/180 Hz: 0.600 / 0.390 / 0.102 mV; 75% of the variance at mains harmonics; broadband sigma 0.295 mV; readings integrate whole mains periods, so it cancels in the measurements",
+          "criteria": "60 Hz amplitude < 1 mV (WARN; not when the readings reject it), < 3 (FAIL); mains fraction < 0.5",
+          "measured": {
+            "value": 0.6,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/elec/opt101/coil_emi",
+          "name": "opt101: coil interference (moving vs coils off)",
+          "status": "PASS",
+          "message": "sigma 1.194 mV moving vs 0.126 mV off (measured while moving, S0 D2); judged only when measuring while moving (continuous mode): every other reading is taken with the motors stopped",
+          "criteria": "ratio < 3 (WARN), < 6 (FAIL)",
+          "measured": {
+            "value": 9.44,
+            "unit": "x"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/coil_emi",
+          "name": "ingaas: coil interference (moving vs coils off)",
+          "status": "PASS",
+          "message": "sigma 0.353 mV moving vs 0.295 mV off (measured while moving, S0 D2); judged only when measuring while moving (continuous mode): every other reading is taken with the motors stopped",
+          "criteria": "ratio < 3 (WARN), < 6 (FAIL)",
+          "measured": {
+            "value": 1.2,
+            "unit": "x"
+          }
+        },
+        {
+          "id": "T13.1/elec/opt101/h07/select_only",
+          "name": "opt101: select-only coupling (MOSFET on, CE low)",
+          "status": "PASS",
+          "message": "largest on hole 7: +0.5 counts",
+          "criteria": "< 8 counts (WARN); FAIL capped to WARN (gate coupling, LED off)",
+          "measured": {
+            "value": 0.5,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/h16/select_only",
+          "name": "ingaas: select-only coupling (MOSFET on, CE low)",
+          "status": "PASS",
+          "message": "largest on hole 16: -0.6 counts",
+          "criteria": "< 8 counts (WARN); FAIL capped to WARN (gate coupling, LED off)",
+          "measured": {
+            "value": 0.6,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/elec/opt101/ce_only",
+          "name": "opt101: CE-only coupling (driver enabled, no LED)",
+          "status": "PASS",
+          "message": "CE1: +0.0, CE2: +1.0",
+          "criteria": "< 8 counts (WARN), < 20 (FAIL)",
+          "measured": {
+            "value": 1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/ce_only",
+          "name": "ingaas: CE-only coupling (driver enabled, no LED)",
+          "status": "PASS",
+          "message": "CE1: -1.0, CE2: +2.0",
+          "criteria": "< 8 counts (WARN), < 20 (FAIL)",
+          "measured": {
+            "value": 2.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h01",
+          "name": "hole 1 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h02",
+          "name": "hole 2 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+1 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h03",
+          "name": "hole 3 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+1 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h04",
+          "name": "hole 4 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h05",
+          "name": "hole 5 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h06",
+          "name": "hole 6 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "-1 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": -1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h07",
+          "name": "hole 7 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "-1 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": -1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h08",
+          "name": "hole 8 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+1 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h09",
+          "name": "hole 9 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "+0 counts on ingaas with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h10",
+          "name": "hole 10 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "-1 counts on opt101 with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": -1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h11",
+          "name": "hole 11 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "+0 counts on opt101 with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h12",
+          "name": "hole 12 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "+2 counts on ingaas with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 2.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h13",
+          "name": "hole 13 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "+0 counts on ingaas with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h14",
+          "name": "hole 14 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "+0 counts on ingaas with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h15",
+          "name": "hole 15 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "+0 counts on ingaas with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/ambient/opt101/leak",
+          "name": "opt101: dark vs height (light leak at the shroud)",
+          "status": "PASS",
+          "message": "dark at the bottom +0.3 counts (+0.04 mV) vs the top; 0.13% of the median signal",
+          "criteria": "rise < 8 counts (WARN), < 25 (FAIL)",
+          "measured": {
+            "value": 0.3,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/ambient/ingaas/leak",
+          "name": "ingaas: dark vs height (light leak at the shroud)",
+          "status": "PASS",
+          "message": "dark at the bottom +0.9 counts (+0.11 mV) vs the top; 0.70% of the median signal",
+          "criteria": "rise < 8 counts (WARN), < 25 (FAIL)",
+          "measured": {
+            "value": 0.9,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/ambient/opt101/flicker",
+          "name": "opt101: room-light flicker (120 Hz)",
+          "status": "PASS",
+          "message": "120 Hz amplitude in the dark streams 0.049 mV; readings integrate whole mains periods, so it cancels",
+          "criteria": "< 0.4 mV (WARN), < 1.2 (FAIL)",
+          "measured": {
+            "value": 0.049,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/ambient/ingaas/flicker",
+          "name": "ingaas: room-light flicker (120 Hz)",
+          "status": "PASS",
+          "message": "120 Hz amplitude in the dark streams 0.390 mV; readings integrate whole mains periods, so it cancels",
+          "criteria": "< 0.4 mV (WARN), < 1.2 (FAIL)",
+          "measured": {
+            "value": 0.3895,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/ambient/lid",
+          "name": "lid sensitivity",
+          "status": "SKIP",
+          "message": "optional operator step (lid ajar at two heights)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/mech/travel",
+          "name": "travel (top to bottom)",
+          "status": "WARN",
+          "message": "tracked range 265346 / 307493 half-steps (M1/right / M2/left): the two sides differ (thresholds.motion.travel.range_steps not set: not compared) | why: The tracked travel differs from the configured one (or between the sides). | parts: stage limits",
+          "criteria": "",
+          "measured": {
+            "value": 265346.0,
+            "unit": "half-steps"
+          }
+        },
+        {
+          "id": "T13.1/mech/lockstep",
+          "name": "lockstep (firmware positions level after every move)",
+          "status": "PASS",
+          "message": "84 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "moves"
+          }
+        },
+        {
+          "id": "T13.1/mech/settle",
+          "name": "settle time after a move (dark-read convergence)",
+          "status": "PASS",
+          "message": "median 604 ms, max 608 ms (mechanical wait 300 ms)",
+          "criteria": "max - median < 500 ms (WARN), < 1500 (FAIL)",
+          "measured": {
+            "value": 604.0,
+            "unit": "ms"
+          }
+        },
+        {
+          "id": "T13.1/mech/backlash",
+          "name": "backlash (down vs up response curves)",
+          "status": "SKIP",
+          "message": "+9997 \u00b1 693 half-steps (+2.441 mm) from 102 readings on 14 channels",
+          "criteria": "< 600 (WARN), < 1500 (FAIL); not flagged within 3 sigma; not judged when the resolution is worse than 300",
+          "measured": {
+            "value": 9997.0,
+            "unit": "half-steps"
+          }
+        },
+        {
+          "id": "T13.1/mech/step_loss",
+          "name": "step loss (offset growing over the up pass)",
+          "status": "SKIP",
+          "message": "the stage falls behind by -5991 \u00b1 1812 half-steps over a full upward travel (one side losing steps: about twice that on that side, and a tilt)",
+          "criteria": "< 400 (WARN), < 1000 (FAIL); not flagged within 3 sigma",
+          "measured": {
+            "value": -5991.0,
+            "unit": "half-steps per travel"
+          }
+        },
+        {
+          "id": "T13.1/mech/repeatability",
+          "name": "repeatability at the reference heights",
+          "status": "WARN",
+          "message": "spread of repeated visits 3863 half-steps (RMS over 8 groups); above minus below +6352 half-steps (backlash, direct); softened to WARN (V3 mechanics provisional) | why: Repeated visits to one height do not land in the same place. | parts: couplers, lead screws",
+          "criteria": "< 300 (WARN), < 800 (would FAIL; capped at WARN for V3 mechanics)",
+          "measured": {
+            "value": 3863.0,
+            "unit": "half-steps"
+          }
+        }
+      ],
+      "measured": {
+        "run": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/tray_v3/20261120-184450_scan_full",
+        "mode": "full",
+        "status": "COMPLETE",
+        "verdict": "FUNCTIONAL",
+        "health": {
+          "link": "OK",
+          "adc": "OK",
+          "shift_registers": "OK",
+          "drivers": "OK",
+          "channels": "WATCH",
+          "opt101": "OK",
+          "ingaas": "ACT",
+          "motors": "WATCH",
+          "stage": "OK",
+          "safety": "OK",
+          "power": "WATCH",
+          "optical_path": "WATCH",
+          "run": "OK"
+        }
+      },
+      "artefacts": [
+        "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/tray_v3/20261120-184450_scan_full/report.html"
+      ]
+    }
+  ],
+  "duty": {},
+  "finished": "2026-11-20T19:19:20-05:00",
+  "verdict": {
+    "verdict": "FUNCTIONAL",
+    "reasons": [
+      "warnings: T13.1"
+    ],
+    "counts": {
+      "PASS": 0,
+      "WARN": 0,
+      "FAIL": 1,
+      "SKIP": 0,
+      "ERROR": 0
+    }
+  }
+}

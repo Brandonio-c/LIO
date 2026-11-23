@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 24744,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "hemorrhoidal glycerin, phenylephrine HCl, pramoxine HCl, white petrolatum GLYCERIN GLYCERIN PHENYLEPHRINE HYDROCHLORIDE PHENYLEPHRINE PRAMOXINE HYDROCHLORIDE PRAMOXINE PETROLATUM PETROLATUM ALOE VERA LEAF BUTYLATED HYDROXYANISOLE CARBOXYMETHYLCELLULOSE SODIUM, UNSPECIFIED CETYL ALCOHOL CITRIC ACID MONOHYDRATE EDETATE DISODIUM GLYCERYL MONOSTEARATE LAURETH-23 METHYLPARABEN MINERAL OIL PANTHENOL PROPYL GALLATE PROPYLPARABEN WATER SODIUM BENZOATE STEARETH-2 STEARETH-20 STEARYL ALCOHOL .ALPHA.-TOCOPHEROL XANTHAN GUM"
+      ],
+      "active_ingredient": [
+        "Active ingredients Glycerin 14.4% Phenylephrine HCl 0.25% Pramoxine HCl 1% White petrolatum 15%"
+      ],
+      "purpose": [
+        "Purpose Protectant Vasoconstrictor Local anesthetic Protectant"
+      ],
+      "indications_and_usage": [
+        "Uses for temporary relief of pain, soreness and burning helps relieve the local itching and discomfort associated with hemorrhoids temporarily shrinks hemorrhoidal tissue temporarily provides a coating for relief of anorectal discomforts temporarily protects the inflamed, irritated anorectal surface to help make bowel movements less painful"
+      ],
+      "warnings": [
+        "Warnings For external use only Ask a doctor before use if you have heart disease high blood pressure thyroid disease diabetes trouble urinating due to an enlarged prostate gland Ask a doctor or pharmacist before use if you are presently taking a prescription drug for high blood pressure or depression When using this product do not exceed the recommended daily dosage unless directed by a doctor do not put into the rectum by using fingers or any mechanical device or applicator Stop use and ask a doctor if bleeding occurs condition worsens or does not improve within 7 days an allergic reaction develops the symptom being treated does not subside or if redness, irritation, swelling, pain, or other symptoms develop or increase If pregnant or breast-feeding, ask a health professional before use. Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have heart disease high blood pressure thyroid disease diabetes trouble urinating due to an enlarged prostate gland"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor or pharmacist before use if you are presently taking a prescription drug for high blood pressure or depression"
+      ],
+      "when_using": [
+        "When using this product do not exceed the recommended daily dosage unless directed by a doctor do not put into the rectum by using fingers or any mechanical device or applicator"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if bleeding occurs condition worsens or does not improve within 7 days an allergic reaction develops the symptom being treated does not subside or if redness, irritation, swelling, pain, or other symptoms develop or increase"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions adults: when practical, cleanse the affected area by patting or blotting with an appropriate cleansing wipe. Gently dry by patting or blotting with a tissue or a soft cloth before applying cream. when first opening the tube, puncture foil seal with top end of cap apply externally or in the lower portion of the anal canal only apply externally to the affected area up to 4 times daily, especially at night, in the morning or after each bowel movement for application in the lower anal canal: remove cover from dispensing cap. Attach dispensing cap to tube. Lubricate dispensing cap well, then gently insert dispensing cap partway into the anus. thoroughly cleanse dispensing cap after each use and replace cover children under 12 years of age: ask a doctor"
+      ],
+      "storage_and_handling": [
+        "Other information store at 20°-25°C (68°-77°F)"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients aloe barbadensis leaf extract, butylated hydroxyanisole, carboxymethylcellulose sodium, cetyl alcohol, citric acid, edetate disodium, glyceryl monostearate, laureth-23, methylparaben, mineral oil, panthenol, propyl gallate, propylparaben, purified water, sodium benzoate, steareth-2, steareth-20, stearyl alcohol, vitamin E, xanthan gum"
+      ],
+      "questions": [
+        "Questions or comments? 1-800-277-6533"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal Display Panel Compare to Preparation H® Cream active ingredients MAXIMUM STRENGTH Hemorrhoidal Cream Drug Fact"
+      ],
+      "set_id": "5f635795-cb5b-cab4-e063-6394a90a7a9a",
+      "id": "5f635795-cb5c-cab4-e063-6394a90a7a9a",
+      "effective_time": "20261103",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M015"
+        ],
+        "brand_name": [
+          "hemorrhoidal"
+        ],
+        "generic_name": [
+          "GLYCERIN, PHENYLEPHRINE HCL, PRAMOXINE HCL, WHITE PETROLATUM"
+        ],
+        "manufacturer_name": [
+          "Shield Line LLC"
+        ],
+        "product_ndc": [
+          "52410-8440"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "RECTAL"
+        ],
+        "substance_name": [
+          "GLYCERIN",
+          "PHENYLEPHRINE HYDROCHLORIDE",
+          "PRAMOXINE HYDROCHLORIDE",
+          "PETROLATUM"
+        ],
+        "spl_id": [
+          "5f635795-cb5c-cab4-e063-6394a90a7a9a"
+        ],
+        "spl_set_id": [
+          "5f635795-cb5b-cab4-e063-6394a90a7a9a"
+        ],
+        "package_ndc": [
+          "52410-8440-6"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000185370",
+          "N0000175629",
+          "N0000184306",
+          "N0000185001",
+          "M0000728",
+          "M0009417"
+        ],
+        "pharm_class_epc": [
+          "Non-Standardized Chemical Allergen [EPC]"
+        ],
+        "pharm_class_pe": [
+          "Increased Histamine Release [PE]",
+          "Cell-mediated Immunity [PE]",
+          "Increased IgG Production [PE]"
+        ],
+        "pharm_class_cs": [
+          "Allergens [CS]",
+          "Glycerol [CS]"
+        ],
+        "unii": [
+          "PDC6A3C0OX",
+          "04JA59TNSJ",
+          "88AYB867L5",
+          "4T6H12BN9U"
+        ]
+      }
+    }
+  ]
+}

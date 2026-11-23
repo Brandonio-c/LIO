@@ -1,0 +1,251 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 4398,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Allergena Zone 7 Kids Trees, Weeds and Grasses Echinacea,Baptisia tinctoria, Hydrastis canadensis, Myrrha, Phytolacca decandra, Trigonella foenum-graecum, Zone 7 Tree, Zone 7 Weed, Zone 7 Grass WATER GLYCERIN NASTURTIUM OFFICINALE ECHINACEA, UNSPECIFIED ECHINACEA, UNSPECIFIED BAPTISIA TINCTORIA ROOT BAPTISIA TINCTORIA ROOT GOLDENSEAL GOLDENSEAL MYRRH MYRRH PHYTOLACCA AMERICANA ROOT PHYTOLACCA AMERICANA ROOT FENUGREEK LEAF FENUGREEK LEAF ALNUS INCANA SUBSP. RUGOSA POLLEN ALNUS INCANA SUBSP. RUGOSA POLLEN FRAXINUS AMERICANA POLLEN FRAXINUS AMERICANA POLLEN POPULUS TREMULOIDES POLLEN POPULUS TREMULOIDES POLLEN FAGUS GRANDIFOLIA POLLEN FAGUS GRANDIFOLIA POLLEN BETULA NIGRA POLLEN BETULA NIGRA POLLEN JUNIPERUS ASHEI POLLEN JUNIPERUS ASHEI POLLEN JUNIPERUS VIRGINIANA POLLEN JUNIPERUS VIRGINIANA POLLEN POPULUS DELTOIDES SUBSP. MONILIFERA POLLEN POPULUS DELTOIDES SUBSP. MONILIFERA POLLEN ACER NEGUNDO POLLEN ACER NEGUNDO POLLEN ULMUS PUMILA POLLEN ULMUS PUMILA POLLEN CELTIS OCCIDENTALIS POLLEN CELTIS OCCIDENTALIS POLLEN CARYA ALBA POLLEN CARYA ALBA POLLEN JUNIPERUS SCOPULORUM POLLEN JUNIPERUS SCOPULORUM POLLEN ACER SACCHARUM POLLEN ACER SACCHARUM POLLEN MORUS RUBRA POLLEN MORUS RUBRA POLLEN MORUS ALBA POLLEN MORUS ALBA POLLEN QUERCUS VIRGINIANA POLLEN QUERCUS VIRGINIANA POLLEN PINUS STROBUS POLLEN PINUS STROBUS POLLEN POPULUS NIGRA POLLEN POPULUS NIGRA POLLEN POPULUS ALBA POLLEN POPULUS ALBA POLLEN LIGUSTRUM VULGARE POLLEN LIGUSTRUM VULGARE POLLEN PICEA PUNGENS POLLEN PICEA PUNGENS POLLEN LIQUIDAMBAR STYRACIFLUA POLLEN LIQUIDAMBAR STYRACIFLUA POLLEN PLATANUS OCCIDENTALIS POLLEN PLATANUS OCCIDENTALIS POLLEN AILANTHUS ALTISSIMA POLLEN AILANTHUS ALTISSIMA POLLEN JUGLANS NIGRA POLLEN JUGLANS NIGRA POLLEN SALIX NIGRA POLLEN SALIX NIGRA POLLEN AMARANTHUS PALMERI POLLEN AMARANTHUS PALMERI POLLEN XANTHIUM STRUMARIUM POLLEN XANTHIUM STRUMARIUM POLLEN BASSIA SCOPARIA POLLEN BASSIA SCOPARIA POLLEN SOLIDAGO CANADENSIS POLLEN SOLIDAGO CANADENSIS POLLEN CHENOPODIUM ALBUM POLLEN CHENOPODIUM ALBUM POLLEN CYCLACHAENA XANTHIFOLIA POLLEN CYCLACHAENA XANTHIFOLIA POLLEN AMARANTHUS RETROFLEXUS POLLEN AMARANTHUS RETROFLEXUS POLLEN AMARANTHUS SPINOSUS POLLEN AMARANTHUS SPINOSUS POLLEN PLANTAGO LANCEOLATA POLLEN PLANTAGO LANCEOLATA POLLEN URTICA DIOICA POLLEN URTICA DIOICA POLLEN AMBROSIA ACANTHICARPA POLLEN AMBROSIA ACANTHICARPA POLLEN AMBROSIA TRIFIDA POLLEN AMBROSIA TRIFIDA POLLEN AMBROSIA ARTEMISIIFOLIA POLLEN AMBROSIA ARTEMISIIFOLIA POLLEN AMBROSIA PSILOSTACHYA POLLEN AMBROSIA PSILOSTACHYA POLLEN ARTEMISIA TRIDENTATA POLLEN ARTEMISIA TRIDENTATA POLLEN ARTEMISIA LUDOVICIANA POLLEN ARTEMISIA LUDOVICIANA POLLEN ATRIPLEX CONFERTIFOLIA POLLEN ATRIPLEX CONFERTIFOLIA POLLEN RUMEX ACETOSELLA POLLEN RUMEX ACETOSELLA POLLEN SALSOLA TRAGUS POLLEN SALSOLA TRAGUS POLLEN AMARANTHUS TUBERCULATUS POLLEN AMARANTHUS TUBERCULATUS POLLEN ATRIPLEX CANESCENS POLLEN ATRIPLEX CANESCENS POLLEN ARTEMISIA ABSINTHIUM POLLEN ARTEMISIA ABSINTHIUM POLLEN POA ANNUA POLLEN POA ANNUA POLLEN BROMUS INERMIS POLLEN BROMUS INERMIS POLLEN PHALARIS ARUNDINACEA POLLEN PHALARIS ARUNDINACEA POLLEN ZEA MAYS POLLEN ZEA MAYS POLLEN SORGHUM HALEPENSE POLLEN SORGHUM HALEPENSE POLLEN KOELERIA MACRANTHA POLLEN KOELERIA MACRANTHA POLLEN FESTUCA PRATENSIS POLLEN FESTUCA PRATENSIS POLLEN AVENA SATIVA POLLEN AVENA SATIVA POLLEN DACTYLIS GLOMERATA POLLEN DACTYLIS GLOMERATA POLLEN LOLIUM PERENNE POLLEN LOLIUM PERENNE POLLEN AGROSTIS GIGANTEA POLLEN AGROSTIS GIGANTEA POLLEN LOLIUM MULTIFLORUM POLLEN LOLIUM MULTIFLORUM POLLEN SORGHUM X DRUMMONDII POLLEN SORGHUM X DRUMMONDII POLLEN PHLEUM PRATENSE POLLEN PHLEUM PRATENSE POLLEN TRITICUM AESTIVUM POLLEN TRITICUM AESTIVUM POLLEN PASCOPYRUM SMITHII POLLEN PASCOPYRUM SMITHII POLLEN"
+      ],
+      "active_ingredient": [
+        "Active Ingredients: Antigens 6X, 12X, 30X: **Zone 7 Grasses, **Zone 7 Trees, **Zone 7 Weeds; Herbal Drainage Remedies 3X: Baptisia tinctoria HPUS, Hydrastis canadensis HPUS, Myrrha HPUS, Phytolacca decandra HPUS, Trigonella foenum-graecum; Echinacea 3X HPUS."
+      ],
+      "purpose": [
+        "Purpose: Relief from Sneezing, Runny Nose, Itchy Eyes and Sinus Congestion.*"
+      ],
+      "indications_and_usage": [
+        "Use: This product is a Homeopathic Dilution formulated to support the body's immunity for the temporary relief of allergies.*"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep Out of Reach of Children. In case of overdose, get medical help or contact a Poison Control Center right away."
+      ],
+      "warnings": [
+        "Warnings: Use Only as directed. Stop use and ask a doctor if symptoms worsen or do not improve after 5 days."
+      ],
+      "dosage_and_administration": [
+        "Directions: •Shake Well Before Use. • Adults (12 and Older) 10-15 drops under the tongue three times daily. • Children (2-12) 6-10 drops under the tongue three times daily. • Infants (0-2) 3-6 drops under the tongue three times daily or as directed by your health care professional."
+      ],
+      "other_safety_information": [
+        "Other Information: Do not use if TAMPER EVIDENT seal around neck of bottle is missing or broken."
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredients: Nasturtium aquaticum (watercress), USP Purified Water and Vegetable Glycerin."
+      ],
+      "package_label_principal_display_panel": [
+        "*www.allergena.com/drugdisclaimer **Standard antigen mix used in this product is cross-reactive with Zone 7 Tree, Weed, and Grass allergens. For a complete list of allergens visit www.allergena.com Manufactured for PROGENA Professional Formulations 4820 Eubank Blvd. NE, ABQ, NM 87111, www.progena.com image of label"
+      ],
+      "set_id": "1639a979-d56d-4247-8db5-33f316917793",
+      "id": "2ce017c3-b743-ab43-e063-6394a90a1a49",
+      "effective_time": "20250129",
+      "version": "1",
+      "openfda": {
+        "brand_name": [
+          "Allergena Zone 7 Kids Trees, Weeds and Grasses"
+        ],
+        "generic_name": [
+          "ECHINACEA,BAPTISIA TINCTORIA, HYDRASTIS CANADENSIS, MYRRHA, PHYTOLACCA DECANDRA, TRIGONELLA FOENUM-GRAECUM, ZONE 7 TREE, ZONE 7 WEED, ZONE 7 GRASS"
+        ],
+        "manufacturer_name": [
+          "Meditrend, Inc. DBA Progena Professional Formulations"
+        ],
+        "product_ndc": [
+          "62713-991"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "ECHINACEA, UNSPECIFIED",
+          "BAPTISIA TINCTORIA ROOT",
+          "GOLDENSEAL",
+          "MYRRH",
+          "PHYTOLACCA AMERICANA ROOT",
+          "FENUGREEK LEAF",
+          "ALNUS INCANA SUBSP. RUGOSA POLLEN",
+          "FRAXINUS AMERICANA POLLEN",
+          "POPULUS TREMULOIDES POLLEN",
+          "FAGUS GRANDIFOLIA POLLEN",
+          "BETULA NIGRA POLLEN",
+          "JUNIPERUS ASHEI POLLEN",
+          "JUNIPERUS VIRGINIANA POLLEN",
+          "POPULUS DELTOIDES SUBSP. MONILIFERA POLLEN",
+          "ACER NEGUNDO POLLEN",
+          "ULMUS PUMILA POLLEN",
+          "CELTIS OCCIDENTALIS POLLEN",
+          "CARYA ALBA POLLEN",
+          "JUNIPERUS SCOPULORUM POLLEN",
+          "ACER SACCHARUM POLLEN",
+          "MORUS RUBRA POLLEN",
+          "MORUS ALBA POLLEN",
+          "QUERCUS VIRGINIANA POLLEN",
+          "PINUS STROBUS POLLEN",
+          "POPULUS NIGRA POLLEN",
+          "POPULUS ALBA POLLEN",
+          "LIGUSTRUM VULGARE POLLEN",
+          "PICEA PUNGENS POLLEN",
+          "LIQUIDAMBAR STYRACIFLUA POLLEN",
+          "PLATANUS OCCIDENTALIS POLLEN",
+          "AILANTHUS ALTISSIMA POLLEN",
+          "JUGLANS NIGRA POLLEN",
+          "SALIX NIGRA POLLEN",
+          "AMARANTHUS PALMERI POLLEN",
+          "XANTHIUM STRUMARIUM POLLEN",
+          "BASSIA SCOPARIA POLLEN",
+          "SOLIDAGO CANADENSIS POLLEN",
+          "CHENOPODIUM ALBUM POLLEN",
+          "CYCLACHAENA XANTHIFOLIA POLLEN",
+          "AMARANTHUS RETROFLEXUS POLLEN",
+          "AMARANTHUS SPINOSUS POLLEN",
+          "PLANTAGO LANCEOLATA POLLEN",
+          "URTICA DIOICA POLLEN",
+          "AMBROSIA ACANTHICARPA POLLEN",
+          "AMBROSIA TRIFIDA POLLEN",
+          "AMBROSIA ARTEMISIIFOLIA POLLEN",
+          "AMBROSIA PSILOSTACHYA POLLEN",
+          "ARTEMISIA TRIDENTATA POLLEN",
+          "ARTEMISIA LUDOVICIANA POLLEN",
+          "ATRIPLEX CONFERTIFOLIA POLLEN",
+          "RUMEX ACETOSELLA POLLEN",
+          "SALSOLA TRAGUS POLLEN",
+          "AMARANTHUS TUBERCULATUS POLLEN",
+          "ATRIPLEX CANESCENS POLLEN",
+          "ARTEMISIA ABSINTHIUM POLLEN",
+          "POA ANNUA POLLEN",
+          "BROMUS INERMIS POLLEN",
+          "PHALARIS ARUNDINACEA POLLEN",
+          "ZEA MAYS POLLEN",
+          "SORGHUM HALEPENSE POLLEN",
+          "KOELERIA MACRANTHA POLLEN",
+          "FESTUCA PRATENSIS POLLEN",
+          "AVENA SATIVA POLLEN",
+          "DACTYLIS GLOMERATA POLLEN",
+          "LOLIUM PERENNE POLLEN",
+          "AGROSTIS GIGANTEA POLLEN",
+          "LOLIUM MULTIFLORUM POLLEN",
+          "SORGHUM X DRUMMONDII POLLEN",
+          "PHLEUM PRATENSE POLLEN",
+          "TRITICUM AESTIVUM POLLEN",
+          "PASCOPYRUM SMITHII POLLEN"
+        ],
+        "spl_id": [
+          "2ce017c3-b743-ab43-e063-6394a90a1a49"
+        ],
+        "spl_set_id": [
+          "1639a979-d56d-4247-8db5-33f316917793"
+        ],
+        "package_ndc": [
+          "62713-991-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000185367",
+          "N0000175629",
+          "N0000184306",
+          "N0000185001",
+          "M0017130",
+          "M0000728",
+          "N0000185006"
+        ],
+        "pharm_class_epc": [
+          "Non-Standardized Pollen Allergenic Extract [EPC]",
+          "Standardized Pollen Allergenic Extract [EPC]"
+        ],
+        "pharm_class_pe": [
+          "Increased Histamine Release [PE]",
+          "Cell-mediated Immunity [PE]",
+          "Increased IgG Production [PE]"
+        ],
+        "pharm_class_cs": [
+          "Pollen [CS]",
+          "Allergens [CS]"
+        ],
+        "unii": [
+          "4N9P6CC1DX",
+          "5EF0HWI5WU",
+          "ZW3Z11D0JV",
+          "JC71GJ1F3L",
+          "11E6VI8VEG",
+          "487RI96K8Z",
+          "605T96G8Y5",
+          "G684LX721Q",
+          "928OC2TJDA",
+          "34X886W1H4",
+          "93963RFO1P",
+          "544F8MEY0Y",
+          "PY0JA16R2G",
+          "5928LJ1441",
+          "P6K070AR8V",
+          "030R993R8E",
+          "68R9X9Y96X",
+          "G2A764T54B",
+          "0G82TT8ZFY",
+          "V38QUQ7861",
+          "9LYI4RTZ52",
+          "3I9T68187H",
+          "8KDG09A4GO",
+          "TX1ER5UV3T",
+          "0MGE63QPFJ",
+          "VU8C8SB23P",
+          "Y3FRX92Z0E",
+          "R9JBC6687X",
+          "5Q246DS5BS",
+          "E03U1K03LK",
+          "2A64U81OQ3",
+          "1BV28146ZR",
+          "6M2JIH93ZN",
+          "1GH3WV23KH",
+          "2QOF601J1M",
+          "07A108ZKW5",
+          "644CZ16IR5",
+          "098LKX5NCN",
+          "V80TPZ0T6J",
+          "73B14PX5FW",
+          "380W4HYR6N",
+          "DO87T1U2CI",
+          "DNB59M1NVU",
+          "U2AI3H2J5Y",
+          "KU1V1898XX",
+          "K20Y81ACO3",
+          "RX18M46K8L",
+          "YI19RB8YFD",
+          "57KIJ4772H",
+          "GG8WX068MX",
+          "N52MIQ81ZW",
+          "V174354MDI",
+          "92N6W6KO2G",
+          "26U0BU8G83",
+          "81GS97HVFO",
+          "7U437HHU5C",
+          "766QT72BK6",
+          "FAY1Y90VJ9",
+          "74PD8J616H",
+          "577VA5B4HP",
+          "IIC6H3WF6J",
+          "A0WFQ8P6N1",
+          "A7IKY24TR7",
+          "83N78IDA7P",
+          "4T81LB52R0",
+          "HU8V6E7HOA",
+          "VJI0WKK736",
+          "B43R30VP73",
+          "65M88RW2EG",
+          "F1KAH8374D",
+          "6AU0ZD8T1O"
+        ]
+      }
+    }
+  ]
+}

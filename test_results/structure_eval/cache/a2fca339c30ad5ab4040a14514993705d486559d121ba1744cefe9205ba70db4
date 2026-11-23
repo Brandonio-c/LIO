@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 2152,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "effective_time": "20171128",
+      "inactive_ingredient": [
+        "Other Ingredients: Water (Aqua), Cyclopentasiloxane, Butylene glycol, glycerin, Caprylic/Capric triglyceride, Glycerin Stearate, PEG-100 Stearate, Polyglyceryl-3 Polymethylsiloxyeethyl Dimethicon, Cyclohexasiloxane, Sorbitan Stearate, Dimethicone, Polyacrylamide, C13-14 Isoparaffin, Laureth-7,phenoxyethanol, Caprylyl Glycol, Ethylhexyglycerin, Hexylene glycol, Imperata Cylindrica Root Extract, PEG-8, Carbomer, triethoxysilylethyl Polydimethylsiloxyethyl Hexyl Dimethicone, Cetyl Alcohol, Lecithin, Tocopherol, Ascorbyl Palmitate, Ascorbic Acid, Citric Acid, Xanthan gum, Polyester-7, Neopentyl Glycol Diheptanoate, tocopherol Linoleate/Oleate, Teprenone, Phoenix Dactylifera (Date) Fruit Extract, Polygonum Aviculare Extract, Sodium Lactate, Disodium EDTA, Dipotassium Glycyrrhizate, Arabidopsis Thaliana Extract, Plankton Extract, Micrococcus Lysate, Triethoxycaprylysilane, Iron Oxides (CI77491, CI77492, CI77499)"
+      ],
+      "purpose": [
+        "Purpose: Sunscreen"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children: If swallowed, get medical help or contact a Poison Cpntrol center right away."
+      ],
+      "warnings": [
+        "Warnings: For external use only"
+      ],
+      "when_using": [
+        "When using this product: Keep out of eyes. If contact occurs, rinse with water. Discontinue use if irritation or redness occurs."
+      ],
+      "spl_product_data_elements": [
+        "SheerZinc SPF 30 Tinted - SunKissed Zinc Oxide ZINC OXIDE ZINC CATION WATER DIMETHICONE CROSSPOLYMER (450000 MPA.S AT 12% IN CYCLOPENTASILOXANE) BUTYLENE GLYCOL GLYCERIN MEDIUM-CHAIN TRIGLYCERIDES GLYCERYL STEARATE SE PEG-100 STEARATE POLYGLYCERYL-3 POLYDIMETHYLSILOXYETHYL DIMETHICONE (4000 MPA.S) CYCLOMETHICONE 6 SORBITAN MONOSTEARATE DIMETHICONE C13-14 ISOPARAFFIN LAURETH-7 PHENOXYETHANOL CAPRYLYL GLYCOL ETHYLHEXYLGLYCERIN HEXYLENE GLYCOL IMPERATA CYLINDRICA ROOT POLYETHYLENE GLYCOL 400 CARBOMER 1342 CETYL ALCOHOL LECITHIN, SOYBEAN TOCOPHEROL ASCORBYL PALMITATE ASCORBIC ACID CITRIC ACID MONOHYDRATE XANTHAN GUM POLYESTER-7 NEOPENTYL GLYCOL DIHEPTANOATE .ALPHA.-TOCOPHEROL LINOLEATE, D- TEPRENONE DATE POLYGONUM AVICULARE TOP SODIUM LACTATE EDETATE DISODIUM ANHYDROUS GLYCYRRHIZINATE DIPOTASSIUM ARABIDOPSIS THALIANA MICROCOCCUS LUTEUS TRIETHOXYCAPRYLYLSILANE FERRIC OXIDE RED FERRIC OXIDE YELLOW FERROSOFERRIC OXIDE"
+      ],
+      "openfda": {
+        "application_number": [
+          "part352"
+        ],
+        "brand_name": [
+          "SheerZinc SPF 30 Tinted - SunKissed"
+        ],
+        "generic_name": [
+          "ZINC OXIDE"
+        ],
+        "manufacturer_name": [
+          "Allure Labs Inc"
+        ],
+        "product_ndc": [
+          "62742-4094"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ZINC OXIDE"
+        ],
+        "spl_id": [
+          "390b4010-fd94-43d8-9f2b-a18504ac04da"
+        ],
+        "spl_set_id": [
+          "0a9834ad-f867-4b37-9e3c-f3a4d388dc4c"
+        ],
+        "package_ndc": [
+          "62742-4094-1",
+          "62742-4094-2"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "SOI2LOH54Z"
+        ]
+      },
+      "version": "1",
+      "dosage_and_administration": [
+        "Directions: Apply sunscreen in the AM to finger tips and gently massage into the skin. Reapply as needed."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor If severe skin irritation developes"
+      ],
+      "package_label_principal_display_panel": [
+        "Manufactured for DermaQuest, Inc. Hayward, CA 94544 1272 GK, NL Made in USA dermaquestinc.com Image SheerZn Sunkissed 20"
+      ],
+      "indications_and_usage": [
+        "Uses: To help protect the skin from harmful UVA and UVB rays"
+      ],
+      "set_id": "0a9834ad-f867-4b37-9e3c-f3a4d388dc4c",
+      "id": "390b4010-fd94-43d8-9f2b-a18504ac04da",
+      "active_ingredient": [
+        "Active Ingredient: Zinc oxide - 18.6%"
+      ]
+    }
+  ]
+}

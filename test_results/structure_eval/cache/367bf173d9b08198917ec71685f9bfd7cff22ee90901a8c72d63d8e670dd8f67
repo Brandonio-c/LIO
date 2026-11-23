@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="043e1eb8-e21c-b1a0-e063-6394a90ab5f5"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Viscum Tilia RK 30X</title>
+   <effectiveTime value="20230831"/>
+   <setId root="043e1eb8-e21b-b1a0-e063-6394a90ab5f5"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="182071519"/>
+            <name>True Botanica, LLC</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <assignedEntity>
+                     <assignedOrganization>
+                        <id root="1.3.6.1.4.1.519.1" extension="182071519"/>
+                        <name>True Botanica, LLC</name>
+                     </assignedOrganization>
+                     <performance>
+                        <actDefinition>
+                           <code code="C43360" displayName="manufacture" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="53645-2300" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                  </assignedEntity>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="051a60a4-defb-7969-e063-6294a90a49df"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20230831"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="53645-2300" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Viscum Tilia RK 30X</name>
+                        <formCode code="C42953" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="LIQUID"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Viscum Tilia RK 30X</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2968PHW8QP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CITRIC ACID MONOHYDRATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="[hp_X]" value="30"/>
+                              <denominator unit="mL" value="20"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="E6839Q6DO1" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>VISCUM ALBUM WHOLE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="E6839Q6DO1" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>VISCUM ALBUM WHOLE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="20" unit="mL"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="53645-2300-4" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43169" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20230831"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <code code="C73614" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="unapproved homeopathic"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20230831"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38288" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ORAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75952a-f7f7-d2e7-e053-2a91aa0a85d7">
+               <id root="043e1eb8-e210-b1a0-e063-6394a90ab5f5"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <text>
+                  <paragraph>Viscum Album 30X, HPUS</paragraph>
+                  <paragraph/>
+                  <paragraph>The letters HPUS indicate that these ingredients are officially included in the Homeopathic Pharmacopoeia of the United States.</paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e750a62-73bd-0868-e053-2a91aa0a97d2">
+               <id root="043e1eb8-e211-b1a0-e063-6394a90ab5f5"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <text>
+                  <paragraph>For contitutional treatments based on homeopathic and anthroposophic indications or as directed by your physician.</paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e750a62-73bb-0868-e053-2a91aa0a97d2">
+               <id root="043e1eb8-e212-b1a0-e063-6394a90ab5f5"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>Use:</title>
+               <text>
+                  <paragraph>For contitutional treatments based on homeopathic and anthroposophic indications or as directed by your physician.</paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75cb69-e02d-91b9-e053-2991aa0aaaea">
+               <id root="043e1eb8-e213-b1a0-e063-6394a90ab5f5"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>Warnings:</title>
+               <text>
+                  <paragraph>Consult your health care provider if symptoms persist more than 5 days or worsen.</paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75cb69-e02f-91b9-e053-2991aa0aaaea">
+               <id root="043e1eb8-e214-b1a0-e063-6394a90ab5f5"/>
+               <code code="53414-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PREGNANCY OR BREAST FEEDING SECTION"/>
+               <text>
+                  <paragraph>If pregnant or breastfeeding ask a health professional before use. 
+  <br/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e759ff1-82be-f49d-e053-2a91aa0a10ba">
+               <id root="043e1eb8-e215-b1a0-e063-6394a90ab5f5"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <text>
+                  <paragraph>Keep out of the reach of children. 
+  <br/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75a407-bad4-fdfc-e053-2a91aa0af957">
+               <id root="043e1eb8-e216-b1a0-e063-6394a90ab5f5"/>
+               <code code="50570-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - DO NOT USE SECTION"/>
+               <text>
+                  <paragraph>TAMPER EVIDENT: Do not use if safety seal is broken before first use. 
+  <br/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75a407-bad6-fdfc-e053-2a91aa0af957">
+               <id root="043e1eb8-e217-b1a0-e063-6394a90ab5f5"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>Directions for Use:</title>
+               <text>
+                  <paragraph>Place drops under tongue for 30 seconds. Adults3-5 drops 3 times a day. Children 2-12 years--3-5 drops 3 times a day. Under 2 years, consult your doctor. Use until symptoms are relieved or as directed by your health care provider.</paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75952a-f7fa-d2e7-e053-2a91aa0a85d7">
+               <id root="043e1eb8-e218-b1a0-e063-6394a90ab5f5"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>Other Ingredients:</title>
+               <text>
+                  <paragraph>Citric Acid, Water</paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e75952a-f7fc-d2e7-e053-2a91aa0a85d7">
+               <id root="043e1eb8-e219-b1a0-e063-6394a90ab5f5"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <text>
+                  <paragraph>Developed and Made by</paragraph>
+                  <paragraph>True Botanica, LLC</paragraph>
+                  <paragraph>1005 Richards Rd., Suite D</paragraph>
+                  <paragraph>Hartland, WI 53029</paragraph>
+                  <paragraph>800-315-8783</paragraph>
+                  <paragraph>www.truebotanica.com</paragraph>
+               </text>
+               <effectiveTime value="20230515"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5e750a62-73bf-0868-e053-2a91aa0a97d2">
+               <id root="043e4a24-476a-f231-e063-6294a90af0e9"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>Principal Display Panel</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_043e4a24-4769-f231-e063-6294a90af0e9"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20230831"/>
+               <component>
+                  <observationMedia ID="img_043e4a24-4769-f231-e063-6294a90af0e9">
+                     <text>Viscum Tilia RK 30X</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="Viscum Tilia RK 30X_20 ml_Final_v1_8-17-2023.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

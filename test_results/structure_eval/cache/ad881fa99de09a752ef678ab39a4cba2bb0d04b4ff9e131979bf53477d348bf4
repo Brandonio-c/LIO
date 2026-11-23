@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 19020,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "iBeaLee 5% Minoxidil Hair Regrowth Treatment 5% MINOXIDIL POTASSIUM SORBATE GINGER CHAMOMILE CYMBOPOGON CITRATUS LEAF PROPYLENE GLYCOL MINOXIDIL MINOXIDIL CASTOR OIL WATER LAVENDER OIL ROSEMARY BIOTIN"
+      ],
+      "active_ingredient": [
+        "ACTIVE INGREDIENT Minoxidil 5% w/w"
+      ],
+      "purpose": [
+        "Purpose Hair Regrowth"
+      ],
+      "indications_and_usage": [
+        "USE Use to regrow hair of the scalp and beard growth for men and wemen"
+      ],
+      "warnings": [
+        "Warnings Warnings For external use only. Keep out of reach of children."
+      ],
+      "do_not_use": [
+        "Do not use if You have no family history of hair loss. Your hair loss is sudden and/or patchy. Your hair loss is associated with childbirth. You do not know the reason for your hair loss. You are under 18 years of age. Do not use on babies and children. Your scalp is red, inflamed, infected, irritated, or painful. You use other medicines on the scalp."
+      ],
+      "when_using": [
+        "When Using Avoid contact with eyes. In case of accidental contact, rinse eyes with a large amount of cool tap water."
+      ],
+      "ask_doctor": [
+        "Stop Use And Ask A Doctor Stop Use And Ask A Doctor Chest pain, rapid heartbeat, faintness, or dizziness occurs. Sudden, unexplained weight gain occurs. Scalp irritation or redness occurs. Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center (1-800-222-1222) right away."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep Out Of Reach Of Children Keep Out Of Reach Of Children"
+      ],
+      "dependence": [
+        "Directions Apply twice a day. Once in the morning and another time in the evening before bed Spray directly on top of the scalp in the area to be treated Using more than directed or more often will not improve results Continued use is necessary to lncrease and then malntain your hair regrowth"
+      ],
+      "questions": [
+        "Other information Before use, read all information on carton and enclosed leaflet. Store at controlled room temperature 10° to 30°C (50° to 80°F). Do not incinerate container. Do not expose to heat or store at temperature above 104°F (40°C)."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Water, Propylene Glycol, Potassium Sorbate, Castor Oil, Lavender Oil, Cymbopogon Citratus Leaf, Chamomile, Biotin , Rosemary Oil, Ginger, Batana Oil"
+      ],
+      "dosage_and_administration": [
+        ""
+      ],
+      "package_label_principal_display_panel": [
+        "01"
+      ],
+      "set_id": "4cb728d0-6abe-6645-e063-6394a90acb4c",
+      "id": "4cb71a59-0c9f-39da-e063-6294a90a5614",
+      "effective_time": "20260310",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M032"
+        ],
+        "brand_name": [
+          "iBeaLee 5% Minoxidil Hair Regrowth Treatment"
+        ],
+        "generic_name": [
+          "5% MINOXIDIL"
+        ],
+        "manufacturer_name": [
+          "Shenzhen Earth Surface Trading Co., Ltd."
+        ],
+        "product_ndc": [
+          "85636-018"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "MINOXIDIL"
+        ],
+        "rxcui": [
+          "1537948"
+        ],
+        "spl_id": [
+          "4cb71a59-0c9f-39da-e063-6294a90a5614"
+        ],
+        "spl_set_id": [
+          "4cb728d0-6abe-6645-e063-6394a90acb4c"
+        ],
+        "package_ndc": [
+          "85636-018-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000175379",
+          "N0000175564"
+        ],
+        "pharm_class_pe": [
+          "Arteriolar Vasodilation [PE]"
+        ],
+        "pharm_class_epc": [
+          "Arteriolar Vasodilator [EPC]"
+        ],
+        "unii": [
+          "5965120SH1"
+        ]
+      }
+    }
+  ]
+}

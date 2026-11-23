@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 10893,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "LIDOCAINE PAIN RELIEF Gel-Patch Lidocaine POLYSORBATE 80 GLYCERIN POVIDONE K90 METHYLPARABEN PROPYLPARABEN KAOLIN TARTARIC ACID WATER PROPYLENE GLYCOL POLYACRYLIC ACID (250000 MW) SODIUM POLYACRYLATE (2500000 MW) TITANIUM DIOXIDE DIHYDROXYALUMINUM AMINOACETATE ANHYDROUS LIDOCAINE LIDOCAINE EDETATE DISODIUM"
+      ],
+      "active_ingredient": [
+        "Active ingredients Lidocaine 4%"
+      ],
+      "purpose": [
+        "Purpose Topical Anesthetic"
+      ],
+      "indications_and_usage": [
+        "Uses Temporarily relieves muscle soreness and minor joint pains in the wrist, knees, back, neck, hips, shoulders, elbows.",
+        "Usage 1.Remove patch from outer package 2.Partially peel back protective film 3.Place on affected area 4.Remove remaining film while pressing patch to skin"
+      ],
+      "warnings": [
+        "Warnings For external use only"
+      ],
+      "do_not_use": [
+        "Do not use on wounds or damaged skin with a heating pad or device with other ointments, creams, sprays, or liniments if you are allergic to any ingredients of this product"
+      ],
+      "when_using": [
+        "When using this product use only as directed avoid contact with the eyes, mucous membranes, or rashes do not bandage tightly"
+      ],
+      "stop_use": [
+        "Stop use ... if skin reactions such as redness, swelling, blistering or other discomfort occur symptoms persist for more than 7 days"
+      ],
+      "ask_doctor": [
+        "... ask a doctor if skin reactions such as redness, swelling, blistering or other discomfort occur symptoms persist for more than 7 days"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP OUT OF REACH OF CHILDREN If swallowed accidentally, get medical help or contact with Poison Control Center immediately."
+      ],
+      "dosage_and_administration": [
+        "Directions Adults and Children above 12 years old : Clean and dry the affected area. Tear off the proctive film and apply the exposed part of the patch to the affected area. Carefully remove remaining film while pressing the patch firmly on the skin. Remove patch from the skin after at most 8-hour application. Children under age of 12 : Consult a doctor"
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredients Dihydroxyaluminum Aminoacetate, Disodium Ethylenediaminetetraacetic Acid, Glycerin, Kaolin, Methylparaben, Polysorbate 80, Propylene Glycol, Polyacrylic Acid, Polyvinylpyrrolidone K90, Propylparaben, Sodium Polyacrylate, Tartaric Acid, Titanium Dioxide, Water"
+      ],
+      "questions": [
+        "Questions or Comments supports@sumifunofficial.com"
+      ],
+      "recent_major_changes": [
+        ""
+      ],
+      "package_label_principal_display_panel": [
+        "158-12 12",
+        "158-13 13",
+        "158-14 14",
+        "158-17 17",
+        "158-19 19",
+        "158-22 22",
+        "158-23 23",
+        "158-24 24",
+        "158-25 25",
+        "158-26 26",
+        "158-27 27",
+        "158-29 29",
+        "158-33 33",
+        "158-34 34",
+        "158-35 35",
+        "158-37 37",
+        "158-42 42",
+        "158-43 43",
+        "158-44 44",
+        "158-45 45",
+        "158-46 46"
+      ],
+      "set_id": "322aa97d-b35b-d9dd-e063-6394a90a7ae5",
+      "id": "520ed5a4-9292-3ceb-e063-6394a90a0a50",
+      "effective_time": "20260517",
+      "version": "3",
+      "openfda": {
+        "application_number": [
+          "505G(a)(3)"
+        ],
+        "brand_name": [
+          "LIDOCAINE PAIN RELIEF Gel-Patch"
+        ],
+        "generic_name": [
+          "LIDOCAINE"
+        ],
+        "manufacturer_name": [
+          "Guangzhou Liuquanmiao Import & Export Trade Co., Ltd."
+        ],
+        "product_ndc": [
+          "83602-158"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "LIDOCAINE"
+        ],
+        "rxcui": [
+          "1737778"
+        ],
+        "spl_id": [
+          "520ed5a4-9292-3ceb-e063-6394a90a0a50"
+        ],
+        "spl_set_id": [
+          "322aa97d-b35b-d9dd-e063-6394a90a7ae5"
+        ],
+        "package_ndc": [
+          "83602-158-26",
+          "83602-158-23",
+          "83602-158-27",
+          "83602-158-13",
+          "83602-158-17",
+          "83602-158-19",
+          "83602-158-22",
+          "83602-158-25",
+          "83602-158-24",
+          "83602-158-14",
+          "83602-158-12",
+          "83602-158-29",
+          "83602-158-33",
+          "83602-158-34",
+          "83602-158-35",
+          "83602-158-37",
+          "83602-158-42",
+          "83602-158-43",
+          "83602-158-44",
+          "83602-158-45",
+          "83602-158-46"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "6977916514003",
+          "6977916514010",
+          "6977916513907",
+          "6977916513945",
+          "6977916513891",
+          "6977916513969",
+          "6977916513990",
+          "6977916514102",
+          "6977916513952",
+          "6977916513921",
+          "6977916514072",
+          "6977916514089",
+          "6977916513914",
+          "6977916514065",
+          "6977916514027",
+          "6977916513976",
+          "6977916513983",
+          "6977314349092",
+          "6977916514034"
+        ],
+        "nui": [
+          "N0000175682",
+          "M0000897",
+          "N0000175426",
+          "N0000175976"
+        ],
+        "pharm_class_epc": [
+          "Amide Local Anesthetic [EPC]",
+          "Antiarrhythmic [EPC]"
+        ],
+        "pharm_class_cs": [
+          "Amides [CS]"
+        ],
+        "pharm_class_pe": [
+          "Local Anesthesia [PE]"
+        ],
+        "unii": [
+          "98PI200987"
+        ]
+      }
+    }
+  ]
+}

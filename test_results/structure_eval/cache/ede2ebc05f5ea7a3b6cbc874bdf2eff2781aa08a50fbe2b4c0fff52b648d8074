@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 14404,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Scentfull Hand Sanitizer Whipped Coconut Alcohol GLYCERIN ALCOHOL ALCOHOL ALOE VERA LEAF BLUE 1 WATER YELLOW 5 RED 40 DENATONIUM BENZOATE PEG-40 HYDROGENATED CASTOR OIL"
+      ],
+      "dosage_and_administration": [
+        "Drug Facts Drug Facts"
+      ],
+      "active_ingredient": [
+        "Active ingredients Ethyl Alcohol 62% V/V"
+      ],
+      "purpose": [
+        "Purpose Antiseptic"
+      ],
+      "indications_and_usage": [
+        "Uses For handwashing to decrease bacteria on the skin."
+      ],
+      "warnings": [
+        "Warnings For external use only: hands Flammable, keep away from fire or flame. When using this product - keep out of eyes. In case of contact with eyes, flush thoroughly with water. - avoid contact with broken skin. - do not inhale or ingest. Stop use and ask a doctor if - irritation and redness develop - condition persists for more than 72 hours keep out of reach of children. If swallowed, get medical help or contact a poison control center right away."
+      ],
+      "when_using": [
+        "When using this product - keep out of eyes. In case of contact with eyes, flush thoroughly with water. - avoid contact with broken skin. - do not inhale or ingest."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if - irritation and redness develop - condition persists for more than 72 hours"
+      ],
+      "keep_out_of_reach_of_children": [
+        "keep out of reach of children. If swallowed, get medical help or contact a poison control center right away."
+      ],
+      "instructions_for_use": [
+        "Directions Spray hands with product and allow to dry without wiping For children under 6, use only under adult supervision Not recommended for infants"
+      ],
+      "other_safety_information": [
+        "Other information Do not store above 105°f may discolor some fabrics harmful to wood finishes and plastics"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Water (Aqua), Fragrance (Parfum), Glycerin, Peg-40 Hydrogenated Castor Oil, Aloe Barbadensis Leaf Juice, Denatonium Benzoate, Red 40, Yellow 5, Blue 1"
+      ],
+      "package_label_principal_display_panel": [
+        "SANITIZERS_SECONDBATCH_TECHPACKS_PRINT__Whipped Coconut-R-OL"
+      ],
+      "set_id": "3cfaadb3-1881-2dd9-e063-6394a90abcb4",
+      "id": "5128d628-794b-e999-e063-6294a90a65e0",
+      "effective_time": "20260506",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M003"
+        ],
+        "brand_name": [
+          "Scentfull Hand Sanitizer Whipped Coconut"
+        ],
+        "generic_name": [
+          "ALCOHOL"
+        ],
+        "manufacturer_name": [
+          "Scent Theory Products LLC"
+        ],
+        "product_ndc": [
+          "76891-150"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ALCOHOL"
+        ],
+        "rxcui": [
+          "1020364"
+        ],
+        "spl_id": [
+          "5128d628-794b-e999-e063-6294a90a65e0"
+        ],
+        "spl_set_id": [
+          "3cfaadb3-1881-2dd9-e063-6394a90abcb4"
+        ],
+        "package_ndc": [
+          "76891-150-35"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "3K9958V90M"
+        ]
+      }
+    }
+  ]
+}

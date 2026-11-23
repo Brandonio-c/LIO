@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="5efc74e8-f11c-a66b-e063-6394a90a26ab"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Dove Men Maximum Protection Ocean Breeze Soft Solid Antiperspirant</title>
+   <effectiveTime value="20261029"/>
+   <setId root="5efc74e8-f11b-a66b-e063-6394a90a26ab"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="001375088"/>
+            <name>Conopco d/b/a Unilever</name>
+            <assignedEntity>
+               <assignedOrganization/>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="5efd0439-d200-1649-e063-6394a90ae126"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20261029"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="64942-2575" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Dove</name>
+                        <formCode code="C42991" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="STICK"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Men Maximum Protection Ocean Breeze Soft Solid Antiperspirant</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="20"/>
+                              <denominator unit="g" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="8O386558JE" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALUMINUM ZIRCONIUM TETRACHLOROHYDREX GLY</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="8O386558JE" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>ALUMINUM ZIRCONIUM TETRACHLOROHYDREX GLY</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="0THT5PCI0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CYCLOPENTASILOXANE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="92RU3N3Y1O" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DIMETHICONE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="XOF597Q3KY" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MICROCRYSTALLINE WAX</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="I9O0E3H2ZE" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PARAFFIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="ETJ7Z6XBU4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SILICA</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="UF7620L1W6" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DIMETHICONE CROSSPOLYMER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="1P9D0Z171K" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BHT</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="T7EU0O9VPP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CITRAL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="9MC3I34447" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>LIMONENE, (+/-)-</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="D81QY6I88E" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>LINALOOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3W1JG795YI" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>HELIANTHUS ANNUUS (SUNFLOWER) SEED OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="9XP4LC555B" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALPHA-ISOMETHYL IONONE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="P01OUT964K" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CITRONELLOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="A4VZ22K1WT" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>COUMARIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="5M0MWY797U" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ISOEUGENOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="48" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="64942-2575-1" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43186" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CONTAINER"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="1" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="64942-2575-2" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43182" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CARTON"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20261029"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M019" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20261029"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5efcb4b5-a8be-ac9a-e063-6294a90a1e4e">
+               <id root="5efcba6b-ac09-b0f4-e063-6294a90a3909"/>
+               <code code="34089-3" codeSystem="2.16.840.1.113883.6.1" displayName="DESCRIPTION SECTION"/>
+               <text>
+                  <paragraph>Dove Men Maximum Protection Ocean Breeze Soft Solid Antiperspirant </paragraph>
+               </text>
+               <effectiveTime value="20261029"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5efcb4f0-61d7-d86b-e063-6394a90adbba">
+               <id root="5efcb4f0-61d6-d86b-e063-6394a90adbba"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <text>
+                  <paragraph>Aluminum Zirconium Tetrachlorohydrex GLY  20%</paragraph>
+               </text>
+               <effectiveTime value="20261029"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5efcb480-b910-d825-e063-6394a90a3caf">
+               <id root="5efcb480-b90f-d825-e063-6394a90a3caf"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <text>
+                  <paragraph>Antiperspirant</paragraph>
+               </text>
+               <effectiveTime value="20261029"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5efcdb4a-8bd6-f51a-e063-6394a90a7248">
+               <id root="5efcdb4a-8bd5-f51a-e063-6394a90a7248"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <text>
+                  <paragraph>reduces underarm wetness </paragraph>
+               </text>
+               <effectiveTime value="20261029"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5efcda14-9fcb-f4ed-e063-6394a90af6f4">
+               <id root="5efcda14-9fca-f4ed-e063-6394a90af6f4"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">• For external use only.</content>
+                     <br/>
+• 
+  <content styleCode="bold">Do not use</content> on broken skin. •
+  <content styleCode="bold"> Stop use if</content> rash or irritation occurs. • 
+  <content styleCode="bold">Ask a doctor before use if you have</content> kidney disease.  • If swallowed, get medical help or contact a Poison Control Center right away. 
+ </paragraph>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20261029"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5efcdfec-a1b5-f87f-e063-6394a90aa797">
+               <id root="5efcdfec-a1b4-f87f-e063-6394a90aa797"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <text>
+                  <paragraph>• KEEP OUT OF REACH OF CHILDREN. </paragraph>
+               </text>
+               <effectiveTime value="20261029"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5efce115-dc9a-fa2b-e063-6394a90aab54">
+               <id root="5efce115-dc99-fa2b-e063-6394a90aab54"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <text>
+                  <paragraph>• Apply to underarms only
+  <br/>
+• before bed, apply two clicks of product to each underarm
+ </paragraph>
+               </text>
+               <effectiveTime value="20261029"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5efce21e-dcc7-fac6-e063-6394a90a4d99">
+               <id root="5efce21e-dcc6-fac6-e063-6394a90a4d99"/>
+               <code code="60561-8" codeSystem="2.16.840.1.113883.6.1" displayName="OTHER SAFETY INFORMATION"/>
+               <text>
+                  <paragraph>• Do not store over 115°F</paragraph>
+               </text>
+               <effectiveTime value="20261029"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5efce479-1726-fbf6-e063-6394a90a39ad">
+               <id root="5efce479-1725-fbf6-e063-6394a90a39ad"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <text>
+                  <paragraph>Cyclopentasiloxane, Dimethicone, Paraffin, Microcrystalline Wax, Fragrance (Parfum), Silica, Helianthus Annuus (Sunflower) Seed Oil, Dimethicone Crosspolymer, BHT, Alpha-Isomethyl Ionone, Citral, Citronellol, Coumarin, Isoeugenol, Limonene, Linalool.</paragraph>
+               </text>
+               <effectiveTime value="20261029"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5efce689-32e5-fc4a-e063-6394a90a7bbe">
+               <id root="5efce689-32e4-fc4a-e063-6394a90a7bbe"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <text>
+                  <paragraph>Call 1-800-761-3683</paragraph>
+               </text>
+               <effectiveTime value="20261029"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5efce899-c0b1-ffc9-e063-6394a90af8a2">
+               <id root="5efce899-c0b0-ffc9-e063-6394a90af8a2"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_5efce902-5c75-e8da-e063-6294a90ad2d3"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20261029"/>
+               <component>
+                  <observationMedia ID="img_5efce902-5c75-e8da-e063-6294a90ad2d3">
+                     <text>Label</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="Dove Men Maximum Protection Ocean Breeze Soft Solid Antiperspirant - Artwork.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

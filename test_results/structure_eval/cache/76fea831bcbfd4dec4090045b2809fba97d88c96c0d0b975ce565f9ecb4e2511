@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 23842,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "SKINARIS WART REMOVER Salicylic acid 17% WART REMOVER SALICYLIC ACID SALICYLIC ACID WATER POLYVINYL ALCOHOL POLIGLUSAM ALCOHOL GLYCERIN LAUROCAPRAM LYTTA VESICATORIA NITROCELLULOSE"
+      ],
+      "active_ingredient": [
+        "Active Ingredient Salicylic acid 17%"
+      ],
+      "purpose": [
+        "Purpose Wart remover"
+      ],
+      "indications_and_usage": [
+        "Uses For the removal of common warts and plantar warts. Common warts have a rough \"cauliflower-like\" surface and are easily recognizable. Plantar warts are located only on the soles of the feet, tender to touch, with an interrupted footprint pattern."
+      ],
+      "warnings": [
+        "Warnings For external use only."
+      ],
+      "do_not_use": [
+        "Do not use on irritated skin or on any area that is infected or reddened. On moles, birthmarks, warts with hair growing from them, genital warts, or warts on the face or mucous membranes. If you have diabetes or poor blood circulation."
+      ],
+      "when_using": [
+        "When Using Avoid contact with eyes. If product gets into the eyes, flush with water for 15 minutes. Non-edible. Cap tightly and store at room temperature, away from heat."
+      ],
+      "stop_use": [
+        "Stop Use Stop use and ask a doctor if discomfort persists."
+      ],
+      "ask_doctor": [
+        "Ask Doctor Stop use and ask a doctor if discomfort persists."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep Out Of Reach Of Children If swallowed, get medical help or contact the Poison Control Center (1-800-222-1222) right away."
+      ],
+      "dosage_and_administration": [
+        "Directions Wash the affected area. May soak wart in warm water for 5 minutes. Dry area thoroughly. Use a cotton swab to apply a sufficient amount to cover each wart. Let it dry. Repeat this procedure once or twice daily as needed (until wart is removed) for up to 12 weeks."
+      ],
+      "storage_and_handling": [
+        "Other information Store at room temperature. Avoid excessive heat (37°C / 99°F). Skin discoloration may occur during or after use."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Purified Water, Polyvinyl Alcohol, Chitosan, Ethanol, Glycerin, Laurocapram, Collodion, Nitrocellulose"
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPAL DISPLAY PANEL 17"
+      ],
+      "set_id": "5bf732b1-bb67-61b8-e063-6394a90a6775",
+      "id": "5bf732b1-bb68-61b8-e063-6394a90a6775",
+      "effective_time": "20260920",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M028"
+        ],
+        "brand_name": [
+          "SKINARIS WART REMOVER"
+        ],
+        "generic_name": [
+          "SALICYLIC ACID 17% WART REMOVER"
+        ],
+        "manufacturer_name": [
+          "Wenzhou Yuyuan Pharmaceutical Co., Ltd."
+        ],
+        "product_ndc": [
+          "87786-071"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "SALICYLIC ACID"
+        ],
+        "rxcui": [
+          "312881"
+        ],
+        "spl_id": [
+          "5bf732b1-bb68-61b8-e063-6394a90a6775"
+        ],
+        "spl_set_id": [
+          "5bf732b1-bb67-61b8-e063-6394a90a6775"
+        ],
+        "package_ndc": [
+          "87786-071-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "6978887450581"
+        ],
+        "unii": [
+          "O414PZ4LPZ"
+        ]
+      }
+    }
+  ]
+}

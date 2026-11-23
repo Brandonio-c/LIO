@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 9815,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "HIONFURT Motion Sickness Motion Sickness Natural Herbal Plant Lavender ANGELICA SINENSIS WHOLE GASTRODIA ELATA WHOLE CAMPHOR, (-)- CAMPHOR, (-)- MENTHOL GLUCURONIDE MENTHOL GLUCURONIDE EGGPLANT SAFFLOWER"
+      ],
+      "active_ingredient": [
+        "Active ingredient Menthol , Camphor"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Plant Extract Gastrodia Elata Safflower Angelica Sinensis"
+      ],
+      "purpose": [
+        "Purpose PRODUCT FEATURES: Effectively preventing and alleviating motion sickness for a smoother journey."
+      ],
+      "when_using": [
+        "When using this product lf the symptoms are severe, you can use 2 patches on both ears or on one ear and navel"
+      ],
+      "do_not_use": [
+        "Do not use Pregnant women, breastfeeding mothers, children under the age of4 should not use.Do not use if the skin has abnormalities, wounds, eczema, inflammation, allergies.Please keep it out of reach of children and pets."
+      ],
+      "keep_out_of_reach_of_children": [
+        "keep out of children Please keep it out of reach of children and pets. For external use only."
+      ],
+      "dosage_and_administration": [
+        "Dosage Use it 10 minutes before boarding a car, airplane or boat.*lf the symptoms are severe, you can use 2 patches on both ears or on one ear and navel"
+      ],
+      "warnings": [
+        "warning Pregnant women, breastfeeding mothers, children under the age of 4 should not use .Do not use if the skin has abnormalities, wounds, eczema, inflammation, allergies. Please keep it out of reach of children and pets. For external use only."
+      ],
+      "indications_and_usage": [
+        "Indication 1.Tear open the package, take out the patch, peel off the white anti-adhesive layer, and stick the patchbehind the ear or the navel (please dry the sweat from the ear and the navel). 2.Use it 10 minutes before boarding a car, airplane or boat.*lf the symptoms are severe, you can use 2 patches on both ears or on one ear and navel"
+      ],
+      "package_label_principal_display_panel": [
+        "85213-004-01 3-16",
+        "85213-004-02 3-32 labeling",
+        "85213-004-03 3-48 labeling",
+        "85213-004-04 3-64 labeling",
+        "85213-004-05 3-80labeling"
+      ],
+      "set_id": "2e30b09d-838d-59fb-e063-6394a90aa984",
+      "id": "2e30b09d-838e-59fb-e063-6394a90aa984",
+      "effective_time": "20250215",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M009"
+        ],
+        "brand_name": [
+          "HIONFURT Motion Sickness"
+        ],
+        "generic_name": [
+          "MOTION SICKNESS NATURAL HERBAL PLANT LAVENDER"
+        ],
+        "manufacturer_name": [
+          "Puning Huiyu E-Commerce Co., Ltd."
+        ],
+        "product_ndc": [
+          "85213-004"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "CAMPHOR, (-)-",
+          "MENTHOL GLUCURONIDE"
+        ],
+        "spl_id": [
+          "2e30b09d-838e-59fb-e063-6394a90aa984"
+        ],
+        "spl_set_id": [
+          "2e30b09d-838d-59fb-e063-6394a90aa984"
+        ],
+        "package_ndc": [
+          "85213-004-01",
+          "85213-004-02",
+          "85213-004-03",
+          "85213-004-04",
+          "85213-004-05"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "213N3S8275",
+          "WW64GZ6LQY"
+        ]
+      }
+    }
+  ]
+}

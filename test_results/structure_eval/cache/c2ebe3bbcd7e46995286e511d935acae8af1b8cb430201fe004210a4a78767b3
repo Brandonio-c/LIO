@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 16965,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Daily Protect Mineral Sunscreen Zinc Oxide CYCLOHEXASILOXANE HYDROGEN DIMETHICONE (20 CST) POLYGLYCERYL-4 ISOSTEARATE STEARYL DIMETHICONE (400 MPA.S AT 50C) POLYSORBATE 20 TETRAHEXYLDECYL ASCORBATE WATER DIMETHICONE CROSSPOLYMER ZINC OXIDE ZINC OXIDE C12-15 ALKYL BENZOATE CAPRYLHYDROXAMIC ACID CAPRYLYL GLYCOL CYCLOPENTASILOXANE DIMETHICONOL (2000 CST) EDETATE DISODIUM ANHYDROUS GLYCERIN PEG-10 DIMETHICONE (600 CST) POLYHYDROXYSTEARIC ACID (2300 MW) DIMETHICONE/VINYL DIMETHICONE CROSSPOLYMER (SOFT PARTICLE) TRIETHANOLAMINE ALPHA-TOCOPHEROL ACETATE DIMETHICONE PEG-30 DIPOLYHYDROXYSTEARATE CETYL PEG/PPG-10/1 DIMETHICONE (HLB 4) MICROCRYSTALLINE WAX SODIUM CHLORIDE TRIETHOXYCAPRYLYLSILANE"
+      ],
+      "active_ingredient": [
+        "ACTIVE INGREDIENT ZINC OXIDE 20%"
+      ],
+      "purpose": [
+        "PURPOSE SUNSCREEN"
+      ],
+      "indications_and_usage": [
+        "USES Helps Prevent Sunburn. If used as directed with other sun protection measures (see “Directions”), decreases the risk of skin cancer and early skin aging caused by the sun."
+      ],
+      "warnings": [
+        "WARNINGS For external use only. Do not use on broken or damaged skin. Stop use and ask a doctor if rash occurs. When using this product, keep out of eyes. Rinse with water to remove. Keep out of reach of children. If swallowed, get medical help or contact a poison control center right away."
+      ],
+      "keep_out_of_reach_of_children": [
+        "WARNING KEEP OUT OF REACH OF CHILDREN"
+      ],
+      "dosage_and_administration": [
+        "DIRECTIONS Apply liberally 15 minutes before sun exposure. Use a water-resistant product if swimming or sweating. Reapply at least every 2 hours. Children under 6 months: Ask a doctor. Sun Protection Measures: Spending time in the sun increases your risk of skin cancer and early skin aging. To decrease this risk, regularly use a sunscreen with a Broad-Spectrum SPF value of 15 or higher and other sun protection measures including: Limit time in the sun, especially from 10 a.m. - 2 p.m. Wear long-sleeved shirts, pants, hats and sunglasses."
+      ],
+      "inactive_ingredient": [
+        "INACTIVE INGREDIENTS C12-15 Alkyl Benzoate, Caprylhydroxamic Acid, Caprylyl Glycol, Cetyl PEG/PPG-10/1 Dimethicone, Cyclohexasiloxane, Cyclopentasiloxane, Dimethicone, Dimethicone Crosspolymer, Dimethicone/Vinyl Dimethicone Crosspolymer, Dimethiconol, Disodium EDTA, Glycerin, Hydrogen Dimethicone, Microcrystalline Wax, PEG-10 Dimethicone, PEG-30 Dipolyhydroxystearate, Polyglyceryl-4 Isostearate, Polyhydroxystearic Acid, Polysorbate 20, Sodium Chloride, Stearyl Dimethicone, Tetrahexyldecyl Ascorbate, Tocopheryl Acetate, Triethanolamine, Triethoxycaprylylsilane, Water"
+      ],
+      "other_safety_information": [
+        "OTHER SAFETY - PROTECT THIS PRODUCT FROM EXCESSIVE HEAT AND DIRECT SUN"
+      ],
+      "package_label_principal_display_panel": [
+        "PRODUCT LABEL"
+      ],
+      "set_id": "4617beb7-381e-8994-e063-6394a90a14b5",
+      "id": "4617beb7-381f-8994-e063-6394a90a14b5",
+      "effective_time": "20251216",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "Daily Protect Mineral Sunscreen"
+        ],
+        "generic_name": [
+          "ZINC OXIDE"
+        ],
+        "manufacturer_name": [
+          "SARAH'S"
+        ],
+        "product_ndc": [
+          "87199-205"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ZINC OXIDE"
+        ],
+        "spl_id": [
+          "4617beb7-381f-8994-e063-6394a90a14b5"
+        ],
+        "spl_set_id": [
+          "4617beb7-381e-8994-e063-6394a90a14b5"
+        ],
+        "package_ndc": [
+          "87199-205-04"
+        ],
+        "original_packager_product_ndc": [
+          "58892-205"
+        ],
+        "upc": [
+          "0387199205042"
+        ],
+        "unii": [
+          "SOI2LOH54Z"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 12950,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Kaopectate Bismuth subsalicylate Bismuth Subsalicylate Bismuth Cation Croscarmellose Sodium Crospovidone Hydrated Silica Hypromellose, Unspecified Magnesium Stearate Microcrystalline Cellulose Mineral Oil Povidone, Unspecified Sodium Lauryl Sulfate Stearic Acid Talc Titanium Dioxide Triacetin K caplet Front Label Image Rear Label Image Bottle 84ct front 84ct rear"
+      ],
+      "active_ingredient": [
+        "Active ingredient (per caplet) Purposes Bismuth subsalicylate 262 mg Anti-diarrheal, Upset stomach reliever"
+      ],
+      "active_ingredient_table": [
+        "<table cellpadding=\"4\" width=\"40%\"><tbody><tr><td styleCode=\"Botrule Lrule Rrule Toprule\"><content styleCode=\"bold\">Active ingredient (per caplet)</content></td><td align=\"right\" styleCode=\"Botrule Lrule Rrule Toprule\" valign=\"top\"><content styleCode=\"bold\"><content styleCode=\"italics\">Purposes</content></content></td></tr><tr><td styleCode=\"Botrule Lrule Rrule Toprule\" valign=\"top\">Bismuth subsalicylate 262 mg</td><td align=\"right\" styleCode=\"Botrule Lrule Rrule Toprule\" valign=\"top\">Anti-diarrheal, Upset stomach reliever </td></tr></tbody></table>"
+      ],
+      "purpose": [
+        "Active ingredient (per caplet) Purposes Bismuth subsalicylate 262 mg Anti-diarrheal, Upset stomach reliever"
+      ],
+      "purpose_table": [
+        "<table cellpadding=\"4\" width=\"40%\"><tbody><tr><td styleCode=\"Botrule Lrule Rrule Toprule\"><content styleCode=\"bold\">Active ingredient (per caplet)</content></td><td align=\"right\" styleCode=\"Botrule Lrule Rrule Toprule\" valign=\"top\"><content styleCode=\"bold\"><content styleCode=\"italics\">Purposes</content></content></td></tr><tr><td styleCode=\"Botrule Lrule Rrule Toprule\" valign=\"top\">Bismuth subsalicylate 262 mg</td><td align=\"right\" styleCode=\"Botrule Lrule Rrule Toprule\" valign=\"top\">Anti-diarrheal, Upset stomach reliever </td></tr></tbody></table>"
+      ],
+      "indications_and_usage": [
+        "Uses relieves: traveler’s diarrhea diarrhea upset stomach due to overindulgence in food and drink, including: heartburn indigestion nausea gas belching fullness"
+      ],
+      "warnings": [
+        "Warnings Reye’s syndrome: Children and teenagers who have or are recovering from chicken pox or flu-like symptoms should not use this product. When using this product, if changes in behavior with nausea and vomiting occur, consult a doctor because these symptoms could be an early sign of Reye’s syndrome, a rare but serious illness. Allergy Alert: Contains salicylate. Do not take if you are allergic to salicylates (including aspirin) taking other salicylate products Do not use if you have an ulcer a bleeding problem bloody or black stool Ask a doctor before use if you have fever mucus in the stool Ask a doctor or pharmacist before use if you are taking any drug for anticoagulation (thinning the blood) diabetes gout arthritis When using this product a temporary, but harmless, darkening of the stool and/or tongue may occur Stop use and ask a doctor if symptoms get worse ringing in the ears or loss of hearing occurs diarrhea lasts more than 2 days If pregnant or breast-feeding, ask a health professional before use. Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away."
+      ],
+      "do_not_use": [
+        "Do not use if you have an ulcer a bleeding problem bloody or black stool"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have fever mucus in the stool"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor or pharmacist before use if you are taking any drug for anticoagulation (thinning the blood) diabetes gout arthritis"
+      ],
+      "when_using": [
+        "When using this product a temporary, but harmless, darkening of the stool and/or tongue may occur"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if symptoms get worse ringing in the ears or loss of hearing occurs diarrhea lasts more than 2 days"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions adults and children 12 years of age and older: 2 caplets (1 dose) swallow caplets with water; do not chew repeat dose every 1/2 hour to 1 hour as needed do not exceed 8 doses in 24 hours use until diarrhea stops but not more than 2 days children under 12 years: ask a doctor drink plenty of clear fluids to help prevent dehydration caused by diarrhea"
+      ],
+      "spl_unclassified_section": [
+        "Other information Each caplet contains very low sodium do not use if carton was opened or if printed foil inner seal under bottle cap is torn or missing store at room temperature 20º-25º C (68º-77º F)"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients croscarmellose sodium, crospovidone, hydrated silica, hypromellose, magnesium stearate, microcrystalline cellulose, mineral oil, povidone, sodium lauryl sulfate, stearic acid, talc, titanium dioxide, triacetin"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal Display Panel FAST & EFFECTIVE RELIEF Kaopectate ® Bismuth Subsalicylate • Anti-Diarrheal • Upset Stomach Reliver Diarrhea & Upset Stomach ✓ Begins controlling symptoms from the first dose ✓ Quickly relieves urgency, gas, and cramping ✓ Effective on diarrhea from bacteria, viruses, and other causes CLINICALLY PROVEN MEDICINE 28 Coated Caplets LOT EXP Do not use if foil seal under cap, printed with \"SEALED for YOUR PROTECTION\" is missing, open or broken. Kramer Laboratories, Inc. Bridgewater, NJ 08807 1-800-824-4894 14711-07-20_K0720 Kaopectate ® Bismuth Subsalicylate Anti-Diarrheal Upset Stomach Reliever Diarrhea & Upset Stomach 28 Coated Caplets Do not use if foil seal under cap, printed with \"SEALED for YOUR PROTECTION\" is missing, open or broken. KEEP CARTON AS IT CONTAINS IMPORTANT INFORMATION Kramer Laboratories, Inc. Bridgewater, NJ 08807 1-800-824-4894 14712-07-20_K0720 FAST & EFFECTIVE RELIEF Kaopectate ® Bismuth Subsalicylate Anti-Diarrheal Upset Stomach Reliever Diarrhea & Upset Stomach 84 Coated Caplets Do not use if foil seal under cap, printed with \"SEALED for YOUR PROTECTION\" is missing, open or broken. K0426 LOT: EXP: R55002 Kramer Laboratories, Inc. Bridgewater, NJ 08807 1-800-824-4894"
+      ],
+      "set_id": "3877a88d-9546-48ce-ad6b-3c2a115e3eaf",
+      "id": "eb3ecda3-180e-4a04-9089-5cceabe22724",
+      "effective_time": "20260603",
+      "version": "9",
+      "openfda": {
+        "application_number": [
+          "M008"
+        ],
+        "brand_name": [
+          "Kaopectate"
+        ],
+        "generic_name": [
+          "BISMUTH SUBSALICYLATE"
+        ],
+        "manufacturer_name": [
+          "Kramer Laboratories"
+        ],
+        "product_ndc": [
+          "55505-197"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "BISMUTH SUBSALICYLATE"
+        ],
+        "rxcui": [
+          "308760",
+          "642349"
+        ],
+        "spl_id": [
+          "eb3ecda3-180e-4a04-9089-5cceabe22724"
+        ],
+        "spl_set_id": [
+          "3877a88d-9546-48ce-ad6b-3c2a115e3eaf"
+        ],
+        "package_ndc": [
+          "55505-197-07",
+          "55505-197-70",
+          "55505-197-78",
+          "55505-197-77"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0053076000405"
+        ],
+        "nui": [
+          "M0002611",
+          "N0000180183"
+        ],
+        "pharm_class_cs": [
+          "Bismuth [CS]"
+        ],
+        "pharm_class_epc": [
+          "Bismuth [EPC]"
+        ],
+        "unii": [
+          "62TEY51RR1"
+        ]
+      }
+    }
+  ]
+}

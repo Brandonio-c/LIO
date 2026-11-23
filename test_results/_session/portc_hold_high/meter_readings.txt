@@ -1,0 +1,11 @@
+2026-11-10, Nano off the breadboard, USB only, sketch portc_hold_high (DDRC=0x3F, PORTC=0x3F, analogRead(A7) first)
+Operator meter readings to GND while A0-A5 commanded HIGH:
+A0 0.215 V
+A1 0.101 V
+A2 0.096 V
+A3 0.147 V
+A4 0.145 V
+A5 0.594 V
+REF 0.184 V
+5V 4.673 V
+Self-test (verbatim sketch) standalone: AVCC/Vcc = inf (bandgap ADC = 0), 3/3 runs; REF during its idle loop 0.18 V.

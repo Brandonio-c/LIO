@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl"?>
+<document xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="a2d4089f-57bf-4a64-8749-fd577c74f82d"/>
+   <code code="34390-5" displayName="HUMAN OTC DRUG LABEL" codeSystem="2.16.840.1.113883.6.1"/>
+   <title>Drug Facts</title>
+   <effectiveTime value="20240221"/>
+   <setId root="446c857f-2380-4019-9a82-9fb9ee060d08"/>
+   <versionNumber value="5"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id extension="008965063" root="1.3.6.1.4.1.519.1"/>
+            <name>Walgreens</name>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="3a6aad2b-d948-4a9b-a6ab-18920dcd2cbb"/>
+               <code code="48780-1" displayName="SPL listing data elements section" codeSystem="2.16.840.1.113883.6.1"/>
+               <effectiveTime value="20240221"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="0363-9780" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Nicotine</name>
+                        <formCode code="C42955" displayName="LOZENGE" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>nicotine polacrilex</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mg" value="2"/>
+                              <denominator unit="1" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="6M3C89ZY6R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>NICOTINE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="6M3C89ZY6R" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>NICOTINE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="23OV73Q5G9" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ACESULFAME POTASSIUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="ETJ7Z6XBU4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SILICON DIOXIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="9XZ8H6N6OH" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>HYDROXYPROPYL CELLULOSE, UNSPECIFIED</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="70097M6I30" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MAGNESIUM STEARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3OWL53L36A" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MANNITOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="HM5Z15LEBN" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POTASSIUM BICARBONATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="FZ989GH94E" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POVIDONE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="C269C4G2ZQ" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM ALGINATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="45P3261C7T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM CARBONATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="96K6UQ3ZD4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SUCRALOSE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="TTV12P4NEE" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>XANTHAN GUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator unit="1" value="27"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43173" displayName="BOTTLE, PLASTIC" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator unit="1" value="3"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="0363-9780-81" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" displayName="BOX" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20210101"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" displayName="Type 0: Not a Combination Product" codeSystem="2.16.840.1.113883.3.26.1.1" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator unit="1" value="27"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="0363-9780-27" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43173" displayName="BOTTLE, PLASTIC" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" displayName="Type 0: Not a Combination Product" codeSystem="2.16.840.1.113883.3.26.1.1" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20210101"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="ANDA210711" root="2.16.840.1.113883.3.150"/>
+                           <code code="C73584" displayName="ANDA" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20210101"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLCOLOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48325" displayName="white" codeSystem="2.16.840.1.113883.3.26.1.1" xsi:type="CV"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLFLAVOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C73375" displayName="CHERRY" codeSystem="2.16.840.1.113883.3.26.1.1" xsi:type="CV"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLIMPRINT" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value xsi:type="ST">A501</value>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSCORE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value value="1" xsi:type="INT"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSHAPE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48348" displayName="ROUND" codeSystem="2.16.840.1.113883.3.26.1.1" xsi:type="CV"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSIZE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value unit="mm" value="10" xsi:type="PQ"/>
+                        </characteristic>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38288" displayName="ORAL" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="LINK_11344dc0-f777-4436-9fe9-afa875eda614">
+               <id root="ed32df69-20d8-46a0-896e-93a611c316af"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>Active ingredient (in each lozenge)</title>
+               <text>
+                  <paragraph>Nicotine polacrilex USP,  2 mg</paragraph>
+                  <paragraph>
+                     <br/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20240221"/>
+            </section>
+         </component>
+         <component>
+            <section ID="LINK_4291c809-6c7c-4b9e-99f1-827413d4d275">
+               <id root="8300c0c0-ed7f-48b7-9b37-5a5025a91094"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>Purpose</title>
+               <text>
+                  <paragraph>Stop smoking aid</paragraph>
+               </text>
+               <effectiveTime value="20240221"/>
+            </section>
+         </component>
+         <component>
+            <section ID="LINK_946b4df0-289f-45d3-aff8-966a8f7bda54">
+               <id root="0929c124-838e-4ad8-a39e-aa8f26749d6c"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>Use</title>
+               <text>
+                  <list listType="unordered" styleCode="Disk">
+                     <item>reduces withdrawal symptoms, including nicotine craving, associated with quitting smoking</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240221"/>
+            </section>
+         </component>
+         <component>
+            <section ID="LINK_f90ada6d-74ad-43a7-894c-f4760c316d35">
+               <id root="f6c3c476-885a-436e-abc0-05807cc71641"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>Warnings</title>
+               <effectiveTime value="20240221"/>
+               <component>
+                  <section ID="LINK_a4a0b809-f6d0-4c51-b4c5-6e76a4d705ab">
+                     <id root="00492266-e183-4e64-860e-a48d7d5c50da"/>
+                     <code code="53414-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PREGNANCY OR BREAST FEEDING SECTION"/>
+                     <title>If you are pregnant or breast-feeding,</title>
+                     <text>
+                        <paragraph>
+                           <content styleCode="bold">only use this medicine on the advice of your health care provider. </content>Smoking can seriously harm your child. Try to stop smoking without using any nicotine replacement medicine. This medicine is believed to be safer than smoking. However, the risks to your child from this medicine are not fully known.</paragraph>
+                     </text>
+                     <effectiveTime value="20240221"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="LINK_f1dfd838-4fd9-4db4-b43a-653a8c08039e">
+                     <id root="cd47ebcf-e3b5-4499-b39d-2a916afff0f3"/>
+                     <code code="50569-3" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR SECTION"/>
+                     <title>Ask a doctor before use if you have</title>
+                     <text>
+                        <list listType="unordered" styleCode="Disk">
+                           <item>heart disease, recent heart attack, or irregular heartbeat. Nicotine can increase your heart rate.</item>
+                           <item>high blood pressure not controlled with medication. Nicotine can increase your blood pressure.</item>
+                           <item>stomach ulcer or diabetes</item>
+                           <item>history of seizures</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20240221"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="LINK_640289a4-d48e-4960-aedb-ea37376bb14b">
+                     <id root="e46f1d48-83f9-4f75-bec0-50d35bac1c71"/>
+                     <code code="50568-5" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR/PHARMACIST SECTION"/>
+                     <title>Ask a doctor or pharmacist before use if you are</title>
+                     <text>
+                        <list listType="unordered" styleCode="Disk">
+                           <item>using a non-nicotine stop smoking drug</item>
+                           <item>taking prescription medicine for depression or asthma. Your prescription dose may need to be adjusted.</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20240221"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="LINK_3b9c784f-9768-4ee3-b30a-7d47de122f40">
+                     <id root="855db6f4-8bfa-493f-8d73-8f6284d3a465"/>
+                     <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+                     <title>Stop use and ask a doctor if</title>
+                     <text>
+                        <list listType="unordered" styleCode="Disk">
+                           <item>mouth problems occur</item>
+                           <item>persistent indigestion or severe sore throat occurs</item>
+                           <item>irregular heartbeat or palpitations occur</item>
+                           <item>you get symptoms of nicotine overdose such as nausea, vomiting, dizziness, diarrhea, weakness and rapid heartbeat</item>
+                           <item>you have symptoms of an allergic reaction (such as difficulty breathing or rash)</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20240221"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="LINK_f6257fe8-2b55-4cb2-bfef-9ab4c4c7b065">
+                     <id root="4707e8f7-a300-4601-a81d-8f3b180fd6af"/>
+                     <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+                     <title>Keep out of reach of children and pets.</title>
+                     <text>
+                        <paragraph>Nicotine lozenges may have enough nicotine to make children and pets sick. If you need to remove the lozenge, wrap it in paper and throw away in the trash. In case of overdose, get medical help or contact a Poison Control Center (1-800-222-1222) right away</paragraph>
+                     </text>
+                     <effectiveTime value="20240221"/>
+                  </section>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="LINK_be99d438-88cc-402d-b6d4-574e78d643e7">
+               <id root="ca81967d-51f0-4f15-8a24-6e9c15a9d3ea"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>Directions</title>
+               <text>
+                  <list listType="unordered" styleCode="Disk">
+                     <item>
+                        <content styleCode="bold">if you are under 18 years of age, ask a doctor before use. No studies have been done to show if this product will work for you.</content>
+                     </item>
+                     <item>before using this product, read the enclosed User’s Guide for complete directions and other important information</item>
+                     <item>begin using the lozenge on your quit day</item>
+                     <item>
+                        <content styleCode="bold">if you smoke your first cigarette within 30 minutes after waking up,</content> use 4 mg nicotine lozenge</item>
+                     <item>
+                        <content styleCode="bold">if you smoke your first cigarette more than 30 minutes of waking up, </content>use 2 mg nicotine lozenge according to the following 12 week schedule:</item>
+                  </list>
+                  <table width="652px">
+                     <col width="1px"/>
+                     <col width="1px"/>
+                     <col width="1px"/>
+                     <tbody>
+                        <tr>
+                           <td align="center" valign="top" styleCode=" Botrule Toprule Rrule"> Weeks 1 to 6</td>
+                           <td align="center" valign="top" styleCode=" Botrule Toprule Rrule"> Weeks 7 to 9</td>
+                           <td align="center" valign="top" styleCode=" Botrule Toprule"> Weeks 10 to 12</td>
+                        </tr>
+                        <tr>
+                           <td align="center" valign="top" styleCode=" Botrule Rrule"> 1 lozenge every 1 to 2 hours</td>
+                           <td align="center" valign="top" styleCode=" Botrule Rrule"> 1 lozenge every 2 to 4 hours</td>
+                           <td align="center" valign="top" styleCode=" Botrule"> 1 lozenge every 4 to 8 hours</td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <list listType="unordered" styleCode="Disk">
+                     <item>
+                        <content styleCode="bold">nicotine lozenge is a medicine and must be used a certain way to get the best results</content>
+                     </item>
+                     <item>place the lozenge in your mouth and allow the lozenge to slowly dissolve (about 20 to 30 minutes). Minimize swallowing. <content styleCode="bold">Do not chew or swallow lozenge.</content>
+                     </item>
+                     <item>you may feel a warm or tingling sensation</item>
+                     <item>occasionally move the lozenge from one side of your mouth to the other until completely dissolved (about 20 to 30 minutes)</item>
+                     <item>do not eat or drink 15 minutes before using or while the lozenge is in your mouth</item>
+                     <item>to improve your chances of quitting, use at least 9 lozenges per day for the first 6 weeks</item>
+                     <item>do not use more than one lozenge at a time or continuously use one lozenge after another since this may cause you hiccups, heartburn, nausea or other side effects</item>
+                     <item>
+                        <content styleCode="bold">do not use more than 5 lozenges in 6 hours. Do not use more than 20 lozenges per day.</content>
+                     </item>
+                     <item>It is important to complete treatment.  If you feel you need to use the lozenge for a longer period to keep from smoking, talk to your health care provider.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240221"/>
+            </section>
+         </component>
+         <component>
+            <section ID="LINK_ad0ca4c3-2130-445a-9b0c-756edd704d7b">
+               <id root="68a9a004-7277-4acf-8b3d-23f1ef823914"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <title>
+                  <content styleCode="italics">Other information</content>
+               </title>
+               <text>
+                  <list listType="unordered" styleCode="Disk">
+                     <item>
+                        <content styleCode="bold">each lozenge contains</content>: sodium 5 mg</item>
+                     <item>store at 20º to 25ºC (68º to 77ºF)</item>
+                     <item>keep bottle tightly closed and protect from light</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240221"/>
+            </section>
+         </component>
+         <component>
+            <section ID="LINK_23b20bd2-3981-439b-a6ed-5f0b15adaa14">
+               <id root="478f0662-ac64-4e66-bd45-a163a9148613"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="italics">Inactive ingredients</content>
+               </title>
+               <text>
+                  <paragraph>acesulfame potassium, colloidal silicon dioxide, cherry flavor, hydroxypropyl cellulose, magnesium stearate, mannitol, potassium bicarbonate, povidone, sodium alginate,  sodium carbonate, sucralose,xanthan gum</paragraph>
+               </text>
+               <effectiveTime value="20240221"/>
+            </section>
+         </component>
+         <component>
+            <section ID="LINK_1469944e-62e1-4147-a687-4881c23f9341">
+               <id root="91571535-be76-43ab-9740-3e3490ff49f9"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>
+                  <content styleCode="italics">Questions or comments?</content>
+               </title>
+               <text>
+                  <paragraph>Call <content styleCode="bold">1-877-753-3935</content> Monday-Friday 9AM-5PM EST</paragraph>
+               </text>
+               <effectiveTime value="20240221"/>
+            </section>
+         </component>
+         <component>
+            <section ID="LINK_faa07952-82ba-4f85-8581-5aa0bcb67c01">
+               <id root="227c2a28-9716-4f60-a9be-fcb75fa4121f"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>Principal Display Panel</title>
+               <text>
+                  <paragraph>Compare to the active ingredient in Nicorette® Mini Lozenge††</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Nicotine Mini Lozenges</content>
+                  </paragraph>
+                  <paragraph>NICOTINE POLACRILEX LOZENGE 2 mg </paragraph>
+                  <paragraph>STOP SMOKING AID</paragraph>
+                  <paragraph>Sugar Free</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">FOR THOSE WHO SMOKE THEIR FIRST CIGARETTE MORE THAN 30 MINUTES AFTER WAKING UP.</content>
+                  </paragraph>
+                  <paragraph>If you smoke your first cigarette <content styleCode="bold">
+                        <content styleCode="underline">WITHIN</content> 30 MINUTES </content>of waking up, use Nicotine Polacrilex Lozenge 4 mg.</paragraph>
+                  <paragraph>includes User's Guide</paragraph>
+                  <paragraph>Cherry flavor</paragraph>
+                  <paragraph>LOZENGES</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">TO INCREASE YOUR SUCCESS IN QUITTING:</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">1. </content>You must be motivated to quit.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">2.</content> Use Enough - Use <content styleCode="bold">at least 9</content> Nicotine Polacrilex lozenges per day during the first six weeks.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">3.</content> Use Long Enough - Use Nicotine Polacrilex lozenges for the full 12 weeks.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">4. Use With a Support Program </content>as directed in the enclosed User's Guide.</paragraph>
+                  <list listType="unordered" styleCode="Disk">
+                     <item>
+                        <content styleCode="bold">NOT FOR SALE TO THOSE UNDER 18 YEARS OF AGE </content>
+                     </item>
+                     <item>
+                        <content styleCode="bold">PROOF OF AGE REQUIRED</content>
+                     </item>
+                     <item>
+                        <content styleCode="bold">NOT FOR SALE IN VENDING MACHINES OR FORM ANY SOURCE WHERE PROOF OF SALE CANNOT BE VERIFIED</content>
+                     </item>
+                  </list>
+                  <paragraph>††This product is not affiliated with, manufactured by, or produced by the makers or owners of Nicorette® Lozenge.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">TAMPER EVIDENT FEATURE: DO NOT USE IF PRINTED SEAL UNDER CAP IS BROKEN OR MISSING</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">OPENING DIRECTIONS: PUSH DOWN ON CAP AND TURN TO OPEN</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">DISTRIBUTED BY: WALGREEN CO.</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">DEERFIELD, IL 60015</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20240221"/>
+            </section>
+         </component>
+         <component>
+            <section ID="LINK_f8618e18-af2f-4ae3-b9c8-54ffe1891cf6">
+               <id root="4fb18c6c-8e1d-4a30-a622-8b3d239191db"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>Package Label</title>
+               <text>
+                  <renderMultiMedia referencedObject="MM1">
+                     <caption>WALGREENS Nicotone Mini Lozenge Cherry Flavor</caption>
+                  </renderMultiMedia>
+               </text>
+               <effectiveTime value="20240221"/>
+               <component>
+                  <observationMedia ID="MM1">
+                     <text>Nicotine Polacrilex USP, 2 mg</text>
+                     <value xsi:type="ED" mediaType="image/jpeg">
+                        <reference value="nicotine-2-mg-mini-lozenge-cherry-flavor-rub-1.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="cd7c9c63-7126-43f0-bca2-f0d263415e36"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="Human OTC Drug Label"/>
+   <title/>
+   <effectiveTime value="20240615"/>
+   <setId root="419659f9-098a-4a18-8bba-cd45157bfa50"/>
+   <versionNumber value="6"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id extension="027630078" root="1.3.6.1.4.1.519.1"/>
+            <name>Bi-Mart</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <id extension="078728447" root="1.3.6.1.4.1.519.1"/>
+                  <name>Aurohealth LLC</name>
+                  <assignedEntity>
+                     <assignedOrganization>
+                        <id extension="650381903" root="1.3.6.1.4.1.519.1"/>
+                        <name>Aurobindo Pharma Limited</name>
+                     </assignedOrganization>
+                     <performance>
+                        <actDefinition>
+                           <code code="C25391" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ANALYSIS"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="37835-189" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                     <performance>
+                        <actDefinition>
+                           <code code="C43360" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="MANUFACTURE"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="37835-189" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                  </assignedEntity>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="a1c8264d-a02b-44bb-8ab9-85334bc0c9a9"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL PRODUCT DATA ELEMENTS SECTION"/>
+               <effectiveTime value="20240615"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="37835-189" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Acid Reducer<suffix/>
+                        </name>
+                        <formCode code="C42905" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TABLET, DELAYED RELEASE"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Omeprazole</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIM">
+                           <quantity>
+                              <numerator value="20" unit="mg"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="426QFE7XLK" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>OMEPRAZOLE MAGNESIUM</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="KG60484QX9" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>OMEPRAZOLE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="40UAA97IT9" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CROSPOVIDONE (35 .MU.M)</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="230OU9XXE4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERYL MONOSTEARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="UKE75GEA7F" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>HYDROXYPROPYL CELLULOSE (90000 WAMW)</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="R75537T0T4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>HYPROMELLOSE 2910 (5 MPA.S)</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="70097M6I30" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MAGNESIUM STEARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="NX76LV5T8J" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>METHACRYLIC ACID - ETHYL ACRYLATE COPOLYMER (1:1) TYPE A</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="OP1R32D61U" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MICROCRYSTALLINE CELLULOSE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="4R4HFI6D95" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POLYETHYLENE GLYCOL 4000</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6OZP39ZG8H" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POLYSORBATE 80</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="1K09F3G675" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>FERRIC OXIDE RED</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="ETJ7Z6XBU4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SILICON DIOXIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="55X04QC32I" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM HYDROXIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="7CV7WJK4UI" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM STEARYL FUMARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="IY9XDZ35W2" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DEXTROSE, UNSPECIFIED FORM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="O8232NY3SJ" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>STARCH, CORN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="C151H8M554" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SUCROSE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="7SEV7J4R1U" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TALC</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="15FIX9V2JP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TITANIUM DIOXIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="8Z96QXD6UM" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TRIETHYL CITRATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="EX438O2MRT" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>FERRIC OXIDE YELLOW</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="8VAB711C5E" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>HYDROXYPROPYL CELLULOSE (45000 WAMW)</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="0WZ8WG20P6" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>HYPROMELLOSE 2910 (6 MPA.S)</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="14" unit="1"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43169" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="1" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="37835-189-14" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43182" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CARTON"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20180606"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="14" unit="1"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43169" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="3" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="37835-189-42" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43182" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CARTON"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20180606"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="ANDA206877" root="2.16.840.1.113883.3.150"/>
+                           <code code="C73584" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ANDA"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20180606"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLCOLOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value xsi:type="CV" code="C48328" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="PINK"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSHAPE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value xsi:type="CV" code="C48347" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="RECTANGLE">
+                              <originalText>Oblong</originalText>
+                           </value>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSIZE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value xsi:type="PQ" unit="mm" value="14"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSCORE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value xsi:type="INT" value="1"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLIMPRINT" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value xsi:type="ST">Z;69</value>
+                        </characteristic>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38288" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ORAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="Unclassified_Section_2">
+               <id root="edcb22aa-9f4c-4635-9516-705023bf8b21"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <title>Tips for Managing Heartburn</title>
+               <text>
+                  <list listType="unordered" styleCode="disc">
+                     <item>Do not lie flat or bend over after eating</item>
+                     <item>Do not wear tight-fitting clothing around the stomach</item>
+                     <item>Do not eat before bedtime</item>
+                     <item>Raise the head of your bed</item>
+                     <item>Avoid heartburn-causing foods such as rich, spicy, fatty or fried foods, chocolate, caffeine, alcohol and certain fruits and vegetables</item>
+                     <item>Eat slowly and avoid big meals</item>
+                     <item>If overweight, lose weight</item>
+                     <item>Quit smoking</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Unclassified_Section_1">
+               <id root="240dab7f-ebd2-42cf-bf08-e6bcb27b45c9"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <title>
+                  <content styleCode="italics">Drug Facts</content>
+               </title>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_0">
+               <id root="029c6aa3-d7fa-4d3a-8e94-b8239dff5e05"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="italics">Active ingredient (in each tablet)</content>
+               </title>
+               <text>
+                  <paragraph>Omeprazole delayed-release tablet 20 mg (equivalent to 20.6 mg omeprazole magnesium) </paragraph>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_1">
+               <id root="013c5996-97f8-49f8-8767-03cb944f9e24"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>
+                  <content styleCode="italics">Purpose</content>
+               </title>
+               <text>
+                  <paragraph>Acid reducer</paragraph>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_2">
+               <id root="92e21d3d-48df-46b8-a47a-7db20965116a"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>
+                  <content styleCode="italics">Use</content>
+               </title>
+               <text>
+                  <list listType="unordered" styleCode="disc">
+                     <item>treats frequent heartburn (occurs <content styleCode="bold">
+                           <content styleCode="underline">
+                              <content styleCode="italics">2 or more</content>
+                           </content>
+                        </content> days a week)</item>
+                     <item>not intended for immediate relief of heartburn; this drug may take 1 to 4 days for full effect</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_3">
+               <id root="1e160fc3-0114-4e1f-a673-7daa14cbc52b"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>
+                  <content styleCode="italics">Warnings</content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Allergy alert:<br/>
+                     </content>
+                     <br/> Do not use if you are allergic to omeprazole</paragraph>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_4">
+               <id root="1f02023f-04b2-43a1-8d55-627784674cac"/>
+               <code code="50570-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - DO NOT USE SECTION"/>
+               <title>Do not use if you have:</title>
+               <text>
+                  <list listType="unordered" styleCode="disc">
+                     <item>trouble or pain swallowing food, vomiting with blood, or bloody or black stools</item>
+                     <item>heartburn with <content styleCode="bold">lightheadedness, sweating or dizziness</content>
+                     </item>
+                     <item>chest pain or shoulder pain with shortness of breath; sweating; pain spreading to arms, neck or shoulders; or lightheadedness</item>
+                     <item>frequent <content styleCode="bold">chest pain</content>
+                     </item>
+                  </list>
+                  <paragraph>These may be signs of a serious condition. See your doctor.</paragraph>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_5">
+               <id root="1ba9467b-b1ef-4f82-be0e-a9b4f3734cb9"/>
+               <code code="50569-3" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR SECTION"/>
+               <title>Ask a doctor before use if you have:</title>
+               <text>
+                  <list listType="unordered" styleCode="disc">
+                     <item>had heartburn over 3 months. This may be a sign of a more serious condition.</item>
+                     <item>frequent wheezing, particularly with heartburn </item>
+                     <item>unexplained weight loss </item>
+                     <item>nausea or vomiting </item>
+                     <item>stomach pain</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_6">
+               <id root="b752635b-4930-4920-8215-71a8da8c85c6"/>
+               <code code="50568-5" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR/PHARMACIST SECTION"/>
+               <title>
+                  <content styleCode="bold">Ask a doctor or pharmacist before use if you are</content> taking:</title>
+               <text>
+                  <list listType="unordered" styleCode="disc">
+                     <item>warfarin, clopidogrel or cilostazol (blood-thinning medicines) </item>
+                     <item>prescription antifungal or anti-yeast medicines</item>
+                     <item>diazepam (anxiety medicine) </item>
+                     <item>digoxin (heart medicine)</item>
+                     <item>tacrolimus or mycophenolate mofetil (immune system medicines) </item>
+                     <item>prescription antiretrovirals (medicines for HIV infection)</item>
+                     <item>methotrexate (arthritis medicine)</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_8">
+               <id root="9198c52b-b287-42bf-8a25-3d6278469150"/>
+               <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+               <title>Stop use and ask a doctor if:</title>
+               <text>
+                  <list listType="unordered" styleCode="disc">
+                     <item>your heartburn continues or worsens</item>
+                     <item>you need to take this product for more than 14 days </item>
+                     <item>you need to take more than 1 course of treatment every 4 months</item>
+                     <item>you get diarrhea</item>
+                     <item>you develop a rash or joint pain</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_10">
+               <id root="fca12000-7fa6-4847-ab99-0d3c95a58acb"/>
+               <code code="53414-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PREGNANCY OR BREAST FEEDING SECTION"/>
+               <title>If pregnant or breast-feeding,</title>
+               <text>
+                  <paragraph>ask a health professional before use.</paragraph>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_11">
+               <id root="623894bf-bc85-4c88-965f-4483afaa8615"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <title>Keep out of reach of children.</title>
+               <text>
+                  <paragraph>In case of overdose, get medical help or contact a Poison Control Center (1-800-222-1222)  right away.</paragraph>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_12">
+               <id root="0bb05ab7-87db-4cd8-9750-686ed075d488"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Directions</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered" styleCode="disc">
+                     <item>for adults 18 years of age and older</item>
+                     <item>this product is to be used once a day (every 24 hours), every day for 14 days</item>
+                     <item>it may take 1 to 4 days for full effect; some people get complete relief of symptoms within 24 hours</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">14-Day Course of Treatment</content>
+                  </paragraph>
+                  <list listType="unordered" styleCode="disc">
+                     <item>swallow 1 tablet with a glass of water before eating in the morning</item>
+                     <item>take every day for 14 days</item>
+                     <item>do not take more than 1 tablet a day</item>
+                     <item>do not use for more than 14 days unless directed by your doctor</item>
+                     <item>swallow whole. Do not chew or crush tablets.</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">Repeated 14-Day Courses (if needed)</content>
+                  </paragraph>
+                  <list listType="unordered" styleCode="disc">
+                     <item>you may repeat a 14-day course every 4 months</item>
+                     <item>
+                        <content styleCode="bold">do not take for more than 14 days or more often than every 4 months unless directed by a doctor</content>
+                     </item>
+                     <item>children under 18 years of age: ask a doctor. Heartburn in children may sometimes be caused by a serious condition.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_13">
+               <id root="bca7d6e5-f177-487f-99bd-80de3688ddb4"/>
+               <code code="44425-7" codeSystem="2.16.840.1.113883.6.1" displayName="STORAGE AND HANDLING SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Other information</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered" styleCode="disc">
+                     <item>read the directions and warnings before use</item>
+                     <item>keep the carton. It contains important information.</item>
+                     <item>store at 20º to 25ºc (68º to 77º F) and protect from moisture</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_15">
+               <id root="2f735998-6b7e-4b8e-94be-bda1bfc3924c"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Inactive ingredients</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>crospovidone, glyceryl monostearate, hydroxypropyl cellulose, hypromellose, magnesium stearate, methacrylic acid copolymer dispersion, microcrystalline cellulose, polyethylene glycol, polysorbate 80, red iron oxide, silicified microcrystalline cellulose, sodium hydroxide, sodium stearyl fumarate, sugar spheres [which contains liquid glucose, starch (maize) and sucrose], talc, titanium dioxide,  triethyl citrate and yellow iron oxide.</paragraph>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_14">
+               <id root="50bac5fe-25f6-483d-be22-4a9414f4b42a"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Questions?</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>Call<content styleCode="bold"> 1-800-935-6737<br/>
+                     </content>
+                     <br/>*This product is not manufactured or distributed by the owner of the registered trademark Prilosec OTC®<br/>
+                     <br/>Distributed by:<br/>
+                     <content styleCode="bold">BI-MART<br/>Eugene, OR 97402<br/>
+                     </content>Made in India<br/>
+                     <br/> Code: TS/DRUGS/22/2009</paragraph>
+               </text>
+               <effectiveTime value="20240615"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_16">
+               <id root="fb8fe62c-c6c4-4054-b077-5fd7e46c052c"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>PACKAGE LABEL-PRINCIPAL DISPLAY PANEL - 20 mg (14 Tablet Bottle)</title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">BI-MART        NDC 37835-189-14<br/>
+                        <content styleCode="bold">ACID REDUCER</content>
+                        <br/>
+                     </content>
+                     <content styleCode="bold">Omeprazole <br/>
+                     </content>
+                     <content styleCode="bold">Delayed-Release Tablets 20 mg<br/>
+                     </content>
+                     <content styleCode="bold">
+                        <content styleCode="bold">TREATS FREQUENT HEARTBURN<br/>OCCURRING 2 OR MORE DAYS A WEEK</content>
+                        <br/>
+                     </content>
+                     <content styleCode="bold">14 TABLETS<br/>
+                     </content>
+                     <content styleCode="bold">
+                        <content styleCode="italics">ONE 14-DAY</content>
+                        <content styleCode="bold">
+                           <content styleCode="italics">COURSE OF TREATMENT<br/>
+                              <renderMultiMedia referencedObject="MM1"/>
+                           </content>
+                        </content>
+                     </content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20240615"/>
+               <component>
+                  <observationMedia ID="MM1">
+                     <text>PACKAGE LABEL-PRINCIPAL DISPLAY PANEL - 20 mg (14 Tablet Bottle)</text>
+                     <value xsi:type="ED" mediaType="image/jpeg">
+                        <reference value="omerprazole-fig1.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="Section_17">
+               <id root="48cee9bf-364f-4984-a65d-ee3105bb0d78"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>PACKAGE LABEL-PRINCIPAL DISPLAY PANEL - 20 mg Container Carton Label</title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">
+                        <content styleCode="bold">BI-MART        NDC 37835-189-14<br/>
+                        </content>
+                        <content styleCode="bold">ACID REDUCER</content>
+                        <br/>
+                        <content styleCode="bold">Omeprazole </content>
+                        <content styleCode="bold">Delayed-Release <br/> Tablets 20 mg<br/>
+                        </content>
+                        <content styleCode="bold">
+                           <content styleCode="bold">TREATS FREQUENT HEARTBURN<br/>OCCURRING 2 OR MORE DAYS A WEEK</content>
+                           <br/>
+                        </content>
+                        <content styleCode="bold">14 TABLETS<br/>
+                        </content>
+                        <content styleCode="bold">
+                           <content styleCode="italics">ONE 14-DAY</content>
+                           <content styleCode="bold">
+                              <content styleCode="italics">COURSE OF TREATMENT</content>
+                           </content>
+                        </content>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <renderMultiMedia referencedObject="MM2"/>
+                     </content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20240615"/>
+               <component>
+                  <observationMedia ID="MM2">
+                     <text>PACKAGE LABEL-PRINCIPAL DISPLAY PANEL - 20 mg Container Carton Label</text>
+                     <value xsi:type="ED" mediaType="image/jpeg">
+                        <reference value="omerprazole-fig2.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

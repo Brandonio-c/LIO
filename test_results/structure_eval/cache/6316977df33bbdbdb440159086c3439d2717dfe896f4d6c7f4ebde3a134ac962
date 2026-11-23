@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="57449e29-ec47-9c30-e063-6394a90a7b4a"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>87786-025</title>
+   <effectiveTime value="20260723"/>
+   <setId root="57449e29-ec46-9c30-e063-6394a90a7b4a"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="567637894"/>
+            <name>Wenzhou Yuyuan Pharmaceutical Co., Ltd.</name>
+            <assignedEntity>
+               <assignedOrganization/>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="5752f8f1-f845-fe8d-e063-6294a90a97ca"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20260723"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="87786-025" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>DERMFREE Vein Target  Microneedle  Patch</name>
+                        <formCode code="C42968" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="PATCH"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Allantoin 1%   Vein Target  Microneedle  Patch</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="1"/>
+                              <denominator unit="1" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="92RU3N3Y1O" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DIMETHICONE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="92RU3N3Y1O" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>DIMETHICONE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="T5L8T28FGP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MINERAL OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="4T6H12BN9U" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PETROLATUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2ZA36H0S2V" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BEESWAX</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="7" unit="1"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="87786-025-01" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20260723"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M016" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20260723"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_57454ba4-02e6-61d2-e063-6394a90a85a9">
+               <id root="57454ba4-02e5-61d2-e063-6394a90a85a9"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>Active Ingredient</title>
+               <text>
+                  <paragraph>Allantoin1%</paragraph>
+               </text>
+               <effectiveTime value="20260723"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_57454d58-7fb3-6736-e063-6394a90abea4">
+               <id root="57454d58-7fb2-6736-e063-6394a90abea4"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>Purpose</title>
+               <text>
+                  <paragraph>Skin Protectant</paragraph>
+               </text>
+               <effectiveTime value="20260723"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_57454d58-7fb5-6736-e063-6394a90abea4">
+               <id root="57454d58-7fb4-6736-e063-6394a90abea4"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>Use</title>
+               <text>
+                  <paragraph>Helps soothe, moisturize, and protect dry, irritated skin</paragraph>
+               </text>
+               <effectiveTime value="20260723"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_57529b1c-81d5-66bf-e063-6394a90aaf4a">
+               <id root="57529b1c-81d4-66bf-e063-6394a90aaf4a"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>Warnings</title>
+               <text>
+                  <paragraph>For external use only.</paragraph>
+               </text>
+               <effectiveTime value="20260724"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_57529c6c-fbc0-6858-e063-6394a90a79e1">
+               <id root="57529c6c-fbbf-6858-e063-6394a90a79e1"/>
+               <code code="50570-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - DO NOT USE SECTION"/>
+               <title>Do not use</title>
+               <text>
+                  <paragraph>Do not apply to broken, irritated, wounded, or inflamed skin.</paragraph>
+               </text>
+               <effectiveTime value="20260724"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_57529dde-0ecc-9045-e063-6294a90aa5c1">
+               <id root="57529dde-0ecb-9045-e063-6294a90aa5c1"/>
+               <code code="50567-7" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - WHEN USING SECTION"/>
+               <title>When Using </title>
+               <text>
+                  <paragraph>avoid contact with eyes, mouth, and other mucous membranes. In case of accidental contact, rinse thoroughly with clean water.</paragraph>
+               </text>
+               <effectiveTime value="20260724"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5752afa2-abac-76ab-e063-6394a90adfe2">
+               <id root="5752afa2-abab-76ab-e063-6394a90adfe2"/>
+               <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+               <title>Stop Use </title>
+               <text>
+                  <paragraph>if skin redness, itching, rash, swelling, or other signs of irritation develop and persist.</paragraph>
+               </text>
+               <effectiveTime value="20260724"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5752b30c-b014-777a-e063-6394a90a09a6">
+               <id root="5752b30c-b013-777a-e063-6394a90a09a6"/>
+               <code code="50569-3" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR SECTION"/>
+               <title>Ask Doctor</title>
+               <text>
+                  <paragraph>if skin redness, itching, rash, swelling, or other signs of irritation develop and persist.</paragraph>
+               </text>
+               <effectiveTime value="20260724"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5752b51f-4ff8-a69e-e063-6294a90a64e3">
+               <id root="5752b51f-4ff7-a69e-e063-6294a90a64e3"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <title>Keep Out Of Reach Of Children</title>
+               <text>
+                  <paragraph>Keep out of reach of children and pets to prevent accidental ingestion or choking hazard.If swallowed, get medical help or contact a Poison Control Center right away.</paragraph>
+               </text>
+               <effectiveTime value="20260724"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5752bc29-e2a1-7c4b-e063-6394a90a7784">
+               <id root="5752bc29-e2a0-7c4b-e063-6394a90a7784"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>Directions</title>
+               <text>
+                  <paragraph>•Clean and thoroughly dry the skin on the leg area where the patch will be applied.
+  <br/>
+•Cut the patch to your desired size if needed, then peel off the protective backing layer.
+  <br/>
+•Apply the adhesive side firmly to the target leg area and press evenly along all edges to ensure full skin contact.
+  <br/>
+•Leave the patch on for 2 to 4 hours per application, then remove and replace with a new patch.
+  <br/>
+•For optimal soothing and moisturizing results, use continuously as directed.
+ </paragraph>
+               </text>
+               <effectiveTime value="20260724"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5752be0b-c04d-bb4a-e063-6294a90a9e2e">
+               <id root="5752be0b-c04c-bb4a-e063-6294a90a9e2e"/>
+               <code code="44425-7" codeSystem="2.16.840.1.113883.6.1" displayName="STORAGE AND HANDLING SECTION"/>
+               <title>Other information</title>
+               <text>
+                  <paragraph>Store in a cool, dry place at room temperature. Keep away from direct sunlight, high heat, and moisture. Keep sealed when not in use.</paragraph>
+               </text>
+               <effectiveTime value="20260724"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5752be0b-c04f-bb4a-e063-6294a90a9e2e">
+               <id root="5752be0b-c04e-bb4a-e063-6294a90a9e2e"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>Inactive ingredients</title>
+               <text>
+                  <paragraph>Mineral Oil, Petrolatum, Beeswax, Glycerin</paragraph>
+               </text>
+               <effectiveTime value="20260724"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5752cb36-070b-89ba-e063-6394a90ab8fd">
+               <id root="5752fdb7-fbf5-c875-e063-6394a90abf9a"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>PRINCIPAL DISPLAY PANEL</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_5752fc7c-b418-04ce-e063-6294a90a6fd4"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20260724"/>
+               <component>
+                  <observationMedia ID="img_5752fc7c-b418-04ce-e063-6294a90a6fd4">
+                     <text>1</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="9eeb43e6f545dde231dd55fb7ddaf397.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

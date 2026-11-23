@@ -3,6 +3,7 @@
 **Date:** 23 November 2026  
 **From:** engineering session after visible-LED replace + `20261123-003133_scan_quick`  
 **Repository:** https://github.com/Brandonio-c/LIO — local clone `/Users/coleloughbc/Documents/VSCode-Local/LIO`  
+**Data on GitHub:** historical `test_results/` (scans, `tray_v3/` artifacts, corpora) are **tracked on `main`**. See `test_results/README.md`. Only `test_results/stage_position.json` remains local/gitignored.  
 **Branch rule:** work conceptually on `main` knowledge; do **not** flash firmware, move motors, light LEDs, or change wiring unless the hardware owner explicitly authorizes a bench session.
 
 ---
@@ -280,13 +281,15 @@ Software cannot fix missing photons, but analysis can:
 | 3 | `software/host/src/lio/scan/analysis/electrical.py` | coupling, hum |
 | 4 | `docs/PROTOCOL.md` | MEAS/SWEEP/MAINS/STREAM limits |
 | 5 | `docs/OPTICAL_CHANNEL_MAP.md`, `docs/DIAGNOSTIC_SWEEP.md` | apparatus intent |
-| 6 | `test_results/20261123-003133_scan_quick/analysis.json` | latest soft findings |
-| 7 | `test_results/20261120-012619_scan_quick/` | last strong empty FUNCTIONAL baseline |
-| 8 | `test_results/tray_v3/INGAAS_REMOUNT_DEPTH_CHECK.json` | handheld vs mounted proof |
-| 9 | `test_results/tray_v3/LED_CONFIRM_SWEEP.json` | post-replace LED alive map |
-| 10 | `test_results/tray_v3/INGAAS_BOOST_INTEGRATION_CHECK.json` | longer integration ≠ enough |
+| 6 | `test_results/README.md` then `test_results/20261123-003133_scan_quick/analysis.json` | **on GitHub `main`** — latest soft findings |
+| 7 | `test_results/20261120-012619_scan_quick/` | **on GitHub** — last strong empty FUNCTIONAL baseline |
+| 8 | `test_results/tray_v3/INGAAS_REMOUNT_DEPTH_CHECK.json` | **on GitHub** — handheld vs mounted proof |
+| 9 | `test_results/tray_v3/LED_CONFIRM_SWEEP.json` | **on GitHub** — post-replace LED alive map |
+| 10 | `test_results/tray_v3/INGAAS_BOOST_INTEGRATION_CHECK.json` | **on GitHub** — longer integration ≠ enough |
 | 11 | `docs/handoffs/2026-11-16_research_handoff_diagnostics_dashboard.md` | prior research context |
 | 12 | `docs/FOOD_PROFILE_ANALYSIS_PLAN.md` | what “more signal” must feed |
+
+Pull/clone `main` and read these paths in-repo; they are no longer bench-Mac-only.
 
 ---
 

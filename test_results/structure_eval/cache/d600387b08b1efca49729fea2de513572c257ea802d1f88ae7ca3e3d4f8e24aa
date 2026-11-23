@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 9265,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Povidone-Iodine Gel Povidone-Iodine POVIDONE-IODINE IODINE WATER SODIUM HYDROXIDE HYDROXYETHYL CELLULOSE (2000 CPS AT 1%) NONOXYNOL-10 GLYCERIN ANHYDROUS CITRIC ACID C12-20 ALKYL GLUCOSIDE POTASSIUM IODIDE"
+      ],
+      "active_ingredient": [
+        "Active Ingredient Povidone-Iodine USP 10%"
+      ],
+      "purpose": [
+        "Purpose Antiseptic"
+      ],
+      "indications_and_usage": [
+        "Use Patient preoperative skin preparation. Helps to reduce bacteria that potentially can cause skin infection."
+      ],
+      "warnings": [
+        "Warnings For External Use Only Do not use if allergic to iodine in the eyes Ask a doctor before use if injuries are deep or puncture wounds serious burn Stop use and ask doctor infection occurs redness, irritation or swelling develops Keep out of reach of children If swallowed, get medical help or contact Poison Control Center right away"
+      ],
+      "do_not_use": [
+        "Do not use if allergic to iodine in the eyes"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if injuries are deep or puncture wounds serious burn"
+      ],
+      "stop_use": [
+        "Stop use and ask doctor infection occurs redness, irritation or swelling develops"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children If swallowed, get medical help or contact Poison Control Center right away"
+      ],
+      "dosage_and_administration": [
+        "Directions apply product to skin as needed"
+      ],
+      "spl_unclassified_section": [
+        "Other information 1% titratable iodine Avoid excessive heat Store at room temperature For hospital or professional use only Not made with natural rubber latex"
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredients Alkyl Glucoside, Citric Acid, Glycerin, Hydroxyethyl Cellulose, Nonoxynol-10, Potassium Iodide, Sodium hydroxide, Water"
+      ],
+      "package_label_principal_display_panel": [
+        "Principle Display Panel Duka Povidone-Iodine Gel Non-Sterile Antispetic Drug Facts Active ingredient Purpose Povidone Iodine USP 10% Antiseptic Use Patient preoperative skin preparation. Helps to reduce bacteria that potentially can cause skin infection. 1 fl oz (29.5ml) Do not re-use NDC-66517-0070-1 REF 916 916"
+      ],
+      "set_id": "2bebe082-59b6-17c1-e063-6294a90a9a52",
+      "id": "43f8fa10-9266-a4f3-e063-6394a90a9e93",
+      "effective_time": "20251119",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "505G(a)(3)"
+        ],
+        "brand_name": [
+          "Povidone-Iodine Gel"
+        ],
+        "generic_name": [
+          "POVIDONE-IODINE"
+        ],
+        "manufacturer_name": [
+          "Dukal LLC"
+        ],
+        "product_ndc": [
+          "65517-0070"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "POVIDONE-IODINE"
+        ],
+        "spl_id": [
+          "43f8fa10-9266-a4f3-e063-6394a90a9e93"
+        ],
+        "spl_set_id": [
+          "2bebe082-59b6-17c1-e063-6294a90a9a52"
+        ],
+        "package_ndc": [
+          "65517-0070-1"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000175486",
+          "M0011640"
+        ],
+        "pharm_class_epc": [
+          "Antiseptic [EPC]"
+        ],
+        "pharm_class_cs": [
+          "Iodine [CS]"
+        ],
+        "unii": [
+          "85H0HZU99M"
+        ]
+      }
+    }
+  ]
+}

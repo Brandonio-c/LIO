@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261116-140000_sim</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261116-140000_sim</code> on <code>sim</code>
+,
+2026-11-16T14:00:00-05:00 to 2026-11-16T14:00:13-05:00</p>
+<div class="verdict" style="background: #0ca30c">FUNCTIONAL</div>
+<ul><li>no failures or warnings</li></ul>
+
+<table>
+<tr><th>Sample</th><td>none-empty-chamber</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td>2.4.0 (proto 1, build 2026-11-03)</td>
+    <th>Config</th><td><code>22c2ed4f62a0</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.4</td>
+    <th>Software</th><td>lio 0.2.0, git <code>5a814da780</code> (dirty)</td></tr>
+<tr><th>Results</th><td colspan="3">PASS 1</td></tr>
+<tr><th>LED duty</th><td colspan="3">0.0 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T13.1">T13.1</a></td><td>Diagnostic height sweep</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>quick scan COMPLETE: FUNCTIONAL (20261116-140000_scan_quick)</td></tr>
+
+</table>
+
+
+
+
+<h2>T13</h2>
+
+<h3 id="T13.1">T13.1 Diagnostic height sweep <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+<p class="meta">quick scan COMPLETE: FUNCTIONAL (20261116-140000_scan_quick)</p>
+
+<details >
+<summary>76 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>link and firmware (no unexpected reset, no lost replies)<br><code>T13.1/system/link</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>firmware 2.4.0, no unexpected # BOOT</td><td></td></tr>
+
+<tr><td>ADC / I²C (every reading answered)<br><code>T13.1/system/adc</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>728 readings, no dropout</td><td></td></tr>
+
+<tr><td>addressing (each hole lights its own LED)<br><code>T13.1/system/addressing</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>15 responding holes, all distinct</td><td></td></tr>
+
+<tr><td>RAIL A (driver gates the LEDs)<br><code>T13.1/A/rail</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>9/9 holes respond</td><td></td></tr>
+
+<tr><td>RAIL B (driver gates the LEDs)<br><code>T13.1/B/rail</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>6/7 holes respond</td><td></td></tr>
+
+<tr><td>P4 interlock re-checks<br><code>T13.1/system/interlocks</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>light_while_moving: PASS; single_channel: PASS</td><td></td></tr>
+
+<tr><td>LED duty (RAIL A &lt;= budget per LED per minute)<br><code>T13.1/system/duty</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>max 80 ms of 1000 ms; 0 cool-down waits, 0 s in all</td><td></td></tr>
+
+<tr><td>stage tracking (position trusted, soft limits respected)<br><code>T13.1/system/stage</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>position [-4096, -4096], limits respected</td><td></td></tr>
+
+<tr><td>run complete<br><code>T13.1/system/run</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>COMPLETE</td><td></td></tr>
+
+<tr><td>hole 1 (395) on opt101<br><code>T13.1/optics/opt101/h01/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 2759 counts at h -368027, C +0.7, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 2 (405) on opt101<br><code>T13.1/optics/opt101/h02/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 3932 counts at h -368027, C +0.7, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 3 (blue) on opt101<br><code>T13.1/optics/opt101/h03/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 6756 counts at h -368027, C +0.7, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 4 (green) on opt101<br><code>T13.1/optics/opt101/h04/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 4886 counts at h -368027, C +0.7, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 5 (yellow) on opt101<br><code>T13.1/optics/opt101/h05/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 3311 counts at h -368027, C +0.7, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 6 (orange) on opt101<br><code>T13.1/optics/opt101/h06/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 5842 counts at h -316037, C +0.7, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 7 (red) on opt101<br><code>T13.1/optics/opt101/h07/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 8212 counts at h -316037, C +0.7, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 8 (850) on opt101<br><code>T13.1/optics/opt101/h08/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 13058 counts at h -316037, C +0.7, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 9 (940) on opt101<br><code>T13.1/optics/opt101/h09/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 13390 counts at h -316037, C +0.7, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 10 (white) on opt101<br><code>T13.1/optics/opt101/h10/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 5778 counts at h -316037, C +1.0, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 11 (pink) on opt101<br><code>T13.1/optics/opt101/h11/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 2893 counts at h -316037, C +1.0, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 12 (1450) seen by opt101?<br><code>T13.1/optics/opt101/h12/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 cannot see 1450 nm; residual +3 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 13 (1550) seen by opt101?<br><code>T13.1/optics/opt101/h13/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 cannot see 1550 nm; residual +2 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 14 (1650) seen by opt101?<br><code>T13.1/optics/opt101/h14/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 cannot see 1650 nm; residual +3 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 15 (1760) seen by opt101?<br><code>T13.1/optics/opt101/h15/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 cannot see 1760 nm; residual +5 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 16 (1850) seen by opt101?<br><code>T13.1/optics/opt101/h16/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 cannot see 1850 nm; residual +4 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>opt101: signal electrical only (no light)?<br><code>T13.1/optics/opt101/electrical_only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0/11 expected holes show no optical response; coupling small</td><td>FAIL when &gt;= 75% of expected holes have O &lt; 40 while |C| &gt;= 8</td></tr>
+
+<tr><td>opt101: optical throughput (window, alignment)<br><code>T13.1/optics/opt101/throughput</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>median O over 11 expected holes; spread (CV) 56% across holes</td><td>median O &gt;= 2000 (WARN below), &gt;= 800 (FAIL below) for empty</td></tr>
+
+<tr><td>hole 1 (395) seen by ingaas?<br><code>T13.1/optics/ingaas/h01/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 395 nm; residual +6 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 2 (405) seen by ingaas?<br><code>T13.1/optics/ingaas/h02/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 405 nm; residual +4 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 3 (blue) seen by ingaas?<br><code>T13.1/optics/ingaas/h03/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 465 nm; residual +2 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 4 (green) seen by ingaas?<br><code>T13.1/optics/ingaas/h04/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 525 nm; residual +4 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 5 (yellow) seen by ingaas?<br><code>T13.1/optics/ingaas/h05/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 590 nm; residual +1 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 6 (orange) seen by ingaas?<br><code>T13.1/optics/ingaas/h06/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 605 nm; residual +3 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 7 (red) seen by ingaas?<br><code>T13.1/optics/ingaas/h07/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 630 nm; residual +7 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 8 (850) on ingaas<br><code>T13.1/optics/ingaas/h08/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 5921 counts at h -316037, C +1.0, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 9 (940) on ingaas<br><code>T13.1/optics/ingaas/h09/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 15090 counts at h -316037, C +1.0, modulation 0.66</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 10 (white) seen by ingaas?<br><code>T13.1/optics/ingaas/h10/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 450 nm; residual +4 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 11 (pink) seen by ingaas?<br><code>T13.1/optics/ingaas/h11/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 450 nm; residual +4 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 12 (1450) on ingaas<br><code>T13.1/optics/ingaas/h12/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 8691 counts at h -316037, C +2.0, modulation 0.67</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 13 (1550) on ingaas<br><code>T13.1/optics/ingaas/h13/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 11366 counts at h -316037, C +2.0, modulation 0.67</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 14 (1650) on ingaas<br><code>T13.1/optics/ingaas/h14/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 7522 counts at h -316037, C +2.0, modulation 0.67</td><td>O &gt;= 100 (WARN below), &gt;= 40 (FAIL below)</td></tr>
+
+<tr><td>hole 16 (1850) seen by ingaas?<br><code>T13.1/optics/ingaas/h16/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 1850 nm; residual +10 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>ingaas: signal electrical only (no light)?<br><code>T13.1/optics/ingaas/electrical_only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0/5 expected holes show no optical response; coupling small</td><td>FAIL when &gt;= 75% of expected holes have O &lt; 40 while |C| &gt;= 8</td></tr>
+
+<tr><td>ingaas: optical throughput (window, alignment)<br><code>T13.1/optics/ingaas/throughput</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>median O over 5 expected holes; spread (CV) 33% across holes</td><td>median O &gt;= 3000 (WARN below), &gt;= 1000 (FAIL below) for empty</td></tr>
+
+<tr><td>optimum height (all holes)<br><code>T13.1/optics/optimum</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-316037 half-steps (-77.16 mm); weakest normalised response there 0.96</td><td></td></tr>
+
+<tr><td>opt101: signal-to-noise at the optimum<br><code>T13.1/optics/opt101/snr</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>weakest hole 1: 61.5 dB (noise sigma 0.291 mV)</td><td>&gt;= 30 dB</td></tr>
+
+<tr><td>opt101: saturation headroom<br><code>T13.1/optics/opt101/headroom</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>highest lit reading 13802 of 29600 counts</td><td>&gt;= 10%</td></tr>
+
+<tr><td>ingaas: signal-to-noise at the optimum<br><code>T13.1/optics/ingaas/snr</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>weakest hole 8: 64.2 dB (noise sigma 0.458 mV)</td><td>&gt;= 30 dB</td></tr>
+
+<tr><td>ingaas: saturation headroom<br><code>T13.1/optics/ingaas/headroom</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>highest lit reading 15427 of 28000 counts</td><td>&gt;= 10%</td></tr>
+
+<tr><td>opt101: electrical coupling (height-invariant, LED on)<br><code>T13.1/elec/opt101/coupling</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>rail A: +0.7 counts (+0.08 mV) inferred, rail B: +1.0 counts (+0.12 mV) from 5 blind holes</td><td>|C| &lt; 8 counts (WARN), &lt; 20 (FAIL)</td></tr>
+
+<tr><td>opt101: ground shift (coupling vs rail current)<br><code>T13.1/elec/opt101/ground_shift</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0.022 counts/mA</td><td>|slope| &lt; 0.03 mV/mA (WARN), &lt; 0.08 (FAIL)</td></tr>
+
+<tr><td>ingaas: electrical coupling (height-invariant, LED on)<br><code>T13.1/elec/ingaas/coupling</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>rail A: +1.0 counts (+0.12 mV) from 7 blind holes, rail B: +2.0 counts (+0.25 mV) from 3 blind holes</td><td>|C| &lt; 8 counts (WARN), &lt; 20 (FAIL)</td></tr>
+
+<tr><td>ingaas: ground shift (coupling vs rail current)<br><code>T13.1/elec/ingaas/ground_shift</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0.041 counts/mA</td><td>|slope| &lt; 0.03 mV/mA (WARN), &lt; 0.08 (FAIL)</td></tr>
+
+<tr><td>opt101: dark offset / leakage<br><code>T13.1/elec/opt101/dark_offset</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+200.1 counts (+25.02 mV)</td><td>0 to 800 counts (thresholds.dark)</td></tr>
+
+<tr><td>ingaas: dark offset / leakage<br><code>T13.1/elec/ingaas/dark_offset</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+39.8 counts (+4.97 mV); equivalent input current -5.0 nA (Rf 1 MΩ)</td><td>-100 to 2000 counts (thresholds.dark)</td></tr>
+
+<tr><td>opt101: dark drift over the run<br><code>T13.1/elec/opt101/drift</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-0.08 ± 0.11 mV/h; P4 - P1 -0.10 mV</td><td>|slope| &lt; 3 mV/h (WARN), &lt; 8 (FAIL)</td></tr>
+
+<tr><td>ingaas: dark drift over the run<br><code>T13.1/elec/ingaas/drift</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-0.00 ± 0.18 mV/h (+0.0 nA/h); P4 - P1 -0.05 mV</td><td>|slope| &lt; 3 mV/h (WARN), &lt; 8 (FAIL)</td></tr>
+
+<tr><td>opt101: mains hum (coils off)<br><code>T13.1/elec/opt101/hum</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>60/120/180 Hz: 0.090 / 0.085 / 0.094 mV; 12% of the variance at mains harmonics; broadband sigma 0.291 mV</td><td>60 Hz amplitude &lt; 0.3 mV (WARN), &lt; 1 (FAIL); mains fraction &lt; 0.5</td></tr>
+
+<tr><td>ingaas: mains hum (coils off)<br><code>T13.1/elec/ingaas/hum</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>60/120/180 Hz: 0.298 / 0.148 / 0.171 mV; 25% of the variance at mains harmonics; broadband sigma 0.458 mV</td><td>60 Hz amplitude &lt; 1 mV (WARN), &lt; 3 (FAIL); mains fraction &lt; 0.5</td></tr>
+
+<tr><td>opt101: coil interference (moving vs coils off)<br><code>T13.1/elec/opt101/coil_emi</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sigma 0.280 mV moving vs 0.291 mV off (firmware has no coils-held state: measured while moving, S0 D2)</td><td>ratio &lt; 3 (WARN), &lt; 6 (FAIL)</td></tr>
+
+<tr><td>ingaas: coil interference (moving vs coils off)<br><code>T13.1/elec/ingaas/coil_emi</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sigma 0.476 mV moving vs 0.458 mV off (firmware has no coils-held state: measured while moving, S0 D2)</td><td>ratio &lt; 3 (WARN), &lt; 6 (FAIL)</td></tr>
+
+<tr><td>opt101: select-only coupling (MOSFET on, CE low)<br><code>T13.1/elec/opt101/select_only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>largest on hole 10: -2.5 counts</td><td>&lt; 8 counts (WARN), &lt; 20 (FAIL)</td></tr>
+
+<tr><td>ingaas: select-only coupling (MOSFET on, CE low)<br><code>T13.1/elec/ingaas/select_only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>largest on hole 10: +4.9 counts</td><td>&lt; 8 counts (WARN), &lt; 20 (FAIL)</td></tr>
+
+<tr><td>opt101: dark vs height (light leak at the shroud)<br><code>T13.1/ambient/opt101/leak</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>dark at the bottom +0.8 counts (+0.09 mV) vs the top; 0.01% of the median signal</td><td>rise &lt; 8 counts (WARN), &lt; 25 (FAIL)</td></tr>
+
+<tr><td>ingaas: dark vs height (light leak at the shroud)<br><code>T13.1/ambient/ingaas/leak</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>dark at the bottom +1.9 counts (+0.24 mV) vs the top; 0.02% of the median signal</td><td>rise &lt; 8 counts (WARN), &lt; 25 (FAIL)</td></tr>
+
+<tr><td>opt101: room-light flicker (120 Hz)<br><code>T13.1/ambient/opt101/flicker</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>120 Hz amplitude in the dark streams 0.085 mV</td><td>&lt; 0.4 mV (WARN), &lt; 1.2 (FAIL)</td></tr>
+
+<tr><td>ingaas: room-light flicker (120 Hz)<br><code>T13.1/ambient/ingaas/flicker</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>120 Hz amplitude in the dark streams 0.148 mV</td><td>&lt; 0.4 mV (WARN), &lt; 1.2 (FAIL)</td></tr>
+
+<tr><td>travel (top to bottom)<br><code>T13.1/mech/travel</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>tracked range 420017 / 420017 half-steps (left / right) (thresholds.motion.travel.range_steps not set: not compared)</td><td></td></tr>
+
+<tr><td>lockstep (firmware positions level after every move)<br><code>T13.1/mech/lockstep</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>20 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)</td><td></td></tr>
+
+<tr><td>settle time after a move (dark-read convergence)<br><code>T13.1/mech/settle</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>median 588 ms, max 589 ms (mechanical wait 300 ms)</td><td>max - wait &lt; 500 ms (WARN), &lt; 1500 (FAIL)</td></tr>
+
+<tr><td>backlash (down vs up response curves)<br><code>T13.1/mech/backlash</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+390 ± 203 half-steps (+0.095 mm) from 128 readings on 16 channels</td><td>&lt; 600 (WARN), &lt; 1500 (FAIL); not flagged within 3 sigma</td></tr>
+
+<tr><td>step loss (offset growing over the up pass)<br><code>T13.1/mech/step_loss</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>the stage falls behind by -780 ± 468 half-steps over a full upward travel (one side losing steps: about twice that on that side, and a tilt)</td><td>&lt; 400 (WARN), &lt; 1000 (FAIL); not flagged within 3 sigma</td></tr>
+
+<tr><td>stray light<br><code>T13.1/optics/stray</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>needs a black_cup run (with a white_ptfe reference)</td><td></td></tr>
+
+<tr><td>effectiveness vs reference<br><code>T13.1/optics/effectiveness</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>needs a reference (baseline) of the same sample</td><td></td></tr>
+
+<tr><td>lid sensitivity<br><code>T13.1/ambient/lid</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>optional operator step (lid ajar at two heights)</td><td></td></tr>
+
+<tr><td>repeatability at the reference heights<br><code>T13.1/mech/repeatability</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>no repeated reference visits in this mode (full, fine, repeatability have them)</td><td></td></tr>
+
+</table>
+</details>
+
+
+
+</body>
+</html>

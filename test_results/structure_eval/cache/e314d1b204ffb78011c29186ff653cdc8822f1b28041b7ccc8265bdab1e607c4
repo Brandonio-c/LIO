@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="774f9277-a985-448f-bad1-04e70a68b77c"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>BJWC Nicotine Lozenge Drug Facts</title>
+   <effectiveTime value="20260625"/>
+   <setId root="1055f032-3a6e-40d3-8343-d144953c143d"/>
+   <versionNumber value="2"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id extension="159082692" root="1.3.6.1.4.1.519.1"/>
+            <name>BJWC</name>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="cae7447b-d5eb-418e-988f-ccfedac438c2"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20260625"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="68391-734" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>berkley and jensen nicotine</name>
+                        <formCode code="C42955" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="LOZENGE"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Nicotine Polacrilex</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mg" value="2"/>
+                              <denominator unit="1" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="6M3C89ZY6R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>NICOTINE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="6M3C89ZY6R" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>NICOTINE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="RCZ785HI7S" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POLACRILIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="23OV73Q5G9" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ACESULFAME POTASSIUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="8F049NKY49" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CALCIUM POLYCARBOPHIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="70097M6I30" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MAGNESIUM STEARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3OWL53L36A" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MANNITOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="HM5Z15LEBN" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POTASSIUM BICARBONATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="C269C4G2ZQ" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM ALGINATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="45P3261C7T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM CARBONATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="96K6UQ3ZD4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SUCRALOSE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="TTV12P4NEE" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>XANTHAN GUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator unit="1" value="27"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="68391-734-01" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43186" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CONTAINER"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator unit="1" value="7"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="68391-734-06" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43233" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="PACKAGE"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20171106"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic classCode="OBS">
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CE"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="ANDA203690" root="2.16.840.1.113883.3.150"/>
+                           <code code="C73584" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ANDA"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20171106"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLCOLOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48325" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="WHITE" xsi:type="CE">
+                              <originalText>white to off-white</originalText>
+                           </value>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSIZE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value unit="mm" value="10" xsi:type="PQ"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSHAPE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48345" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OVAL" xsi:type="CE"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLSCORE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value value="1" xsi:type="INT"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLIMPRINT" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value xsi:type="ST">L734</value>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLFLAVOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C73404" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="MINT" xsi:type="CE"/>
+                        </characteristic>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38288" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ORAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_ff1684e7-e9c9-4c61-8fed-a15e91e6d45c">
+               <id root="ff1684e7-e9c9-4c61-8fed-a15e91e6d45c"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>Active ingredient (in each lozenge)</title>
+               <text>
+                  <paragraph>Nicotine polacrilex, 2 mg (nicotine)</paragraph>
+               </text>
+               <effectiveTime value="20171102"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_e661ff46-0d47-46aa-a63b-9977ccce7c01">
+               <id root="e661ff46-0d47-46aa-a63b-9977ccce7c01"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>Purpose</title>
+               <text>
+                  <paragraph>Stop smoking aid</paragraph>
+               </text>
+               <effectiveTime value="20171102"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_f6c065ea-244c-46bf-babe-a9cb95a1efdf">
+               <id root="f6c065ea-244c-46bf-babe-a9cb95a1efdf"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>Use</title>
+               <text>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>reduces withdrawal symptoms, including nicotine craving, associated with quitting smoking</item>
+                  </list>
+               </text>
+               <effectiveTime value="20171102"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_70cf522f-9765-437a-b3f9-cd5fcf9b6b0f">
+               <id root="47946eaf-4122-44f2-b644-41b432e730cd"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>Warnings</title>
+               <effectiveTime value="20260625"/>
+               <component>
+                  <section ID="ID_58dc89c4-5845-4dfc-b68c-f0989691c8aa">
+                     <id root="db909ffe-4a78-47b7-a855-564ccd2a4e27"/>
+                     <code code="53414-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PREGNANCY OR BREAST FEEDING SECTION"/>
+                     <title>If you are pregnant or breast-feeding,</title>
+                     <text>
+                        <paragraph>
+                           <content styleCode="bold">only use this medicine on the advice of your health care provider.</content> Smoking can seriously harm your child. Try to stop smoking without using any nicotine replacement medicine. This medicine is believed to be safer than smoking. However, the risks to your child from this medicine are not fully known.</paragraph>
+                     </text>
+                     <effectiveTime value="20260625"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="ID_f5184baa-a3cf-4f18-b244-5ddd87e50220">
+                     <id root="9b6b359c-b445-45da-b4a3-18822bcd6f24"/>
+                     <code code="50569-3" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR SECTION"/>
+                     <title>Ask a doctor before use if you have</title>
+                     <text>
+                        <list listType="unordered">
+                           <item>
+                              <caption>•</caption>heart disease, recent heart attack, or irregular heartbeat. Nicotine can increase your heart rate.</item>
+                           <item>
+                              <caption>•</caption>high blood pressure not controlled with medication. Nicotine can increase your blood pressure.</item>
+                           <item>
+                              <caption>•</caption>stomach ulcer or diabetes</item>
+                           <item>
+                              <caption>•</caption>history of seizures</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20260625"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="ID_7b1eb7a3-5438-4df9-ad6a-073a339af29e">
+                     <id root="7b1eb7a3-5438-4df9-ad6a-073a339af29e"/>
+                     <code code="50568-5" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR/PHARMACIST SECTION"/>
+                     <title>Ask a doctor or pharmacist before use if you are</title>
+                     <text>
+                        <list listType="unordered">
+                           <item>
+                              <caption>•</caption>using a non-nicotine stop smoking drug</item>
+                           <item>
+                              <caption>•</caption>taking prescription medicine for depression or asthma. Your prescription dose may need to be adjusted</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20171102"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="ID_4ce7e66c-db0c-46d0-8308-714034f67394">
+                     <id root="49baaaf9-da71-4a80-ab3a-8d6586e839eb"/>
+                     <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+                     <title>Stop use and ask a doctor if</title>
+                     <text>
+                        <list listType="unordered">
+                           <item>
+                              <caption>•</caption>mouth problems occur</item>
+                           <item>
+                              <caption>•</caption>persistent indigestion or severe sore throat occurs</item>
+                           <item>
+                              <caption>•</caption>irregular heartbeat or palpitations occur</item>
+                           <item>
+                              <caption>•</caption>you get symptoms of nicotine overdose such as nausea, vomiting, dizziness, diarrhea, weakness and rapid heartbeat</item>
+                           <item>
+                              <caption>•</caption>you have symptoms of an allergic reaction (such as difficulty breathing or rash)</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20260625"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="ID_0037e5c3-397d-45b7-936d-9ca98e7c186a">
+                     <id root="445787a7-1b77-4661-b74c-8535a13eb762"/>
+                     <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+                     <title>Keep out of reach of children and pets.</title>
+                     <text>
+                        <paragraph>Nicotine lozenges may have enough nicotine to make children and pets sick. If you need to remove the lozenge, wrap it in paper and throw away in the trash. In case of overdose, get medical help or contact a Poison Control Center right away (1-800-222-1222).</paragraph>
+                     </text>
+                     <effectiveTime value="20260625"/>
+                  </section>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_00b0c3b6-a273-49e7-acd9-d5b45b7792be">
+               <id root="b5e9a66a-7a02-4087-8cfc-afcc37ae61e5"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>Directions</title>
+               <text>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>
+                        <content styleCode="bold">if you are under 18 years of age, ask a doctor before use. No studies have been done to show if this product will work for you.</content>
+                     </item>
+                     <item>
+                        <caption>•</caption>before using this product, read the enclosed User’s Guide for complete directions and other important information</item>
+                     <item>
+                        <caption>•</caption>begin using the lozenge on your quit day</item>
+                     <item>
+                        <caption>•</caption>
+                        <content styleCode="bold">if you smoke your first cigarette within 30 minutes of waking up, use 4 mg nicotine lozenge</content>
+                     </item>
+                     <item>
+                        <caption>•</caption>
+                        <content styleCode="bold">if you smoke your first cigarette more than 30 minutes after waking up</content>, use 2 mg nicotine lozenge according to the following 12 week schedule:</item>
+                  </list>
+                  <table styleCode="Noautorules" width="100%">
+                     <col width="25%"/>
+                     <col width="37%"/>
+                     <col width="30%"/>
+                     <tbody>
+                        <tr>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>Weeks 1 to 6</paragraph>
+                           </td>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>Weeks 7 to 9</paragraph>
+                           </td>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>Weeks 10 to 12</paragraph>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>1 lozenge every</paragraph>
+                              <paragraph>1 to 2 hours</paragraph>
+                           </td>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>1 lozenge every</paragraph>
+                              <paragraph>2 to 4 hours</paragraph>
+                           </td>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>1 lozenge every</paragraph>
+                              <paragraph>4 to 8 hours</paragraph>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>
+                        <content styleCode="bold">nicotine lozenge is a medicine and must be used a certain way to get the best results</content>
+                     </item>
+                     <item>
+                        <caption>•</caption>place the lozenge in your mouth and allow the lozenge to slowly dissolve. Minimize swallowing. <content styleCode="bold">Do not chew or swallow lozenge.</content>
+                     </item>
+                     <item>
+                        <caption>•</caption>you may feel a warm or tingling sensation</item>
+                     <item>
+                        <caption>•</caption>occasionally move the lozenge from one side of your mouth to the other until completely dissolved</item>
+                     <item>
+                        <caption>•</caption>do not eat or drink 15 minutes before using or while the lozenge is in your mouth</item>
+                     <item>
+                        <caption>•</caption>to improve your chances of quitting, use at least 9 lozenges per day for the first 6 weeks</item>
+                     <item>
+                        <caption>•</caption>do not use more than one lozenge at a time or continuously use one lozenge after another since this may cause you hiccups, heartburn, nausea or other side effects</item>
+                     <item>
+                        <caption>•</caption>
+                        <content styleCode="bold">do not use more than 5 lozenges in 6 hours. Do not use more than 20 lozenges per day.</content>
+                     </item>
+                     <item>
+                        <caption>•</caption>it is important to complete treatment. If you feel you need to use the lozenge for a longer period to keep from smoking, talk to your health care provider.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20260625"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_dbdda6ad-2050-4c8f-8d1a-cb35c06dd31d">
+               <id root="dbdda6ad-2050-4c8f-8d1a-cb35c06dd31d"/>
+               <code code="44425-7" codeSystem="2.16.840.1.113883.6.1" displayName="STORAGE AND HANDLING SECTION"/>
+               <title>Other information</title>
+               <text>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>store at 20-25°C (68-77°F)</item>
+                     <item>
+                        <caption>•</caption>keep vial tightly closed and protect from light</item>
+                  </list>
+               </text>
+               <effectiveTime value="20171102"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_2c32415b-24ec-469c-a612-3c77291d3fa7">
+               <id root="2c32415b-24ec-469c-a612-3c77291d3fa7"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>Inactive ingredients</title>
+               <text>
+                  <paragraph>acesulfame potassium, calcium polycarbophil, magnesium stearate, mannitol, natural and artificial mint flavor, potassium bicarbonate, sodium alginate, sodium carbonate, sucralose, xanthan gum</paragraph>
+               </text>
+               <effectiveTime value="20171102"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_77442ec6-cc7e-4b1b-aee3-2bde2dc8f4b7">
+               <id root="e575acda-fed6-4fbb-a35c-0f233e0f4820"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>Questions or comments?</title>
+               <text>
+                  <paragraph>call toll-free <content styleCode="bold">1-866-751-9303</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20260625"/>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_fef80235-f1ab-4c06-a82c-708399a6ab89">
+               <id root="7fe5eb3b-b95e-40d7-81e8-c454d36e93d6"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <title>Consumer Information</title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">HOW TO USE MINI NICOTINE POLACRILEX LOZENGES AND TIPS TO HELP YOU QUIT SMOKING.</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Nicotine Polacrilex Lozenge</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="italics">2 mg and 4 mg User’s Guide</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">mini Lozenge</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">PLANNING YOUR SUCCESS.</content>
+                  </paragraph>
+                  <list listType="ordered">
+                     <item>
+                        <caption>1)</caption>The key to accomplishing anything important is commitment. When it comes to quitting smoking, that is especially true. Mini Nicotine Polacrilex Lozenges can help if you really want to quit. Mini Nicotine Polacrilex Lozenges help reduce withdrawal symptoms including nicotine craving associated with quitting smoking.</item>
+                     <item>
+                        <caption>2)</caption>Your chances of staying off cigarettes are much better if you start with at least 9 mini Nicotine Polacrilex Lozenges daily. For best results, use the lozenges on a regular schedule (as outlined in this User’s Guide).</item>
+                     <item>
+                        <caption>3)</caption>Start using mini Nicotine Polacrilex Lozenges on your quit date.</item>
+                     <item>
+                        <caption>4)</caption>This User’s Guide outlines a 12 week plan for mini Nicotine Polacrilex Lozenges. Even though you may feel confident about your non-smoking status after a few weeks, it’s important to stick with the plan to help you remain smoke-free. Even a single cigarette can put you right back to square one.</item>
+                     <item>
+                        <caption>5)</caption>Mini Nicotine Polacrilex Lozenges work best when used together with a support plan. See information below for instructions on enrollment in the SmokeFreeHabits.com Free &amp; Personalized Support Plan.</item>
+                     <item>
+                        <caption>6)</caption>After the first six weeks, start using fewer mini Nicotine Polacrilex Lozenges, as directed in the instructions, gradually reducing your use over the next six weeks. If you feel the need to use the lozenges for a longer period to keep from smoking, talk to your health care provider.</item>
+                     <item>
+                        <caption>7)</caption>If you have questions about using mini Nicotine Polacrilex Lozenges, call toll-free <content styleCode="bold">1-866-751-9303</content>, or talk to your pharmacist or family doctor.</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">YES! YOU WANT TO QUIT.</content>
+                  </paragraph>
+                  <paragraph>Wonderful. You’ve made the most important decision of all, to stop smoking. And by choosing mini Nicotine Polacrilex Lozenges to help you, you’re starting on the right path. Now remember, using mini Nicotine Polacrilex Lozenges doesn’t just mean taking a mini Nicotine Polacrilex Lozenge. It means setting and following a program like the one we suggest in this User’s Guide.</paragraph>
+                  <paragraph>Your own success depends on your effort, your level of addiction to tobacco, and your commitment to following your program.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">LET’S FACE IT.</content>
+                  </paragraph>
+                  <paragraph>Quitting smoking isn’t easy! You or someone you know may have tried unsuccessfully. That’s okay. It’s hard to stop smoking the first time you try. The important part is to learn from your previous attempts, consider what went wrong and keep trying to quit until you succeed. Look to this User’s Guide for support as you undergo this terrific task. The guide includes important information on how to use mini Nicotine Polacrilex Lozenges and also gives you tips to help you stop smoking. Refer back to it often for advice, answers, and encouragement to help you stay on track.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">GET MOTIVATED. STAY MOTIVATED.</content>
+                  </paragraph>
+                  <paragraph>Everyone has a reason for quitting – whether you’re concerned about your health, your appearance, family or peer pressure, or the effect of secondhand smoke on your loved ones – all of the above, or something else entirely. Whatever your reasons, write them down. There’s a WALLET CARD on the bottom left of this User’s Guide. Write your reasons on the card and carry it with you. When you have an urge to smoke or experience a difficult moment it can help you focus on your reasons for quitting. Lots of people quit with a co-worker, spouse or friend and use them as a quitting buddy. You can help each other out by providing extra encouragement in tough moments.</paragraph>
+                  <paragraph>There may be support groups in your area for people trying to quit. Call your local chapter of the American Lung Association, American Cancer Society or American Heart Association for further information. Toll-free phone numbers are printed on the back of the WALLET CARD on the bottom left of this User's Guide. </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">UNDERSTANDING THE DOUBLE-EDGED SWORD.</content>
+                  </paragraph>
+                  <paragraph>Smoking has two addictive components, a physical and a mental need for the nicotine in tobacco. You need to conquer both to succeed. Mini Nicotine Polacrilex Lozenges can ease your physical nicotine addiction. But your readiness and resolve are necessary to help overcome the mental side of your cigarette dependence. So once you're ready, it's time to begin. But first, read and consider the following important warnings. </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">IMPORTANT WARNINGS.</content>
+                  </paragraph>
+                  <paragraph>This product is only for those who want to stop smoking.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">If you are pregnant or breast-feeding, only use this medicine on the advice of your health care provider.</content> Smoking can seriously harm your child. Try to stop smoking without using any nicotine replacement medicine. This medicine is believed to be safer than smoking. However, the risks to your child from this medicine are not fully known.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Ask a doctor before use if you have</content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>heart disease, recent heart attack, or irregular heartbeat. Nicotine can increase your heart rate.</item>
+                     <item>
+                        <caption>•</caption>high blood pressure not controlled with medication. Nicotine can increase your blood pressure.</item>
+                     <item>
+                        <caption>•</caption>stomach ulcer or diabetes</item>
+                     <item>
+                        <caption>•</caption>history of seizures</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">Ask a doctor or pharmacist before use if you are</content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>using a non-nicotine stop smoking drug</item>
+                     <item>
+                        <caption>•</caption>taking a prescription medicine for depression or asthma. Your prescription dose may need to be adjusted.</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">Stop use and ask a doctor if</content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>mouth problems occur</item>
+                     <item>
+                        <caption>•</caption>persistent indigestion or severe sore throat occurs</item>
+                     <item>
+                        <caption>•</caption>irregular heartbeat or palpitations occur</item>
+                     <item>
+                        <caption>•</caption>you get symptoms of nicotine overdose such as nausea, vomiting, dizziness, diarrhea, weakness and rapid heartbeat</item>
+                     <item>
+                        <caption>•</caption>you have symptoms of an allergic reaction (such as difficulty breathing or rash)</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">Keep out of reach of children and pets.</content> Nicotine lozenges may have enough nicotine to make children and pets sick. If you need to remove the lozenge, wrap it in paper and throw away in the trash. In case of overdose, get medical help or contact a Poison Control Center right away (1-800-222-1222).</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">YOU’RE READY TO START.</content>
+                  </paragraph>
+                  <paragraph>Okay, you're ready. To become a non-smoker, start today. Now before you do anything else, you have a bit of planning to do. Read this User's Guide all the way through. You want to make sure you bought the right dose to start. If you typically smoke <content styleCode="bold">your first cigarette within 30 minutes of waking up</content>, use the 4 mg mini Nicotine Polacrilex Lozenges. If you smoke <content styleCode="bold">your first cigarette more than 30 minutes after waking up,</content> use the 2 mg mini Nicotine Polacrilex Lozenges. Next, plan your quitting schedule. Get a calendar to follow your progress and mark the following four important dates (see the reminders on the left side of this User's Guide).</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">THE PROGRAM</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">STEP 1. (Weeks 1-6) Starting on your quit date it's best to use at least 9 mini Nicotine Polacrilex Lozenges each day, one every 1-2 hours.</content>
+                  </paragraph>
+                  <paragraph>First choose the day you plan to quit (make it soon). Place the Step 1 reminder on this date. That's the day you will start using mini Nicotine Polacrilex Lozenges to calm your cravings for nicotine and help you stay smoke-free. Prior to the quit date, get rid of all your cigarettes to remove temptations and make it more difficult to start smoking again.</paragraph>
+                  <paragraph>Use a mini Nicotine Polacrilex Lozenge every 1 to 2 hours and at least 9 lozenges each day for the first 6 weeks to help prevent unexpected cravings and improve your chances of quitting. <content styleCode="bold">These aren't ordinary lozenges.</content> Place the lozenge in your mouth and allow the lozenge to slowly dissolve. Minimize swallowing. <content styleCode="bold">Do not chew or swallow the lozenge.</content> You may feel a warm or tingling sensation. Occasionally move the lozenge from one side of your mouth to the other until completely dissolved. <content styleCode="bold">Remember to read the “USING mini Nicotine Polacrilex LOZENGES PROPERLY” section before you take your first mini Nicotine Polacrilex Lozenge.</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">STEP 2. (The next three weeks, that is weeks 7-9). At the beginning of week 7 start using fewer mini Nicotine Polacrilex Lozenges, one every 2-4 hours.</content>
+                  </paragraph>
+                  <paragraph>After six weeks, you should wait a little longer between lozenges, one lozenge every two to four hours. This will help you gradually use fewer mini Nicotine Polacrilex Lozenges. Put the Step 2 reminder on the first day of week 7 to help remind you when to start reducing the number of mini Nicotine Polacrilex Lozenges you take.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">STEP 3. (The last three weeks, that is weeks 10-12). At the beginning of week 10, reduce mini Nicotine Polacrilex Lozenge use even further, one every 4-8 hours.</content>
+                  </paragraph>
+                  <paragraph>At the beginning of week 10 further decrease the number of mini Nicotine Polacrilex Lozenges you use each day to reduce the amount of nicotine you get. You should do this by using one lozenge every 4 to 8 hours. Put the Step 3 reminder on the first day of week 10 so you know when you should be starting this last step to becoming smoke and nicotine-free.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">END. At the end of week 12 you’ll complete mini Nicotine Polacrilex Lozenge therapy.</content>
+                  </paragraph>
+                  <paragraph>Put the “EX-SMOKER” reminder on your calendar on the date 12 weeks after the day you stopped smoking and started using mini Nicotine Polacrilex Lozenges.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">BE PREPARED.</content>
+                  </paragraph>
+                  <paragraph>Since smoking is an addiction, it is hard to quit. Even after you stop, there will be times when you WANT a cigarette, sometimes strongly (see also section on <content styleCode="bold">“CHALLENGES TO WATCH FOR”</content>). The best defense is to be prepared. Plan now for handling tough times so you don't give in. Think about situations where you usually get an urge to smoke or where you might experience strong urges to smoke (for example, spending time with smokers or drinking alcohol - try to avoid these situations if those things tempt you to smoke).</paragraph>
+                  <paragraph>Change your habits. For example, take your coffee break somewhere else. Take a walk. In other words, break the association between your usual habits and cigarettes.</paragraph>
+                  <paragraph>If you do encounter a situation where you feel a strong urge to smoke, fight it! Take a break from the situation; keep yourself busy or distracted with other activities. Remind yourself why you want to quit, and above all, remind yourself that having “just one” really will hurt your goal of quitting!</paragraph>
+                  <paragraph>Assemble a “survival package” – items that can keep you distracted in case you get an urge to smoke. For example, cinnamon gum or hard candy, relaxing music, things to keep your hands busy like a smooth stone or paper clips, etc.</paragraph>
+                  <paragraph>Track your quit progress. Use a journal to note if and when you get an urge to smoke. Note how many pieces of mini Nicotine Polacrilex Lozenges you use each day. If you slip and have a cigarette, don't give up. Stop smoking again and get back on your program with mini Nicotine Polacrilex Lozenges.</paragraph>
+                  <paragraph>Establish your support network. Keep friends' and family members' phone numbers ready to get the moral support you need. Before quitting, ask friends and family to support and encourage you. Think of specific ways they can help.</paragraph>
+                  <paragraph>Reward yourself. Set aside little gifts to encourage yourself which you can earn by overcoming difficult hurdles.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">HOW mini Nicotine Polacrilex LOZENGES WORK.</content>
+                  </paragraph>
+                  <paragraph>Mini Nicotine Polacrilex Lozenges are a form of Nicotine Replacement Therapy. They deliver nicotine to your body, temporarily relieving craving and nicotine withdrawal symptoms when you quit smoking. But unlike cigarettes, mini Nicotine Polacrilex Lozenges deliver a lower, steady level of nicotine to your blood. When used as directed, mini Nicotine Polacrilex Lozenges help you regulate, control, and gradually reduce your body's craving for nicotine.</paragraph>
+                  <paragraph>The good news is that mini Nicotine Polacrilex Lozenges contain no tar or carbon monoxide, and therefore don't present the same medical risks as cigarettes.</paragraph>
+                  <paragraph>However, the lozenges still deliver nicotine, the addictive ingredient in cigarettes. And for some people the nicotine in mini Nicotine Polacrilex Lozenges can occasionally cause mouth or throat irritation, headaches, nausea, hiccups, upset stomach or dizziness.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">USING mini Nicotine Polacrilex LOZENGES PROPERLY.</content>
+                  </paragraph>
+                  <paragraph>Remember, <content styleCode="bold">mini Nicotine Polacrilex Lozenges aren't like ordinary lozenges such as cough drops.</content> This lozenge is designed to deliver nicotine into your system through the lining of your mouth, not in your stomach like most other medicines. It is important to minimize swallowing the dissolved medicine in these lozenges so that it can be properly absorbed in your mouth.</paragraph>
+                  <paragraph>Do not use more than one lozenge at a time, or many lozenges one after another since this can cause hiccups, heartburn, nausea or other side effects. </paragraph>
+                  <paragraph>Read all the following instructions before using mini Nicotine Polacrilex Lozenges. Refer to them often to make sure you're using mini Nicotine Polacrilex Lozenges correctly.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">IMPORTANT: Don't worry or give up if you do not like the taste of the lozenge at first. Mini Nicotine Polacrilex Lozenges are a medication, not a candy. Most people get used to the taste after a day or two. Remember, staying with the plan will help you quit. Begin using mini Nicotine Polacrilex Lozenges on your quit date.</content>
+                  </paragraph>
+                  <list listType="ordered">
+                     <item>
+                        <caption>1)</caption>Remove the mini Nicotine Polacrilex Lozenge from the immediate container. Place the lozenge in your mouth and allow the lozenge to slowly dissolve. Minimize swallowing. <content styleCode="bold">Do not chew or swallow the lozenge.</content> You may feel a warm or tingling sensation.</item>
+                     <item>
+                        <caption>2)</caption>Occasionally move the lozenge from one side of your mouth to the other side until completely dissolved.</item>
+                  </list>
+                  <paragraph>To reduce cravings or urges to smoke and other withdrawal symptoms, use mini Nicotine Polacrilex Lozenges according to the following dosage schedule:</paragraph>
+                  <table styleCode="Noautorules" width="100%">
+                     <col width="21%"/>
+                     <col width="21%"/>
+                     <col width="24%"/>
+                     <tbody>
+                        <tr>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>Weeks 1 through 6</paragraph>
+                           </td>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>Weeks 7 through 9</paragraph>
+                           </td>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>Weeks 10 through 12</paragraph>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>1 lozenge every </paragraph>
+                              <paragraph>1 to 2 hours</paragraph>
+                           </td>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>1 lozenge every </paragraph>
+                              <paragraph>2 to 4 hours</paragraph>
+                           </td>
+                           <td align="center" styleCode="Rrule Botrule Lrule Toprule " valign="top">
+                              <paragraph>1 lozenge every </paragraph>
+                              <paragraph>4 to 8 hours</paragraph>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <paragraph>
+                     <content styleCode="bold">Do not use more than 5 lozenges in 6 hours. Do not use more than 20 lozenges per day.</content> At the end of 12 weeks (3 months) you will have completed treatment.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">FOR THE BEST CHANCE OF QUITTING,</content> use mini Nicotine Polacrilex Lozenges on a regular schedule, using at least 9 lozenges a day during the first 6 weeks. That will help your body better adjust to the lack of cigarettes and better help prevent cravings. Some people may need more lozenges to reduce their cravings. <content styleCode="bold">Do not exceed the recommended maximum daily dosage of 20 lozenges per day.</content> Do not continuously use one lozenge after another, since this may cause you hiccups, heartburn, nausea or other side effects.</paragraph>
+                  <paragraph>Do not eat or drink 15 minutes before using or while the lozenge is in your mouth.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">CUTTING BACK ON YOUR mini Nicotine Polacrilex LOZENGE USAGE.</content>
+                  </paragraph>
+                  <paragraph>The whole reason for using mini Nicotine Polacrilex Lozenges is to decrease and slowly eliminate your need for nicotine, while you control cravings. So, as the schedule outlined in this User's Guide indicates, you should gradually reduce the amount of mini Nicotine Polacrilex Lozenges you take per day. Some people find it easier to reduce by substituting ordinary sweets or sugar-free candy for some of the mini Nicotine Polacrilex Lozenges they would normally use. As time goes on, you can increase the number of pieces of candy as you further reduce your use of mini Nicotine Polacrilex Lozenges. <content styleCode="bold">It is important to complete treatment.</content> If you still feel the need to use mini Nicotine Polacrilex Lozenges to keep from smoking after week 12, talk with your health care provider. </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">MAKE QUITTING EASIER ON YOURSELF.</content>
+                  </paragraph>
+                  <paragraph>Soon after your quit date, parties, bars, celebrations, and socializing may all tempt you to smoke. Please remember these tips to help you resist those urges and stay smoke-free.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">The Day You Quit Smoking:</content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>Look to your family and friends for support. Let them know what to do or avoid doing to help you quit.</item>
+                     <item>
+                        <caption>•</caption>Throw away ALL cigarettes, ashtrays, matches, lighters. You don't need them. You don't want them and you want to make it difficult to go back.</item>
+                     <item>
+                        <caption>•</caption>Keep yourself occupied. Take a walk. See a movie. See friends. Do anything to keep your mind off cigarettes.</item>
+                     <item>
+                        <caption>•</caption>Calculate all the money you'll save by not buying cigarettes. Probably well over $1,000 a year! $1,000 a year? Think of what you can spend it on!</item>
+                     <item>
+                        <caption>•</caption>Know what situations are going to make you want to smoke. Plan now how you'll avoid them or deal with them so you don't smoke.</item>
+                     <item>
+                        <caption>•</caption>Keep mini Nicotine Polacrilex Lozenges next to your bed so you're prepared when you get up. A lot of people get cravings first thing in the morning.</item>
+                     <item>
+                        <caption>•</caption>Make an appointment to see your dentist and get the tobacco stains cleaned off. While you're getting rid of the evidence of cigarettes in the house, do the same for your teeth. Have clothes or drapes that smell of smoking cleaned.</item>
+                     <item>
+                        <caption>•</caption>Now that your house is smoke-free, try to spend most of your time in smoke-free environments.</item>
+                     <item>
+                        <caption>•</caption>If you usually smoked with coffee or alcohol, try to keep away from them for now. Remember you are also trying to break a habit.</item>
+                     <item>
+                        <caption>•</caption>Smoking is a “hands-on” habit. So use something else to occupy your hands: a rubber band or a pen.</item>
+                     <item>
+                        <caption>•</caption>Now's a good time to get active. Find activities to take your mind off cigarettes and relax. Take up jogging, swimming, or walking.</item>
+                     <item>
+                        <caption>•</caption>Don't stress out about gaining weight. Dieting now may weaken your efforts to quit smoking. Eat sensibly and exercise daily; drink large quantities of water and fruit juices; this can help your chances of staying smoke-free.</item>
+                     <item>
+                        <caption>•</caption>Laugh. Watch a sitcom. Read a comic book. It really helps.</item>
+                  </list>
+                  <paragraph>REMEMBER: Urges to smoke are temporary. They'll pass, even if you don't smoke.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">WHAT YOU CAN EXPECT.</content>
+                  </paragraph>
+                  <paragraph>As you are successful at staying smoke-free, initially you will probably notice a few of the following typical withdrawal symptoms, so don't be surprised. Use of mini Nicotine Polacrilex Lozenges reduces these symptoms, but may not eliminate them entirely. They will go away with time. Stay focused on your goal of becoming an ex-smoker. Research shows that if you manage to avoid all smoking in the first week (that means not having a single puff), your chances of success increase dramatically. </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">The First Few Days.</content> You may feel nervous or irritable or have difficulty concentrating during the first few days after you quit smoking. Your body needs time to regain balance. Initially, you might feel a little out of sorts, get headaches, feel light-headed, or have trouble sleeping. Your smoker’s cough may get worse before it improves. But fear not, it’s a positive sign. Coughing helps clean your lungs of the tar residue you got from smoking.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">After a Couple of Weeks.</content> Your confidence and ability to cope with urges to smoke should be getting stronger. But don't be over-confident and think you can smoke just one cigarette. Even now, having even a single puff can lead to a return to smoking cigarettes regularly. Be prepared, and remember why you wanted to stop smoking. Have you noticed that your sense of taste and smell has improved? You are probably coughing less and finding it easier to breathe. You've also probably noticed your withdrawal symptoms are subsiding (though don't worry if they're still there: they last longer for some people). These are all positive signs that your body is getting used to your success at stopping smoking.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">By The End Of The First Month.</content> You are less likely to have cravings for cigarettes as often. However sudden cravings may still happen, and when they do, be on your guard, as they can be strong and seem to come out of the blue. Be prepared for these challenging times. The key is do what you can so these unexpected cravings can't beat you. Keep focused on the ways non-smokers are more attractive than smokers. Their breath smells better. Their clothes and hair are fresher. Their teeth are cleaner and brighter. Their skin is less likely to wrinkle. Not smoking around children and your friends is also healthier for them too.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">WHAT IF YOU DO SLIP AND SMOKE?</content>
+                  </paragraph>
+                  <paragraph>“What if I relapse?” One cigarette is a slip-up, but it's not the end of the quit effort. Everybody slips at something. The key is this: forgive yourself and stop at that one cigarette. Don't let this slip ruin your good intentions, keep at your quit attempt. So, throw out your cigarettes and continue with your quit attempt, keeping in mind what went wrong and led to the slip.</paragraph>
+                  <paragraph>If you do go back to smoking, certainly don't throw out your mini Nicotine Polacrilex Lozenges. Keep them for the next time you're ready to quit. In fact research says that even if you are back to smoking regularly the best thing you can do is learn and try again.</paragraph>
+                  <paragraph>Try to understand the reason you had those cigarettes that made you slip. That’s important, because now you can plan better to deal with these moments next time. It’s true you stumbled, but don’t think of yourself as having failed. Encourage yourself by treating the last attempt as a learning experience, even a “trial run” for the real thing.</paragraph>
+                  <paragraph>Take a look at the usage instructions and check that you used the mini Nicotine Polacrilex Lozenges correctly and for the full 12 weeks of the program. When you try again make sure you use enough and the right way. That way you’ll be best equipped to deal with the unexpected cravings.</paragraph>
+                  <paragraph>Don’t forget; quitting isn't easy and it takes practice to do anything. Stopping smoking is no different.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">YOU’VE MADE IT.</content>
+                  </paragraph>
+                  <paragraph>Once your twelve week quitting program is over, you’ve taken your last mini Nicotine Polacrilex Lozenge. Now you are both cigarette and nicotine-free. Get up and give yourself a standing ovation. We mean it. Do you realize that you have just done a really difficult thing?</paragraph>
+                  <paragraph>Now’s a good time to think back on the process. Think of all your reasons for quitting smoking. Think of your goals. Think of how they’re going to be a reality now.</paragraph>
+                  <paragraph>Think of what you’re going to do with your newly liberated cigarette money. The places you can now go smoke-free. Think of the extra time you may have added to your life and what you can do with it. And although you may still experience the occasional temptation, and cigarettes still want you back, think positively. Think forward. And consider yourself a proud non-smoker.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">FREQUENTLY ASKED QUESTIONS.</content>
+                  </paragraph>
+                  <list listType="ordered">
+                     <item>
+                        <caption>1.</caption>
+                        <content styleCode="bold">When I stop smoking and start using mini Nicotine Polacrilex Lozenges how will I feel?</content>
+                     </item>
+                  </list>
+                  <paragraph>Mini Nicotine Polacrilex Lozenges help reduce cravings, but be prepared for some nicotine withdrawal symptoms. After you stop smoking they can begin almost at once and are normally at their strongest during the first three or four days. For some people, any of the following may occur:</paragraph>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>unexpected craving or urges for cigarettes</item>
+                     <item>
+                        <caption>•</caption>anxiety, irritability, restlessness, mood changes, nervousness</item>
+                     <item>
+                        <caption>•</caption>drowsiness</item>
+                     <item>
+                        <caption>•</caption>trouble concentrating</item>
+                     <item>
+                        <caption>•</caption>increased appetite and weight gain</item>
+                     <item>
+                        <caption>•</caption>headaches, muscular pain, constipation, fatigue</item>
+                  </list>
+                  <paragraph>Mini Nicotine Polacrilex Lozenges are designed to reduce the craving for nicotine you used to satisfy with cigarettes. Mini Nicotine Polacrilex Lozenges can also help provide relief from other withdrawal symptoms such as irritability and nervousness.</paragraph>
+                  <list listType="ordered">
+                     <item>
+                        <caption>2.</caption>
+                        <content styleCode="bold">Are mini Nicotine Polacrilex Lozenges just swapping one type of nicotine addiction for another?</content>
+                     </item>
+                  </list>
+                  <paragraph>Mini Nicotine Polacrilex Lozenges do contain nicotine, however there is probably less nicotine in your daily dose of lozenges than in your cigarettes. Mini Nicotine Polacrilex Lozenges give you enough nicotine to help you combat the physical withdrawal symptoms so you can cope with the mental side of stopping smoking. Also, since the nicotine from the lozenges goes into your blood stream more slowly, it produces less of the effects of nicotine that people find rewarding. In fact, when used as directed in the 12 week program, mini Nicotine Polacrilex Lozenges gradually wean you off your dependence for both nicotine and cigarettes.</paragraph>
+                  <list listType="ordered">
+                     <item>
+                        <caption>3.</caption>
+                        <content styleCode="bold">Can mini Nicotine Polacrilex Lozenges do any harm?</content>
+                     </item>
+                  </list>
+                  <paragraph>Some people with conditions like heart disease or people taking prescription medicine for asthma or depression should not use this product without talking to their doctor - check the <content styleCode="bold">“IMPORTANT WARNINGS”</content> on the front of this User's Guide. You may also experience side effects such as hiccups, mouth or throat irritation, heartburn or other stomach problems such as nausea especially if mini Nicotine Polacrilex Lozenges are chewed or swallowed. In any case, mini Nicotine Polacrilex Lozenges do not contain the tar, carbon monoxide, and other toxins present in cigarette smoke.</paragraph>
+                  <list listType="ordered">
+                     <item>
+                        <caption>4.</caption>
+                        <content styleCode="bold">Will I put on weight?</content>
+                     </item>
+                  </list>
+                  <paragraph>In the first couple of months after quitting smoking, some people do put on a few pounds. But think of it this way. Overall, you’ll be healthier and look better. You can always tackle your weight by changing your diet and increasing the amount you exercise once you have gotten through the difficult part of stopping smoking. </paragraph>
+                  <list listType="ordered">
+                     <item>
+                        <caption>5.</caption>
+                        <content styleCode="bold">Does taking mini Nicotine Polacrilex Lozenges cost more than smoking?</content>
+                     </item>
+                  </list>
+                  <paragraph>If you normally smoke a pack and a half a day, your total cost of using mini Nicotine Polacrilex Lozenges during the 12 week period should be less than smoking. But guess what? After you’ve finished the mini Nicotine Polacrilex Lozenge program all that money you used to spend on cigarettes is now savings. And think of the health issues you’ll hopefully be able to avoid.</paragraph>
+                  <list listType="ordered">
+                     <item>
+                        <caption>6.</caption>
+                        <content styleCode="bold">What if I have a cigarette and start smoking?</content>
+                     </item>
+                  </list>
+                  <paragraph>Don't panic. First, don't think badly of yourself. Throw away your cigarettes and forgive yourself. Then think about what went wrong and get back on track. In fact people who have already tried to stop smoking are more likely to be successful the next time.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">CHALLENGES TO WATCH FOR.</content>
+                  </paragraph>
+                  <paragraph>Once you quit smoking, you are likely to experience periodic, and sometimes intense, temptations to smoke. Certain situations present special challenges. Some common ones include:</paragraph>
+                  <paragraph>
+                     <content styleCode="italics">Stress and upset.</content>
+                  </paragraph>
+                  <paragraph>When you are feeling stressed or upset, you may think a cigarette will make everything better. It won’t. Find other ways to relax and unwind.</paragraph>
+                  <paragraph>
+                     <content styleCode="italics">The blues.</content>
+                  </paragraph>
+                  <paragraph>You may be especially vulnerable when you feel bored or blue. Remember that having a cigarette will just make you feel worse.</paragraph>
+                  <paragraph>
+                     <content styleCode="italics">Smoking cues.</content>
+                  </paragraph>
+                  <paragraph>Seeing cigarettes or watching other people smoke can trigger temptation. Remember that you choose not to smoke anymore.</paragraph>
+                  <paragraph>
+                     <content styleCode="italics">Alcohol.</content>
+                  </paragraph>
+                  <paragraph>Drinking and smoking seem to go together, and alcoholic beverages may weaken your resolve, making drinking dangerous to your quit effort. Avoid drinking early in your quit effort, and try to drink with non-smokers.</paragraph>
+                  <paragraph>
+                     <content styleCode="italics">Automatic slips.</content>
+                  </paragraph>
+                  <paragraph>Sometimes you may find yourself preparing to smoke without even realizing it. Watch out for those moments when your hand seems to “automatically” reach for a cigarette.</paragraph>
+                  <paragraph>Watch out for these situations: they can trigger a relapse. You probably know which one(s) are most dangerous for you; plan ahead to deal with the situation effectively. Always remember that you’re trying to break a habit, and the most important thing is to do something to combat the urge in these situations.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">COPING AFTER QUITTING.</content>
+                  </paragraph>
+                  <paragraph>The key to staying smoke-free is to prepare for and cope with challenges as they occur. If you find yourself tempted to smoke, do something! Here are some things to consider:</paragraph>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>Escape. Leave the situation, even for a few minutes. Most temptations don’t last long.</item>
+                     <item>
+                        <caption>•</caption>Distract yourself. Get your mind off smoking. Think of something else or get busy with something.</item>
+                     <item>
+                        <caption>•</caption>Relax. Don't let stress get to you. Think of pleasant, relaxing things; breathe slowly and regularly. Let the stress drain out of you.</item>
+                     <item>
+                        <caption>•</caption>Talk yourself out of it. What you say to yourself matters. So, remind yourself how important it is for you to quit; remind yourself you can't have just one; or just command yourself to STOP.</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">For more information please visit www.SmokeFreeHabits.com</content>
+                  </paragraph>
+                  <paragraph>Packaged By</paragraph>
+                  <paragraph>Perrigo®</paragraph>
+                  <paragraph>Allegan, MI 49010</paragraph>
+                  <paragraph>: 9571E 00 J3</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">PLACE THESE REMINDERS ON YOUR CALENDAR:</content>
+                  </paragraph>
+                  <renderMultiMedia ID="id-459494926" referencedObject="ID_91da4fb9-c22e-41d4-bf3a-42120fca2c69"/>
+                  <paragraph>
+                     <content styleCode="bold">
+                        <content styleCode="italics">Free Personalized Plan</content>
+                     </content>
+                  </paragraph>
+                  <renderMultiMedia ID="id1777592588" referencedObject="ID_50b3fc64-9174-49b7-8334-1d7b4b7969c1"/>
+                  <paragraph>The <content styleCode="bold">Smoke Free Habits</content> plan provides you with support whenever you need it. The plan provides a network of tools to help you get through those tough moments.</paragraph>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>
+                        <content styleCode="bold">On the Web:</content> Stay motivated with our personalized wellness assessment and 12-week plan. Get helpful advice, tips, and inspiration on SmokeFreeHabits.com/assessment-form.</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">To learn more visit <content styleCode="underline">www.smokefreehabits.com</content>
+                     </content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">QUITTING TIPS</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">How to Survive the First Week:</content>
+                  </paragraph>
+                  <list listType="ordered">
+                     <item>
+                        <caption>1.</caption>
+                        <content styleCode="bold">Control your physical cravings for nicotine.</content>
+                     </item>
+                     <item>
+                        <caption> </caption>Use enough - You can greatly increase your chances for success by using at least 9 mini lozenges per day during the first 6 weeks when you start using mini Nicotine Polacrilex Lozenges.</item>
+                     <item>
+                        <caption>2.</caption>
+                        <content styleCode="bold">Get rid of all signs that you ever smoked –</content>
+                     </item>
+                     <item>
+                        <caption> </caption>ashtrays, matches and, of course, cigarettes.</item>
+                     <item>
+                        <caption>3.</caption>
+                        <content styleCode="bold">Stay active.</content>
+                     </item>
+                     <item>
+                        <caption> </caption>Keep busy to take your mind off smoking.</item>
+                     <item>
+                        <caption>4.</caption>
+                        <content styleCode="bold">Think positive!</content>
+                     </item>
+                     <item>
+                        <caption> </caption>The first week is the toughest. Remind yourself that it will get easier.</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">TIPS</content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>
+                        <caption>•</caption>Make sure you tell friends and family members that you quit.</item>
+                     <item>
+                        <caption>•</caption>Use enough mini Nicotine Polacrilex Lozenges – at least 9 mini lozenges per day during the first 6 weeks.</item>
+                     <item>
+                        <caption>•</caption>Stay active. Keep busy to take your mind off smoking.</item>
+                     <item>
+                        <caption>•</caption>When an urge to smoke strikes, take a few deep breaths and remind yourself how important quitting is to you.</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">WALLET CARD</content>
+                  </paragraph>
+                  <renderMultiMedia ID="id297421160" referencedObject="ID_6e7df3d9-5790-4320-88c5-aa72a002070a"/>
+                  <paragraph>
+                     <content styleCode="bold">WALLET CARD</content>
+                  </paragraph>
+                  <renderMultiMedia ID="id-1494029490" referencedObject="DD944E9B-0D97-44AC-9BD8-F47D203DF00E"/>
+               </text>
+               <effectiveTime value="20260625"/>
+               <component>
+                  <observationMedia ID="ID_91da4fb9-c22e-41d4-bf3a-42120fca2c69">
+                     <text>lozenge-stickers.jpg</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="lozenge-stickers.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+               <component>
+                  <observationMedia ID="ID_50b3fc64-9174-49b7-8334-1d7b4b7969c1">
+                     <text>lozenge-smoke-free-habits.jpg</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="image-01.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+               <component>
+                  <observationMedia ID="ID_6e7df3d9-5790-4320-88c5-aa72a002070a">
+                     <text>lozenge-wallet-card-front.jpg</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="image-02.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+               <component>
+                  <observationMedia ID="DD944E9B-0D97-44AC-9BD8-F47D203DF00E">
+                     <text>lozenge-wallet-card-back.jpg</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="image-03.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="ID_576ba257-a1e6-4bb4-aa25-13457b01c129">
+               <id root="bd605ecd-fa58-4e7a-8cc7-349f5ba86ea1"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>Principal Display Panel</title>
+               <text>
+                  <paragraph>Compare to the active ingredient in Nicorette<sup>®</sup> mini Lozenge</paragraph>
+                  <paragraph>berkley jensen<sub>®</sub>
+                  </paragraph>
+                  <paragraph>mini NICOTINE LOZENGE</paragraph>
+                  <paragraph>Nicotine Polacrilex Lozenge 2 mg (nicotine)</paragraph>
+                  <paragraph>STOP SMOKING AID</paragraph>
+                  <paragraph>Includes User’s Guide</paragraph>
+                  <paragraph>QuitTube®</paragraph>
+                  <paragraph>FOR THOSE WHO SMOKE THEIR FIRST CIGARETTE MORE THAN 30 MINUTES AFTER WAKING UP.</paragraph>
+                  <paragraph>If you smoke your first cigarette <content styleCode="underline">WITHIN</content> 30 MINUTES of waking up, use Nicotine Polacrilex Lozenge, 4 mg.</paragraph>
+                  <paragraph>MINT</paragraph>
+                  <paragraph>Actual Size</paragraph>
+                  <paragraph>189 LOZENGES | 2 mg EACH</paragraph>
+                  <paragraph>(7 mini QUITTUBE<sup>®</sup> CONTAINERS OF 27)</paragraph>
+                  <paragraph>2 mg</paragraph>
+                  <renderMultiMedia ID="id-252669644" referencedObject="ID_64e2e1ae-5421-4e02-ac0e-d15c8890daef"/>
+                  <renderMultiMedia ID="id1044250498" referencedObject="ID_1847d535-41f6-4ada-b9da-a60e6277de8d"/>
+               </text>
+               <effectiveTime value="20260625"/>
+               <component>
+                  <observationMedia ID="ID_64e2e1ae-5421-4e02-ac0e-d15c8890daef">
+                     <text>berkley-jensen-nicotine-lozenge-mint-stretch-card-image-1.jpg</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="berkley-jensen-nicotine-lozenge-mint-stretch-card-image-1.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+               <component>
+                  <observationMedia ID="ID_1847d535-41f6-4ada-b9da-a60e6277de8d">
+                     <text>berkley-jensen-nicotine-lozenge-mint-stretch-card-image-2.jpg</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="berkley-jensen-nicotine-lozenge-mint-stretch-card-image-2.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

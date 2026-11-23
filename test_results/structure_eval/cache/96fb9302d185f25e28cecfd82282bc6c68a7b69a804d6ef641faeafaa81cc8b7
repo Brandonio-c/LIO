@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 3070,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Sodium Bicarbonate Sodium Bicarbonate STEARIC ACID MICROCRYSTALLINE CELLULOSE SODIUM BICARBONATE BICARBONATE ION SB6"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts"
+      ],
+      "active_ingredient": [
+        "Active Ingredient (in each tablet) Sodium Bicarbonate 10 gr (650 mg)"
+      ],
+      "purpose": [
+        "Purpose Antacid"
+      ],
+      "indications_and_usage": [
+        "Uses relieves: acid indigestion heartburn sour stomach upset stomach associated with these symptoms"
+      ],
+      "warnings": [
+        "Warnings Do not use this product if you are on a sodium-restricted diet unless directed by a doctor. Do not take more than 24 tablets for adults up to 60 years of age (or 12 tablets for adults 60 years of age and older) in a 24-hour period nor use maximum dosage for more than 2 weeks, except under the advice and supervision of a doctor. Stop use and ask a doctor if symptoms last more than 2 weeks. Stomach Warning: TO AVOID SERIOUS INJURY, D0 NOT TAKE UNTIL TABLET IS COMPLETELY DISSOLVED. IT IS VERY IMPORTANT NOT TO TAKE THIS PRODUCT WHEN OVERLY FULL FROM FOOD OR DRINK. Consult a doctor if severe stomach pain occurs after taking this product. Drug Interaction Precaution: Ask a physician or pharmacist before use if you are presently taking a prescription drug. Antacids may interact with certain prescription drugs. If pregnant or breast-feeding, ask a health professional before use. KEEP THIS AND ALL DRUGS OUT OF THE REACH OF CHILDREN. In case of accidental overdose, get medical help or contact a Poison Control Center (1-800-222-1222) immediately."
+      ],
+      "do_not_use": [
+        "Do not use this product if you are on a sodium-restricted diet unless directed by a doctor. Do not take more than 24 tablets for adults up to 60 years of age (or 12 tablets for adults 60 years of age and older) in a 24-hour period nor use maximum dosage for more than 2 weeks, except under the advice and supervision of a doctor."
+      ],
+      "ask_doctor": [
+        "Stop use and ask a doctor if symptoms last more than 2 weeks."
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP THIS AND ALL DRUGS OUT OF THE REACH OF CHILDREN. In case of accidental overdose, get medical help or contact a Poison Control Center (1-800-222-1222) immediately."
+      ],
+      "dosage_and_administration": [
+        "Directions Adults: Take 1 tablet, dissolved in a glass of water, as needed. Maximum daily dose for adults up to 60 years of age is 24 tablets. Maximum daily dose for adults 60 years of age or older is 12 tablets. Dissolve completely in water before drinking. DO NOT EXCEED RECOMMENDED DOSE. Not recommended for children."
+      ],
+      "storage_and_handling": [
+        "Other information each tablet contains: sodium 178 mg store at room temperature 15-30ºC (59-86°F) in well-closed containers as defined in the USP"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Microcrystalline Cellulose, and Stearic Acid"
+      ],
+      "questions": [
+        "Questions? Call toll free 1-844-912-4012"
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPAL DISPLAY PANEL - 1000 Tablets Bottle Label label"
+      ],
+      "set_id": "0f867f56-4bc0-4a85-b9d2-a16282b7c82b",
+      "id": "50c437cb-e5c2-0e2b-e063-6394a90a3e2b",
+      "effective_time": "20260501",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M001"
+        ],
+        "brand_name": [
+          "Sodium Bicarbonate"
+        ],
+        "generic_name": [
+          "SODIUM BICARBONATE"
+        ],
+        "manufacturer_name": [
+          "TWIN MED LLC"
+        ],
+        "product_ndc": [
+          "55681-332"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "SODIUM BICARBONATE"
+        ],
+        "rxcui": [
+          "198861"
+        ],
+        "spl_id": [
+          "50c437cb-e5c2-0e2b-e063-6394a90a3e2b"
+        ],
+        "spl_set_id": [
+          "0f867f56-4bc0-4a85-b9d2-a16282b7c82b"
+        ],
+        "package_ndc": [
+          "55681-332-10"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "8MDF5V39QO"
+        ]
+      }
+    }
+  ]
+}

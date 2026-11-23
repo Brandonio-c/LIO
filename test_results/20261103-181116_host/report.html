@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261103-181116_host</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261103-181116_host</code> on <code>/dev/cu.usbserial-1120</code>
+,
+2026-11-03T18:11:16-05:00 to 2026-11-03T18:11:17-05:00</p>
+<div class="verdict" style="background: #0ca30c">FUNCTIONAL</div>
+<ul><li>no failures or warnings</li></ul>
+
+<table>
+<tr><th>Sample</th><td>none-empty-chamber</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td>2.0.0 (proto 1, build 2026-11-03)</td>
+    <th>Config</th><td><code>c4d85cb25bd0</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.11</td>
+    <th>Software</th><td>lio 0.2.0, git <code>332e74c7d6</code></td></tr>
+<tr><th>Results</th><td colspan="3">PASS 3</td></tr>
+<tr><th>LED duty</th><td colspan="3">0.0 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T01.1">T01.1</a></td><td>Python and dependency versions</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T01.2">T01.2</a></td><td>Serial port discovery</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T01.3">T01.3</a></td><td>Configuration loads and is self-consistent</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+</table>
+
+
+
+
+<h2>T01</h2>
+
+<h3 id="T01.1">T01.1 Python and dependency versions <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>6 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Python version<br><code>T01.1/python</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.12.11</td><td>&gt;= 3.10</td></tr>
+
+<tr><td>pyserial installed<br><code>T01.1/pyserial</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.5</td><td>importable</td></tr>
+
+<tr><td>pyyaml installed<br><code>T01.1/pyyaml</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>6.0.3</td><td>importable</td></tr>
+
+<tr><td>numpy installed<br><code>T01.1/numpy</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2.5.4</td><td>importable</td></tr>
+
+<tr><td>matplotlib installed<br><code>T01.1/matplotlib</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.11.2</td><td>importable</td></tr>
+
+<tr><td>jinja2 installed<br><code>T01.1/jinja2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.1.6</td><td>importable</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T01.2">T01.2 Serial port discovery <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Selected port is present<br><code>T01.2/port</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>/dev/cu.usbserial-1120: present</td><td>--lio-port names an existing serial port</td></tr>
+
+<tr><td>USB-serial chip recognised<br><code>T01.2/chip</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>VID:PID 1A86:7523 (CH340)</td><td>one of link.usb_ids</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T01.3">T01.3 Configuration loads and is self-consistent <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Config validates<br><code>T01.3/load</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lio_hw.yaml sha256 c4d85cb25bd0</td><td></td></tr>
+
+<tr><td>16 holes<br><code>T01.3/holes</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>16 entries</td><td></td></tr>
+
+<tr><td>Rails split A = 1-9, B = 10-16<br><code>T01.3/rails</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>A=[1, 2, 3, 4, 5, 6, 7, 8, 9] B=[10, 11, 12, 13, 14, 15, 16]</td><td></td></tr>
+
+</table>
+</details>
+
+
+
+</body>
+</html>

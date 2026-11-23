@@ -218,8 +218,10 @@ __marimo__/
 .streamlit/secrets.toml
 .DS_Store
 
-# LIO system test suite
-test_results/
+# LIO system test suite: historical runs under test_results/ are tracked so
+# research agents can read cubes/analysis without the bench Mac. Keep only
+# ephemeral local stage state ignored.
+test_results/stage_position.json
 software/host/.venv/
 .pytest_cache/
 .mypy_cache/

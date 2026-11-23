@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 7165,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Free and Pure Cold Therapy Pain Relief Menthol ARCTIUM LAPPA ROOT ARNICA MONTANA FLOWER INDIAN FRANKINCENSE ILEX PARAGUARIENSIS LEAF WATER CAMPHOR (SYNTHETIC) GLYCERIN SILICON DIOXIDE .ALPHA.-TOCOPHEROL ACETATE, DL- MEDIUM-CHAIN TRIGLYCERIDES AMINOMETHYL PROPANOL MENTHOL, UNSPECIFIED FORM MENTHOL, UNSPECIFIED FORM ACRYLATES/C10-30 ALKYL ACRYLATE CROSSPOLYMER (60000 MPA.S) GREEN TEA LEAF ALOE VERA LEAF CALENDULA OFFICINALIS FLOWER ISOPROPYL ALCOHOL ISOPROPYL MYRISTATE"
+      ],
+      "active_ingredient": [
+        "Active ingredient Menthol 4%"
+      ],
+      "purpose": [
+        "Purpose Topical analgesic"
+      ],
+      "indications_and_usage": [
+        "Uses Temporarily relieves minor aches and pains of muscles and joing associated with simple backache arthritis strains bruises sprains"
+      ],
+      "warnings": [
+        "Warnings For external use only. Flammable: Keep away from excessive heat or open flame. When using this product use only as directed avoid contact with the yes or on mucous membranes do not apply to wounds or damaged skin do not apply to irritate skin or if excessive irritation develops do not bandage tightly or use with heating pad or device Stop use and ask a doctor if you experience pain, swelling, or blistering of the skin condition worsens, or if symptoms persist for more than 7 days or clear up and occur again within a few days arthritic pain persists for more than 10 days, or redness is present, or in conditions affecting children under 12 years of age If pregnant or breast-feeding ask a health professional before use Keep out of reach of children If swallowed, get medical help or contact a Poison Control Center right away"
+      ],
+      "when_using": [
+        "When using this product use only as directed avoid contact with the yes or on mucous membranes do not apply to wounds or damaged skin do not apply to irritate skin or if excessive irritation develops do not bandage tightly or use with heating pad or device"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if you experience pain, swelling, or blistering of the skin condition worsens, or if symptoms persist for more than 7 days or clear up and occur again within a few days arthritic pain persists for more than 10 days, or redness is present, or in conditions affecting children under 12 years of age"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding ask a health professional before use"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children If swallowed, get medical help or contact a Poison Control Center right away"
+      ],
+      "dosage_and_administration": [
+        "Directions adults and children 2 years of age and older: rub a thin film over affected area not more than 3 to 4 times daily children under 2 years of age: do not use, consult a physician wash hands after use with cool water"
+      ],
+      "other_safety_information": [
+        "Other information store at 20-25°C (68-77°F) store in a cool dry place away from direct sunlight"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Aloe Barbadensis Leaf Extract, Aminomethyl Propanol, Arctium Lappa Root Extract, Arnica Montana Flower Extract, Boswellia Serrata Extract, Calendula Officinalis Extract, Camellia Sinensis Leaf Extract, Camphor, Glycerin, Ilex Paraguariensis Leaf Extract, Isopropyl Alcohol, Isopropyl Myristate, Silicon Dioxide, Tocopheryl Acetate, Water"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal Display Panel - 8 fl oz Walgreens Free and Pure t Cold Therapy Pain Relief Gel Pump Menthol 4%, topical analgesic Compare to the active ingredient in Biofreeze ® Gel tt For the temporary relief of minor aches & pains of muscles & joints associated with simple backache, arthritis, strains, bruises & sprains Soothing menthol t Free + Pure is: Fragrance Free Hypoallergenic Paraben Free 8 FL OZ (236.5 mL) Free and Pure Label"
+      ],
+      "set_id": "22cbbffc-f876-411e-e063-6394a90a1b38",
+      "id": "376626f7-0d07-f936-e063-6294a90a3691",
+      "effective_time": "20250612",
+      "version": "4",
+      "openfda": {
+        "application_number": [
+          "M017"
+        ],
+        "brand_name": [
+          "Free and Pure Cold Therapy Pain Relief"
+        ],
+        "generic_name": [
+          "MENTHOL"
+        ],
+        "manufacturer_name": [
+          "Walgreen Co."
+        ],
+        "product_ndc": [
+          "0363-0383"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "MENTHOL, UNSPECIFIED FORM"
+        ],
+        "spl_id": [
+          "376626f7-0d07-f936-e063-6294a90a3691"
+        ],
+        "spl_set_id": [
+          "22cbbffc-f876-411e-e063-6394a90a1b38"
+        ],
+        "package_ndc": [
+          "0363-0383-08"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0311917043999"
+        ],
+        "unii": [
+          "L7T10EIP3A"
+        ]
+      }
+    }
+  ]
+}

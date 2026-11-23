@@ -1,0 +1,337 @@
+{
+  "run_id": "20261117-012457_host",
+  "target": "/dev/cu.usbmodem1101",
+  "started": "2026-11-17T01:24:57-05:00",
+  "environment": {
+    "os": "macOS-27.0.1-x86_64-i386-64bit",
+    "python": "3.12.4",
+    "lio_package": "0.2.0",
+    "git_commit": "33dbb2908541a223769f80e64f98e89e640e11ff",
+    "git_dirty": true,
+    "host": "lhc-mac-colelou.nlm.nih.gov",
+    "user": "coleloughbc"
+  },
+  "firmware": {
+    "banner": "# BOOT name=lio fw=2.5.1 proto=1 build=2026-11-16 adc_ok=1 hw_wdt=0",
+    "fw": "2.5.1",
+    "proto": "1",
+    "build": "2026-11-16",
+    "adc_addr": "0x48",
+    "adc_ok": "1",
+    "gain": "1",
+    "rate": "128",
+    "settle_ms": "8",
+    "wdt_a_ms": "2000",
+    "wdt_b_ms": "5000",
+    "wdt_a_cap_ms": "5000",
+    "wdt_b_cap_ms": "10000",
+    "comms_ms": "10000",
+    "arm_ms": "60000",
+    "step_max": "2048",
+    "jog_max": "2048",
+    "jog_v_max": "1000",
+    "jog_acc_max": "1000",
+    "wake_ms_max": "3000",
+    "motion_armed": "0",
+    "debug_states": "1",
+    "mains": "0",
+    "light_in_motion": "0",
+    "arm_token": "0xCAE3",
+    "hw_wdt": "0"
+  },
+  "config": {
+    "path": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
+    "sha256": "795e6bf0787df66b2d875853751606696dc877503458fa1a98060b79fbeed2d0",
+    "provisional": true
+  },
+  "metadata": {
+    "sample_id": "none-empty-chamber",
+    "operator": "unknown"
+  },
+  "faults": [],
+  "results": [
+    {
+      "id": "T06.1",
+      "name": "OPT101",
+      "module": "T06",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 5.324796583969146,
+      "subs": [
+        {
+          "id": "T06.1/dark",
+          "name": "opt101 dark offset",
+          "status": "PASS",
+          "message": "56.9 counts",
+          "criteria": "0 to 800 counts",
+          "measured": {
+            "mean": 56.92
+          }
+        },
+        {
+          "id": "T06.1/h01/visible",
+          "name": "Responds to hole 1 (395)",
+          "status": "PASS",
+          "message": "net +76",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 76
+          }
+        },
+        {
+          "id": "T06.1/h02/visible",
+          "name": "Responds to hole 2 (405)",
+          "status": "PASS",
+          "message": "net +59",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 59
+          }
+        },
+        {
+          "id": "T06.1/h03/visible",
+          "name": "Responds to hole 3 (blue)",
+          "status": "PASS",
+          "message": "net +41",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 41
+          }
+        },
+        {
+          "id": "T06.1/h04/visible",
+          "name": "Responds to hole 4 (green)",
+          "status": "PASS",
+          "message": "net +43",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 43
+          }
+        },
+        {
+          "id": "T06.1/h05/visible",
+          "name": "Responds to hole 5 (yellow)",
+          "status": "PASS",
+          "message": "net +20",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 20
+          }
+        },
+        {
+          "id": "T06.1/h06/visible",
+          "name": "Responds to hole 6 (orange)",
+          "status": "PASS",
+          "message": "net +21",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 21
+          }
+        },
+        {
+          "id": "T06.1/h07/visible",
+          "name": "Responds to hole 7 (red)",
+          "status": "PASS",
+          "message": "net +27",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 27
+          }
+        },
+        {
+          "id": "T06.1/h10/visible",
+          "name": "Responds to hole 10 (white)",
+          "status": "PASS",
+          "message": "net +68",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 68
+          }
+        },
+        {
+          "id": "T06.1/h11/visible",
+          "name": "Responds to hole 11 (pink)",
+          "status": "PASS",
+          "message": "net +136",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 136
+          }
+        },
+        {
+          "id": "T06.1/saturation",
+          "name": "Not saturated",
+          "status": "PASS",
+          "message": "peak 359",
+          "criteria": "< 29000 counts",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "visible_net": {
+          "1": 76,
+          "2": 59,
+          "3": 41,
+          "4": 43,
+          "5": 20,
+          "6": 21,
+          "7": 27,
+          "10": 68,
+          "11": 136
+        }
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T06.2",
+      "name": "InGaAs TIA",
+      "module": "T06",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 1.3102041250094771,
+      "subs": [
+        {
+          "id": "T06.2/erratic",
+          "name": "Dark signal steady",
+          "status": "PASS",
+          "message": "dark mean -168, sigma 6.9",
+          "criteria": "sigma <= 100 and mean >= -1500",
+          "measured": {
+            "sigma": 6.89
+          }
+        },
+        {
+          "id": "T06.2/dark",
+          "name": "ingaas dark offset",
+          "status": "PASS",
+          "message": "-168.0 counts",
+          "criteria": "-400 to 2000 counts",
+          "measured": {
+            "mean": -168.02
+          }
+        },
+        {
+          "id": "T06.2/polarity/gate",
+          "name": "Polarity gate (hole 8)",
+          "status": "PASS",
+          "message": "net +16",
+          "criteria": "net >= -5 sigma",
+          "measured": {
+            "net": 16
+          }
+        },
+        {
+          "id": "T06.2/h09/polarity",
+          "name": "Hole 9 InGaAs polarity",
+          "status": "PASS",
+          "message": "net -1",
+          "criteria": "net not negative",
+          "measured": {
+            "net": -1
+          }
+        },
+        {
+          "id": "T06.2/h12/polarity",
+          "name": "Hole 12 InGaAs polarity",
+          "status": "PASS",
+          "message": "net +11",
+          "criteria": "net not negative",
+          "measured": {
+            "net": 11
+          }
+        },
+        {
+          "id": "T06.2/h13/polarity",
+          "name": "Hole 13 InGaAs polarity",
+          "status": "PASS",
+          "message": "net +17",
+          "criteria": "net not negative",
+          "measured": {
+            "net": 17
+          }
+        },
+        {
+          "id": "T06.2/h14/polarity",
+          "name": "Hole 14 InGaAs polarity",
+          "status": "PASS",
+          "message": "net +108",
+          "criteria": "net not negative",
+          "measured": {
+            "net": 108
+          }
+        },
+        {
+          "id": "T06.2/saturation",
+          "name": "InGaAs not saturated",
+          "status": "PASS",
+          "message": "no hole saturates",
+          "criteria": "< 27000 counts",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T06.3",
+      "name": "Cross-calibration on the shared holes",
+      "module": "T06",
+      "kind": "A",
+      "status": "FAIL",
+      "message": "",
+      "duration_s": 0.008064041030593216,
+      "subs": [
+        {
+          "id": "T06.3/h08",
+          "name": "Hole 8 seen by both detectors",
+          "status": "FAIL",
+          "message": "one detector does not respond",
+          "criteria": "both above the detection threshold",
+          "measured": {
+            "ratio": 0.10135135135135136
+          }
+        },
+        {
+          "id": "T06.3/h09",
+          "name": "Hole 9 seen by both detectors",
+          "status": "FAIL",
+          "message": "one detector does not respond",
+          "criteria": "both above the detection threshold",
+          "measured": {
+            "ratio": null
+          }
+        }
+      ],
+      "measured": {
+        "ingaas_over_opt101": {}
+      },
+      "artefacts": []
+    }
+  ],
+  "duty": {
+    "window_s": 60.0,
+    "budget_ms": {
+      "A": 1000.0,
+      "B": 5000.0
+    },
+    "total_cooldown_s": 0,
+    "cooldowns": [],
+    "over_budget": []
+  },
+  "finished": "2026-11-17T01:25:04-05:00",
+  "verdict": {
+    "verdict": "DEGRADED",
+    "reasons": [
+      "failing channels: 8, 9"
+    ],
+    "counts": {
+      "PASS": 2,
+      "WARN": 0,
+      "FAIL": 1,
+      "SKIP": 0,
+      "ERROR": 0
+    }
+  }
+}

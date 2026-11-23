@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="48bf7422-38f0-d4b4-e063-6294a90aa3ab"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Sinus Severe Nasal Spray</title>
+   <effectiveTime value="20260119"/>
+   <setId root="48bf7422-38ef-d4b4-e063-6294a90aa3ab"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="045829437"/>
+            <name>VIVUNT PHARMA LLC</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <assignedEntity>
+                     <assignedOrganization>
+                        <id root="1.3.6.1.4.1.519.1" extension="862273427"/>
+                        <name>Midas Care Pharmaceuticals Pvt Ltd</name>
+                     </assignedOrganization>
+                     <performance>
+                        <actDefinition>
+                           <code code="C43360" displayName="manufacture" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="82706-026" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                     <performance>
+                        <actDefinition>
+                           <code code="C84732" displayName="label" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="82706-026" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                     <performance>
+                        <actDefinition>
+                           <code code="C84731" displayName="pack" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="82706-026" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                  </assignedEntity>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="494ecbc9-0d57-a0e7-e063-6294a90aa151"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20260119"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="82706-026" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Sinus Severe Ultra Fine Mist</name>
+                        <formCode code="C42889" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="AEROSOL, SPRAY"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Oxymetazoline hydrochloride.</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mg" value="0.5"/>
+                              <denominator unit="mL" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="K89MJ0S5VY" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>OXYMETAZOLINE HYDROCHLORIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="8VLN5B44ZY" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>OXYMETAZOLINE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="22ADO53M6F" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM PHOSPHATE, DIBASIC, ANHYDROUS</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="U725QWY32X" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POVIDONE K30</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="7FLD91C86K" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>EDETATE DISODIUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6DC9Q167V3" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPYLENE GLYCOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="F5UM2KM3W7" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BENZALKONIUM CHLORIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="KH7I04HPUU" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM PHOSPHATE, MONOBASIC, ANHYDROUS</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="15" unit="mL"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43175" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE, SPRAY"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="1" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="82706-026-01" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43182" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CARTON"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20260119"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M012" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20260119"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38284" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="NASAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_48d43f3d-4ac5-33d1-e063-6294a90a5adc">
+               <id root="48d43f3d-4ac4-33d1-e063-6294a90a5adc"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Drug Facts</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">
+                        <content styleCode="italics">Active ingredients</content>
+                     </content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>Oxymetazoline HCl 0.05%</item>
+                  </list>
+               </text>
+               <effectiveTime value="20260120"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_48d43dea-aca2-1940-e063-6294a90a4a35">
+               <id root="48d43dea-aca1-1940-e063-6294a90a4a35"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Purpose</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>Nasal decongestant</item>
+                  </list>
+               </text>
+               <effectiveTime value="20260120"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_48d443c9-51fe-dfa1-e063-6394a90a4b2f">
+               <id root="48d443c9-51fd-dfa1-e063-6394a90a4b2f"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Uses</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>temporarily relieves nasal congestion due to a cold</item>
+                     <item>hay fever or other upper respiratory allergies</item>
+                     <item>sinus congestion and pressure.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20260120"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_494e2aaf-5323-d2fa-e063-6394a90a207f">
+               <id root="494e2c2d-8c74-ea1e-e063-6394a90a5967"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Warnings</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>Warnings</paragraph>
+               </text>
+               <effectiveTime value="20260126"/>
+               <component>
+                  <section ID="id_link_48d47529-3cdd-9057-e063-6294a90aa3ac">
+                     <id root="494e943c-b8b9-508c-e063-6294a90ab0a9"/>
+                     <code code="50567-7" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - WHEN USING SECTION"/>
+                     <title>
+                        <content styleCode="bold">
+                           <content styleCode="italics">When using this product</content>
+                        </content>
+                     </title>
+                     <text>
+                        <list listType="unordered">
+                           <item>
+                              <content styleCode="bold">Do not exceed recommended dosage</content>
+                           </item>
+                           <item>do not use this product for more than 3 days. Use only as directed. Frequent or prolonged use may cause nasal congestion to recur or worsen.</item>
+                           <item>do not use this product if you have</item>
+                           <item>heart disease</item>
+                           <item>high blood pressure</item>
+                           <item>thyroid disease</item>
+                           <item>diabetes</item>
+                           <item>or difficulty in urination due to enlargement of the prostate gland unless directed by a doctor.</item>
+                           <item>this product may cause temporary discomfort such as burning, stinging, sneezing, or an increase in nasal discharge.</item>
+                           <item>use of this comtainer by more than one person may spread infection.</item>
+                        </list>
+                     </text>
+                     <effectiveTime value="20260120"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="id_link_48d47e90-9d45-0349-e063-6394a90af260">
+                     <id root="494e12ac-cf8d-6058-e063-6294a90ada50"/>
+                     <code code="50569-3" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR SECTION"/>
+                     <title>
+                        <content styleCode="bold">Stop use and ask a doctor</content>
+                     </title>
+                     <text>
+                        <paragraph>if symptoms persist.</paragraph>
+                     </text>
+                     <effectiveTime value="20260120"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="id_link_48d47529-3ce0-9057-e063-6294a90aa3ac">
+                     <id root="494e4005-416b-f459-e063-6394a90adcfe"/>
+                     <code code="53414-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PREGNANCY OR BREAST FEEDING SECTION"/>
+                     <title>
+                        <content styleCode="bold">If pregnant or breast-feeding,</content>
+                     </title>
+                     <text>
+                        <paragraph>ask a health professional before use.</paragraph>
+                     </text>
+                     <effectiveTime value="20260120"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="id_link_48d47529-3ce3-9057-e063-6294a90aa3ac">
+                     <id root="494e32b2-c5d2-db3f-e063-6394a90aaa0d"/>
+                     <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+                     <title>
+                        <content styleCode="bold">Keep out of reach of children.</content>
+                     </title>
+                     <text>
+                        <paragraph>Keep out of reach of children.</paragraph>
+                     </text>
+                     <effectiveTime value="20260120"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="id_link_48d4899e-2817-372e-e063-6394a90a012b">
+                     <id root="494e316f-08d6-f137-e063-6394a90af479"/>
+                     <code code="34088-5" codeSystem="2.16.840.1.113883.6.1" displayName="OVERDOSAGE SECTION"/>
+                     <text>
+                        <paragraph>If swallowed, get medical help or contact a Poison Control Center right away.</paragraph>
+                     </text>
+                     <effectiveTime value="20260120"/>
+                  </section>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_48d4a9af-aaa1-d854-e063-6294a90aa58b">
+               <id root="48d4d815-36c2-34e1-e063-6294a90a80e6"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Directions</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>adults and children 6 to under 12 years of age (with adult supervision): 2 or 3 sprays in each nostril not more than every 10 to 12 hours. Do not exceed 2 doses in any 24-hour period.</item>
+                     <item>children under 6 years of age: ask a doctor</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">To Use</content>
+                  </paragraph>
+                  <list listType="unordered">
+                     <item>remove protective cap</item>
+                     <item>before using for the first time, prime the pump by firmly depressing its rim several times</item>
+                     <item>hold container with thumb at base and nozzle between first and second fingers</item>
+                     <item>without tilting your head, inset nozzle into nostril</item>
+                     <item>fully depress rim with a firm, even stroke and inhale deeply.</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">
+                        <content styleCode="italics">How to use:</content>
+                     </content>
+                  </paragraph>
+                  <paragraph>Hold white tabs; 
+  <content styleCode="underline">
+                        <content styleCode="bold">SQUEEZE </content>
+                     </content>grooved area of cap 
+  <content styleCode="underline">
+                        <content styleCode="bold">FIRMLY</content>
+                     </content> and turn counter clockwise. Secure cap after use.
+ </paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_48d4e3b7-60ab-47c9-e063-6294a90a6763"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20260120"/>
+               <component>
+                  <observationMedia ID="img_48d4e3b7-60ab-47c9-e063-6294a90a6763">
+                     <text>Directions</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="Directions for use.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_48d4ad0b-214d-5f93-e063-6394a90a2887">
+               <id root="48d4ad0b-214c-5f93-e063-6394a90a2887"/>
+               <code code="60561-8" codeSystem="2.16.840.1.113883.6.1" displayName="OTHER SAFETY INFORMATION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Other information</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>Store at room temperature</item>
+                  </list>
+               </text>
+               <effectiveTime value="20260120"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_48d4a2b0-06d1-518c-e063-6394a90a7141">
+               <id root="48d4a2b0-06d0-518c-e063-6394a90a7141"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Inactive ingredients</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>Benzalkonium Chloride, Sodium Phosphate monobasic, Edetate disodium, Propylene Glycol, Polyvinylpyrrolidone, Sodium Phosphate dibasic, Purified Water.</paragraph>
+               </text>
+               <effectiveTime value="20260120"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_48d4b85b-dd57-dfc0-e063-6294a90ad8a9">
+               <id root="48d4d211-b24e-8a5f-e063-6394a90ade9c"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Distributed by: VIVUNT PHARMA LLC</content>
+                  </paragraph>
+                  <paragraph>8950 SW 74th Court, Suite 1901</paragraph>
+                  <paragraph>Miami, FL 33156-3178. USA.</paragraph>
+                  <paragraph>Product from India.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">www.vivunt.live</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20260120"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_48d4ced4-e3c2-2378-e063-6294a90a82e8">
+               <id root="494eb619-1f33-414b-e063-6394a90a583d"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <text>
+                  <paragraph>axiv®</paragraph>
+                  <paragraph>Sinus SEVERE</paragraph>
+                  <paragraph>ULTRA FINE MIST</paragraph>
+                  <list listType="unordered">
+                     <item>Fast &amp; Powerfull Congestion Relief</item>
+                     <item>Nasal Decongestant</item>
+                  </list>
+                  <paragraph>MAXIMUM STRENGTH</paragraph>
+                  <paragraph>UP TO 265 SPRAYS</paragraph>
+                  <paragraph>PER 15 ML BOTTLE</paragraph>
+                  <paragraph>Oxymetazoline HCl 0.05%</paragraph>
+                  <paragraph>Nasal Decongestant</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">0.5 Fl OZ </content>(15ml)
+ </paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_48d4d0f0-534e-8951-e063-6394a90a5257"/>
+                  </paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_494e6c4f-7854-20eb-e063-6394a90a1e05"/>
+                  </paragraph>
+                  <paragraph>axiv®</paragraph>
+                  <paragraph>Sinus SEVERE</paragraph>
+                  <paragraph>ULTRA FINE MIST</paragraph>
+                  <list listType="unordered">
+                     <item>Fast &amp; Powerfull Congestion Relief</item>
+                     <item>Nasal Decongestant</item>
+                  </list>
+                  <paragraph>MAXIMUM STRENGTH</paragraph>
+                  <paragraph>UP TO 265 SPRAYS</paragraph>
+                  <paragraph>PER 15 ML BOTTLE</paragraph>
+                  <paragraph>Oxymetazoline HCl 0.05%</paragraph>
+                  <paragraph>Nasal Decongestant</paragraph>
+                  <paragraph>0.5 Fl OZ (15 ml)</paragraph>
+                  <paragraph/>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20260120"/>
+               <component>
+                  <observationMedia ID="img_48d4d0f0-534e-8951-e063-6394a90a5257">
+                     <text>Principal Display Panel</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="Estuche  Axiv Oxymetazoline - Rev. 1_001.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+               <component>
+                  <observationMedia ID="img_494e6c4f-7854-20eb-e063-6394a90a1e05">
+                     <text>Inner</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="Etiqueta Axiv Oxymetazoline - Rev. 1_001.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

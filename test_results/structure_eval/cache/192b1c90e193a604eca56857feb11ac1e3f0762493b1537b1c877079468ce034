@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 21683,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "CeraVe Anti-Dandruff Hydrating Conditioner Pyrithione zinc WATER CETEARYL ALCOHOL BEHENTRIMONIUM CHLORIDE GLYCERIN PEG-180 AMODIMETHICONE (1300 CST) CETYL ESTERS CERAMIDE NP CERAMIDE AP CARBOMER ZINC GLUCONATE NIACINAMIDE TRIDECETH-6 TRIETHYL CITRATE SODIUM LAUROYL LACTYLATE SODIUM HYALURONATE SODIUM CHLORIDE CHOLESTEROL PHENOXYETHANOL CHLORHEXIDINE DIHYDROCHLORIDE ISOPROPYL ALCOHOL PROPYLENE GLYCOL HYDROXYETHYLCELLULOSE CETRIMONIUM CHLORIDE CAPRYLYL GLYCOL XANTHAN GUM PHYTOSPHINGOSINE BENZOIC ACID PYRITHIONE ZINC PYRITHIONE ZINC"
+      ],
+      "active_ingredient": [
+        "Active ingredient Pyrithione zinc 0.51%"
+      ],
+      "purpose": [
+        "Purpose Antidandruff"
+      ],
+      "indications_and_usage": [
+        "Use helps prevent recurrence of scalp flaking and itching associated with dandruff"
+      ],
+      "warnings": [
+        "Warnings For external use only"
+      ],
+      "when_using": [
+        "When using this product avoid contact with the eyes. If contact occurs, rinse eyes thoroughly with water."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if condition worsens or does not improve after regular use of this product as directed"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions for best results use at least twice a week or as directed by a doctor use after CeraVe Anti-Dandruff Shampoo rinse and repeat if desired"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients water, cetearyl alcohol, behentrimonium chloride, glycerin, PEG-180, amodimethicone, cetyl esters, ceramide NP, ceramide AP, ceramide EOP, carbomer, zinc gluconate, niacinamide, trideceth-6, triethyl citrate, sodium lauroyl lactylate, sodium hyaluronate, sodium polynaphthalenesulfonate, sodium chloride, cholesterol, phenoxyethanol, chlorhexidine dihydrochloride, isopropyl alcohol, propylene glycol, hydroxyethylcellulose, cetrimonium chloride, caprylyl glycol, xanthan gum, phytosphingosine, benzoic acid"
+      ],
+      "questions": [
+        "Questions or comments? Toll-free number 1-888-768-2915"
+      ],
+      "package_label_principal_display_panel": [
+        "tube"
+      ],
+      "set_id": "552926da-0dfb-4248-e063-6294a90ab4a8",
+      "id": "552926e0-bd22-6ea1-e063-6294a90a6771",
+      "effective_time": "20260626",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M032"
+        ],
+        "brand_name": [
+          "CeraVe Anti-Dandruff Hydrating Conditioner"
+        ],
+        "generic_name": [
+          "PYRITHIONE ZINC"
+        ],
+        "manufacturer_name": [
+          "LOreal USA Products Inc"
+        ],
+        "product_ndc": [
+          "82046-802"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "PYRITHIONE ZINC"
+        ],
+        "rxcui": [
+          "1043014"
+        ],
+        "spl_id": [
+          "552926e0-bd22-6ea1-e063-6294a90a6771"
+        ],
+        "spl_set_id": [
+          "552926da-0dfb-4248-e063-6294a90ab4a8"
+        ],
+        "package_ndc": [
+          "82046-802-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "R953O2RHZ5"
+        ]
+      }
+    }
+  ]
+}

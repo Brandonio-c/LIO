@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261104-005317_host</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261104-005317_host</code> on <code>/dev/cu.usbserial-1120</code>
+,
+2026-11-04T00:53:17-05:00 to 2026-11-04T00:53:18-05:00</p>
+<div class="verdict" style="background: #d03b3b">NOT FUNCTIONAL</div>
+<ul><li>failure in a critical module: T03.1</li></ul>
+
+<table>
+<tr><th>Sample</th><td>none-empty-chamber</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td>2.2.0 (proto 1, build 2026-11-04)</td>
+    <th>Config</th><td><code>31365ef72671</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.11</td>
+    <th>Software</th><td>lio 0.2.0, git <code>943774d465</code></td></tr>
+<tr><th>Results</th><td colspan="3">FAIL 1, SKIP 4</td></tr>
+<tr><th>LED duty</th><td colspan="3">0.0 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T03.1">T03.1</a></td><td>I2C scan finds the ADS1115</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ FAIL</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.2">T03.2</a></td><td>Dark ADC noise, all inputs</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T03.3">T03.3</a></td><td>Gain sweep on dark inputs</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T03.4">T03.4</a></td><td>ADC data rate</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T03.5">T03.5</a></td><td>Long-term dark stability</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+</table>
+
+
+
+
+<h2>T03</h2>
+
+<h3 id="T03.1">T03.1 I2C scan finds the ADS1115 <span class="badge" style="border-color: #d03b3b">✕ FAIL</span></h3>
+
+
+<details open>
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>ADS1115 at 0x48<br><code>T03.1/adc</code></td>
+<td><span class="badge" style="border-color: #d03b3b">✕ FAIL</span></td>
+<td>found nothing; first check that power bank A is on: it alone powers the +5 V bus (ADS1115, LEDs, shift registers), and USB banks switch off when the load is small (measure about 5 V between +5 V and GND); then the ADS1115 wiring: SDA -&gt; A4, SCL -&gt; A5, ADDR -&gt; GND (0x48), VDD 5 V and GND; both lines should idle near 5 V</td><td>0x48 acknowledges</td></tr>
+
+<tr><td>No unexpected I2C devices<br><code>T03.1/only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>none</td><td>only the ADS1115</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T03.2">T03.2 Dark ADC noise, all inputs <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T03.3">T03.3 Gain sweep on dark inputs <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T03.4">T03.4 ADC data rate <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T03.5">T03.5 Long-term dark stability <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+
+</body>
+</html>

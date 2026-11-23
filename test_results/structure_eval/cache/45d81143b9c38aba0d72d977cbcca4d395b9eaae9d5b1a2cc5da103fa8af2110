@@ -1,0 +1,120 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 15984,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Fungicure Night Cream Clotrimazole GLYCYRRHIZA GLABRA (LICORICE) ROOT GREEN TEA LEAF STEARYL ALCOHOL PHENOXYETHANOL ALOE BARBADENSIS LEAF JUICE WHITE PETROLATUM TEA TREE OIL XANTHAN GUM CLOTRIMAZOLE CLOTRIMAZOLE WATER CITRIC ACID .ALPHA.-TOCOPHEROL ACETATE UREA POLYSORBATE 80 GLYCERIN GLYCERYL STEARATE SE CETYL ALCOHOL WILLOW BARK SHEA BUTTER DISODIUM HEDTA PANTHENOL ISOPROPYL MYRISTATE DIMETHICONE 350 TRISODIUM CITRATE DIHYDRATE"
+      ],
+      "active_ingredient": [
+        "Active ingredient Clotrimazole 1%"
+      ],
+      "purpose": [
+        "Purpose Antifungal"
+      ],
+      "indications_and_usage": [
+        "Uses For the cure of most athlete's foot (tinea pedis) For relief og: itching scaling cracking burning redness soreness irritation discomforts which may accompany this condition."
+      ],
+      "warnings": [
+        "Warnings For external use only."
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use on children under 2 years of age."
+      ],
+      "when_using": [
+        "When using this product avoid contact with the eyes."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if irritation occurs there is no improvement within 4 weeks."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a poison control center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions Clean the affected area and dry thoroughly. Apply a thin layer of FUNGICURE Night Cream over the affected area twice daily (morning and night), or as directed by a doctor. For athlete's foot, use daily for 4 weeks. If condition persists longer, consult a doctor. For athlete's foot: Pay special attention to spaces between toes; wear well fitting, ventilated shoes, and change shoes and socks at least once daily. Supervise children in the use of this product. This product is not effective on scalp or nails."
+      ],
+      "other_safety_information": [
+        "Other information Fungicure Night Cream may be applied to exposed nail-beds, to cuticles, around nail edges and under nail tips. While not all finger and toe fungal infections are curable with OTC topical medications, if you see improvement within 4 weeks of use, you may continue to use Fungicure Night Cream until satisfactory results are obtained. This product is not intended to, nor will it, penetrate hard nail surfaces. Keep container tightly closed when not in use. Store away from excessive heat and cold. You may report serious side effects to the phone number provided under Questions? below."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Aloe barbadensis leaf juice, cetyl alcohol, citric acid, dimethicone, disodium EDTA, D-panthenol, glycerin, glyceryl stearate, green tea extract, isopropyl myristate, licorice (glycyrrhiza glabra) root extract, petrolatum, phenoxyethanol, polysorbate 80, purified water, shea butter, sodium citrate, stearyl alcohol, tea tree (melaleuca alternifolia) oil, tocopheryl acetate, urea, willow (salix alba) bark extract, xanthan gum."
+      ],
+      "questions": [
+        "Questions? 1-800-792-2582"
+      ],
+      "package_label_principal_display_panel": [
+        "PDP"
+      ],
+      "set_id": "43029403-2afd-cfa1-e063-6394a90a99a3",
+      "id": "43029403-2afe-cfa1-e063-6394a90a99a3",
+      "effective_time": "20251204",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M005"
+        ],
+        "brand_name": [
+          "Fungicure Night Cream"
+        ],
+        "generic_name": [
+          "CLOTRIMAZOLE"
+        ],
+        "manufacturer_name": [
+          "Kobayashi Healthcare International, Inc."
+        ],
+        "product_ndc": [
+          "52389-681"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "CLOTRIMAZOLE"
+        ],
+        "rxcui": [
+          "309367"
+        ],
+        "spl_id": [
+          "43029403-2afe-cfa1-e063-6394a90a99a3"
+        ],
+        "spl_set_id": [
+          "43029403-2afd-cfa1-e063-6394a90a99a3"
+        ],
+        "package_ndc": [
+          "52389-681-02"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0072959010812"
+        ],
+        "nui": [
+          "N0000175487",
+          "M0002083"
+        ],
+        "pharm_class_epc": [
+          "Azole Antifungal [EPC]"
+        ],
+        "pharm_class_cs": [
+          "Azoles [CS]"
+        ],
+        "unii": [
+          "G07GZ97H65"
+        ]
+      }
+    }
+  ]
+}

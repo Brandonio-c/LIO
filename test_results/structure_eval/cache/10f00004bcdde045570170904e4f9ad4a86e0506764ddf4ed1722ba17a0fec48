@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="b148ece9-98ad-45ff-a93b-4ae58fcd9b12"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>DRUG FACTS:</title>
+   <effectiveTime value="20240801"/>
+   <setId root="1ac1e955-a374-4cac-b997-51c6aef8d35d"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="940741853"/>
+            <name>Deseret Biologicals, Inc.</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <id extension="844330915" root="1.3.6.1.4.1.519.1"/>
+                  <name>Apotheca Company</name>
+                  <assignedEntity>
+                     <assignedOrganization>
+                        <id root="1.3.6.1.4.1.519.1" extension="844330915"/>
+                        <name>Apotheca Company</name>
+                     </assignedOrganization>
+                     <performance>
+                        <actDefinition>
+                           <code code="C43360" displayName="manufacture" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="43742-2182" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                     <performance>
+                        <actDefinition>
+                           <code code="C82401" displayName="api manufacture" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="43742-2182" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                     <performance>
+                        <actDefinition>
+                           <code code="C84732" displayName="label" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="43742-2182" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                     <performance>
+                        <actDefinition>
+                           <code code="C84731" displayName="pack" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="43742-2182" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                  </assignedEntity>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="9fa63ccd-74f8-422b-96c4-528c211835e6"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <title/>
+               <text/>
+               <effectiveTime value="20240801"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="43742-2182" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Mind Detox and Drainage</name>
+                        <formCode code="C42953" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="LIQUID"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Alumina, Baryta Carbonica, Carboneum Sulphuratum, Cerebrum Suis, Conium Maculatum, Helleborus Niger, Lecithin, Lycopodium Clavatum, Mandragora Officinarum, Mercurius Solubilis, Naja Tripudians, Picricum Acidum, Platinum Metallicum, Silicea, Stramonium, Sulphuricum Acidum, Zincum Phosphoratum</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="LMI26O6933" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALUMINUM OXIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="LMI26O6933" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>ALUMINUM OXIDE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="6P669D8HQ8" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BARIUM CARBONATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="V645272HLN" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>BARIUM CATION</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="6" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="S54S8B99E8" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CARBON DISULFIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="S54S8B99E8" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>CARBON DISULFIDE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="8" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="4GB5DQR532" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SUS SCROFA CEREBRUM</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="4GB5DQR532" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>SUS SCROFA CEREBRUM</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="6" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="Q28R5GF371" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CONIUM MACULATUM FLOWERING TOP</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="Q28R5GF371" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>CONIUM MACULATUM FLOWERING TOP</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="608DGJ6815" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>HELLEBORUS NIGER ROOT</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="608DGJ6815" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>HELLEBORUS NIGER ROOT</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="8" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="1Z74184RGV" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>EGG PHOSPHOLIPIDS</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="1Z74184RGV" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>EGG PHOSPHOLIPIDS</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="6" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="C88X29Y479" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>LYCOPODIUM CLAVATUM SPORE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="C88X29Y479" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>LYCOPODIUM CLAVATUM SPORE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="18" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="I2XCB174VB" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MANDRAGORA OFFICINARUM ROOT</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="I2XCB174VB" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>MANDRAGORA OFFICINARUM ROOT</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="324Y4038G2" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MERCURIUS SOLUBILIS</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="324Y4038G2" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>MERCURIUS SOLUBILIS</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="ZZ4AG7L7VM" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>NAJA NAJA VENOM</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="ZZ4AG7L7VM" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>NAJA NAJA VENOM</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="A49OS0F91S" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PICRIC ACID</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="A49OS0F91S" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PICRIC ACID</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="49DFR088MY" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PLATINUM</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="49DFR088MY" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PLATINUM</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="8" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="ETJ7Z6XBU4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SILICON DIOXIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="ETJ7Z6XBU4" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>SILICON DIOXIDE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="G6W4F0V8Z3" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DATURA STRAMONIUM</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="G6W4F0V8Z3" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>DATURA STRAMONIUM</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="6" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="O40UQP6WCF" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SULFURIC ACID</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="O40UQP6WCF" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>SULFURIC ACID</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="813396S1PC" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ZINC PHOSPHIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="813396S1PC" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>ZINC PHOSPHIDE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3K9958V90M" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="30" unit="mL"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="43742-2182-1" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43171" displayName="BOTTLE, DROPPER" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20240801"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                           <subjectOf>
+                              <characteristic classCode="OBS">
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" displayName="Type 0: Not a Combination Product" codeSystem="2.16.840.1.113883.3.26.1.1" xsi:type="CE"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20240801"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <approval>
+                           <code code="C73614" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="unapproved homeopathic"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38288" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ORAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="Ldf7c99f7-1ef5-48c8-90e5-cd0a8e1532de">
+               <id root="759462b5-b4fe-4e4c-a51c-a4c613a34679"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>ACTIVE INGREDIENTS:</title>
+               <text>
+                  <paragraph>Alumina 12X, 30X, 6C, 12C, 30C, Baryta Carbonica 12X, 30X, 6C, 12C, 30C, Carboneum Sulphuratum 6X, 12X, 30X, 6C, 12C, 30C, Cerebrum Suis 8X, Conium Maculatum 6X, 12X, 30X, 6C, 12C, 30C, Helleborus Niger 12X, 18X, 24X, 30X, 30C, Lecithin 8X, Lycopodium Clavatum 6X, 12X, 30X, 6C, 12C, 30C, Mandragora Officinarum 18X, 24X, 30X, Mercurius Solubilis 12X, 30X, 6C, 12C, 30C, Naja Tripudians 12X, 18X, 24X, 30X, 30C, Picricum Acidum 12X, 18X, 24X, 30X, Platinum Metallicum 12X, 18X, 24X, 30X, 30C, Silicea 8X, 12X, 30X, 6C, 12C, 30C, Stramonium 12X, 18X, 24X, 30X, 30C, Sulphuricum Acidum 6X, 12X, 30X, 6C, 12C, 30C, Zincum Phosphoratum 12X, 18X, 24X, 30X.</paragraph>
+               </text>
+               <effectiveTime value="20240801"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L834a79c6-c8de-4ebe-aff5-261340b1d348">
+               <id root="8ae02ad4-cf76-4511-a306-95eee952e5b5"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>PURPOSE:</title>
+               <text>
+                  <paragraph>Alumina – Mind Support, Baryta Carbonica – Difficulty Processing Information, Carboneum Sulphuratum – Difficulty Expressing Thoughts, Cerebrum Suis – Poor Attention, Conium Maculatum – Difficulty Making Decisions, Helleborus Niger – Memory Loss, Lecithin - Indolence, Lycopodium Clavatum - Denial, Mandragora Officinarum – Sensitivity to External Impressions, Mercurius Solubilis - Impatience, Naja Tripudians – Difficulty Understanding Others, Picricum Acidum - Hurry, Platinum Metallicum - Haughtiness, Silicea – Memory Loss, Stramonium - Suspiciousness, Sulphuricum Acidum - Hurry, Zincum Phosphoratum - Indolence</paragraph>
+               </text>
+               <effectiveTime value="20240801"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L54d17542-2965-4378-a1ef-3ab3194b94da">
+               <id root="49107590-58c9-4bf6-9905-1e1f8ef3735f"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>USES:</title>
+               <text>
+                  <paragraph>• For the temporary relief of symptoms including:</paragraph>
+                  <paragraph>• mind support • poor attention • difficulty processing information</paragraph>
+                  <paragraph>• difficulty expressing thoughts • difficulty making decisions <content>• memory loss</content>
+                  </paragraph>
+                  <paragraph>
+                     <content>• indolence • denial • sensitivity to external impressions </content>
+                     <content>• impatience • hurry</content>
+                  </paragraph>
+                  <paragraph>
+                     <content>• haughtiness • difficulty understanding others </content>
+                     <content>• suspiciousness</content>
+                  </paragraph>
+                  <paragraph>These statements are based upon homeopathic principles. They have not been reviewed by the Food and Drug Administration.</paragraph>
+               </text>
+               <effectiveTime value="20240801"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L8ee23c32-8cce-41a2-82fa-e5867a2849de">
+               <id root="c2dab7aa-8f0f-480e-ad49-eed7cf79a813"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>WARNINGS:</title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">If pregnant or breast-feeding,</content> ask a health professional before use.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Keep out of reach of children.</content> In case of overdose, contact a physician or Poison Control Center right away.<br/>
+                     <content styleCode="bold">Tamper Evident:</content> Sealed for your protection. Do not use if seal is broken or missing.</paragraph>
+               </text>
+               <effectiveTime value="20240801"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Laafb9103-7e32-46d7-bcc3-6c1f4d5213ac">
+               <id root="6675c6c0-5886-4225-88a5-465c2ae210fb"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <title>KEEP OUT OF REACH OF CHILDREN:</title>
+               <text>
+                  <paragraph>In case of overdose, contact a physician or Poison Control Center right away.</paragraph>
+               </text>
+               <effectiveTime value="20240801"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L6477483b-82f2-4eb6-8cd7-31c2bd3faf5a">
+               <id root="6c62666d-9a91-4d0f-9594-6cb08c4065de"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>DIRECTIONS:</title>
+               <text>
+                  <paragraph>1-10 drops under the tongue, 3 times a day or as directed by a health professional. Consult a physician for use in children under 12 years of age.</paragraph>
+               </text>
+               <effectiveTime value="20240801"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L27b17f78-a604-42ed-9b26-12fe5d8cdb85">
+               <id root="0cd7e182-751d-4216-9971-193720e95b4e"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>INACTIVE INGREDIENTS:</title>
+               <text>
+                  <paragraph>Demineralized water, 25% ethanol</paragraph>
+               </text>
+               <effectiveTime value="20240801"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Ld421a984-7112-4619-99c0-ccd09cdaf462">
+               <id root="a24c9ddb-6fb8-4242-9152-bd9c946d4701"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>QUESTIONS:</title>
+               <text>
+                  <paragraph>Dist. By: Deseret Biologicals, Inc.<br/>469 W. Parkland Drive<br/>Sandy, UT 84070</paragraph>
+                  <paragraph> www.desbio.com</paragraph>
+                  <paragraph>800-827-8204</paragraph>
+               </text>
+               <effectiveTime value="20240801"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L78876843-92a0-4a6d-9c9f-02335abbc4b5">
+               <id root="1eab7bd4-3942-4812-87ec-d3a5078a7b49"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>PACKAGE LABEL DISPLAY:</title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">DesBio</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Mind Detox </content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">&amp; Drainage</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Homeopathic </content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">NDC 43742-2182-1</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">1 FL OZ (30 ml)</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold"/>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">
+                        <renderMultiMedia referencedObject="Lee129da3-65c6-404a-9414-3106580545ea"/>
+                     </content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20240801"/>
+               <component>
+                  <observationMedia ID="Lee129da3-65c6-404a-9414-3106580545ea">
+                     <text>Mind Detox &amp; Drainage</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="DSRT0886 Mind Detox Drainage.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

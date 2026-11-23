@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 23182,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Minoxidil Minoxidil MINOXIDIL MINOXIDIL BUTANE BUTYLATED HYDROXYTOLUENE CETYL ALCOHOL ANHYDROUS CITRIC ACID GLYCERIN ISOBUTANE LACTIC ACID POLYSORBATE 60 PROPANE WATER ALCOHOL STEARYL ALCOHOL"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts"
+      ],
+      "active_ingredient": [
+        "Active ingredient Minoxidil 5% w/w (without propellant)"
+      ],
+      "purpose": [
+        "Purpose Hair regrowth treatment for women"
+      ],
+      "indications_and_usage": [
+        "Use to regrow hair on the top of the scalp (see pictures on side of this carton)"
+      ],
+      "warnings": [
+        "Warnings For external use only. Extremely Flammable: Avoid fire, flame, or smoking during and immediately following application. Do not use if your degree of hair loss is different than that shown on the side of this carton because this product may not work for you you have no family history of hair loss your hair loss is sudden and/or patchy your hair loss is associated with childbirth you do not know the reason for your hair loss you are under 18 years of age. Do not use on babies and children. your scalp is red, inflamed, infected, irritated, or painful you use other medicines on the scalp Ask a doctor before use if you have heart disease When using this product do not use more than directed do not apply on other parts of the body avoid contact with the eyes. In case of accidental contact, rinse eyes with large amounts of cool tap water. some people have experienced changes in hair color and/or texture it takes time to regrow hair. Results may occur at 3 months with once daily use For some women, you may need to use this product once a day for at least 6 months before you see results. the amount of hair regrowth is different for each person. This product will not work for all men. Stop use and ask a doctor if chest pain, rapid heartbeat, faintness, or dizziness occurs sudden, unexplained weight gain occurs your hands or feet swell scalp irritation or redness occurs unwanted facial hair growth occurs you do not see hair regrowth in 6 months May be harmful if used when pregnant or breast-feeding. Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center (1-800-222-1222) right away."
+      ],
+      "do_not_use": [
+        "Do not use if your degree of hair loss is different than that shown on the side of this carton because this product may not work for you you have no family history of hair loss your hair loss is sudden and/or patchy your hair loss is associated with childbirth you do not know the reason for your hair loss you are under 18 years of age. Do not use on babies and children. your scalp is red, inflamed, infected, irritated, or painful you use other medicines on the scalp"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have heart disease"
+      ],
+      "when_using": [
+        "When using this product do not use more than directed do not apply on other parts of the body avoid contact with the eyes. In case of accidental contact, rinse eyes with large amounts of cool tap water. some people have experienced changes in hair color and/or texture it takes time to regrow hair. Results may occur at 3 months with once daily use For some women, you may need to use this product once a day for at least 6 months before you see results. the amount of hair regrowth is different for each person. This product will not work for all men."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if chest pain, rapid heartbeat, faintness, or dizziness occurs sudden, unexplained weight gain occurs your hands or feet swell scalp irritation or redness occurs unwanted facial hair growth occurs you do not see hair regrowth in 6 months"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "May be harmful if used when pregnant or breast-feeding."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center (1-800-222-1222) right away."
+      ],
+      "dosage_and_administration": [
+        "Directions see enclosed leaflet for complete directions on how to use apply half a capful once daily directly to the scalp in the hair loss area massage into scalp with fingers, then wash hands well using more or more often will not improve results continued use is necessary to increase and keep your hair regrowth, or hair loss will begin again"
+      ],
+      "other_safety_information": [
+        "Other information see hair loss pictures on side of this carton before use, read all information on carton and enclosed leaflet keep the carton. It contains important information. store at controlled room temperature 20º to 25ºC (68º to 77ºF) contents under pressure. Do not puncture or incinerate container. Do not expose to heat or store at temperature above 120ºF (49ºC)."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients butane, butylated hydroxytoluene, cetyl alcohol, citric acid, glycerin, isobutane,lactic acid, polysorbate 60, propane, purified water, SD alcohol,40-Bstearyl alcohol"
+      ],
+      "questions": [
+        "Questions? Call 1-877-753-3935 Monday-Friday 9AM-5PM EST"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal display panel Compare to active ingredient in Women's Rogaine® Women's Hair Regrowth Treatment Minoxidil Topical Aerosol, 5% Clinically proven to help regrow hair Reactivates hair follicles to stimulate regrowth Unscented Once-a Day Foam for women 60 g (2.11OZ CAN *This product is not manufactured or distributed by Johnson & Johnson Consumer Inc., distributor of Women's Rogaine®.",
+        "Package label Women's Hair Regrowth Treatment Minoxidil 5% w/w (without propellant)"
+      ],
+      "set_id": "59e7cdae-6595-4aa2-8fe0-7a8bcf300912",
+      "id": "57e8c30c-69ab-4864-8bfe-31c570b8d900",
+      "effective_time": "20241105",
+      "version": "3",
+      "openfda": {
+        "application_number": [
+          "ANDA208092"
+        ],
+        "brand_name": [
+          "Minoxidil"
+        ],
+        "generic_name": [
+          "MINOXIDIL"
+        ],
+        "manufacturer_name": [
+          "P & L Development, LLC"
+        ],
+        "product_ndc": [
+          "59726-116"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "MINOXIDIL"
+        ],
+        "rxcui": [
+          "645146"
+        ],
+        "spl_id": [
+          "57e8c30c-69ab-4864-8bfe-31c570b8d900"
+        ],
+        "spl_set_id": [
+          "59e7cdae-6595-4aa2-8fe0-7a8bcf300912"
+        ],
+        "package_ndc": [
+          "59726-116-60",
+          "59726-116-65"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000175379",
+          "N0000175564"
+        ],
+        "pharm_class_pe": [
+          "Arteriolar Vasodilation [PE]"
+        ],
+        "pharm_class_epc": [
+          "Arteriolar Vasodilator [EPC]"
+        ],
+        "unii": [
+          "5965120SH1"
+        ]
+      }
+    }
+  ]
+}

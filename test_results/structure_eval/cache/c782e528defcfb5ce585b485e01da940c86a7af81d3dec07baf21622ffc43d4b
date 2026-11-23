@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 5128,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "EUPATORIUM PERF EUPATORIUM PERF ALCOHOL WATER EUPATORIUM PERFOLIATUM FLOWERING TOP EUPATORIUM PERFOLIATUM FLOWERING TOP"
+      ],
+      "active_ingredient": [
+        "ACTIVE INGREDIENT EUPATORIUM PERF HPUS 1X and higher"
+      ],
+      "purpose": [
+        "USES USES: Temporary Relief - Running Allergies Due To Seasonal Changes* * Claims based on traditional homeopathic practice, not accepted medical evidence. Not FDA evaluated."
+      ],
+      "indications_and_usage": [
+        "INDICATIONS Condition listed above or as directed by the physician"
+      ],
+      "dosage_and_administration": [
+        "DOSAGE Adults: Mix 4-6 drops in 1/2 cup of water, take orally three times daily or as directed by a physician. Children (2 years and older): Take half the adult dose."
+      ],
+      "warnings": [
+        "WARNINGS This product is to be used for self-limiting conditions If symptoms do not improve in 4 days, or worsen, discontinue use and seek assistance of health professional As with any drug, if you are pregnant, or nursing a baby, seek professional advice before taking this product Keep this and all medication out of reach of children Do not use if capseal is broken or missing. Close the cap tightly after use."
+      ],
+      "stop_use": [
+        "If symptoms do not improve in 4 days, or worsen, discontinue use and seek assistance of health professional"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "As with any drug, if you are pregnant, or nursing a baby, seek professional advice before taking this product"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep this and all medication out of reach of children"
+      ],
+      "do_not_use": [
+        "Do not use if capseal is broken or missing. Close the cap tightly after use."
+      ],
+      "inactive_ingredient": [
+        "INACTIVE INGREDIENTS Active: As Above; Inactive: ENA 50% v/v and Purified Water q.s."
+      ],
+      "storage_and_handling": [
+        "STORAGE Store in a cool dark place"
+      ],
+      "questions": [
+        "QUESTIONS OR COMMENTS www.Rxhomeo.com | 1.888.2796642 | info@rxhomeo.com - Rxhomeo, Inc 2940 Eisenhower St., Suite 100, Carrollton, TX 75007 USA"
+      ],
+      "package_label_principal_display_panel": [
+        "Product Label Carton Box"
+      ],
+      "set_id": "19baba95-9875-7a72-e063-6394a90a9ebb",
+      "id": "19bab8a0-69e2-49c6-e063-6394a90a9380",
+      "effective_time": "20240531",
+      "version": "1",
+      "openfda": {
+        "brand_name": [
+          "EUPATORIUM PERF"
+        ],
+        "generic_name": [
+          "EUPATORIUM PERF"
+        ],
+        "manufacturer_name": [
+          "Rxhomeo Private Limited d.b.a. Rxhomeo, Inc"
+        ],
+        "product_ndc": [
+          "15631-2733"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "EUPATORIUM PERFOLIATUM FLOWERING TOP"
+        ],
+        "spl_id": [
+          "19bab8a0-69e2-49c6-e063-6394a90a9380"
+        ],
+        "spl_set_id": [
+          "19baba95-9875-7a72-e063-6394a90a9ebb"
+        ],
+        "package_ndc": [
+          "15631-2733-0",
+          "15631-2733-1"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "1W0775VX6E"
+        ]
+      }
+    }
+  ]
+}

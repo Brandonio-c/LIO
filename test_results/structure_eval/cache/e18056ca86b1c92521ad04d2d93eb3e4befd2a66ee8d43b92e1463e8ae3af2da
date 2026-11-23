@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 24618,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Dove Men Maximum Protection Ocean Breeze Soft Solid Antiperspirant ALUMINUM ZIRCONIUM TETRACHLOROHYDREX GLY ALUMINUM ZIRCONIUM TETRACHLOROHYDREX GLY CYCLOPENTASILOXANE DIMETHICONE MICROCRYSTALLINE WAX PARAFFIN SILICA DIMETHICONE CROSSPOLYMER BHT CITRAL LIMONENE, (+/-)- LINALOOL HELIANTHUS ANNUUS (SUNFLOWER) SEED OIL ALPHA-ISOMETHYL IONONE CITRONELLOL COUMARIN ISOEUGENOL"
+      ],
+      "description": [
+        "Dove Men Maximum Protection Ocean Breeze Soft Solid Antiperspirant"
+      ],
+      "active_ingredient": [
+        "Aluminum Zirconium Tetrachlorohydrex GLY 20%"
+      ],
+      "purpose": [
+        "Antiperspirant"
+      ],
+      "indications_and_usage": [
+        "reduces underarm wetness"
+      ],
+      "warnings": [
+        "• For external use only. • Do not use on broken skin. • Stop use if rash or irritation occurs. • Ask a doctor before use if you have kidney disease. • If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "keep_out_of_reach_of_children": [
+        "• KEEP OUT OF REACH OF CHILDREN."
+      ],
+      "dosage_and_administration": [
+        "• Apply to underarms only • before bed, apply two clicks of product to each underarm"
+      ],
+      "other_safety_information": [
+        "• Do not store over 115°F"
+      ],
+      "inactive_ingredient": [
+        "Cyclopentasiloxane, Dimethicone, Paraffin, Microcrystalline Wax, Fragrance (Parfum), Silica, Helianthus Annuus (Sunflower) Seed Oil, Dimethicone Crosspolymer, BHT, Alpha-Isomethyl Ionone, Citral, Citronellol, Coumarin, Isoeugenol, Limonene, Linalool."
+      ],
+      "questions": [
+        "Call 1-800-761-3683"
+      ],
+      "package_label_principal_display_panel": [
+        "Label"
+      ],
+      "set_id": "5efc74e8-f11b-a66b-e063-6394a90a26ab",
+      "id": "5efc74e8-f11c-a66b-e063-6394a90a26ab",
+      "effective_time": "20261029",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M019"
+        ],
+        "brand_name": [
+          "Dove"
+        ],
+        "generic_name": [
+          "MEN MAXIMUM PROTECTION OCEAN BREEZE SOFT SOLID ANTIPERSPIRANT"
+        ],
+        "manufacturer_name": [
+          "Conopco d/b/a Unilever"
+        ],
+        "product_ndc": [
+          "64942-2575"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ALUMINUM ZIRCONIUM TETRACHLOROHYDREX GLY"
+        ],
+        "spl_id": [
+          "5efc74e8-f11c-a66b-e063-6394a90a26ab"
+        ],
+        "spl_set_id": [
+          "5efc74e8-f11b-a66b-e063-6394a90a26ab"
+        ],
+        "package_ndc": [
+          "64942-2575-1",
+          "64942-2575-2"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "8O386558JE"
+        ]
+      }
+    }
+  ]
+}

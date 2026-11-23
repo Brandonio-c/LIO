@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="0fbb4be0-7501-4ee9-91cc-80107008504e"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Wildberry Lip Balm</title>
+   <effectiveTime value="20250103"/>
+   <setId root="5e13dc33-67b7-4461-bec5-0c3edc72f8b4"/>
+   <versionNumber value="3"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="877343673"/>
+            <name>Casad Company Inc.</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <id extension="877343673" root="1.3.6.1.4.1.519.1"/>
+                  <name>Casad Company Inc.</name>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="006281c1-ae84-4e74-a73e-051864321f8e"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <title/>
+               <text/>
+               <effectiveTime value="20231107"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="71087-114" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Wildberry Lip Balm</name>
+                        <formCode code="C42991" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="STICK"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Lip Balm</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="2.0" unit="g"/>
+                              <denominator value="100" unit="g"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="G63QQF2NOX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>AVOBENZONE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="G63QQF2NOX" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>AVOBENZONE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="6.5" unit="g"/>
+                              <denominator value="100" unit="g"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="4Y5P7MUD51" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>OCTINOXATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="4Y5P7MUD51" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>OCTINOXATE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="5.0" unit="g"/>
+                              <denominator value="100" unit="g"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="4X49Y0596W" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>OCTISALATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="4X49Y0596W" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>OCTISALATE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="1.5" unit="g"/>
+                              <denominator value="100" unit="g"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="5A68WGF6WM" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>OCTOCRYLENE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="5A68WGF6WM" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>OCTOCRYLENE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3W1JG795YI" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SUNFLOWER OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2ZA36H0S2V" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>YELLOW WAX</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6UYK2W1W1E" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>OLIVE OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="69VJ1LPN1S" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CANNABIS SATIVA SEED OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="8LGU7VM393" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ROSEMARY OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="H4N855PNZ1" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>.ALPHA.-TOCOPHEROL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="ZY81Z83H0X" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALOE VERA LEAF</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="4.25" unit="g"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="71087-114-01" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C42794" displayName="TUBE" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20220906"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                           <subjectOf>
+                              <characteristic classCode="OBS">
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" displayName="Type 0: Not a Combination Product" codeSystem="2.16.840.1.113883.3.26.1.1" xsi:type="CE"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20220906"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M020" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic>
+                           <code code="SPLFLAVOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C73365" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BERRY" xsi:type="CE">
+                              <originalText>WILDBERRY</originalText>
+                           </value>
+                        </characteristic>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="Lfc73b55e-fa80-4c10-bd42-bccd7c44f37f">
+               <id root="fbb87184-e9d8-4596-84b7-49d82d7763bc"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">
+                        <content styleCode="italics">Drug Facts</content>
+                     </content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Active Ingredients:</content>
+                     </content>
+                     <br/>Avobenzone 2.0%<br/>Octinoxate    6.5%<br/>Octisalate     5.0%<br/>Octocrylene 1.5%</paragraph>
+               </text>
+               <effectiveTime value="20220906"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L15792985-acad-4f19-904c-2ff2b3423be1">
+               <id root="81dc127b-0988-42b9-89ab-1c8be24ad121"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Purpose</content>
+                     </content>
+                     <br/>Avobenzone ,,,,Sunscreen<br/>Octinoxate ,,,,,,,Sunscreen<br/>Octisalate ,,,,,,,,Sunscreen<br/>Octocrylene ,,,,,Sunscreen</paragraph>
+               </text>
+               <effectiveTime value="20220906"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lbeb7db37-7410-4b9a-b3ba-13ae5cec5ea4">
+               <id root="687f2916-f93f-4774-8d7c-e7afef8adb07"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Uses:</content>
+                     </content> Helps prevent sunburn </paragraph>
+               </text>
+               <effectiveTime value="20220906"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L9631d70a-5bff-40d3-8f79-3ef772a116dd">
+               <id root="6797d64b-d89d-47b2-947d-1e170e4ab327"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Warnings</content>
+                     </content>
+                     <br/>• <content styleCode="bold">For external use only</content> • <content styleCode="bold">Do not use</content> on damaged or broken<br/>skin • <content styleCode="bold">Stop use and ask a doctor i</content>f• rash occurs • <content styleCode="bold">When</content>
+                     <br/>
+                     <content styleCode="bold">using this product</content> • keep out of eyes. Rinse with water to remove.</paragraph>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20231107"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Le0bb67cc-ae61-4e49-a9d9-64831620b00c">
+               <id root="7e286c92-21b4-4c37-b871-a11c7faf4a86"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Keep out of reach of children:</content>
+                     </content>  If swallowed, get medilcal<br/>help or contact a Poison Control center right away.</paragraph>
+               </text>
+               <effectiveTime value="20220906"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L97087741-0a86-4b28-9dcc-5f7b9682fff9">
+               <id root="d1d97bad-5b22-470a-a012-4d3c1585cc83"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Directions</content>
+                     </content> • Apply liberally 15 minutes before sun exposure • Use a<br/>water resistant sunscreen if swimming or sweating • Reapply at least<br/>every 2 hours • Children under 6 months of age: <content styleCode="bold">Ask a doctor</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Sun Protection Measures</content> Spending time in the sun increases your<br/>risk of skin cancer and early skin aging. To decrease this risk, regularly<br/>use a sunscreen with a Broad Spectrum SPF value of 15 or higher and<br/>other protection measures including: • limit time in the sun, especially from<br/>10a.m. - 2p.m.• wear long sleeved shirts, pants, hat, and sunglasses</paragraph>
+               </text>
+               <effectiveTime value="20220906"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L77a12cf9-1789-42bb-934f-d056294965d2">
+               <id root="d1223673-efde-4d63-8243-de69ffb64a9b"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Inactive ingredients:</content>
+                     </content> Sunflower oil, beeswax, extra virgin olive<br/>oil, flavor, hemp seed oil, rosemary extract, vitamin E, aloe vera.</paragraph>
+               </text>
+               <effectiveTime value="20220906"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L30fbe266-8af5-4407-84c9-1e36e73428ba">
+               <id root="220da725-dc1a-4a1b-9fc7-a5bf865e1970"/>
+               <code code="60561-8" codeSystem="2.16.840.1.113883.6.1" displayName="OTHER SAFETY INFORMATION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Other Information:</content>
+                     </content>
+                  </paragraph>
+                  <paragraph>Protect this product from excessive heat and direct sun.</paragraph>
+               </text>
+               <effectiveTime value="20220906"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lae973fb6-a80d-4f10-b999-01d0731b3ea2">
+               <id root="a9cddd13-d46f-40ee-88ef-dab3017b1db2"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Broad Spectrum SPF 15 Sunscreen<br/>Wildberry Lip Balm</content>
+                     </content>
+                  </paragraph>
+                  <paragraph>Net Wt. 0.15 oz (4.25g)</paragraph>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">SAFETY SEAL</content>
+                     </content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Dist. by:</content>
+                     </content>www.totallypromotional.com | CoIdwater, OH 45828</paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="L34dfccf4-8f96-4137-916a-f7635f4975df"/>
+                  </paragraph>
+                  <paragraph/>
+                  <paragraph/>
+                  <paragraph/>
+                  <paragraph/>
+                  <paragraph/>
+                  <paragraph>res</paragraph>
+               </text>
+               <effectiveTime value="20220906"/>
+               <component>
+                  <observationMedia ID="L34dfccf4-8f96-4137-916a-f7635f4975df">
+                     <text>Vanilla Mint</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="71087-114.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

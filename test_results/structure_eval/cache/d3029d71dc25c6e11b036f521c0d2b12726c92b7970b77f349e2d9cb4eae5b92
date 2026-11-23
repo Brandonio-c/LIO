@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 21387,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Medi First Triple Antibiotic Bacitracin zinc, Neomycin sulfate, Polymyxin B sulfate NEOMYCIN SULFATE NEOMYCIN BACITRACIN ZINC BACITRACIN POLYMYXIN B SULFATE POLYMYXIN B WHITE PETROLATUM"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts Drug Facts"
+      ],
+      "active_ingredient": [
+        "Active Ingredient Active Ingredient Bacitracin Zinc 400 units Neomycin Sulfate 5 mg (equivalent to 3.5 mg Neomycin Base) Polymyxin B sulfate 5,000 units"
+      ],
+      "purpose": [
+        "Purpose Purpose First aid antibiotic"
+      ],
+      "indications_and_usage": [
+        "Uses Uses First aid to help prevent infection in minor: cuts scrapes burns"
+      ],
+      "warnings": [
+        "Warnings Warnings For external use only."
+      ],
+      "do_not_use": [
+        "Do not use Do not use in the eyes over large areas of the body if you are allergic to any of the ingredients longer than 1 week unless directed by a doctor"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have Ask a doctor before use if you have animal bites serious burns deep or puncture wounds"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if Stop use and ask a doctor if condition worsens or gets worse a rash or other allergic reaction develops"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep our of reach of children Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center immediately."
+      ],
+      "dosage_and_administration": [
+        "Directions Directions clean the affected area apply a small amount of this product (an amount equal to the surface area of the tip of a finger) may be covered with a sterile bandage"
+      ],
+      "other_safety_information": [
+        "Other information Other information Store at room termperature 15°-30° *(59°-86°F) Lot No. & Exp Date: See box or crimp of tube."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Inactive ingredient white petrolatum"
+      ],
+      "questions": [
+        "Questions or comments? Questions or comments? Call 1-800-635-7680"
+      ],
+      "recent_major_changes": [
+        ""
+      ],
+      "package_label_principal_display_panel": [
+        "Principal Display Panel Medi ♥ First Topical Solutions healing made easy NDC #47682-868-69 Helps protect against infection in minor cuts, scrapes and burns * Comare to the Active Ingredient in NEOSPORIN® 52369 TripleAntibiotic 12-17-25"
+      ],
+      "set_id": "545fa5b6-781c-18ae-e063-6294a90a2f0d",
+      "id": "545fa5b6-781d-18ae-e063-6294a90a2f0d",
+      "effective_time": "20260616",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M004"
+        ],
+        "brand_name": [
+          "Medi First Triple Antibiotic"
+        ],
+        "generic_name": [
+          "BACITRACIN ZINC, NEOMYCIN SULFATE, POLYMYXIN B SULFATE"
+        ],
+        "manufacturer_name": [
+          "Unifirst First Aid Corporation"
+        ],
+        "product_ndc": [
+          "47682-868"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "NEOMYCIN SULFATE",
+          "BACITRACIN ZINC",
+          "POLYMYXIN B SULFATE"
+        ],
+        "rxcui": [
+          "204602"
+        ],
+        "spl_id": [
+          "545fa5b6-781d-18ae-e063-6294a90a2f0d"
+        ],
+        "spl_set_id": [
+          "545fa5b6-781c-18ae-e063-6294a90a2f0d"
+        ],
+        "package_ndc": [
+          "47682-868-69",
+          "47682-868-66"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0347682523695"
+        ],
+        "unii": [
+          "057Y626693",
+          "89Y4M234ES",
+          "19371312D4"
+        ]
+      }
+    }
+  ]
+}

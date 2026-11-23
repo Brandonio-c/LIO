@@ -1,0 +1,1330 @@
+[
+ {
+  "kind": "drug",
+  "id": "1c81582c-7ece-182f-e063-6294a90a8fbc",
+  "name": "Bunnies Bum Soothing Hemorrhoidal (glycerin, lidocaine, petrolatum, phenylephrine hcl)",
+  "options": 1,
+  "has_text": true,
+  "table": {
+   "source": "openfda",
+   "product": "Bunnies Bum Soothing Hemorrhoidal (glycerin, lidocaine, petrolatum, phenylephrine hcl)",
+   "variant": "N/A",
+   "serving": "1 of product",
+   "ingredients": [
+    {
+     "name": "Glycerin",
+     "role": "active",
+     "amount": "14.4%",
+     "basis": "of product",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "purpose: Protectant"
+    },
+    {
+     "name": "Lidocaine",
+     "role": "active",
+     "amount": "5%",
+     "basis": "of product",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "purpose: Local anesthetic"
+    },
+    {
+     "name": "Petrolatum",
+     "role": "active",
+     "amount": "15%",
+     "basis": "of product",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "purpose: Protectant"
+    },
+    {
+     "name": "Phenylephrine HCl",
+     "role": "active",
+     "amount": "0.25%",
+     "basis": "of product",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "purpose: Vasoconstrictor"
+    },
+    {
+     "name": "Aloe barbadensis leaf extract",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "ascorbic acid",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "BHT",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "boswellia serrata extract",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "bromelain",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "cellulose gum",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "cetyl alcohol",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "citric acid",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "curcuma long (turmeric) root extract",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "disodium EDTA",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "ethylhexylglycerin",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "glucose",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "glyceryl stearate",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "mineral oil",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "panax ginseng root extract",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "panthenol",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "phenoxyethanol",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "propyl gallate",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "propylene glycol",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "salix alba (willow) bark extract",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "sorbitan olivate",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "steareth-21",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "stearyl alcohol",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "tocopherol",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "tocopheryl acetate",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "water",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "xanthan gum",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    }
+   ],
+   "contains": []
+  },
+  "score": {
+   "spl_product": "Bunnies Bum Soothing Hemorrhoidal",
+   "actives": [
+    {
+     "spl": {
+      "name": "GLYCERIN",
+      "amount": "14.4 g",
+      "per": "100 g"
+     },
+     "name_found": true,
+     "amount_ok": true,
+     "table_amount": "14.4%",
+     "table_basis": "of product"
+    },
+    {
+     "spl": {
+      "name": "PETROLATUM",
+      "amount": "15 g",
+      "per": "100 g"
+     },
+     "name_found": true,
+     "amount_ok": true,
+     "table_amount": "15%",
+     "table_basis": "of product"
+    },
+    {
+     "spl": {
+      "name": "PHENYLEPHRINE HYDROCHLORIDE",
+      "amount": "0.25 g",
+      "per": "100 g"
+     },
+     "name_found": true,
+     "amount_ok": true,
+     "table_amount": "0.25%",
+     "table_basis": "of product"
+    },
+    {
+     "spl": {
+      "name": "LIDOCAINE",
+      "amount": "5 g",
+      "per": "100 g"
+     },
+     "name_found": true,
+     "amount_ok": true,
+     "table_amount": "5%",
+     "table_basis": "of product"
+    }
+   ],
+   "active_extra": [],
+   "inactive_spl": 27,
+   "inactive_table": 27,
+   "inactive_found": 22,
+   "inactive_missing": [
+    "ANHYDROUS DEXTROSE",
+    "GLYCERYL MONOSTEARATE",
+    "INDIAN FRANKINCENSE",
+    "ASIAN GINSENG",
+    "BROMELAINS"
+   ],
+   "inactive_extra": [
+    "boswellia serrata extract",
+    "bromelain",
+    "glucose",
+    "glyceryl stearate",
+    "panax ginseng root extract"
+   ]
+  },
+  "failures": []
+ },
+ {
+  "kind": "drug",
+  "id": "0331c1dd-fe30-421a-85a7-6c6886e7ab27",
+  "name": "Kroger Hot and Cold Medicated Patch (menthol)",
+  "options": 1,
+  "has_text": true,
+  "table": {
+   "source": "openfda",
+   "product": "Kroger Hot and Cold Medicated Patch (menthol)",
+   "variant": "N/A",
+   "serving": "1 of product",
+   "ingredients": [
+    {
+     "name": "Menthol",
+     "role": "active",
+     "amount": "5%",
+     "basis": "of product",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "purpose: Topical Analgesic"
+    },
+    {
+     "name": "CMC",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Dihydroxy aluminum Aminoacetate",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Glycerin",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Kaolin",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Mineral Oil",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Methylparaben",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Petrolatum",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Polyacrylic Acid",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Polysorbate 80",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Propylene Glycol",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Propylparaben",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "PVP",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Sodium Polyacrylate",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Tartaric Acid",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Titanium Dioxide",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Water",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    }
+   ],
+   "contains": []
+  },
+  "score": {
+   "spl_product": "Kroger Hot and Cold Medicated Patch",
+   "actives": [
+    {
+     "spl": {
+      "name": "MENTHOL",
+      "amount": "5 g",
+      "per": "100 g"
+     },
+     "name_found": true,
+     "amount_ok": true,
+     "table_amount": "5%",
+     "table_basis": "of product"
+    }
+   ],
+   "active_extra": [],
+   "inactive_spl": 16,
+   "inactive_table": 16,
+   "inactive_found": 15,
+   "inactive_missing": [
+    "DIHYDROXYALUMINUM AMINOACETATE"
+   ],
+   "inactive_extra": [
+    "Dihydroxy aluminum Aminoacetate"
+   ]
+  },
+  "failures": []
+ },
+ {
+  "kind": "drug",
+  "id": "15af4557-4baf-c177-e063-6294a90a7a5b",
+  "name": "Burn Relief (lidocaine)",
+  "options": 1,
+  "has_text": true,
+  "table": {
+   "source": "openfda",
+   "product": "Burn Relief (lidocaine)",
+   "variant": "N/A",
+   "serving": "1 of product",
+   "ingredients": [
+    {
+     "name": "Lidocaine",
+     "role": "active",
+     "amount": "0.5%",
+     "basis": "of product",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "purpose: External analgesic"
+    },
+    {
+     "name": "aloe barbadensis leaf juice",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "butane",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "carbomer",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "diazolidinyl urea",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "disodium",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "cocoamphodipropionate",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "disodium EDTA",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "glycerin",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "methylparaben",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "propane",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "propylene glycol",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "propylparaben",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "simethicone",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "tocopheryl acetate",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "vitamin E acetate",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "triethanolamine",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "water",
+     "role": "inactive",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    }
+   ],
+   "contains": []
+  },
+  "score": {
+   "spl_product": "Burn Relief",
+   "actives": [
+    {
+     "spl": {
+      "name": "LIDOCAINE",
+      "amount": "0.5 g",
+      "per": "100 g"
+     },
+     "name_found": true,
+     "amount_ok": true,
+     "table_amount": "0.5%",
+     "table_basis": "of product"
+    }
+   ],
+   "active_extra": [],
+   "inactive_spl": 15,
+   "inactive_table": 16,
+   "inactive_found": 14,
+   "inactive_missing": [
+    "DIMETHICONE"
+   ],
+   "inactive_extra": [
+    "simethicone"
+   ]
+  },
+  "failures": []
+ },
+ {
+  "kind": "supplement",
+  "id": 309576,
+  "name": "Rhodiola Rosea",
+  "table": {
+   "source": "dsld",
+   "product": "Rhodiola Rosea",
+   "variant": "N/A",
+   "serving": "1 Capsule, up to 2 a day",
+   "ingredients": [
+    {
+     "name": "Total Carbohydrates",
+     "role": "dietary",
+     "amount": "< 1 g",
+     "basis": "per 1 Capsule",
+     "dv": "1%",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "category: sugar; UNII 0"
+    },
+    {
+     "name": "Siberian Rhodiola Root Extract",
+     "role": "dietary",
+     "amount": "120 mg",
+     "basis": "per 1 Capsule",
+     "dv": "Daily Value not established",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "category: botanical"
+    },
+    {
+     "name": "Rosavins",
+     "role": "dietary",
+     "amount": "6 mg",
+     "basis": "per 1 Capsule",
+     "dv": "Daily Value not established",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "in Siberian Rhodiola Root Extract; category: non-nutrient/non-botanical; UNII 1R72C0ROME"
+    },
+    {
+     "name": "Glycerin",
+     "role": "other",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Hypromellose",
+     "role": "other",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "Water",
+     "role": "other",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    }
+   ],
+   "contains": []
+  },
+  "score": {
+   "rows": 3,
+   "found": 3,
+   "amount_ok": 3,
+   "missing": [],
+   "other_expected_min": 3,
+   "other_table": 3,
+   "serving": "1 Capsule, up to 2 a day"
+  },
+  "failures": []
+ },
+ {
+  "kind": "supplement",
+  "id": 294903,
+  "name": "Turmeric",
+  "table": {
+   "source": "dsld",
+   "product": "Turmeric",
+   "variant": "N/A",
+   "serving": "1.5 Gram",
+   "ingredients": [
+    {
+     "name": "Turmeric, Freeze-Dried",
+     "role": "dietary",
+     "amount": "1.5 g",
+     "basis": "per 1.5 Gram",
+     "dv": "Daily Value not established",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "category: botanical; UNII 856YO1Z64F; Organic"
+    }
+   ],
+   "contains": []
+  },
+  "score": {
+   "rows": 1,
+   "found": 1,
+   "amount_ok": 1,
+   "missing": [],
+   "other_expected_min": 0,
+   "other_table": 0,
+   "serving": "1.5 Gram"
+  },
+  "failures": []
+ },
+ {
+  "kind": "food",
+  "id": 2071343,
+  "name": "PASTA",
+  "table": {
+   "source": "usda",
+   "product": "PASTA",
+   "variant": "N/A",
+   "serving": "53 g (0.167 PACKAGE, PER CONTAINER)",
+   "ingredients": [
+    {
+     "name": "ENRICHED DURUM WHEAT",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "CONTAINS NIACIN, RIBOFLAVIN, THIAMIN, IRON, FOLIC ACID",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "WATER",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "MAY INCLUDE SPINACH",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "TOMATO OR BEET POWDERS",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "FOR COLOR",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "EGG WHITES",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "CHILI PEPPER",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "SALT",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "SPICES",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "BROWN SUGAR",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "GARLIC",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "SUGAR",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    }
+   ],
+   "contains": []
+  },
+  "failures": [],
+  "off": {
+   "text": "Enriched durum wheat (contains niacin, riboflavin, thiamin, iron, folic acid), water, may include spinach, tomato or beet powders (for color), egg whites, chili pepper, salt, spices, brown sugar, garlic, sugar.",
+   "off_top": 12,
+   "table_rows": 11,
+   "found": 12,
+   "missing": [],
+   "extra": [],
+   "percents": [],
+   "failures": []
+  }
+ },
+ {
+  "kind": "food",
+  "id": 2524890,
+  "name": "CHEESE BALLS, CHEESE",
+  "table": {
+   "source": "usda",
+   "product": "CHEESE BALLS, CHEESE",
+   "variant": "N/A",
+   "serving": "28 g (about 28 balls)",
+   "ingredients": [
+    {
+     "name": "ENRICHED YELLOW CORN",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "YELLOW CORN, THIAMINE MONONITRATE, RIBOFLAVIN, NIACIN, FERROUS SULFATE, FOLIC ACID",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "VEGETABLE OIL",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "CONTAINS ONE OR MORE OF THE FOLLOWING: CORN OIL, SUNFLOWER OIL, OR CANOLA OIL",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "CHEESE SEASONING",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "WHEY, COCONUT OIL, MALTODEXTRIN, SALT, CHEDDAR CHEESE [PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), NATURAL AND ARTIFICIAL FLAVORS, MONOSODIUM GLUTAMATE, SODIUM CASEINATE, YELLOW 6, YELLOW 5, CITRIC ACID",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "SALT",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    }
+   ],
+   "contains": []
+  },
+  "failures": []
+ },
+ {
+  "kind": "food",
+  "id": 2095890,
+  "name": "CORN SNACKS",
+  "table": {
+   "source": "usda",
+   "product": "CORN SNACKS",
+   "variant": "N/A",
+   "serving": "28 g (1 ONZ)",
+   "ingredients": [
+    {
+     "name": "CORN FLOUR",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "SOFT WHEAT FLOUR",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "VEGETABLE OIL",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "COTTONSEED, CORN, CANOLA, SOYBEAN AND/OR SUNFLOWER OIL",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "RICE FLOUR",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "OAT FLOUR",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "SUGAR",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "SEA SALT",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    },
+    {
+     "name": "SODIUM BICARBONATE",
+     "role": "ingredient",
+     "amount": "N/A",
+     "basis": "N/A",
+     "dv": "N/A",
+     "form": "N/A",
+     "sub": "N/A",
+     "variant": "N/A",
+     "note": "N/A"
+    }
+   ],
+   "contains": []
+  },
+  "failures": [],
+  "off": {
+   "text": "Corn flour, soft wheat flour, vegetable oil (cottonseed, corn, canola, soybean and/or sunflower oil), rice flour, oat flour, sugar, sea salt, sodium bicarbonate.",
+   "off_top": 8,
+   "table_rows": 8,
+   "found": 8,
+   "missing": [],
+   "extra": [],
+   "percents": [],
+   "failures": []
+  }
+ }
+]

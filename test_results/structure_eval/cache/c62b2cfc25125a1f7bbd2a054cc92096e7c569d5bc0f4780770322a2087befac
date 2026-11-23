@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 24085,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "ZKBB ARTHRITIS PAIN RELIEF Methyl Salicylate, Camphor and Capsaicin METHYL SALICYLATE SALICYLIC ACID CAMPHOR, (-)- CAMPHOR, (-)- CAPSAICIN CAPSAICIN PEG-120 STEARATE GLYCERYL MONOSTEARATE CETOSTEARYL ALCOHOL WATER PHENOXYETHANOL EDETATE CALCIUM DISODIUM ALLANTOIN SODIUM HYDROXIDE CARBOMER 940 DIMETHICONE"
+      ],
+      "purpose": [
+        "Purpose Methyl salicylate 10% Counterirritant Camphor 5% Counterirritant Capsaicin 0.025% Counterirritant"
+      ],
+      "indications_and_usage": [
+        "Uses Temporarily relieves minor aches and pains of muscles and joints associated with: arthritis simple backache strains bruises sprains Temporarily relieves muscle soreness and stiffness of joints."
+      ],
+      "warnings": [
+        "Warnings For external use only. Do not use: on wounds or damaged skin with a heating pad or device with other ointments, creams, sprays, or liniments if you are allergic to any ingredients of this product Ask a doctor before use if you have redness or irritated skin. When using this product: avoid contact with eyes and mucous membranes do not bandage tightly or use with a heating pad capsaicin may cause a burning sensation; wash hands after applying, except when treating the hands Stop use and ask a doctor if: the condition worsens or symptoms persist for more than 7 days excessive skin irritation, burning, or redness occurs If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "dosage_and_administration": [
+        "Directions Adults and children 12 years of age and older: rub a thin film over the affected area not more than 3 to 4 times daily; massage is not necessary. Children under 12 years of age: consult a physician. Wash hands after use with cool water, except when treating the hands. Avoid contact with eyes and mucous membranes."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients PEG-120 stearate, glyceryl monostearate, cetostearyl alcohol, water, phenoxyethanol, edetate calcium disodium, allantoin, sodium hydroxide, carbomer 940, dimethicone."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "package_label_principal_display_panel": [
+        "PDParthritis"
+      ],
+      "set_id": "5cff7314-8a84-2de2-e063-6294a90ac6b9",
+      "id": "5cff7314-8a85-2de2-e063-6294a90ac6b9",
+      "effective_time": "20261004",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M017"
+        ],
+        "brand_name": [
+          "ZKBB ARTHRITIS PAIN RELIEF"
+        ],
+        "generic_name": [
+          "METHYL SALICYLATE, CAMPHOR AND CAPSAICIN"
+        ],
+        "manufacturer_name": [
+          "Guchutang Biotechnology (Longyan) Co.,Ltd."
+        ],
+        "product_ndc": [
+          "87083-016"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "METHYL SALICYLATE",
+          "CAMPHOR, (-)-",
+          "CAPSAICIN"
+        ],
+        "rxcui": [
+          "2740835"
+        ],
+        "spl_id": [
+          "5cff7314-8a85-2de2-e063-6294a90ac6b9"
+        ],
+        "spl_set_id": [
+          "5cff7314-8a84-2de2-e063-6294a90ac6b9"
+        ],
+        "package_ndc": [
+          "87083-016-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "LAV5U5022Y",
+          "213N3S8275",
+          "S07O44R1ZM"
+        ]
+      }
+    }
+  ]
+}

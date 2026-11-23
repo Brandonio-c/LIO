@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="4a197084-aa10-02ef-e063-6394a90a1e46"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Signature Care Hemorrhoidal Ointment 1 oz (with applicator) 78982 ZDP</title>
+   <effectiveTime value="20260205"/>
+   <setId root="3c8b43f3-6e1e-499e-ba71-ffdf836f6743"/>
+   <versionNumber value="7"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="009137209"/>
+            <name>Better Living Brands, LLC</name>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="4a199b41-e3a1-77f7-e063-6294a90a3adf"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20260205"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="21130-789" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Signature Care Hemorrhoidal</name>
+                        <formCode code="C42966" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OINTMENT"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Mineral oil, Petrolatum, and Phenylephrine HCI</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="7EV65EAW6H" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>LANOLIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="A2I8C7HI9T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>METHYLPARABEN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6OZP39ZG8H" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POLYSORBATE 80</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="Z8IX2SC1OH" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPYLPARABEN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2KR89I4H1Y" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>STEARYL ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2UK410MY6B" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>THYME OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mg" value="749"/>
+                              <denominator unit="g" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="4T6H12BN9U" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PETROLATUM</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="4T6H12BN9U" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PETROLATUM</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3K9958V90M" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="9E8X80D2L0" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>.ALPHA.-TOCOPHEROL ACETATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="7G1J5DA97F" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WHITE WAX</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIM">
+                           <quantity>
+                              <numerator unit="mg" value="2.5"/>
+                              <denominator unit="g" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="04JA59TNSJ" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PHENYLEPHRINE HYDROCHLORIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="1WS297W6MV" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PHENYLEPHRINE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mg" value="140"/>
+                              <denominator unit="g" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="T5L8T28FGP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MINERAL OIL</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="T5L8T28FGP" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>MINERAL OIL</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="28" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C42794" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TUBE"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="1" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="21130-789-14" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43182" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CARTON"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20160121"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M015" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20160120"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="L30af12e1-606f-4b2c-b81f-b62adf8876d0">
+               <id root="98fb3f04-ff6a-ef69-e053-2995a90a0b0a"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <text>
+                  <paragraph>Active ingredients                                               Purpose</paragraph>
+                  <paragraph>Mineral oil 14%..............................................Protectant</paragraph>
+                  <paragraph>Petrolatum 74.9%..........................................Protectant</paragraph>
+                  <paragraph>Phenylephrine HCI 0.25%..........................Vasconstrictor</paragraph>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Ld42d85a3-731b-4e6f-a899-25d538ef98fd">
+               <id root="98fb3f04-ff6b-ef69-e053-2995a90a0b0a"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <text>
+                  <paragraph>Uses</paragraph>
+                  <list listType="unordered">
+                     <item>helps relieve the local itching and discomfort associated with hemorrhoids</item>
+                     <item>temporarily shrinks hemorrhoidal tissue and relieves burning</item>
+                     <item>temporarily provides a coating for relief of anorectal discomforts</item>
+                     <item>temporarily protects the inflamed, irritated anorectal surface to help bowel movements less painful</item>
+                  </list>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L73544d78-c4a6-4a98-827d-bfe33953cdba">
+               <id root="98fb3f04-ff6c-ef69-e053-2995a90a0b0a"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <text>
+                  <paragraph>Warnings</paragraph>
+                  <paragraph>For external and/or intrarectal use only</paragraph>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Ld14c0feb-08c7-4655-871f-653fa85c8de3">
+               <id root="98fb3f04-ff6d-ef69-e053-2995a90a0b0a"/>
+               <code code="50569-3" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR SECTION"/>
+               <text>
+                  <paragraph>Ask a doctor before use if you have</paragraph>
+                  <list listType="unordered">
+                     <item>heart disease</item>
+                     <item>high blood pressure</item>
+                     <item>thyroid disease</item>
+                     <item>diabetes</item>
+                     <item>difficulty in urination due to enlargement of the prostate gland</item>
+                  </list>
+                  <paragraph>Ask a doctor of pharmacist before use if you are presently taking a prescription drug for high blood pressure or depression.</paragraph>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L4cee05be-a0b9-4bf5-9738-9d46e6617c8d">
+               <id root="98fb3f04-ff6e-ef69-e053-2995a90a0b0a"/>
+               <code code="50567-7" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - WHEN USING SECTION"/>
+               <text>
+                  <paragraph>When using this product do not exceed the recommended daily dosage unless directed by a doctor.</paragraph>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lb702b430-bbcd-46f0-a4ac-1b0f04e40935">
+               <id root="98fb3f04-ff6f-ef69-e053-2995a90a0b0a"/>
+               <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+               <text>
+                  <paragraph>Stop use and ask a doctor if</paragraph>
+                  <list listType="unordered">
+                     <item>bleeding occurs</item>
+                     <item>condition worsens or does not improve within 7 days</item>
+                     <item>introduction of applicator into rectum causes additional pain</item>
+                  </list>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Ld72a514d-0dbf-49ba-b226-99b76409ca6e">
+               <id root="98fb3f04-ff70-ef69-e053-2995a90a0b0a"/>
+               <code code="53414-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PREGNANCY OR BREAST FEEDING SECTION"/>
+               <text>
+                  <paragraph>If pregnant or breast-feeding, ask a health professional before use.</paragraph>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lc214c5cc-ad64-4afd-96cd-260a8a9d4d26">
+               <id root="98fb3f04-ff71-ef69-e053-2995a90a0b0a"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <text>
+                  <paragraph>Keep out of reach of children. If swallowed, get medical help or contact a Poison Control right away.</paragraph>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L0d97e45b-e733-47d5-a383-58a60f663e5e">
+               <id root="98fb3f04-ff72-ef69-e053-2995a90a0b0a"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <text>
+                  <paragraph>Directions</paragraph>
+                  <list listType="unordered">
+                     <item>adults: when practical, cleanse the affected area by patting or blotting with an appropriate cleansing wipe. Gently dry by patting or blotting with a tissue or a soft cloth before applying ointment.</item>
+                     <item>when first opening the tube, puncture foil seal with top end of cap</item>
+                     <item>apply to the affected area up to 4 times daily, especially at night, in the morning or after each bowel movement  </item>
+                     <item>interacetal use: remove cover from applicator, attach applicator to tube, lubricate applicator well and gently insert applicator into thoroughly cleanse applicator after each use and replace cover</item>
+                     <item>also apply ointment to external area</item>
+                     <item>regular use provides continual therapy for relief of symptoms</item>
+                     <item>children under 12 years of age: ask a doctor</item>
+                  </list>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lefda4f86-c38a-4f00-aec5-cc352e1e6acb">
+               <id root="98fb3f04-ff73-ef69-e053-2995a90a0b0a"/>
+               <code code="44425-7" codeSystem="2.16.840.1.113883.6.1" displayName="STORAGE AND HANDLING SECTION"/>
+               <text>
+                  <paragraph>Other information</paragraph>
+                  <list listType="unordered">
+                     <item>store at 20-25°C (68-77°F)</item>
+                     <item>Lot No. &amp; Exp. Date: see box or see crimp of tube</item>
+                  </list>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L6d2ef7d7-d89a-4170-922d-6b8e17dbbdfd">
+               <id root="bf414666-cf14-ad2f-e053-2a95a90af35b"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <text>
+                  <paragraph>Inactive ingredients</paragraph>
+                  <paragraph>.alpha.-tocopherol acetate, alcohol, glycerin, lanolin, methylparaben, polysorbate 80, propylparaben, stearyl alcohol, thyme oil, purified water, white wax</paragraph>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L9467b55e-0506-465b-9555-9ded4fd3227c">
+               <id root="bf412f18-897a-5160-e053-2995a90a6240"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <text>
+                  <paragraph>Distributed by:</paragraph>
+                  <paragraph>Better Living Brands LLC</paragraph>
+                  <paragraph>P.O. Box 99</paragraph>
+                  <paragraph>Pleasanton, CA 94566-0009</paragraph>
+                  <paragraph>1-888-723-3929</paragraph>
+                  <paragraph>
+                     <linkHtml href="http://www.betterlivingbrandsLLC.com">www.betterlivingbrandsLLC.com</linkHtml>
+                  </paragraph>
+                  <paragraph>Made in China</paragraph>
+               </text>
+               <effectiveTime value="20160121"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L4a8312bd-8056-4486-b947-e10456af0817">
+               <id root="bf412f18-897d-5160-e053-2995a90a6240"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_bf41446a-1d27-fd0e-e053-2a95a90afaf4"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20160121"/>
+               <component>
+                  <observationMedia ID="img_bf41446a-1d27-fd0e-e053-2a95a90afaf4">
+                     <text>78982.1</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="78982.1.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

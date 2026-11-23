@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 15788,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Nailtific Nighttime Antifungal Renewal Pen Refill TOLNAFTATE OREGANO LEAF OIL CINNAMON OIL TEA TREE OIL TOLNAFTATE TOLNAFTATE EUCALYPTUS OIL JOJOBA OIL LAVENDER OIL CLOVE OIL"
+      ],
+      "active_ingredient": [
+        "TOLNAFTATE"
+      ],
+      "inactive_ingredient": [
+        "JOJOBA SEED OIL,TEA TREE OIL,OREGANO OIL,CINNAMON OIL,CLOVE BUD OIL,EUCALYPTUS OIL, LAVENDER OIL"
+      ],
+      "dosage_and_administration": [
+        "6ml 0.23fl"
+      ],
+      "keep_out_of_reach_of_children": [
+        "keep out of reach of children section"
+      ],
+      "warnings": [
+        "warnings section"
+      ],
+      "indications_and_usage": [
+        "Apply to the affected area twice daily."
+      ],
+      "purpose": [
+        "Treatment for nail and skin fungal infections"
+      ],
+      "package_label_principal_display_panel": [
+        "333 111"
+      ],
+      "set_id": "42634fc7-d0c7-4813-e063-6294a90a702d",
+      "id": "4f29dee5-5203-ab15-e063-6294a90a30aa",
+      "effective_time": "20260411",
+      "version": "3",
+      "openfda": {
+        "application_number": [
+          "M005"
+        ],
+        "brand_name": [
+          "Nailtific Nighttime Antifungal Renewal Pen Refill"
+        ],
+        "generic_name": [
+          "TOLNAFTATE"
+        ],
+        "manufacturer_name": [
+          "Guangzhou Meixi Biotechnology Co., Ltd."
+        ],
+        "product_ndc": [
+          "84167-023"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "TOLNAFTATE"
+        ],
+        "rxcui": [
+          "313423"
+        ],
+        "spl_id": [
+          "4f29dee5-5203-ab15-e063-6294a90a30aa"
+        ],
+        "spl_set_id": [
+          "42634fc7-d0c7-4813-e063-6294a90a702d"
+        ],
+        "package_ndc": [
+          "84167-023-31"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "06KB629TKV"
+        ]
+      }
+    }
+  ]
+}

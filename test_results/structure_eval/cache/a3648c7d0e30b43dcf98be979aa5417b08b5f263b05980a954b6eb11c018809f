@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="5d4feaaf-0587-77d5-e063-6394a90a359b"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <effectiveTime value="20261008"/>
+   <setId root="5d4feaaf-0586-77d5-e063-6394a90a359b"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="707967322"/>
+            <name>Lance (Guangzhou) Biological Technology Co., Ltd.</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <assignedEntity>
+                     <assignedOrganization>
+                        <id root="1.3.6.1.4.1.519.1" extension="707967322"/>
+                        <name>Lance (Guangzhou) Biological Technology Co., Ltd.</name>
+                     </assignedOrganization>
+                     <performance>
+                        <actDefinition>
+                           <code code="C43360" displayName="manufacture" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="87593-103" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                  </assignedEntity>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="5d50de08-9372-681d-e063-6394a90a173c"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20261008"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="87593-103" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>2% MINOXIDIL SERUM FOR WOMEN</name>
+                        <formCode code="C42953" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="LIQUID"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>2% MINOXIDIL SERUM FOR WOMEN</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="1"/>
+                              <denominator unit="g" value="50"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="5965120SH1" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MINOXIDIL</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="5965120SH1" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>MINOXIDIL</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="94ZLA3W45F" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ARGININE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="CUQ3A77YXI" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PANAX GINSENG ROOT</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6SO6U10H04" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BIOTIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PZH18SVV84" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CALYCOPHYLLUM MULTIFLORUM WHOLE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="SAS9Z1SVUK" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ZINGIBER OFFICINALE (GINGER) ROOT OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="OFD5T4515T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PINUS MASSONIANA LEAF</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2968PHW8QP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CITRIC ACID</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="O03S90U1F2" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>VITAMIN E POLYETHYLENE GLYCOL SUCCINATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="HIE492ZZ3T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PHENOXYETHANOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="50" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="87593-103-50" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20250320"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="505G(a)(3)" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20250320"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLCOLOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48330" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="yellow" xsi:type="CE">
+                              <originalText/>
+                           </value>
+                        </characteristic>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38675" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CUTANEOUS"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d504056-1959-c544-e063-6394a90af46f">
+               <id root="5d504056-1958-c544-e063-6394a90af46f"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>DOSAGE ADMINISTRATION SECTION</title>
+               <text>
+                  <paragraph>DOSAGE ADMINISTRATION SECTION</paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_5d504056-1957-c544-e063-6394a90af46f"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250320"/>
+               <component>
+                  <observationMedia ID="img_5d504056-1957-c544-e063-6394a90af46f">
+                     <text>DOSAGE ADMINISTRATION SECTION</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="DOSAGE ADMINISTRATION SECTION.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d505252-9c64-d344-e063-6394a90a0a48">
+               <id root="5d505252-9c63-d344-e063-6394a90a0a48"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>INACTIVE INGREDIENT SECTION</title>
+               <text>
+                  <paragraph>INACTIVE INGREDIENT SECTION</paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_5d50522d-5a8b-14c4-e063-6294a90a4bbc"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250320"/>
+               <component>
+                  <observationMedia ID="img_5d50522d-5a8b-14c4-e063-6294a90a4bbc">
+                     <text>INACTIVE INGREDIENT SECTION</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="INACTIVE INGREDIENT SECTION.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d50561b-17c3-d4d6-e063-6394a90a630b">
+               <id root="5d50561b-17c2-d4d6-e063-6394a90a630b"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>WARNINGS SECTION</title>
+               <text>
+                  <paragraph>WARNINGS SECTION</paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_5d5055f1-1b57-d427-e063-6394a90a1503"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250320"/>
+               <component>
+                  <observationMedia ID="img_5d5055f1-1b57-d427-e063-6394a90a1503">
+                     <text>WARNINGS SECTION</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="WARNINGS SECTION.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d5059c7-b808-238c-e063-6294a90a3fc4">
+               <id root="5d5059c7-b807-238c-e063-6294a90a3fc4"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>INDICATIONS USAGE SECTION</title>
+               <text>
+                  <paragraph>INDICATIONS USAGE SECTION</paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_5d5059be-2220-d722-e063-6394a90a9e1c"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250320"/>
+               <component>
+                  <observationMedia ID="img_5d5059be-2220-d722-e063-6394a90a9e1c">
+                     <text>INDICATIONS USAGE SECTION</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="INDICATIONS USAGE SECTION.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d505d5a-d409-2403-e063-6294a90a452e">
+               <id root="5d505d5a-d408-2403-e063-6294a90a452e"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <title>KEEP OUT OF REACH OF CHILDREN SECTION</title>
+               <text>
+                  <paragraph>KEEP OUT OF REACH OF CHILDREN SECTION</paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_5d505d2b-b39c-d931-e063-6394a90a1fc9"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250320"/>
+               <component>
+                  <observationMedia ID="img_5d505d2b-b39c-d931-e063-6394a90a1fc9">
+                     <text>KEEP OUT OF REACH OF CHILDREN SECTION</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="KEEP OUT OF REACH OF CHILDREN SECTION.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d5061d2-760f-293d-e063-6294a90a0376">
+               <id root="5d5061d2-760e-293d-e063-6294a90a0376"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>PURPOSE SECTION</title>
+               <text>
+                  <paragraph>PURPOSE SECTION</paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_5d50617b-9d21-26d4-e063-6294a90ab904"/>
+                  </paragraph>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20250320"/>
+               <component>
+                  <observationMedia ID="img_5d50617b-9d21-26d4-e063-6294a90ab904">
+                     <text>PURPOSE SECTION</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="PURPOSE SECTION.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_5d503d32-1bbf-fc53-e063-6294a90a95c8">
+               <id root="5d503d32-1bbe-fc53-e063-6294a90a95c8"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>2%MINOXIDIL SERUM FOR WOMEN</title>
+               <text>
+                  <paragraph>2%MINOXIDIL SERUM FOR WOMEN PACKAGE LABEL.PRINCIPAL DISPLAY PANEL</paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_5d503cef-19e6-c1ce-e063-6394a90ab19a"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250320"/>
+               <component>
+                  <observationMedia ID="img_5d503cef-19e6-c1ce-e063-6394a90ab19a">
+                     <text>2%MINOXIDIL SERUM FOR WOMEN PACKAGE LABEL.PRINCIPAL DISPLAY PANEL</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="MINOXIDIL SERUM FOR WOMEN PACKAGE LABEL.PRINCIPAL DISPLAY PANEL.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

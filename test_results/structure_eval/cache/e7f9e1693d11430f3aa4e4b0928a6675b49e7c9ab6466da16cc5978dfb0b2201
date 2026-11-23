@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="32934d7c-c3dc-4bfc-8b8c-ffbbc39768de"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Drug Facts:</title>
+   <effectiveTime value="20241105"/>
+   <setId root="3f62001a-27b5-43cb-8006-110943facf87"/>
+   <versionNumber value="4"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="113501902"/>
+            <name>The Magni Company</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <id extension="844330915" root="1.3.6.1.4.1.519.1"/>
+                  <name>Apotheca Company</name>
+                  <assignedEntity>
+                     <assignedOrganization>
+                        <id root="1.3.6.1.4.1.519.1" extension="844330915"/>
+                        <name>Apotheca Company</name>
+                     </assignedOrganization>
+                     <performance>
+                        <actDefinition>
+                           <code code="C43360" displayName="manufacture" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="43689-0020" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                     <performance>
+                        <actDefinition>
+                           <code code="C82401" displayName="api manufacture" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="43689-0020" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                     <performance>
+                        <actDefinition>
+                           <code code="C84732" displayName="label" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="43689-0020" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                     <performance>
+                        <actDefinition>
+                           <code code="C84731" displayName="pack" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="43689-0020" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                  </assignedEntity>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="c9e58f33-6355-43f4-b3a2-2d3370f2e56e"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <title/>
+               <text/>
+               <effectiveTime value="20220110"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="43689-0020" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Earache Relief</name>
+                        <formCode code="C42998" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TABLET"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Belladonna, Calcarea Carbonica, Chamomilla, Hepar Sulphuris Calcareum, Kali Bichromicum, Lycopodium Clavatum, Plantago Major, Pulsatilla (Vulgaris)</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="WQZ3G9PF0H" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ATROPA BELLADONNA</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="WQZ3G9PF0H" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>ATROPA BELLADONNA</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="2E32821G6I" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>OYSTER SHELL CALCIUM CARBONATE, CRUDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="2E32821G6I" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>OYSTER SHELL CALCIUM CARBONATE, CRUDE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="G0R4UBI2ZZ" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MATRICARIA CHAMOMILLA WHOLE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="G0R4UBI2ZZ" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>MATRICARIA CHAMOMILLA</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="1MBW07J51Q" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CALCIUM SULFIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="1MBW07J51Q" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>CALCIUM SULFIDE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="T4423S18FM" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POTASSIUM DICHROMATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="9LKY4BFN2V" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>DICHROMATE ION</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="C88X29Y479" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>LYCOPODIUM CLAVATUM SPORE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="C88X29Y479" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>LYCOPODIUM CLAVATUM SPORE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="W2469WNO6U" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PLANTAGO MAJOR WHOLE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="W2469WNO6U" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PLANTAGO MAJOR</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="I76KB35JEV" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PULSATILLA VULGARIS WHOLE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="I76KB35JEV" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>ANEMONE PULSATILLA</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="J2B2A4N98G" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>LACTOSE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="70097M6I30" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MAGNESIUM STEARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="OP1R32D61U" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CELLULOSE, MICROCRYSTALLINE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="90" unit="1"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="43689-0020-1" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43169" displayName="BOTTLE" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="1" unit="1"/>
+                                    <denominator value="1" unit="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="43689-0020-2" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43233" displayName="PACKAGE" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20160824"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic classCode="OBS">
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" displayName="Type 0: Not a Combination Product" codeSystem="2.16.840.1.113883.3.26.1.1" xsi:type="CE"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20160509"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <approval>
+                           <code code="C73614" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="unapproved homeopathic"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic>
+                           <code code="SPLCOLOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48325" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="white" xsi:type="CE"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic>
+                           <code code="SPLSHAPE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48348" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ROUND" xsi:type="CE">
+                              <originalText>Convex</originalText>
+                           </value>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic>
+                           <code code="SPLSIZE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value unit="mm" value="6" xsi:type="PQ"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic>
+                           <code code="SPLSCORE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value value="1" xsi:type="INT"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic>
+                           <code code="SPLIMPRINT" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value xsi:type="ST">ML</value>
+                        </characteristic>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38288" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ORAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="L7760aca2-4035-4f83-b9f6-d0a2e030f0bc">
+               <id root="b2cda57a-d68c-48ee-b84b-de18e4033666"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>ACTIVE INGREDIENTS:</title>
+               <text>
+                  <paragraph>Belladonna 12X, Calcarea Carbonica 12X, Chamomilla 12X, Hepar Sulphuris Calcareum 12X, Kali Bichromicum 12X, Lycopodium Clavatum 12X, Plantago Major 12X, Pulsatilla (Vulgaris) 12X.</paragraph>
+               </text>
+               <effectiveTime value="20160824"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lecf73eb8-0cf0-459e-98a0-90084479ae51">
+               <id root="bfb86d46-59c3-4508-a429-5fb8cec2ec0c"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>USES:</title>
+               <text>
+                  <paragraph>For temporary relief of earache symptoms, such as pain, pressure, congestion, itching, sleeplessness, and headaches, after diagnosis by a physician.</paragraph>
+               </text>
+               <effectiveTime value="20160824"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L7dcfbb5b-f431-4706-93b7-fd505b994ca6">
+               <id root="f0ac70d7-edeb-4c1b-832f-da97b6d6fb0f"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>WARNINGS:</title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">• If pregnant or breastfeeding,</content> ask a health professional before use.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">• Keep out of reach of children.</content> In case of overdose, get medical help or contact a Poison Control Center right away.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">• Stop use and ask a doctor if</content> you experience worsening symptoms or if symptoms last longer than 7 days.</paragraph>
+               </text>
+               <effectiveTime value="20160824"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L9ef9647c-abff-4e87-af02-523bded7cab9">
+               <id root="7a94ab13-f12d-4788-b0cf-706986937db7"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <title>KEEP OUT OF REACH OF CHILDREN:</title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Keep out of reach of children.</content> In case of overdose, get medical help or contact a Poison Control Center right away.</paragraph>
+               </text>
+               <effectiveTime value="20160824"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L3e234461-5a09-44f2-8be4-fa28b39e43dd">
+               <id root="48596b31-c4c3-4f04-8064-311ff39d7d64"/>
+               <code code="60561-8" codeSystem="2.16.840.1.113883.6.1" displayName="OTHER SAFETY INFORMATION"/>
+               <title>OTHER INFORMATION:</title>
+               <text>
+                  <paragraph>• Store tightly closed in a cool, dry place (59° - 86°F)</paragraph>
+                  <paragraph>• Tamper sealed: Sealed for your protection. Do not use if seal is broken or missing</paragraph>
+                  <paragraph>• The letters "HPUS" indicate that the components in this product are officially monographed in the Homeopathic Pharmacopeia of the United<br/>   States</paragraph>
+                  <paragraph>• These statements are supported by the traditional homeopathic principles</paragraph>
+               </text>
+               <effectiveTime value="20160824"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L601f9369-c5a5-4a2e-8ad9-392e3fa800ed">
+               <id root="95d99d60-9574-42ba-8732-e7e4ea513452"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>DIRECTIONS:</title>
+               <text>
+                  <paragraph>Adults and children 12 years and above:  dissolve 1-2 tablets under tongue, 2 to 3 times daily or as directed by a physician.</paragraph>
+                  <paragraph>Children under 12 years, consult a physician.</paragraph>
+               </text>
+               <effectiveTime value="20160824"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L021774b6-37bf-4f4d-a9a2-f2cf8fd6da76">
+               <id root="391da7dd-7ca1-4c34-ab3c-9893de84d162"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>INDICATIONS:</title>
+               <text>
+                  <paragraph>For temporary relief of earache symptoms, such as pain, pressure, congestion, itching, sleeplessness, and headaches, after diagnosis by a physician.</paragraph>
+               </text>
+               <effectiveTime value="20160824"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L1577cadb-1d6a-42b1-93f7-7e9ff69e7f11">
+               <id root="c3407e6e-576b-4c99-b208-e5d1551442e1"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>INACTIVE INGREDIENTS:</title>
+               <text>
+                  <paragraph>Lactose, Magnesium Stearate, Microcrystalline Cellulose</paragraph>
+               </text>
+               <effectiveTime value="20160824"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Ld529e1b2-71ca-482d-9b26-5a10f4d9e74c">
+               <id root="5f04f970-9e54-43f2-a7c4-0903fd2c5ebc"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>QUESTIONS:</title>
+               <text>
+                  <paragraph>Dist. by: The Magni Group, Inc. McKinney, TX 75071 USA</paragraph>
+                  <paragraph>www.magnilife.com                               1-800-645-9199</paragraph>
+               </text>
+               <effectiveTime value="20160824"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L22c63e48-b58a-4233-b240-f8c341f4772f">
+               <id root="7e32cb3e-7541-4b2e-9da2-971a95e2c9f2"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>PACKAGE LABEL DISPLAY:</title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">MAGNILIFE</content> Homeopathic</paragraph>
+                  <paragraph>NDC 43689-0020-1<br/>
+                     <content styleCode="bold"/>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">EARACHE RELIEF</content>
+                  </paragraph>
+                  <paragraph>Targets ear pain<br/>for fast relief</paragraph>
+                  <paragraph>Soothes ear pain and<br/>discomfort due to:<br/>√ Allergy<br/>√ Cold &amp; Flu<br/>√ Congestion<br/>√Swimmer's Ear</paragraph>
+                  <paragraph>90 Dissolving Tablets</paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="L5f9cb279-d020-49d2-ac61-f50cac157d1e"/>
+                  </paragraph>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="L04c42dc6-75f3-4989-8791-07a4d5e06b82"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20160824"/>
+               <component>
+                  <observationMedia ID="L5f9cb279-d020-49d2-ac61-f50cac157d1e">
+                     <text>Earache Relief   lbl</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="MGNI0029 Earache Relief LBL.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+               <component>
+                  <observationMedia ID="L04c42dc6-75f3-4989-8791-07a4d5e06b82">
+                     <text>Earache Relief    ctn</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="MGNI0029 Earache Relief CTN.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

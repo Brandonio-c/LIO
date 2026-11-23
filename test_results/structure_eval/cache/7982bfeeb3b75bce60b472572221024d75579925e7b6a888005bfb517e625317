@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 24970,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Fortinia OF clotrimazole 1% PROPYLENE GLYCOL ALCOHOL CLOTRIMAZOLE CLOTRIMAZOLE"
+      ],
+      "active_ingredient": [
+        "Active Ingredient Clotrimazole 1%"
+      ],
+      "purpose": [
+        "Purpose Antifungal"
+      ],
+      "indications_and_usage": [
+        "Uses • cures most athlete’s foot infections and ringworm infections • relieves itching, burning, cracking, scaling and discomfort which accompany these conditions"
+      ],
+      "warnings": [
+        "Warnings For external use only",
+        "Flammable Do not use near heat or ame, or while smoking. Cap tightly and store at room temperature away from heat."
+      ],
+      "do_not_use": [
+        "Do not use on children under 2 years of age unless directed by a doctor. When using this product, avoid contact with eyes. If contact occurs, rinse eyes thoroughly with water."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor or pharmacist if • irritation occurs • there is no improvement within 4 weeks"
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP OUT OF REACH OF CHILDREN. In case of accidental ingestion, seek medical help or contact a Poison Control Center immediately."
+      ],
+      "dosage_and_administration": [
+        "Directions • wash affected area and dry thoroughly • apply one drop to the affected area twice daily (morning and night) or as directed by your doctor • using a disposable cotton swab, spread a thin layer over the affected area • discard cotton swab • supervise children in the use of this product • for athlete’s foot: pay special attention to spaces between toes; wear well-fitting, ventilated shoes and change shoes and socks at least once daily • for athlete’s foot and ringworm infections, use daily for 4 weeks • this product is not effective on scalp or nails"
+      ],
+      "other_safety_information": [
+        "Other Information Store at controlled room temperature."
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredients Ethyl Alcohol (79%), Propylene Glycol"
+      ],
+      "questions": [
+        "Questions or Suggestions? 1.855.763.8733 or visit us at www.thepodiatreecompany.com"
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPAL DISPLAY PANEL label"
+      ],
+      "set_id": "60cbd3aa-9ad7-24e4-e053-2a91aa0ab05f",
+      "id": "47e362c2-c357-adbe-e063-6294a90a6043",
+      "effective_time": "20260108",
+      "version": "3",
+      "openfda": {
+        "application_number": [
+          "M005"
+        ],
+        "brand_name": [
+          "Fortinia OF"
+        ],
+        "generic_name": [
+          "CLOTRIMAZOLE 1%"
+        ],
+        "manufacturer_name": [
+          "The Podiatree Company"
+        ],
+        "product_ndc": [
+          "54633-017"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "CLOTRIMAZOLE"
+        ],
+        "rxcui": [
+          "309370"
+        ],
+        "spl_id": [
+          "47e362c2-c357-adbe-e063-6294a90a6043"
+        ],
+        "spl_set_id": [
+          "60cbd3aa-9ad7-24e4-e053-2a91aa0ab05f"
+        ],
+        "package_ndc": [
+          "54633-017-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000175487",
+          "M0002083"
+        ],
+        "pharm_class_epc": [
+          "Azole Antifungal [EPC]"
+        ],
+        "pharm_class_cs": [
+          "Azoles [CS]"
+        ],
+        "unii": [
+          "G07GZ97H65"
+        ]
+      }
+    }
+  ]
+}

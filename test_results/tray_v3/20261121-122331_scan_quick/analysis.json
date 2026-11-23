@@ -1,0 +1,3307 @@
+{
+ "run_id": "20261121-122331_scan_quick",
+ "sample_id": "empty",
+ "mode": "quick",
+ "status": "COMPLETE",
+ "verdict": {
+  "verdict": "DEGRADED",
+  "reasons": [
+   "failing channels: 14",
+   "warnings: T13.T09, T13.T06"
+  ],
+  "modules": {
+   "T02": "PASS",
+   "T03": "PASS",
+   "T04": "PASS",
+   "T05": "FAIL",
+   "T06": "FAIL",
+   "T09": "WARN",
+   "T10": "PASS",
+   "T13": "PASS"
+  }
+ },
+ "health": [
+  {
+   "key": "link",
+   "title": "Link / firmware",
+   "parts": "Nano R4, USB, firmware",
+   "health": "OK",
+   "reason": "1 checks pass",
+   "findings": [
+    "system/link"
+   ]
+  },
+  {
+   "key": "adc",
+   "title": "ADC / I\u00b2C",
+   "parts": "ADS1115, software I\u00b2C D11/D12",
+   "health": "OK",
+   "reason": "1 checks pass",
+   "findings": [
+    "system/adc"
+   ]
+  },
+  {
+   "key": "shift_registers",
+   "title": "Shift registers",
+   "parts": "U1, U2",
+   "health": "OK",
+   "reason": "1 checks pass",
+   "findings": [
+    "system/addressing"
+   ]
+  },
+  {
+   "key": "drivers",
+   "title": "LED drivers / rails",
+   "parts": "DRV1 (RAIL A), DRV2 (RAIL B)",
+   "health": "OK",
+   "reason": "4 checks pass",
+   "findings": [
+    "system/rail/A",
+    "system/rail/B",
+    "elec/opt101/ce_only",
+    "elec/ingaas/ce_only"
+   ]
+  },
+  {
+   "key": "channels",
+   "title": "LED / MOSFET channels",
+   "parts": "LED1-16, Q1-16",
+   "health": "ACT",
+   "reason": "optics/ingaas/h14/response: O 2 counts at h -16384, C +15.0, modulation 1.96",
+   "findings": [
+    "optics/opt101/h01/response",
+    "optics/opt101/h02/response",
+    "optics/opt101/h03/response",
+    "optics/opt101/h04/response",
+    "optics/opt101/h05/response",
+    "optics/opt101/h06/response",
+    "optics/opt101/h07/response",
+    "optics/opt101/h08/response",
+    "optics/opt101/h09/response",
+    "optics/opt101/h10/response",
+    "optics/opt101/h11/response",
+    "optics/opt101/h12/plausibility",
+    "optics/opt101/h13/plausibility",
+    "optics/opt101/h14/plausibility",
+    "optics/opt101/h15/plausibility",
+    "optics/opt101/h16/plausibility",
+    "optics/ingaas/h01/plausibility",
+    "optics/ingaas/h02/plausibility",
+    "optics/ingaas/h03/plausibility",
+    "optics/ingaas/h04/plausibility",
+    "optics/ingaas/h05/plausibility",
+    "optics/ingaas/h06/plausibility",
+    "optics/ingaas/h07/plausibility",
+    "optics/ingaas/h08/response",
+    "optics/ingaas/h09/response",
+    "optics/ingaas/h10/plausibility",
+    "optics/ingaas/h11/plausibility",
+    "optics/ingaas/h12/response",
+    "optics/ingaas/h13/response",
+    "optics/ingaas/h14/response",
+    "optics/ingaas/h16/plausibility",
+    "optics/h01/intermittent",
+    "optics/h02/intermittent",
+    "optics/h03/intermittent",
+    "optics/h04/intermittent",
+    "optics/h05/intermittent",
+    "optics/h06/intermittent",
+    "optics/h07/intermittent",
+    "optics/h08/intermittent",
+    "optics/h09/intermittent",
+    "optics/h10/intermittent",
+    "optics/h11/intermittent",
+    "optics/h12/intermittent",
+    "optics/h13/intermittent",
+    "optics/h14/intermittent",
+    "optics/h15/intermittent",
+    "optics/h16/intermittent",
+    "elec/opt101/h15/select_only",
+    "elec/ingaas/h15/select_only",
+    "optics/wrong_rail/h01",
+    "optics/wrong_rail/h02",
+    "optics/wrong_rail/h03",
+    "optics/wrong_rail/h04",
+    "optics/wrong_rail/h05",
+    "optics/wrong_rail/h06",
+    "optics/wrong_rail/h07",
+    "optics/wrong_rail/h08",
+    "optics/wrong_rail/h09",
+    "optics/wrong_rail/h10",
+    "optics/wrong_rail/h11",
+    "optics/wrong_rail/h12",
+    "optics/wrong_rail/h13",
+    "optics/wrong_rail/h14",
+    "optics/wrong_rail/h15"
+   ]
+  },
+  {
+   "key": "opt101",
+   "title": "OPT101",
+   "parts": "OPT101 (A1)",
+   "health": "OK",
+   "reason": "8 checks pass",
+   "findings": [
+    "optics/opt101/electrical_only",
+    "optics/opt101/throughput",
+    "optics/opt101/snr",
+    "optics/opt101/headroom",
+    "elec/opt101/coupling",
+    "elec/opt101/dark_offset",
+    "elec/opt101/drift",
+    "elec/opt101/coil_emi"
+   ]
+  },
+  {
+   "key": "ingaas",
+   "title": "InGaAs TIA",
+   "parts": "D1, U5, Rf, Cf (A0)",
+   "health": "ACT",
+   "reason": "optics/ingaas/throughput: median O over 5 expected holes; spread (CV) 72% across holes",
+   "findings": [
+    "optics/ingaas/electrical_only",
+    "optics/ingaas/throughput",
+    "optics/ingaas/snr",
+    "optics/ingaas/headroom",
+    "elec/ingaas/coupling",
+    "elec/ingaas/dark_offset",
+    "elec/ingaas/drift",
+    "elec/ingaas/coil_emi"
+   ]
+  },
+  {
+   "key": "motors",
+   "title": "Motors / lead screws",
+   "parts": "M1, M2, ULN2003, couplers, M6 rods",
+   "health": "WATCH",
+   "reason": "mech/travel: tracked range 260400 / 333677 half-steps (M1/right / M2/left): the two sides differ (thresholds.motion.travel.range_steps not set: not compared)",
+   "findings": [
+    "mech/home_sensors",
+    "mech/travel",
+    "mech/lockstep",
+    "mech/settle",
+    "mech/backlash",
+    "mech/step_loss",
+    "mech/repeatability"
+   ]
+  },
+  {
+   "key": "stage",
+   "title": "Stage tracking",
+   "parts": "lio.stage, soft limits",
+   "health": "OK",
+   "reason": "1 checks pass",
+   "findings": [
+    "system/stage"
+   ]
+  },
+  {
+   "key": "safety",
+   "title": "Safety",
+   "parts": "interlocks, duty budget",
+   "health": "OK",
+   "reason": "2 checks pass",
+   "findings": [
+    "system/interlocks",
+    "system/duty"
+   ]
+  },
+  {
+   "key": "power",
+   "title": "Power / earthing",
+   "parts": "supplies, GND, earth bond",
+   "health": "OK",
+   "reason": "4 checks pass",
+   "findings": [
+    "elec/opt101/ground_shift",
+    "elec/ingaas/ground_shift",
+    "elec/opt101/hum",
+    "elec/ingaas/hum",
+    "elec/rails"
+   ]
+  },
+  {
+   "key": "optical_path",
+   "title": "Optical path / ambient",
+   "parts": "window, shroud, lid, sample",
+   "health": "OK",
+   "reason": "5 checks pass",
+   "findings": [
+    "optics/optimum",
+    "optics/stray",
+    "optics/effectiveness",
+    "ambient/opt101/leak",
+    "ambient/ingaas/leak",
+    "ambient/opt101/flicker",
+    "ambient/ingaas/flicker",
+    "ambient/lid"
+   ]
+  },
+  {
+   "key": "run",
+   "title": "Run",
+   "parts": "the scan itself",
+   "health": "OK",
+   "reason": "1 checks pass",
+   "findings": [
+    "system/run"
+   ]
+  }
+ ],
+ "findings": [
+  {
+   "id": "system/link",
+   "title": "link and firmware (no unexpected reset, no lost replies)",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "unexpected boots",
+   "detail": "firmware 2.5.2, no unexpected # BOOT",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/adc",
+   "title": "ADC / I\u00b2C (every reading answered)",
+   "status": "PASS",
+   "value": 764.0,
+   "unit": "readings",
+   "detail": "764 readings, no dropout",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/addressing",
+   "title": "addressing (each hole lights its own LED)",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "pairs",
+   "detail": "14 responding holes, all distinct",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/rail/A",
+   "title": "RAIL A (driver gates the LEDs)",
+   "status": "PASS",
+   "value": 8.0,
+   "unit": "holes",
+   "detail": "8/8 holes respond",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/rail/B",
+   "title": "RAIL B (driver gates the LEDs)",
+   "status": "PASS",
+   "value": 5.0,
+   "unit": "holes",
+   "detail": "5/8 holes respond",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/interlocks",
+   "title": "P4 interlock re-checks",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "failed",
+   "detail": "light_while_moving: PASS; single_channel: PASS",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/duty",
+   "title": "LED duty (RAIL A <= budget per LED per minute)",
+   "status": "PASS",
+   "value": 252.0,
+   "unit": "ms/min",
+   "detail": "max 252 ms of 1000 ms; 0 cool-down waits, 0 s in all",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/stage",
+   "title": "stage tracking (position trusted, soft limits respected)",
+   "status": "PASS",
+   "value": null,
+   "unit": "",
+   "detail": "position [-16384, -16384], limits respected",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/run",
+   "title": "run complete",
+   "status": "PASS",
+   "value": null,
+   "unit": "",
+   "detail": "COMPLETE",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/opt101/h01/response",
+   "title": "hole 1 (395) on opt101",
+   "status": "PASS",
+   "value": 102.7,
+   "unit": "counts",
+   "detail": "O 103 counts at h -260400, C +10.0, modulation 0.42",
+   "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+   "data": {
+    "h_opt": -260400.0,
+    "O": 102.66666666666666,
+    "C": 10.0,
+    "modulation": 0.41558441558441567,
+    "fwhm_hs": 244016.0
+   }
+  },
+  {
+   "id": "optics/opt101/h02/response",
+   "title": "hole 2 (405) on opt101",
+   "status": "PASS",
+   "value": 98.0,
+   "unit": "counts",
+   "detail": "O 98 counts at h -260400, C +10.0, modulation 0.50",
+   "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+   "data": {
+    "h_opt": -260400.0,
+    "O": 97.99999999999996,
+    "C": 10.0,
+    "modulation": 0.496598639455782,
+    "fwhm_hs": 244016.0
+   }
+  },
+  {
+   "id": "optics/opt101/h03/response",
+   "title": "hole 3 (blue) on opt101",
+   "status": "PASS",
+   "value": 82.0,
+   "unit": "counts",
+   "detail": "O 82 counts at h -260400, C +10.0, modulation 0.55",
+   "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+   "data": {
+    "h_opt": -260400.0,
+    "O": 81.99999999999994,
+    "C": 10.0,
+    "modulation": 0.5508130081300809,
+    "fwhm_hs": 215562.64179104485
+   }
+  },
+  {
+   "id": "optics/opt101/h04/response",
+   "title": "hole 4 (green) on opt101",
+   "status": "PASS",
+   "value": 111.0,
+   "unit": "counts",
+   "detail": "O 111 counts at h -260400, C +10.0, modulation 0.53",
+   "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+   "data": {
+    "h_opt": -260400.0,
+    "O": 111.00000000000001,
+    "C": 10.0,
+    "modulation": 0.5285285285285286,
+    "fwhm_hs": 228094.62637362623
+   }
+  },
+  {
+   "id": "optics/opt101/h05/response",
+   "title": "hole 5 (yellow) on opt101",
+   "status": "PASS",
+   "value": 35.2,
+   "unit": "counts",
+   "detail": "O 35 counts at h -260400, C +10.0, modulation 0.36",
+   "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+   "data": {
+    "h_opt": -260400.0,
+    "O": 35.16666666666667,
+    "C": 10.0,
+    "modulation": 0.36018957345971575,
+    "fwhm_hs": 244016.0
+   }
+  },
+  {
+   "id": "optics/opt101/h06/response",
+   "title": "hole 6 (orange) on opt101",
+   "status": "PASS",
+   "value": 24.0,
+   "unit": "counts",
+   "detail": "O 24 counts at h -260400, C +10.0, modulation 0.92",
+   "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+   "data": {
+    "h_opt": -260400.0,
+    "O": 23.999999999999986,
+    "C": 10.0,
+    "modulation": 0.9166666666666666,
+    "fwhm_hs": 178969.56626506028
+   }
+  },
+  {
+   "id": "optics/opt101/h07/response",
+   "title": "hole 7 (red) on opt101",
+   "status": "PASS",
+   "value": 47.2,
+   "unit": "counts",
+   "detail": "O 47 counts at h -260400, C +10.0, modulation 0.59",
+   "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+   "data": {
+    "h_opt": -260400.0,
+    "O": 47.166666666666636,
+    "C": 10.0,
+    "modulation": 0.593639575971731,
+    "fwhm_hs": 206601.1111111112
+   }
+  },
+  {
+   "id": "optics/opt101/h08/response",
+   "title": "hole 8 (850) on opt101",
+   "status": "PASS",
+   "value": 425.4,
+   "unit": "counts",
+   "detail": "O 425 counts at h -229898, C +10.0, modulation 0.56",
+   "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+   "data": {
+    "h_opt": -229898.0,
+    "O": 425.4,
+    "C": 10.0,
+    "modulation": 0.5600219401347751,
+    "fwhm_hs": 118862.36352408401
+   }
+  },
+  {
+   "id": "optics/opt101/h09/response",
+   "title": "hole 9 (940) on opt101",
+   "status": "PASS",
+   "value": 308.7,
+   "unit": "counts",
+   "detail": "O 309 counts at h -260400, C +15.0, modulation 0.57",
+   "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+   "data": {
+    "h_opt": -260400.0,
+    "O": 308.66666666666663,
+    "C": 15.0,
+    "modulation": 0.5680345572354211,
+    "fwhm_hs": 212954.27384553332
+   }
+  },
+  {
+   "id": "optics/opt101/h10/response",
+   "title": "hole 10 (white) on opt101",
+   "status": "PASS",
+   "value": 163.4,
+   "unit": "counts",
+   "detail": "O 163 counts at h -138392, C +15.0, modulation 2.21",
+   "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+   "data": {
+    "h_opt": -138392.0,
+    "O": 163.40000000000003,
+    "C": 15.0,
+    "modulation": 2.2107303141574857,
+    "fwhm_hs": 185780.6457491031
+   }
+  },
+  {
+   "id": "optics/opt101/h11/response",
+   "title": "hole 11 (pink) on opt101",
+   "status": "PASS",
+   "value": 480.5,
+   "unit": "counts",
+   "detail": "O 480 counts at h -260400, C +15.0, modulation 0.51",
+   "criteria": "O >= 15 (WARN below), >= 6 (FAIL below)",
+   "data": {
+    "h_opt": -260400.0,
+    "O": 480.4999999999999,
+    "C": 15.0,
+    "modulation": 0.5143947277141866,
+    "fwhm_hs": 236578.6733254994
+   }
+  },
+  {
+   "id": "optics/opt101/h12/plausibility",
+   "title": "hole 12 (1450) seen by opt101?",
+   "status": "PASS",
+   "value": 1.0,
+   "unit": "counts",
+   "detail": "opt101 cannot see 1450 nm; residual +1 counts over C +15.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": 1.0000000000000036,
+    "modulation": 3.657142857142849
+   }
+  },
+  {
+   "id": "optics/opt101/h13/plausibility",
+   "title": "hole 13 (1550) seen by opt101?",
+   "status": "PASS",
+   "value": -0.4,
+   "unit": "counts",
+   "detail": "opt101 cannot see 1550 nm; residual -0 counts over C +15.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": -0.4499999999999993,
+    "modulation": 2.3015873015873067
+   }
+  },
+  {
+   "id": "optics/opt101/h14/plausibility",
+   "title": "hole 14 (1650) seen by opt101?",
+   "status": "PASS",
+   "value": 0.1,
+   "unit": "counts",
+   "detail": "opt101 cannot see 1650 nm; residual +0 counts over C +15.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": 0.08571428571428363,
+    "modulation": 24.333333333333982
+   }
+  },
+  {
+   "id": "optics/opt101/h15/plausibility",
+   "title": "hole 15 (1760) seen by opt101?",
+   "status": "PASS",
+   "value": 0.5,
+   "unit": "counts",
+   "detail": "opt101 cannot see 1760 nm; residual +1 counts over C +15.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": 0.5499999999999972,
+    "modulation": 2.818181818181834
+   }
+  },
+  {
+   "id": "optics/opt101/h16/plausibility",
+   "title": "hole 16 (1850) seen by opt101?",
+   "status": "WARN",
+   "value": 619.0,
+   "unit": "counts",
+   "detail": "opt101 cannot see 1850 nm; residual +619 counts over C +15.0; height-dependent (optical)",
+   "criteria": "< 30 counts (WARN); FAIL capped to WARN: no in-range detector for this hole",
+   "data": {
+    "O": 619.0,
+    "modulation": 0.40414647280560057
+   },
+   "explanation": {
+    "cause": "A detector responds, with a height-dependent (optical) signal, to a hole whose wavelength it cannot see: the LED in this hole is not the one in the channel map (swapped with another hole, or the wrong part).",
+    "parts": [
+     "LED16"
+    ],
+    "check": "Camera check of that hole (visible or not); compare the LED marking with docs/OPTICAL_CHANNEL_MAP.md; look for the hole it was swapped with (a response missing elsewhere)."
+   }
+  },
+  {
+   "id": "optics/opt101/electrical_only",
+   "title": "opt101: signal electrical only (no light)?",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "fraction",
+   "detail": "0/11 expected holes show no optical response; coupling present",
+   "criteria": "FAIL when >= 75% of expected holes have O < 6 while |C| >= 8",
+   "data": {
+    "no_light_holes": []
+   }
+  },
+  {
+   "id": "optics/opt101/throughput",
+   "title": "opt101: optical throughput (window, alignment)",
+   "status": "PASS",
+   "value": 102.7,
+   "unit": "counts",
+   "detail": "median O over 11 expected holes; spread (CV) 89% across holes",
+   "criteria": "median O >= 60 (WARN below), >= 20 (FAIL below) for empty",
+   "data": {
+    "O": {
+     "1": 102.66666666666666,
+     "2": 97.99999999999996,
+     "3": 81.99999999999994,
+     "4": 111.00000000000001,
+     "5": 35.16666666666667,
+     "6": 23.999999999999986,
+     "7": 47.166666666666636,
+     "8": 425.4,
+     "9": 308.66666666666663,
+     "10": 163.40000000000003,
+     "11": 480.4999999999999
+    },
+    "cv_pct": 89.43241897064858
+   }
+  },
+  {
+   "id": "optics/ingaas/h01/plausibility",
+   "title": "hole 1 (395) seen by ingaas?",
+   "status": "PASS",
+   "value": 5.2,
+   "unit": "counts",
+   "detail": "ingaas cannot see 395 nm; residual +5 counts over C +2.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": 5.166666666666665,
+    "modulation": 0.6294930875576035
+   }
+  },
+  {
+   "id": "optics/ingaas/h02/plausibility",
+   "title": "hole 2 (405) seen by ingaas?",
+   "status": "PASS",
+   "value": 0.2,
+   "unit": "counts",
+   "detail": "ingaas cannot see 405 nm; residual +0 counts over C +2.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": 0.1666666666666674,
+    "modulation": 13.342857142857087
+   }
+  },
+  {
+   "id": "optics/ingaas/h03/plausibility",
+   "title": "hole 3 (blue) seen by ingaas?",
+   "status": "PASS",
+   "value": -0.7,
+   "unit": "counts",
+   "detail": "ingaas cannot see 465 nm; residual -1 counts over C +2.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": -0.7428571428571429,
+    "modulation": 2.3653846153846154
+   }
+  },
+  {
+   "id": "optics/ingaas/h04/plausibility",
+   "title": "hole 4 (green) seen by ingaas?",
+   "status": "PASS",
+   "value": -0.5,
+   "unit": "counts",
+   "detail": "ingaas cannot see 525 nm; residual -1 counts over C +2.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": -0.5000000000000013,
+    "modulation": 2.142857142857134
+   }
+  },
+  {
+   "id": "optics/ingaas/h05/plausibility",
+   "title": "hole 5 (yellow) seen by ingaas?",
+   "status": "PASS",
+   "value": 20.8,
+   "unit": "counts",
+   "detail": "ingaas cannot see 590 nm; residual +21 counts over C +2.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": 20.83333333333333,
+    "modulation": 0.2964571428571428
+   }
+  },
+  {
+   "id": "optics/ingaas/h06/plausibility",
+   "title": "hole 6 (orange) seen by ingaas?",
+   "status": "PASS",
+   "value": 11.7,
+   "unit": "counts",
+   "detail": "ingaas cannot see 605 nm; residual +12 counts over C +2.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": 11.66666666666667,
+    "modulation": 0.6957142857142858
+   }
+  },
+  {
+   "id": "optics/ingaas/h07/plausibility",
+   "title": "hole 7 (red) seen by ingaas?",
+   "status": "PASS",
+   "value": 1.2,
+   "unit": "counts",
+   "detail": "ingaas cannot see 630 nm; residual +1 counts over C +2.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": 1.1666666666666656,
+    "modulation": 1.7102040816326536
+   }
+  },
+  {
+   "id": "optics/ingaas/h08/response",
+   "title": "hole 8 (850) on ingaas",
+   "status": "PASS",
+   "value": 52.8,
+   "unit": "counts",
+   "detail": "O 53 counts at h -199396, C +2.0, modulation 2.25",
+   "criteria": "O >= 19.6453 (WARN below), >= 9.82264 (FAIL below)",
+   "data": {
+    "h_opt": -199396.0,
+    "O": 52.77142857142857,
+    "C": 2.0,
+    "modulation": 2.247518498465981,
+    "fwhm_hs": 41337.8260473469
+   }
+  },
+  {
+   "id": "optics/ingaas/h09/response",
+   "title": "hole 9 (940) on ingaas",
+   "status": "WARN",
+   "value": 18.0,
+   "unit": "counts",
+   "detail": "O 18 counts at h -260400, C +15.0, modulation 0.95",
+   "criteria": "O >= 19.6453 (WARN below), >= 9.82264 (FAIL below)",
+   "data": {
+    "h_opt": -260400.0,
+    "O": 17.999999999999986,
+    "C": 15.0,
+    "modulation": 0.9537037037037035,
+    "fwhm_hs": 63776.909090909496
+   },
+   "explanation": {
+    "cause": "This hole gives no (or little) height-dependent light on a detector that should see it: the LED is dead or reversed, its MOSFET is open, it is wired to the wrong rail, or it is an LED that this detector cannot see (swapped or wrong part).",
+    "parts": [
+     "LED9",
+     "Q9",
+     "rail wiring"
+    ],
+    "check": "Phone-camera check of the hole while it is lit (lio ch 9 on); meter the Q gate and drain; compare with the rail map."
+   }
+  },
+  {
+   "id": "optics/ingaas/h10/plausibility",
+   "title": "hole 10 (white) seen by ingaas?",
+   "status": "PASS",
+   "value": -12.2,
+   "unit": "counts",
+   "detail": "ingaas cannot see 450 nm; residual -12 counts over C +15.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": -12.166666666666666,
+    "modulation": 0.34246575342465735
+   }
+  },
+  {
+   "id": "optics/ingaas/h11/plausibility",
+   "title": "hole 11 (pink) seen by ingaas?",
+   "status": "PASS",
+   "value": 1.7,
+   "unit": "counts",
+   "detail": "ingaas cannot see 450 nm; residual +2 counts over C +15.0",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {
+    "O": 1.7000000000000028,
+    "modulation": 3.1568627450980373
+   }
+  },
+  {
+   "id": "optics/ingaas/h12/response",
+   "title": "hole 12 (1450) on ingaas",
+   "status": "PASS",
+   "value": 35.2,
+   "unit": "counts",
+   "detail": "O 35 counts at h -260400, C +15.0, modulation 0.24",
+   "criteria": "O >= 19.6453 (WARN below), >= 9.82264 (FAIL below)",
+   "data": {
+    "h_opt": -260400.0,
+    "O": 35.166666666666664,
+    "C": 15.0,
+    "modulation": 0.23696682464454943,
+    "fwhm_hs": 244016.0
+   }
+  },
+  {
+   "id": "optics/ingaas/h13/response",
+   "title": "hole 13 (1550) on ingaas",
+   "status": "WARN",
+   "value": 14.8,
+   "unit": "counts",
+   "detail": "O 15 counts at h -16384, C +15.0, modulation 0.40",
+   "criteria": "O >= 19.6453 (WARN below), >= 9.82264 (FAIL below)",
+   "data": {
+    "h_opt": -16384.0,
+    "O": 14.833333333333336,
+    "C": 15.0,
+    "modulation": 0.40096308186195884,
+    "fwhm_hs": 244016.0
+   },
+   "explanation": {
+    "cause": "This hole gives no (or little) height-dependent light on a detector that should see it: the LED is dead or reversed, its MOSFET is open, it is wired to the wrong rail, or it is an LED that this detector cannot see (swapped or wrong part).",
+    "parts": [
+     "LED13",
+     "Q13",
+     "rail wiring"
+    ],
+    "check": "Phone-camera check of the hole while it is lit (lio ch 13 on); meter the Q gate and drain; compare with the rail map."
+   }
+  },
+  {
+   "id": "optics/ingaas/h14/response",
+   "title": "hole 14 (1650) on ingaas",
+   "status": "FAIL",
+   "value": 2.2,
+   "unit": "counts",
+   "detail": "O 2 counts at h -16384, C +15.0, modulation 1.96",
+   "criteria": "O >= 19.6453 (WARN below), >= 9.82264 (FAIL below)",
+   "data": {
+    "h_opt": -16384.0,
+    "O": 2.1666666666666714,
+    "C": 15.0,
+    "modulation": 1.962637362637362,
+    "fwhm_hs": 72172.66161616154
+   },
+   "explanation": {
+    "cause": "This hole gives no (or little) height-dependent light on a detector that should see it: the LED is dead or reversed, its MOSFET is open, it is wired to the wrong rail, or it is an LED that this detector cannot see (swapped or wrong part).",
+    "parts": [
+     "LED14",
+     "Q14",
+     "rail wiring"
+    ],
+    "check": "Phone-camera check of the hole while it is lit (lio ch 14 on); meter the Q gate and drain; compare with the rail map."
+   }
+  },
+  {
+   "id": "optics/ingaas/h16/plausibility",
+   "title": "hole 16 (1850) seen by ingaas?",
+   "status": "PASS",
+   "value": 9.7,
+   "unit": "counts",
+   "detail": "ingaas cannot see 1850 nm; residual +10 counts over C +15.0",
+   "criteria": "< 30 counts (WARN); FAIL capped to WARN: no in-range detector for this hole",
+   "data": {
+    "O": 9.666666666666668,
+    "modulation": 0.8965517241379314
+   }
+  },
+  {
+   "id": "optics/ingaas/electrical_only",
+   "title": "ingaas: signal electrical only (no light)?",
+   "status": "PASS",
+   "value": 0.2,
+   "unit": "fraction",
+   "detail": "1/5 expected holes show no optical response; coupling present",
+   "criteria": "FAIL when >= 75% of expected holes have O < 9.82264 while |C| >= 8",
+   "data": {
+    "no_light_holes": [
+     14
+    ]
+   }
+  },
+  {
+   "id": "optics/ingaas/throughput",
+   "title": "ingaas: optical throughput (window, alignment)",
+   "status": "FAIL",
+   "value": 18.0,
+   "unit": "counts",
+   "detail": "median O over 5 expected holes; spread (CV) 72% across holes",
+   "criteria": "median O >= 60 (WARN below), >= 20 (FAIL below) for empty",
+   "data": {
+    "O": {
+     "8": 52.77142857142857,
+     "9": 17.999999999999986,
+     "12": 35.166666666666664,
+     "13": 14.833333333333336,
+     "14": 2.1666666666666714
+    },
+    "cv_pct": 71.55035396218359
+   },
+   "explanation": {
+    "cause": "Every hole on this detector is weaker than expected while the shape vs height is normal: less light reaches the detector (a dirty or blocked window, misalignment, or a weaker sample).",
+    "parts": [
+     "detector window",
+     "alignment",
+     "sample"
+    ],
+    "check": "Inspect and clean the deck window over the detector; re-run with the white tile."
+   }
+  },
+  {
+   "id": "optics/h01/intermittent",
+   "title": "hole 1 (395) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h02/intermittent",
+   "title": "hole 2 (405) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h03/intermittent",
+   "title": "hole 3 (blue) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h04/intermittent",
+   "title": "hole 4 (green) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h05/intermittent",
+   "title": "hole 5 (yellow) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h06/intermittent",
+   "title": "hole 6 (orange) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h07/intermittent",
+   "title": "hole 7 (red) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h08/intermittent",
+   "title": "hole 8 (850) intermittent",
+   "status": "WARN",
+   "value": 5.0,
+   "unit": "heights",
+   "detail": "down and up readings disagree on both detectors at once at 5 height(s): -199396, -138392, -77388, -46886, -16384",
+   "criteria": "both detectors within max(5 x noise floor, 0.1 x reading) of each other",
+   "data": {
+    "heights": [
+     -199396.0,
+     -138392.0,
+     -77388.0,
+     -46886.0,
+     -16384.0
+    ]
+   },
+   "explanation": {
+    "cause": "This hole's readings jump on both detectors at the same moment: an electrical event (a joint opening for an instant, or an intermittent short), not light.",
+    "parts": [
+     "LED8",
+     "Q8",
+     "solder joints",
+     "breadboard contacts"
+    ],
+    "check": "Wiggle-test the LED and MOSFET leads while watching 'lio ch 8 on' readings; reflow or re-seat the joints."
+   }
+  },
+  {
+   "id": "optics/h09/intermittent",
+   "title": "hole 9 (940) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h10/intermittent",
+   "title": "hole 10 (white) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h11/intermittent",
+   "title": "hole 11 (pink) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h12/intermittent",
+   "title": "hole 12 (1450) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h13/intermittent",
+   "title": "hole 13 (1550) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h14/intermittent",
+   "title": "hole 14 (1650) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h15/intermittent",
+   "title": "hole 15 (1760) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/h16/intermittent",
+   "title": "hole 16 (1850) intermittent",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "heights",
+   "detail": "down and up agree at 8 heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/optimum",
+   "title": "optimum height (all holes)",
+   "status": "PASS",
+   "value": -77388.0,
+   "unit": "half-steps",
+   "detail": "-77388 half-steps (-18.89 mm); weakest normalised response there -0.11",
+   "criteria": "",
+   "data": {
+    "h_opt": -77388.0,
+    "mm": -18.8935546875,
+    "per_hole": {
+     "opt101/h01": -260400.0,
+     "opt101/h02": -260400.0,
+     "opt101/h03": -260400.0,
+     "opt101/h04": -260400.0,
+     "opt101/h05": -260400.0,
+     "opt101/h06": -260400.0,
+     "opt101/h07": -260400.0,
+     "opt101/h08": -229898.0,
+     "opt101/h09": -260400.0,
+     "opt101/h10": -138392.0,
+     "opt101/h11": -260400.0,
+     "ingaas/h08": -199396.0,
+     "ingaas/h09": -260400.0,
+     "ingaas/h12": -260400.0,
+     "ingaas/h13": -16384.0,
+     "ingaas/h14": -16384.0
+    }
+   }
+  },
+  {
+   "id": "optics/opt101/snr",
+   "title": "opt101: signal-to-noise at the optimum",
+   "status": "PASS",
+   "value": 28.1,
+   "unit": "dB",
+   "detail": "weakest hole 6: 28.1 dB (noise sigma 0.118 mV)",
+   "criteria": ">= 20 dB",
+   "data": {
+    "per_hole_db": {
+     "1": 40.74029210340471,
+     "2": 40.33622438163897,
+     "3": 38.78797991546341,
+     "4": 41.41816244352222,
+     "5": 31.43432696607006,
+     "6": 28.115927702021196,
+     "7": 33.984406570602005,
+     "8": 53.08765257912328,
+     "9": 50.30149750703451,
+     "10": 44.77674391171702,
+     "11": 54.14557070788036
+    }
+   }
+  },
+  {
+   "id": "optics/opt101/headroom",
+   "title": "opt101: saturation headroom",
+   "status": "PASS",
+   "value": 97.5,
+   "unit": "%",
+   "detail": "highest lit reading 729 of 29600 counts",
+   "criteria": ">= 10%",
+   "data": {}
+  },
+  {
+   "id": "optics/ingaas/snr",
+   "title": "ingaas: signal-to-noise at the optimum",
+   "status": "WARN",
+   "value": 15.6,
+   "unit": "dB",
+   "detail": "weakest hole 13: 15.6 dB (noise sigma 0.307 mV)",
+   "criteria": ">= 20 dB",
+   "data": {
+    "per_hole_db": {
+     "8": 26.64461434792779,
+     "9": 17.30208742819459,
+     "12": 23.119261424409455,
+     "13": 15.621412451353859
+    }
+   },
+   "explanation": {
+    "cause": "A hole's signal is close to the noise.",
+    "parts": [
+     "LED",
+     "detector"
+    ],
+    "check": "See the noise metrics; compare with the baseline."
+   }
+  },
+  {
+   "id": "optics/ingaas/headroom",
+   "title": "ingaas: saturation headroom",
+   "status": "PASS",
+   "value": 100.0,
+   "unit": "%",
+   "detail": "highest lit reading -5 of 28000 counts",
+   "criteria": ">= 10%",
+   "data": {}
+  },
+  {
+   "id": "optics/stray",
+   "title": "stray light",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "needs a black_cup run (with a white_ptfe reference)",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "optics/effectiveness",
+   "title": "effectiveness vs reference",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "needs a reference (baseline) of the same sample",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/opt101/coupling",
+   "title": "opt101: electrical coupling (height-invariant, LED on)",
+   "status": "PASS",
+   "value": 15.0,
+   "unit": "counts",
+   "detail": "rail A: +10.0 counts (+1.25 mV) inferred, rail B: +15.0 counts (+1.88 mV) from 5 blind holes",
+   "criteria": "corrected in software below 20 counts (FAIL at or above)",
+   "data": {
+    "C_counts": {
+     "B": 15.0,
+     "A": 10.0
+    },
+    "blind_holes": [
+     12,
+     13,
+     14,
+     15,
+     16
+    ],
+    "inferred": [
+     "A"
+    ]
+   }
+  },
+  {
+   "id": "elec/opt101/ground_shift",
+   "title": "opt101: ground shift (coupling vs rail current)",
+   "status": "PASS",
+   "value": 0.0417,
+   "unit": "mV/mA",
+   "detail": "+0.333 counts/mA",
+   "criteria": "corrected in software below 0.08 mV/mA (FAIL at or above)",
+   "data": {
+    "counts_per_ma": 0.3333333333333333,
+    "scales_with_current": null
+   }
+  },
+  {
+   "id": "elec/ingaas/coupling",
+   "title": "ingaas: electrical coupling (height-invariant, LED on)",
+   "status": "PASS",
+   "value": 15.0,
+   "unit": "counts",
+   "detail": "rail A: +2.0 counts (+0.25 mV) from 7 blind holes, rail B: +15.0 counts (+1.88 mV) from 3 blind holes",
+   "criteria": "corrected in software below 20 counts (FAIL at or above)",
+   "data": {
+    "C_counts": {
+     "A": 2.0,
+     "B": 15.0
+    },
+    "blind_holes": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     10,
+     11,
+     16
+    ],
+    "inferred": []
+   }
+  },
+  {
+   "id": "elec/ingaas/ground_shift",
+   "title": "ingaas: ground shift (coupling vs rail current)",
+   "status": "PASS",
+   "value": 0.0314,
+   "unit": "mV/mA",
+   "detail": "+0.251 counts/mA",
+   "criteria": "corrected in software below 0.08 mV/mA (FAIL at or above)",
+   "data": {
+    "counts_per_ma": 0.2512820512820513,
+    "scales_with_current": null
+   }
+  },
+  {
+   "id": "elec/opt101/dark_offset",
+   "title": "opt101: dark offset / leakage",
+   "status": "PASS",
+   "value": 8.75,
+   "unit": "mV",
+   "detail": "+70.0 counts (+8.75 mV)",
+   "criteria": "0 to 800 counts (thresholds.dark)",
+   "data": {
+    "counts": 70.0,
+    "mv": 8.75,
+    "range_counts": [
+     0.0,
+     800.0
+    ]
+   }
+  },
+  {
+   "id": "elec/ingaas/dark_offset",
+   "title": "ingaas: dark offset / leakage",
+   "status": "PASS",
+   "value": -21.0,
+   "unit": "mV",
+   "detail": "-168.0 counts (-21.00 mV); equivalent input current +21.0 nA (Rf 1 M\u03a9)",
+   "criteria": "-400 to 2000 counts (thresholds.dark)",
+   "data": {
+    "counts": -168.0,
+    "mv": -21.0,
+    "range_counts": [
+     -400.0,
+     2000.0
+    ],
+    "i_eq_na": 21.000000000000004
+   }
+  },
+  {
+   "id": "elec/opt101/drift",
+   "title": "opt101: dark drift over the run",
+   "status": "PASS",
+   "value": -2.378,
+   "unit": "mV/h",
+   "detail": "-2.38 \u00b1 0.07 mV/h; P4 - P1 -0.73 mV",
+   "criteria": "|slope| < 3 mV/h (WARN), < 8 (FAIL)",
+   "data": {
+    "counts_per_h": -19.026182277781874,
+    "se_counts_per_h": 0.5429740757829453,
+    "height_separated": true,
+    "p4_minus_p1_counts": -5.810000000000002
+   }
+  },
+  {
+   "id": "elec/ingaas/drift",
+   "title": "ingaas: dark drift over the run",
+   "status": "PASS",
+   "value": -0.139,
+   "unit": "mV/h",
+   "detail": "-0.14 \u00b1 0.09 mV/h (+0.1 nA/h); P4 - P1 -0.02 mV",
+   "criteria": "|slope| < 3 mV/h (WARN), < 8 (FAIL)",
+   "data": {
+    "counts_per_h": -1.1133772070123036,
+    "se_counts_per_h": 0.7031453051410832,
+    "height_separated": true,
+    "na_per_h": 0.13917215087653795,
+    "p4_minus_p1_counts": -0.18999999999999773
+   }
+  },
+  {
+   "id": "elec/opt101/hum",
+   "title": "opt101: mains hum (coils off)",
+   "status": "PASS",
+   "value": 0.0373,
+   "unit": "mV",
+   "detail": "60/120/180 Hz: 0.037 / 0.047 / 0.037 mV; 15% of the variance at mains harmonics; broadband sigma 0.118 mV; readings integrate whole mains periods, so it cancels in the measurements",
+   "criteria": "60 Hz amplitude < 0.3 mV (WARN; not when the readings reject it), < 1 (FAIL); mains fraction < 0.5",
+   "data": {
+    "amp_counts": {
+     "60": 0.29866509308744804,
+     "120": 0.3776362621353274,
+     "180": 0.2928660497785393
+    },
+    "mains_fraction": 0.15261132876678132,
+    "sigma_counts": 0.942789759502954,
+    "bursts": 102
+   }
+  },
+  {
+   "id": "elec/ingaas/hum",
+   "title": "ingaas: mains hum (coils off)",
+   "status": "PASS",
+   "value": 0.9031,
+   "unit": "mV",
+   "detail": "60/120/180 Hz: 0.903 / 0.667 / 0.142 mV; 87% of the variance at mains harmonics; broadband sigma 0.307 mV; readings integrate whole mains periods, so it cancels in the measurements",
+   "criteria": "60 Hz amplitude < 1 mV (WARN; not when the readings reject it), < 3 (FAIL); mains fraction < 0.5",
+   "data": {
+    "amp_counts": {
+     "60": 7.225087383739489,
+     "120": 5.336108508961616,
+     "180": 1.1356835503385803
+    },
+    "mains_fraction": 0.8703936321075294,
+    "sigma_counts": 2.455659420917475,
+    "bursts": 102
+   }
+  },
+  {
+   "id": "elec/opt101/coil_emi",
+   "title": "opt101: coil interference (moving vs coils off)",
+   "status": "PASS",
+   "value": 9.63,
+   "unit": "x",
+   "detail": "sigma 1.204 mV moving vs 0.118 mV off (measured while moving, S0 D2); judged only when measuring while moving (continuous mode): every other reading is taken with the motors stopped",
+   "criteria": "ratio < 3 (WARN), < 6 (FAIL)",
+   "data": {
+    "moving": {
+     "amp_counts": {
+      "60": 4.4689247566771835,
+      "120": 1.2206339504250563,
+      "180": 1.6794960849694907
+     },
+     "mains_fraction": 0.11898412156869274,
+     "sigma_counts": 9.633658602126609,
+     "bursts": 20
+    },
+    "off": {
+     "amp_counts": {
+      "60": 0.29866509308744804,
+      "120": 0.3776362621353274,
+      "180": 0.2928660497785393
+     },
+     "mains_fraction": 0.15261132876678132,
+     "sigma_counts": 0.942789759502954,
+     "bursts": 102
+    }
+   }
+  },
+  {
+   "id": "elec/ingaas/coil_emi",
+   "title": "ingaas: coil interference (moving vs coils off)",
+   "status": "PASS",
+   "value": 1.21,
+   "unit": "x",
+   "detail": "sigma 0.370 mV moving vs 0.307 mV off (measured while moving, S0 D2); judged only when measuring while moving (continuous mode): every other reading is taken with the motors stopped",
+   "criteria": "ratio < 3 (WARN), < 6 (FAIL)",
+   "data": {
+    "moving": {
+     "amp_counts": {
+      "60": 7.2680628123935,
+      "120": 5.540361770829732,
+      "180": 1.2919866421304902
+     },
+     "mains_fraction": 0.8274347121229888,
+     "sigma_counts": 2.9627733409527606,
+     "bursts": 20
+    },
+    "off": {
+     "amp_counts": {
+      "60": 7.225087383739489,
+      "120": 5.336108508961616,
+      "180": 1.1356835503385803
+     },
+     "mains_fraction": 0.8703936321075294,
+     "sigma_counts": 2.455659420917475,
+     "bursts": 102
+    }
+   }
+  },
+  {
+   "id": "elec/opt101/h15/select_only",
+   "title": "opt101: select-only coupling (MOSFET on, CE low)",
+   "status": "PASS",
+   "value": 0.4,
+   "unit": "counts",
+   "detail": "largest on hole 15: -0.4 counts",
+   "criteria": "< 8 counts (WARN); FAIL capped to WARN (gate coupling, LED off)",
+   "data": {
+    "per_hole": {
+     "1": 0.0,
+     "2": -0.12,
+     "3": 0.13,
+     "4": -0.37,
+     "5": 0.25,
+     "6": -0.13,
+     "7": -0.13,
+     "8": 0.25,
+     "9": 0.12,
+     "10": 0.25,
+     "11": 0.0,
+     "12": -0.12,
+     "13": 0.0,
+     "14": -0.12,
+     "15": -0.38,
+     "16": -0.12
+    }
+   }
+  },
+  {
+   "id": "elec/ingaas/h15/select_only",
+   "title": "ingaas: select-only coupling (MOSFET on, CE low)",
+   "status": "PASS",
+   "value": 0.9,
+   "unit": "counts",
+   "detail": "largest on hole 15: +0.9 counts",
+   "criteria": "< 8 counts (WARN); FAIL capped to WARN (gate coupling, LED off)",
+   "data": {
+    "per_hole": {
+     "1": -0.37,
+     "2": -0.25,
+     "3": 0.5,
+     "4": -0.37,
+     "5": -0.37,
+     "6": 0.25,
+     "7": -0.13,
+     "8": -0.5,
+     "9": 0.25,
+     "10": 0.0,
+     "11": 0.0,
+     "12": 0.0,
+     "13": -0.12,
+     "14": -0.25,
+     "15": 0.88,
+     "16": 0.5
+    }
+   }
+  },
+  {
+   "id": "elec/opt101/ce_only",
+   "title": "opt101: CE-only coupling (driver enabled, no LED)",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "CE1: +0.0, CE2: +0.0",
+   "criteria": "< 8 counts (WARN), < 20 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "elec/ingaas/ce_only",
+   "title": "ingaas: CE-only coupling (driver enabled, no LED)",
+   "status": "PASS",
+   "value": 1.0,
+   "unit": "counts",
+   "detail": "CE1: +1.0, CE2: -1.0",
+   "criteria": "< 8 counts (WARN), < 20 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h01",
+   "title": "hole 1 dark with only RAIL B enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h02",
+   "title": "hole 2 dark with only RAIL B enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h03",
+   "title": "hole 3 dark with only RAIL B enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h04",
+   "title": "hole 4 dark with only RAIL B enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h05",
+   "title": "hole 5 dark with only RAIL B enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h06",
+   "title": "hole 6 dark with only RAIL B enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h07",
+   "title": "hole 7 dark with only RAIL B enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h08",
+   "title": "hole 8 dark with only RAIL B enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h09",
+   "title": "hole 9 dark with only RAIL A enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on opt101 with the hole selected and RAIL A enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h10",
+   "title": "hole 10 dark with only RAIL A enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on opt101 with the hole selected and RAIL A enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h11",
+   "title": "hole 11 dark with only RAIL A enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on opt101 with the hole selected and RAIL A enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h12",
+   "title": "hole 12 dark with only RAIL A enabled",
+   "status": "PASS",
+   "value": -1.0,
+   "unit": "counts",
+   "detail": "-1 counts on ingaas with the hole selected and RAIL A enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h13",
+   "title": "hole 13 dark with only RAIL A enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on ingaas with the hole selected and RAIL A enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h14",
+   "title": "hole 14 dark with only RAIL A enabled",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "counts",
+   "detail": "+0 counts on ingaas with the hole selected and RAIL A enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "optics/wrong_rail/h15",
+   "title": "hole 15 dark with only RAIL A enabled",
+   "status": "PASS",
+   "value": -1.0,
+   "unit": "counts",
+   "detail": "-1 counts on ingaas with the hole selected and RAIL A enabled",
+   "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "elec/rails",
+   "title": "supply rails and ground (A2/A3)",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "A2/A3 not wired for rail and ground monitoring",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "mech/home_sensors",
+   "title": "home sensors",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no home sensors fitted",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "ambient/opt101/leak",
+   "title": "opt101: dark vs height (light leak at the shroud)",
+   "status": "PASS",
+   "value": 1.4,
+   "unit": "counts",
+   "detail": "dark at the bottom +1.4 counts (+0.17 mV) vs the top; 1.34% of the median signal",
+   "criteria": "rise < 8 counts (WARN), < 25 (FAIL)",
+   "data": {
+    "heights": [
+     -260400.0,
+     -229898.0,
+     -199396.0,
+     -168894.0,
+     -138392.0,
+     -107890.0,
+     -77388.0,
+     -46886.0,
+     -16384.0
+    ],
+    "dark": [
+     70.0,
+     70.06,
+     69.75,
+     69.435,
+     69.375,
+     68.995,
+     69.06,
+     68.685,
+     68.31
+    ],
+    "onset_hs": null,
+    "ambient_fraction": 0.013392857142857144
+   }
+  },
+  {
+   "id": "ambient/ingaas/leak",
+   "title": "ingaas: dark vs height (light leak at the shroud)",
+   "status": "PASS",
+   "value": -0.1,
+   "unit": "counts",
+   "detail": "dark at the bottom -0.1 counts (-0.01 mV) vs the top",
+   "criteria": "rise < 8 counts (WARN), < 25 (FAIL)",
+   "data": {
+    "heights": [
+     -260400.0,
+     -229898.0,
+     -199396.0,
+     -168894.0,
+     -138392.0,
+     -107890.0,
+     -77388.0,
+     -46886.0,
+     -16384.0
+    ],
+    "dark": [
+     -167.87,
+     -168.185,
+     -168.31,
+     -167.75,
+     -167.935,
+     -168.06,
+     -167.625,
+     -167.81,
+     -168.31
+    ],
+    "onset_hs": null,
+    "ambient_fraction": 0.0
+   }
+  },
+  {
+   "id": "ambient/opt101/flicker",
+   "title": "opt101: room-light flicker (120 Hz)",
+   "status": "PASS",
+   "value": 0.0472,
+   "unit": "mV",
+   "detail": "120 Hz amplitude in the dark streams 0.047 mV; readings integrate whole mains periods, so it cancels",
+   "criteria": "< 0.4 mV (WARN), < 1.2 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "ambient/ingaas/flicker",
+   "title": "ingaas: room-light flicker (120 Hz)",
+   "status": "PASS",
+   "value": 0.667,
+   "unit": "mV",
+   "detail": "120 Hz amplitude in the dark streams 0.667 mV; readings integrate whole mains periods, so it cancels",
+   "criteria": "< 0.4 mV (WARN), < 1.2 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "ambient/lid",
+   "title": "lid sensitivity",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "optional operator step (lid ajar at two heights)",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "mech/travel",
+   "title": "travel (top to bottom)",
+   "status": "WARN",
+   "value": 260400.0,
+   "unit": "half-steps",
+   "detail": "tracked range 260400 / 333677 half-steps (M1/right / M2/left): the two sides differ (thresholds.motion.travel.range_steps not set: not compared)",
+   "criteria": "",
+   "data": {},
+   "explanation": {
+    "cause": "The tracked travel differs from the configured one (or between the sides).",
+    "parts": [
+     "stage limits"
+    ],
+    "check": "Re-mark the top and bottom."
+   }
+  },
+  {
+   "id": "mech/lockstep",
+   "title": "lockstep (firmware positions level after every move)",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "moves",
+   "detail": "20 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "mech/settle",
+   "title": "settle time after a move (dark-read convergence)",
+   "status": "PASS",
+   "value": 602.0,
+   "unit": "ms",
+   "detail": "median 602 ms, max 644 ms (mechanical wait 300 ms)",
+   "criteria": "max - median < 500 ms (WARN), < 1500 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "mech/backlash",
+   "title": "backlash (down vs up response curves)",
+   "status": "SKIP",
+   "value": -22343.0,
+   "unit": "half-steps",
+   "detail": "-22343 \u00b1 3522 half-steps (-5.455 mm) from 105 readings on 14 channels",
+   "criteria": "< 600 (WARN), < 1500 (FAIL); not flagged within 3 sigma; not judged when the resolution is worse than 300",
+   "data": {
+    "d0": 22342.714999999997,
+    "se_d0": 3521.5709992104726,
+    "n": 105.0,
+    "k": -48803.2,
+    "se_k": 7283.864309807968,
+    "dropped": 7.0
+   }
+  },
+  {
+   "id": "mech/step_loss",
+   "title": "step loss (offset growing over the up pass)",
+   "status": "SKIP",
+   "value": 48803.0,
+   "unit": "half-steps per travel",
+   "detail": "the stage falls behind by +48803 \u00b1 7284 half-steps over a full upward travel (one side losing steps: about twice that on that side, and a tilt)",
+   "criteria": "< 400 (WARN), < 1000 (FAIL); not flagged within 3 sigma",
+   "data": {
+    "d0": 22342.714999999997,
+    "se_d0": 3521.5709992104726,
+    "n": 105.0,
+    "k": -48803.2,
+    "se_k": 7283.864309807968,
+    "dropped": 7.0
+   }
+  },
+  {
+   "id": "mech/repeatability",
+   "title": "repeatability at the reference heights",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no repeated reference visits in this mode (full, fine, repeatability have them)",
+   "criteria": "",
+   "data": {}
+  }
+ ],
+ "context": {
+  "electrical": {
+   "coupling": {
+    "opt101": {
+     "C": {
+      "B": 15.0,
+      "A": 10.0
+     },
+     "inferred": [
+      "A"
+     ],
+     "blind": [
+      12,
+      13,
+      14,
+      15,
+      16
+     ]
+    },
+    "ingaas": {
+     "C": {
+      "A": 2.0,
+      "B": 15.0
+     },
+     "inferred": [],
+     "blind": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      10,
+      11,
+      16
+     ]
+    }
+   },
+   "spectra": {
+    "opt101": {
+     "amp_counts": {
+      "60": 0.29866509308744804,
+      "120": 0.3776362621353274,
+      "180": 0.2928660497785393
+     },
+     "mains_fraction": 0.15261132876678132,
+     "sigma_counts": 0.942789759502954,
+     "bursts": 102
+    },
+    "ingaas": {
+     "amp_counts": {
+      "60": 7.225087383739489,
+      "120": 5.336108508961616,
+      "180": 1.1356835503385803
+     },
+     "mains_fraction": 0.8703936321075294,
+     "sigma_counts": 2.455659420917475,
+     "bursts": 102
+    }
+   }
+  },
+  "optics": {
+   "channels": {
+    "opt101": {
+     "1": {
+      "h_opt": -260400.0,
+      "O": 102.66666666666666,
+      "S_opt": 112.66666666666666,
+      "C": 10.0,
+      "modulation": 0.41558441558441567,
+      "fwhm_hs": 244016.0,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       112.0,
+       105.0,
+       94.0,
+       87.0,
+       78.0,
+       77.0,
+       72.0,
+       70.0,
+       71.0
+      ],
+      "smooth": [
+       112.66666666666666,
+       103.80000000000001,
+       95.19999999999999,
+       85.62857142857143,
+       79.8857142857143,
+       75.37142857142855,
+       72.60000000000001,
+       69.99999999999999,
+       70.5
+      ]
+     },
+     "2": {
+      "h_opt": -260400.0,
+      "O": 97.99999999999996,
+      "S_opt": 107.99999999999996,
+      "C": 10.0,
+      "modulation": 0.496598639455782,
+      "fwhm_hs": 244016.0,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       108.0,
+       99.0,
+       90.0,
+       83.0,
+       75.0,
+       70.0,
+       66.0,
+       61.0,
+       60.0
+      ],
+      "smooth": [
+       107.99999999999996,
+       98.70000000000002,
+       90.42857142857142,
+       82.4,
+       75.51428571428572,
+       70.0,
+       65.39999999999999,
+       61.749999999999986,
+       59.33333333333334
+      ]
+     },
+     "3": {
+      "h_opt": -260400.0,
+      "O": 81.99999999999994,
+      "S_opt": 91.99999999999994,
+      "C": 10.0,
+      "modulation": 0.5508130081300809,
+      "fwhm_hs": 215562.64179104485,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       92.0,
+       85.0,
+       78.0,
+       71.0,
+       65.0,
+       60.0,
+       56.0,
+       51.0,
+       47.0
+      ],
+      "smooth": [
+       91.99999999999994,
+       85.0,
+       77.9142857142857,
+       71.08571428571429,
+       65.0,
+       60.171428571428585,
+       55.65714285714286,
+       51.29999999999998,
+       46.833333333333336
+      ]
+     },
+     "4": {
+      "h_opt": -260400.0,
+      "O": 111.00000000000001,
+      "S_opt": 121.00000000000001,
+      "C": 10.0,
+      "modulation": 0.5285285285285286,
+      "fwhm_hs": 228094.62637362623,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       121.0,
+       112.0,
+       103.0,
+       94.0,
+       87.0,
+       81.0,
+       74.0,
+       69.0,
+       62.0
+      ],
+      "smooth": [
+       121.00000000000001,
+       112.00000000000003,
+       102.82857142857142,
+       94.25714285714285,
+       87.08571428571429,
+       80.57142857142857,
+       74.60000000000001,
+       68.39999999999996,
+       62.33333333333333
+      ]
+     },
+     "5": {
+      "h_opt": -260400.0,
+      "O": 35.16666666666667,
+      "S_opt": 45.16666666666667,
+      "C": 10.0,
+      "modulation": 0.36018957345971575,
+      "fwhm_hs": 244016.0,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       45.0,
+       44.0,
+       42.0,
+       38.0,
+       38.0,
+       37.0,
+       35.0,
+       35.0,
+       32.0
+      ],
+      "smooth": [
+       45.16666666666667,
+       44.14999999999999,
+       41.39999999999999,
+       38.94285714285714,
+       37.57142857142858,
+       36.74285714285715,
+       35.685714285714276,
+       34.24999999999999,
+       32.5
+      ]
+     },
+     "6": {
+      "h_opt": -260400.0,
+      "O": 23.999999999999986,
+      "S_opt": 33.999999999999986,
+      "C": 10.0,
+      "modulation": 0.9166666666666666,
+      "fwhm_hs": 178969.56626506028,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       34.0,
+       32.0,
+       30.0,
+       30.0,
+       28.0,
+       28.0,
+       20.0,
+       16.0,
+       12.0
+      ],
+      "smooth": [
+       33.999999999999986,
+       31.699999999999992,
+       30.51428571428572,
+       29.314285714285713,
+       29.200000000000006,
+       26.11428571428571,
+       21.371428571428574,
+       15.399999999999997,
+       11.999999999999998
+      ]
+     },
+     "7": {
+      "h_opt": -260400.0,
+      "O": 47.166666666666636,
+      "S_opt": 57.166666666666636,
+      "C": 10.0,
+      "modulation": 0.593639575971731,
+      "fwhm_hs": 206601.1111111112,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       57.0,
+       53.0,
+       48.0,
+       45.0,
+       42.0,
+       39.0,
+       36.0,
+       33.0,
+       29.0
+      ],
+      "smooth": [
+       57.166666666666636,
+       52.55000000000001,
+       48.42857142857142,
+       44.82857142857142,
+       42.00000000000001,
+       39.0,
+       36.08571428571428,
+       32.849999999999994,
+       29.166666666666675
+      ]
+     },
+     "8": {
+      "h_opt": -229898.0,
+      "O": 425.4,
+      "S_opt": 435.4,
+      "C": 10.0,
+      "modulation": 0.5600219401347751,
+      "fwhm_hs": 118862.36352408401,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       321.0,
+       406.0,
+       431.0,
+       200.0,
+       271.0,
+       211.0,
+       234.0,
+       246.0,
+       185.0
+      ],
+      "smooth": [
+       330.99999999999994,
+       435.4,
+       366.3714285714286,
+       284.9428571428572,
+       215.5428571428572,
+       237.39999999999995,
+       231.25714285714287,
+       236.7,
+       197.16666666666666
+      ]
+     },
+     "9": {
+      "h_opt": -260400.0,
+      "O": 308.66666666666663,
+      "S_opt": 323.66666666666663,
+      "C": 15.0,
+      "modulation": 0.5680345572354211,
+      "fwhm_hs": 212954.27384553332,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       324.0,
+       298.0,
+       274.0,
+       240.0,
+       228.0,
+       215.0,
+       195.0,
+       165.0,
+       151.0
+      ],
+      "smooth": [
+       323.66666666666663,
+       299.8,
+       270.22857142857146,
+       244.7142857142857,
+       226.54285714285714,
+       214.74285714285713,
+       192.51428571428573,
+       168.89999999999995,
+       148.33333333333334
+      ]
+     },
+     "10": {
+      "h_opt": -138392.0,
+      "O": 163.40000000000003,
+      "S_opt": 178.40000000000003,
+      "C": 15.0,
+      "modulation": 2.2107303141574857,
+      "fwhm_hs": 185780.6457491031,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       -201.0,
+       -1.0,
+       90.0,
+       181.0,
+       170.0,
+       156.0,
+       140.0,
+       128.0,
+       110.0
+      ],
+      "smooth": [
+       -182.83333333333317,
+       -17.349999999999923,
+       108.08571428571425,
+       163.77142857142857,
+       178.40000000000003,
+       155.57142857142856,
+       141.37142857142857,
+       126.49999999999994,
+       110.99999999999997
+      ]
+     },
+     "11": {
+      "h_opt": -260400.0,
+      "O": 480.4999999999999,
+      "S_opt": 495.4999999999999,
+      "C": 15.0,
+      "modulation": 0.5143947277141866,
+      "fwhm_hs": 236578.6733254994,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       497.0,
+       453.0,
+       418.0,
+       382.0,
+       355.0,
+       328.0,
+       300.0,
+       280.0,
+       246.0
+      ],
+      "smooth": [
+       495.4999999999999,
+       454.5,
+       416.28571428571433,
+       383.6285714285714,
+       354.31428571428575,
+       327.1428571428573,
+       302.65714285714284,
+       276.69999999999993,
+       248.3333333333333
+      ]
+     },
+     "12": {
+      "h_opt": -260400.0,
+      "O": 1.0000000000000036,
+      "S_opt": 16.000000000000004,
+      "C": 15.0,
+      "modulation": 3.657142857142849,
+      "fwhm_hs": 11731.538461538468,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       16.0,
+       15.0,
+       14.0,
+       15.0,
+       13.0,
+       12.0,
+       13.0,
+       13.0,
+       13.0
+      ],
+      "smooth": [
+       16.000000000000004,
+       14.7,
+       14.6,
+       14.22857142857143,
+       13.25714285714286,
+       12.342857142857142,
+       12.65714285714286,
+       13.149999999999995,
+       13.0
+      ]
+     },
+     "13": {
+      "h_opt": -229898.0,
+      "O": -0.4499999999999993,
+      "S_opt": 14.55,
+      "C": 15.0,
+      "modulation": 2.3015873015873067,
+      "fwhm_hs": null,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       14.0,
+       15.0,
+       14.0,
+       14.0,
+       13.0,
+       14.0,
+       14.0,
+       14.0,
+       14.0
+      ],
+      "smooth": [
+       14.333333333333336,
+       14.55,
+       14.428571428571427,
+       13.571428571428573,
+       13.514285714285714,
+       13.657142857142858,
+       14.085714285714285,
+       13.999999999999996,
+       14.000000000000002
+      ]
+     },
+     "14": {
+      "h_opt": -168894.0,
+      "O": 0.08571428571428363,
+      "S_opt": 15.085714285714284,
+      "C": 15.0,
+      "modulation": 24.333333333333982,
+      "fwhm_hs": 20334.66666666619,
+      "fwhm_complete": true,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       13.0,
+       14.0,
+       15.0,
+       15.0,
+       15.0,
+       15.0,
+       15.0,
+       15.0,
+       15.0
+      ],
+      "smooth": [
+       12.999999999999993,
+       14.149999999999995,
+       14.828571428571426,
+       15.085714285714284,
+       14.999999999999998,
+       14.999999999999998,
+       14.999999999999998,
+       14.999999999999996,
+       14.999999999999996
+      ]
+     },
+     "15": {
+      "h_opt": -46886.0,
+      "O": 0.5499999999999972,
+      "S_opt": 15.549999999999997,
+      "C": 15.0,
+      "modulation": 2.818181818181834,
+      "fwhm_hs": 65833.48333333324,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       15.0,
+       14.0,
+       14.0,
+       15.0,
+       15.0,
+       15.0,
+       15.0,
+       16.0,
+       15.0
+      ],
+      "smooth": [
+       14.833333333333336,
+       13.999999999999996,
+       14.171428571428569,
+       14.742857142857138,
+       15.085714285714284,
+       14.914285714285713,
+       15.34285714285714,
+       15.549999999999997,
+       15.333333333333336
+      ]
+     },
+     "16": {
+      "h_opt": -260400.0,
+      "O": 619.0,
+      "S_opt": 634.0,
+      "C": 15.0,
+      "modulation": 0.40414647280560057,
+      "fwhm_hs": 244016.0,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       634.0,
+       582.0,
+       530.0,
+       502.0,
+       460.0,
+       433.0,
+       413.0,
+       393.0,
+       386.0
+      ],
+      "smooth": [
+       634.0,
+       578.4,
+       535.3142857142856,
+       496.2571428571428,
+       463.1714285714285,
+       432.9142857142857,
+       411.2857142857143,
+       394.95000000000005,
+       383.83333333333326
+      ]
+     }
+    },
+    "ingaas": {
+     "1": {
+      "h_opt": -260400.0,
+      "O": 5.166666666666665,
+      "S_opt": 7.166666666666665,
+      "C": 2.0,
+      "modulation": 0.6294930875576035,
+      "fwhm_hs": 147572.9775641026,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       7.0,
+       7.0,
+       6.0,
+       7.0,
+       6.0,
+       4.0,
+       4.0,
+       5.0,
+       7.0
+      ],
+      "smooth": [
+       7.166666666666665,
+       6.55,
+       6.6,
+       6.571428571428574,
+       5.82857142857143,
+       4.342857142857143,
+       3.9142857142857146,
+       4.999999999999998,
+       6.833333333333333
+      ]
+     },
+     "2": {
+      "h_opt": -16384.0,
+      "O": 0.1666666666666674,
+      "S_opt": 2.1666666666666674,
+      "C": 2.0,
+      "modulation": 13.342857142857087,
+      "fwhm_hs": 1326.1739130434835,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       0.0,
+       2.0,
+       1.0,
+       1.0,
+       1.0,
+       1.0,
+       -1.0,
+       1.0,
+       2.0
+      ],
+      "smooth": [
+       0.49999999999999994,
+       1.4,
+       1.4285714285714288,
+       0.9142857142857143,
+       1.1714285714285715,
+       0.3142857142857144,
+       -0.057142857142856954,
+       0.249999999999999,
+       2.1666666666666674
+      ]
+     },
+     "3": {
+      "h_opt": -107890.0,
+      "O": -0.7428571428571429,
+      "S_opt": 1.2571428571428571,
+      "C": 2.0,
+      "modulation": 2.3653846153846154,
+      "fwhm_hs": null,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       1.0,
+       1.0,
+       1.0,
+       0.0,
+       1.0,
+       1.0,
+       1.0,
+       -1.0,
+       0.0
+      ],
+      "smooth": [
+       0.9999999999999998,
+       1.15,
+       0.6571428571428571,
+       0.5142857142857145,
+       0.657142857142857,
+       1.2571428571428571,
+       0.40000000000000024,
+       -0.25000000000000006,
+       -0.5000000000000001
+      ]
+     },
+     "4": {
+      "h_opt": -260400.0,
+      "O": -0.5000000000000013,
+      "S_opt": 1.4999999999999987,
+      "C": 2.0,
+      "modulation": 2.142857142857134,
+      "fwhm_hs": null,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       1.0,
+       2.0,
+       0.0,
+       0.0,
+       2.0,
+       0.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "smooth": [
+       1.4999999999999987,
+       1.2500000000000002,
+       0.42857142857142877,
+       0.5142857142857141,
+       0.8857142857142853,
+       0.9428571428571431,
+       0.5714285714285715,
+       1.15,
+       1.0
+      ]
+     },
+     "5": {
+      "h_opt": -260400.0,
+      "O": 20.83333333333333,
+      "S_opt": 22.83333333333333,
+      "C": 2.0,
+      "modulation": 0.2964571428571428,
+      "fwhm_hs": 244016.0,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       24.0,
+       17.0,
+       17.0,
+       18.0,
+       18.0,
+       20.0,
+       16.0,
+       22.0,
+       17.0
+      ],
+      "smooth": [
+       22.83333333333333,
+       17.89999999999999,
+       16.657142857142855,
+       17.571428571428577,
+       18.942857142857147,
+       17.94285714285714,
+       19.171428571428578,
+       18.849999999999994,
+       18.83333333333334
+      ]
+     },
+     "6": {
+      "h_opt": -16384.0,
+      "O": 11.66666666666667,
+      "S_opt": 13.66666666666667,
+      "C": 2.0,
+      "modulation": 0.6957142857142858,
+      "fwhm_hs": 21921.35523613962,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       8.0,
+       8.0,
+       7.0,
+       7.0,
+       11.0,
+       12.0,
+       1.0,
+       9.0,
+       13.0
+      ],
+      "smooth": [
+       8.166666666666666,
+       7.699999999999998,
+       6.9142857142857155,
+       7.857142857142857,
+       11.17142857142857,
+       8.571428571428573,
+       5.62857142857143,
+       5.549999999999998,
+       13.66666666666667
+      ]
+     },
+     "7": {
+      "h_opt": -260400.0,
+      "O": 1.1666666666666656,
+      "S_opt": 3.1666666666666656,
+      "C": 2.0,
+      "modulation": 1.7102040816326536,
+      "fwhm_hs": 37234.42342342343,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       3.0,
+       3.0,
+       2.0,
+       2.0,
+       3.0,
+       1.0,
+       1.0,
+       2.0,
+       1.0
+      ],
+      "smooth": [
+       3.1666666666666656,
+       2.6999999999999997,
+       2.1714285714285717,
+       2.342857142857143,
+       2.2285714285714286,
+       1.5142857142857142,
+       1.1714285714285715,
+       1.5499999999999998,
+       1.3333333333333333
+      ]
+     },
+     "8": {
+      "h_opt": -199396.0,
+      "O": 52.77142857142857,
+      "S_opt": 54.77142857142857,
+      "C": 2.0,
+      "modulation": 2.247518498465981,
+      "fwhm_hs": 41337.8260473469,
+      "fwhm_complete": true,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       -68.0,
+       23.0,
+       57.0,
+       15.0,
+       -96.0,
+       -38.0,
+       28.0,
+       -50.0,
+       -51.0
+      ],
+      "smooth": [
+       -58.49999999999995,
+       25.850000000000033,
+       54.77142857142857,
+       -4.7999999999999785,
+       -61.800000000000004,
+       -38.77142857142857,
+       -3.9714285714285813,
+       -16.849999999999987,
+       -63.83333333333334
+      ]
+     },
+     "9": {
+      "h_opt": -260400.0,
+      "O": 17.999999999999986,
+      "S_opt": 32.999999999999986,
+      "C": 15.0,
+      "modulation": 0.9537037037037035,
+      "fwhm_hs": 63776.909090909496,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       34.0,
+       26.0,
+       24.0,
+       24.0,
+       21.0,
+       20.0,
+       17.0,
+       21.0,
+       14.0
+      ],
+      "smooth": [
+       32.999999999999986,
+       26.599999999999994,
+       24.085714285714293,
+       23.14285714285714,
+       21.771428571428572,
+       18.885714285714283,
+       19.314285714285713,
+       18.299999999999994,
+       15.833333333333336
+      ]
+     },
+     "10": {
+      "h_opt": -16384.0,
+      "O": -12.166666666666666,
+      "S_opt": 2.8333333333333335,
+      "C": 15.0,
+      "modulation": 0.34246575342465735,
+      "fwhm_hs": null,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       -1.0,
+       0.0,
+       3.0,
+       2.0,
+       2.0,
+       2.0,
+       2.0,
+       2.0,
+       3.0
+      ],
+      "smooth": [
+       -1.333333333333331,
+       0.9000000000000007,
+       2.0571428571428565,
+       2.5142857142857142,
+       1.9142857142857141,
+       2.0000000000000004,
+       1.9142857142857141,
+       2.15,
+       2.8333333333333335
+      ]
+     },
+     "11": {
+      "h_opt": -229898.0,
+      "O": 1.7000000000000028,
+      "S_opt": 16.700000000000003,
+      "C": 15.0,
+      "modulation": 3.1568627450980373,
+      "fwhm_hs": 71944.93478260873,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       16.0,
+       17.0,
+       16.0,
+       15.0,
+       15.0,
+       12.0,
+       13.0,
+       13.0,
+       11.0
+      ],
+      "smooth": [
+       16.33333333333333,
+       16.700000000000003,
+       16.08571428571429,
+       15.428571428571429,
+       14.05714285714286,
+       13.02857142857143,
+       12.65714285714286,
+       12.850000000000001,
+       11.33333333333333
+      ]
+     },
+     "12": {
+      "h_opt": -260400.0,
+      "O": 35.166666666666664,
+      "S_opt": 50.166666666666664,
+      "C": 15.0,
+      "modulation": 0.23696682464454943,
+      "fwhm_hs": 244016.0,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       50.0,
+       49.0,
+       47.0,
+       47.0,
+       45.0,
+       44.0,
+       43.0,
+       42.0,
+       42.0
+      ],
+      "smooth": [
+       50.166666666666664,
+       48.55,
+       47.6,
+       46.40000000000001,
+       45.34285714285715,
+       43.91428571428572,
+       42.91428571428573,
+       42.14999999999999,
+       41.83333333333334
+      ]
+     },
+     "13": {
+      "h_opt": -16384.0,
+      "O": 14.833333333333336,
+      "S_opt": 29.833333333333336,
+      "C": 15.0,
+      "modulation": 0.40096308186195884,
+      "fwhm_hs": 244016.0,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       24.0,
+       25.0,
+       24.0,
+       25.0,
+       23.0,
+       26.0,
+       27.0,
+       28.0,
+       30.0
+      ],
+      "smooth": [
+       24.33333333333333,
+       24.4,
+       24.771428571428576,
+       23.88571428571428,
+       24.28571428571429,
+       25.228571428571424,
+       27.08571428571429,
+       28.150000000000006,
+       29.833333333333336
+      ]
+     },
+     "14": {
+      "h_opt": -16384.0,
+      "O": 2.1666666666666714,
+      "S_opt": 17.16666666666667,
+      "C": 15.0,
+      "modulation": 1.962637362637362,
+      "fwhm_hs": 72172.66161616154,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       15.0,
+       15.0,
+       13.0,
+       13.0,
+       14.0,
+       16.0,
+       16.0,
+       17.0,
+       17.0
+      ],
+      "smooth": [
+       15.333333333333329,
+       14.399999999999999,
+       13.428571428571429,
+       12.914285714285711,
+       14.257142857142853,
+       15.485714285714282,
+       16.42857142857143,
+       16.7,
+       17.16666666666667
+      ]
+     },
+     "15": {
+      "h_opt": -16384.0,
+      "O": -6.5000000000000036,
+      "S_opt": 8.499999999999996,
+      "C": 15.0,
+      "modulation": 0.43296703296703226,
+      "fwhm_hs": null,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       8.0,
+       7.0,
+       7.0,
+       6.0,
+       5.0,
+       7.0,
+       7.0,
+       9.0,
+       8.0
+      ],
+      "smooth": [
+       7.833333333333333,
+       7.3,
+       6.74285714285714,
+       5.8285714285714265,
+       5.685714285714285,
+       6.228571428571427,
+       7.7714285714285705,
+       8.25,
+       8.499999999999996
+      ]
+     },
+     "16": {
+      "h_opt": -260400.0,
+      "O": 9.666666666666668,
+      "S_opt": 24.666666666666668,
+      "C": 15.0,
+      "modulation": 0.8965517241379314,
+      "fwhm_hs": 81268.06018518528,
+      "fwhm_complete": false,
+      "h": [
+       -260400.0,
+       -229898.0,
+       -199396.0,
+       -168894.0,
+       -138392.0,
+       -107890.0,
+       -77388.0,
+       -46886.0,
+       -16384.0
+      ],
+      "net": [
+       24.0,
+       24.0,
+       20.0,
+       20.0,
+       18.0,
+       18.0,
+       16.0,
+       16.0,
+       18.0
+      ],
+      "smooth": [
+       24.666666666666668,
+       22.799999999999997,
+       21.200000000000006,
+       19.14285714285715,
+       18.685714285714287,
+       17.31428571428572,
+       16.34285714285714,
+       15.999999999999996,
+       17.666666666666668
+      ]
+     }
+    }
+   },
+   "floors": {
+    "opt101": [
+     15.0,
+     6.0
+    ],
+    "ingaas": [
+     19.6452753673398,
+     9.8226376836699
+    ]
+   }
+  },
+  "reference": null
+ }
+}

@@ -1,0 +1,37 @@
+{
+  "promoted_run": "20261120-173515_scan_full",
+  "sample_id": "empty",
+  "baseline_path": "test_results/tray_v3/scan_baselines/empty/20261120-173515_scan_full.json",
+  "verdict": "DEGRADED",
+  "promotion": "saved as tray_v3 empty-tray scan baseline (COMPLETE acquisition; not a bare-chamber baseline)",
+  "accepted_existing_soft_warnings": [
+    "optics/opt101/h16/plausibility (known hole-16 coupling)",
+    "optics/ingaas/h13 weak response (known soft InGaAs SWIR)",
+    "optics/ingaas/snr / throughput (known weak InGaAs)",
+    "mech/repeatability softened WARN (V3 provisional mechanics)"
+  ],
+  "new_or_elevated_vs_prior_bare_empty_quick": [
+    "optics/ingaas/h14/response FAIL (O\u22485; prior bare empty was FUNCTIONAL with soft WARNs) \u2014 elevated under empty plastic tray geometry; retained and documented, thresholds not weakened",
+    "optics/h08/intermittent WARN (down/up disagree at 3 heights)",
+    "mech/travel WARN: asymmetric bottom marks after set_top following manual level (297147 vs 309218 hs)"
+  ],
+  "geometry": {
+    "holder": "LIO_V3_Simple_Circular_Tray_v3",
+    "tray_lid": "OFF",
+    "cup_nest": "REMOVED",
+    "support": "tray on chamber floor",
+    "cad_nominal_note": "Z2.4 mm design value with nest removed; not measured stage mm"
+  },
+  "stage_range_used": {
+    "plan_top_hs": -16384,
+    "plan_bottom_hs": -297147,
+    "top_mm": -4.0,
+    "bottom_mm": -72.5,
+    "duration_min": 36.7
+  },
+  "not_done": [
+    "white_ptfe / black_cup references under tray_v3",
+    "re-mark matched bottom after manual level (asymmetric bottoms remain)",
+    "food-in-tray scans"
+  ]
+}

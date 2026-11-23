@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="69332262-99a6-400f-9c7d-12cc674df851"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Drug Facts:</title>
+   <effectiveTime value="20180711"/>
+   <setId root="5620a1dc-b59c-4489-a548-20f3e488287f"/>
+   <versionNumber value="4"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="969572502"/>
+            <name>Energetix Corp</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <id extension="844330915" root="1.3.6.1.4.1.519.1"/>
+                  <name>Apotheca Company</name>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="ff518363-345c-4276-a35a-6317805ed406"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <title/>
+               <text/>
+               <effectiveTime value="20160714"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="64578-0130" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>GB-Tone</name>
+                        <formCode code="C42953" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="LIQUID"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Ammi Visnaga, Atropinum Sulphuricum, Boldo, Carduus Marianus, Chelidonium Majus, Echinacea, Fel Tauri, Hepar Suis, Hydrastis Canadensis, Leptandra Virginica, Magnesia Phosphorica, Natrum Phosphoricum, Podophyllum Peltatum, Taraxacum Officinale</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="3UN285QN0C" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>AMMI VISNAGA FRUIT</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="3UN285QN0C" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>AMMI VISNAGA FRUIT</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="03J5ZE7KA5" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ATROPINE SULFATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="7C0697DR9I" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>ATROPINE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="4" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="Q4EWM09M3O" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PEUMUS BOLDUS LEAF</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="Q4EWM09M3O" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PEUMUS BOLDUS LEAF</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="4" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="U946SH95EE" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MILK THISTLE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="U946SH95EE" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>MILK THISTLE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="7E889U5RNN" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CHELIDONIUM MAJUS</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="7E889U5RNN" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>CHELIDONIUM MAJUS</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="4" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="VB06AV5US8" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ECHINACEA ANGUSTIFOLIA</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="VB06AV5US8" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>ECHINACEA ANGUSTIFOLIA</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="8" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="ET3651ZLOU" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BOS TAURUS BILE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="ET3651ZLOU" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>BOS TAURUS BILE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="9" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="6EC706HI7F" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PORK LIVER</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="6EC706HI7F" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PORK LIVER</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="5" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="ZW3Z11D0JV" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GOLDENSEAL</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="ZW3Z11D0JV" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>GOLDENSEAL</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="M2O62YTN42" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>VERONICASTRUM VIRGINICUM ROOT</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="M2O62YTN42" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>CULVER'S ROOT</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="HF539G9L3Q" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>MAGNESIUM PHOSPHATE, DIBASIC TRIHYDRATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="T6V3LHY838" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>MAGNESIUM CATION</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="6" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="70WT22SF4B" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM PHOSPHATE, DIBASIC, HEPTAHYDRATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="NK08V8K8HR" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PHOSPHATE ION</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="12" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="2S713A4VP3" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PODOPHYLLUM</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="2S713A4VP3" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PODOPHYLLUM</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="4" unit="[hp_X]"/>
+                              <denominator value="1" unit="mL"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="39981FM375" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TARAXACUM OFFICINALE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="39981FM375" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>TARAXACUM OFFICINALE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3K9958V90M" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="30" unit="mL"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="64578-0130-1" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43171" displayName="BOTTLE, DROPPER" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20160714"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                           <subjectOf>
+                              <characteristic classCode="OBS">
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" displayName="Type 0: Not a Combination Product" codeSystem="2.16.840.1.113883.3.26.1.1" xsi:type="CE"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20160714"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <approval>
+                           <code code="C73614" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="unapproved homeopathic"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38288" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ORAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="Le52fbbb4-fc5f-4f06-9f1a-195a91d818a6">
+               <id root="d8f6b45d-e6d5-40d1-908a-081d3ea8c8ff"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>ACTIVE INGREDIENTS:</title>
+               <text>
+                  <paragraph>59.1 mL contains 12.5% of Boldo 4X; Carduus Marianus 4X; Echinacea 4X; Hepar Suis 6C; Hydrastis Canadensis 5X; Natrum Phosphoricum 6X; Taraxacum Officinale 4X; 0.83% of: Ammi Visnaga 12X; Atropinum Sulphuricum 12X; Boldo 12X; Chelidonium Majus 12X; Fel Tauri 8X, 12X, 30X; Hepar Suis 9X, 12X, 30X; Leptandra Virginica 12X; Magnesia Phosphorica 12X, 30X; Natrum Phosphoricum 12X; Podophyllum Peltatum 12X.</paragraph>
+               </text>
+               <effectiveTime value="20180709"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L1c14a624-bcb2-4564-bbac-8bdd07e69059">
+               <id root="4e537719-11e9-4975-a8e5-b4b7ed85dad2"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>PURPOSE:</title>
+               <text>
+                  <paragraph>Temporary relief of abdominal discomfort, indigestion, headaches.</paragraph>
+               </text>
+               <effectiveTime value="20180709"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Ld93d145f-8070-483a-93ce-ca5e0a77a42f">
+               <id root="9efeab60-ed14-4097-8949-ca550a42ea2c"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>WARNINGS:</title>
+               <text>
+                  <paragraph>In case of overdose, get medical help or contact a Poison Control Center right away.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">If pregnant or breast feeding,</content> ask a health professional before use.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Keep out of reach of children.</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Other information</content>
+                  </paragraph>
+                  <paragraph>
+                     <content>Store at room temperature out of direct sunlight.</content>
+                  </paragraph>
+                  <paragraph>Do not use if neck wrap is broken or missing.</paragraph>
+               </text>
+               <effectiveTime value="20160719"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L5e5fc1da-30ab-4146-81c4-c343b125beea">
+               <id root="80db4419-6005-4b6f-9aeb-a9af33e70808"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <title>KEEP OUT OF REACH OF CHILDREN:</title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Keep out of reach of children.</content> In case of overdose, get medical help or contact a Poison Control Center right away.</paragraph>
+               </text>
+               <effectiveTime value="20160714"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L970fe645-eafb-4a52-ac5c-f05089c3d453">
+               <id root="d4c0df43-9866-4f21-82c0-5abfca53af55"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>DIRECTIONS:</title>
+               <text>
+                  <paragraph>Take 30 drops orally twice daily or as directed by a healthcare professional.</paragraph>
+                  <paragraph>Consult a physician for use in children under 12 years of age or if symptoms worsen or persist.</paragraph>
+               </text>
+               <effectiveTime value="20160719"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L578dfdff-94f1-4ae5-8372-42901651367f">
+               <id root="c99c750d-0d4f-4e7c-a3f6-366c3c6de49a"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>USES:</title>
+               <text>
+                  <paragraph>Temporary relief of abdominal discomfort, indigestion, headaches.</paragraph>
+               </text>
+               <effectiveTime value="20180709"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L0a34b354-46f5-48bb-958e-ecdeaf642341">
+               <id root="9b514ae2-4a97-4b48-9e64-7937db480b76"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>INACTIVE INGREDIENTS:</title>
+               <text>
+                  <paragraph>Ethyl Alcohol, Glycerin, Purified Water</paragraph>
+               </text>
+               <effectiveTime value="20160719"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L1fa0d6aa-86c8-4310-9e5d-53306ef49a50">
+               <id root="c2219892-d50e-4034-a150-1910efa5484e"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>QUESTIONS:</title>
+               <text>
+                  <paragraph>Distributed by</paragraph>
+                  <paragraph>Energetix Corp.</paragraph>
+                  <paragraph>Dahlonega, GA 30533</paragraph>
+                  <paragraph>Questions? 800.990.7085</paragraph>
+                  <paragraph>www.goenergetix.com</paragraph>
+               </text>
+               <effectiveTime value="20160714"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L42f79e9a-1750-494c-a742-6f39617de685">
+               <id root="fe6e5866-2182-4715-a146-f22482324cff"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>PACKAGE LABEL DISPLAY:</title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">energetix</content>
+                     <br/>
+                     <content styleCode="bold">GB-Tone</content>
+                     <br/>
+                     <content styleCode="bold">Homeopathic Remedy</content>
+                     <br/>Abdominal discomfort, indigestion, headaches.<br/>
+                     <content styleCode="bold">2 fl oz (59.1 mL)</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">
+                        <renderMultiMedia referencedObject="L0dd1829f-fea5-47f8-aaff-66252f23fbd8"/>
+                     </content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20180709"/>
+               <component>
+                  <observationMedia ID="L0dd1829f-fea5-47f8-aaff-66252f23fbd8">
+                     <text>GB-Tone</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="ENTX0023 GB Tone 7-9-18.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

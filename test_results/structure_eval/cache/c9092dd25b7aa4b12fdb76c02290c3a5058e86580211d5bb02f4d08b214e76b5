@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="552926e0-bd22-6ea1-e063-6294a90a6771"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Drug Facts</title>
+   <effectiveTime value="20260626"/>
+   <setId root="552926da-0dfb-4248-e063-6294a90ab4a8"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="002136794"/>
+            <name>L’Oreal USA Products Inc</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <assignedEntity>
+                     <assignedOrganization>
+                        <id root="1.3.6.1.4.1.519.1" extension="960317444"/>
+                        <name>L'OREAL USA, INC.</name>
+                     </assignedOrganization>
+                     <performance>
+                        <actDefinition>
+                           <code code="C43360" displayName="manufacture" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <product>
+                              <manufacturedProduct classCode="MANU">
+                                 <manufacturedMaterialKind>
+                                    <code code="82046-802" codeSystem="2.16.840.1.113883.6.69"/>
+                                 </manufacturedMaterialKind>
+                              </manufacturedProduct>
+                           </product>
+                        </actDefinition>
+                     </performance>
+                  </assignedEntity>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="5529687a-8a54-de41-e063-6294a90a4bfb"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20260626"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="82046-802" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>CeraVe Anti-Dandruff Hydrating Conditioner</name>
+                        <formCode code="C42953" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="LIQUID"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Pyrithione zinc</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2DMT128M1S" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CETEARYL ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="X7GNG3S47T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BEHENTRIMONIUM CHLORIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="Q662QK8M3B" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PEG-180</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3V7U636DWN" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>AMODIMETHICONE (1300 CST)</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="D072FFP9GU" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CETYL ESTERS</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="4370DF050B" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CERAMIDE NP</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="F1X8L2B00J" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CERAMIDE AP</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="0A5MM307FC" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CARBOMER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="U6WSN5SQ1Z" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ZINC GLUCONATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="25X51I8RD4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>NIACINAMIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3T5PCR2H0C" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TRIDECETH-6</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="8Z96QXD6UM" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TRIETHYL CITRATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="7243K85WFO" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM LAUROYL LACTYLATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="YSE9PPT4TH" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM HYALURONATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="451W47IQ8X" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM CHLORIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="97C5T2UQ7J" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CHOLESTEROL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="HIE492ZZ3T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PHENOXYETHANOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="E64XL9U38K" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CHLORHEXIDINE DIHYDROCHLORIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="ND2M416302" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ISOPROPYL ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6DC9Q167V3" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPYLENE GLYCOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="T4V6TWG28D" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>HYDROXYETHYLCELLULOSE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="UC9PE95IBP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CETRIMONIUM CHLORIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="00YIU5438U" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CAPRYLYL GLYCOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="TTV12P4NEE" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>XANTHAN GUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="GIN46U9Q2Q" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PHYTOSPHINGOSINE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="8SKN0B0MIM" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BENZOIC ACID</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mg" value="5.1"/>
+                              <denominator unit="mL" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="R953O2RHZ5" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PYRITHIONE ZINC</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="R953O2RHZ5" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PYRITHIONE ZINC</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="266" unit="mL"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="82046-802-01" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C42794" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TUBE"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20260518"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M032" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20260518"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="Lb311ffc4-e2b1-4393-b18e-c0a4144b1b8a">
+               <id root="5528e790-b2b4-0cfd-e063-6294a90a7531"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>Active ingredient</title>
+               <text>
+                  <paragraph>Pyrithione zinc 0.51%</paragraph>
+               </text>
+               <effectiveTime value="20260518"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L8534dc4a-b436-40ae-a08b-53526e5ef399">
+               <id root="5528e790-b2b5-0cfd-e063-6294a90a7531"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>Purpose</title>
+               <text>
+                  <paragraph>Antidandruff</paragraph>
+               </text>
+               <effectiveTime value="20260518"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L34a02916-7e13-4797-af6d-432465d16ef8">
+               <id root="5528e790-b2b6-0cfd-e063-6294a90a7531"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>Use</title>
+               <text>
+                  <paragraph>helps prevent recurrence of scalp flaking and itching associated with dandruff</paragraph>
+               </text>
+               <effectiveTime value="20260518"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L52f2da29-dc63-4a1f-95b8-aa23b742fb9a">
+               <id root="5528e790-b2b7-0cfd-e063-6294a90a7531"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>Warnings</title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">For external use only</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20260518"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L218adfc6-1c58-46c1-9191-455579e52af9">
+               <id root="5528e790-b2b8-0cfd-e063-6294a90a7531"/>
+               <code code="50567-7" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - WHEN USING SECTION"/>
+               <title>When using this product</title>
+               <text>
+                  <paragraph>avoid contact with the eyes. If contact occurs, rinse eyes thoroughly with water.</paragraph>
+               </text>
+               <effectiveTime value="20260518"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L0c74314c-11b3-4692-9fdb-184f4cf085c6">
+               <id root="5528e790-b2b9-0cfd-e063-6294a90a7531"/>
+               <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+               <title>Stop use and ask a doctor if</title>
+               <text>
+                  <paragraph>condition worsens or does not improve after regular use of this product as directed</paragraph>
+               </text>
+               <effectiveTime value="20260518"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lb5080ee0-3c31-44d5-bd6b-c1e73d4552e3">
+               <id root="5528e790-b2ba-0cfd-e063-6294a90a7531"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <title>Keep out of reach of children.</title>
+               <text>
+                  <paragraph>If swallowed, get medical help or contact a Poison Control Center right away.</paragraph>
+               </text>
+               <effectiveTime value="20260518"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L02947319-ccaa-4653-8ac3-ca30b06f5a8d">
+               <id root="5528e790-b2bb-0cfd-e063-6294a90a7531"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>Directions</title>
+               <text>
+                  <list listType="unordered">
+                     <item>for best results use at least twice a week or as directed by a doctor</item>
+                     <item>use after CeraVe Anti-Dandruff Shampoo</item>
+                     <item>rinse and repeat if desired</item>
+                  </list>
+               </text>
+               <effectiveTime value="20260518"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L4869dd3b-6711-4251-b9cb-d8c565a2ddca">
+               <id root="5528e790-b2bc-0cfd-e063-6294a90a7531"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>Inactive ingredients</title>
+               <text>
+                  <paragraph>water, cetearyl alcohol, behentrimonium chloride, glycerin, PEG-180, amodimethicone, cetyl esters, ceramide NP, ceramide AP, ceramide EOP, carbomer, zinc gluconate, niacinamide, trideceth-6, triethyl citrate, sodium lauroyl lactylate, sodium hyaluronate, sodium polynaphthalenesulfonate, sodium chloride, cholesterol, phenoxyethanol, chlorhexidine dihydrochloride, isopropyl alcohol, propylene glycol, hydroxyethylcellulose, cetrimonium chloride, caprylyl glycol, xanthan gum, phytosphingosine, benzoic acid</paragraph>
+               </text>
+               <effectiveTime value="20260518"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L38a50dad-8d28-4867-971e-98f198a4c772">
+               <id root="5528e790-b2bd-0cfd-e063-6294a90a7531"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>Questions or comments?</title>
+               <text>
+                  <paragraph>Toll-free number
+ 
+  <content styleCode="bold">1-888-768-2915</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20260518"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L8e2a3d05-f2ff-492b-a379-90023f8d3415">
+               <id root="5528e790-b2be-0cfd-e063-6294a90a7531"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="L8c90dde8-b812-4ab9-af56-bd51a73cfa9d"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20260518"/>
+               <component>
+                  <observationMedia ID="L8c90dde8-b812-4ab9-af56-bd51a73cfa9d">
+                     <text>tube</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="266 mL US.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

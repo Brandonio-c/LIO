@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 11930,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Ultimate Physical Sunscreen Zinc Oxide CYCLOPENTASILOXANE DIMETHICONE EDETATE DISODIUM ANHYDROUS GLYCERIN HYDROGEN DIMETHICONE (20 CST) PEG-30 DIPOLYHYDROXYSTEARATE POLYSORBATE 20 SODIUM CHLORIDE STEARYL DIMETHICONE (400 MPA.S AT 50C) TETRAHEXYLDECYL ASCORBATE ALPHA-TOCOPHEROL ACETATE TRIETHANOLAMINE TRIETHOXYCAPRYLYLSILANE WATER DIMETHICONE/VINYL DIMETHICONE CROSSPOLYMER (SOFT PARTICLE) DIMETHICONOL (2000 CST) PEG-10 DIMETHICONE (600 CST) POLYGLYCERYL-4 ISOSTEARATE MICROCRYSTALLINE WAX CAPRYLHYDROXAMIC ACID POLYHYDROXYSTEARIC ACID (2300 MW) DIMETHICONE CROSSPOLYMER CYCLOHEXASILOXANE ZINC OXIDE ZINC OXIDE C12-15 ALKYL BENZOATE CAPRYLYL GLYCOL CETYL PEG/PPG-10/1 DIMETHICONE (HLB 4)"
+      ],
+      "active_ingredient": [
+        ""
+      ],
+      "purpose": [
+        ""
+      ],
+      "indications_and_usage": [
+        ""
+      ],
+      "warnings": [
+        ""
+      ],
+      "keep_out_of_reach_of_children": [
+        ""
+      ],
+      "dosage_and_administration": [
+        ""
+      ],
+      "inactive_ingredient": [
+        ""
+      ],
+      "other_safety_information": [
+        ""
+      ],
+      "package_label_principal_display_panel": [
+        "Package Label"
+      ],
+      "set_id": "35bc5ff5-8eb8-54cf-e063-6394a90ae3c2",
+      "id": "45b3b14f-2c89-5ba1-e063-6394a90a00a2",
+      "effective_time": "20251211",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "Ultimate Physical Sunscreen"
+        ],
+        "generic_name": [
+          "ZINC OXIDE"
+        ],
+        "manufacturer_name": [
+          "HALEM DERMATOLOGY PLLC"
+        ],
+        "product_ndc": [
+          "85413-205"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ZINC OXIDE"
+        ],
+        "spl_id": [
+          "45b3b14f-2c89-5ba1-e063-6394a90a00a2"
+        ],
+        "spl_set_id": [
+          "35bc5ff5-8eb8-54cf-e063-6394a90ae3c2"
+        ],
+        "package_ndc": [
+          "85413-205-04"
+        ],
+        "original_packager_product_ndc": [
+          "58892-205"
+        ],
+        "upc": [
+          "0385413205045"
+        ],
+        "unii": [
+          "SOI2LOH54Z"
+        ]
+      }
+    }
+  ]
+}

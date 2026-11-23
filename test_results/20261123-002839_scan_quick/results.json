@@ -1,0 +1,380 @@
+{
+  "run_id": "20261123-002839_scan_quick",
+  "target": "/dev/cu.usbmodem101",
+  "started": "2026-11-23T00:28:39-05:00",
+  "environment": {},
+  "firmware": {
+    "fw": "2.5.2",
+    "proto": "1",
+    "build": "2026-11-17",
+    "adc_addr": "0x48",
+    "adc_ok": "1",
+    "gain": "1",
+    "rate": "128",
+    "settle_ms": "8",
+    "wdt_a_ms": "2000",
+    "wdt_b_ms": "5000",
+    "wdt_a_cap_ms": "5000",
+    "wdt_b_cap_ms": "10000",
+    "comms_ms": "10000",
+    "arm_ms": "60000",
+    "step_max": "2048",
+    "jog_max": "2048",
+    "jog_v_max": "1000",
+    "jog_acc_max": "1000",
+    "wake_ms_max": "3000",
+    "motion_armed": "0",
+    "debug_states": "1",
+    "mains": "0",
+    "rail_b_first": "9",
+    "light_in_motion": "0",
+    "arm_token": "0x36A6",
+    "hw_wdt": "0"
+  },
+  "config": {
+    "path": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
+    "sha256": "e29964e36d34c92bd1f14084f4dc95e8421a01cdd1f512f9654354816b416b01",
+    "provisional": true
+  },
+  "metadata": {
+    "sample_id": "empty",
+    "kind": "scan",
+    "mode": "quick",
+    "scan_status": "INCOMPLETE"
+  },
+  "faults": [],
+  "results": [
+    {
+      "id": "T13.1",
+      "name": "Diagnostic height sweep",
+      "module": "T13",
+      "kind": "M",
+      "status": "WARN",
+      "message": "quick scan INCOMPLETE: FUNCTIONAL (20261123-002839_scan_quick)",
+      "duration_s": 0.0,
+      "subs": [
+        {
+          "id": "T13.1/system/link",
+          "name": "link and firmware (no unexpected reset, no lost replies)",
+          "status": "PASS",
+          "message": "firmware 2.5.2, no unexpected # BOOT",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "unexpected boots"
+          }
+        },
+        {
+          "id": "T13.1/system/adc",
+          "name": "ADC / I\u00b2C (every reading answered)",
+          "status": "PASS",
+          "message": "0 readings, no dropout",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "readings"
+          }
+        },
+        {
+          "id": "T13.1/system/addressing",
+          "name": "addressing (each hole distinct)",
+          "status": "SKIP",
+          "message": "no optical response to compare",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/system/interlocks",
+          "name": "P4 interlock re-checks",
+          "status": "SKIP",
+          "message": "P4 not reached",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/system/duty",
+          "name": "LED duty (RAIL A <= budget per LED per minute)",
+          "status": "PASS",
+          "message": "max 0 ms of 1000 ms; 0 cool-down waits, 0 s in all",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "ms/min"
+          }
+        },
+        {
+          "id": "T13.1/system/stage",
+          "name": "stage tracking (position trusted, soft limits respected)",
+          "status": "PASS",
+          "message": "position [-16384, -16384], limits respected",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/system/run",
+          "name": "run complete",
+          "status": "WARN",
+          "message": "INCOMPLETE: All off pressed | why: The run did not complete: metrics needing the missing steps are SKIP. | parts: run",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/optics/curves",
+          "name": "response curves vs height",
+          "status": "SKIP",
+          "message": "no down pass in this mode (no height data)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/opt101/coupling",
+          "name": "opt101: electrical coupling",
+          "status": "SKIP",
+          "message": "no blind channels measured",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/ingaas/coupling",
+          "name": "ingaas: electrical coupling",
+          "status": "SKIP",
+          "message": "no blind channels measured",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/opt101/dark_offset",
+          "name": "opt101: dark offset",
+          "status": "SKIP",
+          "message": "no dark frames",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/ingaas/dark_offset",
+          "name": "ingaas: dark offset",
+          "status": "SKIP",
+          "message": "no dark frames",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/opt101/drift",
+          "name": "opt101: dark drift",
+          "status": "SKIP",
+          "message": "under 5 min of dark frames: too short for a drift estimate",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/ingaas/drift",
+          "name": "ingaas: dark drift",
+          "status": "SKIP",
+          "message": "under 5 min of dark frames: too short for a drift estimate",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/opt101/hum",
+          "name": "opt101: mains hum",
+          "status": "SKIP",
+          "message": "no hum records",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/ingaas/hum",
+          "name": "ingaas: mains hum",
+          "status": "SKIP",
+          "message": "no hum records",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/opt101/coil_emi",
+          "name": "opt101: coil interference",
+          "status": "SKIP",
+          "message": "needs hum records, coils off and moving",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/ingaas/coil_emi",
+          "name": "ingaas: coil interference",
+          "status": "SKIP",
+          "message": "needs hum records, coils off and moving",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/opt101/select_only",
+          "name": "opt101: select-only coupling",
+          "status": "SKIP",
+          "message": "no select-only readings",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/ingaas/select_only",
+          "name": "ingaas: select-only coupling",
+          "status": "SKIP",
+          "message": "no select-only readings",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/ambient/opt101/leak",
+          "name": "opt101: dark vs height (light leak)",
+          "status": "SKIP",
+          "message": "needs dark frames at 4+ heights",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/ambient/ingaas/leak",
+          "name": "ingaas: dark vs height (light leak)",
+          "status": "SKIP",
+          "message": "needs dark frames at 4+ heights",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/ambient/opt101/flicker",
+          "name": "opt101: room-light flicker",
+          "status": "SKIP",
+          "message": "no dark streams",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/ambient/ingaas/flicker",
+          "name": "ingaas: room-light flicker",
+          "status": "SKIP",
+          "message": "no dark streams",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/ambient/lid",
+          "name": "lid sensitivity",
+          "status": "SKIP",
+          "message": "optional operator step (lid ajar at two heights)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/mech/travel",
+          "name": "travel (top to bottom)",
+          "status": "WARN",
+          "message": "tracked range 268806 / 406532 half-steps (M1/right / M2/left): the two sides differ (thresholds.motion.travel.range_steps not set: not compared) | why: The tracked travel differs from the configured one (or between the sides). | parts: stage limits",
+          "criteria": "",
+          "measured": {
+            "value": 268806.0,
+            "unit": "half-steps"
+          }
+        },
+        {
+          "id": "T13.1/mech/lockstep",
+          "name": "lockstep (firmware positions level after every move)",
+          "status": "PASS",
+          "message": "0 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "moves"
+          }
+        },
+        {
+          "id": "T13.1/mech/settle",
+          "name": "settle time after a move",
+          "status": "SKIP",
+          "message": "no settle records",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/mech/backlash",
+          "name": "backlash",
+          "status": "SKIP",
+          "message": "no down-pass reference curves (static or continuous mode, or no strong channel)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/mech/step_loss",
+          "name": "step loss",
+          "status": "SKIP",
+          "message": "no down-pass reference curves (static or continuous mode, or no strong channel)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/mech/repeatability",
+          "name": "repeatability",
+          "status": "SKIP",
+          "message": "no down-pass reference curves (static or continuous mode, or no strong channel)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/trend/compare",
+          "name": "20261123-002839_scan_quick vs 20261116-202110_scan_quick",
+          "status": "PASS",
+          "message": "no change beyond the band",
+          "criteria": "per-hole ratio within \u00b10.1 (WARN), \u00b10.25 (FAIL)",
+          "measured": {
+            "value": 1.0,
+            "unit": "x (furthest per-hole ratio)"
+          }
+        },
+        {
+          "id": "T13.1/trend/control",
+          "name": "control charts vs baselines",
+          "status": "SKIP",
+          "message": "needs 5 baselines of empty (have 1)",
+          "criteria": "",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "run": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/20261123-002839_scan_quick",
+        "mode": "quick",
+        "status": "INCOMPLETE",
+        "verdict": "FUNCTIONAL",
+        "health": {
+          "link": "OK",
+          "adc": "OK",
+          "shift_registers": "n/a",
+          "drivers": "n/a",
+          "channels": "n/a",
+          "opt101": "n/a",
+          "ingaas": "n/a",
+          "motors": "WATCH",
+          "stage": "OK",
+          "safety": "OK",
+          "power": "n/a",
+          "optical_path": "OK",
+          "run": "WATCH"
+        }
+      },
+      "artefacts": [
+        "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/20261123-002839_scan_quick/report.html"
+      ]
+    }
+  ],
+  "duty": {},
+  "finished": "2026-11-23T00:29:48-05:00",
+  "verdict": {
+    "verdict": "FUNCTIONAL",
+    "reasons": [
+      "warnings: T13.1"
+    ],
+    "counts": {
+      "PASS": 0,
+      "WARN": 1,
+      "FAIL": 0,
+      "SKIP": 0,
+      "ERROR": 0
+    }
+  }
+}

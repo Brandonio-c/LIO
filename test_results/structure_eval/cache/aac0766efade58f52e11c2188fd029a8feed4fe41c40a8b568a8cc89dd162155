@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 9012,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Advanced Hand Sanitizer Ethyl Alcohol ALCOHOL ALCOHOL WATER ALOE VERA LEAF GLYCERYL CAPRYLATE/CAPRATE GLYCERIN ISOPROPYL MYRISTATE .ALPHA.-TOCOPHEROL ACETATE CARBOMER HOMOPOLYMER, UNSPECIFIED TYPE ACRYLATES/C10-30 ALKYL ACRYLATE CROSSPOLYMER (60000 MPA.S) SULISOBENZONE FD&C BLUE NO. 1 FD&C YELLOW NO. 5"
+      ],
+      "active_ingredient": [
+        "Active ingredient Ethyl alcohol 70%"
+      ],
+      "purpose": [
+        "Purpose Antiseptic"
+      ],
+      "indications_and_usage": [
+        "Uses to decrease bacteria on the skin that could cause disease recommended for repeated use"
+      ],
+      "warnings": [
+        "Warnings For external use only-hands Flammable, keep away from fire or flame."
+      ],
+      "when_using": [
+        "When using this product keep out of eyes. In case of contact with eyes, flush thoroughly with water. avoid contact with broken skin do not inhale or ingest"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if irritation and redness develop condition persists for more than 72 hours"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions wet hands thoroughly with product and allow to dry without wiping for children under 6, use only under adult supervision not recommended for infants"
+      ],
+      "storage_and_handling": [
+        "Other information do not store above 105⁰ F may discolor some fabrics harmful to wood finishes and plastics"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients water, Aloe barbadensis leaf juice, glyceryl caprylate/caprate, glycerin, isopropyl myristate, tocopheryl acetate, carbomer or acrylates/C10-30 alkyl acrylate crosspolymer, fragrance, benzophenone-4, blue 1, yellow 5"
+      ],
+      "spl_unclassified_section": [
+        "Claim *Effective at eliminating more than 99.99% of many common harmful germs and bacteria in as little as 15 seconds."
+      ],
+      "adverse_reactions": [
+        "Adverse reaction Distributed by: CVS Pharmacy, Inc. One CVS Drive, Woonsocket, RI 02895 ©2023 CVS/Pharmacy CVS.com 1-800-SHOP CVS Made in the U.S.A. with U.S. and foreign components 100% money back guaranteed. CVS.com/returnpolicy"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal display panel CVS Health ® Hand Sanitizer WITH ALOE VERA Fast & effective* Moisturizing formula with vitamin E leaves hands feeling soft Paraben & phthalate free KILLS 99.99% OF GERMS* 2 FL OZ (59 mL) image description image description"
+      ],
+      "set_id": "2adb16b7-c43f-49a0-9a56-fece3d730089",
+      "id": "5f611062-c9ce-ef57-e063-6394a90ae416",
+      "effective_time": "20261103",
+      "version": "27",
+      "openfda": {
+        "application_number": [
+          "505G(a)(3)"
+        ],
+        "brand_name": [
+          "Advanced Hand Sanitizer"
+        ],
+        "generic_name": [
+          "ETHYL ALCOHOL"
+        ],
+        "manufacturer_name": [
+          "CVS Pharmacy, Inc."
+        ],
+        "product_ndc": [
+          "59779-070"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ALCOHOL"
+        ],
+        "spl_id": [
+          "5f611062-c9ce-ef57-e063-6394a90ae416"
+        ],
+        "spl_set_id": [
+          "2adb16b7-c43f-49a0-9a56-fece3d730089"
+        ],
+        "package_ndc": [
+          "59779-070-16",
+          "59779-070-26",
+          "59779-070-34",
+          "59779-070-49",
+          "59779-070-45"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "3K9958V90M"
+        ]
+      }
+    }
+  ]
+}

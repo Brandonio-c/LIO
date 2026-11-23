@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 16887,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Pain Relief Gel-Patch Lidocaine POLYSORBATE 80 GLYCERIN POVIDONE K90 METHYLPARABEN PROPYLPARABEN EDETATE DISODIUM KAOLIN TARTARIC ACID WATER PROPYLENE GLYCOL POLYACRYLIC ACID (250000 MW) SODIUM POLYACRYLATE (2500000 MW) TITANIUM DIOXIDE DIHYDROXYALUMINUM AMINOACETATE ANHYDROUS LIDOCAINE LIDOCAINE"
+      ],
+      "active_ingredient": [
+        "Active ingredient Lidocaine 4% ...... Purpose: Topical Anesthetic"
+      ],
+      "purpose": [
+        "Purpose Topical Anesthetic"
+      ],
+      "indications_and_usage": [
+        "Uses For temporary relief of pain"
+      ],
+      "warnings": [
+        "Warnings For external use only"
+      ],
+      "ask_doctor": [
+        "Ask a doctor if: localized skin reactions occur, such as rash, itching, redness, irritation, pain, swelling and blistering Conditions worsen Symptoms persists for more than 7 days Symptoms clear up and occur again within a few days"
+      ],
+      "when_using": [
+        "When using this product Use only as directed Avoid contact with the eyes, mucous membranes or rashes Do not bandage tightly"
+      ],
+      "do_not_use": [
+        "Do not use More than 1 patch at a time On wounds or damaged skin with a heating pad or device If you are allergic to any ingredients of this product"
+      ],
+      "stop_use": [
+        "Stop use if: localized skin reactions occur, such as rash, itching, redness, irritation, pain, swelling and blistering Conditions worsen Symptoms persists for more than 7 days Symptoms clear up and occur again within a few days"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "Pregnancy or breast feeding If pregnant or breast-feeding , ask a health professional before use"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children Keep out of reach of children . If swallowed accidentally, get medical help or contact with Poison Control Center immediately."
+      ],
+      "dosage_and_administration": [
+        "Directions Adult and Children 12 years of age and over : Clean and dry the affected area Remove film from patch and apply to the skin Apply 1 patch at a time to affected area, not more than 3 to 4 times daily Remove patch from the skin after at most 8-hour application Children under 12 years of age : Consult a doctor"
+      ],
+      "questions": [
+        "Questions or Comments? support@PaxiumHealth.com"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Dihydroxyaluminum Aminoacetate, Edetate Disodium,Glycerin, Kaolin, Methylparaben, Polysorbate 80,Propylene Glycol, Polyacrylic Acid, Povidone K90,Propylparaben, Sodium Polyacrylate, Tartaric Acid,Titanium Dioxide, Water."
+      ],
+      "package_label_principal_display_panel": [
+        "Package label. Principal display panel 15-patch 30-patch"
+      ],
+      "set_id": "45ccfcae-a307-1c5f-e063-6294a90acf89",
+      "id": "45ccfce2-c8c2-ac14-e063-6394a90adfdd",
+      "effective_time": "20251212",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M017"
+        ],
+        "brand_name": [
+          "Pain Relief Gel-Patch"
+        ],
+        "generic_name": [
+          "LIDOCAINE"
+        ],
+        "manufacturer_name": [
+          "KORVIA GLOBAL Inc."
+        ],
+        "product_ndc": [
+          "87253-187"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "LIDOCAINE"
+        ],
+        "rxcui": [
+          "1737778"
+        ],
+        "spl_id": [
+          "45ccfce2-c8c2-ac14-e063-6394a90adfdd"
+        ],
+        "spl_set_id": [
+          "45ccfcae-a307-1c5f-e063-6294a90acf89"
+        ],
+        "package_ndc": [
+          "87253-187-15",
+          "87253-187-30"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "8800352600000",
+          "8800352600017"
+        ],
+        "nui": [
+          "N0000175682",
+          "M0000897",
+          "N0000175426",
+          "N0000175976"
+        ],
+        "pharm_class_epc": [
+          "Amide Local Anesthetic [EPC]",
+          "Antiarrhythmic [EPC]"
+        ],
+        "pharm_class_cs": [
+          "Amides [CS]"
+        ],
+        "pharm_class_pe": [
+          "Local Anesthesia [PE]"
+        ],
+        "unii": [
+          "98PI200987"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "purpose": "post-Citrucel empty-chamber recheck (sample removed); printer off; diagnose InGaAs blind coupling",
+  "holder": "LIO_V3_Simple_Circular_Tray_v3",
+  "tray_parts": "flat-bottom tray only; removable lid OFF for measurement",
+  "contents": "empty (Citrucel removed)",
+  "support_arrangement": "cup nest REMOVED; tray on chamber support/floor",
+  "chamber_door": "closed",
+  "earth_bond": "assumed connected (operator closed door)",
+  "operator_present": true,
+  "canonical_sample_id": "empty",
+  "scan_modes": [
+    "electrical",
+    "quick"
+  ],
+  "results_root": "test_results/tray_v3",
+  "spot_meas_ingaas_blind": {
+    "h10": 1,
+    "h11": 11,
+    "h16": 15
+  },
+  "confirmed_at": "2026-11-21T12:22:10-05:00",
+  "electrical_run_id": "20261121-122210_scan_electrical",
+  "quick_run_id": "20261121-122331_scan_quick",
+  "notes": "Empty recheck after Citrucel removed; spot InGaAs blind median 11 (PASS); quick empty for optical baseline"
+}

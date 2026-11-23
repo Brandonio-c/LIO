@@ -1,0 +1,122 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 8146,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "AVOBENZONE,OCTINOXATE,OCTISALATE,OCTOCRYLENE Chop Saver Fresh Citrus SPF 15 Lip Balm CASTOR OIL CANDELILLA WAX YELLOW WAX SHEA BUTTER MANGIFERA INDICA SEED BUTTER CARNAUBA WAX AVOCADO OIL APRICOT KERNEL OIL GRAPE SEED OIL LEMON OIL, DISTILLED .ALPHA.-TOCOPHEROL GRAPEFRUIT OIL ORANGE OIL, DISTILLED LIME OIL, DISTILLED GINGER OIL ARNICA MONTANA WHOLE CALENDULA OFFICINALIS FLOWER RUBUS IDAEUS LEAF COMFREY LEAF ALOE VERA LEAF SALIX ALBA WHOLE PEA PROTEIN AVOBENZONE AVOBENZONE OCTINOXATE OCTINOXATE OCTISALATE OCTISALATE OCTOCRYLENE OCTOCRYLENE"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts",
+        "Blister Card Content SPF 15 Broad Spectrum Fresh Citrus Gosling's Original ChopSaver Lip Care 10 Certified Organic Ingredients Musician Invented Dermatologist Recommended with soothing arnica sunflower extract W hen you're a proefessional trumpet player like I am, healthy lips are essential. That's why I created ChopSaver- a lip care alternative that's dermatologist-recommended and musician-trusted. I'm confident ChopSaver will work for you , too. -Dan Gosling, ChopSaver Inventor Broad Spectrum SPF 15 Sunscreen Visit us at www.chopsaver.com (c) 2019 Good For the Goose Products, LLC P.O. Box 20692 - Indianapolis, IN 46220 Made in the USA with domestic and imported ingredients Net Wt. .15 oz (4.25 g)",
+        "Tube Label Content Peel here for Drug Facts SPF 15 Broad Spectrum Gosling's Original ChopSaver Lip Care Broad Spectrum SPF 15 Sunscreen ChopSaver Lip Balm Made in the USA Net Wt. .15 oz (4.25 g)"
+      ],
+      "active_ingredient": [
+        "Active Ingredients: Avobenzone 2%, Octinoxate 6.5% Octisalate 5%, Octocrylene 1.5%"
+      ],
+      "purpose": [
+        "Purpose: Sunscreen"
+      ],
+      "indications_and_usage": [
+        "Use: Helps prevent sunburn"
+      ],
+      "warnings": [
+        "Warnings: Do not use on damaged or broken skin When using this product, keep out of eyes Stop use and ask a doctor if rash occurs Keep out of reach of children."
+      ],
+      "do_not_use": [
+        "Do not use on damaged or broken skin"
+      ],
+      "when_using": [
+        "When using this product, keep out of eyes"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if rash occurs"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children."
+      ],
+      "dosage_and_administration": [
+        "Directions: apply liberally 15 minutes before sun exposure reapply at least every 2 hours use a water-resistant sunscreen if swimming or sweating Sun protection measures. Spending time in the sun increases your risk of skin cancer and early skin aging. To decrease this risk, regularly use a sunscreen with Broad Spectrum SPF value of 15 or higher and other sun protection measures including: limit time in the sun, especially from 10am-2pm. wear long-sleeved shirts, pants, hats and sunglasses children under 6 months of age: ask a doctor"
+      ],
+      "storage_and_handling": [
+        "Other information: Protect this product from excessive heat and direct sun"
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredients: Castor Oil*, Candelilla Wax, Beeswax*, Aloe Vera*, Calendula*, Comfrey*, Raspberry Leaf*, Willow Bark*, Ginger Root*, Shea Butter*, Mango Butter*, Carnauba Wax*, Avocado Oil*, Arnica Extract, Lemon Essential Oil*, Vitamin E, Grapefruit Essential Oil, Orange Essential Oil*, Lime Essential Oil*, Ginger Essential Oil*, Pea Isolate *Certified Organic Ingredient"
+      ],
+      "questions": [
+        "Questions or comments? 877-346-0951"
+      ],
+      "recent_major_changes": [
+        "Dosage and Administration section updated to read: Directions: apply liberally 15 minutes before sun exposure reapply at least every 2 hours use a water-resistant sunscreen if swimming or sweating Sun protection measures. Spending time in the sun increases your risk of skin cancer and early skin aging. To decrease this risk, regularly use a sunscreen with Broad Spectrum SPF value of 15 or higher and other sun protection measures including: limit time in the sun, especially from 10am-2pm. wear long-sleeved shirts, pants, hats and sunglasses children under 6 months of age: ask a doctor"
+      ],
+      "package_label_principal_display_panel": [
+        "Blister Card artwork Chop Saver Lip Care Broad Spectrum SPF 15 Sunscreen Lip Balm Blister Card Artwork",
+        "Tube Label Artwork Chop Saver Lip Care Broad Spectrum SPF 15 Sunscreen Lip Balm Label Artwork"
+      ],
+      "set_id": "2786cec8-0b8e-9c83-e063-6394a90ab338",
+      "id": "41d661c2-82f9-0a2d-e063-6294a90a49ee",
+      "effective_time": "20251023",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "AVOBENZONE,OCTINOXATE,OCTISALATE,OCTOCRYLENE"
+        ],
+        "generic_name": [
+          "CHOP SAVER FRESH CITRUS SPF 15 LIP BALM"
+        ],
+        "manufacturer_name": [
+          "Good for the Goose Products, LLC"
+        ],
+        "product_ndc": [
+          "83724-770"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "AVOBENZONE",
+          "OCTINOXATE",
+          "OCTISALATE",
+          "OCTOCRYLENE"
+        ],
+        "spl_id": [
+          "41d661c2-82f9-0a2d-e063-6294a90a49ee"
+        ],
+        "spl_set_id": [
+          "2786cec8-0b8e-9c83-e063-6394a90ab338"
+        ],
+        "package_ndc": [
+          "83724-770-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0182740000028"
+        ],
+        "unii": [
+          "G63QQF2NOX",
+          "4Y5P7MUD51",
+          "4X49Y0596W",
+          "5A68WGF6WM"
+        ]
+      }
+    }
+  ]
+}

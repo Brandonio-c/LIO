@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 1707,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "RET Stomach 7001 RET Stomach CICHORIUM INTYBUS FLOWER CICHORIUM INTYBUS FLOWER MALUS SYLVESTRIS FLOWER MALUS SYLVESTRIS FLOWER IMPATIENS GLANDULIFERA FLOWER IMPATIENS GLANDULIFERA FLOWER SALIX ALBA FLOWERING TOP SALIX ALBA FLOWERING TOP SILICON DIOXIDE SILICON DIOXIDE PULSATILLA MONTANA WHOLE PULSATILLA MONTANA WHOLE SULFUR SULFUR ALCOHOL WATER"
+      ],
+      "active_ingredient": [
+        "ACTIVE INGREDIENTS Chicory flower essence 3X Crabapple flower essence 3X Impatiens flower essence 3X Willow flower essence 3X Silicea 3X, 6X, 30X Pulsatilla 30X, 100X, 200X Sulphur 30X, 100X, 200X"
+      ],
+      "questions": [
+        "QUESTIONS Professional Formulas PO Box 2034 Lake Oswego, OR 97035"
+      ],
+      "indications_and_usage": [
+        "INDICATIONS Temporarily relieves impatience, being easily irritated, having poor self-image or the feeling of not being clean, resentment, being overly possessive, being easily offended, or being demanding or manipulative.*"
+      ],
+      "purpose": [
+        "*Claims based on traditional homeopathic practice, not accepted medical evidence. Not FDA evaluated."
+      ],
+      "warnings": [
+        "WARNINGS In case of overdose, get medical help or contact a poison control center right away. Keep out of the reach of children. If pregnant or breastfeeding, ask a healthcare professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of the reach of children."
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breastfeeding, ask a healthcare professional before use."
+      ],
+      "dosage_and_administration": [
+        "DIRECTIONS Place drops under tongue 30 minutes before/after meals. Adults and children 12 years and over: Take 5 drops up to 4 times per day for up to one month. Consult a physician for use in children under 12 years of age."
+      ],
+      "other_safety_information": [
+        "OTHER INFORMATION Tamper resistant. If seal is broken, do not use. After opening, close container tightly and store at room temperature away from heat."
+      ],
+      "inactive_ingredient": [
+        "INACTIVE INGREDIENTS 20% ethanol, purified water."
+      ],
+      "package_label_principal_display_panel": [
+        "LABEL Est 1985 Professional Formulas Complementary Health RET Stomach Homeopathic Remedy 1 FL. OZ. (29.5 mL) Label image"
+      ],
+      "set_id": "086427e0-599e-4405-a996-d949023f9d90",
+      "id": "03a2a530-d7c5-4bbb-9e99-f6031d29a5f6",
+      "effective_time": "20260108",
+      "version": "2",
+      "openfda": {
+        "brand_name": [
+          "RET Stomach 7001"
+        ],
+        "generic_name": [
+          "RET STOMACH"
+        ],
+        "manufacturer_name": [
+          "Professional Complementary Health Formulas"
+        ],
+        "product_ndc": [
+          "63083-7001"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "CICHORIUM INTYBUS FLOWER",
+          "MALUS SYLVESTRIS FLOWER",
+          "IMPATIENS GLANDULIFERA FLOWER",
+          "SALIX ALBA FLOWERING TOP",
+          "SILICON DIOXIDE",
+          "PULSATILLA MONTANA WHOLE",
+          "SULFUR"
+        ],
+        "spl_id": [
+          "03a2a530-d7c5-4bbb-9e99-f6031d29a5f6"
+        ],
+        "spl_set_id": [
+          "086427e0-599e-4405-a996-d949023f9d90"
+        ],
+        "package_ndc": [
+          "63083-7001-1"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "HW54500A89",
+          "6ZJ8N1924Z",
+          "AJU5O1A5ZV",
+          "XBP5X7E70R",
+          "ETJ7Z6XBU4",
+          "24K790T39B",
+          "70FD1KFU70"
+        ]
+      }
+    }
+  ]
+}

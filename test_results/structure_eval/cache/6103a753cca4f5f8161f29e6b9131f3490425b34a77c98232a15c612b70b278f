@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 4735,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Inverness Ear Care BENZALKONIUM CHLORIDE BENZALKONIUM CHLORIDE BENZALKONIUM WATER"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts"
+      ],
+      "active_ingredient": [
+        "Active ingredient Benzalkonium Chloride 0.12% w/w Purpose Antiseptic"
+      ],
+      "purpose": [
+        "Purpose Antiseptic"
+      ],
+      "indications_and_usage": [
+        "Use First aid to prevent infection of pierced ears."
+      ],
+      "warnings": [
+        "Warnings For external use only. Do not ingest. If swallowed, get medical help or contact Poison Control Center immediately. In case of contact with eyes, flush with water. Keep out of reach of children. Stop use and ask a doctor if you experience pain, redness, or swelling."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if you experience pain, redness, or swelling."
+      ],
+      "dosage_and_administration": [
+        "Directions For optimal results, follow these steps daily: Clean hands thoroughly with soap before touching ears or piercing studs. Using a cotton swab saturated with Ear Care solution, cleanse front and back of piercing 3 time daily. Gently rotate the earrings while cleasnsing. DO NOT remove earrings. Keep hair, hair spray, shampoo, soap, cosmetics, perfume, etc. away from newly pierced ears. After shampooing, exercising, swimming, or use of hair products, rinse ears in clear water and reapply Ear Care Solution."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Purified Water"
+      ],
+      "questions": [
+        "Questions? Call 1-800-255-8556"
+      ],
+      "package_label_principal_display_panel": [
+        "Package Labeling: Label"
+      ],
+      "set_id": "180a2995-334c-2e93-e063-6294a90aecf7",
+      "id": "180a3441-c7d7-3b06-e063-6294a90a3ae6",
+      "effective_time": "20240509",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M003"
+        ],
+        "brand_name": [
+          "Inverness Ear Care"
+        ],
+        "generic_name": [
+          "BENZALKONIUM CHLORIDE"
+        ],
+        "manufacturer_name": [
+          "The Richline Group, Inc."
+        ],
+        "product_ndc": [
+          "70094-007"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "BENZALKONIUM CHLORIDE"
+        ],
+        "rxcui": [
+          "1052949"
+        ],
+        "spl_id": [
+          "180a3441-c7d7-3b06-e063-6294a90a3ae6"
+        ],
+        "spl_set_id": [
+          "180a2995-334c-2e93-e063-6294a90aecf7"
+        ],
+        "package_ndc": [
+          "70094-007-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0011561980045"
+        ],
+        "unii": [
+          "F5UM2KM3W7"
+        ]
+      }
+    }
+  ]
+}

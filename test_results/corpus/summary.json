@@ -1,0 +1,33 @@
+{
+ "seed": 20261112,
+ "ocr_engine": "tesseract",
+ "by_kind": {
+  "drug_facts": {
+   "items": 100,
+   "scored": 100,
+   "full_panel": 17,
+   "fields": 1026,
+   "exact_match": 125,
+   "proposed": 332,
+   "needs_correction": 207
+  },
+  "supplement_facts": {
+   "items": 100,
+   "scored": 100,
+   "full_panel": 5,
+   "fields": 937,
+   "exact_match": 165,
+   "proposed": 219,
+   "needs_correction": 54
+  },
+  "nutrition_facts": {
+   "items": 49,
+   "scored": 49,
+   "full_panel": 9,
+   "fields": 443,
+   "exact_match": 70,
+   "proposed": 106,
+   "needs_correction": 36
+  }
+ }
+}

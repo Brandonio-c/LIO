@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 3595,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Axe Cool Ocean Sea Mist and Grapefruit 48H Antiperspirant LIMONENE, (+)- CYCLOMETHICONE 5 HYDROGENATED CASTOR OIL BUTYLATED HYDROXYTOLUENE ALUMINUM ZIRCONIUM TETRACHLOROHYDREX GLY ALUMINUM ZIRCONIUM TETRACHLOROHYDREX GLY STEARYL ALCOHOL PPG-14 BUTYL ETHER MINERAL OIL PEG-8 DISTEARATE ISOPROPYL PALMITATE HIGH DENSITY POLYETHYLENE LINALOOL, (+/-)-"
+      ],
+      "description": [
+        "AXE COOL OCEAN SEA MIST & GRAPEFRUIT 48H ANTIPERSPIRANT - aluminum zirconium tetrachlorohydrex gly stick Axe Dark Temptation 48H Anti Sweat Antiperspirant"
+      ],
+      "active_ingredient": [
+        "Drug Facts Active ingredient Aluminum Zirconium Tetrachlorohydrex GLY (18.2 %)"
+      ],
+      "purpose": [
+        "Purpose antiperspirant"
+      ],
+      "indications_and_usage": [
+        "Uses reduces underarm wetness"
+      ],
+      "warnings": [
+        "Warnings For external use only Do not use on broken skin Stop use if rash or irritation occurs Ask a doctor before use if you have kidney disease"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions apply to underarms only"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients PPG-14 Butyl Ether, Cyclopentasiloxane, Stearyl Alcohol, Isopropyl Palmitate, Mineral Oil, Hydrogenated Castor Oil, PEG-8 Distearate, Fragrance (Parfum), Polyethylene, BHT, Limonene, Linalool"
+      ],
+      "questions": [
+        "Questions? Call toll-free 1-800-450-7580"
+      ],
+      "package_label_principal_display_panel": [
+        "Packaging Axe Cool Ocean AP IS"
+      ],
+      "set_id": "12222f81-406f-71d5-e063-6394a90a4c71",
+      "id": "12222fa0-bf3a-5e3d-e063-6294a90a5816",
+      "effective_time": "20240224",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M019"
+        ],
+        "brand_name": [
+          "Axe"
+        ],
+        "generic_name": [
+          "COOL OCEAN SEA MIST AND GRAPEFRUIT 48H ANTIPERSPIRANT"
+        ],
+        "manufacturer_name": [
+          "Conopco Inc. d/b/a/ Unilever"
+        ],
+        "product_ndc": [
+          "64942-2265"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ALUMINUM ZIRCONIUM TETRACHLOROHYDREX GLY"
+        ],
+        "spl_id": [
+          "12222fa0-bf3a-5e3d-e063-6294a90a5816"
+        ],
+        "spl_set_id": [
+          "12222f81-406f-71d5-e063-6394a90a4c71"
+        ],
+        "package_ndc": [
+          "64942-2265-1",
+          "64942-2265-2",
+          "64942-2265-3"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "8O386558JE"
+        ]
+      }
+    }
+  ]
+}

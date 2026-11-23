@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 22498,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Walgreens Maximum Strength Non Drowsy Day and Night Cold and Flu Walgreens Maximum Strength Non Drowsy Day and Night Cold and Flu Maximum Strength Non Drowsy Daytime Cold and Flu acetaminophen, dextromethorphan hydrobromide, phenylephrine hydrochloride PROPYLENE GLYCOL GELATIN GLYCERIN POLYETHYLENE GLYCOL 400 SORBITAN SORBITOL TITANIUM DIOXIDE FD&C YELLOW NO. 6 WATER POVIDONE POTASSIUM ALUMINUM DISILICATE ACETAMINOPHEN ACETAMINOPHEN DEXTROMETHORPHAN HYDROBROMIDE DEXTROMETHORPHAN PHENYLEPHRINE HYDROCHLORIDE PHENYLEPHRINE 105 Maximum Strength Nighttime Cold and Flu acetaminophen, dextromethorphan hydrobromide, doxylamine succinate, phenylephrine hydrochloride WATER TITANIUM DIOXIDE FD&C BLUE NO. 1 SORBITOL PROPYLENE GLYCOL POLYETHYLENE GLYCOL 400 POVIDONE D&C YELLOW NO. 10 SORBITAN POTASSIUM ALUMINUM DISILICATE ACETAMINOPHEN ACETAMINOPHEN DEXTROMETHORPHAN HYDROBROMIDE DEXTROMETHORPHAN DOXYLAMINE SUCCINATE DOXYLAMINE PHENYLEPHRINE HYDROCHLORIDE PHENYLEPHRINE GELATIN GLYCERIN 106"
+      ],
+      "spl_patient_package_insert": [
+        "Do not take these products at the same time."
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts",
+        "Walgreens Non Drowsy Day Cold & Flu",
+        "Walgreens Maximum Strength Night Cold & Flu"
+      ],
+      "active_ingredient": [
+        "Active ingredients (in each capsule) Acetaminophen 325 mg Dextromethorphan hydrobromide 10 mg Phenylephrine hydrochloride 5 mg",
+        "Active ingredients (in each capsule) Acetaminophen 325 mg Dextromethorphan hydrobromide 10 mg Doxylamine succinate 6.25 mg Phenylephrine hydrochloride 5 mg"
+      ],
+      "purpose": [
+        "Purposes Pain reliever/fever reducer Cough suppressant Nasal decongestant",
+        "Purposes Pain reliever/fever reducer Cough suppressant Antihistamine Nasal decongestant"
+      ],
+      "indications_and_usage": [
+        "Uses temporarily relieves these symptoms due to a cold or flu: minor aches and pains headache cough sore throat nasal and sinus congestion temporarily reduces fever",
+        "Directions Directions do not take more than the recommended dose adults and children 12 years and over: take 2 capsules with water every 4 hours. Do not exceed 10 capsules in 24 hours or as directed by a doctor. children under 12 years: do not use",
+        "Uses temporarily relieves these symptoms due to a cold or flu: minor aches and pains headache nasal and sinus congestion cough sore throat runny nose sneezing temporarily reduces fever"
+      ],
+      "warnings": [
+        "Warnings Liver warning: This product contains acetaminophen. Severe liver damage may occur if you take more than 4,000 mg of acetaminophen in 24 hours with other drugs containing acetaminophen 3 or more alcoholic drinks every day while using this product Allergy alert: Acetaminophen may cause severe skin or severe allergic reactions. Symptoms may include: skin reddening blisters rash hives facial swelling asthma (wheezing) shock If a skin or general allergic reaction occurs, stop use and seek medical help right away. Sore throat warning: If sore throat is severe, persists for more than 2 days, is accompanied or followed by fever, headache, rash, nausea, or vomiting, consult a doctor promptly. Do not use ● with any other drug containing acetaminophen (prescription or nonprescription). If you are not sure whether a drug contains acetaminophen, ask a doctor or pharmacist. ● if you are now taking a prescription monoamine oxidase inhibitor (MAOI) (certain drugs for depression, psychiatric, or emotional conditions, or Parkinson's disease), or for 2 weeks after stopping the MAOI drug. If you do not know if your prescription drug contains an MAOI, ask a doctor or pharmacist before taking this product. ● if you have ever had an allergic reaction to this product or any of its ingredients ● in children under 12 years of age Ask a doctor before use if you have ● liver disease ● heart disease ● high blood pressure ● thyroid disease ● diabetes ● cough with excessive phlegm (mucus) ● difficulty in urination due to enlargement of the prostate gland ● persistent or chronic cough such as occurs with smoking, asthma, or emphysema Ask a doctor or pharmacist before use if you are taking the blood thinning drug warfa When using this product do not exceed recommended dosage Stop use and ask a doctor if pain, cough, or nasal congestion gets worse or lasts more than 7 days fever gets worse or lasts more than 3 days redness or swelling is present new symptoms occur cough comes back or occurs with rash or headache that lasts. These could be signs of a serious condition. nervousness, dizziness, or sleeplessness occurs If pregnant or breast-feeding, ask a health professional before use. Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away. Quick medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms.",
+        "Warnings Liver warning: This product contains acetaminophen. Severe liver damage may occur if you take more than 4,000 mg of acetaminophen in 24 hours with other drugs containing acetaminophen 3 or more alcoholic drinks every day while using this product Allergy alert: Acetaminophen may cause severe skin or severe allergic reactions. Symptoms may include: skin reddening blisters rash hives facial swelling asthma (wheezing) shock If a skin or general allergic reaction occurs, stop use and seek medical help right away. Sore throat warning: If sore throat is severe, persists for more than 2 days, is accompanied or followed by fever, headache, rash, nausea, or vomiting, consult a doctor promptly. Do not use to sedate children. Do not use ● with any other drug containing acetaminophen (prescription or nonprescription). If you are not sure whether a drug contains acetaminophen, ask a doctor or pharmacist. ● if you are now taking a prescription monoamine oxidase inhibitor (MAOI) (certain drugs for depression, psychiatric, or emotional conditions, or Parkinson's disease), or for 2 weeks after stopping the MAOI drug. If you do not know if your prescription drug contains an MAOI, ask a doctor or pharmacist before taking this product. ● if you have ever had an allergic reaction to this product or any of its ingredients ● in children under 12 years of age Ask a doctor before use if you have ● liver disease ● heart disease ● high blood pressure ● thyroid disease ● diabetes ● glaucoma ● cough with excessive phlegm (mucus) ● a breathing problem such as emphysema or chronic bronchitis ● difficulty in urination due to enlargement of the prostate gland ● persistent or chronic cough such as occurs with smoking, asthma, or emphysema Ask a doctor or pharmacist before use if you are ● taking the blood thinning drug warfarin ● taking sedatives or tranquilizers When using this product ● do not exceed recommended dosage ● may cause marked drowsiness ● avoid alcoholic drinks ● alcohol, sedatives, and tranquilizers may increase drowsiness ● be careful when driving a motor vehicle or operating machinery ● excitability may occur, especially in children Stop use and ask a doctor if pain, cough, or nasal congestion gets worse or lasts more than 7 days fever gets worse or lasts more than 3 days redness or swelling is present new symptoms occur cough comes back or occurs with rash or headache that lasts. These could be signs of a serious condition. · nervousness, dizziness, or sleeplessness occurs If pregnant or breast-feeding, ask a health professional before use. Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away. Quick medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms."
+      ],
+      "do_not_use": [
+        "Do not use ● with any other drug containing acetaminophen (prescription or nonprescription). If you are not sure whether a drug contains acetaminophen, ask a doctor or pharmacist. ● if you are now taking a prescription monoamine oxidase inhibitor (MAOI) (certain drugs for depression, psychiatric, or emotional conditions, or Parkinson's disease), or for 2 weeks after stopping the MAOI drug. If you do not know if your prescription drug contains an MAOI, ask a doctor or pharmacist before taking this product. ● if you have ever had an allergic reaction to this product or any of its ingredients ● in children under 12 years of age",
+        "Do not use ● with any other drug containing acetaminophen (prescription or nonprescription). If you are not sure whether a drug contains acetaminophen, ask a doctor or pharmacist. ● if you are now taking a prescription monoamine oxidase inhibitor (MAOI) (certain drugs for depression, psychiatric, or emotional conditions, or Parkinson's disease), or for 2 weeks after stopping the MAOI drug. If you do not know if your prescription drug contains an MAOI, ask a doctor or pharmacist before taking this product. ● if you have ever had an allergic reaction to this product or any of its ingredients ● in children under 12 years of age"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have ● liver disease ● heart disease ● high blood pressure ● thyroid disease ● diabetes ● cough with excessive phlegm (mucus) ● difficulty in urination due to enlargement of the prostate gland ● persistent or chronic cough such as occurs with smoking, asthma, or emphysema",
+        "Ask a doctor before use if you have ● liver disease ● heart disease ● high blood pressure ● thyroid disease ● diabetes ● glaucoma ● cough with excessive phlegm (mucus) ● a breathing problem such as emphysema or chronic bronchitis ● difficulty in urination due to enlargement of the prostate gland ● persistent or chronic cough such as occurs with smoking, asthma, or emphysema"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor or pharmacist before use if you are taking the blood thinning drug warfa",
+        "Ask a doctor or pharmacist before use if you are ● taking the blood thinning drug warfarin ● taking sedatives or tranquilizers"
+      ],
+      "when_using": [
+        "When using this product do not exceed recommended dosage",
+        "When using this product ● do not exceed recommended dosage ● may cause marked drowsiness ● avoid alcoholic drinks ● alcohol, sedatives, and tranquilizers may increase drowsiness ● be careful when driving a motor vehicle or operating machinery ● excitability may occur, especially in children"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if pain, cough, or nasal congestion gets worse or lasts more than 7 days fever gets worse or lasts more than 3 days redness or swelling is present new symptoms occur cough comes back or occurs with rash or headache that lasts. These could be signs of a serious condition. nervousness, dizziness, or sleeplessness occurs",
+        "Stop use and ask a doctor if pain, cough, or nasal congestion gets worse or lasts more than 7 days fever gets worse or lasts more than 3 days redness or swelling is present new symptoms occur cough comes back or occurs with rash or headache that lasts. These could be signs of a serious condition. · nervousness, dizziness, or sleeplessness occurs"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use.",
+        "If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away. Quick medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms.",
+        "Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away. Quick medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms."
+      ],
+      "other_safety_information": [
+        "Other information ● store at room temperature. Avoid temperatures above 25°C (77°F).",
+        "Other information store at room temperature. Avoid temperatures above 25°C (77°F)."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients FD&C yellow #6, gelatin, glycerin, potassium aluminum silicate, polyethylene glycol, povidone, propylene glycol, purified water, sorbitol , titanium dioxide",
+        "Inactive ingredients FD&C Blue #1, FD&C yellow #10, gelatin, glycerin, potassium aluminum silicate, polyethylene glycol, povidone, propylene glycol, purified water, sorbitol sorbitan solution, titanium dioxide"
+      ],
+      "questions": [
+        "Questions or comments? 1-888-333-9792",
+        "Questions or comments? 1-888-333-9792"
+      ],
+      "dosage_and_administration": [
+        "Directions do not take more than the recommended dose adults and children 12 years and over: take 2 capsules with water every 4 hours. Do not exceed 10 capsules in 24 hours or as directed by a doctor. children under 12 years: do not use"
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPLA DISPLAY PANEL Day and Night minis"
+      ],
+      "set_id": "579c47c8-6366-4785-9680-d3986ce9641d",
+      "id": "48bcc153-cdc0-46c1-e063-6394a90a29d6",
+      "effective_time": "20260119",
+      "version": "7",
+      "openfda": {
+        "application_number": [
+          "M012"
+        ],
+        "brand_name": [
+          "Walgreens Maximum Strength Non Drowsy Day and Night Cold and Flu"
+        ],
+        "generic_name": [
+          "WALGREENS MAXIMUM STRENGTH NON DROWSY DAY AND NIGHT COLD AND FLU"
+        ],
+        "manufacturer_name": [
+          "Walgreens"
+        ],
+        "product_ndc": [
+          "0363-9077"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "rxcui": [
+          "1086997",
+          "1297288",
+          "2634363"
+        ],
+        "spl_id": [
+          "48bcc153-cdc0-46c1-e063-6394a90a29d6"
+        ],
+        "spl_set_id": [
+          "579c47c8-6366-4785-9680-d3986ce9641d"
+        ],
+        "package_ndc": [
+          "0363-9077-24"
+        ],
+        "is_original_packager": [
+          true
+        ]
+      }
+    }
+  ]
+}

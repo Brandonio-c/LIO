@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 1536,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "DANDRUFF pyrithione zinc PYRITHIONE ZINC PYRITHIONE ZINC SODIUM CHLORIDE METHYLISOTHIAZOLINONE DIMETHICONE IODOPROPYNYL BUTYLCARBAMATE FD&C BLUE NO. 1 WATER SODIUM LAURYL SULFATE COCAMIDOPROPYL BETAINE SODIUM LAURETH SULFATE GUAR HYDROXYPROPYLTRIMONIUM CHLORIDE (1.7 SUBSTITUENTS PER SACCHARIDE) STYRENE/ACRYLAMIDE COPOLYMER (500000 MW) SODIUM CITRATE"
+      ],
+      "active_ingredient": [
+        "Active ingredient Pyrithione zinc 0.3%"
+      ],
+      "purpose": [
+        "Purpose Anti-dandruff"
+      ],
+      "indications_and_usage": [
+        "Use helps prevent recurrence of flaking and itching associated with dandruff."
+      ],
+      "warnings": [
+        "Warnings For external use only. When using this product do not get into eyes. If contact occurs, rinse eyes thoroughly with water."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if condition worsens or does not improve after regular use as directed."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Posion Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions • shake well • for maximum dandruff control, use every time you shampoo • wet hair, massage onto scalp, rinse, repeat if desired • for best results, use at least twice a week or as directed by a doctor"
+      ],
+      "storage_and_handling": [
+        "Other information Store at room temperature."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Water (Aqua), Sodium Laureth Sulfate, Cocamidopropyl Betaine, Sodium Lauryl Sulfate, Cocamide MEA, Styrene/Acrylates Copolymer, Guar Hydroxypropyltrimonium Chloride, Sodium Citrate, Fragrance, Sodium Chloride, Dimethicone, Methylisothiazolinone, Iodopropynyl Butylcarbamate"
+      ],
+      "package_label_principal_display_panel": [
+        "label"
+      ],
+      "set_id": "076de7da-8acc-5f66-e063-6294a90a9abf",
+      "id": "5b2fbb0b-57c6-59b7-e063-6394a90aa324",
+      "effective_time": "20230501",
+      "version": "3",
+      "openfda": {
+        "application_number": [
+          "M032"
+        ],
+        "brand_name": [
+          "DANDRUFF"
+        ],
+        "generic_name": [
+          "PYRITHIONE ZINC"
+        ],
+        "manufacturer_name": [
+          "Primal Elements"
+        ],
+        "product_ndc": [
+          "80801-103"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "PYRITHIONE ZINC"
+        ],
+        "rxcui": [
+          "1052932"
+        ],
+        "spl_id": [
+          "5b2fbb0b-57c6-59b7-e063-6394a90aa324"
+        ],
+        "spl_set_id": [
+          "076de7da-8acc-5f66-e063-6294a90a9abf"
+        ],
+        "package_ndc": [
+          "80801-103-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0640986009026"
+        ],
+        "unii": [
+          "R953O2RHZ5"
+        ]
+      }
+    }
+  ]
+}

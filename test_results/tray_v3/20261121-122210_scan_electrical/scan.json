@@ -1,0 +1,261 @@
+{
+ "run_id": "20261121-122210_scan_electrical",
+ "status": "COMPLETE",
+ "started": "2026-11-21T12:22:10-05:00",
+ "finished": "2026-11-21T12:23:29-05:00",
+ "completed_step": 1,
+ "events": [
+  {
+   "at": "2026-11-21T12:22:10-05:00",
+   "kind": "start",
+   "mode": "electrical",
+   "sample_id": "empty"
+  },
+  {
+   "at": "2026-11-21T12:23:29-05:00",
+   "kind": "complete"
+  }
+ ],
+ "aborts": [],
+ "answers": {
+  "sample_id": "empty",
+  "scan_lid_closed": true,
+  "scan_earth_bond": true,
+  "scan_sample": true
+ },
+ "phases": {
+  "P0": 0.028,
+  "P1": 75.824,
+  "P4": 3.627
+ },
+ "streams": [
+  {
+   "name": "s000_coils_off_opt101",
+   "file": "streams/s000_coils_off_opt101.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": 0,
+   "rate_setting": 860
+  },
+  {
+   "name": "s000_coils_off_ingaas",
+   "file": "streams/s000_coils_off_ingaas.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": 0,
+   "rate_setting": 860
+  },
+  {
+   "name": "long_dark_opt101",
+   "file": "streams/long_dark_opt101.npz",
+   "state": "dark",
+   "detector": "opt101",
+   "height_hs": 0,
+   "rate_setting": 8
+  },
+  {
+   "name": "long_dark_ingaas",
+   "file": "streams/long_dark_ingaas.npz",
+   "state": "dark",
+   "detector": "ingaas",
+   "height_hs": 0,
+   "rate_setting": 8
+  }
+ ],
+ "mode": "electrical",
+ "sample_id": "empty",
+ "simulated": false,
+ "host": {
+  "lio": "0.2.0",
+  "python": "3.12.11"
+ },
+ "firmware": {
+  "fw": "2.5.2",
+  "proto": "1",
+  "build": "2026-11-17",
+  "adc_addr": "0x48",
+  "adc_ok": "1",
+  "gain": "1",
+  "rate": "128",
+  "settle_ms": "8",
+  "wdt_a_ms": "2000",
+  "wdt_b_ms": "5000",
+  "wdt_a_cap_ms": "5000",
+  "wdt_b_cap_ms": "10000",
+  "comms_ms": "10000",
+  "arm_ms": "60000",
+  "step_max": "2048",
+  "jog_max": "2048",
+  "jog_v_max": "1000",
+  "jog_acc_max": "1000",
+  "wake_ms_max": "3000",
+  "motion_armed": "0",
+  "debug_states": "1",
+  "mains": "0",
+  "rail_b_first": "9",
+  "light_in_motion": "0",
+  "arm_token": "0x18D8",
+  "hw_wdt": "0"
+ },
+ "config_sha256": "82201cb43d998b883df5719f7b8e8591f15e41e9921218bcd4e3707f1a455aa9",
+ "plan": {
+  "mode": "electrical",
+  "label": "electrical health here, no motion (~2 min)",
+  "top": -16384,
+  "bottom": -260400,
+  "settings": {
+   "jog_speed": 500,
+   "settle_ms_mech": 300,
+   "dark_agree_sigma": 3.0,
+   "dark_agree_tries": 5,
+   "dark_n": 8,
+   "optical_settle_ms": 8,
+   "sweep_n": 2,
+   "hum_every_k": 4,
+   "hum_bursts": 17,
+   "long_dark_s": 30.0,
+   "ref_offset_steps": 4096,
+   "arm_renew_s": 40.0,
+   "heartbeat_timeout_s": 90.0,
+   "abort_on_saturation": true,
+   "lead_mm_per_rev": 1.0,
+   "mains_hz": 60,
+   "mains_periods": 2
+  },
+  "steps": [
+   {
+    "index": 0,
+    "phase": "P1",
+    "kind": "static",
+    "height": 0,
+    "direction": "none",
+    "rep": 0,
+    "hum": false,
+    "label": "electrical characterisation (no motion)"
+   },
+   {
+    "index": 1,
+    "phase": "P4",
+    "kind": "closing",
+    "height": 0,
+    "direction": "none",
+    "rep": 0,
+    "hum": false,
+    "label": "closing checks here (drift, interlocks)"
+   }
+  ],
+  "heights_down": [],
+  "heights_up": [],
+  "ref_heights": [],
+  "repeats": 1,
+  "extra_near_optimum": 0,
+  "static": true,
+  "continuous": false,
+  "return_top": false,
+  "eta_s": 160.4003210486665,
+  "eta_parts": {
+   "P0": 30.0,
+   "P1": 71.69813333333335,
+   "P2": 0.0,
+   "P3": 0.0,
+   "P4": 58.70218771533317
+  },
+  "duty": {
+   "on_ms_per_sweep": 82.7,
+   "max_on_ms_per_min_A": 165.3,
+   "budget_A": 1000.0,
+   "waits_s": 0.0
+  }
+ },
+ "stage": {
+  "known": true,
+  "valid": true,
+  "invalid_reason": null,
+  "abs": [
+   0,
+   0
+  ],
+  "top": [
+   0,
+   0
+  ],
+  "bottom": [
+   -260400,
+   -333677
+  ],
+  "updated": "2026-11-21T12:16:42-05:00",
+  "file": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/stage_position.json",
+  "range": [
+   260400,
+   333677
+  ],
+  "below_top": [
+   0,
+   0
+  ],
+  "above_bottom": [
+   260400,
+   333677
+  ]
+ },
+ "capabilities": {
+  "coupling_states": true,
+  "mains_rejection": true,
+  "rail_monitor": false,
+  "home_sensors": false
+ },
+ "skipped_checks": {
+  "rail_monitor": "A2/A3 not wired for rail and ground monitoring",
+  "home_sensors": "no home sensors fitted"
+ },
+ "rows": 142,
+ "interlocks": {
+  "light_while_moving": "SKIP: static mode (no motion)",
+  "single_channel": "PASS"
+ },
+ "health": {
+  "unexpected_boots": 0,
+  "duty": {
+   "max_rail_a_ms_per_min": 252.0,
+   "budget_a_ms": 1000.0,
+   "over_budget": [],
+   "cooldown_s": 0,
+   "cooldowns": 0
+  },
+  "moves": 0,
+  "unlevel": [],
+  "stage_end": {
+   "known": true,
+   "valid": true,
+   "invalid_reason": null,
+   "abs": [
+    0,
+    0
+   ],
+   "top": [
+    0,
+    0
+   ],
+   "bottom": [
+    -260400,
+    -333677
+   ],
+   "updated": "2026-11-21T12:16:42-05:00",
+   "file": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/stage_position.json",
+   "range": [
+    260400,
+    333677
+   ],
+   "below_top": [
+    0,
+    0
+   ],
+   "above_bottom": [
+    260400,
+    333677
+   ]
+  }
+ }
+}

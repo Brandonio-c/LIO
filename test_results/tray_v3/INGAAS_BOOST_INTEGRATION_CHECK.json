@@ -1,0 +1,129 @@
+{
+  "at": "2026-11-21T14:06:30-05:00",
+  "setup": "Rf=2M\u03a9; door closed; no DRV2 pot change yet (~45 mA); compare short vs long integration",
+  "short": {
+    "settle_ms": 8,
+    "n": 4,
+    "mains_hz": 0,
+    "reps": 3
+  },
+  "long": {
+    "settle_ms": 100,
+    "n": 16,
+    "mains_hz": 60,
+    "reps": 3,
+    "note": "n = whole mains periods while mains on"
+  },
+  "recommendation": "integration_not_enough_need_aim_or_current",
+  "now_short": {
+    "8": {
+      "dark": -332,
+      "lit": -303,
+      "net": 29,
+      "t_on_ms": 78,
+      "opt_net": 217
+    },
+    "9": {
+      "dark": -331,
+      "lit": -351,
+      "net": -20,
+      "t_on_ms": 78,
+      "opt_net": 157
+    },
+    "12": {
+      "dark": -332,
+      "lit": -363,
+      "net": -31,
+      "t_on_ms": 78,
+      "opt_net": 18
+    },
+    "13": {
+      "dark": -332,
+      "lit": -341,
+      "net": -10,
+      "t_on_ms": 78,
+      "opt_net": 15
+    },
+    "14": {
+      "dark": -332,
+      "lit": -348,
+      "net": -16,
+      "t_on_ms": 78,
+      "opt_net": 14
+    },
+    "15": {
+      "dark": -332,
+      "lit": -385,
+      "net": -53,
+      "t_on_ms": 78,
+      "opt_net": 17
+    },
+    "16": {
+      "dark": -332,
+      "lit": -342,
+      "net": -10,
+      "t_on_ms": 78,
+      "opt_net": 364
+    }
+  },
+  "now_long": {
+    "8": {
+      "dark": -331,
+      "lit": -301,
+      "net": 30,
+      "t_on_ms": 640,
+      "opt_net": 216
+    },
+    "9": {
+      "dark": -331,
+      "lit": -346,
+      "net": -15,
+      "t_on_ms": 640,
+      "opt_net": 153
+    },
+    "12": {
+      "dark": -331,
+      "lit": -362,
+      "net": -31,
+      "t_on_ms": 640,
+      "opt_net": 18
+    },
+    "13": {
+      "dark": -331,
+      "lit": -338,
+      "net": -7,
+      "t_on_ms": 640,
+      "opt_net": 15
+    },
+    "14": {
+      "dark": -331,
+      "lit": -352,
+      "net": -21,
+      "t_on_ms": 640,
+      "opt_net": 15
+    },
+    "15": {
+      "dark": -331,
+      "lit": -383,
+      "net": -52,
+      "t_on_ms": 640,
+      "opt_net": 17
+    },
+    "16": {
+      "dark": -331,
+      "lit": -340,
+      "net": -9,
+      "t_on_ms": 640,
+      "opt_net": 358
+    }
+  },
+  "prev_check4_nets": {
+    "8": 20,
+    "9": -38,
+    "12": -48,
+    "13": -22,
+    "14": -28,
+    "15": -76,
+    "16": -25
+  }
+}

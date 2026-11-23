@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 10281,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Isopropyl alcohol Isopropyl alcohol WATER ISOPROPYL ALCOHOL ISOPROPYL ALCOHOL"
+      ],
+      "active_ingredient": [
+        "Active ingredient Isopropyl alcohol 70%"
+      ],
+      "purpose": [
+        "Purpose First aid antiseptic"
+      ],
+      "indications_and_usage": [
+        "Uses first aid to help prevent the risk of infection in: minor cuts scrapes burns"
+      ],
+      "warnings": [
+        "Warnings For external use only. If taken internally serious gastric disturbances will result. Flammable Keep away from fire or flame, heat, spark, electrical do not use as a fuel source. If exposed to a heat source, vapors may ignite, resulting in severe burns, serious injury, or death."
+      ],
+      "ask_doctor": [
+        "Ask a Doctor before use for deep or puncture wounds, animal bites or serious burns"
+      ],
+      "when_using": [
+        "When using this product do not get into eyes do not inhale do not apply over large areas of the body do not use longer than 1 week use only as directed"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor If condition persists or gets worse"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "warnings_and_cautions": [
+        "Caution Fumes can be acutely irritating to skin, eyes and the respiratory system. Do not apply to irritated skin or if excessive irritation develops. Avoid getting into the eyes or on mucous membranes. Avoid inhaling this product."
+      ],
+      "dosage_and_administration": [
+        "Directions clean the affected area apply a small amount of this product on the affected area 1 to 3 times daily may be covered with a sterile bandage if bandaged, let dry first"
+      ],
+      "other_safety_information": [
+        "Other information does not contain, nor is intended as a substitute for grain or ethyl alcohol"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredient water"
+      ],
+      "adverse_reactions": [
+        "ADVERSE REACTION Distributed By: Consumer Value Products, Inc. Temple, TX 76502 CVPproducts.com Pat. D675, 101"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal display panel CVP ® HEALTH 70% ISOPROPYL RUBBING ALCOHOL FIRST AID ANTIEPTIC WARNING FLAMMABLE Keep away form heat, spark, electrical, fire or flame DANGER: DO NOT USE AS A FUEL SOURCE. If exposed to a heat source, vapors may ignite, resulting in serve burns, serious injury, or death. CAUTION: Do not point at self or others; product will squirt when squeezed. Use only in a well-ventilated area; fumes can be harmful. Square bottle uses less plastic than a similarly sized round bottle. Recyclable (if available in your area) 16 FL OZ (1 PT) 473 mL image description image description"
+      ],
+      "set_id": "30294cad-d806-4d5b-8c86-484f22d214b6",
+      "id": "4cac7d26-db41-efef-e063-6394a90a6c64",
+      "effective_time": "20260310",
+      "version": "17",
+      "openfda": {
+        "application_number": [
+          "M003"
+        ],
+        "brand_name": [
+          "Isopropyl alcohol"
+        ],
+        "generic_name": [
+          "ISOPROPYL ALCOHOL"
+        ],
+        "manufacturer_name": [
+          "Salado Sales Inc."
+        ],
+        "product_ndc": [
+          "57243-810"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ISOPROPYL ALCOHOL"
+        ],
+        "rxcui": [
+          "808520"
+        ],
+        "spl_id": [
+          "4cac7d26-db41-efef-e063-6394a90a6c64"
+        ],
+        "spl_set_id": [
+          "30294cad-d806-4d5b-8c86-484f22d214b6"
+        ],
+        "package_ndc": [
+          "57243-810-43"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "ND2M416302"
+        ]
+      }
+    }
+  ]
+}

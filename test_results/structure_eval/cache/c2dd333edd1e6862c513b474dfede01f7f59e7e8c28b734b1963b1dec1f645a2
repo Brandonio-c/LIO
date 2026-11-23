@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="4aaf5ca9-fa8e-45ef-a1bc-8da1e1657924"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>equate<sup>TM</sup> MAXIMUM STRENGTH NIGHTTIME SEVERE Cold &amp; Flu SOFTGELS</title>
+   <effectiveTime value="20250909"/>
+   <setId root="38637189-d1ee-9405-e063-6394a90ae8b8"/>
+   <versionNumber value="2"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="051957769"/>
+            <name>WALMART INC.</name>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="77bd3568-ba2a-48a9-b2c4-9ca5d4736a44"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20250910"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="79903-387" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>equate MAXIMUM STRENGTH NIGHTTIME SEVERE Cold and Flu SOFTGELS</name>
+                        <formCode code="C42954" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CAPSULE, LIQUID FILLED"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Acetaminophen, Dextromethorphan Hydrobromide, Doxylamine Succinate, Phenylephrine Hydrochloride</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="325" unit="mg"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="362O9ITL9D" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ACETAMINOPHEN</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="362O9ITL9D" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>ACETAMINOPHEN</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="10" unit="mg"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="9D2RTI9KYH" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DEXTROMETHORPHAN HYDROBROMIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="7355X3ROTS" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>DEXTROMETHORPHAN</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="6.25" unit="mg"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="V9BI9B5YI2" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DOXYLAMINE SUCCINATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="95QB77JKPL" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>DOXYLAMINE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator value="5" unit="mg"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="04JA59TNSJ" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PHENYLEPHRINE HYDROCHLORIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="1WS297W6MV" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>PHENYLEPHRINE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="35SW5USQ3G" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>D&amp;C YELLOW NO. 10</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="H3R47K3TBD" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>FD&amp;C BLUE NO. 1</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2G86QN327L" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GELATIN, UNSPECIFIED</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3WJQ0SDW1A" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POLYETHYLENE GLYCOL, UNSPECIFIED</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="FZ989GH94E" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POVIDONE, UNSPECIFIED</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6DC9Q167V3" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPYLENE GLYCOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="506T60A25R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SORBITOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6O92ICV9RU" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SORBITAN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="15FIX9V2JP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TITANIUM DIOXIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="1"/>
+                              <denominator value="1" unit="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <formCode code="C43168" displayName="BLISTER PACK" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="2" unit="1"/>
+                                    <denominator value="1" unit="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="79903-387-24" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43182" displayName="CARTON" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250910"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic classCode="OBS">
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" displayName="Type 0: Not a Combination Product" codeSystem="2.16.840.1.113883.3.26.1.1" xsi:type="CE"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M012" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20250910"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic>
+                           <code code="SPLCOLOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48329" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="green" xsi:type="CE"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic>
+                           <code code="SPLSHAPE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48345" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OVAL" xsi:type="CE"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic>
+                           <code code="SPLSCORE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value value="1" xsi:type="INT"/>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic>
+                           <code code="SPLIMPRINT" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value xsi:type="ST">A07</value>
+                        </characteristic>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic>
+                           <code code="SPLSIZE" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value unit="mm" value="18" xsi:type="PQ"/>
+                        </characteristic>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38288" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="ORAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="Lc49b9e88-da3a-4f1e-9390-c4970fb156c7">
+               <id root="69c998b7-1276-4ec8-b942-a99e0d28d40f"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <title>
+                  <content styleCode="italics">Drug Facts</content>
+               </title>
+               <text>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20250908"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L14aae30f-984b-435e-8cfa-aa9ee1fc719a">
+               <id root="5b61ec78-6f75-4c49-bf35-8f3f1c38fbfd"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="italics">Active ingredients</content>
+                  <br/>
+                  <content styleCode="italics">(in each softgel)</content>
+               </title>
+               <text>
+                  <paragraph>Acetaminophen 325 mg<br/>Dextromethorphan HBr 10 mg<br/>Doxylamine succinate 6.25 mg<br/>Phenylephrine HCl 5 mg</paragraph>
+               </text>
+               <effectiveTime value="20250908"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L5fa53f3d-a563-4e98-8452-4c9b2decabb7">
+               <id root="211fcd65-446a-4ce4-8a5c-d6718856570b"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>
+                  <content styleCode="italics">Purpose</content>
+               </title>
+               <text>
+                  <paragraph>Pain reliever/fever reducer<br/>Cough suppressant<br/>Antihistamine<br/>Nasal decongestant</paragraph>
+               </text>
+               <effectiveTime value="20250908"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lb5982992-7ca8-43af-a82c-250b465e7eb1">
+               <id root="cf4f8913-2f09-4a20-bb44-a1b715b2f55b"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>
+                  <content styleCode="italics">Uses</content>
+               </title>
+               <text>
+                  <paragraph>• temporarily relieves common cold/flu symptoms:<br/>  • nasal congestion • sinus congestion &amp; pressure<br/>  • cough due to minor throat &amp; bronchial irritation<br/>  • cough to help you sleep • minor aches &amp; pains<br/>  • headache • fever • sore throat<br/>• runny nose &amp; sneezing<br/>• reduces swelling of nasal passages<br/>• temporarily restores freer breathing through the nose<br/>• promotes nasal and/or sinus drainage</paragraph>
+               </text>
+               <effectiveTime value="20250908"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Le2a93893-dd2d-40bf-9847-c652084b4c56">
+               <id root="dc1a3a85-b563-441b-bdc3-28c81d7c7632"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>
+                  <content styleCode="italics">Warnings</content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Liver warning:</content> This product contains acetaminophen, Severe liver damage may occur if you take<br/>• more than 8 softgels in 24 hours, which is the maximum daily amount for this product<br/>• with other drugs containing acetaminophen<br/>• 3 or more alcoholic drinks every day while using this product</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Allergy alert:</content> Acetaminophen may cause severe skin reactions. Symptoms may include:<br/>• skin reddening • blisters • rash <br/>If a skin reaction occurs, stop use and seek medical help right away.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Sore throat warning</content> If sore throat is severe, persists for more than 2 days, is accompanied or followed by fever, headache, rash, nausea, or vomiting, consult a doctor promptly.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Do not use</content>
+                     <br/>• with any other drug containing acetaminophen (prescription or nonprescription). If you are not sure whether a drug contains acetaminophen, ask a doctor or pharmacist.<br/>• if you are now taking a prescription monoamine oxidase inhibitor (MAOI) (certain drugs for depression, psychiatric, or emotional conditions, or Parkinson's disease), or for 2 weeks after stopping the MAOI drug. If you do not know if your prescription drug contains an MAOI, ask a doctor or pharmacist before taking this product.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Ask a doctor before use if you have</content>
+                     <br/>• liver disease • heart disease • high blood pressure • thyroid disease • diabetes • glaucoma<br/>• cough that occurs with too much phlegm (mucus)<br/>• a breathing problem or chronic cough that lasts or as occurs with smoking, asthma, chronic bronchitis, or emphysema<br/>• trouble urinating due to enlarged prostate gland</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Ask a doctor or pharmacist before use if you are</content>
+                     <br/>• taking sedatives or tranquilizers<br/>• taking the blood thinning drug warfarin</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">When using this product</content>
+                     <br/>• <content styleCode="bold">do not use more than directed</content>
+                     <br/>• excitability may occur, especially in children<br/>• marked drowsiness may occur<br/>• avoid alcoholic drinks<br/>• be careful when driving a motor vehicle or operating machinery<br/>• alcohol, sedatives, and tranquilizers may increase drowsiness</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Stop use and ask a doctor if</content>﻿ • you get nervous, dizzy, or sleepless • pain, nasal congestion, or cough gets worse or lasts more than 7 days • fever gets worse or lasts more than 3 days • redness or swelling is present • new symptoms occur • cough comes back or occurs with rash or headache that lasts.<br/>These could be signs of a serious condition.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">If pregnant or breast-feeding,</content> ask a health professional before use.</paragraph>
+               </text>
+               <effectiveTime value="20250908"/>
+               <component>
+                  <section ID="La7090a6e-c5e6-47e2-b75b-7ad3dffdfb77">
+                     <id root="74fa8cb6-7d7a-4756-af11-f8eff7c2b802"/>
+                     <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+                     <text>
+                        <paragraph>
+                           <content styleCode="bold">Keep out of reach of children, </content>
+                           <content>
+                              <content styleCode="bold">
+                                 <br/>Overdose warning:</content> In case of overdose, get medical help or contact a Poison Control Center right away, Quick medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms.</content>
+                        </paragraph>
+                     </text>
+                     <effectiveTime value="20250908"/>
+                  </section>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="L62da2e32-f7b8-42f4-9871-e62324750212">
+               <id root="43bad3fd-5d82-4198-a41e-85138a811020"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>
+                  <content styleCode="italics">Directions</content>
+               </title>
+               <text>
+                  <paragraph>• take only as directed<br/>• do not exceed 8 softgels per 24 hrs</paragraph>
+                  <table width="80%">
+                     <caption/>
+                     <tbody>
+                        <tr>
+                           <td styleCode="Botrule Lrule Rrule Toprule">adults &amp; children 12 yrs &amp; over</td>
+                           <td styleCode="Botrule Lrule Rrule Toprule">2 softgels with water every 4 hrs</td>
+                        </tr>
+                        <tr>
+                           <td styleCode="Botrule Lrule Rrule Toprule">children 4 to under 12 yrs</td>
+                           <td styleCode="Botrule Lrule Rrule Toprule">ask a doctor</td>
+                        </tr>
+                        <tr>
+                           <td styleCode="Botrule Lrule Rrule Toprule">children under 4 yrs</td>
+                           <td styleCode="Botrule Lrule Rrule Toprule">do not use</td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20250908"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Ldd079529-7b4d-404c-a445-025a5159809e">
+               <id root="f71cdaf5-38f8-40b0-98a9-c3e9e6e29d35"/>
+               <code code="44425-7" codeSystem="2.16.840.1.113883.6.1" displayName="STORAGE AND HANDLING SECTION"/>
+               <title>
+                  <content styleCode="italics">Other information</content>
+               </title>
+               <text>
+                  <paragraph>• store at controlled room temperature 20-25°C (68-77°F)  • protect from light, heat, and moisture</paragraph>
+               </text>
+               <effectiveTime value="20250910"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L2a78de93-5d4e-4ccc-9b86-fa9ede096ee1">
+               <id root="c9945850-df3c-452c-98b6-eb4c3ae9df90"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="italics">Inactive ingredients</content>
+               </title>
+               <text>
+                  <paragraph>D&amp;C Yellow No.10, FD&amp;C Blue No.1, gelatin, glycerin, polyethylene glycol, povidone, propylene glycol, sorbitol sorbitan solution, titanium dioxide</paragraph>
+               </text>
+               <effectiveTime value="20250908"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lbea22682-54be-4be6-af87-cf1f1869968a">
+               <id root="e65ba805-f5e9-47ff-9c49-25c0a3d86e91"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>
+                  <content styleCode="italics">Questions or comments?</content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">1-888-287-1915</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250908"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L67df5b48-2a86-4df5-88e0-ad40e98b8c43">
+               <id root="518e9b16-f518-47e6-b928-d46e367a41fb"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <title/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Compare to Vicks<sup>®</sup> NyQuil™ Severe Cold &amp; Flu LiquiCaps™ active ingredients*</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Relief of:</content>
+                     <br/>• Headache, fever, sore throat, minor aches and pains<br/>• Nasal/sinus congestion and sinus pressure<br/>• Sneezing, runny nose<br/>• Cough</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">Satisfaction Guaranteed</content>
+                     <br/>For more information call 1-888-287-1915 or visit Walmart.com/help</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">DISTRIBUTED BY:</content>
+                     <br/>
+                     <content styleCode="bold">Walmart Inc.,</content>
+                     <br/>
+                     <content styleCode="bold">Bentonville, AR 72716</content>
+                     <br/>PRODUCT OF INDIA<br/>*This product is not manufactured or distributed by The Procter &amp; Gamble Company, owner of the registered trademarks Vicks<sup>®</sup> NyQuil™ LiquiCaps™.</paragraph>
+                  <paragraph>
+                     <content styleCode="bold">READ AND KEEP OUTER CARTON FOR COMPLETE PRODUCT WARNINGS AND INFORMATION</content>
+                  </paragraph>
+                  <paragraph>
+                     <content styleCode="bold">TEMPER EVIDENT: DO NOT USE IF PACKAGE IS OPENED OR IF BLISTER UNIT IS TORN, BROKEN OR SHOWS ANY SIGNS OR TAMPERING.</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250910"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L4c21a956-36cc-469a-af92-d421a25b4c40">
+               <id root="d9694fc2-8a67-40cf-b546-e38739896bd5"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>Packaging</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="L505685bc-3f18-42a3-8554-103e8e72b299"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250908"/>
+               <component>
+                  <observationMedia ID="L505685bc-3f18-42a3-8554-103e8e72b299">
+                     <text>Equate Nighttime Severe Cold &amp; Flu</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="79903387-1.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

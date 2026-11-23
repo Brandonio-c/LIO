@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 13729,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "MEDCLOT Hemostatic Dressing 10 cm x 10 cm MEDCLOT Hemostatic Dressing CARBOXYMETHYLCELLULOSE CARBOXYMETHYLCELLULOSE WATER"
+      ],
+      "spl_unclassified_section": [
+        "This is a HEMOSTATIC DRESSING - Sterile Dressing 10 cm x 10 cm"
+      ],
+      "active_ingredient": [
+        "CarboxymethylCellulose"
+      ],
+      "purpose": [
+        "Emergecy bleeding control. For use by trained emergency responders."
+      ],
+      "indications_and_usage": [
+        "1. Open package and remove MED-CLOT. 2. Pack MED-CLOT into the wound and use it to apply pressure directly over bleeding source. More than one MED-CLOT may be required. 3. Continue to apply pressure untill bleeding is under control. 4. Wrap and tie bandage to maintain pressure. Seek medical care immediately. Show PRODUCT REMOVAL directions on package to medical personnel."
+      ],
+      "warnings": [
+        "For external use only. Sterility not guaranteed if package is damaged. Avoid contact with eyes. Reuse will cause risk of infection and loss of efficacy."
+      ],
+      "dosage_and_administration": [
+        "More than one MED-CLOT may be required."
+      ],
+      "do_not_use": [
+        "Do not use if package is damaged."
+      ],
+      "when_using": [
+        "Reuse will cause risk of infection and loss of efficacy."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. Avoid contact with eyes."
+      ],
+      "storage_and_handling": [
+        "Keep at room temperature."
+      ],
+      "inactive_ingredient": [
+        "Purified water (standard ISO 13959:2014)"
+      ],
+      "package_label_principal_display_panel": [
+        "85925-101-01 MED-CLOT 10 cm. x 10 cm."
+      ],
+      "set_id": "3b00d8e9-11a0-5875-e063-6394a90a28c2",
+      "id": "5dfd682d-935b-375a-e063-6394a90a50d2",
+      "effective_time": "20261016",
+      "version": "2",
+      "openfda": {
+        "brand_name": [
+          "MEDCLOT Hemostatic Dressing 10 cm x 10 cm"
+        ],
+        "generic_name": [
+          "MEDCLOT HEMOSTATIC DRESSING"
+        ],
+        "manufacturer_name": [
+          "Comercializadora y Distribuidora de Equipos y Frmacos, S.A. de C.V."
+        ],
+        "product_ndc": [
+          "85925-101"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "CUTANEOUS"
+        ],
+        "substance_name": [
+          "CARBOXYMETHYLCELLULOSE"
+        ],
+        "spl_id": [
+          "5dfd682d-935b-375a-e063-6394a90a50d2"
+        ],
+        "spl_set_id": [
+          "3b00d8e9-11a0-5875-e063-6394a90a28c2"
+        ],
+        "package_ndc": [
+          "85925-101-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "8682450885011"
+        ],
+        "unii": [
+          "05JZI7B19X"
+        ]
+      }
+    }
+  ]
+}

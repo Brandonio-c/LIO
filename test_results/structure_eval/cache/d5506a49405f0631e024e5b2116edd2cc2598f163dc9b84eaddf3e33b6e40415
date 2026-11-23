@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="26454eb2-2efd-f603-e063-6394a90a76d5"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Dove Even Tone+ Niacinamide Apple Blossom &amp; Mango Butter Dry Spray 72H Antiperspirant Deodorant</title>
+   <effectiveTime value="20241106"/>
+   <setId root="0024658a-0b42-790f-e063-6294a90aefe8"/>
+   <versionNumber value="2"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="001375088"/>
+            <name>Conopco, Inc. d/b/a Unilever</name>
+            <assignedEntity>
+               <assignedOrganization/>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="26454c42-87df-0012-e063-6394a90a8f01"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20241106"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="64942-2138" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Dove</name>
+                        <formCode code="C42889" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="AEROSOL, SPRAY"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Even Tone plus Niacinamide Apple Blossom and Mango Butter Dry Spray 72H Antiperspirant Deodorant</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="M4I0D6VV5M" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CALCIUM CHLORIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="0B1U8K2ME0" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>1,1-DIFLUOROETHANE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="TE7660XO1C" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCINE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6LV4FOR43R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BUTANE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="0THT5PCI0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CYCLOMETHICONE 5</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="BXR49TP611" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ISOBUTANE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="R199TJT95T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PPG-14 BUTYL ETHER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="3W1JG795YI" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SUNFLOWER OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="X687XDK09L" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DISTEARDIMONIUM HECTORITE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="A9EJ3J61HQ" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALKYL (C12-15) BENZOATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="T75W9911L6" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPANE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="1P9D0Z171K" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BUTYLATED HYDROXYTOLUENE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="461N1O614Y" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>OCTYLDODECANOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="8D08K3S51E" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPYLENE CARBONATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="343C7U75XW" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DIMETHICONOL (40 CST)</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="12.2"/>
+                              <denominator unit="g" value="100"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="UCN889409V" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALUMINUM SESQUICHLOROHYDRATE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="UCN889409V" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>ALUMINUM SESQUICHLOROHYDRATE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="C67IXB9Y7T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ISOPROPYL ISOSTEARATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="25X51I8RD4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>NIACINAMIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="107" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="64942-2138-1" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43180" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CAN"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20230710"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M019" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20230710"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_e774abdb-55fa-7df8-e053-2a95a90a3dbc">
+               <id root="0024a56b-46fe-c44e-e063-6294a90abd52"/>
+               <code code="34089-3" codeSystem="2.16.840.1.113883.6.1" displayName="DESCRIPTION SECTION"/>
+               <title>
+                  <content styleCode="bold">DOVE EVEN TONE+ NIACINAMIDE APPLE BLOSSOM &amp; MANGO BUTTER  DRY SPRAY 72H ANTIPERSPIRANT DEODORANT</content> - aluminum sesquichlorohydrate aerosol, spray
+</title>
+               <effectiveTime value="20230710"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_6414f1d7-4cfa-7504-e053-2991aa0a8972">
+               <id root="0024a56b-46ff-c44e-e063-6294a90abd52"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Drug Facts</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Active ingredient</content>
+                     </content>
+                  </paragraph>
+                  <paragraph>Aluminum Sesquichlorohydrate (12.2)</paragraph>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20230710"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_6414fab0-8d4d-928e-e053-2a91aa0a7cb3">
+               <id root="0024a9f1-4d61-4591-e063-6394a90a9ede"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>
+                  <content styleCode="bold">
+                     <content styleCode="italics">Purpose</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph/>
+                  <paragraph>antiperspirant</paragraph>
+               </text>
+               <effectiveTime value="20230710"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_6414fab0-8d52-928e-e053-2a91aa0a7cb3">
+               <id root="0024a9f1-4d62-4591-e063-6394a90a9ede"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Uses</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>
+                     <br/>
+• reduces underarm wetness
+ </paragraph>
+               </text>
+               <effectiveTime value="20230710"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_6414fab0-8d54-928e-e053-2a91aa0a7cb3">
+               <id root="0024d77c-9c66-503d-e063-6294a90a3171"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Warnings</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>• 
+  <content styleCode="bold">FLAMMABLE. DO NOT USE NEAR HEAT, FLAME, OR WHILE SMOKING. CAN CAUSE SERIOUS INJURY OR DEATH</content>
+                     <br/>
+• Keep away from face and mouth to avoid breathing in.
+  <br/>
+• Avoid spraying in eyes. Contents under pressure. Do not puncture or incinerate. Do not expose to heat or store at temperatures above 120°F/50°C or in enclosed places that could overheat
+  <br/>
+• Do not use on broken skin. Stop use if rash or irritation occurs.
+  <br/>
+• Ask a doctor before using if you have kidney disease.
+  <br/>
+• 
+  <content styleCode="bold">USE ONLY AS DIRECTED. INTENTIONAL MISUSE BY DELIBERATELY CONCENTRATING AND INHALING THE CONTENTS CAN BE HARMFUL OR FATAL. </content>
+                     <br/>
+Help stop inhalation abuse. For information visit www.inhalant.org
+ </paragraph>
+               </text>
+               <effectiveTime value="20230710"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Ld2cee955-8615-4cd0-ba7e-670922b9299b">
+               <id root="0024d77c-9c67-503d-e063-6294a90a3171"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">• KEEP OUT OF REACH OF CHILDREN</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20230710"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_6414f1d7-4cfd-7504-e053-2991aa0a8972">
+               <id root="0024a9f1-4d67-4591-e063-6394a90a9ede"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Directions</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph/>
+                  <paragraph>apply to underarms only</paragraph>
+               </text>
+               <effectiveTime value="20230710"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_641518b5-8a71-bda1-e053-2a91aa0afc43">
+               <id root="0024d77c-9c68-503d-e063-6294a90a3171"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Inactive ingredients</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>Butane, Hydrofluorocarbon 152a, Cyclopentasiloxane, Isobutane, PPG-14 Butyl Ether, Isopropyl Isostearate, Glycine, Helianthus Annuus (Sunflower) Seed Oil, C12-15 Alkyl Benzoate,  Disteardimonium Hectorite,  Fragrance (Parfum), Calcium Chloride, Propane, BHT, Octyldodecanol, Propylene Carbonate, Dimethiconol, Niacinamide</paragraph>
+               </text>
+               <effectiveTime value="20230710"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_641518b5-8a74-bda1-e053-2a91aa0afc43">
+               <id root="0024d77c-9c69-503d-e063-6294a90a3171"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Questions?</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>Call 1-800-761-3683 </paragraph>
+               </text>
+               <effectiveTime value="20230710"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_0024a9f1-4d71-4591-e063-6394a90a9ede">
+               <id root="0024a9f1-4d70-4591-e063-6394a90a9ede"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_0024d77c-9c6c-503d-e063-6294a90a3171"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20230710"/>
+               <component>
+                  <observationMedia ID="img_0024d77c-9c6c-503d-e063-6294a90a3171">
+                     <text>Dove Apple Blossom Dry Spray AP</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="Dove Apple Blossom AP Deo AE.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

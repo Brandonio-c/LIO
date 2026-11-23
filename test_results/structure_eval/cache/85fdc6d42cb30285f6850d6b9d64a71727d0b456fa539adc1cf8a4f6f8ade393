@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 4105,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Rubber Ducky SPF 50 Sunscreen Avobenzone, Homosalate, Octisalate, Octocrylene HOMOSALATE HOMOSALATE ALCOHOL OCTISALATE OCTISALATE GLYCERIN ACRYLATES/OCTYLACRYLAMIDE COPOLYMER (40000 MW) AVOBENZONE AVOBENZONE OCTOCRYLENE OCTOCRYLENE MEDIUM-CHAIN TRIGLYCERIDES DIETHYLHEXYL SYRINGYLIDENEMALONATE TOCOPHEROL"
+      ],
+      "active_ingredient": [
+        "Active Ingredients Avobenzone 3%, Homosalate 15%, Octisalate 5%, Octocrylene 10%"
+      ],
+      "purpose": [
+        "Purpose Sunscreen"
+      ],
+      "dosage_and_administration": [
+        "Uses Helps prevent sunburn if used as directed with other sun protection measures (see Directions) decreases the risk of skin cancer and early skin aging caused by the sun."
+      ],
+      "warnings": [
+        "Warnings For external use only . Flammable: do not use while smoking or near heat or flame. Do not use on damaged or broken skin. When using this product keep out of eyes. Rinse eyes with water to remove. Contents under pressure. Do not puncture or incinerate. Do not store at temperature above 120 degrees F. Stop use and ask a doctor if rash occurs."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep Out of Reach of Children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "indications_and_usage": [
+        "Directions Apply liberally 15 minutes before sun exposure. Reapply: after 80 minutes of swimming or sweating immediately after towel drying at least every 2 hours Sun protection measures: spending time n the sun increases your risk of skin cancer and early skin aging. To decrease risk, regularly use a sunscreen with broad spectrum SPF of 15 or higher and other sun protection measure including: limit time in the sun, especially from 10 am to 2 pm wear long-sleeved shirts, pants, hats, and sunglasses. Children under 6 months: ask a doctor. Hold container 4 to 6 inches from the skin to apply. Do not spray directly into face. Spray on hands then apply to face. Do no apply in windy conditions. Use in a well-ventilated area."
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredients Alcohol Denat., Acrylates/Octylacrylamide Copolymer, Tocopherol, Glycerin, Caprylic/Capric Triglyceride, Diethylhexyl Syringylidenemalonate."
+      ],
+      "package_label_principal_display_panel": [
+        "Label Label"
+      ],
+      "set_id": "14bd5cf9-423e-53a8-e063-6394a90a29f1",
+      "id": "14bd4249-1cb9-5400-e063-6294a90ac2f1",
+      "effective_time": "20240328",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "Rubber Ducky SPF 50 Sunscreen"
+        ],
+        "generic_name": [
+          "AVOBENZONE, HOMOSALATE, OCTISALATE, OCTOCRYLENE"
+        ],
+        "manufacturer_name": [
+          "Carefree Skincare Ventures, LLC"
+        ],
+        "product_ndc": [
+          "84218-151"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "HOMOSALATE",
+          "OCTISALATE",
+          "AVOBENZONE",
+          "OCTOCRYLENE"
+        ],
+        "spl_id": [
+          "14bd4249-1cb9-5400-e063-6294a90ac2f1"
+        ],
+        "spl_set_id": [
+          "14bd5cf9-423e-53a8-e063-6394a90a29f1"
+        ],
+        "package_ndc": [
+          "84218-151-06"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0858149004454"
+        ],
+        "unii": [
+          "V06SV4M95S",
+          "4X49Y0596W",
+          "G63QQF2NOX",
+          "5A68WGF6WM"
+        ]
+      }
+    }
+  ]
+}

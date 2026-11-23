@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 12827,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "meijer stomach relief Bismuth Subsalicylate BISMUTH SUBSALICYLATE SALICYLIC ACID D&C RED NO. 27 MAGNESIUM STEARATE MALTODEXTRIN MICROCRYSTALLINE CELLULOSE SORBITOL SUCRALOSE RP124"
+      ],
+      "active_ingredient": [
+        "Active ingredient (in each tablet) Bismuth subsalicylate 262 mg"
+      ],
+      "purpose": [
+        "Purpose Anti-diarrheal/ upset stomach reliever"
+      ],
+      "indications_and_usage": [
+        "Uses relieves: ▪ travelers’ diarrhea ▪ diarrhea ▪ upset stomach due to overindulgence in food and drink, including: ▪ heartburn ▪ indigestion ▪ nausea ▪ gas ▪ belching ▪ fullness"
+      ],
+      "warnings": [
+        "Warnings Reye's syndrome: Children and teenagers who have or are recovering from chicken pox or flu-like symptoms should not use this product. When using this product, if changes in behavior with nausea and vomiting occur, consult a doctor because these symptoms could be an early sign of Reye's syndrome, a rare but serious illness. Allergy alert: Contains salicylate. Do not take if you are ▪ allergic to salicylates (including aspirin) ▪ taking other salicylate products Do not use if you have ▪ an ulcer ▪ a bleeding problem ▪ bloody or black stool Ask a doctor before use if you have ▪ fever ▪ mucus in the stool Ask a doctor or pharmacist before use if you are taking any drug for ▪ anticoagulation (thinning of the blood) ▪ diabetes ▪ gout ▪ arthritis When using this product a temporary, but harmless, darkening of the stool and/or tongue may occur. Stop use and ask a doctor if ▪ symptoms get worse or last more than 2 days ▪ ringing in the ears or loss of hearing occurs ▪ diarrhea lasts more than 2 days If pregnant or breast-feeding, ask a health professional before use . Keep Out of Reach of Children In case of overdose, get medical help or contact a Poison Control Center immediately at 1-800-222-1222"
+      ],
+      "do_not_use": [
+        "Do not use if you have ▪ an ulcer ▪ a bleeding problem ▪ bloody or black stool Ask a doctor before use if you have ▪ fever ▪ mucus in the stool Ask a doctor or pharmacist before use if you are taking any drug for ▪ anticoagulation (thinning of the blood) ▪ diabetes ▪ gout ▪ arthritis When using this product a temporary, but harmless, darkening of the stool and/or tongue may occur. Stop use and ask a doctor if ▪ symptoms get worse or last more than 2 days ▪ ringing in the ears or loss of hearing occurs ▪ diarrhea lasts more than 2 days If pregnant or breast-feeding, ask a health professional before use . Keep Out of Reach of Children In case of overdose, get medical help or contact a Poison Control Center immediately at 1-800-222-1222"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have ▪ fever ▪ mucus in the stool Ask a doctor or pharmacist before use if you are taking any drug for ▪ anticoagulation (thinning of the blood) ▪ diabetes ▪ gout ▪ arthritis When using this product a temporary, but harmless, darkening of the stool and/or tongue may occur. Stop use and ask a doctor if ▪ symptoms get worse or last more than 2 days ▪ ringing in the ears or loss of hearing occurs ▪ diarrhea lasts more than 2 days If pregnant or breast-feeding, ask a health professional before use . Keep Out of Reach of Children In case of overdose, get medical help or contact a Poison Control Center immediately at 1-800-222-1222"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor or pharmacist before use if you are taking any drug for ▪ anticoagulation (thinning of the blood) ▪ diabetes ▪ gout ▪ arthritis When using this product a temporary, but harmless, darkening of the stool and/or tongue may occur. Stop use and ask a doctor if ▪ symptoms get worse or last more than 2 days ▪ ringing in the ears or loss of hearing occurs ▪ diarrhea lasts more than 2 days If pregnant or breast-feeding, ask a health professional before use . Keep Out of Reach of Children In case of overdose, get medical help or contact a Poison Control Center immediately at 1-800-222-1222"
+      ],
+      "when_using": [
+        "When using this product a temporary, but harmless, darkening of the stool and/or tongue may occur. Stop use and ask a doctor if ▪ symptoms get worse or last more than 2 days ▪ ringing in the ears or loss of hearing occurs ▪ diarrhea lasts more than 2 days If pregnant or breast-feeding, ask a health professional before use . Keep Out of Reach of Children In case of overdose, get medical help or contact a Poison Control Center immediately at 1-800-222-1222"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if ▪ symptoms get worse or last more than 2 days ▪ ringing in the ears or loss of hearing occurs ▪ diarrhea lasts more than 2 days If pregnant or breast-feeding, ask a health professional before use . Keep Out of Reach of Children In case of overdose, get medical help or contact a Poison Control Center immediately at 1-800-222-1222"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use . Keep Out of Reach of Children In case of overdose, get medical help or contact a Poison Control Center immediately at 1-800-222-1222"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep Out of Reach of Children In case of overdose, get medical help or contact a Poison Control Center immediately at 1-800-222-1222"
+      ],
+      "dosage_and_administration": [
+        "Directions ▪ chew completely or dissolve tablets in mouth. Do not swallow tablets whole. ▪ adults and children 12 years and older: 2 caplets every 1/2 to 1 hour as needed ▪ do not exceed 8 doses (16 caplets) in 24 hours ▪ use until diarrhea stops but not more than 2 days ▪ children under 12 years: ask a doctor ▪ drink plenty clear fluids to help prevent dehydration caused by diarrhea."
+      ],
+      "storage_and_handling": [
+        "Other information ▪ each caplet contains : salicylate 102 mg ▪ store at room temperature. ▪ avoid excessive heat ▪ keep this carton for future reference on full labeling TAMPER EVIDENT: DO NOT USE IF CARTON IS OPENED OR IF STRIP UNIT IS TORN, BROKEN OR SHOWS ANY SIGNS OF TEMPERING."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients D&C Red No. 27, flavor, magnesium stearate, maltodextrin, microcrystalline cellulose, sorbitol, sucralose. Questions? 1-866-467-2748"
+      ],
+      "questions": [
+        "Questions? 1-866-467-2748"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal Display meijer ® BDC# 41250-878-30 Compare To Pepto-Bismol ® Caplets active ingredient* Stomach relief Bismuth Subsalicylate 262 mg Soothing relief for Upset Stomach, Indigestion, Nausea, Heartburn and Diarrhea. 30 Chewable Tablets OUR QUALITY GUARANTEE WWW.MEIJER.COM/SATISFACTION DIST. BY MEIJER DISTRIBUTION, INC GRAND RAPIDS, MI 49544 www.meijer.com *This product is not manufactured or distributed by The Procter & Gamble Co., owner of the registered trademark Pepto-Bismol ® . meijer Bismuth Subsalicylate 30 counts"
+      ],
+      "set_id": "3803eb97-4d12-4e5d-9a62-f84cc1026676",
+      "id": "5d0cbc69-38f5-44d4-a676-b2ba028b8515",
+      "effective_time": "20261001",
+      "version": "9",
+      "openfda": {
+        "application_number": [
+          "M008"
+        ],
+        "brand_name": [
+          "meijer stomach relief"
+        ],
+        "generic_name": [
+          "BISMUTH SUBSALICYLATE"
+        ],
+        "manufacturer_name": [
+          "Meijer Distribution Inc"
+        ],
+        "product_ndc": [
+          "41250-878"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "BISMUTH SUBSALICYLATE"
+        ],
+        "rxcui": [
+          "308761"
+        ],
+        "spl_id": [
+          "5d0cbc69-38f5-44d4-a676-b2ba028b8515"
+        ],
+        "spl_set_id": [
+          "3803eb97-4d12-4e5d-9a62-f84cc1026676"
+        ],
+        "package_ndc": [
+          "41250-878-30"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0708820133433"
+        ],
+        "nui": [
+          "M0002611",
+          "N0000180183"
+        ],
+        "pharm_class_cs": [
+          "Bismuth [CS]"
+        ],
+        "pharm_class_epc": [
+          "Bismuth [EPC]"
+        ],
+        "unii": [
+          "62TEY51RR1"
+        ]
+      }
+    }
+  ]
+}

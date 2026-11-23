@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 22266,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "ULTRA VIOLETTE Unblock Screen SPF 50 Sunscreen bemotrizinol, octocrylene, zinc oxide BIXA ORELLANA SEED BEMOTRIZINOL BEMOTRIZINOL BENZYL ALCOHOL ORYZA SATIVA (RICE) BRAN OCTOCRYLENE OCTOCRYLENE CELLULOSE GUM SILICA DISODIUM LAURIMINODIPROPIONATE TOCOPHERYL PHOSPHATES CITRIC ACID COPERNICIA CERIFERA (CARNAUBA) WAX CI 77499 PHENOXYETHANOL 3-CHLORO-6-HYDROXYACETOPHENONE MALTODEXTRIN XANTHAN GUM SODIUM HYDROXIDE PENTYLENE GLYCOL SODIUM STEAROYL GLUTAMATE ETHYL LINOLEATE EDETATE DISODIUM BUTYLOCTYL SALICYLATE HEPTYL UNDECYLENATE CETEARYL ALCOHOL ETHYLHEXYL METHOXYCRYLENE MICROCRYSTALLINE CELLULOSE TRIETHOXYCAPRYLYLSILANE POLYHYDROXYSTEARIC ACID (2300 MW) CI 77492 CI 77491 SODIUM CITRATE EPILOBIUM ANGUSTIFOLIUM LEAF SACCHARIDE ISOMERATE CETYL ALCOHOL LACTIC ACID SODIUM METABISULFITE ZINC OXIDE ZINC OXIDE"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts"
+      ],
+      "active_ingredient": [
+        "Active ingredients Bemotrizinol 3% Octocrylene 6% Zinc Oxide 10%"
+      ],
+      "purpose": [
+        "Purpose Sunscreen"
+      ],
+      "indications_and_usage": [
+        "Uses Helps prevent sunburn If used with other sun protection measures (see Directions), decreases the risk of early skin aging caused by the sun"
+      ],
+      "warnings": [
+        "Warnings For external use only. Do not use on damaged or broken skin When using this product keep out of eyes. Rinse with water to remove. Stop use and ask a doctor if rash occurs Keep out of reach of children. if swallowed, call a poison control center or get medical help right away."
+      ],
+      "do_not_use": [
+        "Do not use on damaged or broken skin"
+      ],
+      "when_using": [
+        "When using this product keep out of eyes. Rinse with water to remove."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if rash occurs"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. if swallowed, call a poison control center or get medical help right away."
+      ],
+      "dosage_and_administration": [
+        "Directions apply liberally 15 minutes before sun exposure reapply at least every 2 hours use a water resistant sunscreen if swimming or sweating Sun protection measures. Spending time in the sun increases your risk of skin cancer and early skin aging. To decrase this risk, regularly use a Broad-Spectrum SPF value of 15 or higher and other sun protection measures including: limit time in the sun, especially from 10am - 2pm wear long-sleeved shirts, pants, hats, and sunglasses children under 6 months of age: ask a doctor"
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredients water, butyloctyl salicylate, heptyl undecylenate, cetearyl alcohol, silica, ethylhexyl methoxycylene, copernicia cerifera (carnauba) wax, microcrystalline cellulose, saccharide isomerate, cetyl alcohol, phenoxyethanol, hydroxyacetophenone, disodium lauriminodipropionate tocopheryl phosphates, polyhydroxystearic acid, triethoxycaprylylsilane, cellulose gum, maltodextrin, benzyl alcohol, bixa orellana seed extract, epilobium angustifolium flower/leaf/stem extract, oryza sativa (rice) bran wax, sodium stearoyl glutamate, xanthan gum, disodium EDTA, ethyl linoleate, pentylene glycol, lactic acid, citric acid, sodium citrate, sodium metabisulfite, sodium hydroxide, iron oxides (CI 77492), iron oxides (CI77491), iron oxides (CI 77499)"
+      ],
+      "other_safety_information": [
+        "Other Information Protect this product from heat and direct sun"
+      ],
+      "package_label_principal_display_panel": [
+        "Uses Next Gen UV Filter ULTRA VIOLETTE Unblock Screen SPF 50 For Pores That Protest SPF A SOFT-MATTE AIRY CREAM FOR BREAKOUT-PRONE SKIN Broad Spectrum SPF 50 Sunscreen 5mL 0.16 fl oz PDP"
+      ],
+      "set_id": "56ad0dce-410e-9d78-e063-6294a90a1c3e",
+      "id": "56ad0dce-410f-9d78-e063-6294a90a1c3e",
+      "effective_time": "20260809",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "ULTRA VIOLETTE Unblock Screen SPF 50 Sunscreen"
+        ],
+        "generic_name": [
+          "BEMOTRIZINOL, OCTOCRYLENE, ZINC OXIDE"
+        ],
+        "manufacturer_name": [
+          "Grace and Fire USA Inc."
+        ],
+        "product_ndc": [
+          "84803-116"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "BEMOTRIZINOL",
+          "OCTOCRYLENE",
+          "ZINC OXIDE"
+        ],
+        "spl_id": [
+          "56ad0dce-410f-9d78-e063-6294a90a1c3e"
+        ],
+        "spl_set_id": [
+          "56ad0dce-410e-9d78-e063-6294a90a1c3e"
+        ],
+        "package_ndc": [
+          "84803-116-50",
+          "84803-116-05"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "9355909008864"
+        ],
+        "unii": [
+          "PWZ1720CBH",
+          "5A68WGF6WM",
+          "SOI2LOH54Z"
+        ]
+      }
+    }
+  ]
+}

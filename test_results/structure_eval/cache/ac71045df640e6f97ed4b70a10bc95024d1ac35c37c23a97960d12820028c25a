@@ -1,0 +1,1582 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="520ed5a4-9292-3ceb-e063-6394a90a0a50"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Liuquanmiao, LIDOCAINE PAIN RELIEF Gel-Patch, Lidocaine 4%, 15-41 Patches</title>
+   <effectiveTime value="20260517"/>
+   <setId root="322aa97d-b35b-d9dd-e063-6394a90a7ae5"/>
+   <versionNumber value="3"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="418399704"/>
+            <name>Guangzhou Liuquanmiao Import &amp; Export Trade Co., Ltd.</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <id root="1.3.6.1.4.1.519.1" extension="418399704"/>
+                  <name>Guangzhou Liuquanmiao Import &amp; Export Trade Co., Ltd.</name>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="520ed4a5-0822-03e4-e063-6294a90a11d0"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20260517"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="83602-158" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>LIDOCAINE PAIN RELIEF Gel-Patch</name>
+                        <formCode code="C42968" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="PATCH"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Lidocaine</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6OZP39ZG8H" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POLYSORBATE 80</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="RDH86HJV5Z" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POVIDONE K90</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="A2I8C7HI9T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>METHYLPARABEN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="Z8IX2SC1OH" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPYLPARABEN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="24H4NWX5CO" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>KAOLIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="W4888I119H" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TARTARIC ACID</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6DC9Q167V3" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PROPYLENE GLYCOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="9G2MAD7J6W" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POLYACRYLIC ACID (250000 MW)</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="05I15JNI2J" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SODIUM POLYACRYLATE (2500000 MW)</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="15FIX9V2JP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TITANIUM DIOXIDE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="1K713C615K" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DIHYDROXYALUMINUM AMINOACETATE ANHYDROUS</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="g" value="0.04"/>
+                              <denominator unit="g" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="98PI200987" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>LIDOCAINE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="98PI200987" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>LIDOCAINE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="7FLD91C86K" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>EDETATE DISODIUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="26" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-26" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="23" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-23" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="27" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-27" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="13" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-13" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="17" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-17" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="19" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-19" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="22" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-22" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="25" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-25" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="24" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-24" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="14" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-14" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="12" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-12" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="29" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-29" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="33" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-33" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="34" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-34" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="35" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-35" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="37" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-37" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="42" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-42" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="43" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-43" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="44" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-44" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="45" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-45" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                        <asContent>
+                           <quantity>
+                              <numerator value="12" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C43167" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BAG"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="46" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="83602-158-46" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43178" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOX"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20250403"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="505G(a)(3)" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20250403"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <subjectOf>
+                        <characteristic classCode="OBS">
+                           <code code="SPLCOLOR" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                           <value code="C48325" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="white" xsi:type="CE">
+                              <originalText/>
+                           </value>
+                        </characteristic>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b7065ad-cc48-1700-e054-00144ff88e88">
+               <id root="322b636a-57ed-327f-e063-6394a90a1c3a"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="bold">Active ingredients</content>
+               </title>
+               <text>
+                  <paragraph>Lidocaine 4% </paragraph>
+                  <paragraph/>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20250403"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b7065ad-cc4d-1700-e054-00144ff88e88">
+               <id root="2b0249ec-f17c-d672-e063-6294a90a9448"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>
+                  <content styleCode="bold">Purpose</content>
+               </title>
+               <text>
+                  <paragraph>Topical Anesthetic</paragraph>
+               </text>
+               <effectiveTime value="20230805"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b6fc08f-c6bc-01cf-e054-00144ff8d46c">
+               <id root="23efabeb-79f9-878e-e063-6394a90a0be5"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>
+                  <content styleCode="bold">Uses</content>
+               </title>
+               <text>
+                  <paragraph>Temporarily relieves muscle soreness and minor joint pains in the wrist, knees, back, neck, hips, shoulders, elbows.</paragraph>
+               </text>
+               <effectiveTime value="20230805"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b71f9a6-22d0-64e1-e054-00144ff8d46c">
+               <id root="23efabeb-79fa-878e-e063-6394a90a0be5"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>
+                  <content styleCode="bold">Warnings</content>
+               </title>
+               <text>
+                  <paragraph>For external use only</paragraph>
+               </text>
+               <effectiveTime value="20230805"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b6fc08f-c6ba-01cf-e054-00144ff8d46c">
+               <id root="23efabeb-79fb-878e-e063-6394a90a0be5"/>
+               <code code="50570-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - DO NOT USE SECTION"/>
+               <title>
+                  <content styleCode="bold">Do not use</content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>on wounds or damaged skin</item>
+                     <item>with a heating pad or device</item>
+                     <item>with other ointments, creams, sprays, or liniments</item>
+                     <item>if you are allergic to any ingredients of this product</item>
+                  </list>
+               </text>
+               <effectiveTime value="20230805"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b7065ad-cc4f-1700-e054-00144ff88e88">
+               <id root="23efabeb-79fc-878e-e063-6394a90a0be5"/>
+               <code code="50567-7" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - WHEN USING SECTION"/>
+               <title>
+                  <content styleCode="bold">When using this product</content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>use only as directed</item>
+                     <item>avoid contact with the eyes, mucous membranes, or rashes</item>
+                     <item>do not bandage tightly</item>
+                  </list>
+               </text>
+               <effectiveTime value="20230805"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b71f9a6-22c0-64e1-e054-00144ff8d46c">
+               <id root="23efabeb-79fd-878e-e063-6394a90a0be5"/>
+               <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+               <title>
+                  <content styleCode="bold">Stop use ... if</content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>skin reactions such as redness, swelling, blistering or other discomfort occur</item>
+                     <item>symptoms persist for more than 7 days</item>
+                  </list>
+               </text>
+               <effectiveTime value="20230805"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b71f9a6-22c2-64e1-e054-00144ff8d46c">
+               <id root="23efabeb-79fe-878e-e063-6394a90a0be5"/>
+               <code code="50569-3" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR SECTION"/>
+               <title>
+                  <content styleCode="bold">... ask a doctor if</content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>skin reactions such as redness, swelling, blistering or other discomfort occur</item>
+                     <item>symptoms persist for more than 7 days</item>
+                  </list>
+               </text>
+               <effectiveTime value="20230805"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b71f9a6-22ca-64e1-e054-00144ff8d46c">
+               <id root="23efabeb-79ff-878e-e063-6394a90a0be5"/>
+               <code code="53414-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PREGNANCY OR BREAST FEEDING SECTION"/>
+               <title>
+                  <content styleCode="bold">If pregnant or breast-feeding</content>
+               </title>
+               <text>
+                  <paragraph>ask a health professional before use.</paragraph>
+               </text>
+               <effectiveTime value="20230805"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b71f9a6-22c6-64e1-e054-00144ff8d46c">
+               <id root="23efabeb-7a00-878e-e063-6394a90a0be5"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <title>
+                  <content styleCode="bold">KEEP OUT OF REACH OF CHILDREN</content>
+               </title>
+               <text>
+                  <paragraph>If swallowed accidentally, get medical help or contact with Poison Control Center immediately.</paragraph>
+               </text>
+               <effectiveTime value="20230805"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b71f9a6-22cc-64e1-e054-00144ff8d46c">
+               <id root="23efabeb-7a01-878e-e063-6394a90a0be5"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>
+                  <content styleCode="bold">Directions</content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">Adults and Children above 12 years old</content>:
+
+ </paragraph>
+                  <list listType="unordered">
+                     <item>Clean and dry the affected area.</item>
+                     <item>Tear off the proctive film and apply the exposed part of the patch to the affected area.</item>
+                     <item>Carefully remove remaining film while pressing the patch firmly on the skin.</item>
+                     <item>Remove patch from the skin after at most 8-hour application.</item>
+                  </list>
+                  <paragraph>
+                     <content styleCode="bold">Children under age of 12</content>: Consult a doctor
+
+ </paragraph>
+               </text>
+               <effectiveTime value="20230805"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b7065ad-cc4a-1700-e054-00144ff88e88">
+               <id root="23efabeb-7a02-878e-e063-6394a90a0be5"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="bold">Inactive Ingredients</content>
+               </title>
+               <text>
+                  <paragraph>Dihydroxyaluminum Aminoacetate, Disodium Ethylenediaminetetraacetic Acid, Glycerin, Kaolin, Methylparaben, Polysorbate 80, Propylene Glycol, Polyacrylic Acid, Polyvinylpyrrolidone K90, Propylparaben, Sodium Polyacrylate, Tartaric Acid, Titanium Dioxide, Water</paragraph>
+               </text>
+               <effectiveTime value="20230805"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b71f9a6-22ce-64e1-e054-00144ff8d46c">
+               <id root="322fdeb0-d813-870a-e063-6394a90ad05f"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>
+                  <content styleCode="bold">Usage</content>
+               </title>
+               <text>
+                  <paragraph>1.Remove patch from outer package</paragraph>
+                  <paragraph>2.Partially peel back protective film</paragraph>
+                  <paragraph>3.Place on affected area</paragraph>
+                  <paragraph>4.Remove remaining film while pressing patch to skin</paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4b71f9a6-22c8-64e1-e054-00144ff8d46c">
+               <id root="2d7417e1-4e18-1429-e063-6394a90aeeb9"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>
+                  <content styleCode="bold">Questions or Comments</content>
+               </title>
+               <text>
+                  <paragraph>supports@sumifunofficial.com</paragraph>
+               </text>
+               <effectiveTime value="20241014"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_322fdeb0-d815-870a-e063-6394a90ad05f">
+               <id root="322fdeb0-d814-870a-e063-6394a90ad05f"/>
+               <code code="43683-2" codeSystem="2.16.840.1.113883.6.1" displayName="RECENT MAJOR CHANGES SECTION"/>
+               <effectiveTime value="20250407"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_24809729-c359-ec30-e063-6394a90a352e">
+               <id root="322b9bfe-a65a-77ff-e063-6394a90a073b"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-12</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322ba84e-522d-ee23-e063-6294a90a3204"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322ba84e-522d-ee23-e063-6294a90a3204">
+                     <text>12</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158_12.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_2480c4cc-84bf-3d71-e063-6394a90a6fbe">
+               <id root="322b9d44-e3de-77dc-e063-6394a90ad83e"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-13</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322ba79d-dc0e-f8c0-e063-6294a90a0c15"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322ba79d-dc0e-f8c0-e063-6294a90a0c15">
+                     <text>13</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-13.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_2480b28d-0283-1fbe-e063-6394a90a1165">
+               <id root="322b99c4-8d1b-e965-e063-6294a90a12b8"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-14</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bad31-f82a-fd1e-e063-6294a90a1669"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bad31-f82a-fd1e-e063-6294a90a1669">
+                     <text>14</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158_14.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_24816e35-d2a4-4462-e063-6394a90a7020">
+               <id root="322ba893-7983-f97e-e063-6294a90ac2fb"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-17</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322ba79d-dc0f-f8c0-e063-6294a90a0c15"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322ba79d-dc0f-f8c0-e063-6294a90a0c15">
+                     <text>17</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158_17.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_24956b63-df87-ded6-e063-6294a90ad880">
+               <id root="322ba893-7984-f97e-e063-6294a90ac2fb"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-19</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bb568-4c87-7f37-e063-6394a90ab59c"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bb568-4c87-7f37-e063-6394a90ab59c">
+                     <text>19</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-19.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_24956e06-d44b-7427-e063-6394a90ae17d">
+               <id root="322bb81d-e1bf-0053-e063-6294a90a4cba"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-22</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322ba893-7985-f97e-e063-6294a90ac2fb"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322ba893-7985-f97e-e063-6294a90ac2fb">
+                     <text>22</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-22.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_249580c8-db9c-9880-e063-6394a90a8de5">
+               <id root="322bba80-6f0a-096d-e063-6294a90a21d1"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-23</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bba56-ed6d-fabd-e063-6294a90a172e"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bba56-ed6d-fabd-e063-6294a90a172e">
+                     <text>23</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-23.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_249584ec-71c5-9d1a-e063-6394a90a017d">
+               <id root="322bba56-ed6e-fabd-e063-6294a90a172e"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-24</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bb568-4c8a-7f37-e063-6394a90ab59c"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bb568-4c8a-7f37-e063-6394a90ab59c">
+                     <text>24</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-24.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_2495bdd1-44ca-0e3d-e063-6294a90a8cb9">
+               <id root="322bb96a-e0ed-068c-e063-6294a90ad05d"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-25</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bbee1-6adc-06b4-e063-6294a90ad401"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bbee1-6adc-06b4-e063-6294a90ad401">
+                     <text>25</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-25.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_2495be8f-007b-1c2c-e063-6394a90a3de7">
+               <id root="322bc498-0af8-178d-e063-6294a90a1dc1"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-26</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bb568-4c8b-7f37-e063-6394a90ab59c"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bb568-4c8b-7f37-e063-6394a90ab59c">
+                     <text>26</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-26.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_2495c0ce-c9ce-0ac9-e063-6394a90aa910">
+               <id root="322baf91-6f8a-7a3b-e063-6394a90a3182"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-27</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bc703-0c7c-0f6d-e063-6294a90ae214"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bc703-0c7c-0f6d-e063-6294a90ae214">
+                     <text>27</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-27.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_322bccda-c120-88c7-e063-6394a90ad288">
+               <id root="322bccda-c11f-88c7-e063-6394a90ad288"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-29</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bcc70-cf2e-1a23-e063-6294a90aa2a8"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bcc70-cf2e-1a23-e063-6294a90aa2a8">
+                     <text>29</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-29.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_322bcfcf-4e29-8a51-e063-6394a90a0ae4">
+               <id root="322bcfcf-4e28-8a51-e063-6394a90a0ae4"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-33</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bcd82-4f68-1f9b-e063-6294a90a8f56"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bcd82-4f68-1f9b-e063-6294a90a8f56">
+                     <text>33</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-33.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_322bd0c4-2aae-8a35-e063-6394a90a7972">
+               <id root="322bd0c4-2aad-8a35-e063-6394a90a7972"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-34</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bc498-0afd-178d-e063-6294a90a1dc1"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bc498-0afd-178d-e063-6294a90a1dc1">
+                     <text>34</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-34.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_322bd551-27aa-1fae-e063-6294a90afd11">
+               <id root="322bd551-27a9-1fae-e063-6294a90afd11"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-35</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bd0c4-2aaf-8a35-e063-6394a90a7972"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bd0c4-2aaf-8a35-e063-6394a90a7972">
+                     <text>35</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-35.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_322bd793-654a-8e90-e063-6394a90ac56e">
+               <id root="322bd793-6549-8e90-e063-6394a90ac56e"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-37</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bcfcf-4e2c-8a51-e063-6394a90a0ae4"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bcfcf-4e2c-8a51-e063-6394a90a0ae4">
+                     <text>37</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-37.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_322bd793-654c-8e90-e063-6394a90ac56e">
+               <id root="322bd793-654b-8e90-e063-6394a90ac56e"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-42</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bdaec-f5f7-28b7-e063-6294a90a4d0c"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bdaec-f5f7-28b7-e063-6294a90a4d0c">
+                     <text>42</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-42.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_322bdaec-f5fb-28b7-e063-6294a90a4d0c">
+               <id root="322bdaec-f5fa-28b7-e063-6294a90a4d0c"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-43</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bde05-1d7e-8f64-e063-6394a90a38ef"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bde05-1d7e-8f64-e063-6394a90a38ef">
+                     <text>43</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-43.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_322bda7e-0722-8f79-e063-6394a90a8f1d">
+               <id root="322bda7e-0721-8f79-e063-6394a90a8f1d"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-44</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322bd793-6550-8e90-e063-6394a90ac56e"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322bd793-6550-8e90-e063-6394a90ac56e">
+                     <text>44</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-44.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_322be009-4ba1-2c79-e063-6294a90af745">
+               <id root="322be009-4ba0-2c79-e063-6294a90af745"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-45</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322be2fe-8eda-2b52-e063-6294a90aa48e"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322be2fe-8eda-2b52-e063-6294a90aa48e">
+                     <text>45</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-45.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_322fbc7e-f193-c1a1-e063-6294a90a3c7b">
+               <id root="322fbc7e-f192-c1a1-e063-6294a90a3c7b"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>158-46</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_322fcb8e-b02e-6c0c-e063-6394a90a4ac6"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20250403"/>
+               <component>
+                  <observationMedia ID="img_322fcb8e-b02e-6c0c-e063-6394a90a4ac6">
+                     <text>46</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="158-46.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

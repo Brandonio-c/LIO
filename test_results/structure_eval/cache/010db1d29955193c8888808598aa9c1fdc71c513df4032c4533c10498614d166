@@ -1,0 +1,152 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 22216,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Headache Relief Extra Strength Acetaminophen, Aspirin, Caffeine ACETAMINOPHEN ACETAMINOPHEN ASPIRIN ASPIRIN CAFFEINE CAFFEINE CARNAUBA WAX SILICON DIOXIDE STARCH, CORN HYPROMELLOSES CELLULOSE, MICROCRYSTALLINE MINERAL OIL POLYETHYLENE GLYCOL, UNSPECIFIED POVIDONE SODIUM STARCH GLYCOLATE TYPE A CORN STEARIC ACID TALC TITANIUM DIOXIDE TCL370;S53"
+      ],
+      "active_ingredient": [
+        "Active ingredients (in each caplet) Acetaminophen 250 mg Aspirin 250 mg (NSAID)* Caffeine 65 mg *nonsteroidal anti-inflammatory drug"
+      ],
+      "purpose": [
+        "Purposes Pain reliever Pain reliever Pain reliever aid"
+      ],
+      "indications_and_usage": [
+        "Uses temporarily relieves minor aches and pains due to: headache a cold arthritis muscular aches toothache premenstrual and menstrual cramps"
+      ],
+      "warnings": [
+        "Warnings Reye's syndrome: Children and teenagers who have or are recovering from chicken pox or flu-like symptoms should not use this product. When using this product, if changes in behavior with nausea and vomiting occur, consult a doctor because these symptoms could be an early sign of Reye’s syndrome, a rare but serious illness. Allergy alert : Acetaminophen may cause severe skin reactions. Symptoms may include: skin reddening blisters rash. If a skin reaction, occurs, stop use and seek medical help right away. Allergy alert: Aspirin may cause a severe allergic reaction, which may include: hives facial swelling shock asthma (wheezing) Liver warning: This product contains acetaminophen. Severe liver damage may occur if you take: more than 8 caplets in 24 hours, which is the maximum daily amount with other drugs containing acetaminophen 3 or more alcoholic drinks every day while using this product Stomach bleeding warning: This product contains an NSAID, which may cause severe stomach bleeding. The chance is higher if you: are age 60 or older have had stomach ulcers or bleeding problems take a blood thinning (anticoagulant) or steroid drug take other drugs containing prescription or nonprescription NSAIDs (aspirin, ibuprofen, naproxen, or others) have 3 or more alcoholic drinks every day while using this product take more or for a longer time than directed Caffeine warning: The recommended dose of this product contains about as much caffeine as a cup of coffee. Limit the use of caffeine-containing medications, foods, or beverages while taking this product because too much caffeine may cause nervousness, irritability, sleeplessness, and, occasionally, rapid heartbeat. Do not use if you have ever had an allergic reaction to acetaminophen, aspirin or any other pain reliever/fever reducer with any other drug containing acetaminophen (prescription or nonprescription). If you are not sure whether a drug contains acetaminophen, ask a doctor or pharmacist. Ask a doctor before use if you have liver disease stomach bleeding warning applies to you you have asthma you are taking a diuretic you have a history of stomach problems, such as heartburn you have high blood pressure, heart disease, liver cirrhosis, or kidney disease Ask a doctor or pharmacist before use if you are taking a prescription drug for diabetes, gout, or arthritis taking any other drug or are under a doctor’s care for any serious condition Stop use and ask doctor if an allergic reaction occurs. Seek medical help right away any new symptoms appear you experience any of the following signs of stomach bleeding feel faint vomit blood have bloody or black stools have stomach pain that does not get better ringing in the ears or loss of hearing occurs pains gets worse or last for more than 10 days fever gets worse or lasts for more than 3 days painful area is red or swollen These could be signs of a serious condition If pregnant or breast-feeding, ask a health professional before use. It is especially important not to use aspirin during the last 3 months of pregnancy unless definitely directed to do so by a doctor because it may cause problems in the unborn child or complications during delivery. Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away. Quick medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms."
+      ],
+      "do_not_use": [
+        "Do not use if you have ever had an allergic reaction to acetaminophen, aspirin or any other pain reliever/fever reducer with any other drug containing acetaminophen (prescription or nonprescription). If you are not sure whether a drug contains acetaminophen, ask a doctor or pharmacist."
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have liver disease stomach bleeding warning applies to you you have asthma you are taking a diuretic you have a history of stomach problems, such as heartburn you have high blood pressure, heart disease, liver cirrhosis, or kidney disease"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor or pharmacist before use if you are taking a prescription drug for diabetes, gout, or arthritis taking any other drug or are under a doctor’s care for any serious condition"
+      ],
+      "stop_use": [
+        "Stop use and ask doctor if an allergic reaction occurs. Seek medical help right away any new symptoms appear you experience any of the following signs of stomach bleeding feel faint vomit blood have bloody or black stools have stomach pain that does not get better ringing in the ears or loss of hearing occurs pains gets worse or last for more than 10 days fever gets worse or lasts for more than 3 days painful area is red or swollen These could be signs of a serious condition"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use. It is especially important not to use aspirin during the last 3 months of pregnancy unless definitely directed to do so by a doctor because it may cause problems in the unborn child or complications during delivery."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away. Quick medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms."
+      ],
+      "dosage_and_administration": [
+        "Directions do not use more than directed drink a full glass of water with each dose adults and children 12 years and over: take 2 caplets every 6 hours; do not take more than 8 caplets in 24 hours children under 12 years: do not use unless directed by a doctor"
+      ],
+      "storage_and_handling": [
+        "Other information store between 20º-25ºC (68º-77ºF)"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients carnauba wax**, colloidal silicon dioxide, corn starch, hypromellose, microcrystalline cellulose, mineral oil**, polyethylene glycol**, povidone, sodium starch glycolate**, stearic acid, talc**, titanium dioxide **contains one or more of these ingredients"
+      ],
+      "questions": [
+        "Questions or comments? Call 1-800-632-6900"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal Display Panel COMPARE TO the active ingredients in EXCEDRIN® EXTRA STRENGTH ***See back panel Headache Relief Extra Strength Acetaminophen 250 mg - Pain Reliever Aspirin (NSAID) 250 mg - Pain Reliever Caffeine 65 mg - Pain Reliever Aid CAPLETS ***Excedrin is a registered trademark of GSK Consumer Healthcare, Waren, New Jersey 07059. GSK Consumer Healthcare is not affiliated with The Kroger Co. or this product TAMPER EVIDENT: DO NOT USE IF PRINTED SAFTEY SEAL UNDER CAP IS BROKEN OR MISSING KEEP OUTER CARTON FOR COMPLETE WARNINGS AND PRODUCT INFORMATION . DISTRIBUTED BY THE KROGER CO. CINCINNATI, OHIO 45202 www.kroger.com",
+        "Package Label KROGER Extra Strength Headache Relief Acetaminophen 250 mg, Aspirin 250 mg (NSAID)* Caffeine 65 mg"
+      ],
+      "set_id": "5691ac45-5732-412e-abb8-2bfaac59160e",
+      "id": "85b14eb3-4da3-44dc-a234-dc8c3676afe4",
+      "effective_time": "20240607",
+      "version": "4",
+      "openfda": {
+        "application_number": [
+          "M013"
+        ],
+        "brand_name": [
+          "Headache Relief Extra Strength"
+        ],
+        "generic_name": [
+          "ACETAMINOPHEN, ASPIRIN, CAFFEINE"
+        ],
+        "manufacturer_name": [
+          "The Kroger Co."
+        ],
+        "product_ndc": [
+          "30142-625"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "ACETAMINOPHEN",
+          "ASPIRIN",
+          "CAFFEINE"
+        ],
+        "rxcui": [
+          "308297"
+        ],
+        "spl_id": [
+          "85b14eb3-4da3-44dc-a234-dc8c3676afe4"
+        ],
+        "spl_set_id": [
+          "5691ac45-5732-412e-abb8-2bfaac59160e"
+        ],
+        "package_ndc": [
+          "30142-625-10",
+          "30142-625-24"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0041260330759"
+        ],
+        "nui": [
+          "N0000000160",
+          "N0000008836",
+          "M0001335",
+          "N0000175722",
+          "N0000175578",
+          "N0000008832",
+          "N0000175739",
+          "N0000175729",
+          "N0000175790",
+          "M0023046"
+        ],
+        "pharm_class_moa": [
+          "Cyclooxygenase Inhibitors [MoA]"
+        ],
+        "pharm_class_pe": [
+          "Decreased Prostaglandin Production [PE]",
+          "Decreased Platelet Aggregation [PE]",
+          "Central Nervous System Stimulation [PE]"
+        ],
+        "pharm_class_cs": [
+          "Anti-Inflammatory Agents, Non-Steroidal [CS]",
+          "Xanthines [CS]"
+        ],
+        "pharm_class_epc": [
+          "Nonsteroidal Anti-inflammatory Drug [EPC]",
+          "Platelet Aggregation Inhibitor [EPC]",
+          "Central Nervous System Stimulant [EPC]",
+          "Methylxanthine [EPC]"
+        ],
+        "unii": [
+          "362O9ITL9D",
+          "R16CO5Y76E",
+          "3G6A5W338E"
+        ]
+      }
+    }
+  ]
+}

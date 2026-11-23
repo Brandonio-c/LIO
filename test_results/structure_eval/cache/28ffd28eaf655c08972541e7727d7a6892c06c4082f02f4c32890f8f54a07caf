@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 2346,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Carmex Classic Lip Balm Medicated Free Cupcake Batter Stick Sunscreen SPF 15 CAMPHOR (SYNTHETIC), WHITE PETROLATUM, OCTINOXATE, OXYBENZONE Carmex Classic Lip Balm Medicated CAMPHOR (SYNTHETIC), PETROLATUM LANOLIN YELLOW WAX CETYL ESTERS WAX MINERAL OIL MENTHOL SALICYLIC ACID PHENOL VANILLIN CAMPHOR (SYNTHETIC) CAMPHOR (SYNTHETIC) WHITE PETROLATUM WHITE PETROLATUM Carmex Daily Care Moisturizing Lip Balm Cupcake Batter SPF 15 OCTINOXATE, OXYBENZONE PETROLATUM LANOLIN ISOPROPYL PALMITATE YELLOW WAX CETYL ESTERS WAX PARAFFIN MEADOWFOAM SEED OIL OCTINOXATE OCTINOXATE OXYBENZONE OXYBENZONE"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts",
+        "Other Information this is a personal care item, and should be used by one individual only",
+        "Drug Facts",
+        "Other Information • this is personal care item, and should be used by one individual only • protect this product from excessive heat and direct sun"
+      ],
+      "active_ingredient": [
+        "Active Ingredients Camphor 1.70% White Petrolatum 45.30% Purpose External Analgesic Lip Protectant",
+        "Active Ingredients Octinoxate 7.50% Oxybenzone 4.00% Purpose Sunscreen"
+      ],
+      "purpose": [
+        "Purpose External Analgesic Lip Protectant",
+        "Purpose Sunscreen"
+      ],
+      "indications_and_usage": [
+        "Uses helps provide relief of symptoms of cold sores and dry lips",
+        "Uses helps protect against sunburn higher SPF gives more sunburn protection"
+      ],
+      "warnings": [
+        "Warnings For external use only When using this product: keep out of eyes. Rinse with water to remove. Stop use and ask a doctor if: condition worsens symptoms last more than 7 days or clear up and occur again within a few days Do not use on: deep puncture wounds serious burns animal bites Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away.",
+        "Warnings Skin Cancer/Skin Aging Alert: Spending time in the sun increases your risk of skin cancer and early skin aging. This product has been shown only to help prevent sunburn, not skin cancer or early skin aging. For external use only Do not use on damaged or broken skin When using this product: keep out of eyes. Rinse with water to remove. Stop use and ask a doctor if: rash occurs Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "when_using": [
+        "When using this product: keep out of eyes. Rinse with water to remove.",
+        "When using this product: keep out of eyes. Rinse with water to remove."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if: condition worsens symptoms last more than 7 days or clear up and occur again within a few days",
+        "Stop use and ask a doctor if: rash occurs"
+      ],
+      "do_not_use": [
+        "Do not use on: deep puncture wounds serious burns animal bites",
+        "Do not use on damaged or broken skin"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away.",
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions apply to lips not more than 3 to 4 times daily children under 2 years of age: ask a doctor",
+        "Directions apply liberally 15 minutes before sun exposure reapply: • after 80 minutes of swimming or sweating • immediately after towel drying • at least every 2 hours • children under 2 years of age: ask a doctor"
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredients lanolin, beeswax, cetyl esters, paraffinum liquidum, theobroma cacao seed butter, menthol, salicylic acid, phenol, vanillin, flavor",
+        "Inactive Ingredients petrolatum, lanolin, euphorbia cerifera wax, isopropyl palmitate, ozokerite, beeswax, cetyl esters, paraffin, theobroma cacao seed butter, flavor, limnanthes alba seed oil, stevia rebaudiana extract"
+      ],
+      "package_label_principal_display_panel": [
+        "Package Labeling: Label4"
+      ],
+      "set_id": "0bc6812a-5c2a-7bb9-e063-6294a90a36e3",
+      "id": "0bc667c5-364c-6ba3-e063-6394a90a4ec3",
+      "effective_time": "20231205",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M016"
+        ],
+        "brand_name": [
+          "Carmex Classic Lip Balm Medicated Free Cupcake Batter Stick Sunscreen SPF 15"
+        ],
+        "generic_name": [
+          "CAMPHOR (SYNTHETIC), WHITE PETROLATUM, OCTINOXATE, OXYBENZONE"
+        ],
+        "manufacturer_name": [
+          "Carma Laboratories, Inc."
+        ],
+        "product_ndc": [
+          "10210-0060"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "rxcui": [
+          "2475168"
+        ],
+        "spl_id": [
+          "0bc667c5-364c-6ba3-e063-6394a90a4ec3"
+        ],
+        "spl_set_id": [
+          "0bc6812a-5c2a-7bb9-e063-6294a90a36e3"
+        ],
+        "package_ndc": [
+          "10210-0060-1",
+          "10210-0022-6",
+          "10210-0030-1"
+        ],
+        "is_original_packager": [
+          true
+        ]
+      }
+    }
+  ]
+}

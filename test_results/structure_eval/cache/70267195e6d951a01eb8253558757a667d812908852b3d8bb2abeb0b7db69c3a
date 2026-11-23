@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 14224,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Signature Care Hemorrhoidal Mineral oil, Petrolatum, and Phenylephrine HCI GLYCERIN LANOLIN METHYLPARABEN POLYSORBATE 80 PROPYLPARABEN STEARYL ALCOHOL THYME OIL PETROLATUM PETROLATUM ALCOHOL .ALPHA.-TOCOPHEROL ACETATE WATER WHITE WAX PHENYLEPHRINE HYDROCHLORIDE PHENYLEPHRINE MINERAL OIL MINERAL OIL"
+      ],
+      "active_ingredient": [
+        "Active ingredients Purpose Mineral oil 14%..............................................Protectant Petrolatum 74.9%..........................................Protectant Phenylephrine HCI 0.25%..........................Vasconstrictor"
+      ],
+      "purpose": [
+        "Uses helps relieve the local itching and discomfort associated with hemorrhoids temporarily shrinks hemorrhoidal tissue and relieves burning temporarily provides a coating for relief of anorectal discomforts temporarily protects the inflamed, irritated anorectal surface to help bowel movements less painful"
+      ],
+      "warnings": [
+        "Warnings For external and/or intrarectal use only"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have heart disease high blood pressure thyroid disease diabetes difficulty in urination due to enlargement of the prostate gland Ask a doctor of pharmacist before use if you are presently taking a prescription drug for high blood pressure or depression."
+      ],
+      "when_using": [
+        "When using this product do not exceed the recommended daily dosage unless directed by a doctor."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if bleeding occurs condition worsens or does not improve within 7 days introduction of applicator into rectum causes additional pain"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control right away."
+      ],
+      "indications_and_usage": [
+        "Directions adults: when practical, cleanse the affected area by patting or blotting with an appropriate cleansing wipe. Gently dry by patting or blotting with a tissue or a soft cloth before applying ointment. when first opening the tube, puncture foil seal with top end of cap apply to the affected area up to 4 times daily, especially at night, in the morning or after each bowel movement interacetal use: remove cover from applicator, attach applicator to tube, lubricate applicator well and gently insert applicator into thoroughly cleanse applicator after each use and replace cover also apply ointment to external area regular use provides continual therapy for relief of symptoms children under 12 years of age: ask a doctor"
+      ],
+      "storage_and_handling": [
+        "Other information store at 20-25°C (68-77°F) Lot No. & Exp. Date: see box or see crimp of tube"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients .alpha.-tocopherol acetate, alcohol, glycerin, lanolin, methylparaben, polysorbate 80, propylparaben, stearyl alcohol, thyme oil, purified water, white wax"
+      ],
+      "dosage_and_administration": [
+        "Distributed by: Better Living Brands LLC P.O. Box 99 Pleasanton, CA 94566-0009 1-888-723-3929 www.betterlivingbrandsLLC.com Made in China"
+      ],
+      "package_label_principal_display_panel": [
+        "78982.1"
+      ],
+      "set_id": "3c8b43f3-6e1e-499e-ba71-ffdf836f6743",
+      "id": "4a197084-aa10-02ef-e063-6394a90a1e46",
+      "effective_time": "20260205",
+      "version": "7",
+      "openfda": {
+        "application_number": [
+          "M015"
+        ],
+        "brand_name": [
+          "Signature Care Hemorrhoidal"
+        ],
+        "generic_name": [
+          "MINERAL OIL, PETROLATUM, AND PHENYLEPHRINE HCI"
+        ],
+        "manufacturer_name": [
+          "Better Living Brands, LLC"
+        ],
+        "product_ndc": [
+          "21130-789"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "PETROLATUM",
+          "PHENYLEPHRINE HYDROCHLORIDE",
+          "MINERAL OIL"
+        ],
+        "rxcui": [
+          "1372298"
+        ],
+        "spl_id": [
+          "4a197084-aa10-02ef-e063-6394a90a1e46"
+        ],
+        "spl_set_id": [
+          "3c8b43f3-6e1e-499e-ba71-ffdf836f6743"
+        ],
+        "package_ndc": [
+          "21130-789-14"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0321130789826"
+        ],
+        "unii": [
+          "4T6H12BN9U",
+          "04JA59TNSJ",
+          "T5L8T28FGP"
+        ]
+      }
+    }
+  ]
+}

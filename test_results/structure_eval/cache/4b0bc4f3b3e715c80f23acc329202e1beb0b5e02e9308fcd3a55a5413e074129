@@ -1,0 +1,141 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 11527,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "COLDTAC Plus Acetaminophen, Phenylephrin Hydrochloride, Dextromethorphan Hydrobromide ACETAMINOPHEN ACETAMINOPHEN PHENYLEPHRINE HYDROCHLORIDE PHENYLEPHRINE DEXTROMETHORPHAN HYDROBROMIDE DEXTROMETHORPHAN GUAIFENESIN GUAIFENESIN POVIDONE K30 SILICON DIOXIDE MICROCRYSTALLINE CELLULOSE STARCH, CORN STEARIC ACID CROSPOVIDONE WATER TALC A15"
+      ],
+      "active_ingredient": [
+        "Drug Facts Active Ingredients (in each tablet) Acetaminophen USP 325mg.........................................................Pain reliever/fever reducer Guaifenesin USP 200mg..............................................................Expectorant Phenylephrine HCL USP 5mg........................................................Decongestant Dextromethorphan HBr USP 15mg................................................Antitussive"
+      ],
+      "purpose": [
+        "Purpose Pain reliever/ fever reducer Expectorant Decongestant Antitussive"
+      ],
+      "indications_and_usage": [
+        "Uses Temporarily Relieves nasal congestion due to the common cold, hay fever or other upper respiratory allergies Relieves sinus congestion and pressure, helps decongest sinus openings and passages Restores freer breathing Helps loosen bothersome mucus, drain bronchial tubes, and make coughs more productive Suppresses cough due to minor throat and bronchial irritation associated with a cold or inhaled irritants Temporarily relieves minor aches, pains and fever associated with: headache, common cold, toothache, backache, muscular aches, menstrual cramps"
+      ],
+      "warnings": [
+        "Warnings: Liver Warning: This product contains acetaminophen. Severe liver damage may occur if you take: More than 8 tablets in 24 hours With other drugs containing acetaminophen (prescription or nonprescription). Ask a doctor or pharmacist before using with other drugs if you are not sure 3 or more alcoholic drinks every day while using this product"
+      ],
+      "when_using": [
+        "Allergy alert: Acetaminophen may cause severe skin reactions. Symproms may include: skin reddening, blisters, rash if a skin reaction occurs, stop use and seek medical help right away.",
+        "Do not exceed recommended dosage if nervousness, dizziness, or sleeplessness occur, discontinue use consult a doctor.",
+        "Other Inforamtion: Tamper evident. Do not use if packet is torn, cut or opened Store at controlled room temperature 15° to 30°C (59° to 86°F) Avoid excessive heat and humidity"
+      ],
+      "do_not_use": [
+        "Warning: a persistent cough may be sing of a serious condition Do not: use with any other product containing acetaminophen this will provide more than the recommended dose (overdose) of acetaminophen and cold cause serious health concerns. use more than the recommended dose for more than 10 days for pain unless directed by a doctor for more than 3 days for fever unless directed by a doctor when using this product do not exceed recommended dose if you are now taking a presription monoamine oxidase inhibitor (MAOI) (certain drugs for depression, psychiatric or emotional conditions, or Parkinson's disease), or for 2 weeks after stopping MAOI drug. If you do not know if your prescription drug contains an MAOI, consult a doctor or pharmacist before taking this product take this product for persistent or chronic cough such as occurs with smoking, asthma, chronic bronchitis, or emphysema or where cough is accompanied by excessive phlegm (mucus) unless directed by a doctor."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if: symptoms do not improve, pain or fever persists or gets worse, new symptoms occur, redness or swelling is present, symptoms do not improve within 7 days or are accompanied by fever, cough persists for more than 1 week, tends to recur, or is accompanied by a fever, rash, or persistent headache. A persistent cough may be a sign of a serious condition"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have: heart disease, high blood pressure, thyroid disease, diabetes, difficulty in urination due to enlargement of the prostate gland, liver disease"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor or pharmacist if you are taking the blood thinning drug warfarin."
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP OUT OF REACH OF CHILDREN In case of overdose, get medical help or contact a Poison Control Center right away. Prompt medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms"
+      ],
+      "dosage_and_administration": [
+        "Directions: Adults and children 12 years of age and older: Take 2 tablets every 6 to 8 hours as needed, do not exceed 8 tablets in 24 hours, or as directed by a doctor. Children under 12 years, consult a doctor"
+      ],
+      "inactive_ingredient": [
+        "Inactive Ingredients Corn Starch, Crospovidone, Microcrystalline cellulose, Povidone k30, Silicon dioxide, Stearic acid, Talc, Water"
+      ],
+      "questions": [
+        "Questions or comments? Call: 619-600-5632 (Mon-Fri 9am - 5pm EST)"
+      ],
+      "package_label_principal_display_panel": [
+        "COLDTAC Plus 2 Tablets in a pouch - 12 Tablets NDC 69729-143-06 BOX POUCH",
+        "COLDTAC Plus 2 Tablets in a pouch - 144 tablets NDC 69729-143-72 Coldtac Plus 144",
+        "COLDTAC Plus 2 Tablets in a pouch - 100 tablets NDC 69729-143-50 BOX100"
+      ],
+      "set_id": "3496866c-682f-420b-bfdb-64ecebbf70a2",
+      "id": "574a9f60-3b83-0bc7-e063-6294a90a5482",
+      "effective_time": "20260723",
+      "version": "9",
+      "openfda": {
+        "application_number": [
+          "M012"
+        ],
+        "brand_name": [
+          "COLDTAC Plus"
+        ],
+        "generic_name": [
+          "ACETAMINOPHEN, PHENYLEPHRIN HYDROCHLORIDE, DEXTROMETHORPHAN HYDROBROMIDE"
+        ],
+        "manufacturer_name": [
+          "OPMX LLC"
+        ],
+        "product_ndc": [
+          "69729-143"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "ACETAMINOPHEN",
+          "PHENYLEPHRINE HYDROCHLORIDE",
+          "DEXTROMETHORPHAN HYDROBROMIDE",
+          "GUAIFENESIN"
+        ],
+        "rxcui": [
+          "1367204"
+        ],
+        "spl_id": [
+          "574a9f60-3b83-0bc7-e063-6294a90a5482"
+        ],
+        "spl_set_id": [
+          "3496866c-682f-420b-bfdb-64ecebbf70a2"
+        ],
+        "package_ndc": [
+          "69729-143-06",
+          "69729-143-72",
+          "69729-143-50"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0856828008571",
+          "0856828008823"
+        ],
+        "nui": [
+          "N0000193956",
+          "N0000008867",
+          "N0000009560"
+        ],
+        "pharm_class_epc": [
+          "Expectorant [EPC]"
+        ],
+        "pharm_class_pe": [
+          "Decreased Respiratory Secretion Viscosity [PE]",
+          "Increased Respiratory Secretions [PE]"
+        ],
+        "unii": [
+          "362O9ITL9D",
+          "04JA59TNSJ",
+          "9D2RTI9KYH",
+          "495W7451VQ"
+        ]
+      }
+    }
+  ]
+}

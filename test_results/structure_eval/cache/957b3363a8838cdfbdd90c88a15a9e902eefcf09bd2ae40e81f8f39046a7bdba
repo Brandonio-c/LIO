@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 12924,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "EcoZinc x DSO Welders 98 percent UVC Protection Sunscreen for Welding Zinc Oxide sunscreen SODIUM CHLORIDE POLYGLYCERYL-3 RICINOLEATE GLYCERYL STEARATE CITRATE XANTHAN GUM FERRIC OXIDE RED COCO-CAPRYLATE/CAPRATE SODIUM HINOKITIOL FERRIC OXIDE YELLOW FERROSOFERRIC OXIDE COCONUT ALKANES HELIANTHUS ANNUUS (SUNFLOWER) SEED OIL .ALPHA.-TOCOPHEROL ACETATE, D- WATER POLYHYDROXYSTEARIC ACID (2300 MW) ISOSTEARIC ACID CANDELILLA WAX ZINC OXIDE ZINC OXIDE"
+      ],
+      "active_ingredient": [
+        "Zinc oxide - 25%"
+      ],
+      "purpose": [
+        "Sunscreen"
+      ],
+      "indications_and_usage": [
+        "kindly refer to label picture"
+      ],
+      "warnings": [
+        "For external use only. Do not use on damaged r broken skin. When using this product keep out of eyes. Rinse with water to remove. Stop use and ask a doctor if rash occurs. Keep out of reach of children. If product is swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children."
+      ],
+      "dosage_and_administration": [
+        "Kindly refer to Label"
+      ],
+      "inactive_ingredient": [
+        "See ingredients on label"
+      ],
+      "recent_major_changes": [
+        ""
+      ],
+      "package_label_principal_display_panel": [
+        "Label - 100g Label - 1kg Label - 2kg"
+      ],
+      "set_id": "386e35de-cd13-f430-e063-6394a90acc84",
+      "id": "449ffb9d-2411-53b0-e063-6294a90a6693",
+      "effective_time": "20251127",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "EcoZinc x DSO Welders 98 percent UVC Protection Sunscreen for Welding"
+        ],
+        "generic_name": [
+          "ZINC OXIDE SUNSCREEN"
+        ],
+        "manufacturer_name": [
+          "VEGANIC SKN LIMITED"
+        ],
+        "product_ndc": [
+          "83252-115"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ZINC OXIDE"
+        ],
+        "spl_id": [
+          "449ffb9d-2411-53b0-e063-6294a90a6693"
+        ],
+        "spl_set_id": [
+          "386e35de-cd13-f430-e063-6394a90acc84"
+        ],
+        "package_ndc": [
+          "83252-115-21",
+          "83252-115-25",
+          "83252-115-15"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "9337907073068",
+          "9337907073921",
+          "9337907073341"
+        ],
+        "unii": [
+          "SOI2LOH54Z"
+        ]
+      }
+    }
+  ]
+}

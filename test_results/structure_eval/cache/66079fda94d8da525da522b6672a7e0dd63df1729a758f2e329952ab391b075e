@@ -1,0 +1,122 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 15536,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Acid Reducer Omeprazole OMEPRAZOLE MAGNESIUM OMEPRAZOLE CROSPOVIDONE (35 .MU.M) GLYCERYL MONOSTEARATE HYDROXYPROPYL CELLULOSE (90000 WAMW) HYPROMELLOSE 2910 (5 MPA.S) MAGNESIUM STEARATE METHACRYLIC ACID - ETHYL ACRYLATE COPOLYMER (1:1) TYPE A MICROCRYSTALLINE CELLULOSE POLYETHYLENE GLYCOL 4000 POLYSORBATE 80 FERRIC OXIDE RED SILICON DIOXIDE SODIUM HYDROXIDE SODIUM STEARYL FUMARATE DEXTROSE, UNSPECIFIED FORM STARCH, CORN SUCROSE TALC TITANIUM DIOXIDE TRIETHYL CITRATE FERRIC OXIDE YELLOW HYDROXYPROPYL CELLULOSE (45000 WAMW) HYPROMELLOSE 2910 (6 MPA.S) Oblong Z;69"
+      ],
+      "spl_unclassified_section": [
+        "Tips for Managing Heartburn Do not lie flat or bend over after eating Do not wear tight-fitting clothing around the stomach Do not eat before bedtime Raise the head of your bed Avoid heartburn-causing foods such as rich, spicy, fatty or fried foods, chocolate, caffeine, alcohol and certain fruits and vegetables Eat slowly and avoid big meals If overweight, lose weight Quit smoking",
+        "Drug Facts"
+      ],
+      "active_ingredient": [
+        "Active ingredient (in each tablet) Omeprazole delayed-release tablet 20 mg (equivalent to 20.6 mg omeprazole magnesium)"
+      ],
+      "purpose": [
+        "Purpose Acid reducer"
+      ],
+      "indications_and_usage": [
+        "Use treats frequent heartburn (occurs 2 or more days a week) not intended for immediate relief of heartburn; this drug may take 1 to 4 days for full effect"
+      ],
+      "warnings": [
+        "Warnings Allergy alert: Do not use if you are allergic to omeprazole"
+      ],
+      "do_not_use": [
+        "Do not use if you have: trouble or pain swallowing food, vomiting with blood, or bloody or black stools heartburn with lightheadedness, sweating or dizziness chest pain or shoulder pain with shortness of breath; sweating; pain spreading to arms, neck or shoulders; or lightheadedness frequent chest pain These may be signs of a serious condition. See your doctor."
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have: had heartburn over 3 months. This may be a sign of a more serious condition. frequent wheezing, particularly with heartburn unexplained weight loss nausea or vomiting stomach pain"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor or pharmacist before use if you are taking: warfarin, clopidogrel or cilostazol (blood-thinning medicines) prescription antifungal or anti-yeast medicines diazepam (anxiety medicine) digoxin (heart medicine) tacrolimus or mycophenolate mofetil (immune system medicines) prescription antiretrovirals (medicines for HIV infection) methotrexate (arthritis medicine)"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if: your heartburn continues or worsens you need to take this product for more than 14 days you need to take more than 1 course of treatment every 4 months you get diarrhea you develop a rash or joint pain"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center (1-800-222-1222) right away."
+      ],
+      "dosage_and_administration": [
+        "Directions for adults 18 years of age and older this product is to be used once a day (every 24 hours), every day for 14 days it may take 1 to 4 days for full effect; some people get complete relief of symptoms within 24 hours 14-Day Course of Treatment swallow 1 tablet with a glass of water before eating in the morning take every day for 14 days do not take more than 1 tablet a day do not use for more than 14 days unless directed by your doctor swallow whole. Do not chew or crush tablets. Repeated 14-Day Courses (if needed) you may repeat a 14-day course every 4 months do not take for more than 14 days or more often than every 4 months unless directed by a doctor children under 18 years of age: ask a doctor. Heartburn in children may sometimes be caused by a serious condition."
+      ],
+      "storage_and_handling": [
+        "Other information read the directions and warnings before use keep the carton. It contains important information. store at 20º to 25ºc (68º to 77º F) and protect from moisture"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients crospovidone, glyceryl monostearate, hydroxypropyl cellulose, hypromellose, magnesium stearate, methacrylic acid copolymer dispersion, microcrystalline cellulose, polyethylene glycol, polysorbate 80, red iron oxide, silicified microcrystalline cellulose, sodium hydroxide, sodium stearyl fumarate, sugar spheres [which contains liquid glucose, starch (maize) and sucrose], talc, titanium dioxide, triethyl citrate and yellow iron oxide."
+      ],
+      "questions": [
+        "Questions? Call 1-800-935-6737 *This product is not manufactured or distributed by the owner of the registered trademark Prilosec OTC® Distributed by: BI-MART Eugene, OR 97402 Made in India Code: TS/DRUGS/22/2009"
+      ],
+      "package_label_principal_display_panel": [
+        "PACKAGE LABEL-PRINCIPAL DISPLAY PANEL - 20 mg (14 Tablet Bottle) BI-MART NDC 37835-189-14 ACID REDUCER Omeprazole Delayed-Release Tablets 20 mg TREATS FREQUENT HEARTBURN OCCURRING 2 OR MORE DAYS A WEEK 14 TABLETS ONE 14-DAY COURSE OF TREATMENT PACKAGE LABEL-PRINCIPAL DISPLAY PANEL - 20 mg (14 Tablet Bottle)",
+        "PACKAGE LABEL-PRINCIPAL DISPLAY PANEL - 20 mg Container Carton Label BI-MART NDC 37835-189-14 ACID REDUCER Omeprazole Delayed-Release Tablets 20 mg TREATS FREQUENT HEARTBURN OCCURRING 2 OR MORE DAYS A WEEK 14 TABLETS ONE 14-DAY COURSE OF TREATMENT PACKAGE LABEL-PRINCIPAL DISPLAY PANEL - 20 mg Container Carton Label"
+      ],
+      "set_id": "419659f9-098a-4a18-8bba-cd45157bfa50",
+      "id": "cd7c9c63-7126-43f0-bca2-f0d263415e36",
+      "effective_time": "20240615",
+      "version": "6",
+      "openfda": {
+        "application_number": [
+          "ANDA206877"
+        ],
+        "brand_name": [
+          "Acid Reducer"
+        ],
+        "generic_name": [
+          "OMEPRAZOLE"
+        ],
+        "manufacturer_name": [
+          "Bi-Mart"
+        ],
+        "product_ndc": [
+          "37835-189"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "OMEPRAZOLE MAGNESIUM"
+        ],
+        "rxcui": [
+          "402014"
+        ],
+        "spl_id": [
+          "cd7c9c63-7126-43f0-bca2-f0d263415e36"
+        ],
+        "spl_set_id": [
+          "419659f9-098a-4a18-8bba-cd45157bfa50"
+        ],
+        "package_ndc": [
+          "37835-189-14",
+          "37835-189-42"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0071357912810"
+        ],
+        "unii": [
+          "426QFE7XLK"
+        ]
+      }
+    }
+  ]
+}

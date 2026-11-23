@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 24360,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Wildberry Lip Balm Lip Balm AVOBENZONE AVOBENZONE OCTINOXATE OCTINOXATE OCTISALATE OCTISALATE OCTOCRYLENE OCTOCRYLENE SUNFLOWER OIL YELLOW WAX OLIVE OIL CANNABIS SATIVA SEED OIL ROSEMARY OIL .ALPHA.-TOCOPHEROL ALOE VERA LEAF WILDBERRY"
+      ],
+      "active_ingredient": [
+        "Drug Facts Active Ingredients: Avobenzone 2.0% Octinoxate 6.5% Octisalate 5.0% Octocrylene 1.5%"
+      ],
+      "purpose": [
+        "Purpose Avobenzone ,,,,Sunscreen Octinoxate ,,,,,,,Sunscreen Octisalate ,,,,,,,,Sunscreen Octocrylene ,,,,,Sunscreen"
+      ],
+      "indications_and_usage": [
+        "Uses: Helps prevent sunburn"
+      ],
+      "warnings": [
+        "Warnings • For external use only • Do not use on damaged or broken skin • Stop use and ask a doctor i f• rash occurs • When using this product • keep out of eyes. Rinse with water to remove."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children: If swallowed, get medilcal help or contact a Poison Control center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions • Apply liberally 15 minutes before sun exposure • Use a water resistant sunscreen if swimming or sweating • Reapply at least every 2 hours • Children under 6 months of age: Ask a doctor Sun Protection Measures Spending time in the sun increases your risk of skin cancer and early skin aging. To decrease this risk, regularly use a sunscreen with a Broad Spectrum SPF value of 15 or higher and other protection measures including: • limit time in the sun, especially from 10a.m. - 2p.m.• wear long sleeved shirts, pants, hat, and sunglasses"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients: Sunflower oil, beeswax, extra virgin olive oil, flavor, hemp seed oil, rosemary extract, vitamin E, aloe vera."
+      ],
+      "other_safety_information": [
+        "Other Information: Protect this product from excessive heat and direct sun."
+      ],
+      "package_label_principal_display_panel": [
+        "Broad Spectrum SPF 15 Sunscreen Wildberry Lip Balm Net Wt. 0.15 oz (4.25g) SAFETY SEAL Dist. by: www.totallypromotional.com | CoIdwater, OH 45828 res Vanilla Mint"
+      ],
+      "set_id": "5e13dc33-67b7-4461-bec5-0c3edc72f8b4",
+      "id": "0fbb4be0-7501-4ee9-91cc-80107008504e",
+      "effective_time": "20250103",
+      "version": "3",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "Wildberry Lip Balm"
+        ],
+        "generic_name": [
+          "LIP BALM"
+        ],
+        "manufacturer_name": [
+          "Casad Company Inc."
+        ],
+        "product_ndc": [
+          "71087-114"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "AVOBENZONE",
+          "OCTINOXATE",
+          "OCTISALATE",
+          "OCTOCRYLENE"
+        ],
+        "spl_id": [
+          "0fbb4be0-7501-4ee9-91cc-80107008504e"
+        ],
+        "spl_set_id": [
+          "5e13dc33-67b7-4461-bec5-0c3edc72f8b4"
+        ],
+        "package_ndc": [
+          "71087-114-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "G63QQF2NOX",
+          "4Y5P7MUD51",
+          "4X49Y0596W",
+          "5A68WGF6WM"
+        ]
+      }
+    }
+  ]
+}

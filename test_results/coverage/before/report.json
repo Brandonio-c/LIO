@@ -1,0 +1,2754 @@
+[
+ {
+  "assessment": {
+   "any_source_has_list": false,
+   "issues": [
+    "no source has an ingredient list for any barcode form"
+   ]
+  },
+  "code": "0300680418301",
+  "forms": {
+   "as_given": "0300680418301",
+   "check_digit_ok": true,
+   "ean13": "0300680418301",
+   "gtin14": "00300680418301",
+   "upca": "300680418301"
+  },
+  "name": "Citrucel orange",
+  "origin": "library scan LIO-F-00001",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 0,
+   "ingredients_source": "",
+   "ingredients_text": false,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"3 00680 41830 1\"",
+      "form": "spaced:3 00680 41830 1",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 300680 418301\"",
+      "form": "spaced:0 300680 418301",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "300680418301",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0300680418301",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "00300680418301",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0300680418301",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "300680418301",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": true,
+    "hit": null,
+    "tried": [
+     {
+      "code": "0068-0418-30",
+      "form": "openfda package 0068-0418-30",
+      "hit": false
+     },
+     {
+      "code": "0068-0418-30",
+      "form": "openfda product 0068-0418",
+      "hit": false
+     },
+     {
+      "code": "0068-0418-30",
+      "form": "dailymed 0068-0418-30",
+      "hit": false
+     },
+     {
+      "code": "00680-418-30",
+      "form": "openfda package 00680-418-30",
+      "hit": false
+     },
+     {
+      "code": "00680-418-30",
+      "form": "openfda product 00680-418",
+      "hit": false
+     },
+     {
+      "code": "00680-418-30",
+      "form": "dailymed 00680-418-30",
+      "hit": false
+     },
+     {
+      "code": "00680-4183-0",
+      "form": "openfda package 00680-4183-0",
+      "hit": false
+     },
+     {
+      "code": "00680-4183-0",
+      "form": "openfda product 00680-4183",
+      "hit": false
+     },
+     {
+      "code": "00680-4183-0",
+      "form": "dailymed 00680-4183-0",
+      "hit": false
+     }
+    ]
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 0,
+      "ingredients_text": false,
+      "ingredients_text_languages": [],
+      "nutriments": false
+     },
+     "form": "as_given",
+     "lang": "en"
+    },
+    "tried": [
+     {
+      "code": "0300680418301",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "300680418301",
+      "form": "upca",
+      "hit": true
+     },
+     {
+      "code": "00300680418301",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "0300680418301",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "300680418301",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00300680418301",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": [
+    "OFF: lists in 2 languages; only one is used"
+   ]
+  },
+  "code": "051500255162",
+  "forms": {
+   "as_given": "051500255162",
+   "check_digit_ok": true,
+   "ean13": "0051500255162",
+   "gtin14": "00051500255162",
+   "upca": "051500255162"
+  },
+  "name": "Jif Creamy Peanut Butter 16 oz",
+  "origin": "FDC (golden record)",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 121,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "usda",
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"0 51500 25516 2\"",
+      "form": "spaced:0 51500 25516 2",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 051500 255162\"",
+      "form": "spaced:0 051500 255162",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "051500255162",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0051500255162",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": {
+     "fdc_id": 2770309,
+     "fields": {
+      "ingredients": true,
+      "ingredients_chars": 121,
+      "ingredients_ends_cleanly": true,
+      "servingSize": true
+     },
+     "form": "gtin14",
+     "stored_gtinUpc": "00051500255162"
+    },
+    "tried": [
+     {
+      "code": "00051500255162",
+      "form": "gtin14",
+      "hit": true,
+      "results": 1
+     },
+     {
+      "code": "0051500255162",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "051500255162",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 6,
+      "ingredients_text": true,
+      "ingredients_text_languages": [
+       "en",
+       "zh"
+      ],
+      "nutriments": true
+     },
+     "form": "as_given",
+     "lang": "en"
+    },
+    "tried": [
+     {
+      "code": "051500255162",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "0051500255162",
+      "form": "ean13",
+      "hit": true
+     },
+     {
+      "code": "00051500255162",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "0051500255162",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "051500255162",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00051500255162",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "702669934398",
+  "forms": {
+   "as_given": "702669934398",
+   "check_digit_ok": true,
+   "ean13": "0702669934398",
+   "gtin14": "00702669934398",
+   "upca": "702669934398"
+  },
+  "name": "Nutricost Magnesium Oxide",
+  "origin": "DSLD (golden record)",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 102,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "dsld"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": {
+     "dsld_id": 223424,
+     "fields": {
+      "dietary_ingredients": 1,
+      "other_ingredients": 4
+     },
+     "form": "spaced:7 02669 93439 8",
+     "stored_upcSku": "7 02669 93439 8"
+    },
+    "tried": [
+     {
+      "code": "\"7 02669 93439 8\"",
+      "form": "spaced:7 02669 93439 8",
+      "hit": true,
+      "results": 2
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "00702669934398",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0702669934398",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "702669934398",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "702669934398",
+      "form": "as_given",
+      "hit": false
+     },
+     {
+      "code": "0702669934398",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "00702669934398",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "0702669934398",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "702669934398",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00702669934398",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": [
+    "OFF: lists in 10 languages; only one is used"
+   ]
+  },
+  "code": "3017620422003",
+  "forms": {
+   "as_given": "3017620422003",
+   "check_digit_ok": true,
+   "ean13": "3017620422003",
+   "gtin14": "03017620422003"
+  },
+  "name": "Nutella 400 g (France)",
+  "origin": "OFF (golden record)",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 15,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"3 017620 422003\"",
+      "form": "spaced:3 017620 422003",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "3017620422003",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "03017620422003",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "3017620422003",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 2,
+      "ingredients_text": true,
+      "ingredients_text_languages": [
+       "ab",
+       "ar",
+       "de",
+       "en",
+       "es",
+       "fr",
+       "hi",
+       "it",
+       "nl",
+       "or"
+      ],
+      "nutriments": true
+     },
+     "form": "as_given",
+     "lang": "en"
+    },
+    "tried": [
+     {
+      "code": "3017620422003",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "03017620422003",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "3017620422003",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "03017620422003",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": [
+    "OFF: lists in 2 languages; only one is used"
+   ]
+  },
+  "code": "016000275287",
+  "forms": {
+   "as_given": "016000275287",
+   "check_digit_ok": true,
+   "ean13": "0016000275287",
+   "gtin14": "00016000275287",
+   "upca": "016000275287"
+  },
+  "name": "Cheerios",
+  "origin": "FDC search 'cheerios cereal'",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 406,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "usda",
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"0 16000 27528 7\"",
+      "form": "spaced:0 16000 27528 7",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 016000 275287\"",
+      "form": "spaced:0 016000 275287",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "016000275287",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0016000275287",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": {
+     "fdc_id": 2517161,
+     "fields": {
+      "ingredients": true,
+      "ingredients_chars": 406,
+      "ingredients_ends_cleanly": true,
+      "servingSize": true
+     },
+     "form": "gtin14",
+     "stored_gtinUpc": "00016000275287"
+    },
+    "tried": [
+     {
+      "code": "00016000275287",
+      "form": "gtin14",
+      "hit": true,
+      "results": 1
+     },
+     {
+      "code": "0016000275287",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "016000275287",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 16,
+      "ingredients_text": true,
+      "ingredients_text_languages": [
+       "en",
+       "la"
+      ],
+      "nutriments": true
+     },
+     "form": "as_given",
+     "lang": "la"
+    },
+    "tried": [
+     {
+      "code": "016000275287",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "0016000275287",
+      "form": "ean13",
+      "hit": true
+     },
+     {
+      "code": "00016000275287",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "0016000275287",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "016000275287",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00016000275287",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "051000273482",
+  "forms": {
+   "as_given": "051000273482",
+   "check_digit_ok": true,
+   "ean13": "0051000273482",
+   "gtin14": "00051000273482",
+   "upca": "051000273482"
+  },
+  "name": "Campbell's Tomato Soup",
+  "origin": "FDC search 'campbell tomato soup'",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 266,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "usda",
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"0 51000 27348 2\"",
+      "form": "spaced:0 51000 27348 2",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 051000 273482\"",
+      "form": "spaced:0 051000 273482",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "051000273482",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0051000273482",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": {
+     "fdc_id": 2775976,
+     "fields": {
+      "ingredients": true,
+      "ingredients_chars": 266,
+      "ingredients_ends_cleanly": true,
+      "servingSize": true
+     },
+     "form": "gtin14",
+     "stored_gtinUpc": "00051000273482"
+    },
+    "tried": [
+     {
+      "code": "00051000273482",
+      "form": "gtin14",
+      "hit": true,
+      "results": 1
+     },
+     {
+      "code": "0051000273482",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "051000273482",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 12,
+      "ingredients_text": true,
+      "ingredients_text_languages": [
+       "en"
+      ],
+      "nutriments": true
+     },
+     "form": "as_given",
+     "lang": "en"
+    },
+    "tried": [
+     {
+      "code": "051000273482",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "0051000273482",
+      "form": "ean13",
+      "hit": true
+     },
+     {
+      "code": "00051000273482",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "0051000273482",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "051000273482",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00051000273482",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "818290019790",
+  "forms": {
+   "as_given": "818290019790",
+   "check_digit_ok": true,
+   "ean13": "0818290019790",
+   "gtin14": "00818290019790",
+   "upca": "818290019790"
+  },
+  "name": "Chobani Honey Vanilla Greek",
+  "origin": "FDC search 'chobani greek yogurt'",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 261,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "usda",
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"8 18290 01979 0\"",
+      "form": "spaced:8 18290 01979 0",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 818290 019790\"",
+      "form": "spaced:0 818290 019790",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "818290019790",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0818290019790",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": {
+     "fdc_id": 2756313,
+     "fields": {
+      "ingredients": true,
+      "ingredients_chars": 261,
+      "ingredients_ends_cleanly": true,
+      "servingSize": true
+     },
+     "form": "gtin14",
+     "stored_gtinUpc": "00818290019790"
+    },
+    "tried": [
+     {
+      "code": "00818290019790",
+      "form": "gtin14",
+      "hit": true,
+      "results": 1
+     },
+     {
+      "code": "0818290019790",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "818290019790",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 10,
+      "ingredients_text": true,
+      "ingredients_text_languages": [
+       "en"
+      ],
+      "nutriments": true
+     },
+     "form": "as_given",
+     "lang": "en"
+    },
+    "tried": [
+     {
+      "code": "818290019790",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "0818290019790",
+      "form": "ean13",
+      "hit": true
+     },
+     {
+      "code": "00818290019790",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "0818290019790",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "818290019790",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00818290019790",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "021000037377",
+  "forms": {
+   "as_given": "021000037377",
+   "check_digit_ok": true,
+   "ean13": "0021000037377",
+   "gtin14": "00021000037377",
+   "upca": "021000037377"
+  },
+  "name": "Kraft Macaroni & Cheese",
+  "origin": "FDC search 'kraft macaroni cheese'",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 711,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"0 21000 03737 7\"",
+      "form": "spaced:0 21000 03737 7",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 021000 037377\"",
+      "form": "spaced:0 021000 037377",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "021000037377",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0021000037377",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": {
+     "fdc_id": 1592690,
+     "fields": {
+      "ingredients": true,
+      "ingredients_chars": 711,
+      "ingredients_ends_cleanly": true,
+      "servingSize": true
+     },
+     "form": "upca",
+     "stored_gtinUpc": "021000037377"
+    },
+    "tried": [
+     {
+      "code": "00021000037377",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0021000037377",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "021000037377",
+      "form": "upca",
+      "hit": true,
+      "results": 1
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 9,
+      "ingredients_text": true,
+      "ingredients_text_languages": [
+       "en"
+      ],
+      "nutriments": true
+     },
+     "form": "as_given",
+     "lang": "en"
+    },
+    "tried": [
+     {
+      "code": "021000037377",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "0021000037377",
+      "form": "ean13",
+      "hit": true
+     },
+     {
+      "code": "00021000037377",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "0021000037377",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "021000037377",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00021000037377",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "842379108549",
+  "forms": {
+   "as_given": "842379108549",
+   "check_digit_ok": true,
+   "ean13": "0842379108549",
+   "gtin14": "00842379108549",
+   "upca": "842379108549"
+  },
+  "name": "Solimo Melatonin 3 mg",
+  "origin": "DSLD label 239571",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 114,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "dsld"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": {
+     "dsld_id": 239571,
+     "fields": {
+      "dietary_ingredients": 1,
+      "other_ingredients": 4
+     },
+     "form": "spaced:8 42379 10854 9",
+     "stored_upcSku": "8 42379 10854 9"
+    },
+    "tried": [
+     {
+      "code": "\"8 42379 10854 9\"",
+      "form": "spaced:8 42379 10854 9",
+      "hit": true,
+      "results": 1
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "00842379108549",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0842379108549",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "842379108549",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "842379108549",
+      "form": "as_given",
+      "hit": false
+     },
+     {
+      "code": "0842379108549",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "00842379108549",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "0842379108549",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "842379108549",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00842379108549",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "766298017891",
+  "forms": {
+   "as_given": "766298017891",
+   "check_digit_ok": true,
+   "ean13": "0766298017891",
+   "gtin14": "00766298017891",
+   "upca": "766298017891"
+  },
+  "name": "Pure Encapsulations Melatonin-SR",
+  "origin": "DSLD label 277770",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 186,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "dsld"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": {
+     "dsld_id": 277770,
+     "fields": {
+      "dietary_ingredients": 1,
+      "other_ingredients": 6
+     },
+     "form": "spaced:7 66298 01789 1",
+     "stored_upcSku": "7 66298 01789 1"
+    },
+    "tried": [
+     {
+      "code": "\"7 66298 01789 1\"",
+      "form": "spaced:7 66298 01789 1",
+      "hit": true,
+      "results": 2
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "00766298017891",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0766298017891",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "766298017891",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "766298017891",
+      "form": "as_given",
+      "hit": false
+     },
+     {
+      "code": "0766298017891",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "00766298017891",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "0766298017891",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "766298017891",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00766298017891",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": [
+    "a source has a list, but the pipeline returned none"
+   ]
+  },
+  "code": "5453003821090",
+  "forms": {
+   "as_given": "5453003821090",
+   "check_digit_ok": true,
+   "ean13": "5453003821090",
+   "gtin14": "05453003821090"
+  },
+  "name": "SuperSmart Melatonin 2 mg",
+  "origin": "DSLD label 332395",
+  "pipeline": {
+   "errors": {},
+   "found": false,
+   "ingredients_chars": 0,
+   "ingredients_source": "",
+   "ingredients_text": false,
+   "matched_forms": {},
+   "parts": [],
+   "sources": []
+  },
+  "probes": {
+   "dsld": {
+    "hit": {
+     "dsld_id": 332395,
+     "fields": {
+      "dietary_ingredients": 1,
+      "other_ingredients": 1
+     },
+     "form": "spaced:5 453003 821090",
+     "stored_upcSku": "5 453003 821090"
+    },
+    "tried": [
+     {
+      "code": "\"5 453003 821090\"",
+      "form": "spaced:5 453003 821090",
+      "hit": true,
+      "results": 1
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "05453003821090",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "5453003821090",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "5453003821090",
+      "form": "as_given",
+      "hit": false
+     },
+     {
+      "code": "05453003821090",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "5453003821090",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "05453003821090",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "070038610953",
+  "forms": {
+   "as_given": "070038610953",
+   "check_digit_ok": true,
+   "ean13": "0070038610953",
+   "gtin14": "00070038610953",
+   "upca": "070038610953"
+  },
+  "name": "Valu Pain Reliever Extra Strength",
+  "origin": "openFDA label (openfda.upc)",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 361,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "openfda"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"0 70038 61095 3\"",
+      "form": "spaced:0 70038 61095 3",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 070038 610953\"",
+      "form": "spaced:0 070038 610953",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "070038610953",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0070038610953",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "00070038610953",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0070038610953",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "070038610953",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "070038610953",
+      "form": "as_given",
+      "hit": false
+     },
+     {
+      "code": "0070038610953",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "00070038610953",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": {
+     "fields": {
+      "active_ingredient": true,
+      "inactive_ingredient": true,
+      "other_information": true
+     },
+     "form": "ean13",
+     "set_id": "0005aafa-08f8-4990-a54d-cc097195708f"
+    },
+    "tried": [
+     {
+      "code": "0070038610953",
+      "form": "ean13",
+      "hit": true
+     },
+     {
+      "code": "070038610953",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00070038610953",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "341520314643",
+  "forms": {
+   "as_given": "341520314643",
+   "check_digit_ok": true,
+   "ean13": "0341520314643",
+   "gtin14": "00341520314643",
+   "upca": "341520314643"
+  },
+  "name": "Care One Ibuprofen",
+  "origin": "openFDA label (openfda.upc)",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 347,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "openfda"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"3 41520 31464 3\"",
+      "form": "spaced:3 41520 31464 3",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 341520 314643\"",
+      "form": "spaced:0 341520 314643",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "341520314643",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0341520314643",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "00341520314643",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0341520314643",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "341520314643",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": true,
+    "hit": null,
+    "tried": [
+     {
+      "code": "4152-0314-64",
+      "form": "openfda package 4152-0314-64",
+      "hit": false
+     },
+     {
+      "code": "4152-0314-64",
+      "form": "openfda product 4152-0314",
+      "hit": false
+     },
+     {
+      "code": "4152-0314-64",
+      "form": "dailymed 4152-0314-64",
+      "hit": false
+     },
+     {
+      "code": "41520-314-64",
+      "form": "openfda package 41520-314-64",
+      "hit": false
+     },
+     {
+      "code": "41520-314-64",
+      "form": "openfda product 41520-314",
+      "hit": false
+     },
+     {
+      "code": "41520-314-64",
+      "form": "dailymed 41520-314-64",
+      "hit": false
+     },
+     {
+      "code": "41520-3146-4",
+      "form": "openfda package 41520-3146-4",
+      "hit": false
+     },
+     {
+      "code": "41520-3146-4",
+      "form": "openfda product 41520-3146",
+      "hit": false
+     },
+     {
+      "code": "41520-3146-4",
+      "form": "dailymed 41520-3146-4",
+      "hit": false
+     }
+    ]
+   },
+   "off": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "341520314643",
+      "form": "as_given",
+      "hit": false
+     },
+     {
+      "code": "0341520314643",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "00341520314643",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": {
+     "fields": {
+      "active_ingredient": true,
+      "inactive_ingredient": true,
+      "other_information": true
+     },
+     "form": "ean13",
+     "set_id": "016299ef-ad40-46fd-acfc-e74ffee3d9b4"
+    },
+    "tried": [
+     {
+      "code": "0341520314643",
+      "form": "ean13",
+      "hit": true
+     },
+     {
+      "code": "341520314643",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00341520314643",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "032251921049",
+  "forms": {
+   "as_given": "032251921049",
+   "check_digit_ok": true,
+   "ean13": "0032251921049",
+   "gtin14": "00032251921049",
+   "upca": "032251921049"
+  },
+  "name": "Family Wellness Daytime Cold and Flu",
+  "origin": "openFDA label (openfda.upc)",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 313,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "openfda"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"0 32251 92104 9\"",
+      "form": "spaced:0 32251 92104 9",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 032251 921049\"",
+      "form": "spaced:0 032251 921049",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "032251921049",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0032251921049",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "00032251921049",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0032251921049",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "032251921049",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "032251921049",
+      "form": "as_given",
+      "hit": false
+     },
+     {
+      "code": "0032251921049",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "00032251921049",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": {
+     "fields": {
+      "active_ingredient": true,
+      "inactive_ingredient": true,
+      "other_information": true
+     },
+     "form": "ean13",
+     "set_id": "0044c53c-11dd-41a9-a5d9-622dd8b1c144"
+    },
+    "tried": [
+     {
+      "code": "0032251921049",
+      "form": "ean13",
+      "hit": true
+     },
+     {
+      "code": "032251921049",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00032251921049",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "070038599760",
+  "forms": {
+   "as_given": "070038599760",
+   "check_digit_ok": true,
+   "ean13": "0070038599760",
+   "gtin14": "00070038599760",
+   "upca": "070038599760"
+  },
+  "name": "Valu Allergy Relief",
+  "origin": "openFDA label (openfda.upc)",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 170,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "openfda"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"0 70038 59976 0\"",
+      "form": "spaced:0 70038 59976 0",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 070038 599760\"",
+      "form": "spaced:0 070038 599760",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "070038599760",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0070038599760",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "00070038599760",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0070038599760",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "070038599760",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "070038599760",
+      "form": "as_given",
+      "hit": false
+     },
+     {
+      "code": "0070038599760",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "00070038599760",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": {
+     "fields": {
+      "active_ingredient": true,
+      "inactive_ingredient": true,
+      "other_information": true
+     },
+     "form": "ean13",
+     "set_id": "05927511-6b7a-4e29-96b4-3043493acf11"
+    },
+    "tried": [
+     {
+      "code": "0070038599760",
+      "form": "ean13",
+      "hit": true
+     },
+     {
+      "code": "070038599760",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00070038599760",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": [
+    "OFF: lists in 13 languages; only one is used"
+   ]
+  },
+  "code": "5449000000996",
+  "forms": {
+   "as_given": "5449000000996",
+   "check_digit_ok": true,
+   "ean13": "5449000000996",
+   "gtin14": "05449000000996"
+  },
+  "name": "Coca-Cola Original (EU)",
+  "origin": "OFF",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 114,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"5 449000 000996\"",
+      "form": "spaced:5 449000 000996",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "5449000000996",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "05449000000996",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "5449000000996",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 5,
+      "ingredients_text": true,
+      "ingredients_text_languages": [
+       "ar",
+       "bg",
+       "de",
+       "en",
+       "es",
+       "fr",
+       "it",
+       "lt",
+       "pl",
+       "ro",
+       "ru",
+       "sq",
+       "zh"
+      ],
+      "nutriments": true
+     },
+     "form": "as_given",
+     "lang": "es"
+    },
+    "tried": [
+     {
+      "code": "5449000000996",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "05449000000996",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "5449000000996",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "05449000000996",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": [
+    "OFF: lists in 6 languages; only one is used"
+   ]
+  },
+  "code": "8000500310427",
+  "forms": {
+   "as_given": "8000500310427",
+   "check_digit_ok": true,
+   "ean13": "8000500310427",
+   "gtin14": "08000500310427"
+  },
+  "name": "Nutella Biscuits",
+  "origin": "OFF",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 374,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"8 000500 310427\"",
+      "form": "spaced:8 000500 310427",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "8000500310427",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "08000500310427",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "8000500310427",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 20,
+      "ingredients_text": true,
+      "ingredients_text_languages": [
+       "de",
+       "en",
+       "es",
+       "fr",
+       "it",
+       "pt"
+      ],
+      "nutriments": true
+     },
+     "form": "as_given",
+     "lang": "fr"
+    },
+    "tried": [
+     {
+      "code": "8000500310427",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "08000500310427",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "8000500310427",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "08000500310427",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": [
+    "OFF: lists in 2 languages; only one is used"
+   ]
+  },
+  "code": "3228857000166",
+  "forms": {
+   "as_given": "3228857000166",
+   "check_digit_ok": true,
+   "ean13": "3228857000166",
+   "gtin14": "03228857000166"
+  },
+  "name": "Harrys 100% mie complet",
+  "origin": "OFF",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 236,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"3 228857 000166\"",
+      "form": "spaced:3 228857 000166",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "3228857000166",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "03228857000166",
+      "form": "gtin14",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "3228857000166",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 12,
+      "ingredients_text": true,
+      "ingredients_text_languages": [
+       "en",
+       "fr"
+      ],
+      "nutriments": true
+     },
+     "form": "as_given",
+     "lang": "fr"
+    },
+    "tried": [
+     {
+      "code": "3228857000166",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "03228857000166",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "3228857000166",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "03228857000166",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "049000028911",
+  "forms": {
+   "as_given": "049000028911",
+   "check_digit_ok": true,
+   "ean13": "0049000028911",
+   "gtin14": "00049000028911",
+   "upca": "049000028911"
+  },
+  "name": "Diet Coke (US)",
+  "origin": "OFF",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 139,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "usda",
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"0 49000 02891 1\"",
+      "form": "spaced:0 49000 02891 1",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 049000 028911\"",
+      "form": "spaced:0 049000 028911",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "049000028911",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0049000028911",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": {
+     "fdc_id": 2742723,
+     "fields": {
+      "ingredients": true,
+      "ingredients_chars": 139,
+      "ingredients_ends_cleanly": true,
+      "servingSize": true
+     },
+     "form": "gtin14",
+     "stored_gtinUpc": "00049000028911"
+    },
+    "tried": [
+     {
+      "code": "00049000028911",
+      "form": "gtin14",
+      "hit": true,
+      "results": 1
+     },
+     {
+      "code": "0049000028911",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "049000028911",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 7,
+      "ingredients_text": true,
+      "ingredients_text_languages": [
+       "en"
+      ],
+      "nutriments": true
+     },
+     "form": "as_given",
+     "lang": "en"
+    },
+    "tried": [
+     {
+      "code": "049000028911",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "0049000028911",
+      "form": "ean13",
+      "hit": true
+     },
+     {
+      "code": "00049000028911",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "0049000028911",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "049000028911",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00049000028911",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ },
+ {
+  "assessment": {
+   "any_source_has_list": true,
+   "issues": []
+  },
+  "code": "04963406",
+  "forms": {
+   "as_given": "04963406",
+   "check_digit_ok": true,
+   "ean13": "0049000006346",
+   "gtin14": "00049000006346",
+   "upca": "049000006346",
+   "upce": "04963406"
+  },
+  "name": "Coca-Cola can, UPC-E",
+  "origin": "OFF (UPC-E)",
+  "pipeline": {
+   "errors": {},
+   "found": true,
+   "ingredients_chars": 102,
+   "ingredients_source": "",
+   "ingredients_text": true,
+   "matched_forms": {},
+   "parts": [],
+   "sources": [
+    "usda",
+    "openfoodfacts"
+   ]
+  },
+  "probes": {
+   "dsld": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "\"0 49000 00634 6\"",
+      "form": "spaced:0 49000 00634 6",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "\"0 049000 006346\"",
+      "form": "spaced:0 049000 006346",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "049000006346",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "0049000006346",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     }
+    ]
+   },
+   "fdc": {
+    "hit": {
+     "fdc_id": 2743960,
+     "fields": {
+      "ingredients": true,
+      "ingredients_chars": 102,
+      "ingredients_ends_cleanly": true,
+      "servingSize": true
+     },
+     "form": "gtin14",
+     "stored_gtinUpc": "00049000006346"
+    },
+    "tried": [
+     {
+      "code": "00049000006346",
+      "form": "gtin14",
+      "hit": true,
+      "results": 1
+     },
+     {
+      "code": "0049000006346",
+      "form": "ean13",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "049000006346",
+      "form": "upca",
+      "hit": false,
+      "results": 0
+     },
+     {
+      "code": "04963406",
+      "form": "as_given",
+      "hit": false,
+      "results": 1
+     }
+    ]
+   },
+   "ndc": {
+    "applicable": false,
+    "hit": null,
+    "tried": []
+   },
+   "off": {
+    "hit": {
+     "fields": {
+      "ingredients_parsed": 6,
+      "ingredients_text": true,
+      "ingredients_text_languages": [
+       "en"
+      ],
+      "nutriments": true
+     },
+     "form": "as_given",
+     "lang": "en"
+    },
+    "tried": [
+     {
+      "code": "04963406",
+      "form": "as_given",
+      "hit": true
+     },
+     {
+      "code": "049000006346",
+      "form": "upca",
+      "hit": true
+     },
+     {
+      "code": "0049000006346",
+      "form": "ean13",
+      "hit": true
+     },
+     {
+      "code": "00049000006346",
+      "form": "gtin14",
+      "hit": true
+     }
+    ]
+   },
+   "openfda_label": {
+    "hit": null,
+    "tried": [
+     {
+      "code": "0049000006346",
+      "form": "ean13",
+      "hit": false
+     },
+     {
+      "code": "049000006346",
+      "form": "upca",
+      "hit": false
+     },
+     {
+      "code": "00049000006346",
+      "form": "gtin14",
+      "hit": false
+     }
+    ]
+   }
+  }
+ }
+]

@@ -1,0 +1,28 @@
+14:46:35 hole  7  A2 (nothing yet)       before  0.557 V   LIT  0.558 V   after  0.558 V   change +0.001 V
+14:46:35 hole  7  A3 (nothing yet)       before  0.557 V   LIT  0.557 V   after  0.557 V   change +0.001 V
+14:57:56 hole  7  A2=U1 pin10            before  4.096 V   LIT  4.096 V   after  4.096 V   change +0.000 V (≥4.1 V: reads as 4.1, the ADC's ceiling)
+14:57:56 hole  7  A3=DRV1 CE             before  0.087 V   LIT  0.087 V   after  0.087 V   change -0.000 V
+14:57:59 hole  3  A2=U1 pin10            before  4.096 V   LIT  4.096 V   after  4.096 V   change +0.000 V (≥4.1 V: reads as 4.1, the ADC's ceiling)
+14:58:00 hole  3  A3=DRV1 CE             before  0.087 V   LIT  0.087 V   after  0.087 V   change -0.000 V
+15:07:01 hole 13  A2 (wherever it is now) before  0.557 V   LIT  0.559 V   after  0.557 V   change +0.001 V
+15:07:02 hole 13  A3=DRV1 CE             before  0.087 V   LIT  4.096 V   after  0.087 V   change +4.009 V (≥4.1 V: reads as 4.1, the ADC's ceiling)
+15:07:05 hole  7  A2 (wherever it is now) before  0.557 V   LIT  0.557 V   after  0.557 V   change -0.000 V
+15:07:05 hole  7  A3=DRV1 CE             before  0.087 V   LIT  0.087 V   after  0.087 V   change -0.000 V
+15:12:07 hole  7  A2 (not connected)     before  0.557 V   LIT  0.558 V   after  0.557 V   change +0.000 V
+15:12:08 hole  7  A3=DRV1 CE             before  0.104 V   LIT  0.104 V   after  0.104 V   change +0.000 V
+15:12:10 hole 13  A2 (not connected)     before  0.557 V   LIT  0.558 V   after  0.557 V   change +0.001 V
+15:12:11 hole 13  A3=DRV1 CE             before  0.104 V   LIT  0.104 V   after  0.104 V   change +0.000 V
+15:17:51 hole  7  A2=Nano A3 pin         before  0.105 V   LIT  0.105 V   after  0.105 V   change +0.000 V
+15:17:52 hole  7  A3=DRV1 CE rail        before  0.104 V   LIT  0.104 V   after  0.104 V   change +0.000 V
+15:17:55 hole 13  A2=Nano A3 pin         before  0.105 V   LIT  0.105 V   after  0.105 V   change -0.000 V
+15:17:55 hole 13  A3=DRV1 CE rail        before  0.104 V   LIT  0.105 V   after  0.104 V   change +0.000 V
+15:27:38 hole  7  A2=Nano A4 pin         before  0.100 V   LIT  0.100 V   after  0.100 V   change -0.000 V
+15:27:39 hole  7  A3=DRV1 CE rail        before  0.100 V   LIT  0.100 V   after  0.100 V   change +0.000 V
+15:27:41 hole  3  A2=Nano A4 pin         before  0.100 V   LIT  0.100 V   after  0.100 V   change -0.000 V
+15:27:42 hole  3  A3=DRV1 CE rail        before  0.100 V   LIT  0.100 V   after  0.100 V   change +0.000 V
+15:29:42 hole  7  A2=Nano A4 pin         before  0.145 V   LIT  0.145 V   after  0.145 V   change -0.000 V
+15:29:43 hole  7  A3=DRV1 CE rail        before  0.144 V   LIT  0.144 V   after  0.144 V   change +0.000 V
+15:29:46 hole  3  A2=Nano A4 pin         before  0.145 V   LIT  0.145 V   after  0.145 V   change -0.000 V
+15:29:46 hole  3  A3=DRV1 CE rail        before  0.144 V   LIT  0.144 V   after  0.144 V   change +0.000 V
+15:29:49 hole 13  A2=Nano A4 pin         before  0.145 V   LIT  0.145 V   after  0.145 V   change -0.000 V
+15:29:50 hole 13  A3=DRV1 CE rail        before  0.144 V   LIT  0.145 V   after  0.144 V   change +0.000 V

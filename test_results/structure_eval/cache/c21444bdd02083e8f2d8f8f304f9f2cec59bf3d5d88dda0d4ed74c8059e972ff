@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="43029403-2afe-cfa1-e063-6394a90a99a3"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Fungicure Night Cream</title>
+   <effectiveTime value="20251204"/>
+   <setId root="43029403-2afd-cfa1-e063-6394a90a99a3"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="156391729"/>
+            <name>Kobayashi Healthcare International, Inc.</name>
+            <assignedEntity>
+               <assignedOrganization>
+                  <id root="1.3.6.1.4.1.519.1" extension="079852115"/>
+                  <name>Kobayashi America Manufacturing, LLC</name>
+               </assignedOrganization>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="452650a1-815c-04a7-e063-6294a90a42d4"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20251204"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="52389-681" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Fungicure Night Cream</name>
+                        <formCode code="C28944" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CREAM"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>Clotrimazole</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2788Z9758H" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCYRRHIZA GLABRA (LICORICE) ROOT</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="W2ZU1RY8B0" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GREEN TEA LEAF</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2KR89I4H1Y" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>STEARYL ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="HIE492ZZ3T" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PHENOXYETHANOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="RUE8E6T4NB" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ALOE BARBADENSIS LEAF JUICE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="B6E5W8RQJ4" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WHITE PETROLATUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="VIF565UC2G" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TEA TREE OIL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="TTV12P4NEE" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>XANTHAN GUM</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mg" value="10"/>
+                              <denominator unit="g" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="G07GZ97H65" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CLOTRIMAZOLE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="G07GZ97H65" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>CLOTRIMAZOLE</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2968PHW8QP" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CITRIC ACID</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="9E8X80D2L0" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>.ALPHA.-TOCOPHEROL ACETATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="8W8T17847W" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>UREA</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="6OZP39ZG8H" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>POLYSORBATE 80</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="PDC6A3C0OX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERIN</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="FCZ5MH785I" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>GLYCERYL STEARATE SE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="936JST6JCN" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>CETYL ALCOHOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="S883J9JDYX" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WILLOW BARK</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="K49155WL9Y" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>SHEA BUTTER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="KME849MC7A" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DISODIUM HEDTA</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="WV9CM0O67Z" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>PANTHENOL</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="0RE8K4LNJS" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>ISOPROPYL MYRISTATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="2Y53S6ATLU" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>DIMETHICONE 350</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="B22547B95K" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>TRISODIUM CITRATE DIHYDRATE</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="48.2" unit="g"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code/>
+                              <formCode code="C42794" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TUBE"/>
+                              <asContent>
+                                 <quantity>
+                                    <numerator value="1" unit="1"/>
+                                    <denominator value="1"/>
+                                 </quantity>
+                                 <containerPackagedProduct>
+                                    <code code="52389-681-02" codeSystem="2.16.840.1.113883.6.69"/>
+                                    <formCode code="C43182" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="CARTON"/>
+                                 </containerPackagedProduct>
+                                 <subjectOf>
+                                    <marketingAct>
+                                       <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                       <statusCode code="active"/>
+                                       <effectiveTime>
+                                          <low value="20251219"/>
+                                       </effectiveTime>
+                                    </marketingAct>
+                                 </subjectOf>
+                              </asContent>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M005" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20251219"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_43080112-f5da-2b21-e063-6294a90a1aaa">
+               <id root="4526b65c-b0ea-180c-e063-6394a90ae916"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Active ingredient</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>Clotrimazole 1%</paragraph>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4308008c-31bb-71d4-e063-6394a90ad153">
+               <id root="4526c387-9c6f-1a47-e063-6394a90a21da"/>
+               <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Purpose</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>Antifungal</paragraph>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_430806f5-d731-9581-e063-6394a90a29a5">
+               <id root="4526b6bf-f3e8-0e65-e063-6394a90a6238"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Uses</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>For the cure of most</paragraph>
+                  <list listType="unordered">
+                     <item>athlete's foot (tinea pedis)</item>
+                  </list>
+                  <paragraph>For relief og:</paragraph>
+                  <list listType="unordered">
+                     <item>itching</item>
+                     <item>scaling</item>
+                     <item>cracking</item>
+                     <item>burning</item>
+                     <item>redness</item>
+                     <item>soreness</item>
+                     <item>irritation</item>
+                     <item>discomforts which may accompany this condition.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4308140b-78ca-44dd-e063-6294a90a4de2">
+               <id root="4526b265-4251-3e71-e063-6294a90a21a8"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Warnings</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="bold">For external use only.</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_430816e5-e513-5be9-e063-6294a90a521b">
+               <id root="4526ca58-f030-31ad-e063-6394a90a7bae"/>
+               <code code="50569-3" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ASK DOCTOR SECTION"/>
+               <title>
+                  <content styleCode="bold">Ask a doctor before use</content>
+               </title>
+               <text>
+                  <paragraph>on children under 2 years of age.</paragraph>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_43081a3c-67f7-60f5-e063-6294a90a9424">
+               <id root="4526b693-1381-c18c-e063-6294a90a8b7f"/>
+               <code code="50567-7" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - WHEN USING SECTION"/>
+               <title>
+                  <content styleCode="bold">When using this product</content>
+               </title>
+               <text>
+                  <paragraph>avoid contact with the eyes.</paragraph>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_43081fb1-f6fd-7621-e063-6394a90a898a">
+               <id root="4526c193-dd2b-1774-e063-6394a90aabbf"/>
+               <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+               <title>
+                  <content styleCode="bold">Stop use and ask a doctor if</content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>irritation occurs</item>
+                     <item>there is no improvement within 4 weeks.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_430826d3-7c45-655a-e063-6294a90ae4fe">
+               <id root="4526cfb4-b279-35bd-e063-6394a90a1b99"/>
+               <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+               <title>
+                  <content styleCode="bold">Keep out of reach of children.</content>
+               </title>
+               <text>
+                  <paragraph>If swallowed, get medical help or contact a poison control center right away.</paragraph>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_43086b9e-b691-05c9-e063-6394a90aea47">
+               <id root="4526d12f-4d35-c729-e063-6294a90a50d6"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Directions</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>Clean the affected area and dry thoroughly.</item>
+                     <item>Apply a thin layer of FUNGICURE Night Cream over the affected area twice daily (morning and night), or as directed by a doctor.</item>
+                     <item>For athlete's foot, use daily for 4 weeks. If condition persists longer, consult a doctor.</item>
+                     <item>For athlete's foot: Pay special attention to spaces between toes; wear well fitting, ventilated shoes, and change shoes and socks at least once daily.</item>
+                     <item>Supervise children in the use of this product.</item>
+                     <item>This product is not effective on scalp or nails.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4308ca6a-cc66-4186-e063-6294a90aeb2b">
+               <id root="4526cfb4-b27b-35bd-e063-6394a90a1b99"/>
+               <code code="60561-8" codeSystem="2.16.840.1.113883.6.1" displayName="OTHER SAFETY INFORMATION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Other information</content>
+                  </content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>Fungicure Night Cream may be applied to exposed nail-beds, to cuticles, around nail edges and under nail tips.</item>
+                     <item>While not all finger and toe fungal infections are curable with OTC topical medications, if you see improvement within 4 weeks of use, you may continue to use Fungicure Night Cream until satisfactory results are obtained.</item>
+                     <item>This product is not intended to, nor will it, penetrate hard nail surfaces.</item>
+                     <item>Keep container tightly closed when not in use.</item>
+                     <item>Store away from excessive heat and cold.</item>
+                     <item>You may report serious side effects to the phone number provided under Questions? below.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4308f2bf-7766-7f6e-e063-6294a90a9d0b">
+               <id root="4526d53f-a80b-bedc-e063-6294a90aa849"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Inactive ingredients</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>Aloe barbadensis leaf juice, cetyl alcohol, citric acid, dimethicone, disodium EDTA, D-panthenol, glycerin, glyceryl stearate, green tea extract, isopropyl myristate, licorice (glycyrrhiza glabra) root extract, petrolatum, phenoxyethanol, polysorbate 80, purified water, shea butter, sodium citrate, stearyl alcohol, tea tree (melaleuca alternifolia) oil, tocopheryl acetate, urea, willow (salix alba) bark extract, xanthan gum.</paragraph>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_4309090f-9347-800a-e063-6394a90a719e">
+               <id root="4526d3b2-bf62-2bf3-e063-6394a90a4fad"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>
+                  <content styleCode="italics">
+                     <content styleCode="bold">Questions?</content>
+                  </content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">1-800-792-2582</content>
+                     </content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20251204"/>
+            </section>
+         </component>
+         <component>
+            <section ID="id_link_430924c4-02fe-a938-e063-6294a90ab103">
+               <id root="4526d753-7998-0ec3-e063-6294a90a270f"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="img_43091739-c4c9-5c55-e063-6294a90a873a"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20251204"/>
+               <component>
+                  <observationMedia ID="img_43091739-c4c9-5c55-e063-6294a90a873a">
+                     <text>PDP</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="Fungicure Night Cream Carton181-0RF 1124 ART v1.0.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

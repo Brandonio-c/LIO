@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261103-231855_host</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261103-231855_host</code> on <code>/dev/cu.usbserial-1120</code>
+,
+2026-11-03T23:18:55-05:00 to 2026-11-03T23:18:58-05:00</p>
+<div class="verdict" style="background: #0ca30c">FUNCTIONAL</div>
+<ul><li>no failures or warnings</li></ul>
+
+<table>
+<tr><th>Sample</th><td>none-empty-chamber</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td>2.0.0 (proto 1, build 2026-11-03)</td>
+    <th>Config</th><td><code>31365ef72671</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.11</td>
+    <th>Software</th><td>lio 0.2.0, git <code>f6770625cb</code></td></tr>
+<tr><th>Results</th><td colspan="3">PASS 5, SKIP 1</td></tr>
+<tr><th>LED duty</th><td colspan="3">0.0 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T02.1">T02.1</a></td><td>Port open and boot banner</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.2">T02.2</a></td><td>PING round-trip latency</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.3">T02.3</a></td><td>INFO fields, versions and safety limits</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.4">T02.4</a></td><td>Robustness to bad input</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.5">T02.5</a></td><td>Sequence numbers and interleaved events</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T02.6">T02.6</a></td><td>RESET restores the boot state</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+</table>
+
+
+
+
+<h2>T02</h2>
+
+<h3 id="T02.1">T02.1 Port open and boot banner <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Boot banner within the timeout<br><code>T02.1/banner</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1.65 s</td><td>&lt;= 3 s</td></tr>
+
+<tr><td>Banner identifies LIO firmware<br><code>T02.1/identity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># BOOT name=lio fw=2.0.0 proto=1 build=2026-11-03 adc_ok=0 hw_wdt=0</td><td>name=lio, fw and proto present</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.2">T02.2 PING round-trip latency <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Every PING answered<br><code>T02.2/answered</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>100/100 answered</td><td>all</td></tr>
+
+<tr><td>p99 round trip<br><code>T02.2/p99</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>median 6.00 ms, p99 6.99 ms, max 7.10 ms</td><td>p99 &lt; 50 ms</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.3">T02.3 INFO fields, versions and safety limits <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>17 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>INFO fields present<br><code>T02.3/fields</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>21 fields</td><td>all protocol-1 INFO fields</td></tr>
+
+<tr><td>Firmware compatible with this host package<br><code>T02.3/version</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>fw 2.0.0 proto 1</td><td>&gt;= 2.0.0, proto 1</td></tr>
+
+<tr><td>settle_ms matches lio_hw.yaml<br><code>T02.3/limit/settle_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>8</td><td>8</td></tr>
+
+<tr><td>wdt_a_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_a_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2000</td><td>2000</td></tr>
+
+<tr><td>wdt_b_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_b_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5000</td><td>5000</td></tr>
+
+<tr><td>wdt_a_cap_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_a_cap_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5000</td><td>5000</td></tr>
+
+<tr><td>wdt_b_cap_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_b_cap_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>10000</td><td>10000</td></tr>
+
+<tr><td>comms_ms matches lio_hw.yaml<br><code>T02.3/limit/comms_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>10000</td><td>10000</td></tr>
+
+<tr><td>arm_ms matches lio_hw.yaml<br><code>T02.3/limit/arm_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>60000</td><td>60000</td></tr>
+
+<tr><td>step_max matches lio_hw.yaml<br><code>T02.3/limit/step_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2048</td><td>2048</td></tr>
+
+<tr><td>jog_max matches lio_hw.yaml<br><code>T02.3/limit/jog_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2048</td><td>2048</td></tr>
+
+<tr><td>jog_v_max matches lio_hw.yaml<br><code>T02.3/limit/jog_v_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1000</td><td>1000</td></tr>
+
+<tr><td>jog_acc_max matches lio_hw.yaml<br><code>T02.3/limit/jog_acc_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1000</td><td>1000</td></tr>
+
+<tr><td>wake_ms_max matches lio_hw.yaml<br><code>T02.3/limit/wake_ms_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3000</td><td>3000</td></tr>
+
+<tr><td>ADC address matches lio_hw.yaml<br><code>T02.3/adc/addr</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0x48</td><td>0x48</td></tr>
+
+<tr><td>ADC gain matches lio_hw.yaml<br><code>T02.3/adc/gain</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1</td><td>1</td></tr>
+
+<tr><td>ADC rate matches lio_hw.yaml<br><code>T02.3/adc/rate</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>128</td><td>128</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.4">T02.4 Robustness to bad input <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>5 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Unknown command<br><code>T02.4/unknown</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@122 ERR FROBNICATE code=1 msg=unknown command</td><td>ERR code=1</td></tr>
+
+<tr><td>Bad argument<br><code>T02.4/badarg</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@123 ERR MEAS code=2 msg=usage: MEAS &lt;1-16&gt; [settle_ms] [n]</td><td>ERR code=2</td></tr>
+
+<tr><td>Missing argument<br><code>T02.4/missing</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@124 ERR CH code=2 msg=usage: CH &lt;1-16&gt; ON [ms]</td><td>ERR code=2</td></tr>
+
+<tr><td>Line over 64 characters<br><code>T02.4/overflow</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR ? code=6 msg=line too long</td><td>ERR code=6</td></tr>
+
+<tr><td>Garbage bytes, then PING<br><code>T02.4/garbage</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>PING OK</td><td>PING still answered</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.5">T02.5 Sequence numbers and interleaved events <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+<details >
+<summary>4 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>@1 echoed<br><code>T02.5/seq/1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@1 OK PING uptime_ms=10127</td><td>@1 OK PING</td></tr>
+
+<tr><td>@4242 echoed<br><code>T02.5/seq/4242</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@4242 OK PING uptime_ms=10133</td><td>@4242 OK PING</td></tr>
+
+<tr><td>@99999 echoed<br><code>T02.5/seq/99999</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@99999 OK PING uptime_ms=10140</td><td>@99999 OK PING</td></tr>
+
+<tr><td>No @seq, none echoed<br><code>T02.5/noseq</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>OK PING uptime_ms=10144</td><td>OK PING</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.6">T02.6 RESET restores the boot state <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Banner after RESET<br><code>T02.6/banner</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0.06 s</td><td>&lt;= 3 s</td></tr>
+
+<tr><td>STATUS shows the safe state<br><code>T02.6/safe</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ch=0 ce1=0 ce2=0 mask=0x0000 armed=0</td><td>ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle</td></tr>
+
+<tr><td>Settings back to defaults<br><code>T02.6/defaults</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>wdt_a_ms=2000 (was set to 200)</td><td>2000</td></tr>
+
+</table>
+</details>
+
+
+
+</body>
+</html>

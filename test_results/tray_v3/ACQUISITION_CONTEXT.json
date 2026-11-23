@@ -1,0 +1,20 @@
+{
+  "purpose": "empty-tray baseline with printed circular tray (not bare-chamber empty)",
+  "holder": "LIO_V3_Simple_Circular_Tray_v3",
+  "tray_parts": "flat-bottom tray only; removable lid OFF for measurement",
+  "contents": "empty (no food, no reference tile)",
+  "support_arrangement": "cup nest REMOVED; tray sitting on chamber support/floor",
+  "cad_nominal_floor_note": "design Z2.4 mm with nest removed (CAD chamber-local); not a measured stage coordinate",
+  "chamber_door": "closed",
+  "earth_bond": "confirmed connected",
+  "operator_present": true,
+  "canonical_sample_id": "empty",
+  "results_root": "test_results/tray_v3",
+  "not_comparable_to": "legacy bare-chamber empty baselines under test_results/",
+  "confirmed_at": "2026-11-20T17:32:00-05:00",
+  "stage_recovery": {
+    "event": "operator_manual_level_then_set_top",
+    "note": "Motors were skewed after reconnect; operator leveled chamber by hand; host set_top at that pose before full scan",
+    "at": "2026-11-20T17:35:05-0500"
+  }
+}

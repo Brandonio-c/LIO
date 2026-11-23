@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO diagnostic sweep 20261123-002839_scan_quick</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  .card { border: 1px solid var(--rule); border-radius: 6px; padding: .6rem .9rem; margin: .6rem 0; }
+  .card dl { display: grid; grid-template-columns: 7rem 1fr; gap: .2rem .8rem; margin: .4rem 0 0; }
+  .card dt { color: var(--ink2); font-weight: 600; }
+  .card dd { margin: 0; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+  .note { color: var(--ink2); font-size: 12px; }
+  @media (max-width: 640px) { .card dl { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>LIO diagnostic sweep</h1>
+<p class="meta">Run <code>20261123-002839_scan_quick</code>,
+mode <strong>quick</strong>, sample <strong>empty</strong>,
+2026-11-23T00:28:39-05:00 to —: <strong>INCOMPLETE</strong></p>
+<div class="verdict" style="background: #0ca30c">FUNCTIONAL</div>
+<ul><li>warnings: T13.T09, T13.T13</li></ul>
+<p class="note">Thresholds are provisional (set on the simulator), to be calibrated at commissioning.</p>
+
+<table>
+<tr><th>Firmware</th><td>2.5.2 (proto 1)</td>
+    <th>Config</th><td><code>e29964e36d34</code></td></tr>
+<tr><th>Lead screw</th><td>M6 x 1.0 threaded rod, 304 stainless steel, 255 mm (10 in), x4</td><th>Coupler</th><td>5 mm to 6 mm shaft coupler, aluminium alloy, 25 mm long, 20 mm diameter</td></tr>
+<tr><th>Motors</th><td>28BYJ-48 5 V stepper (64:1 gearbox), ULN2003 driver boards, x2</td><th>Plan</th>
+    <td>19 steps, 9 heights down,
+        ETA 21 min</td></tr>
+<tr><th>Aborts</th><td colspan="3">All off pressed</td></tr>
+</table>
+
+<h2>Subsystem health</h2>
+<table>
+<tr><th>Subsystem</th><th>Parts</th><th>Health</th><th>Reason</th></tr>
+
+<tr><td>Link / firmware</td><td>Nano R4, USB, firmware</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>1 checks pass</td></tr>
+
+<tr><td>ADC / I²C</td><td>ADS1115, software I²C D11/D12</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>1 checks pass</td></tr>
+
+<tr><td>Shift registers</td><td>U1, U2</td>
+<td><span class="badge" style="border-color: #8a8984">- n/a</span></td>
+<td>not measured: no optical response to compare</td></tr>
+
+<tr><td>LED drivers / rails</td><td>DRV1 (RAIL A), DRV2 (RAIL B)</td>
+<td><span class="badge" style="border-color: #8a8984">- n/a</span></td>
+<td>not measured: </td></tr>
+
+<tr><td>LED / MOSFET channels</td><td>LED1-16, Q1-16</td>
+<td><span class="badge" style="border-color: #8a8984">- n/a</span></td>
+<td>not measured: </td></tr>
+
+<tr><td>OPT101</td><td>OPT101 (A1)</td>
+<td><span class="badge" style="border-color: #8a8984">- n/a</span></td>
+<td>not measured: no blind channels measured; needs hum records, coils off and moving; no dark frames; no select-only readings; under 5 min of dark frames: too short for a drift estimate</td></tr>
+
+<tr><td>InGaAs TIA</td><td>D1, U5, Rf, Cf (A0)</td>
+<td><span class="badge" style="border-color: #8a8984">- n/a</span></td>
+<td>not measured: no blind channels measured; needs hum records, coils off and moving; no dark frames; no select-only readings; under 5 min of dark frames: too short for a drift estimate</td></tr>
+
+<tr><td>Motors / lead screws</td><td>M1, M2, ULN2003, couplers, M6 rods</td>
+<td><span class="badge" style="border-color: #fab219">! WATCH</span></td>
+<td>mech/travel: tracked range 268806 / 406532 half-steps (M1/right / M2/left): the two sides differ (thresholds.motion.travel.range_steps not set: not compared)</td></tr>
+
+<tr><td>Stage tracking</td><td>lio.stage, soft limits</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>1 checks pass</td></tr>
+
+<tr><td>Safety</td><td>interlocks, duty budget</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>1 checks pass</td></tr>
+
+<tr><td>Power / earthing</td><td>supplies, GND, earth bond</td>
+<td><span class="badge" style="border-color: #8a8984">- n/a</span></td>
+<td>not measured: no hum records; A2/A3 not wired for rail and ground monitoring</td></tr>
+
+<tr><td>Optical path / ambient</td><td>window, shroud, lid, sample</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
+<td>1 checks pass</td></tr>
+
+<tr><td>Run</td><td>the scan itself</td>
+<td><span class="badge" style="border-color: #fab219">! WATCH</span></td>
+<td>system/run: INCOMPLETE: All off pressed</td></tr>
+
+</table>
+
+
+<h2>Findings to act on</h2>
+
+<div class="card">
+<div><span class="badge" style="border-color: #fab219">! WARN</span>
+<strong>run complete</strong> <code>system/run</code></div>
+<div class="meta">INCOMPLETE: All off pressed</div>
+<dl>
+<dt>Why</dt><dd>The run did not complete: metrics needing the missing steps are SKIP.</dd>
+<dt>Parts</dt><dd>run</dd>
+<dt>Next check</dt><dd>See the abort reason; &#39;lio scan resume &lt;run&gt;&#39; carries on from the next step.</dd>
+</dl>
+</div>
+
+<div class="card">
+<div><span class="badge" style="border-color: #fab219">! WARN</span>
+<strong>travel (top to bottom)</strong> <code>mech/travel</code></div>
+<div class="meta">tracked range 268806 / 406532 half-steps (M1/right / M2/left): the two sides differ (thresholds.motion.travel.range_steps not set: not compared)</div>
+<dl>
+<dt>Why</dt><dd>The tracked travel differs from the configured one (or between the sides).</dd>
+<dt>Parts</dt><dd>stage limits</dd>
+<dt>Next check</dt><dd>Re-mark the top and bottom.</dd>
+</dl>
+</div>
+
+
+
+
+
+<h2>System</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>link and firmware (no unexpected reset, no lost replies)<br><code>system/link</code></td>
+<td>0 unexpected boots</td>
+<td>firmware 2.5.2, no unexpected # BOOT</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ADC / I²C (every reading answered)<br><code>system/adc</code></td>
+<td>0 readings</td>
+<td>0 readings, no dropout</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>addressing (each hole distinct)<br><code>system/addressing</code></td>
+<td></td>
+<td>no optical response to compare</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>P4 interlock re-checks<br><code>system/interlocks</code></td>
+<td></td>
+<td>P4 not reached</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>LED duty (RAIL A &lt;= budget per LED per minute)<br><code>system/duty</code></td>
+<td>0 ms/min</td>
+<td>max 0 ms of 1000 ms; 0 cool-down waits, 0 s in all</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>stage tracking (position trusted, soft limits respected)<br><code>system/stage</code></td>
+<td></td>
+<td>position [-16384, -16384], limits respected</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #fab219">! WARN</span></td>
+<td>run complete<br><code>system/run</code></td>
+<td></td>
+<td>INCOMPLETE: All off pressed</td><td></td></tr>
+
+</table>
+
+<h2>Optics</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>response curves vs height<br><code>optics/curves</code></td>
+<td></td>
+<td>no down pass in this mode (no height data)</td><td></td></tr>
+
+</table>
+
+<h2>Electrical</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: electrical coupling<br><code>elec/opt101/coupling</code></td>
+<td></td>
+<td>no blind channels measured</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: electrical coupling<br><code>elec/ingaas/coupling</code></td>
+<td></td>
+<td>no blind channels measured</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: dark offset<br><code>elec/opt101/dark_offset</code></td>
+<td></td>
+<td>no dark frames</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: dark offset<br><code>elec/ingaas/dark_offset</code></td>
+<td></td>
+<td>no dark frames</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: dark drift<br><code>elec/opt101/drift</code></td>
+<td></td>
+<td>under 5 min of dark frames: too short for a drift estimate</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: dark drift<br><code>elec/ingaas/drift</code></td>
+<td></td>
+<td>under 5 min of dark frames: too short for a drift estimate</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: mains hum<br><code>elec/opt101/hum</code></td>
+<td></td>
+<td>no hum records</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: mains hum<br><code>elec/ingaas/hum</code></td>
+<td></td>
+<td>no hum records</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: coil interference<br><code>elec/opt101/coil_emi</code></td>
+<td></td>
+<td>needs hum records, coils off and moving</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: coil interference<br><code>elec/ingaas/coil_emi</code></td>
+<td></td>
+<td>needs hum records, coils off and moving</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: select-only coupling<br><code>elec/opt101/select_only</code></td>
+<td></td>
+<td>no select-only readings</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: select-only coupling<br><code>elec/ingaas/select_only</code></td>
+<td></td>
+<td>no select-only readings</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>supply rails and ground (A2/A3)<br><code>elec/rails</code></td>
+<td></td>
+<td>A2/A3 not wired for rail and ground monitoring</td><td></td></tr>
+
+</table>
+
+<h2>Mechanics</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>home sensors<br><code>mech/home_sensors</code></td>
+<td></td>
+<td>no home sensors fitted</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #fab219">! WARN</span></td>
+<td>travel (top to bottom)<br><code>mech/travel</code></td>
+<td>268806 half-steps</td>
+<td>tracked range 268806 / 406532 half-steps (M1/right / M2/left): the two sides differ (thresholds.motion.travel.range_steps not set: not compared)</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lockstep (firmware positions level after every move)<br><code>mech/lockstep</code></td>
+<td>0 moves</td>
+<td>0 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>settle time after a move<br><code>mech/settle</code></td>
+<td></td>
+<td>no settle records</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>backlash<br><code>mech/backlash</code></td>
+<td></td>
+<td>no down-pass reference curves (static or continuous mode, or no strong channel)</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>step loss<br><code>mech/step_loss</code></td>
+<td></td>
+<td>no down-pass reference curves (static or continuous mode, or no strong channel)</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>repeatability<br><code>mech/repeatability</code></td>
+<td></td>
+<td>no down-pass reference curves (static or continuous mode, or no strong channel)</td><td></td></tr>
+
+</table>
+
+<h2>Ambient</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: dark vs height (light leak)<br><code>ambient/opt101/leak</code></td>
+<td></td>
+<td>needs dark frames at 4+ heights</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: dark vs height (light leak)<br><code>ambient/ingaas/leak</code></td>
+<td></td>
+<td>needs dark frames at 4+ heights</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>opt101: room-light flicker<br><code>ambient/opt101/flicker</code></td>
+<td></td>
+<td>no dark streams</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>ingaas: room-light flicker<br><code>ambient/ingaas/flicker</code></td>
+<td></td>
+<td>no dark streams</td><td></td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>lid sensitivity<br><code>ambient/lid</code></td>
+<td></td>
+<td>optional operator step (lid ajar at two heights)</td><td></td></tr>
+
+</table>
+
+<h2>Trend</h2>
+<table>
+<tr><th>Status</th><th>Metric</th><th>Value</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>20261123-002839_scan_quick vs 20261116-202110_scan_quick<br><code>trend/compare</code></td>
+<td>1 x (furthest per-hole ratio)</td>
+<td>no change beyond the band</td><td>per-hole ratio within ±0.1 (WARN), ±0.25 (FAIL)</td></tr>
+
+<tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>control charts vs baselines<br><code>trend/control</code></td>
+<td></td>
+<td>needs 5 baselines of empty (have 1)</td><td></td></tr>
+
+</table>
+
+
+<h2>Not measured (capability)</h2>
+<ul><li><code>rail_monitor</code>: A2/A3 not wired for rail and ground monitoring</li><li><code>home_sensors</code>: no home sensors fitted</li></ul>
+</body>
+</html>

@@ -1,0 +1,299 @@
+{
+ "seed": 20261112,
+ "ocr_engine": "tesseract",
+ "items": [
+  {
+   "kind": "drug_facts",
+   "id": "216f4d22-e5e8-46c8-a4ef-8d1532792b56",
+   "license": "public domain (DailyMed/FDA)",
+   "image": "Pomada de Sulfa Label.jpg",
+   "sha256": "44aae9691555d84f9b272168e7d1980c7d751ccd39f546256677176f9bf75ed2",
+   "fields": [
+    {
+     "field": "active 3.5 mg",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false,
+   "sections": [
+    "other_information",
+    "inactive"
+   ]
+  },
+  {
+   "kind": "drug_facts",
+   "id": "44f9cf18-dd2d-4637-a5e1-3db82a1904ff",
+   "license": "public domain (DailyMed/FDA)",
+   "image": "softsoap-01.jpg",
+   "sha256": "1673f5aa9780f90f5abbaaf92d97b698d7748a7d659d1ad8d5630f45584561b0",
+   "fields": [
+    {
+     "field": "active 1.33 mg",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Water",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Cetrimonium Chloride",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Glycerin",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Lauramidopropylamine Oxide",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Cocamide MEA",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Citric Acid",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Sodium Benzoate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive PEG-120 Methyl Glucose Dioleate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Fragrance",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Sodium Chloride",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Tetrasodium EDTA",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Yellow 5",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "inactive Red 33",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false,
+   "sections": []
+  },
+  {
+   "kind": "drug_facts",
+   "id": "20ab5698-cd9f-0821-e063-6394a90a60d7",
+   "license": "public domain (DailyMed/FDA)",
+   "image": "Dosage and Administration .jpg",
+   "sha256": "7e6718c1e020f275e2f4f9ce2c2a8b1e541d48bc51dec1e6d055c0294471d5ea",
+   "fields": [
+    {
+     "field": "active 19 mg",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false,
+   "sections": [
+    "uses",
+    "warnings",
+    "directions",
+    "other_information"
+   ]
+  },
+  {
+   "kind": "supplement_facts",
+   "id": 301416,
+   "license": "public domain (NIH DSLD)",
+   "sha256": "3afa66a308d89b1126c1792075605834eb54553d9d6ef1e8bee30c325f2c3776",
+   "fields": [
+    {
+     "field": "row Loquat Leaf Extract, Dry",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "other Alcohol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "other Water",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "other Glycerin",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "supplement_facts",
+   "id": 280391,
+   "license": "public domain (NIH DSLD)",
+   "sha256": "8b709ba8843491ae701deb3b5a1f983c694c5289c5de63436af11c4a22142677",
+   "fields": [
+    {
+     "field": "other Glycerin",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "other Mint Flavor",
+     "ok": true,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0021788916291",
+   "fdc_id": 2675216,
+   "image_url": "https://images.openfoodfacts.org/images/products/002/178/891/6291/nutrition_en.22.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "754a6ab2582dcb45a87a4cc2a8f16f59bbe2ce717a18c0bf53b146a9a5ed4760",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": true
+    },
+    {
+     "field": "trans_fat",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": true,
+     "proposed": true
+    },
+    {
+     "field": "calories",
+     "ok": true,
+     "proposed": true
+    }
+   ],
+   "complete_panel": false
+  },
+  {
+   "kind": "nutrition_facts",
+   "id": "0070038600367",
+   "fdc_id": 2478674,
+   "image_url": "https://images.openfoodfacts.org/images/products/007/003/860/0367/nutrition_en.5.400.jpg",
+   "license": "CC-BY-SA 3.0, Open Food Facts contributors",
+   "sha256": "aa20a9878be3f82219331406c82e2df3a23883045a02ab4579202e6e08c943d3",
+   "reference": "FDC labelNutrients (approximate: partly computed)",
+   "fields": [
+    {
+     "field": "total_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "saturated_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "trans_fat",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "cholesterol",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "sodium",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_carbohydrate",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "dietary_fiber",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "total_sugars",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "protein",
+     "ok": false,
+     "proposed": false
+    },
+    {
+     "field": "calories",
+     "ok": false,
+     "proposed": false
+    }
+   ],
+   "complete_panel": false
+  }
+ ]
+}

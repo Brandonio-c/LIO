@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 23389,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Loratadine Loratadine LORATADINE LORATADINE LACTOSE MONOHYDRATE MAGNESIUM STEARATE STARCH, CORN SODIUM STARCH GLYCOLATE TYPE A POTATO White to Off-white 39;L"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts"
+      ],
+      "active_ingredient": [
+        "Active ingredient (in each tablet) Loratadine USP 10 mg"
+      ],
+      "purpose": [
+        "Purpose Antihistamine"
+      ],
+      "indications_and_usage": [
+        "Uses temporarily relieves these symptoms due to hay fever or other upper respiratory allergies: runny nose itchy, watery eyes sneezing itching of the nose or throat"
+      ],
+      "warnings": [
+        "Warnings Do not use if you have ever had an allergic reaction to this product or any of its ingredients."
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have liver or kidney disease. Your doctor should determine if you need a different dose."
+      ],
+      "when_using": [
+        "When using this product do not take more than directed. Taking more than directed may cause drowsiness."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if an allergic reaction to this product occurs. Seek medical help right away."
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center (1-800-222-1222) right away."
+      ],
+      "dosage_and_administration": [
+        "Directions adults and children 6 years and over 1 tablet daily; not more than 1 tablet in 24 hours children under 6 years of age ask a doctor consumers with liver or kidney disease ask a doctor"
+      ],
+      "dosage_and_administration_table": [
+        "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><col width=\"41%\"/><col width=\"58%\"/><tbody><tr styleCode=\"Botrule\"><td styleCode=\"Lrule Rrule\" valign=\"middle\">adults and children 6 years and over  </td><td styleCode=\"Rrule\" valign=\"middle\">1 tablet daily; not more than 1 tablet in 24 hours  </td></tr><tr styleCode=\"Botrule\"><td styleCode=\"Lrule Rrule\" valign=\"middle\">children under 6 years of age  </td><td styleCode=\"Rrule\" valign=\"middle\">ask a doctor  </td></tr><tr><td styleCode=\"Lrule Rrule\" valign=\"middle\">consumers with liver or kidney disease  </td><td styleCode=\"Rrule\" valign=\"middle\">ask a doctor  </td></tr></tbody></table>"
+      ],
+      "storage_and_handling": [
+        "Other information Tamper-evident: do not use if foil seal under cap, printed with “SEALED for YOUR PROTECTION” is missing, open or broken store at 20° to 25°C (68° to 77°F) protect from excessive moisture"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients lactose monohydrate, magnesium stearate, pregelatinized starch (maize), sodium starch glycolate."
+      ],
+      "questions": [
+        "Questions or comments? call 1-866-933-6337"
+      ],
+      "package_label_principal_display_panel": [
+        "carton"
+      ],
+      "set_id": "5a71de5c-a844-9dd4-e063-6294a90af015",
+      "id": "5a71de70-3333-abbb-e063-6394a90a1ea0",
+      "effective_time": "20260901",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "ANDA208314"
+        ],
+        "brand_name": [
+          "Loratadine"
+        ],
+        "generic_name": [
+          "LORATADINE"
+        ],
+        "manufacturer_name": [
+          "YYBA CORP"
+        ],
+        "product_ndc": [
+          "73581-229"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "LORATADINE"
+        ],
+        "rxcui": [
+          "311372"
+        ],
+        "spl_id": [
+          "5a71de70-3333-abbb-e063-6394a90a1ea0"
+        ],
+        "spl_set_id": [
+          "5a71de5c-a844-9dd4-e063-6294a90af015"
+        ],
+        "package_ndc": [
+          "73581-229-01",
+          "73581-229-03"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "7AJO3BO7QN"
+        ]
+      }
+    }
+  ]
+}

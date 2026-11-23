@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 22420,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "DERMFREE Vein Target Microneedle Patch Allantoin 1% Vein Target Microneedle Patch DIMETHICONE DIMETHICONE MINERAL OIL PETROLATUM BEESWAX GLYCERIN"
+      ],
+      "active_ingredient": [
+        "Active Ingredient Allantoin1%"
+      ],
+      "purpose": [
+        "Purpose Skin Protectant"
+      ],
+      "indications_and_usage": [
+        "Use Helps soothe, moisturize, and protect dry, irritated skin"
+      ],
+      "warnings": [
+        "Warnings For external use only."
+      ],
+      "do_not_use": [
+        "Do not use Do not apply to broken, irritated, wounded, or inflamed skin."
+      ],
+      "when_using": [
+        "When Using avoid contact with eyes, mouth, and other mucous membranes. In case of accidental contact, rinse thoroughly with clean water."
+      ],
+      "stop_use": [
+        "Stop Use if skin redness, itching, rash, swelling, or other signs of irritation develop and persist."
+      ],
+      "ask_doctor": [
+        "Ask Doctor if skin redness, itching, rash, swelling, or other signs of irritation develop and persist."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep Out Of Reach Of Children Keep out of reach of children and pets to prevent accidental ingestion or choking hazard.If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions •Clean and thoroughly dry the skin on the leg area where the patch will be applied. •Cut the patch to your desired size if needed, then peel off the protective backing layer. •Apply the adhesive side firmly to the target leg area and press evenly along all edges to ensure full skin contact. •Leave the patch on for 2 to 4 hours per application, then remove and replace with a new patch. •For optimal soothing and moisturizing results, use continuously as directed."
+      ],
+      "storage_and_handling": [
+        "Other information Store in a cool, dry place at room temperature. Keep away from direct sunlight, high heat, and moisture. Keep sealed when not in use."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Mineral Oil, Petrolatum, Beeswax, Glycerin"
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPAL DISPLAY PANEL 1"
+      ],
+      "set_id": "57449e29-ec46-9c30-e063-6394a90a7b4a",
+      "id": "57449e29-ec47-9c30-e063-6394a90a7b4a",
+      "effective_time": "20260723",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M016"
+        ],
+        "brand_name": [
+          "DERMFREE Vein Target Microneedle Patch"
+        ],
+        "generic_name": [
+          "ALLANTOIN 1% VEIN TARGET MICRONEEDLE PATCH"
+        ],
+        "manufacturer_name": [
+          "Wenzhou Yuyuan Pharmaceutical Co., Ltd."
+        ],
+        "product_ndc": [
+          "87786-025"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "DIMETHICONE"
+        ],
+        "spl_id": [
+          "57449e29-ec47-9c30-e063-6394a90a7b4a"
+        ],
+        "spl_set_id": [
+          "57449e29-ec46-9c30-e063-6394a90a7b4a"
+        ],
+        "package_ndc": [
+          "87786-025-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000010282"
+        ],
+        "pharm_class_pe": [
+          "Skin Barrier Activity [PE]"
+        ],
+        "unii": [
+          "92RU3N3Y1O"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+=== standalone run 1 ===
+AVCC/Vcc = inf V
+pin float_V pullup_V high_V low_V estR_to_GND verdict
+A0 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A1 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A2 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A3 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A4 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A5 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+=== standalone run 2 ===
+AVCC/Vcc = inf V
+pin float_V pullup_V high_V low_V estR_to_GND verdict
+A0 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A1 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A2 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A3 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A4 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A5 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+=== standalone run 3 ===
+AVCC/Vcc = inf V
+pin float_V pullup_V high_V low_V estR_to_GND verdict
+A0 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A1 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A2 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A3 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A4 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+A5 nan nan nan nan >1M STRONG LOAD/SHORT TO GND
+Standalone REF during self-test idle: 0.18 V (operator, meter)

@@ -1,0 +1,23 @@
+{
+  "purpose": "Citrucel orange food-in-tray full diagnostic sweep, catalogued to food library sample LIO-F-00001",
+  "holder": "LIO_V3_Simple_Circular_Tray_v3",
+  "tray_parts": "flat-bottom tray only; removable lid OFF for measurement",
+  "contents": "Citrucel orange (methylcellulose fiber) prepared in tray",
+  "food_library": {
+    "sample_code": "LIO-F-00001",
+    "gtin14": "00300680418301",
+    "product_name": "Citrucel orange",
+    "lot": "211407"
+  },
+  "support_arrangement": "cup nest REMOVED; tray sitting on chamber support/floor",
+  "chamber_door": "closed",
+  "earth_bond": "confirmed connected",
+  "operator_present": true,
+  "canonical_sample_id": "LIO-F-00001",
+  "scan_mode": "full",
+  "results_root": "test_results/tray_v3",
+  "stage_top_set_at": "operator set new top level limit before this scan",
+  "confirmed_at": "2026-11-20T18:44:50-05:00",
+  "run_id": "20261120-184450_scan_full",
+  "run_folder": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/tray_v3/20261120-184450_scan_full"
+}

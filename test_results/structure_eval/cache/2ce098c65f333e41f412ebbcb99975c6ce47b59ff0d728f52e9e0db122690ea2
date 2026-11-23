@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="https://www.accessdata.fda.gov/spl/stylesheet/spl.xsl" type="text/xsl"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xsi:schemaLocation="urn:hl7-org:v3 https://www.accessdata.fda.gov/spl/schema/spl.xsd">
+   <id root="180a3441-c7d7-3b06-e063-6294a90a3ae6"/>
+   <code code="34390-5" codeSystem="2.16.840.1.113883.6.1" displayName="HUMAN OTC DRUG LABEL"/>
+   <title>Inverness Ear Care Solution</title>
+   <effectiveTime value="20240509"/>
+   <setId root="180a2995-334c-2e93-e063-6294a90aecf7"/>
+   <versionNumber value="1"/>
+   <author>
+      <time/>
+      <assignedEntity>
+         <representedOrganization>
+            <id root="1.3.6.1.4.1.519.1" extension="962801937"/>
+            <name>The Richline Group, Inc.</name>
+            <assignedEntity>
+               <assignedOrganization/>
+            </assignedEntity>
+         </representedOrganization>
+      </assignedEntity>
+   </author>
+   <component>
+      <structuredBody>
+         <component>
+            <section>
+               <id root="180a2e46-ca74-4366-e063-6294a90a6765"/>
+               <code code="48780-1" codeSystem="2.16.840.1.113883.6.1" displayName="SPL product data elements section"/>
+               <effectiveTime value="20240509"/>
+               <subject>
+                  <manufacturedProduct>
+                     <manufacturedProduct>
+                        <code code="70094-007" codeSystem="2.16.840.1.113883.6.69"/>
+                        <name>Inverness Ear Care</name>
+                        <formCode code="C42986" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="SOLUTION"/>
+                        <asEntityWithGeneric>
+                           <genericMedicine>
+                              <name>BENZALKONIUM CHLORIDE</name>
+                           </genericMedicine>
+                        </asEntityWithGeneric>
+                        <ingredient classCode="ACTIB">
+                           <quantity>
+                              <numerator unit="mg" value="1.2"/>
+                              <denominator unit="mL" value="1"/>
+                           </quantity>
+                           <ingredientSubstance>
+                              <code code="F5UM2KM3W7" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>BENZALKONIUM CHLORIDE</name>
+                              <activeMoiety>
+                                 <activeMoiety>
+                                    <code code="7N6JUD5X6Y" codeSystem="2.16.840.1.113883.4.9"/>
+                                    <name>BENZALKONIUM</name>
+                                 </activeMoiety>
+                              </activeMoiety>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <ingredient classCode="IACT">
+                           <ingredientSubstance>
+                              <code code="059QF0KO0R" codeSystem="2.16.840.1.113883.4.9"/>
+                              <name>WATER</name>
+                           </ingredientSubstance>
+                        </ingredient>
+                        <asContent>
+                           <quantity>
+                              <numerator value="118" unit="mL"/>
+                              <denominator value="1"/>
+                           </quantity>
+                           <containerPackagedProduct>
+                              <code code="70094-007-01" codeSystem="2.16.840.1.113883.6.69"/>
+                              <formCode code="C43169" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="BOTTLE"/>
+                           </containerPackagedProduct>
+                           <subjectOf>
+                              <characteristic>
+                                 <code code="SPLCMBPRDTP" codeSystem="2.16.840.1.113883.1.11.19255"/>
+                                 <value code="C112160" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="Type 0: Not a Combination Product" xsi:type="CV"/>
+                              </characteristic>
+                           </subjectOf>
+                           <subjectOf>
+                              <marketingAct>
+                                 <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                                 <statusCode code="active"/>
+                                 <effectiveTime>
+                                    <low value="20240531"/>
+                                 </effectiveTime>
+                              </marketingAct>
+                           </subjectOf>
+                        </asContent>
+                     </manufacturedProduct>
+                     <subjectOf>
+                        <approval>
+                           <id extension="M003" root="2.16.840.1.113883.3.9421"/>
+                           <code code="C200263" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="OTC Monograph Drug"/>
+                           <author>
+                              <territorialAuthority>
+                                 <territory>
+                                    <code code="USA" codeSystem="2.16.840.1.113883.5.28"/>
+                                 </territory>
+                              </territorialAuthority>
+                           </author>
+                        </approval>
+                     </subjectOf>
+                     <subjectOf>
+                        <marketingAct>
+                           <code code="C53292" codeSystem="2.16.840.1.113883.3.26.1.1"/>
+                           <statusCode code="active"/>
+                           <effectiveTime>
+                              <low value="20240531"/>
+                           </effectiveTime>
+                        </marketingAct>
+                     </subjectOf>
+                     <consumedIn>
+                        <substanceAdministration>
+                           <routeCode code="C38304" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="TOPICAL"/>
+                        </substanceAdministration>
+                     </consumedIn>
+                  </manufacturedProduct>
+               </subject>
+            </section>
+         </component>
+         <component>
+            <section ID="Ldb4c61fe-dc8e-4aef-aac8-4ec521255173">
+               <id root="180a33d8-e684-5e5d-e063-6394a90a6c17"/>
+               <code code="42229-5" codeSystem="2.16.840.1.113883.6.1" displayName="SPL UNCLASSIFIED SECTION"/>
+               <title>
+                  <content styleCode="italics">Drug Facts</content>
+               </title>
+               <text>
+                  <paragraph/>
+               </text>
+               <effectiveTime value="20240507"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lf48d11a0-7da1-4eb1-8fcc-95661cb617df">
+               <id root="180a33d8-e685-5e5d-e063-6394a90a6c17"/>
+               <code code="55106-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="italics">Active ingredient</content>
+               </title>
+               <text>
+                  <paragraph>Benzalkonium Chloride 0.12% w/w</paragraph>
+               </text>
+               <effectiveTime value="20240507"/>
+               <component>
+                  <section ID="Lbc4c13f1-dbf5-41e1-a238-bb7fb5485363">
+                     <id root="180a33d8-e686-5e5d-e063-6394a90a6c17"/>
+                     <code code="55105-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - PURPOSE SECTION"/>
+                     <title>
+                        <content styleCode="italics">Purpose</content>
+                     </title>
+                     <text>
+                        <paragraph>Antiseptic</paragraph>
+                     </text>
+                     <effectiveTime value="20240507"/>
+                  </section>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="L62533bee-ab44-4481-a536-c08ed469a6d8">
+               <id root="180a33d8-e687-5e5d-e063-6394a90a6c17"/>
+               <code code="34067-9" codeSystem="2.16.840.1.113883.6.1" displayName="INDICATIONS &amp; USAGE SECTION"/>
+               <title>
+                  <content styleCode="italics">Use</content>
+               </title>
+               <text>
+                  <paragraph>First aid to prevent infection of pierced ears.</paragraph>
+               </text>
+               <effectiveTime value="20240507"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lcc880e91-82ce-4365-a685-c0c978f1f3b4">
+               <id root="180a33d8-e688-5e5d-e063-6394a90a6c17"/>
+               <code code="34071-1" codeSystem="2.16.840.1.113883.6.1" displayName="WARNINGS SECTION"/>
+               <title>
+                  <content styleCode="italics">Warnings</content>
+               </title>
+               <text>
+                  <list listType="unordered">
+                     <item>
+                        <content styleCode="bold">For external use only.</content>
+                     </item>
+                     <item>﻿Do not ingest. If swallowed, get medical help or contact Poison Control Center immediately.</item>
+                     <item>In case of contact with eyes, flush with water.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240507"/>
+               <component>
+                  <section ID="Lf71110be-c546-40f2-9bdf-9582cd8f5fef">
+                     <id root="180a33d8-e689-5e5d-e063-6394a90a6c17"/>
+                     <code code="50565-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - KEEP OUT OF REACH OF CHILDREN SECTION"/>
+                     <title>Keep out of reach of children.</title>
+                     <text/>
+                     <effectiveTime value="20240507"/>
+                  </section>
+               </component>
+               <component>
+                  <section ID="L14bb793a-0885-4685-93a7-f7ccdb141676">
+                     <id root="180a33d8-e68a-5e5d-e063-6394a90a6c17"/>
+                     <code code="50566-9" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - STOP USE SECTION"/>
+                     <title>Stop use and ask a doctor if</title>
+                     <text>
+                        <paragraph>
+                           <content styleCode="bold">you experience pain, redness, or swelling.</content>
+                        </paragraph>
+                     </text>
+                     <effectiveTime value="20240507"/>
+                  </section>
+               </component>
+            </section>
+         </component>
+         <component>
+            <section ID="L5fba24cd-8207-4257-a8ca-7789fbb808e6">
+               <id root="180a33d8-e68b-5e5d-e063-6394a90a6c17"/>
+               <code code="34068-7" codeSystem="2.16.840.1.113883.6.1" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+               <title>
+                  <content styleCode="italics">Directions</content>
+               </title>
+               <text>
+                  <paragraph>For optimal results, follow these steps daily:</paragraph>
+                  <list listType="unordered">
+                     <item>Clean hands thoroughly with soap before touching ears or piercing studs.</item>
+                     <item>Using a cotton swab saturated with Ear Care solution, cleanse front and back of piercing 3 time daily.</item>
+                     <item>Gently rotate the earrings while cleasnsing.</item>
+                     <item>
+                        <content styleCode="bold">﻿DO NOT remove earrings.</content>
+                     </item>
+                     <item>Keep hair, hair spray, shampoo, soap, cosmetics, perfume, etc. away from newly pierced ears.</item>
+                     <item>After shampooing, exercising, swimming, or use of hair products, rinse ears in clear water and reapply Ear Care Solution.</item>
+                  </list>
+               </text>
+               <effectiveTime value="20240507"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Lb3b2916f-4179-4381-a5ce-4aba29438e8c">
+               <id root="180a33d8-e68c-5e5d-e063-6394a90a6c17"/>
+               <code code="51727-6" codeSystem="2.16.840.1.113883.6.1" displayName="INACTIVE INGREDIENT SECTION"/>
+               <title>
+                  <content styleCode="italics">Inactive ingredients</content>
+               </title>
+               <text>
+                  <paragraph>Purified Water</paragraph>
+               </text>
+               <effectiveTime value="20240507"/>
+            </section>
+         </component>
+         <component>
+            <section ID="L6e16bc52-c4ae-4b3c-a994-e90a0f75705c">
+               <id root="180a33d8-e68d-5e5d-e063-6394a90a6c17"/>
+               <code code="53413-1" codeSystem="2.16.840.1.113883.6.1" displayName="OTC - QUESTIONS SECTION"/>
+               <title>
+                  <content styleCode="italics">Questions?</content>
+               </title>
+               <text>
+                  <paragraph>
+                     <content styleCode="italics">
+                        <content styleCode="bold">Call </content>
+                     </content>
+                     <content styleCode="bold">﻿1-800-255-8556</content>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20240507"/>
+            </section>
+         </component>
+         <component>
+            <section ID="Le6411bfb-1c68-4cb2-b2e7-7d5e0041de06">
+               <id root="180a33d8-e68e-5e5d-e063-6394a90a6c17"/>
+               <code code="51945-4" codeSystem="2.16.840.1.113883.6.1" displayName="PACKAGE LABEL.PRINCIPAL DISPLAY PANEL"/>
+               <title>Package Labeling:</title>
+               <text>
+                  <paragraph>
+                     <renderMultiMedia referencedObject="Laa16ee6b-5421-4a53-93d3-5ff7b091879a"/>
+                  </paragraph>
+               </text>
+               <effectiveTime value="20240507"/>
+               <component>
+                  <observationMedia ID="Laa16ee6b-5421-4a53-93d3-5ff7b091879a">
+                     <text>Label</text>
+                     <value mediaType="image/jpeg" xsi:type="ED">
+                        <reference value="Label.jpg"/>
+                     </value>
+                  </observationMedia>
+               </component>
+            </section>
+         </component>
+      </structuredBody>
+   </component>
+</document>

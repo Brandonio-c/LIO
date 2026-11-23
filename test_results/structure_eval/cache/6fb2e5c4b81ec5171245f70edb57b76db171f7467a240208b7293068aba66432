@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 5435,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Mind Detox and Drainage Alumina, Baryta Carbonica, Carboneum Sulphuratum, Cerebrum Suis, Conium Maculatum, Helleborus Niger, Lecithin, Lycopodium Clavatum, Mandragora Officinarum, Mercurius Solubilis, Naja Tripudians, Picricum Acidum, Platinum Metallicum, Silicea, Stramonium, Sulphuricum Acidum, Zincum Phosphoratum ALUMINUM OXIDE ALUMINUM OXIDE BARIUM CARBONATE BARIUM CATION CARBON DISULFIDE CARBON DISULFIDE SUS SCROFA CEREBRUM SUS SCROFA CEREBRUM CONIUM MACULATUM FLOWERING TOP CONIUM MACULATUM FLOWERING TOP HELLEBORUS NIGER ROOT HELLEBORUS NIGER ROOT EGG PHOSPHOLIPIDS EGG PHOSPHOLIPIDS LYCOPODIUM CLAVATUM SPORE LYCOPODIUM CLAVATUM SPORE MANDRAGORA OFFICINARUM ROOT MANDRAGORA OFFICINARUM ROOT MERCURIUS SOLUBILIS MERCURIUS SOLUBILIS NAJA NAJA VENOM NAJA NAJA VENOM PICRIC ACID PICRIC ACID PLATINUM PLATINUM SILICON DIOXIDE SILICON DIOXIDE DATURA STRAMONIUM DATURA STRAMONIUM SULFURIC ACID SULFURIC ACID ZINC PHOSPHIDE ZINC PHOSPHIDE WATER ALCOHOL"
+      ],
+      "active_ingredient": [
+        "ACTIVE INGREDIENTS: Alumina 12X, 30X, 6C, 12C, 30C, Baryta Carbonica 12X, 30X, 6C, 12C, 30C, Carboneum Sulphuratum 6X, 12X, 30X, 6C, 12C, 30C, Cerebrum Suis 8X, Conium Maculatum 6X, 12X, 30X, 6C, 12C, 30C, Helleborus Niger 12X, 18X, 24X, 30X, 30C, Lecithin 8X, Lycopodium Clavatum 6X, 12X, 30X, 6C, 12C, 30C, Mandragora Officinarum 18X, 24X, 30X, Mercurius Solubilis 12X, 30X, 6C, 12C, 30C, Naja Tripudians 12X, 18X, 24X, 30X, 30C, Picricum Acidum 12X, 18X, 24X, 30X, Platinum Metallicum 12X, 18X, 24X, 30X, 30C, Silicea 8X, 12X, 30X, 6C, 12C, 30C, Stramonium 12X, 18X, 24X, 30X, 30C, Sulphuricum Acidum 6X, 12X, 30X, 6C, 12C, 30C, Zincum Phosphoratum 12X, 18X, 24X, 30X."
+      ],
+      "purpose": [
+        "PURPOSE: Alumina – Mind Support, Baryta Carbonica – Difficulty Processing Information, Carboneum Sulphuratum – Difficulty Expressing Thoughts, Cerebrum Suis – Poor Attention, Conium Maculatum – Difficulty Making Decisions, Helleborus Niger – Memory Loss, Lecithin - Indolence, Lycopodium Clavatum - Denial, Mandragora Officinarum – Sensitivity to External Impressions, Mercurius Solubilis - Impatience, Naja Tripudians – Difficulty Understanding Others, Picricum Acidum - Hurry, Platinum Metallicum - Haughtiness, Silicea – Memory Loss, Stramonium - Suspiciousness, Sulphuricum Acidum - Hurry, Zincum Phosphoratum - Indolence"
+      ],
+      "indications_and_usage": [
+        "USES: • For the temporary relief of symptoms including: • mind support • poor attention • difficulty processing information • difficulty expressing thoughts • difficulty making decisions • memory loss • indolence • denial • sensitivity to external impressions • impatience • hurry • haughtiness • difficulty understanding others • suspiciousness These statements are based upon homeopathic principles. They have not been reviewed by the Food and Drug Administration."
+      ],
+      "warnings": [
+        "WARNINGS: If pregnant or breast-feeding, ask a health professional before use. Keep out of reach of children. In case of overdose, contact a physician or Poison Control Center right away. Tamper Evident: Sealed for your protection. Do not use if seal is broken or missing."
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP OUT OF REACH OF CHILDREN: In case of overdose, contact a physician or Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "DIRECTIONS: 1-10 drops under the tongue, 3 times a day or as directed by a health professional. Consult a physician for use in children under 12 years of age."
+      ],
+      "inactive_ingredient": [
+        "INACTIVE INGREDIENTS: Demineralized water, 25% ethanol"
+      ],
+      "questions": [
+        "QUESTIONS: Dist. By: Deseret Biologicals, Inc. 469 W. Parkland Drive Sandy, UT 84070 www.desbio.com 800-827-8204"
+      ],
+      "package_label_principal_display_panel": [
+        "PACKAGE LABEL DISPLAY: DesBio Mind Detox & Drainage Homeopathic NDC 43742-2182-1 1 FL OZ (30 ml) Mind Detox & Drainage"
+      ],
+      "set_id": "1ac1e955-a374-4cac-b997-51c6aef8d35d",
+      "id": "b148ece9-98ad-45ff-a93b-4ae58fcd9b12",
+      "effective_time": "20240801",
+      "version": "1",
+      "openfda": {
+        "brand_name": [
+          "Mind Detox and Drainage"
+        ],
+        "generic_name": [
+          "ALUMINA, BARYTA CARBONICA, CARBONEUM SULPHURATUM, CEREBRUM SUIS, CONIUM MACULATUM, HELLEBORUS NIGER, LECITHIN, LYCOPODIUM CLAVATUM, MANDRAGORA OFFICINARUM, MERCURIUS SOLUBILIS, NAJA TRIPUDIANS, PICRICUM ACIDUM, PLATINUM METALLICUM, SILICEA, STRAMONIUM, SULPHURICUM ACIDUM, ZINCUM PHOSPHORATUM"
+        ],
+        "manufacturer_name": [
+          "Deseret Biologicals, Inc."
+        ],
+        "product_ndc": [
+          "43742-2182"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "ALUMINUM OXIDE",
+          "BARIUM CARBONATE",
+          "CARBON DISULFIDE",
+          "SUS SCROFA CEREBRUM",
+          "CONIUM MACULATUM FLOWERING TOP",
+          "HELLEBORUS NIGER ROOT",
+          "EGG PHOSPHOLIPIDS",
+          "LYCOPODIUM CLAVATUM SPORE",
+          "MANDRAGORA OFFICINARUM ROOT",
+          "MERCURIUS SOLUBILIS",
+          "NAJA NAJA VENOM",
+          "PICRIC ACID",
+          "PLATINUM",
+          "SILICON DIOXIDE",
+          "DATURA STRAMONIUM",
+          "SULFURIC ACID",
+          "ZINC PHOSPHIDE"
+        ],
+        "spl_id": [
+          "b148ece9-98ad-45ff-a93b-4ae58fcd9b12"
+        ],
+        "spl_set_id": [
+          "1ac1e955-a374-4cac-b997-51c6aef8d35d"
+        ],
+        "package_ndc": [
+          "43742-2182-1"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "LMI26O6933",
+          "6P669D8HQ8",
+          "S54S8B99E8",
+          "4GB5DQR532",
+          "Q28R5GF371",
+          "608DGJ6815",
+          "1Z74184RGV",
+          "C88X29Y479",
+          "I2XCB174VB",
+          "324Y4038G2",
+          "ZZ4AG7L7VM",
+          "A49OS0F91S",
+          "49DFR088MY",
+          "ETJ7Z6XBU4",
+          "G6W4F0V8Z3",
+          "O40UQP6WCF",
+          "813396S1PC"
+        ]
+      }
+    }
+  ]
+}

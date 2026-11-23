@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 5854,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Bunnies Bum Soothing Hemorrhoidal Glycerin, Lidocaine, Petrolatum, Phenylephrine HCl GLYCERIN GLYCERIN PETROLATUM PETROLATUM CITRIC ACID MONOHYDRATE PROPYL GALLATE EDETATE DISODIUM MINERAL OIL PHENYLEPHRINE HYDROCHLORIDE PHENYLEPHRINE ANHYDROUS DEXTROSE GLYCERYL MONOSTEARATE BUTYLATED HYDROXYTOLUENE PANTHENOL STEARYL ALCOHOL CARBOXYMETHYLCELLULOSE SODIUM TOCOPHEROL CETYL ALCOHOL PHENOXYETHANOL LIDOCAINE LIDOCAINE ALOE VERA LEAF ASCORBIC ACID INDIAN FRANKINCENSE .ALPHA.-TOCOPHEROL ACETATE TURMERIC PROPYLENE GLYCOL ASIAN GINSENG SORBITAN OLIVATE STEARETH-21 WATER ETHYLHEXYLGLYCERIN XANTHAN GUM BROMELAINS SALIX ALBA BARK"
+      ],
+      "active_ingredient": [
+        "Glycerin 14.4%, Lidocaine 5%, Petrolatum 15%, Phenylephrine HCl 0.25%"
+      ],
+      "purpose": [
+        "Glycerin-Protectant Lidocaine-Local anesthetic Petrolatum-Protectant Phenylephrine HCl Vasoconstrictor"
+      ],
+      "indications_and_usage": [
+        "For the temporary relief of pain, soreness, and burning Helps relieve the local itching and discomfort associated with hemorrhoids Temporarily shrinks hemorrhoidal tissue Temporarily provides a costing for the relief of anorectal discomforts Temporarily protects the inflamed, irritated anorectal surface to help make bowel movements less painful"
+      ],
+      "warnings": [
+        "For external use only. Ask a doctor before use if you have heart disease high blood pressure thyroid disease diabetes difficulty in urination due to enlargement of the prostate gland Ask a doctor or pharmacist before use if you are presently taking a prescription drug for high blood pressure or depression When using this product avoid contact with eyes do not exceed recommended dosage unless directed by a doctor do not put this into the rectum by using fingers or any mechanical device or applicator Stop use and ask a doctor if rectal bleeding occurs condition worsens or does not improve within 7 days allergic reaction occurs to ingredients in this product symptom being treated does not subside or if redness, irritation, swelling, pain or other symptoms develop or increase symptoms clear up and return within a few days"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "Ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Adults: when practical, clean area with mild soap and warm water and rinse thoroughly. Gently dry by patting or blotting with toilet tissue or soft cloth before applying. Adults and children 12 years and older: apply externally to the affected area up to 4 times a day, especially at night, in the morning, or after each bowel movement. Children under 12 years of age: consult a doctor."
+      ],
+      "inactive_ingredient": [
+        "Aloe barbadensis leaf extract, ascorbic acid, BHT, boswellia serrata extract, bromelain, cellulose gum, cetyl alcohol, citric acid, curcuma long (turmeric) root extract, disodium EDTA, ethylhexylglycerin, glucose, glyceryl stearate, mineral oil, panax ginseng root extract, panthenol, phenoxyethanol, propyl gallate, propylene glycol, salix alba (willow) bark extract, sorbitan olivate, steareth-21, stearyl alcohol, tocopherol, tocopheryl acetate, water, xanthan gum."
+      ],
+      "package_label_principal_display_panel": [
+        "Label"
+      ],
+      "set_id": "1c81582c-7ece-182f-e063-6294a90a8fbc",
+      "id": "1c81582c-7ecf-182f-e063-6294a90a8fbc",
+      "effective_time": "20240705",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M015"
+        ],
+        "brand_name": [
+          "Bunnies Bum Soothing Hemorrhoidal"
+        ],
+        "generic_name": [
+          "GLYCERIN, LIDOCAINE, PETROLATUM, PHENYLEPHRINE HCL"
+        ],
+        "manufacturer_name": [
+          "FloCal Distributors LLC"
+        ],
+        "product_ndc": [
+          "84308-161"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "GLYCERIN",
+          "PETROLATUM",
+          "PHENYLEPHRINE HYDROCHLORIDE",
+          "LIDOCAINE"
+        ],
+        "rxcui": [
+          "2642220"
+        ],
+        "spl_id": [
+          "1c81582c-7ecf-182f-e063-6294a90a8fbc"
+        ],
+        "spl_set_id": [
+          "1c81582c-7ece-182f-e063-6294a90a8fbc"
+        ],
+        "package_ndc": [
+          "84308-161-02"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000185370",
+          "N0000175629",
+          "N0000184306",
+          "N0000185001",
+          "M0000728",
+          "M0009417",
+          "N0000175682",
+          "M0000897",
+          "N0000175426",
+          "N0000175976"
+        ],
+        "pharm_class_epc": [
+          "Non-Standardized Chemical Allergen [EPC]",
+          "Amide Local Anesthetic [EPC]",
+          "Antiarrhythmic [EPC]"
+        ],
+        "pharm_class_pe": [
+          "Increased Histamine Release [PE]",
+          "Cell-mediated Immunity [PE]",
+          "Increased IgG Production [PE]",
+          "Local Anesthesia [PE]"
+        ],
+        "pharm_class_cs": [
+          "Allergens [CS]",
+          "Glycerol [CS]",
+          "Amides [CS]"
+        ],
+        "unii": [
+          "PDC6A3C0OX",
+          "4T6H12BN9U",
+          "04JA59TNSJ",
+          "98PI200987"
+        ]
+      }
+    }
+  ]
+}

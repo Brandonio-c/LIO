@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261106-144721_host</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261106-144721_host</code> on <code>/dev/cu.usbserial-1120</code>
+,
+2026-11-06T14:47:21-05:00 to 2026-11-06T14:47:39-05:00</p>
+<div class="verdict" style="background: #d03b3b">NOT FUNCTIONAL</div>
+<ul><li>failure in a critical module: T03.1</li></ul>
+
+<table>
+<tr><th>Sample</th><td>none-empty-chamber</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td>2.2.0 (proto 1, build 2026-11-04)</td>
+    <th>Config</th><td><code>39be560ac85d</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.11</td>
+    <th>Software</th><td>lio 0.2.0, git <code>943774d465</code></td></tr>
+<tr><th>Results</th><td colspan="3">PASS 12, FAIL 1, SKIP 25</td></tr>
+<tr><th>LED duty</th><td colspan="3">0.0 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+<tr><th>Notes</th><td colspan="3">full automated run after charging both power banks</td></tr>
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T01.1">T01.1</a></td><td>Python and dependency versions</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T01.2">T01.2</a></td><td>Serial port discovery</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T01.3">T01.3</a></td><td>Configuration loads and is self-consistent</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.1">T02.1</a></td><td>Port open and boot banner</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.2">T02.2</a></td><td>PING round-trip latency</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.3">T02.3</a></td><td>INFO fields, versions and safety limits</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.4">T02.4</a></td><td>Robustness to bad input</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.5">T02.5</a></td><td>Sequence numbers and interleaved events</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T02.6">T02.6</a></td><td>RESET restores the boot state</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.1">T03.1</a></td><td>I2C scan finds the ADS1115</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ FAIL</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.2">T03.2</a></td><td>Dark ADC noise, all inputs</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T03.3">T03.3</a></td><td>Gain sweep on dark inputs</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T03.4">T03.4</a></td><td>ADC data rate</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T03.5">T03.5</a></td><td>Long-term dark stability</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T04.1">T04.1</a></td><td>Shift-register patterns with CE low</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T04.2">T04.2</a></td><td>Shift-register loopback (optional jumper)</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>loopback jumper not fitted (this build has no loop-back input (pins.LOOP), plan §6.3); the shift registers are verified optically by T05.3</td></tr>
+
+<tr><td><a href="#T04.3">T04.3</a></td><td>Optical address verification</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>covered by T05.3 (each hole must light only its own expected response)</td></tr>
+
+<tr><td><a href="#T05.1">T05.1</a></td><td>Rail gating by CE1 / CE2</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T05.2">T05.2</a></td><td>Per-channel response</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T05.3">T05.3</a></td><td>Channel address and isolation</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T05.4">T05.4</a></td><td>Off-state return after each MEAS</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T05.5">T05.5</a></td><td>Repeatability (interleaved MEAS)</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T06.1">T06.1</a></td><td>OPT101</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T06.2">T06.2</a></td><td>InGaAs TIA</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T06.3">T06.3</a></td><td>Cross-calibration on the shared holes</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T07.1">T07.1</a></td><td>Step response and settling time</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T07.2">T07.2</a></td><td>Recommended settle time</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T07.3">T07.3</a></td><td>MEAS timing</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T08.1">T08.1</a></td><td>SWEEP completes with a valid schema</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T08.2">T08.2</a></td><td>Repeated sweeps</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T08.3">T08.3</a></td><td>Sweep agrees with MEAS</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T08.4">T08.4</a></td><td>CSV output format</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T10.1">T10.1</a></td><td>Power-up dark state</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T10.2">T10.2</a></td><td>On-time watchdog</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>the ADS1115 is not responding (see T03.1)</td></tr>
+
+<tr><td><a href="#T10.3">T10.3</a></td><td>Comms-loss failsafe</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T10.4">T10.4</a></td><td>Single-channel invariant</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T10.5">T10.5</a></td><td>Motion disarmed after comms loss</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T11.1">T11.1</a></td><td>Comparison with the baseline</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>no baseline given (--baseline &lt;file&gt;); save one with --save-baseline</td></tr>
+
+</table>
+
+
+
+
+<h2>T01</h2>
+
+<h3 id="T01.1">T01.1 Python and dependency versions <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>6 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Python version<br><code>T01.1/python</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.12.11</td><td>&gt;= 3.10</td></tr>
+
+<tr><td>pyserial installed<br><code>T01.1/pyserial</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.5</td><td>importable</td></tr>
+
+<tr><td>pyyaml installed<br><code>T01.1/pyyaml</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>6.0.3</td><td>importable</td></tr>
+
+<tr><td>numpy installed<br><code>T01.1/numpy</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2.5.4</td><td>importable</td></tr>
+
+<tr><td>matplotlib installed<br><code>T01.1/matplotlib</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.11.2</td><td>importable</td></tr>
+
+<tr><td>jinja2 installed<br><code>T01.1/jinja2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.1.6</td><td>importable</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T01.2">T01.2 Serial port discovery <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Selected port is present<br><code>T01.2/port</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>/dev/cu.usbserial-1120: present</td><td>--lio-port names an existing serial port</td></tr>
+
+<tr><td>USB-serial chip recognised<br><code>T01.2/chip</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>VID:PID 1A86:7523 (CH340)</td><td>one of link.usb_ids</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T01.3">T01.3 Configuration loads and is self-consistent <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Config validates<br><code>T01.3/load</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lio_hw.yaml sha256 39be560ac85d</td><td></td></tr>
+
+<tr><td>16 holes<br><code>T01.3/holes</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>16 entries</td><td></td></tr>
+
+<tr><td>Rails split A = 1-9, B = 10-16<br><code>T01.3/rails</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>A=[1, 2, 3, 4, 5, 6, 7, 8, 9] B=[10, 11, 12, 13, 14, 15, 16]</td><td></td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T02</h2>
+
+<h3 id="T02.1">T02.1 Port open and boot banner <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Boot banner within the timeout<br><code>T02.1/banner</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1.63 s</td><td>&lt;= 3 s</td></tr>
+
+<tr><td>Banner identifies LIO firmware<br><code>T02.1/identity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># BOOT name=lio fw=2.2.0 proto=1 build=2026-11-04 adc_ok=0 hw_wdt=0</td><td>name=lio, fw and proto present</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.2">T02.2 PING round-trip latency <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Every PING answered<br><code>T02.2/answered</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>100/100 answered</td><td>all</td></tr>
+
+<tr><td>p99 round trip<br><code>T02.2/p99</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>median 5.79 ms, p99 6.63 ms, max 6.66 ms</td><td>p99 &lt; 50 ms</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.3">T02.3 INFO fields, versions and safety limits <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>17 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>INFO fields present<br><code>T02.3/fields</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>21 fields</td><td>all protocol-1 INFO fields</td></tr>
+
+<tr><td>Firmware compatible with this host package<br><code>T02.3/version</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>fw 2.2.0 proto 1</td><td>&gt;= 2.0.0, proto 1</td></tr>
+
+<tr><td>settle_ms matches lio_hw.yaml<br><code>T02.3/limit/settle_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>8</td><td>8</td></tr>
+
+<tr><td>wdt_a_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_a_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2000</td><td>2000</td></tr>
+
+<tr><td>wdt_b_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_b_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5000</td><td>5000</td></tr>
+
+<tr><td>wdt_a_cap_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_a_cap_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5000</td><td>5000</td></tr>
+
+<tr><td>wdt_b_cap_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_b_cap_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>10000</td><td>10000</td></tr>
+
+<tr><td>comms_ms matches lio_hw.yaml<br><code>T02.3/limit/comms_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>10000</td><td>10000</td></tr>
+
+<tr><td>arm_ms matches lio_hw.yaml<br><code>T02.3/limit/arm_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>60000</td><td>60000</td></tr>
+
+<tr><td>step_max matches lio_hw.yaml<br><code>T02.3/limit/step_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2048</td><td>2048</td></tr>
+
+<tr><td>jog_max matches lio_hw.yaml<br><code>T02.3/limit/jog_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2048</td><td>2048</td></tr>
+
+<tr><td>jog_v_max matches lio_hw.yaml<br><code>T02.3/limit/jog_v_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1000</td><td>1000</td></tr>
+
+<tr><td>jog_acc_max matches lio_hw.yaml<br><code>T02.3/limit/jog_acc_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1000</td><td>1000</td></tr>
+
+<tr><td>wake_ms_max matches lio_hw.yaml<br><code>T02.3/limit/wake_ms_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3000</td><td>3000</td></tr>
+
+<tr><td>ADC address matches lio_hw.yaml<br><code>T02.3/adc/addr</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0x48</td><td>0x48</td></tr>
+
+<tr><td>ADC gain matches lio_hw.yaml<br><code>T02.3/adc/gain</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1</td><td>1</td></tr>
+
+<tr><td>ADC rate matches lio_hw.yaml<br><code>T02.3/adc/rate</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>128</td><td>128</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.4">T02.4 Robustness to bad input <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>5 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Unknown command<br><code>T02.4/unknown</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@140 ERR FROBNICATE code=1 msg=unknown command</td><td>ERR code=1</td></tr>
+
+<tr><td>Bad argument<br><code>T02.4/badarg</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@141 ERR MEAS code=2 msg=usage: MEAS &lt;1-16&gt; [settle_ms] [n]</td><td>ERR code=2</td></tr>
+
+<tr><td>Missing argument<br><code>T02.4/missing</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@142 ERR CH code=2 msg=usage: CH &lt;1-16&gt; ON [ms]</td><td>ERR code=2</td></tr>
+
+<tr><td>Line over 64 characters<br><code>T02.4/overflow</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR ? code=6 msg=line too long</td><td>ERR code=6</td></tr>
+
+<tr><td>Garbage bytes, then PING<br><code>T02.4/garbage</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>PING OK</td><td>PING still answered</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.5">T02.5 Sequence numbers and interleaved events <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+<details >
+<summary>4 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>@1 echoed<br><code>T02.5/seq/1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@1 OK PING uptime_ms=3291</td><td>@1 OK PING</td></tr>
+
+<tr><td>@4242 echoed<br><code>T02.5/seq/4242</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@4242 OK PING uptime_ms=3296</td><td>@4242 OK PING</td></tr>
+
+<tr><td>@99999 echoed<br><code>T02.5/seq/99999</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@99999 OK PING uptime_ms=3303</td><td>@99999 OK PING</td></tr>
+
+<tr><td>No @seq, none echoed<br><code>T02.5/noseq</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>OK PING uptime_ms=3308</td><td>OK PING</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.6">T02.6 RESET restores the boot state <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Banner after RESET<br><code>T02.6/banner</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0.02 s</td><td>&lt;= 3 s</td></tr>
+
+<tr><td>STATUS shows the safe state<br><code>T02.6/safe</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ch=0 ce1=0 ce2=0 mask=0x0000 armed=0</td><td>ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle</td></tr>
+
+<tr><td>Settings back to defaults<br><code>T02.6/defaults</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>wdt_a_ms=2000 (was set to 200)</td><td>2000</td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T03</h2>
+
+<h3 id="T03.1">T03.1 I2C scan finds the ADS1115 <span class="badge" style="border-color: #d03b3b">✕ FAIL</span></h3>
+
+
+<details open>
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>ADS1115 at 0x48<br><code>T03.1/adc</code></td>
+<td><span class="badge" style="border-color: #d03b3b">✕ FAIL</span></td>
+<td>found nothing; first check that power bank A is on: it alone powers the +5 V bus (ADS1115, LEDs, shift registers), and USB banks switch off when the load is small (measure about 5 V between +5 V and GND); then the ADS1115 wiring: SDA -&gt; D11, SCL -&gt; D12, ADDR -&gt; GND (0x48), VDD 5 V and GND, 4.7 kOhm pull-ups; both lines should idle near 5 V</td><td>0x48 acknowledges</td></tr>
+
+<tr><td>I2C lines (SDA, SCL)<br><code>T03.1/bus</code></td>
+<td><span class="badge" style="border-color: #d03b3b">✕ FAIL</span></td>
+<td>SDA and SCL held low even with the Nano&#39;s pull-up on: a short to GND, a chip without power clamping the line, a damaged Nano pin, or the wrong pin (SDA = D11, SCL = D12); with power on, measure each line to GND, it should idle near 5 V</td><td>both idle high, rise on external pull-ups, not joined</td></tr>
+
+<tr><td>No unexpected I2C devices<br><code>T03.1/only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>none</td><td>only the ADS1115</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T03.2">T03.2 Dark ADC noise, all inputs <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T03.3">T03.3 Gain sweep on dark inputs <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T03.4">T03.4 ADC data rate <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T03.5">T03.5 Long-term dark stability <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+
+<h2>T04</h2>
+
+<h3 id="T04.1">T04.1 Shift-register patterns with CE low <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T04.2">T04.2 Shift-register loopback (optional jumper) <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">loopback jumper not fitted (this build has no loop-back input (pins.LOOP), plan §6.3); the shift registers are verified optically by T05.3</p>
+
+
+<h3 id="T04.3">T04.3 Optical address verification <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">covered by T05.3 (each hole must light only its own expected response)</p>
+
+
+
+<h2>T05</h2>
+
+<h3 id="T05.1">T05.1 Rail gating by CE1 / CE2 <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T05.2">T05.2 Per-channel response <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T05.3">T05.3 Channel address and isolation <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T05.4">T05.4 Off-state return after each MEAS <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T05.5">T05.5 Repeatability (interleaved MEAS) <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+
+<h2>T06</h2>
+
+<h3 id="T06.1">T06.1 OPT101 <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T06.2">T06.2 InGaAs TIA <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T06.3">T06.3 Cross-calibration on the shared holes <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+
+<h2>T07</h2>
+
+<h3 id="T07.1">T07.1 Step response and settling time <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T07.2">T07.2 Recommended settle time <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T07.3">T07.3 MEAS timing <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+
+<h2>T08</h2>
+
+<h3 id="T08.1">T08.1 SWEEP completes with a valid schema <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T08.2">T08.2 Repeated sweeps <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T08.3">T08.3 Sweep agrees with MEAS <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T08.4">T08.4 CSV output format <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+
+<h2>T10</h2>
+
+<h3 id="T10.1">T10.1 Power-up dark state <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>STATUS safe after RESET<br><code>T10.1/reset/status</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ch=0 ce1=0 ce2=0 mask=0x0000 armed=0</td><td>ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle</td></tr>
+
+<tr><td>STATUS safe after a port reopen<br><code>T10.1/reopen/status</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ch=0 ce1=0 ce2=0 mask=0x0000 armed=0</td><td>ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T10.2">T10.2 On-time watchdog <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">the ADS1115 is not responding (see T03.1)</p>
+
+
+<h3 id="T10.3">T10.3 Comms-loss failsafe <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>&#39;# FAILSAFE&#39; after the comms timeout<br><code>T10.3/event</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># FAILSAFE reason=comms idle_ms=10000</td><td>idle_ms 10000-10050</td></tr>
+
+<tr><td>Everything off after the failsafe<br><code>T10.3/status</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ch=0 ce1=0 ce2=0 mask=0x0000 armed=0</td><td>ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle</td></tr>
+
+<tr><td>Failsafe counted<br><code>T10.3/trips</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>failsafe_trips=1</td><td>&gt;= 1</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T10.4">T10.4 Single-channel invariant <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>6 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>SR RAW 0x0000 then CE 1 1<br><code>T10.4/m0000/ce1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3), CE stays low</td></tr>
+
+<tr><td>SR RAW 0x0005 then CE 1 1<br><code>T10.4/m0005/ce1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3), CE stays low</td></tr>
+
+<tr><td>SR RAW 0x0101 then CE 1 1<br><code>T10.4/m0101/ce1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3), CE stays low</td></tr>
+
+<tr><td>SR RAW 0x3000 then CE 2 1<br><code>T10.4/m3000/ce2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3), CE stays low</td></tr>
+
+<tr><td>SR RAW 0x1004 then CE 1 1<br><code>T10.4/m1004/ce1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3), CE stays low</td></tr>
+
+<tr><td>SR RAW 0x1004 then CE 2 1<br><code>T10.4/m1004/ce2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3), CE stays low</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T10.5">T10.5 Motion disarmed after comms loss <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Armed before the silence<br><code>T10.5/before</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>armed=1</td><td>armed=1</td></tr>
+
+<tr><td>Disarmed after the failsafe<br><code>T10.5/after</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>armed=0 armed_ms=0</td><td>armed=0</td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T11</h2>
+
+<h3 id="T11.1">T11.1 Comparison with the baseline <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">no baseline given (--baseline &lt;file&gt;); save one with --save-baseline</p>
+
+
+
+</body>
+</html>

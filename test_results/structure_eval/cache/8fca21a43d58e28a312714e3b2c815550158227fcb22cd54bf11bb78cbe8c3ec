@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 8839,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "SPL LISTING DATA ELEMENTS SECTION Cetaphil octocrylene, avobenzone OCTOCRYLENE OCTOCRYLENE AVOBENZONE AVOBENZONE WATER DIISOPROPYL ADIPATE Cyclomethicone 5 GLYCERIN GLYCERYL MONOSTEARATE PEG-100 STEARATE Poly(Methyl Methacrylate; 450000 Mw) Phenoxyethanol Benzyl Alcohol Acrylates/C10-30 Alkyl Acrylate Crosspolymer (60000 Mpa.S) .Alpha.-Tocopherol Acetate Carbomer Homopolymer, Unspecified Type Edetate Disodium Sodium Hydroxide P57752-0 new carton"
+      ],
+      "active_ingredient": [
+        "ACTIVE INGREDIENT Avobenzone 3% Octocrylene 10%"
+      ],
+      "purpose": [
+        "PURPOSE Sunscreen"
+      ],
+      "indications_and_usage": [
+        "USE(S ) Helps prevent sunburn If used as directed with other sun protection measures (see Directions ) decreases the risk of skin cancer and early skin aging caused by the sun."
+      ],
+      "warnings": [
+        "WARNINGS For external use only Do not use on damaged or broken skin. Stop use and ask a doctor if rash occurs. When using this product keep out of eyes. Rinse with water to remove."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "DIRECTIONS Apply liberally 15 minutes before sun exposure. Use a water resistant sunscreen if swimming or sweating. Reapply at least every 2 hours. Children under 6 months: ask a doctor. SUN PROTECTION MEASURES: Spending time in the sun increases your risk of cancer and early skin aging. To decrease this risk, regularly use a sunscreen with a Broad Spectrum SPF value of 15 or higher and other sun protection measures including: Limit time in the sun, especially 10am - 2pm. Wear long-sleeved shirts, pants, hats and sun glasses."
+      ],
+      "inactive_ingredient": [
+        "INACTIVE INGREDIENTS: Water, Diisopropyl Adipate, Cyclopentasiloxane, Glycerin, Glyceryl Stearate, PEG-100 Stearate, Polymethyl Methacrylate, Phenoxyethanol, Benzyl Alcohol, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Tocopheryl Acetate, Carbomer, Disodium EDTA, Sodium Hydroxide"
+      ],
+      "storage_and_handling": [
+        "Other Information • Protect this product from excessive heat and direct sun. • May stain some fabrics."
+      ],
+      "questions": [
+        "Questions? 1-866-735-4137"
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPAL DISPLAY PANEL - 4 FL OZ Carton NEW LOOK Cetaphil ® Daily Facial Moisturizer AM 15 BROAD SPECTRUM SPF 15 (UVA/UVB) SUNSCREEN All Skin Types Ultra lightweight lotion hydrates and protects skin Glycerin Oil-Free Recommended Skin Cancer Foundation Daily Use 4 FL OZ (118 mL) Distributed by: Galderma Laboratories, L.P. Dallas, TX 75201 USA All trademarks are the property of their respective owners. Made in Canada cetaphil.com P57752-0"
+      ],
+      "set_id": "2a6bc3f2-4e52-252b-d051-94be1ee0cc00",
+      "id": "8731dd5b-3ac1-42f8-b510-68f3e5104038",
+      "effective_time": "20240416",
+      "version": "10",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "Cetaphil"
+        ],
+        "generic_name": [
+          "OCTOCRYLENE, AVOBENZONE"
+        ],
+        "manufacturer_name": [
+          "Galderma Laboratories, L.P."
+        ],
+        "product_ndc": [
+          "0299-3928"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "OCTOCRYLENE",
+          "AVOBENZONE"
+        ],
+        "spl_id": [
+          "8731dd5b-3ac1-42f8-b510-68f3e5104038"
+        ],
+        "spl_set_id": [
+          "2a6bc3f2-4e52-252b-d051-94be1ee0cc00"
+        ],
+        "package_ndc": [
+          "0299-3928-04"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "5A68WGF6WM",
+          "G63QQF2NOX"
+        ]
+      }
+    }
+  ]
+}

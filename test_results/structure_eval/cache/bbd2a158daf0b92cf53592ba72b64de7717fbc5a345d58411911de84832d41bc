@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 16374,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Nicotine nicotine polacrilex NICOTINE NICOTINE ACESULFAME POTASSIUM SILICON DIOXIDE HYDROXYPROPYL CELLULOSE, UNSPECIFIED MAGNESIUM STEARATE MANNITOL POTASSIUM BICARBONATE POVIDONE SODIUM ALGINATE SODIUM CARBONATE SUCRALOSE XANTHAN GUM A501"
+      ],
+      "active_ingredient": [
+        "Active ingredient (in each lozenge) Nicotine polacrilex USP, 2 mg"
+      ],
+      "purpose": [
+        "Purpose Stop smoking aid"
+      ],
+      "indications_and_usage": [
+        "Use reduces withdrawal symptoms, including nicotine craving, associated with quitting smoking"
+      ],
+      "warnings": [
+        "Warnings If you are pregnant or breast-feeding, only use this medicine on the advice of your health care provider. Smoking can seriously harm your child. Try to stop smoking without using any nicotine replacement medicine. This medicine is believed to be safer than smoking. However, the risks to your child from this medicine are not fully known. Ask a doctor before use if you have heart disease, recent heart attack, or irregular heartbeat. Nicotine can increase your heart rate. high blood pressure not controlled with medication. Nicotine can increase your blood pressure. stomach ulcer or diabetes history of seizures Ask a doctor or pharmacist before use if you are using a non-nicotine stop smoking drug taking prescription medicine for depression or asthma. Your prescription dose may need to be adjusted. Stop use and ask a doctor if mouth problems occur persistent indigestion or severe sore throat occurs irregular heartbeat or palpitations occur you get symptoms of nicotine overdose such as nausea, vomiting, dizziness, diarrhea, weakness and rapid heartbeat you have symptoms of an allergic reaction (such as difficulty breathing or rash) Keep out of reach of children and pets. Nicotine lozenges may have enough nicotine to make children and pets sick. If you need to remove the lozenge, wrap it in paper and throw away in the trash. In case of overdose, get medical help or contact a Poison Control Center (1-800-222-1222) right away"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If you are pregnant or breast-feeding, only use this medicine on the advice of your health care provider. Smoking can seriously harm your child. Try to stop smoking without using any nicotine replacement medicine. This medicine is believed to be safer than smoking. However, the risks to your child from this medicine are not fully known."
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have heart disease, recent heart attack, or irregular heartbeat. Nicotine can increase your heart rate. high blood pressure not controlled with medication. Nicotine can increase your blood pressure. stomach ulcer or diabetes history of seizures"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor or pharmacist before use if you are using a non-nicotine stop smoking drug taking prescription medicine for depression or asthma. Your prescription dose may need to be adjusted."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if mouth problems occur persistent indigestion or severe sore throat occurs irregular heartbeat or palpitations occur you get symptoms of nicotine overdose such as nausea, vomiting, dizziness, diarrhea, weakness and rapid heartbeat you have symptoms of an allergic reaction (such as difficulty breathing or rash)"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children and pets. Nicotine lozenges may have enough nicotine to make children and pets sick. If you need to remove the lozenge, wrap it in paper and throw away in the trash. In case of overdose, get medical help or contact a Poison Control Center (1-800-222-1222) right away"
+      ],
+      "dosage_and_administration": [
+        "Directions if you are under 18 years of age, ask a doctor before use. No studies have been done to show if this product will work for you. before using this product, read the enclosed User’s Guide for complete directions and other important information begin using the lozenge on your quit day if you smoke your first cigarette within 30 minutes after waking up, use 4 mg nicotine lozenge if you smoke your first cigarette more than 30 minutes of waking up, use 2 mg nicotine lozenge according to the following 12 week schedule: Weeks 1 to 6 Weeks 7 to 9 Weeks 10 to 12 1 lozenge every 1 to 2 hours 1 lozenge every 2 to 4 hours 1 lozenge every 4 to 8 hours nicotine lozenge is a medicine and must be used a certain way to get the best results place the lozenge in your mouth and allow the lozenge to slowly dissolve (about 20 to 30 minutes). Minimize swallowing. Do not chew or swallow lozenge. you may feel a warm or tingling sensation occasionally move the lozenge from one side of your mouth to the other until completely dissolved (about 20 to 30 minutes) do not eat or drink 15 minutes before using or while the lozenge is in your mouth to improve your chances of quitting, use at least 9 lozenges per day for the first 6 weeks do not use more than one lozenge at a time or continuously use one lozenge after another since this may cause you hiccups, heartburn, nausea or other side effects do not use more than 5 lozenges in 6 hours. Do not use more than 20 lozenges per day. It is important to complete treatment. If you feel you need to use the lozenge for a longer period to keep from smoking, talk to your health care provider."
+      ],
+      "dosage_and_administration_table": [
+        "<table width=\"652px\"><col width=\"1px\"/><col width=\"1px\"/><col width=\"1px\"/><tbody><tr><td align=\"center\" valign=\"top\" styleCode=\" Botrule Toprule Rrule\"> Weeks 1 to 6</td><td align=\"center\" valign=\"top\" styleCode=\" Botrule Toprule Rrule\"> Weeks 7 to 9</td><td align=\"center\" valign=\"top\" styleCode=\" Botrule Toprule\"> Weeks 10 to 12</td></tr><tr><td align=\"center\" valign=\"top\" styleCode=\" Botrule Rrule\"> 1 lozenge every 1 to 2 hours</td><td align=\"center\" valign=\"top\" styleCode=\" Botrule Rrule\"> 1 lozenge every 2 to 4 hours</td><td align=\"center\" valign=\"top\" styleCode=\" Botrule\"> 1 lozenge every 4 to 8 hours</td></tr></tbody></table>"
+      ],
+      "spl_unclassified_section": [
+        "Other information each lozenge contains : sodium 5 mg store at 20º to 25ºC (68º to 77ºF) keep bottle tightly closed and protect from light"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients acesulfame potassium, colloidal silicon dioxide, cherry flavor, hydroxypropyl cellulose, magnesium stearate, mannitol, potassium bicarbonate, povidone, sodium alginate, sodium carbonate, sucralose,xanthan gum"
+      ],
+      "questions": [
+        "Questions or comments? Call 1-877-753-3935 Monday-Friday 9AM-5PM EST"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal Display Panel Compare to the active ingredient in Nicorette® Mini Lozenge†† Nicotine Mini Lozenges NICOTINE POLACRILEX LOZENGE 2 mg STOP SMOKING AID Sugar Free FOR THOSE WHO SMOKE THEIR FIRST CIGARETTE MORE THAN 30 MINUTES AFTER WAKING UP. If you smoke your first cigarette WITHIN 30 MINUTES of waking up, use Nicotine Polacrilex Lozenge 4 mg. includes User's Guide Cherry flavor LOZENGES TO INCREASE YOUR SUCCESS IN QUITTING: 1. You must be motivated to quit. 2. Use Enough - Use at least 9 Nicotine Polacrilex lozenges per day during the first six weeks. 3. Use Long Enough - Use Nicotine Polacrilex lozenges for the full 12 weeks. 4. Use With a Support Program as directed in the enclosed User's Guide. NOT FOR SALE TO THOSE UNDER 18 YEARS OF AGE PROOF OF AGE REQUIRED NOT FOR SALE IN VENDING MACHINES OR FORM ANY SOURCE WHERE PROOF OF SALE CANNOT BE VERIFIED ††This product is not affiliated with, manufactured by, or produced by the makers or owners of Nicorette® Lozenge. TAMPER EVIDENT FEATURE: DO NOT USE IF PRINTED SEAL UNDER CAP IS BROKEN OR MISSING OPENING DIRECTIONS: PUSH DOWN ON CAP AND TURN TO OPEN DISTRIBUTED BY: WALGREEN CO. DEERFIELD, IL 60015",
+        "Package Label WALGREENS Nicotone Mini Lozenge Cherry Flavor Nicotine Polacrilex USP, 2 mg"
+      ],
+      "set_id": "446c857f-2380-4019-9a82-9fb9ee060d08",
+      "id": "a2d4089f-57bf-4a64-8749-fd577c74f82d",
+      "effective_time": "20240221",
+      "version": "5",
+      "openfda": {
+        "application_number": [
+          "ANDA210711"
+        ],
+        "brand_name": [
+          "Nicotine"
+        ],
+        "generic_name": [
+          "NICOTINE POLACRILEX"
+        ],
+        "manufacturer_name": [
+          "Walgreens"
+        ],
+        "product_ndc": [
+          "0363-9780"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "NICOTINE"
+        ],
+        "rxcui": [
+          "359817"
+        ],
+        "spl_id": [
+          "a2d4089f-57bf-4a64-8749-fd577c74f82d"
+        ],
+        "spl_set_id": [
+          "446c857f-2380-4019-9a82-9fb9ee060d08"
+        ],
+        "package_ndc": [
+          "0363-9780-81",
+          "0363-9780-27"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0311917220734"
+        ],
+        "nui": [
+          "N0000175706",
+          "M0014836"
+        ],
+        "pharm_class_epc": [
+          "Cholinergic Nicotinic Agonist [EPC]"
+        ],
+        "pharm_class_cs": [
+          "Nicotine [CS]"
+        ],
+        "unii": [
+          "6M3C89ZY6R"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 13691,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "First Aid Antibiotic bacitracin zinc, neomycin, polymyxin B BACITRACIN ZINC BACITRACIN NEOMYCIN SULFATE NEOMYCIN POLYMYXIN B SULFATE POLYMYXIN B COCOA BUTTER COTTONSEED OIL OLIVE OIL SODIUM PYRUVATE .ALPHA.-TOCOPHEROL ACETATE WHITE PETROLATUM Translucent"
+      ],
+      "active_ingredient": [
+        "Active ingredients (in each gram) Bacitracin zinc equivalent to 400 units bacitracin Neomycin sulfate equivalent to 3.5 mg of neomycin base Polymyxin B 5,000 units as polymyxin B sulfate"
+      ],
+      "purpose": [
+        "Purpose First aid antibiotic"
+      ],
+      "indications_and_usage": [
+        "Use first aid to help prevent infection in minor: • cuts • scrapes • burns"
+      ],
+      "warnings": [
+        "Warnings For external use only. Do not use • if you are allergic to any of the ingredients • in the eyes • over large areas of the body Ask a doctor before use if you have • deep or puncture wounds • animal bites • serious burns Stop use and ask a doctor if • you need to use longer than 1 week • condition persists or gets worse • rash or other allergic reaction develops Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away. (1-800-222-1222)"
+      ],
+      "do_not_use": [
+        "Do not use • if you are allergic to any of the ingredients • in the eyes • over large areas of the body"
+      ],
+      "ask_doctor_or_pharmacist": [
+        "Ask a doctor before use if you have • deep or puncture wounds • animal bites • serious burns"
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if • you need to use longer than 1 week • condition persists or gets worse • rash or other allergic reaction develops"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away. (1-800-222-1222)"
+      ],
+      "dosage_and_administration": [
+        "Directions • clean the affected area • apply a small amount of this product (an amount equal to the surface area of the tip of a finger) on the area 1 to 3 times daily • may be covered with a sterile bandage"
+      ],
+      "storage_and_handling": [
+        "Other information • store at 20-25°C (68-77°F)"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients cocoa butter, cottonseed oil, olive oil, sodium pyruvate, tocopheryl acetate, white petrolatum"
+      ],
+      "questions": [
+        "Questions or comments? 1-800-289-8343"
+      ],
+      "package_label_principal_display_panel": [
+        "Principal Display Panel Compare to Neosporin ® Active Ingredients Triple Antibiotic Ointment Bacitracin Zinc • Neomycin Sulfate • Polymyxin B Sulfate 24 Hour Infection Protection Helps Prevent Infection in Minor Cuts, Scrapes and Burns HyVee ® First Aid Antibiotic Original Ointment NET WT 0.5 OZ (14 g) 067-2h-first-aid-antibiotic.jpg"
+      ],
+      "set_id": "3ac9f0fc-e08c-49d9-9079-3ba0393c612b",
+      "id": "6a1a71b1-ab18-4e9c-a780-ba5b5aaf390d",
+      "effective_time": "20260602",
+      "version": "5",
+      "openfda": {
+        "application_number": [
+          "M004"
+        ],
+        "brand_name": [
+          "First Aid Antibiotic"
+        ],
+        "generic_name": [
+          "BACITRACIN ZINC, NEOMYCIN, POLYMYXIN B"
+        ],
+        "manufacturer_name": [
+          "HyVee Inc"
+        ],
+        "product_ndc": [
+          "42507-067"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "BACITRACIN ZINC",
+          "NEOMYCIN SULFATE",
+          "POLYMYXIN B SULFATE"
+        ],
+        "rxcui": [
+          "204602"
+        ],
+        "spl_id": [
+          "6a1a71b1-ab18-4e9c-a780-ba5b5aaf390d"
+        ],
+        "spl_set_id": [
+          "3ac9f0fc-e08c-49d9-9079-3ba0393c612b"
+        ],
+        "package_ndc": [
+          "42507-067-28",
+          "42507-067-64",
+          "42507-067-16",
+          "42507-067-14",
+          "42507-067-58"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "89Y4M234ES",
+          "057Y626693",
+          "19371312D4"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 12912,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "equate MAXIMUM STRENGTH NIGHTTIME SEVERE Cold and Flu SOFTGELS Acetaminophen, Dextromethorphan Hydrobromide, Doxylamine Succinate, Phenylephrine Hydrochloride ACETAMINOPHEN ACETAMINOPHEN DEXTROMETHORPHAN HYDROBROMIDE DEXTROMETHORPHAN DOXYLAMINE SUCCINATE DOXYLAMINE PHENYLEPHRINE HYDROCHLORIDE PHENYLEPHRINE D&C YELLOW NO. 10 FD&C BLUE NO. 1 GELATIN, UNSPECIFIED GLYCERIN POLYETHYLENE GLYCOL, UNSPECIFIED POVIDONE, UNSPECIFIED PROPYLENE GLYCOL SORBITOL SORBITAN TITANIUM DIOXIDE A07"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts",
+        "Compare to Vicks ® NyQuil™ Severe Cold & Flu LiquiCaps™ active ingredients* Relief of: • Headache, fever, sore throat, minor aches and pains • Nasal/sinus congestion and sinus pressure • Sneezing, runny nose • Cough Satisfaction Guaranteed For more information call 1-888-287-1915 or visit Walmart.com/help DISTRIBUTED BY: Walmart Inc., Bentonville, AR 72716 PRODUCT OF INDIA *This product is not manufactured or distributed by The Procter & Gamble Company, owner of the registered trademarks Vicks ® NyQuil™ LiquiCaps™. READ AND KEEP OUTER CARTON FOR COMPLETE PRODUCT WARNINGS AND INFORMATION TEMPER EVIDENT: DO NOT USE IF PACKAGE IS OPENED OR IF BLISTER UNIT IS TORN, BROKEN OR SHOWS ANY SIGNS OR TAMPERING."
+      ],
+      "active_ingredient": [
+        "Active ingredients (in each softgel) Acetaminophen 325 mg Dextromethorphan HBr 10 mg Doxylamine succinate 6.25 mg Phenylephrine HCl 5 mg"
+      ],
+      "purpose": [
+        "Purpose Pain reliever/fever reducer Cough suppressant Antihistamine Nasal decongestant"
+      ],
+      "indications_and_usage": [
+        "Uses • temporarily relieves common cold/flu symptoms: • nasal congestion • sinus congestion & pressure • cough due to minor throat & bronchial irritation • cough to help you sleep • minor aches & pains • headache • fever • sore throat • runny nose & sneezing • reduces swelling of nasal passages • temporarily restores freer breathing through the nose • promotes nasal and/or sinus drainage"
+      ],
+      "warnings": [
+        "Warnings Liver warning: This product contains acetaminophen, Severe liver damage may occur if you take • more than 8 softgels in 24 hours, which is the maximum daily amount for this product • with other drugs containing acetaminophen • 3 or more alcoholic drinks every day while using this product Allergy alert: Acetaminophen may cause severe skin reactions. Symptoms may include: • skin reddening • blisters • rash If a skin reaction occurs, stop use and seek medical help right away. Sore throat warning If sore throat is severe, persists for more than 2 days, is accompanied or followed by fever, headache, rash, nausea, or vomiting, consult a doctor promptly. Do not use • with any other drug containing acetaminophen (prescription or nonprescription). If you are not sure whether a drug contains acetaminophen, ask a doctor or pharmacist. • if you are now taking a prescription monoamine oxidase inhibitor (MAOI) (certain drugs for depression, psychiatric, or emotional conditions, or Parkinson's disease), or for 2 weeks after stopping the MAOI drug. If you do not know if your prescription drug contains an MAOI, ask a doctor or pharmacist before taking this product. Ask a doctor before use if you have • liver disease • heart disease • high blood pressure • thyroid disease • diabetes • glaucoma • cough that occurs with too much phlegm (mucus) • a breathing problem or chronic cough that lasts or as occurs with smoking, asthma, chronic bronchitis, or emphysema • trouble urinating due to enlarged prostate gland Ask a doctor or pharmacist before use if you are • taking sedatives or tranquilizers • taking the blood thinning drug warfarin When using this product • do not use more than directed • excitability may occur, especially in children • marked drowsiness may occur • avoid alcoholic drinks • be careful when driving a motor vehicle or operating machinery • alcohol, sedatives, and tranquilizers may increase drowsiness Stop use and ask a doctor if • you get nervous, dizzy, or sleepless • pain, nasal congestion, or cough gets worse or lasts more than 7 days • fever gets worse or lasts more than 3 days • redness or swelling is present • new symptoms occur • cough comes back or occurs with rash or headache that lasts. These could be signs of a serious condition. If pregnant or breast-feeding, ask a health professional before use. Keep out of reach of children, Overdose warning: In case of overdose, get medical help or contact a Poison Control Center right away, Quick medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children, Overdose warning: In case of overdose, get medical help or contact a Poison Control Center right away, Quick medical attention is critical for adults as well as for children even if you do not notice any signs or symptoms."
+      ],
+      "dosage_and_administration": [
+        "Directions • take only as directed • do not exceed 8 softgels per 24 hrs adults & children 12 yrs & over 2 softgels with water every 4 hrs children 4 to under 12 yrs ask a doctor children under 4 yrs do not use"
+      ],
+      "dosage_and_administration_table": [
+        "<table width=\"80%\"><caption/><tbody><tr><td styleCode=\"Botrule Lrule Rrule Toprule\">adults &amp; children 12 yrs &amp; over</td><td styleCode=\"Botrule Lrule Rrule Toprule\">2 softgels with water every 4 hrs</td></tr><tr><td styleCode=\"Botrule Lrule Rrule Toprule\">children 4 to under 12 yrs</td><td styleCode=\"Botrule Lrule Rrule Toprule\">ask a doctor</td></tr><tr><td styleCode=\"Botrule Lrule Rrule Toprule\">children under 4 yrs</td><td styleCode=\"Botrule Lrule Rrule Toprule\">do not use</td></tr></tbody></table>"
+      ],
+      "storage_and_handling": [
+        "Other information • store at controlled room temperature 20-25°C (68-77°F) • protect from light, heat, and moisture"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients D&C Yellow No.10, FD&C Blue No.1, gelatin, glycerin, polyethylene glycol, povidone, propylene glycol, sorbitol sorbitan solution, titanium dioxide"
+      ],
+      "questions": [
+        "Questions or comments? 1-888-287-1915"
+      ],
+      "package_label_principal_display_panel": [
+        "Packaging Equate Nighttime Severe Cold & Flu"
+      ],
+      "set_id": "38637189-d1ee-9405-e063-6394a90ae8b8",
+      "id": "4aaf5ca9-fa8e-45ef-a1bc-8da1e1657924",
+      "effective_time": "20250909",
+      "version": "2",
+      "openfda": {
+        "application_number": [
+          "M012"
+        ],
+        "brand_name": [
+          "equate MAXIMUM STRENGTH NIGHTTIME SEVERE Cold and Flu SOFTGELS"
+        ],
+        "generic_name": [
+          "ACETAMINOPHEN, DEXTROMETHORPHAN HYDROBROMIDE, DOXYLAMINE SUCCINATE, PHENYLEPHRINE HYDROCHLORIDE"
+        ],
+        "manufacturer_name": [
+          "WALMART INC."
+        ],
+        "product_ndc": [
+          "79903-387"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "ACETAMINOPHEN",
+          "DEXTROMETHORPHAN HYDROBROMIDE",
+          "DOXYLAMINE SUCCINATE",
+          "PHENYLEPHRINE HYDROCHLORIDE"
+        ],
+        "rxcui": [
+          "1297288"
+        ],
+        "spl_id": [
+          "4aaf5ca9-fa8e-45ef-a1bc-8da1e1657924"
+        ],
+        "spl_set_id": [
+          "38637189-d1ee-9405-e063-6394a90ae8b8"
+        ],
+        "package_ndc": [
+          "79903-387-24"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0194346521883"
+        ],
+        "unii": [
+          "362O9ITL9D",
+          "9D2RTI9KYH",
+          "V9BI9B5YI2",
+          "04JA59TNSJ"
+        ]
+      }
+    }
+  ]
+}

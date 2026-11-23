@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 17790,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Sinus Severe Ultra Fine Mist Oxymetazoline hydrochloride. OXYMETAZOLINE HYDROCHLORIDE OXYMETAZOLINE SODIUM PHOSPHATE, DIBASIC, ANHYDROUS POVIDONE K30 EDETATE DISODIUM PROPYLENE GLYCOL WATER BENZALKONIUM CHLORIDE SODIUM PHOSPHATE, MONOBASIC, ANHYDROUS"
+      ],
+      "active_ingredient": [
+        "Drug Facts Active ingredients Oxymetazoline HCl 0.05%"
+      ],
+      "purpose": [
+        "Purpose Nasal decongestant"
+      ],
+      "indications_and_usage": [
+        "Uses temporarily relieves nasal congestion due to a cold hay fever or other upper respiratory allergies sinus congestion and pressure."
+      ],
+      "warnings": [
+        "Warnings Warnings When using this product Do not exceed recommended dosage do not use this product for more than 3 days. Use only as directed. Frequent or prolonged use may cause nasal congestion to recur or worsen. do not use this product if you have heart disease high blood pressure thyroid disease diabetes or difficulty in urination due to enlargement of the prostate gland unless directed by a doctor. this product may cause temporary discomfort such as burning, stinging, sneezing, or an increase in nasal discharge. use of this comtainer by more than one person may spread infection. Stop use and ask a doctor if symptoms persist. If pregnant or breast-feeding, ask a health professional before use. Keep out of reach of children. Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "when_using": [
+        "When using this product Do not exceed recommended dosage do not use this product for more than 3 days. Use only as directed. Frequent or prolonged use may cause nasal congestion to recur or worsen. do not use this product if you have heart disease high blood pressure thyroid disease diabetes or difficulty in urination due to enlargement of the prostate gland unless directed by a doctor. this product may cause temporary discomfort such as burning, stinging, sneezing, or an increase in nasal discharge. use of this comtainer by more than one person may spread infection."
+      ],
+      "ask_doctor": [
+        "Stop use and ask a doctor if symptoms persist."
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, ask a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. Keep out of reach of children."
+      ],
+      "overdosage": [
+        "If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions adults and children 6 to under 12 years of age (with adult supervision): 2 or 3 sprays in each nostril not more than every 10 to 12 hours. Do not exceed 2 doses in any 24-hour period. children under 6 years of age: ask a doctor To Use remove protective cap before using for the first time, prime the pump by firmly depressing its rim several times hold container with thumb at base and nozzle between first and second fingers without tilting your head, inset nozzle into nostril fully depress rim with a firm, even stroke and inhale deeply. How to use: Hold white tabs; SQUEEZE grooved area of cap FIRMLY and turn counter clockwise. Secure cap after use. Directions"
+      ],
+      "other_safety_information": [
+        "Other information Store at room temperature"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients Benzalkonium Chloride, Sodium Phosphate monobasic, Edetate disodium, Propylene Glycol, Polyvinylpyrrolidone, Sodium Phosphate dibasic, Purified Water."
+      ],
+      "spl_unclassified_section": [
+        "Distributed by: VIVUNT PHARMA LLC 8950 SW 74th Court, Suite 1901 Miami, FL 33156-3178. USA. Product from India. www.vivunt.live"
+      ],
+      "package_label_principal_display_panel": [
+        "axiv® Sinus SEVERE ULTRA FINE MIST Fast & Powerfull Congestion Relief Nasal Decongestant MAXIMUM STRENGTH UP TO 265 SPRAYS PER 15 ML BOTTLE Oxymetazoline HCl 0.05% Nasal Decongestant 0.5 Fl OZ (15ml) axiv® Sinus SEVERE ULTRA FINE MIST Fast & Powerfull Congestion Relief Nasal Decongestant MAXIMUM STRENGTH UP TO 265 SPRAYS PER 15 ML BOTTLE Oxymetazoline HCl 0.05% Nasal Decongestant 0.5 Fl OZ (15 ml) Principal Display Panel Inner"
+      ],
+      "set_id": "48bf7422-38ef-d4b4-e063-6294a90aa3ab",
+      "id": "48bf7422-38f0-d4b4-e063-6294a90aa3ab",
+      "effective_time": "20260119",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M012"
+        ],
+        "brand_name": [
+          "Sinus Severe Ultra Fine Mist"
+        ],
+        "generic_name": [
+          "OXYMETAZOLINE HYDROCHLORIDE."
+        ],
+        "manufacturer_name": [
+          "VIVUNT PHARMA LLC"
+        ],
+        "product_ndc": [
+          "82706-026"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "NASAL"
+        ],
+        "substance_name": [
+          "OXYMETAZOLINE HYDROCHLORIDE"
+        ],
+        "rxcui": [
+          "1000990"
+        ],
+        "spl_id": [
+          "48bf7422-38f0-d4b4-e063-6294a90aa3ab"
+        ],
+        "spl_set_id": [
+          "48bf7422-38ef-d4b4-e063-6294a90aa3ab"
+        ],
+        "package_ndc": [
+          "82706-026-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0850047780683"
+        ],
+        "unii": [
+          "K89MJ0S5VY"
+        ]
+      }
+    }
+  ]
+}

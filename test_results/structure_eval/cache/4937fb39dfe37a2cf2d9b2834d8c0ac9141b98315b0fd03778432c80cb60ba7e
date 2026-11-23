@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 1586,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Thyroid Support Calcarea Carbonica, Calcarea Iodata, Causticum, Ferrum Iodatum, Fucus Vesiculosus, Kali Iodatum, Natrum Muriaticum, Thyroidinum (Bovine) OYSTER SHELL CALCIUM CARBONATE, CRUDE OYSTER SHELL CALCIUM CARBONATE, CRUDE CALCIUM IODIDE CALCIUM CATION CAUSTICUM CAUSTICUM FERROUS IODIDE FERROUS IODIDE FUCUS VESICULOSUS FUCUS VESICULOSUS POTASSIUM IODIDE IODIDE ION SODIUM CHLORIDE CHLORIDE ION THYROID, BOVINE THYROID, BOVINE WATER ALCOHOL"
+      ],
+      "active_ingredient": [
+        "ACTIVE INGREDIENT: (in each drop) Calcarea Carbonica 10X 8.33%, Calcarea Iodata 6X 8.33%, Causticum 10X 8.33%, Ferrum Iodatum 10X, 30X 8.33%, Fucus Vesiculosus 6X 8.33%, Kali Iodatum 6X 8.33%, Natrum Muriaticum 10X, 30X 8.33%, Thyroidinum 6X, 12X, 30X 8.33%."
+      ],
+      "purpose": [
+        "PURPOSE: Calcarea Carbonica – metabolism and weight balance, Calcarea Iodata – thyroid function support, Causticum – thyroid function support, Ferrum Iodatum – thyroid function support, Fucus Vesiculosus – thyroid function support, digestion, Kali Iodatum – thyroid function support, Natrum Muriaticum – thyroid glandular support, Thyroidinum – thyroid function support* *Claims based on traditional homeopathic practice, not accepted medical evidence. Not FDA evaluated. Individual responses may vary, and this product may not work for everyone."
+      ],
+      "indications_and_usage": [
+        "USES: May help to provide temporary glandular support for symptoms of ■ low energy ■ low metabolism ■ cold hands & feet ■ melancholy* *Claims based on traditional homeopathic practice, not accepted medical evidence. Not FDA evaluated. Individual responses may vary, and this product may not work for everyone."
+      ],
+      "warnings": [
+        "WARNINGS: Stop use and ask a doctor if ■ symptoms worsen or persist for more than 2 weeks ■ new symptoms appear If pregnant or breast-feeding, ask a health professional before use. Keep out of reach of children. In case of overdose, get medical help or contact a Poison Control Center right away. Do not use if tamper evident seal is missing or open. ■ Store at room temperature (65-80ºF)"
+      ],
+      "keep_out_of_reach_of_children": [
+        "KEEP OUT OF REACH OF CHILDREN: In case of overdose, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "DIRECTIONS: ■ Adults only take 15 drops under the tongue 4 times daily"
+      ],
+      "inactive_ingredient": [
+        "INACTIVE INGREDIENTS: 20% alcohol, purified water"
+      ],
+      "questions": [
+        "QUESTIONS: Dist. By NaturalCare 201 Apple Blvd. Woodbine, IA 51579 www.NaturalCareWorks.com 1-888-280-5672"
+      ],
+      "package_label_principal_display_panel": [
+        "PACKAGE LABEL DISPLAY: NaturalCare Thyroid Support Homeopathic For Relief of* Low Energy Low Metabolism Cold Hands & Feet 1 FL OZ (30 mL) Thyroid Support LBL Thyroid Support CTN"
+      ],
+      "set_id": "07b4e0ed-2b00-4d0a-ad8f-fc6deff15325",
+      "id": "9a15b04d-bcfa-442a-beeb-d51293563467",
+      "effective_time": "20260908",
+      "version": "2",
+      "openfda": {
+        "brand_name": [
+          "Thyroid Support"
+        ],
+        "generic_name": [
+          "CALCAREA CARBONICA, CALCAREA IODATA, CAUSTICUM, FERRUM IODATUM, FUCUS VESICULOSUS, KALI IODATUM, NATRUM MURIATICUM, THYROIDINUM (BOVINE)"
+        ],
+        "manufacturer_name": [
+          "NaturalCare"
+        ],
+        "product_ndc": [
+          "70163-0018"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "OYSTER SHELL CALCIUM CARBONATE, CRUDE",
+          "CALCIUM IODIDE",
+          "CAUSTICUM",
+          "FERROUS IODIDE",
+          "FUCUS VESICULOSUS",
+          "POTASSIUM IODIDE",
+          "SODIUM CHLORIDE",
+          "THYROID, BOVINE"
+        ],
+        "spl_id": [
+          "9a15b04d-bcfa-442a-beeb-d51293563467"
+        ],
+        "spl_set_id": [
+          "07b4e0ed-2b00-4d0a-ad8f-fc6deff15325"
+        ],
+        "package_ndc": [
+          "70163-0018-1",
+          "70163-0018-2"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0371401102014"
+        ],
+        "unii": [
+          "2E32821G6I",
+          "8EKI9QEE2H",
+          "DD5FO1WKFU",
+          "F5452U54PN",
+          "535G2ABX9M",
+          "1C4QK22F9J",
+          "451W47IQ8X",
+          "MN18OTN73W"
+        ]
+      }
+    }
+  ]
+}

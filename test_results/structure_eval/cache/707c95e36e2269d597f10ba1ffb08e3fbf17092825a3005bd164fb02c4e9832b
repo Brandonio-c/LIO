@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 6784,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Odor-Eaters Athletes Foot TOLNAFTATE TOLNAFTATE TOLNAFTATE WATER MEDIUM-CHAIN TRIGLYCERIDES GLYCERYL STEARATE/PEG-100 STEARATE GLYCERIN WHITE PETROLATUM ARACHIDYL ALCOHOL DOCOSANOL ARACHIDYL GLUCOSIDE CETYL ALCOHOL STARCH, CORN PHENOXYETHANOL ETHYLHEXYLGLYCERIN SODIUM BICARBONATE EDETATE DISODIUM ALLANTOIN ALOE VERA LEAF JUICE"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts"
+      ],
+      "active_ingredient": [
+        "Active ingredient Tolnaftate 1.0% (w/w)"
+      ],
+      "purpose": [
+        "Purpose Antifungal"
+      ],
+      "indications_and_usage": [
+        "Uses Clinically proven to prevent most athlete's foot with daily use and proven clinically effective in the treatment of most athlete's foot For relief of cracking, burning, or itchy, scaly skin between the toes Clears up most athlete's foot infection and with daily use helps keep it from coming back"
+      ],
+      "warnings": [
+        "Warnings For external use only Do not use on children under 2 years of age unless directed by a doctor. Avoid contact with the eyes. If irritation occurs, discontinue use and consult a doctor. Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "do_not_use": [
+        "Do not use on children under 2 years of age unless directed by a doctor. Avoid contact with the eyes. If irritation occurs, discontinue use and consult a doctor."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions To prevent athlete's foot, wash the feet and dry thoroughly. When first opening the tube, remove foil seal. Do not use if foil seal is broken. Apply a thin layer of the product to the feet once or twice daily (morning and/or night). Supervise children in the use of this product. Pay special attention to spaces between the toes; wear well-fitting, ventilated shoes, and change shoes and socks at least once daily. Wash hands after use."
+      ],
+      "storage_and_handling": [
+        "Other information www.odor-eaters.com"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients allantoin, aloe barbadensis leaf juice (decolorized), arachidyl alcohol, arachidyl glucoside, behenyl alcohol, caprylic/capric triglyceride, cetyl alcohol, disodium EDTA, ethylhexylglycerin, fragrance, glycerin, glyceryl stearate, PEG-100 stearate, petrolatum, phenoxyethanol, purified water, sodium bicarbonate, zea mays (corn) starch"
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPAL DISPLAY PANEL - 30 g Tube Carton NEW DOCTOR RECOMMENDED Odor- Eaters ® MAX RELIEF ATHLETE'S FOOT CREAM TOLNAFTATE ANTIFUNGAL Maximum Strength Formula Cures & Prevents Most Athlete's Foot STARTS WORKING IMMEDIATELY POWERFUL RELIEF FROM BURNING, ITCHING & CRACKING Net Wt. 1.06 oz. (30 g) SOOTHING ALOE NEUTRALIZES ODOR FRESH SCENT Principal Display Panel - 30 g Tube Carton"
+      ],
+      "set_id": "20d795d1-2345-4d4f-8439-07ad11ff8f65",
+      "id": "b1f7379e-2405-4d16-940a-bf476f30fb46",
+      "effective_time": "20251121",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M005"
+        ],
+        "brand_name": [
+          "Odor-Eaters Athletes Foot"
+        ],
+        "generic_name": [
+          "TOLNAFTATE"
+        ],
+        "manufacturer_name": [
+          "Blistex Inc."
+        ],
+        "product_ndc": [
+          "10157-3100"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "TOLNAFTATE"
+        ],
+        "rxcui": [
+          "103951"
+        ],
+        "spl_id": [
+          "b1f7379e-2405-4d16-940a-bf476f30fb46"
+        ],
+        "spl_set_id": [
+          "20d795d1-2345-4d4f-8439-07ad11ff8f65"
+        ],
+        "package_ndc": [
+          "10157-3100-1"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "06KB629TKV"
+        ]
+      }
+    }
+  ]
+}

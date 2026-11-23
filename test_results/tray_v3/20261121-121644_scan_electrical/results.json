@@ -1,0 +1,586 @@
+{
+  "run_id": "20261121-121644_scan_electrical",
+  "target": "/dev/cu.usbmodem101",
+  "started": "2026-11-21T12:16:44-05:00",
+  "environment": {},
+  "firmware": {
+    "fw": "2.5.2",
+    "proto": "1",
+    "build": "2026-11-17",
+    "adc_addr": "0x48",
+    "adc_ok": "1",
+    "gain": "1",
+    "rate": "128",
+    "settle_ms": "8",
+    "wdt_a_ms": "2000",
+    "wdt_b_ms": "5000",
+    "wdt_a_cap_ms": "5000",
+    "wdt_b_cap_ms": "10000",
+    "comms_ms": "10000",
+    "arm_ms": "60000",
+    "step_max": "2048",
+    "jog_max": "2048",
+    "jog_v_max": "1000",
+    "jog_acc_max": "1000",
+    "wake_ms_max": "3000",
+    "motion_armed": "0",
+    "debug_states": "1",
+    "mains": "0",
+    "rail_b_first": "9",
+    "light_in_motion": "0",
+    "arm_token": "0x18D8",
+    "hw_wdt": "0"
+  },
+  "config": {
+    "path": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
+    "sha256": "82201cb43d998b883df5719f7b8e8591f15e41e9921218bcd4e3707f1a455aa9",
+    "provisional": true
+  },
+  "metadata": {
+    "sample_id": "LIO-F-00001",
+    "kind": "scan",
+    "mode": "electrical",
+    "scan_status": "COMPLETE"
+  },
+  "faults": [],
+  "results": [
+    {
+      "id": "T13.1",
+      "name": "Diagnostic height sweep",
+      "module": "T13",
+      "kind": "M",
+      "status": "WARN",
+      "message": "electrical scan COMPLETE: FUNCTIONAL (20261121-121644_scan_electrical)",
+      "duration_s": 0.0,
+      "subs": [
+        {
+          "id": "T13.1/system/link",
+          "name": "link and firmware (no unexpected reset, no lost replies)",
+          "status": "PASS",
+          "message": "firmware 2.5.2, no unexpected # BOOT",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "unexpected boots"
+          }
+        },
+        {
+          "id": "T13.1/system/adc",
+          "name": "ADC / I\u00b2C (every reading answered)",
+          "status": "PASS",
+          "message": "142 readings, no dropout",
+          "criteria": "",
+          "measured": {
+            "value": 142.0,
+            "unit": "readings"
+          }
+        },
+        {
+          "id": "T13.1/system/addressing",
+          "name": "addressing (each hole distinct)",
+          "status": "SKIP",
+          "message": "no optical response to compare",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/system/interlocks",
+          "name": "P4 interlock re-checks",
+          "status": "PASS",
+          "message": "light_while_moving: SKIP: static mode (no motion); single_channel: PASS",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "failed"
+          }
+        },
+        {
+          "id": "T13.1/system/duty",
+          "name": "LED duty (RAIL A <= budget per LED per minute)",
+          "status": "PASS",
+          "message": "max 252 ms of 1000 ms; 0 cool-down waits, 0 s in all",
+          "criteria": "",
+          "measured": {
+            "value": 252.0,
+            "unit": "ms/min"
+          }
+        },
+        {
+          "id": "T13.1/system/stage",
+          "name": "stage tracking (position trusted, soft limits respected)",
+          "status": "PASS",
+          "message": "position [0, 0], limits respected",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/system/run",
+          "name": "run complete",
+          "status": "PASS",
+          "message": "COMPLETE",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/optics/curves",
+          "name": "response curves vs height",
+          "status": "SKIP",
+          "message": "no down pass in this mode (no height data)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/opt101/coupling",
+          "name": "opt101: electrical coupling",
+          "status": "SKIP",
+          "message": "no blind channels measured",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/ingaas/coupling",
+          "name": "ingaas: electrical coupling",
+          "status": "SKIP",
+          "message": "no blind channels measured",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/opt101/dark_offset",
+          "name": "opt101: dark offset / leakage",
+          "status": "PASS",
+          "message": "+70.9 counts (+8.87 mV)",
+          "criteria": "0 to 800 counts (thresholds.dark)",
+          "measured": {
+            "value": 8.867,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/dark_offset",
+          "name": "ingaas: dark offset / leakage",
+          "status": "PASS",
+          "message": "-167.7 counts (-20.96 mV); equivalent input current +21.0 nA (Rf 1 M\u03a9)",
+          "criteria": "-400 to 2000 counts (thresholds.dark)",
+          "measured": {
+            "value": -20.961,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/elec/opt101/drift",
+          "name": "opt101: dark drift",
+          "status": "SKIP",
+          "message": "under 5 min of dark frames: too short for a drift estimate",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/ingaas/drift",
+          "name": "ingaas: dark drift",
+          "status": "SKIP",
+          "message": "under 5 min of dark frames: too short for a drift estimate",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/opt101/hum",
+          "name": "opt101: mains hum (coils off)",
+          "status": "PASS",
+          "message": "60/120/180 Hz: 0.032 / 0.046 / 0.038 mV; 14% of the variance at mains harmonics; broadband sigma 0.111 mV; readings integrate whole mains periods, so it cancels in the measurements",
+          "criteria": "60 Hz amplitude < 0.3 mV (WARN; not when the readings reject it), < 1 (FAIL); mains fraction < 0.5",
+          "measured": {
+            "value": 0.0317,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/hum",
+          "name": "ingaas: mains hum (coils off)",
+          "status": "PASS",
+          "message": "60/120/180 Hz: 1.178 / 0.557 / 0.143 mV; 91% of the variance at mains harmonics; broadband sigma 0.296 mV; readings integrate whole mains periods, so it cancels in the measurements",
+          "criteria": "60 Hz amplitude < 1 mV (WARN; not when the readings reject it), < 3 (FAIL); mains fraction < 0.5",
+          "measured": {
+            "value": 1.1775,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/elec/opt101/coil_emi",
+          "name": "opt101: coil interference",
+          "status": "SKIP",
+          "message": "needs hum records, coils off and moving",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/ingaas/coil_emi",
+          "name": "ingaas: coil interference",
+          "status": "SKIP",
+          "message": "needs hum records, coils off and moving",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/elec/opt101/h15/select_only",
+          "name": "opt101: select-only coupling (MOSFET on, CE low)",
+          "status": "PASS",
+          "message": "largest on hole 15: -0.6 counts",
+          "criteria": "< 8 counts (WARN); FAIL capped to WARN (gate coupling, LED off)",
+          "measured": {
+            "value": 0.6,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/h03/select_only",
+          "name": "ingaas: select-only coupling (MOSFET on, CE low)",
+          "status": "PASS",
+          "message": "largest on hole 3: -0.6 counts",
+          "criteria": "< 8 counts (WARN); FAIL capped to WARN (gate coupling, LED off)",
+          "measured": {
+            "value": 0.6,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/elec/opt101/ce_only",
+          "name": "opt101: CE-only coupling (driver enabled, no LED)",
+          "status": "PASS",
+          "message": "CE1: +1.0, CE2: +0.0",
+          "criteria": "< 8 counts (WARN), < 20 (FAIL)",
+          "measured": {
+            "value": 1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/elec/ingaas/ce_only",
+          "name": "ingaas: CE-only coupling (driver enabled, no LED)",
+          "status": "PASS",
+          "message": "CE1: -1.0, CE2: +0.0",
+          "criteria": "< 8 counts (WARN), < 20 (FAIL)",
+          "measured": {
+            "value": 1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h01",
+          "name": "hole 1 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h02",
+          "name": "hole 2 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h03",
+          "name": "hole 3 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h04",
+          "name": "hole 4 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h05",
+          "name": "hole 5 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+0 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h06",
+          "name": "hole 6 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "-1 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": -1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h07",
+          "name": "hole 7 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+1 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h08",
+          "name": "hole 8 dark with only RAIL B enabled",
+          "status": "PASS",
+          "message": "+1 counts on opt101 with the hole selected and RAIL B enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h09",
+          "name": "hole 9 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "+0 counts on opt101 with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h10",
+          "name": "hole 10 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "-1 counts on opt101 with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": -1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h11",
+          "name": "hole 11 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "-1 counts on opt101 with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": -1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h12",
+          "name": "hole 12 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "+2 counts on ingaas with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 2.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h13",
+          "name": "hole 13 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "+0 counts on ingaas with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h14",
+          "name": "hole 14 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "+1 counts on ingaas with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 1.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/optics/wrong_rail/h15",
+          "name": "hole 15 dark with only RAIL A enabled",
+          "status": "PASS",
+          "message": "+0 counts on ingaas with the hole selected and RAIL A enabled",
+          "criteria": "< 30 counts (WARN), < 80 (FAIL)",
+          "measured": {
+            "value": 0.0,
+            "unit": "counts"
+          }
+        },
+        {
+          "id": "T13.1/ambient/opt101/leak",
+          "name": "opt101: dark vs height (light leak)",
+          "status": "SKIP",
+          "message": "needs dark frames at 4+ heights",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/ambient/ingaas/leak",
+          "name": "ingaas: dark vs height (light leak)",
+          "status": "SKIP",
+          "message": "needs dark frames at 4+ heights",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/ambient/opt101/flicker",
+          "name": "opt101: room-light flicker (120 Hz)",
+          "status": "PASS",
+          "message": "120 Hz amplitude in the dark streams 0.046 mV; readings integrate whole mains periods, so it cancels",
+          "criteria": "< 0.4 mV (WARN), < 1.2 (FAIL)",
+          "measured": {
+            "value": 0.0456,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/ambient/ingaas/flicker",
+          "name": "ingaas: room-light flicker (120 Hz)",
+          "status": "PASS",
+          "message": "120 Hz amplitude in the dark streams 0.557 mV; readings integrate whole mains periods, so it cancels",
+          "criteria": "< 0.4 mV (WARN), < 1.2 (FAIL)",
+          "measured": {
+            "value": 0.5573,
+            "unit": "mV"
+          }
+        },
+        {
+          "id": "T13.1/ambient/lid",
+          "name": "lid sensitivity",
+          "status": "SKIP",
+          "message": "optional operator step (lid ajar at two heights)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/mech/travel",
+          "name": "travel (top to bottom)",
+          "status": "WARN",
+          "message": "tracked range 260400 / 333677 half-steps (M1/right / M2/left): the two sides differ (thresholds.motion.travel.range_steps not set: not compared) | why: The tracked travel differs from the configured one (or between the sides). | parts: stage limits",
+          "criteria": "",
+          "measured": {
+            "value": 260400.0,
+            "unit": "half-steps"
+          }
+        },
+        {
+          "id": "T13.1/mech/lockstep",
+          "name": "lockstep (firmware positions level after every move)",
+          "status": "PASS",
+          "message": "0 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)",
+          "criteria": "",
+          "measured": {
+            "value": 0.0,
+            "unit": "moves"
+          }
+        },
+        {
+          "id": "T13.1/mech/settle",
+          "name": "settle time after a move (dark-read convergence)",
+          "status": "PASS",
+          "message": "median 602 ms, max 602 ms (mechanical wait 300 ms)",
+          "criteria": "max - median < 500 ms (WARN), < 1500 (FAIL)",
+          "measured": {
+            "value": 602.0,
+            "unit": "ms"
+          }
+        },
+        {
+          "id": "T13.1/mech/backlash",
+          "name": "backlash",
+          "status": "SKIP",
+          "message": "no down-pass reference curves (static or continuous mode, or no strong channel)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/mech/step_loss",
+          "name": "step loss",
+          "status": "SKIP",
+          "message": "no down-pass reference curves (static or continuous mode, or no strong channel)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/mech/repeatability",
+          "name": "repeatability",
+          "status": "SKIP",
+          "message": "no down-pass reference curves (static or continuous mode, or no strong channel)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T13.1/trend/control",
+          "name": "control charts vs baselines",
+          "status": "SKIP",
+          "message": "needs 5 baselines of LIO-F-00001 (have 0)",
+          "criteria": "",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "run": "test_results/tray_v3/20261121-121644_scan_electrical",
+        "mode": "electrical",
+        "status": "COMPLETE",
+        "verdict": "FUNCTIONAL",
+        "health": {
+          "link": "OK",
+          "adc": "OK",
+          "shift_registers": "n/a",
+          "drivers": "OK",
+          "channels": "OK",
+          "opt101": "OK",
+          "ingaas": "OK",
+          "motors": "WATCH",
+          "stage": "OK",
+          "safety": "OK",
+          "power": "OK",
+          "optical_path": "OK",
+          "run": "OK"
+        }
+      },
+      "artefacts": [
+        "test_results/tray_v3/20261121-121644_scan_electrical/report.html"
+      ]
+    }
+  ],
+  "duty": {},
+  "finished": "2026-11-21T12:18:04-05:00",
+  "verdict": {
+    "verdict": "FUNCTIONAL",
+    "reasons": [
+      "warnings: T13.1"
+    ],
+    "counts": {
+      "PASS": 0,
+      "WARN": 1,
+      "FAIL": 0,
+      "SKIP": 0,
+      "ERROR": 0
+    }
+  }
+}

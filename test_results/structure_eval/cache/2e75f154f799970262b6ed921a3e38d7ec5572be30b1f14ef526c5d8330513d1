@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 24302,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "TOENAIL FUNGUS TREATMENT Undecylenic Acid UNDECYLENIC ACID UNDECYLENIC ACID ACETYL HEXAPEPTIDE-8 ALLANTOIN BISABOLOL CAPRYLIC/CAPRIC TRIGLYCERIDE CENTELLA ASIATICA ETHYLHEXYL PALMITATE GLYCERIN MELALEUCA ALTERNIFOLIA (TEA TREE) LEAF OIL NIACINAMIDE ORIGANUM VULGARE LEAF OIL PALMITOYL TETRAPEPTIDE-7 PALMITOYL TRIPEPTIDE-1 PIPER METHYSTICUM ROOT SODIUM HYALURONATE TOCOPHEROL ALOE"
+      ],
+      "active_ingredient": [
+        "Undecylenic Acid 25%"
+      ],
+      "purpose": [
+        "Antifungal"
+      ],
+      "indications_and_usage": [
+        "Helps improve the appearance of toenails affected by fungal infection,including discoloration, thickening,splitting, crumbling, and brittleness."
+      ],
+      "warnings": [
+        "For external use only."
+      ],
+      "do_not_use": [
+        "Do not use on broken or severely irritated skin. Do not use on children under 2 years of age except under the advice and supervision of a doctor."
+      ],
+      "when_using": [
+        "When using this product,avoid contact with eyes. If eye contact occurs, rinse thoroughly with water."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if irritation occurs or if there is no improvement within 2 weeks."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children.If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Clean and thoroughly dry the affected area. Apply a thin layer to the affected toenail and surrounding skin twice daily, in the morning and evening. Pay special attention to the spaces between the toes. Wear well-fitting, ventilated shoes and change shoes and socks at least once daily. Use for 2 weeks, or as directed by a doctor."
+      ],
+      "inactive_ingredient": [
+        "Acetyl Hexapeptide-8 Allantoin Aloe Yohjyu Matsu Ekisu Bisabolol Caprylic/Capric Triglyceride Centella Asiatica Extract Ethylhexyl Palmitate Glycerin Melaleuca Alternifolia (Tea Tree) Leaf Oil Niacinamide Origanum Vulgare Oil Palmitoyl Tetrapeptide-7 Palmitoyl Tripeptide-1 Piper Methysticum Root Extract Sodium Hyaluronate Tocopherol"
+      ],
+      "package_label_principal_display_panel": [
+        "label label1"
+      ],
+      "set_id": "5ddd0336-b638-d686-e063-6294a90a54f6",
+      "id": "5ddd0336-b639-d686-e063-6294a90a54f6",
+      "effective_time": "20261015",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M005"
+        ],
+        "brand_name": [
+          "TOENAIL FUNGUS TREATMENT"
+        ],
+        "generic_name": [
+          "UNDECYLENIC ACID"
+        ],
+        "manufacturer_name": [
+          "Yunqi Cosmetics (Shenzhen) Co., Ltd"
+        ],
+        "product_ndc": [
+          "84763-018"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "UNDECYLENIC ACID"
+        ],
+        "rxcui": [
+          "998329"
+        ],
+        "spl_id": [
+          "5ddd0336-b639-d686-e063-6294a90a54f6"
+        ],
+        "spl_set_id": [
+          "5ddd0336-b638-d686-e063-6294a90a54f6"
+        ],
+        "package_ndc": [
+          "84763-018-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "K3D86KJ24N"
+        ]
+      }
+    }
+  ]
+}

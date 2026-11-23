@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 19864,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Roll On Anti Perspirant Alcohol Free Aluminum Chlorohydrate WATER GLYCERIN POLYSORBATE 20 HYDROXYETHYL CELLULOSE (2000 CPS AT 1%) EDETATE SODIUM ALUMINUM CHLOROHYDRATE ALUMINUM CHLOROHYDRATE"
+      ],
+      "active_ingredient": [
+        "Active ingredient Aluminum Chlorohydrate 10% Anhydrous"
+      ],
+      "purpose": [
+        "Purpose Antiperspirant"
+      ],
+      "indications_and_usage": [
+        "Uses reduces underarm perspiration also decreases underarm sweating due to stress"
+      ],
+      "warnings": [
+        "Warnings For external use only. Do not use on broken skin Ask a doctor before use if you have kidney disease Stop use if rash or irritation occurs Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "do_not_use": [
+        "Do not use on broken skin"
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have kidney disease"
+      ],
+      "stop_use": [
+        "Stop use if rash or irritation occurs"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children. If swallowed, get medical help or contact a Poison Control Center right away."
+      ],
+      "dosage_and_administration": [
+        "Directions apply to underarms only"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients fragrance, gylcerin, hydroxyethylcellulose, polysorbate 20, tetrasodium EDTA, water"
+      ],
+      "spl_unclassified_section": [
+        "Manufacturing Information Manufactured for: Medline Industries, LP Three Lakes Drive, Northfield, IL 60093 USA Made in USA www.medline.com 1-800-MEDLINE REF: MSC095010 V1 RJ22HDX"
+      ],
+      "package_label_principal_display_panel": [
+        "Package label Label V1 RJ22HDX"
+      ],
+      "set_id": "4f706801-dc2d-48c4-aa06-92207d86e55e",
+      "id": "47e5f552-7c5e-963d-e063-6294a90ad301",
+      "effective_time": "20260108",
+      "version": "15",
+      "openfda": {
+        "application_number": [
+          "M003"
+        ],
+        "brand_name": [
+          "Roll On Anti Perspirant Alcohol Free"
+        ],
+        "generic_name": [
+          "ALUMINUM CHLOROHYDRATE"
+        ],
+        "manufacturer_name": [
+          "Medline Industries, LP"
+        ],
+        "product_ndc": [
+          "53329-069"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "ALUMINUM CHLOROHYDRATE"
+        ],
+        "spl_id": [
+          "47e5f552-7c5e-963d-e063-6294a90ad301"
+        ],
+        "spl_set_id": [
+          "4f706801-dc2d-48c4-aa06-92207d86e55e"
+        ],
+        "package_ndc": [
+          "53329-069-12"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0080196667713"
+        ],
+        "unii": [
+          "HPN8MZW13M"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 12174,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "sugar free honey lemon cough drops menthol WATER MENTHOL MENTHOL honey and lemon B"
+      ],
+      "active_ingredient": [
+        "Active ingredient (in each drop) Menthol 7.6 mg"
+      ],
+      "purpose": [
+        "Purpose Cough suppressant / Oral anesthetic"
+      ],
+      "indications_and_usage": [
+        "Uses temporarily relieves: cough as may occur with a cold occasional minor irritation and sore throat"
+      ],
+      "warnings": [
+        "Warnings Sore throat warning: if sore throat is severe, persists for more than 2 days, is accompanied or followed by fever, headache, rash, swelling, nausea, or vomiting, consult a doctor promptly. If sore mouth symptoms do not improve in 7 days, see your dentist or doctor. These symptoms may be serious."
+      ],
+      "ask_doctor": [
+        "Ask a doctor before use if you have: persistent or chronic cough such as occurs with smoking, asthma, or emphysema cough accompanied by excessive phlegm (mucus)"
+      ],
+      "stop_use": [
+        "Stop use and ask doctor if cough persists for more than 7 days, tends to recur, or is accompanied by fever, rash, or persistent headache. These could be signs of a serious condition. sore throat is severe, or irritation, pain or redness lasts or worsens sore mouth does not improve in 7 days"
+      ],
+      "pregnancy_or_breast_feeding": [
+        "If pregnant or breast-feeding, as a health professional before use."
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children."
+      ],
+      "dosage_and_administration": [
+        "Direction adults and children 5 years and over - dissolve 1 lozenge slowly in mouth. Repeat every 2 hours as needed or as directed by a doctor. children under 5 years - ask a doctor"
+      ],
+      "other_safety_information": [
+        "Other information 6 calories per drop Excess consumption may cause a laxative effect."
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients: Acesulfame potassium, beta carotene, corn starch, eucalyptus oil, glycerin, isomalt, maltitol syrup, medium chain triglycerides, natural and artificial flavors, soybean oil, sucralose and water."
+      ],
+      "questions": [
+        "Questions? Or to report an adverse event call 1-888-423-0139."
+      ],
+      "package_label_principal_display_panel": [
+        "TopCare SF Honey Lemon 25ct Cough Drops"
+      ],
+      "set_id": "36824bee-607e-7095-e054-00144ff8d46c",
+      "id": "466f342d-e8ec-e718-e063-6394a90aa2d1",
+      "effective_time": "20251220",
+      "version": "9",
+      "openfda": {
+        "application_number": [
+          "M012"
+        ],
+        "brand_name": [
+          "sugar free honey lemon cough drops"
+        ],
+        "generic_name": [
+          "MENTHOL"
+        ],
+        "manufacturer_name": [
+          "Topco Associates"
+        ],
+        "product_ndc": [
+          "36800-822"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "MENTHOL"
+        ],
+        "rxcui": [
+          "359751"
+        ],
+        "spl_id": [
+          "466f342d-e8ec-e718-e063-6394a90aa2d1"
+        ],
+        "spl_set_id": [
+          "36824bee-607e-7095-e054-00144ff8d46c"
+        ],
+        "package_ndc": [
+          "36800-822-25"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0036800334496"
+        ],
+        "unii": [
+          "L7T10EIP3A"
+        ]
+      }
+    }
+  ]
+}

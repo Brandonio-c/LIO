@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 2989,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Neutrogena Invisible Daily Defense Broad Spectrum SPF 60 Plus Avobenzone, Homosalate, Octisalate, and Octocrylene WATER BUTYLOCTYL SALICYLATE GLYCERIN ALCOHOL SILICA DIMETHICONE ALUMINUM STARCH OCTENYLSUCCINATE PHENOXYETHANOL PENTYLENE GLYCOL BUTYL METHACRYLATE/METHYL METHACRYLATE/METHACRYLIC ACID/STYRENE CROSSPOLYMER GLYCERYL MONOSTEARATE CHLORPHENESIN MENTHYL LACTATE, (-)- .ALPHA.-TOCOPHEROL ACETATE EDETATE DISODIUM TRIDECETH-6 FEVERFEW SODIUM HYDROXIDE FD&C YELLOW NO. 5 OCTISALATE OCTISALATE FD&C RED NO. 40 AVOBENZONE AVOBENZONE HOMOSALATE HOMOSALATE OCTOCRYLENE OCTOCRYLENE POLYURETHANE-62 2-ETHYLHEXYL ACRYLATE, METHACRYLATE, METHYL METHACRYLATE, OR BUTYL METHACRYLATE/HYDROXYPROPYL DIMETHICONE COPOLYMER (30000-300000 MW)"
+      ],
+      "spl_unclassified_section": [
+        "Drug Facts",
+        "Distributed by: Kenvue Brands LLC Summit, NJ 07901"
+      ],
+      "active_ingredient": [
+        "Active ingredients Purpose Avobenzone 3% Sunscreen Homosalate 13.5% Sunscreen Octisalate 5% Sunscreen Octocrylene 10% Sunscreen"
+      ],
+      "active_ingredient_table": [
+        "<table width=\"60%\"><colgroup><col align=\"left\" valign=\"middle\" width=\"65%\"/><col align=\"right\" valign=\"middle\" width=\"35%\"/></colgroup><thead><tr><th><content styleCode=\"italics\">Active ingredients</content></th><th><content styleCode=\"italics\">Purpose</content></th></tr></thead><tbody><tr><td>Avobenzone 3%</td><td>Sunscreen</td></tr><tr><td>Homosalate 13.5%</td><td>Sunscreen</td></tr><tr><td>Octisalate 5%</td><td>Sunscreen</td></tr><tr><td>Octocrylene 10%</td><td>Sunscreen</td></tr></tbody></table>"
+      ],
+      "purpose": [
+        "Active ingredients Purpose Avobenzone 3% Sunscreen Homosalate 13.5% Sunscreen Octisalate 5% Sunscreen Octocrylene 10% Sunscreen"
+      ],
+      "purpose_table": [
+        "<table width=\"60%\"><colgroup><col align=\"left\" valign=\"middle\" width=\"65%\"/><col align=\"right\" valign=\"middle\" width=\"35%\"/></colgroup><thead><tr><th><content styleCode=\"italics\">Active ingredients</content></th><th><content styleCode=\"italics\">Purpose</content></th></tr></thead><tbody><tr><td>Avobenzone 3%</td><td>Sunscreen</td></tr><tr><td>Homosalate 13.5%</td><td>Sunscreen</td></tr><tr><td>Octisalate 5%</td><td>Sunscreen</td></tr><tr><td>Octocrylene 10%</td><td>Sunscreen</td></tr></tbody></table>"
+      ],
+      "indications_and_usage": [
+        "Uses helps prevent sunburn if used as directed with other sun protection measures (see Directions ), decreases the risk of skin cancer and early skin aging caused by the sun"
+      ],
+      "warnings": [
+        "Warnings For external use only Do not use on damaged or broken skin When using this product keep out of eyes. Rinse with water to remove. Stop use and ask a doctor if rash occurs Keep out of reach of children . If swallowed, get medical help or contact a Poison Control Center right away"
+      ],
+      "do_not_use": [
+        "Do not use on damaged or broken skin"
+      ],
+      "when_using": [
+        "When using this product keep out of eyes. Rinse with water to remove."
+      ],
+      "stop_use": [
+        "Stop use and ask a doctor if rash occurs"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children . If swallowed, get medical help or contact a Poison Control Center right away"
+      ],
+      "dosage_and_administration": [
+        "Directions apply liberally 15 minutes before sun exposure reapply: after 80 minutes of swimming or sweating immediately after towel drying at least every 2 hours Sun Protection Measures. Spending time in the sun increases your risk of skin cancer and early skin aging. To decrease this risk, regularly use a sunscreen with a Broad Spectrum SPF value of 15 or higher and other sun protection measures including: limit time in the sun, especially from 10 a.m. - 2 p.m. wear long-sleeved shirts, pants, hats and sunglasses Children under 6 months of age: Ask a doctor"
+      ],
+      "storage_and_handling": [
+        "Other information protect this product from excessive heat and direct sun May stain some fabrics"
+      ],
+      "inactive_ingredient": [
+        "Inactive ingredients water, butyloctyl salicylate, glycerin, alcohol denat., silica, dimethicone, aluminum starch octenylsuccinate, polyurethane-62, phenoxyethanol, pentylene glycol, sodium acryloyldimethyltaurate/VP crosspolymer, acrylates/dimethicone copolymer, glyceryl stearate, chlorphenesin, styrene/acrylates copolymer, fragrance, menthyl lactate, tocopheryl acetate, disodium EDTA, trideceth-6, chrysanthemum parthenium (feverfew) flower/leaf/stem juice, sodium hydroxide, yellow 5, red 40"
+      ],
+      "questions": [
+        "Questions? Call toll-free 800-299-4786 or 215-273-8755 (collect) or visit www.neutrogena.com"
+      ],
+      "package_label_principal_display_panel": [
+        "PRINCIPAL DISPLAY PANEL - 88 mL Tube Label Neutrogena ® DERMATOLOGIST RECOMMENDED BRAND Invisible Daily defense lotion sunscreen BROAD SPECTRUM SPF 60+ 60+ sun + environment oxybenzone free water resistant (80 minutes) 3.0 FL OZ (88 mL) Neutrogena_1"
+      ],
+      "set_id": "0f0ba2e9-126f-13c0-e063-6394a90aa6a4",
+      "id": "4078c807-9fba-23be-e063-6394a90a61d7",
+      "effective_time": "20251008",
+      "version": "5",
+      "openfda": {
+        "application_number": [
+          "M020"
+        ],
+        "brand_name": [
+          "Neutrogena Invisible Daily Defense Broad Spectrum SPF 60 Plus"
+        ],
+        "generic_name": [
+          "AVOBENZONE, HOMOSALATE, OCTISALATE, AND OCTOCRYLENE"
+        ],
+        "manufacturer_name": [
+          "Kenvue Brands LLC"
+        ],
+        "product_ndc": [
+          "69968-0841"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "OCTISALATE",
+          "AVOBENZONE",
+          "HOMOSALATE",
+          "OCTOCRYLENE"
+        ],
+        "spl_id": [
+          "4078c807-9fba-23be-e063-6394a90a61d7"
+        ],
+        "spl_set_id": [
+          "0f0ba2e9-126f-13c0-e063-6394a90aa6a4"
+        ],
+        "package_ndc": [
+          "69968-0841-3"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0086800111511"
+        ],
+        "unii": [
+          "4X49Y0596W",
+          "G63QQF2NOX",
+          "V06SV4M95S",
+          "5A68WGF6WM"
+        ]
+      }
+    }
+  ]
+}

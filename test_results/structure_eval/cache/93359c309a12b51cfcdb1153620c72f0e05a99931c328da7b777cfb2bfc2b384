@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.",
+    "terms": "https://open.fda.gov/terms/",
+    "license": "https://open.fda.gov/license/",
+    "last_updated": "2026-11-12",
+    "results": {
+      "skip": 18103,
+      "limit": 1,
+      "total": 49843
+    }
+  },
+  "results": [
+    {
+      "spl_product_data_elements": [
+        "Brush Buddies Mouthwash 12oz Star Wars Saber Strike Strawberry SODIUM FLUORIDE SODIUM FLUORIDE FLUORIDE ION SORBITOL SODIUM BENZOATE POTASSIUM SORBATE CETYLPYRIDINIUM CHLORIDE CITRIC ACID MONOHYDRATE METHYL SALICYLATE GLYCERIN METHYL DIISOPROPYL PROPIONAMIDE POLYOXYL 40 HYDROGENATED CASTOR OIL WATER CI 16035 CI 17200 SACCHARIN SODIUM PEG-400 FRAGRANCE 13576"
+      ],
+      "active_ingredient": [
+        "SODIUM FLUORIDE 0.05%"
+      ],
+      "purpose": [
+        "Anticavity"
+      ],
+      "keep_out_of_reach_of_children": [
+        "Keep out of reach of children under 6 years of age"
+      ],
+      "indications_and_usage": [
+        "Adults and children 6 years of age and older: Use once a day after brushing your teeth with a toothpaste. Vigorously swish 10 milliliters of rinse between your teeth for 1 minute and then split out. Do No t swallow the rinse. Do Not eat or drink for 30 minutes after rinsing. Instruct children under 12 years of age in good rinsing habits(to minimize swallowing). Supervise children as necessary until capable of using without supervision. Children under 6 years of age: Consult a dentist or doctor."
+      ],
+      "warnings": [
+        "Keep out of reach of children under 6 years of age, lf you accidentally swallow more than used for rinsing, seek professionalhelp or contact a Poison Control Center immediately. Call professional help at 1-800-222-1222 or go to PoisionHelp.org."
+      ],
+      "dosage_and_administration": [
+        "Directions Adults and children 6 years and older Use daily after you brush your teeth with toothpaste Rinse toothpaste from mouth prior to use. Shake well before each use.Twist and remove cap. Rinse or gargle for 30 seconds with 15 ml and spit out. Do Not swallow the rinse. Do Not eat or drink for 30 minutes after rinsing Supervise children as necessary. Children under 6 years of age, consult with a dentist or doctor."
+      ],
+      "inactive_ingredient": [
+        "Water SORBITOL GLYCERIN SODIUM BENZOATE PEG-40 HYDROGENATED CASTOR OIL PEG-400 POTASSIUM SORBATE Fragrance CETYLPYRIDINIUM CHLORIDE SODIUM SACCHARIN CITRIC ACID METHYL DIISOPROPYL PROPIONAMIDE SUCRALOSE CI 16035 CI 17200"
+      ],
+      "recent_major_changes": [
+        ""
+      ],
+      "package_label_principal_display_panel": [
+        "label"
+      ],
+      "set_id": "4998c0e6-1de3-11cd-e063-6294a90acb6f",
+      "id": "4998d108-9e86-2b29-e063-6294a90a97bd",
+      "effective_time": "20260101",
+      "version": "1",
+      "openfda": {
+        "application_number": [
+          "M021"
+        ],
+        "brand_name": [
+          "Brush Buddies Mouthwash 12oz Star Wars Saber Strike Strawberry"
+        ],
+        "generic_name": [
+          "SODIUM FLUORIDE"
+        ],
+        "manufacturer_name": [
+          "Kingkey MBC Life Technology Group co., LTD."
+        ],
+        "product_ndc": [
+          "73928-130"
+        ],
+        "product_type": [
+          "HUMAN OTC DRUG"
+        ],
+        "route": [
+          "ORAL"
+        ],
+        "substance_name": [
+          "SODIUM FLUORIDE"
+        ],
+        "rxcui": [
+          "240698"
+        ],
+        "spl_id": [
+          "4998d108-9e86-2b29-e063-6294a90a97bd"
+        ],
+        "spl_set_id": [
+          "4998c0e6-1de3-11cd-e063-6294a90acb6f"
+        ],
+        "package_ndc": [
+          "73928-130-01"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "upc": [
+          "0810147889631"
+        ],
+        "unii": [
+          "8ZYQ1474W7"
+        ]
+      }
+    }
+  ]
+}
