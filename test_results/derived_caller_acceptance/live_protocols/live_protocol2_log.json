@@ -1,0 +1,2791 @@
+{
+ "run_id": "20261123-180942_scan_protocol",
+ "log": [
+  {
+   "t": "18:09:42",
+   "path": "/api/scan/beat",
+   "body": {},
+   "code": 200,
+   "out": {
+    "ok": true,
+    "running": false
+   }
+  },
+  {
+   "t": "18:09:42",
+   "path": "/api/scan/protocol/start",
+   "body": {
+    "protocol": {
+     "id": "live_caller_acceptance_pause_abort",
+     "version": "1",
+     "schema": 1,
+     "kind": "stationary_targeted",
+     "sample": {
+      "sample_id": "empty",
+      "declared": true
+     },
+     "assembly": {
+      "tray": "none",
+      "lid": "closed",
+      "notes": "owner: chamber empty, lid closed, earth bond connected"
+     },
+     "holes": [
+      8,
+      12
+     ],
+     "detectors": [
+      "ingaas",
+      "opt101"
+     ],
+     "position_policy": "current_position",
+     "gain": "1",
+     "conditions": [
+      {
+       "id": "unblocked",
+       "label": "chamber unblocked",
+       "settle_ms": 8,
+       "mains_periods": 2,
+       "optical_block": false
+      }
+     ],
+     "blocks": {
+      "n_production": 6,
+      "n_pilot": 0,
+      "n_production_min": 1,
+      "n_production_max": 8
+     },
+     "budgets": {
+      "max_wall_s": 900,
+      "max_cycle_s": 0,
+      "max_total_on_ms": 20000
+     },
+     "allocation": {
+      "policy": "equal_fixed",
+      "control_holes": [],
+      "target_weights": {
+       "8": 1.0,
+       "12": 1.0
+      }
+     },
+     "inference": {
+      "split": "fixed_n",
+      "pilot_is_confirmation": false
+     },
+     "estimator": {
+      "name": "fixed_n_block",
+      "version": "m3",
+      "coupling_model": "validated_control"
+     },
+     "operator_checkpoints": [],
+     "objective": "primary_swir",
+     "notes": "live bounded capture -> persist -> analyse -> report, with pause/abort/resume"
+    },
+    "sample_id": "empty",
+    "allow_light": true,
+    "heartbeat": true,
+    "operator_checkpoint_flag": true,
+    "timeout_s": 30
+   },
+   "code": 200,
+   "out": {
+    "steps": 12,
+    "eta_s": 1.592,
+    "protocol_id": "live_caller_acceptance_pause_abort"
+   }
+  },
+  {
+   "t": "18:09:42",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": true,
+     "running": true,
+     "progress": {
+      "status": "starting",
+      "done": 0,
+      "of": 12,
+      "kind": "protocol"
+     },
+     "folder": null,
+     "result": null,
+     "error": "",
+     "pause_requested": false,
+     "paused": false,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "RUNNING",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 0,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:43",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": true,
+     "running": true,
+     "progress": {
+      "status": "measuring",
+      "done": 2,
+      "of": 12,
+      "kind": "protocol",
+      "paused": false,
+      "step": 2,
+      "phase": "fixed",
+      "actual_on_ms": 168.0
+     },
+     "folder": null,
+     "result": null,
+     "error": "",
+     "pause_requested": false,
+     "paused": false,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "RUNNING",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 2,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:43",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": true,
+     "running": true,
+     "progress": {
+      "status": "measuring",
+      "done": 2,
+      "of": 12,
+      "kind": "protocol",
+      "paused": false,
+      "step": 2,
+      "phase": "fixed",
+      "actual_on_ms": 168.0
+     },
+     "folder": null,
+     "result": null,
+     "error": "",
+     "pause_requested": false,
+     "paused": false,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "RUNNING",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 2,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:43",
+   "path": "/api/scan/pause",
+   "body": {
+    "on": true
+   },
+   "code": 200,
+   "out": {
+    "ok": true
+   }
+  },
+  {
+   "t": "18:09:45",
+   "path": "/api/scan/beat",
+   "body": {},
+   "code": 200,
+   "out": {
+    "ok": true,
+    "running": true
+   }
+  },
+  {
+   "t": "18:09:48",
+   "path": "/api/scan/beat",
+   "body": {},
+   "code": 200,
+   "out": {
+    "ok": true,
+    "running": true
+   }
+  },
+  {
+   "t": "18:09:51",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": true,
+     "running": true,
+     "progress": {
+      "status": "paused",
+      "done": 3,
+      "of": 12,
+      "kind": "protocol",
+      "paused": true,
+      "step": 3,
+      "phase": "fixed",
+      "actual_on_ms": 252.0
+     },
+     "folder": null,
+     "result": null,
+     "error": "",
+     "pause_requested": true,
+     "paused": true,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "RUNNING",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 3,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:51",
+   "path": "/api/scan/beat",
+   "body": {},
+   "code": 200,
+   "out": {
+    "ok": true,
+    "running": true
+   }
+  },
+  {
+   "t": "18:09:54",
+   "path": "/api/scan/beat",
+   "body": {},
+   "code": 200,
+   "out": {
+    "ok": true,
+    "running": true
+   }
+  },
+  {
+   "t": "18:09:56",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": true,
+     "running": true,
+     "progress": {
+      "status": "paused",
+      "done": 3,
+      "of": 12,
+      "kind": "protocol",
+      "paused": true,
+      "step": 3,
+      "phase": "fixed",
+      "actual_on_ms": 252.0
+     },
+     "folder": null,
+     "result": null,
+     "error": "",
+     "pause_requested": true,
+     "paused": true,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "RUNNING",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 3,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:56",
+   "path": "/api/scan/pause",
+   "body": {
+    "on": false
+   },
+   "code": 200,
+   "out": {
+    "ok": true
+   }
+  },
+  {
+   "t": "18:09:56",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": true,
+     "running": true,
+     "progress": {
+      "status": "paused",
+      "done": 3,
+      "of": 12,
+      "kind": "protocol",
+      "paused": true,
+      "step": 3,
+      "phase": "fixed",
+      "actual_on_ms": 252.0
+     },
+     "folder": null,
+     "result": null,
+     "error": "",
+     "pause_requested": false,
+     "paused": true,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "RUNNING",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 3,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:56",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": true,
+     "running": true,
+     "progress": {
+      "status": "measuring",
+      "done": 5,
+      "of": 12,
+      "kind": "protocol",
+      "paused": false,
+      "step": 5,
+      "phase": "fixed",
+      "actual_on_ms": 420.0
+     },
+     "folder": null,
+     "result": null,
+     "error": "",
+     "pause_requested": false,
+     "paused": false,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "RUNNING",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 5,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:56",
+   "path": "/api/scan/abort",
+   "body": {},
+   "code": 200,
+   "out": {
+    "ok": true
+   }
+  },
+  {
+   "t": "18:09:56",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": true,
+     "running": true,
+     "progress": {
+      "status": "measuring",
+      "done": 5,
+      "of": 12,
+      "kind": "protocol",
+      "paused": false,
+      "step": 5,
+      "phase": "fixed",
+      "actual_on_ms": 420.0
+     },
+     "folder": null,
+     "result": null,
+     "error": "",
+     "pause_requested": false,
+     "paused": false,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "RUNNING",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:57",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": false,
+     "running": false,
+     "progress": {
+      "status": "incomplete",
+      "done": 12,
+      "of": 24,
+      "kind": "protocol",
+      "cancel_reason": "cancelled"
+     },
+     "folder": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/20261123-180942_scan_protocol",
+     "result": {
+      "status": "INCOMPLETE",
+      "cancel_reason": "cancelled",
+      "run_id": "20261123-180942_scan_protocol",
+      "unresolved": true,
+      "folder": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/20261123-180942_scan_protocol"
+     },
+     "error": "",
+     "pause_requested": false,
+     "paused": false,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:57",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": false,
+     "running": false,
+     "progress": {
+      "status": "incomplete",
+      "done": 12,
+      "of": 24,
+      "kind": "protocol",
+      "cancel_reason": "cancelled"
+     },
+     "folder": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/20261123-180942_scan_protocol",
+     "result": {
+      "status": "INCOMPLETE",
+      "cancel_reason": "cancelled",
+      "run_id": "20261123-180942_scan_protocol",
+      "unresolved": true,
+      "folder": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/20261123-180942_scan_protocol"
+     },
+     "error": "",
+     "pause_requested": false,
+     "paused": false,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:57",
+   "path": "/api/scan/protocol/start",
+   "body": {
+    "protocol": {
+     "id": "live_caller_acceptance_pause_abort",
+     "version": "1",
+     "schema": 1,
+     "kind": "stationary_targeted",
+     "sample": {
+      "sample_id": "empty",
+      "declared": true
+     },
+     "assembly": {
+      "tray": "none",
+      "lid": "closed",
+      "notes": "owner: chamber empty, lid closed, earth bond connected"
+     },
+     "holes": [
+      8,
+      12
+     ],
+     "detectors": [
+      "ingaas",
+      "opt101"
+     ],
+     "position_policy": "current_position",
+     "gain": "1",
+     "conditions": [
+      {
+       "id": "unblocked",
+       "label": "chamber unblocked",
+       "settle_ms": 8,
+       "mains_periods": 2,
+       "optical_block": false
+      }
+     ],
+     "blocks": {
+      "n_production": 6,
+      "n_pilot": 0,
+      "n_production_min": 1,
+      "n_production_max": 8
+     },
+     "budgets": {
+      "max_wall_s": 900,
+      "max_cycle_s": 0,
+      "max_total_on_ms": 20000
+     },
+     "allocation": {
+      "policy": "equal_fixed",
+      "control_holes": [],
+      "target_weights": {
+       "8": 1.0,
+       "12": 1.0
+      }
+     },
+     "inference": {
+      "split": "fixed_n",
+      "pilot_is_confirmation": false
+     },
+     "estimator": {
+      "name": "fixed_n_block",
+      "version": "m3",
+      "coupling_model": "validated_control"
+     },
+     "operator_checkpoints": [],
+     "objective": "primary_swir",
+     "notes": "live bounded capture -> persist -> analyse -> report, with pause/abort/resume"
+    },
+    "sample_id": "empty",
+    "allow_light": true,
+    "heartbeat": true,
+    "operator_checkpoint_flag": true,
+    "timeout_s": 30,
+    "resume": "20261123-180942_scan_protocol"
+   },
+   "code": 200,
+   "out": {
+    "steps": 12,
+    "eta_s": 1.592,
+    "protocol_id": "live_caller_acceptance_pause_abort"
+   }
+  },
+  {
+   "t": "18:09:57",
+   "path": "/api/scan/beat",
+   "body": {},
+   "code": 200,
+   "out": {
+    "ok": true,
+    "running": true
+   }
+  },
+  {
+   "t": "18:09:58",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": true,
+     "running": true,
+     "progress": {
+      "status": "measuring",
+      "done": 11,
+      "of": 12,
+      "kind": "protocol",
+      "paused": false,
+      "step": 11,
+      "phase": "fixed",
+      "actual_on_ms": 924.0
+     },
+     "folder": null,
+     "result": null,
+     "error": "",
+     "pause_requested": false,
+     "paused": false,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "RUNNING",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 11,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:59",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": false,
+     "running": false,
+     "progress": {
+      "status": "complete",
+      "done": 24,
+      "of": 24,
+      "kind": "protocol",
+      "cancel_reason": null
+     },
+     "folder": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/20261123-180942_scan_protocol",
+     "result": {
+      "status": "COMPLETE",
+      "cancel_reason": null,
+      "run_id": "20261123-180942_scan_protocol",
+      "unresolved": false,
+      "folder": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/20261123-180942_scan_protocol"
+     },
+     "error": "",
+     "pause_requested": false,
+     "paused": false,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 12,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  },
+  {
+   "t": "18:09:59",
+   "path": "/api/scan",
+   "body": null,
+   "code": 200,
+   "out": {
+    "job": null,
+    "protocol_job": {
+     "alive": false,
+     "running": false,
+     "progress": {
+      "status": "complete",
+      "done": 24,
+      "of": 24,
+      "kind": "protocol",
+      "cancel_reason": null
+     },
+     "folder": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/20261123-180942_scan_protocol",
+     "result": {
+      "status": "COMPLETE",
+      "cancel_reason": null,
+      "run_id": "20261123-180942_scan_protocol",
+      "unresolved": false,
+      "folder": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/20261123-180942_scan_protocol"
+     },
+     "error": "",
+     "pause_requested": false,
+     "paused": false,
+     "heartbeat": true,
+     "timeout_s": 30.0,
+     "kind": "protocol",
+     "protocol_id": "live_caller_acceptance_pause_abort",
+     "n_steps": 12,
+     "predicted_duration_s": 1.592,
+     "unresolved": [],
+     "pending_prompts": []
+    },
+    "runs": [
+     {
+      "run_id": "20261123-180942_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 0,
+      "completed": 12,
+      "report": null
+     },
+     {
+      "run_id": "20261123-175731_scan_protocol",
+      "mode": "protocol",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [
+       "error:DutyBudgetError:uncertain recovery: conservative cooldown active; no auto-resume emit"
+      ],
+      "steps": 0,
+      "completed": 6,
+      "report": null
+     },
+     {
+      "run_id": "20261123-173108_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-173108_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-170352_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-163301_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OwnershipError: CE on refused: no single selected hole to reserve duty against"
+      ],
+      "steps": 19,
+      "completed": 18,
+      "report": null
+     },
+     {
+      "run_id": "20261123-003133_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261123-003133_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261123-002839_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "All off pressed"
+      ],
+      "steps": 19,
+      "completed": 0,
+      "report": "/results/20261123-002839_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261120-012619_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261120-012619_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261119-171756_scan_full",
+      "mode": "full",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 63,
+      "completed": 63,
+      "report": "/results/20261119-171756_scan_full/report.html"
+     },
+     {
+      "run_id": "20261119-152512_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261119-152512_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261117-153234_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "INCOMPLETE",
+      "simulated": false,
+      "aborts": [
+       "unexpected error: OSError: [Errno 28] No space left on device (the Mac's disk was full)"
+      ],
+      "steps": 19,
+      "completed": 8,
+      "report": null
+     },
+     {
+      "run_id": "20261116-220635_scan_quick",
+      "mode": "quick",
+      "sample_id": "black_cup",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-220635_scan_quick/report.html"
+     },
+     {
+      "run_id": "20261116-202110_scan_quick",
+      "mode": "quick",
+      "sample_id": "empty",
+      "status": "COMPLETE",
+      "simulated": false,
+      "aborts": [],
+      "steps": 19,
+      "completed": 19,
+      "report": "/results/20261116-202110_scan_quick/report.html"
+     }
+    ],
+    "verdict_layers": {
+     "note": "historical recorded verdict vs current model output vs quantitative eligibility are separate; h8/h9 SNR PASS must not imply h12-h15 OK"
+    }
+   }
+  }
+ ]
+}

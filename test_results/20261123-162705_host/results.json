@@ -1,0 +1,4862 @@
+{
+  "run_id": "20261123-162705_host",
+  "target": "/dev/cu.usbmodem101",
+  "started": "2026-11-23T16:27:05-05:00",
+  "environment": {
+    "os": "macOS-27.0.1-x86_64-i386-64bit",
+    "python": "3.12.11",
+    "lio_package": "0.2.0",
+    "git_commit": "8cdfd0fca35c0d559f0ab091b62e2e58c12c8f39",
+    "git_dirty": true,
+    "host": "lhc-mac-colelou.nlm.nih.gov",
+    "user": "coleloughbc"
+  },
+  "firmware": {
+    "banner": "# BOOT name=lio fw=2.5.2 proto=1 build=2026-11-17 adc_ok=1 hw_wdt=0",
+    "fw": "2.5.2",
+    "proto": "1",
+    "build": "2026-11-17",
+    "adc_addr": "0x48",
+    "adc_ok": "1",
+    "gain": "1",
+    "rate": "128",
+    "settle_ms": "8",
+    "wdt_a_ms": "2000",
+    "wdt_b_ms": "5000",
+    "wdt_a_cap_ms": "5000",
+    "wdt_b_cap_ms": "10000",
+    "comms_ms": "10000",
+    "arm_ms": "60000",
+    "step_max": "2048",
+    "jog_max": "2048",
+    "jog_v_max": "1000",
+    "jog_acc_max": "1000",
+    "wake_ms_max": "3000",
+    "motion_armed": "0",
+    "debug_states": "1",
+    "mains": "0",
+    "rail_b_first": "9",
+    "light_in_motion": "0",
+    "arm_token": "0x257D",
+    "hw_wdt": "0"
+  },
+  "config": {
+    "path": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
+    "sha256": "4937189275280329c81f0a84e8579e90c935e4de655204247ac15d8fa5cd5fd6",
+    "provisional": true
+  },
+  "metadata": {
+    "sample_id": "empty",
+    "operator": "owner (answers via Claude session 2026-11-23)",
+    "notes": "caller-remediation live acceptance; candidate 8cdfd0f; owner answers: chamber empty+clear, lid closed, earth bond connected; real-port admission cooperative_unproven_acknowledged"
+  },
+  "faults": [],
+  "results": [
+    {
+      "id": "T01.1",
+      "name": "Python and dependency versions",
+      "module": "T01",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 1.356822125002509,
+      "subs": [
+        {
+          "id": "T01.1/python",
+          "name": "Python version",
+          "status": "PASS",
+          "message": "3.12.11",
+          "criteria": ">= 3.10",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/pyserial",
+          "name": "pyserial installed",
+          "status": "PASS",
+          "message": "3.5",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/pyyaml",
+          "name": "pyyaml installed",
+          "status": "PASS",
+          "message": "6.0.3",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/numpy",
+          "name": "numpy installed",
+          "status": "PASS",
+          "message": "2.5.4",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/matplotlib",
+          "name": "matplotlib installed",
+          "status": "PASS",
+          "message": "3.11.2",
+          "criteria": "importable",
+          "measured": {}
+        },
+        {
+          "id": "T01.1/jinja2",
+          "name": "jinja2 installed",
+          "status": "PASS",
+          "message": "3.1.6",
+          "criteria": "importable",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "python": "3.12.11",
+        "platform": "macOS-27.0.1-x86_64-i386-64bit",
+        "pyserial": "3.5",
+        "pyyaml": "6.0.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "jinja2": "3.1.6"
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T01.2",
+      "name": "Serial port discovery",
+      "module": "T01",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.07562579200020991,
+      "subs": [
+        {
+          "id": "T01.2/port",
+          "name": "Selected port is present",
+          "status": "PASS",
+          "message": "/dev/cu.usbmodem101: present",
+          "criteria": "--lio-port names an existing serial port",
+          "measured": {}
+        },
+        {
+          "id": "T01.2/chip",
+          "name": "USB-serial chip recognised",
+          "status": "PASS",
+          "message": "VID:PID 2341:0074 (Arduino Nano R4 (native USB))",
+          "criteria": "one of link.usb_ids",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "ports": [
+          {
+            "device": "/dev/cu.usbmodem101",
+            "vid": 9025,
+            "pid": 116,
+            "chip": "Arduino Nano R4 (native USB)"
+          },
+          {
+            "device": "/dev/cu.Bluetooth-Incoming-Port",
+            "vid": null,
+            "pid": null,
+            "chip": null
+          },
+          {
+            "device": "/dev/cu.debug-console",
+            "vid": null,
+            "pid": null,
+            "chip": null
+          }
+        ],
+        "auto_pick": "/dev/cu.usbmodem101"
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T01.3",
+      "name": "Configuration loads and is self-consistent",
+      "module": "T01",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.0582060840097256,
+      "subs": [
+        {
+          "id": "T01.3/load",
+          "name": "Config validates",
+          "status": "PASS",
+          "message": "lio_hw.yaml sha256 493718927528",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T01.3/holes",
+          "name": "16 holes",
+          "status": "PASS",
+          "message": "16 entries",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T01.3/rails",
+          "name": "Rails split A = 1-8, B = 9-16 (as built)",
+          "status": "PASS",
+          "message": "A=[1, 2, 3, 4, 5, 6, 7, 8] B=[9, 10, 11, 12, 13, 14, 15, 16]",
+          "criteria": "",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "config": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
+        "sha256": "4937189275280329c81f0a84e8579e90c935e4de655204247ac15d8fa5cd5fd6",
+        "provisional": true,
+        "thresholds_provisional": true
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T02.1",
+      "name": "Port open and boot banner",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.01420983299612999,
+      "subs": [
+        {
+          "id": "T02.1/banner",
+          "name": "Boot banner within the timeout",
+          "status": "PASS",
+          "message": "0.06 s",
+          "criteria": "<= 3 s",
+          "measured": {
+            "boot_s": 0.062089291983284056
+          }
+        },
+        {
+          "id": "T02.1/identity",
+          "name": "Banner identifies LIO firmware",
+          "status": "PASS",
+          "message": "# BOOT name=lio fw=2.5.2 proto=1 build=2026-11-17 adc_ok=1 hw_wdt=0",
+          "criteria": "name=lio, fw and proto present",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "boot_s": 0.062089291983284056,
+        "banner": "# BOOT name=lio fw=2.5.2 proto=1 build=2026-11-17 adc_ok=1 hw_wdt=0"
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T02.2",
+      "name": "PING round-trip latency",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.10508937499253079,
+      "subs": [
+        {
+          "id": "T02.2/answered",
+          "name": "Every PING answered",
+          "status": "PASS",
+          "message": "100/100 answered",
+          "criteria": "all",
+          "measured": {
+            "lost": 0
+          }
+        },
+        {
+          "id": "T02.2/p99",
+          "name": "p99 round trip",
+          "status": "PASS",
+          "message": "median 0.89 ms, p99 0.96 ms, max 0.96 ms",
+          "criteria": "p99 < 50 ms",
+          "measured": {
+            "median_ms": 0.8887500007404014,
+            "p99_ms": 0.955172935500741,
+            "max_ms": 0.959915982093662
+          }
+        }
+      ],
+      "measured": {
+        "rtt_ms": [
+          0.882,
+          0.844,
+          0.865,
+          0.858,
+          0.883,
+          0.923,
+          0.889,
+          0.885,
+          0.925,
+          0.923,
+          0.851,
+          0.845,
+          0.863,
+          0.903,
+          0.886,
+          0.875,
+          0.928,
+          0.872,
+          0.934,
+          0.932,
+          0.847,
+          0.892,
+          0.848,
+          0.872,
+          0.937,
+          0.889,
+          0.923,
+          0.866,
+          0.867,
+          0.845,
+          0.837,
+          0.838,
+          0.881,
+          0.873,
+          0.872,
+          0.857,
+          0.819,
+          0.855,
+          0.844,
+          0.901,
+          0.941,
+          0.884,
+          0.884,
+          0.928,
+          0.942,
+          0.929,
+          0.926,
+          0.866,
+          0.859,
+          0.859,
+          0.955,
+          0.908,
+          0.928,
+          0.934,
+          0.943,
+          0.926,
+          0.919,
+          0.884,
+          0.941,
+          0.841,
+          0.873,
+          0.841,
+          0.889,
+          0.883,
+          0.88,
+          0.862,
+          0.875,
+          0.874,
+          0.869,
+          0.857,
+          0.917,
+          0.934,
+          0.936,
+          0.892,
+          0.926,
+          0.931,
+          0.93,
+          0.935,
+          0.932,
+          0.862,
+          0.901,
+          0.867,
+          0.905,
+          0.928,
+          0.945,
+          0.93,
+          0.951,
+          0.952,
+          0.96,
+          0.908,
+          0.94,
+          0.922,
+          0.933,
+          0.881,
+          0.865,
+          0.86,
+          0.909,
+          0.939,
+          0.925,
+          0.887
+        ]
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T02.3",
+      "name": "INFO fields, versions and safety limits",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.021267915988573804,
+      "subs": [
+        {
+          "id": "T02.3/fields",
+          "name": "INFO fields present",
+          "status": "PASS",
+          "message": "21 fields",
+          "criteria": "all protocol-1 INFO fields",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/version",
+          "name": "Firmware compatible with this host package",
+          "status": "PASS",
+          "message": "fw 2.5.2 proto 1",
+          "criteria": ">= 2.0.0, proto 1",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/settle_ms",
+          "name": "settle_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "8",
+          "criteria": "8",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/wdt_a_ms",
+          "name": "wdt_a_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "2000",
+          "criteria": "2000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/wdt_b_ms",
+          "name": "wdt_b_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "5000",
+          "criteria": "5000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/wdt_a_cap_ms",
+          "name": "wdt_a_cap_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "5000",
+          "criteria": "5000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/wdt_b_cap_ms",
+          "name": "wdt_b_cap_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "10000",
+          "criteria": "10000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/comms_ms",
+          "name": "comms_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "10000",
+          "criteria": "10000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/arm_ms",
+          "name": "arm_ms matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "60000",
+          "criteria": "60000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/step_max",
+          "name": "step_max matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "2048",
+          "criteria": "2048",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/jog_max",
+          "name": "jog_max matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "2048",
+          "criteria": "2048",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/jog_v_max",
+          "name": "jog_v_max matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "1000",
+          "criteria": "1000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/jog_acc_max",
+          "name": "jog_acc_max matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "1000",
+          "criteria": "1000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/limit/wake_ms_max",
+          "name": "wake_ms_max matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "3000",
+          "criteria": "3000",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/adc/addr",
+          "name": "ADC address matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "0x48",
+          "criteria": "0x48",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/adc/gain",
+          "name": "ADC gain matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "1",
+          "criteria": "1",
+          "measured": {}
+        },
+        {
+          "id": "T02.3/adc/rate",
+          "name": "ADC rate matches lio_hw.yaml",
+          "status": "PASS",
+          "message": "128",
+          "criteria": "128",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "info": {
+          "fw": "2.5.2",
+          "proto": "1",
+          "build": "2026-11-17",
+          "adc_addr": "0x48",
+          "adc_ok": "1",
+          "gain": "1",
+          "rate": "128",
+          "settle_ms": "8",
+          "wdt_a_ms": "2000",
+          "wdt_b_ms": "5000",
+          "wdt_a_cap_ms": "5000",
+          "wdt_b_cap_ms": "10000",
+          "comms_ms": "10000",
+          "arm_ms": "60000",
+          "step_max": "2048",
+          "jog_max": "2048",
+          "jog_v_max": "1000",
+          "jog_acc_max": "1000",
+          "wake_ms_max": "3000",
+          "motion_armed": "0",
+          "debug_states": "1",
+          "mains": "0",
+          "rail_b_first": "9",
+          "light_in_motion": "0",
+          "arm_token": "0x257D",
+          "hw_wdt": "0"
+        }
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T02.4",
+      "name": "Robustness to bad input",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.12712333400850184,
+      "subs": [
+        {
+          "id": "T02.4/unknown",
+          "name": "Unknown command",
+          "status": "PASS",
+          "message": "@148 ERR FROBNICATE code=1 msg=unknown command",
+          "criteria": "ERR code=1",
+          "measured": {}
+        },
+        {
+          "id": "T02.4/badarg",
+          "name": "Bad argument",
+          "status": "PASS",
+          "message": "refused before write",
+          "criteria": "OwnershipError refuse (no production light bypass)",
+          "measured": {}
+        },
+        {
+          "id": "T02.4/missing",
+          "name": "Missing argument",
+          "status": "PASS",
+          "message": "refused before write",
+          "criteria": "OwnershipError refuse (no production light bypass)",
+          "measured": {}
+        },
+        {
+          "id": "T02.4/overflow",
+          "name": "Line over 64 characters",
+          "status": "PASS",
+          "message": "ERR ? code=6 msg=line too long",
+          "criteria": "ERR code=6",
+          "measured": {}
+        },
+        {
+          "id": "T02.4/garbage",
+          "name": "Garbage bytes, then PING",
+          "status": "PASS",
+          "message": "PING OK",
+          "criteria": "PING still answered",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T02.5",
+      "name": "Sequence numbers and interleaved events",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.3685926249891054,
+      "subs": [
+        {
+          "id": "T02.5/seq/1",
+          "name": "@1 echoed",
+          "status": "PASS",
+          "message": "@1 OK PING uptime_ms=10122229",
+          "criteria": "@1 OK PING",
+          "measured": {}
+        },
+        {
+          "id": "T02.5/seq/4242",
+          "name": "@4242 echoed",
+          "status": "PASS",
+          "message": "@4242 OK PING uptime_ms=10122230",
+          "criteria": "@4242 OK PING",
+          "measured": {}
+        },
+        {
+          "id": "T02.5/seq/99999",
+          "name": "@99999 echoed",
+          "status": "PASS",
+          "message": "@99999 OK PING uptime_ms=10122231",
+          "criteria": "@99999 OK PING",
+          "measured": {}
+        },
+        {
+          "id": "T02.5/noseq",
+          "name": "No @seq, none echoed",
+          "status": "PASS",
+          "message": "OK PING uptime_ms=10122232",
+          "criteria": "OK PING",
+          "measured": {}
+        },
+        {
+          "id": "T02.5/stream",
+          "name": "Response found after interleaved events",
+          "status": "PASS",
+          "message": "20 '# S' events then OK",
+          "criteria": "20 events",
+          "measured": {}
+        },
+        {
+          "id": "T02.5/async",
+          "name": "Asynchronous '# OFF' does not desynchronise",
+          "status": "PASS",
+          "message": "10/10 PINGs matched; 1 timer event(s) seen",
+          "criteria": "all PINGs answered in order, one '# OFF'",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T02.6",
+      "name": "RESET restores the boot state",
+      "module": "T02",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.04314158300985582,
+      "subs": [
+        {
+          "id": "T02.6/banner",
+          "name": "Banner after RESET",
+          "status": "PASS",
+          "message": "0.01 s",
+          "criteria": "<= 3 s",
+          "measured": {}
+        },
+        {
+          "id": "T02.6/safe",
+          "name": "STATUS shows the safe state",
+          "status": "PASS",
+          "message": "ch=0 ce1=0 ce2=0 mask=0x0000 armed=0",
+          "criteria": "ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle",
+          "measured": {}
+        },
+        {
+          "id": "T02.6/defaults",
+          "name": "Settings back to defaults",
+          "status": "PASS",
+          "message": "wdt_a_ms=2000 (was set to 200)",
+          "criteria": "2000",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T03.1",
+      "name": "I2C scan finds the ADS1115",
+      "module": "T03",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.03533949999837205,
+      "subs": [
+        {
+          "id": "T03.1/adc",
+          "name": "ADS1115 at 0x48",
+          "status": "PASS",
+          "message": "found ['0x48']",
+          "criteria": "0x48 acknowledges",
+          "measured": {}
+        },
+        {
+          "id": "T03.1/bus",
+          "name": "I2C lines (SDA, SCL)",
+          "status": "PASS",
+          "message": "lines idle high with pull-ups, not bridged; 0x48 answers at 166.666 kHz",
+          "criteria": "both idle high, rise on external pull-ups, not joined",
+          "measured": {}
+        },
+        {
+          "id": "T03.1/only",
+          "name": "No unexpected I2C devices",
+          "status": "PASS",
+          "message": "none",
+          "criteria": "only the ADS1115",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "addresses": [
+          "0x48"
+        ],
+        "i2c_diag": {
+          "sda": 1,
+          "scl": 1,
+          "sda_pu": 1,
+          "scl_pu": 1,
+          "bridge": 0,
+          "ack_slow": 0,
+          "ack_fast": 0,
+          "slow_hz": 166666,
+          "fast_hz": 166666,
+          "hz": 166666,
+          "present": 1
+        }
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T03.2",
+      "name": "Dark ADC noise, all inputs",
+      "module": "T03",
+      "kind": "A",
+      "status": "FAIL",
+      "message": "",
+      "duration_s": 2.301200374990003,
+      "subs": [
+        {
+          "id": "T03.2/a0",
+          "name": "ADS A0 (ingaas) dark noise",
+          "status": "FAIL",
+          "message": "mean -331.2, sigma 37.47 counts (n=64)",
+          "criteria": "sigma <= 20 counts",
+          "measured": {
+            "mean": -331.22,
+            "sigma": 37.47
+          }
+        },
+        {
+          "id": "T03.2/a1",
+          "name": "ADS A1 (opt101) dark noise",
+          "status": "PASS",
+          "message": "mean 56.3, sigma 0.47 counts (n=64)",
+          "criteria": "sigma <= 20 counts",
+          "measured": {
+            "mean": 56.33,
+            "sigma": 0.47
+          }
+        },
+        {
+          "id": "T03.2/a2",
+          "name": "ADS A2 (unconnected)",
+          "status": "PASS",
+          "message": "recorded only: mean 4487.8, sigma 9.80",
+          "criteria": "floating input",
+          "measured": {
+            "mean": 4487.75,
+            "sigma": 9.8
+          }
+        },
+        {
+          "id": "T03.2/a3",
+          "name": "ADS A3 (unconnected)",
+          "status": "PASS",
+          "message": "recorded only: mean 2582.2, sigma 2.03",
+          "criteria": "floating input",
+          "measured": {
+            "mean": 2582.23,
+            "sigma": 2.03
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T03.3",
+      "name": "Gain sweep on dark inputs",
+      "module": "T03",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 1.7795546249835752,
+      "subs": [
+        {
+          "id": "T03.3/ingaas/g2/3/lsb",
+          "name": "GAIN 2/3 accepted",
+          "status": "PASS",
+          "message": "lsb 0.1875 mV",
+          "criteria": "0.1875 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g1/lsb",
+          "name": "GAIN 1 accepted",
+          "status": "PASS",
+          "message": "lsb 0.125 mV",
+          "criteria": "0.125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g2/lsb",
+          "name": "GAIN 2 accepted",
+          "status": "PASS",
+          "message": "lsb 0.0625 mV",
+          "criteria": "0.0625 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g4/lsb",
+          "name": "GAIN 4 accepted",
+          "status": "PASS",
+          "message": "lsb 0.03125 mV",
+          "criteria": "0.03125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g8/lsb",
+          "name": "GAIN 8 accepted",
+          "status": "PASS",
+          "message": "lsb 0.015625 mV",
+          "criteria": "0.015625 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g16/lsb",
+          "name": "GAIN 16 accepted",
+          "status": "PASS",
+          "message": "lsb 0.0078125 mV",
+          "criteria": "0.0078125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/ingaas/g2/3",
+          "name": "ingaas at GAIN 2/3 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-41.84 mV vs -41.64 mV",
+          "criteria": "within 19.64 mV",
+          "measured": {
+            "mv": -41.835
+          }
+        },
+        {
+          "id": "T03.3/ingaas/g1",
+          "name": "ingaas at GAIN 1 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-41.64 mV vs -41.64 mV",
+          "criteria": "within 19.42 mV",
+          "measured": {
+            "mv": -41.64
+          }
+        },
+        {
+          "id": "T03.3/ingaas/g2",
+          "name": "ingaas at GAIN 2 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-41.28 mV vs -41.64 mV",
+          "criteria": "within 19.42 mV",
+          "measured": {
+            "mv": -41.2775
+          }
+        },
+        {
+          "id": "T03.3/ingaas/g4",
+          "name": "ingaas at GAIN 4 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-40.97 mV vs -41.64 mV",
+          "criteria": "within 19.52 mV",
+          "measured": {
+            "mv": -40.9728125
+          }
+        },
+        {
+          "id": "T03.3/ingaas/g8",
+          "name": "ingaas at GAIN 8 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-41.07 mV vs -41.64 mV",
+          "criteria": "within 19.45 mV",
+          "measured": {
+            "mv": -41.07328125
+          }
+        },
+        {
+          "id": "T03.3/ingaas/g16",
+          "name": "ingaas at GAIN 16 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "-41.36 mV vs -41.64 mV",
+          "criteria": "within 19.43 mV",
+          "measured": {
+            "mv": -41.364296875
+          }
+        },
+        {
+          "id": "T03.3/opt101/g2/3/lsb",
+          "name": "GAIN 2/3 accepted",
+          "status": "PASS",
+          "message": "lsb 0.1875 mV",
+          "criteria": "0.1875 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g1/lsb",
+          "name": "GAIN 1 accepted",
+          "status": "PASS",
+          "message": "lsb 0.125 mV",
+          "criteria": "0.125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g2/lsb",
+          "name": "GAIN 2 accepted",
+          "status": "PASS",
+          "message": "lsb 0.0625 mV",
+          "criteria": "0.0625 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g4/lsb",
+          "name": "GAIN 4 accepted",
+          "status": "PASS",
+          "message": "lsb 0.03125 mV",
+          "criteria": "0.03125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g8/lsb",
+          "name": "GAIN 8 accepted",
+          "status": "PASS",
+          "message": "lsb 0.015625 mV",
+          "criteria": "0.015625 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g16/lsb",
+          "name": "GAIN 16 accepted",
+          "status": "PASS",
+          "message": "lsb 0.0078125 mV",
+          "criteria": "0.0078125 mV",
+          "measured": {}
+        },
+        {
+          "id": "T03.3/opt101/g2/3",
+          "name": "opt101 at GAIN 2/3 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "7.20 mV vs 7.05 mV",
+          "criteria": "within 5.28 mV",
+          "measured": {
+            "mv": 7.196250000000001
+          }
+        },
+        {
+          "id": "T03.3/opt101/g1",
+          "name": "opt101 at GAIN 1 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "7.05 mV vs 7.05 mV",
+          "criteria": "within 5.19 mV",
+          "measured": {
+            "mv": 7.0475
+          }
+        },
+        {
+          "id": "T03.3/opt101/g2",
+          "name": "opt101 at GAIN 2 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "7.04 mV vs 7.05 mV",
+          "criteria": "within 5.19 mV",
+          "measured": {
+            "mv": 7.043125
+          }
+        },
+        {
+          "id": "T03.3/opt101/g4",
+          "name": "opt101 at GAIN 4 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "6.76 mV vs 7.05 mV",
+          "criteria": "within 5.19 mV",
+          "measured": {
+            "mv": 6.7559375
+          }
+        },
+        {
+          "id": "T03.3/opt101/g8",
+          "name": "opt101 at GAIN 8 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "7.45 mV vs 7.05 mV",
+          "criteria": "within 5.19 mV",
+          "measured": {
+            "mv": 7.45015625
+          }
+        },
+        {
+          "id": "T03.3/opt101/g16",
+          "name": "opt101 at GAIN 16 agrees with GAIN 1",
+          "status": "PASS",
+          "message": "7.45 mV vs 7.05 mV",
+          "criteria": "within 5.19 mV",
+          "measured": {
+            "mv": 7.44875
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T03.4",
+      "name": "ADC data rate",
+      "module": "T03",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 3.036412167013623,
+      "subs": [
+        {
+          "id": "T03.4/r8",
+          "name": "8 SPS conversion interval",
+          "status": "PASS",
+          "message": "120.747 ms (nominal 125.000 ms, overhead -4.253 ms)",
+          "criteria": "106.250-145.250 ms",
+          "measured": {
+            "interval_ms": 120.747,
+            "nominal_ms": 125.0
+          }
+        },
+        {
+          "id": "T03.4/r16",
+          "name": "16 SPS conversion interval",
+          "status": "PASS",
+          "message": "61.184 ms (nominal 62.500 ms, overhead -1.316 ms)",
+          "criteria": "53.125-73.375 ms",
+          "measured": {
+            "interval_ms": 61.184,
+            "nominal_ms": 62.5
+          }
+        },
+        {
+          "id": "T03.4/r32",
+          "name": "32 SPS conversion interval",
+          "status": "PASS",
+          "message": "31.243 ms (nominal 31.250 ms, overhead -0.007 ms)",
+          "criteria": "26.562-37.438 ms",
+          "measured": {
+            "interval_ms": 31.243,
+            "nominal_ms": 31.25
+          }
+        },
+        {
+          "id": "T03.4/r64",
+          "name": "64 SPS conversion interval",
+          "status": "PASS",
+          "message": "16.433 ms (nominal 15.625 ms, overhead +0.808 ms)",
+          "criteria": "13.281-19.469 ms",
+          "measured": {
+            "interval_ms": 16.433,
+            "nominal_ms": 15.625
+          }
+        },
+        {
+          "id": "T03.4/r128",
+          "name": "128 SPS conversion interval",
+          "status": "PASS",
+          "message": "8.863 ms (nominal 7.812 ms, overhead +1.050 ms)",
+          "criteria": "6.641-10.484 ms",
+          "measured": {
+            "interval_ms": 8.863,
+            "nominal_ms": 7.8125
+          }
+        },
+        {
+          "id": "T03.4/r250",
+          "name": "250 SPS conversion interval",
+          "status": "PASS",
+          "message": "5.288 ms (nominal 4.000 ms, overhead +1.288 ms)",
+          "criteria": "3.400-6.100 ms",
+          "measured": {
+            "interval_ms": 5.288,
+            "nominal_ms": 4.0
+          }
+        },
+        {
+          "id": "T03.4/r475",
+          "name": "475 SPS conversion interval",
+          "status": "PASS",
+          "message": "3.342 ms (nominal 2.105 ms, overhead +1.237 ms)",
+          "criteria": "1.789-3.921 ms",
+          "measured": {
+            "interval_ms": 3.342,
+            "nominal_ms": 2.1052631578947367
+          }
+        },
+        {
+          "id": "T03.4/r860",
+          "name": "860 SPS conversion interval",
+          "status": "PASS",
+          "message": "2.537 ms (nominal 1.163 ms, overhead +1.374 ms)",
+          "criteria": "0.988-2.837 ms",
+          "measured": {
+            "interval_ms": 2.537,
+            "nominal_ms": 1.1627906976744187
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T03.5",
+      "name": "Long-term dark stability",
+      "module": "T03",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 60.04972783400444,
+      "subs": [
+        {
+          "id": "T03.5/ingaas",
+          "name": "ingaas drift over 60 s",
+          "status": "PASS",
+          "message": "-72.4 counts/min (0.221 % FS/min), sigma 30.53",
+          "criteria": "<= 2 % FS/min",
+          "measured": {
+            "drift_counts_per_min": -72.43813114295311,
+            "sigma": 30.528372748964603,
+            "samples": 121,
+            "t_s": [
+              0.011,
+              0.513,
+              1.015,
+              1.515,
+              2.015,
+              2.515,
+              3.015,
+              3.514,
+              4.012,
+              4.516,
+              5.016,
+              5.515,
+              6.016,
+              6.514,
+              7.015,
+              7.516,
+              8.016,
+              8.516,
+              9.011,
+              9.514,
+              10.015,
+              10.513,
+              11.014,
+              11.515,
+              12.013,
+              12.516,
+              13.015,
+              13.516,
+              14.011,
+              14.513,
+              15.015,
+              15.515,
+              16.012,
+              16.514,
+              17.017,
+              17.515,
+              18.016,
+              18.516,
+              19.016,
+              19.514,
+              20.012,
+              20.515,
+              21.015,
+              21.515,
+              22.048,
+              22.515,
+              23.016,
+              23.515,
+              24.017,
+              24.522,
+              25.015,
+              25.523,
+              26.012,
+              26.516,
+              27.016,
+              27.515,
+              28.016,
+              28.515,
+              29.015,
+              29.515,
+              30.016,
+              30.516,
+              31.015,
+              31.516,
+              32.015,
+              32.514,
+              33.016,
+              33.514,
+              34.012,
+              34.516,
+              35.011,
+              35.514,
+              36.016,
+              36.513,
+              37.016,
+              37.514,
+              38.016,
+              38.515,
+              39.013,
+              39.516,
+              40.015,
+              40.588,
+              41.016,
+              41.516,
+              42.014,
+              42.532,
+              43.015,
+              43.515,
+              44.016,
+              44.515,
+              45.012,
+              45.516,
+              46.014,
+              46.515,
+              47.016,
+              47.516,
+              48.015,
+              48.516,
+              49.017,
+              49.516,
+              50.014,
+              50.516,
+              51.017,
+              51.514,
+              52.017,
+              52.513,
+              53.016,
+              53.516,
+              54.015,
+              54.515,
+              55.013,
+              55.513,
+              56.015,
+              56.515,
+              57.013,
+              57.517,
+              58.016,
+              58.515,
+              59.013,
+              59.516,
+              60.016
+            ],
+            "raw": [
+              -321.0,
+              -297.0,
+              -280.0,
+              -281.0,
+              -279.0,
+              -281.0,
+              -280.0,
+              -282.0,
+              -305.0,
+              -281.0,
+              -281.0,
+              -282.0,
+              -280.0,
+              -281.0,
+              -279.0,
+              -282.0,
+              -280.0,
+              -279.0,
+              -323.0,
+              -293.0,
+              -279.0,
+              -298.0,
+              -293.0,
+              -280.0,
+              -299.0,
+              -281.0,
+              -280.0,
+              -281.0,
+              -330.0,
+              -307.0,
+              -283.0,
+              -281.0,
+              -317.0,
+              -289.0,
+              -287.0,
+              -285.0,
+              -281.0,
+              -281.0,
+              -279.0,
+              -289.0,
+              -334.0,
+              -283.0,
+              -279.0,
+              -281.0,
+              -293.0,
+              -284.0,
+              -281.0,
+              -282.0,
+              -283.0,
+              -282.0,
+              -291.0,
+              -281.0,
+              -330.0,
+              -283.0,
+              -280.0,
+              -291.0,
+              -279.0,
+              -283.0,
+              -287.0,
+              -291.0,
+              -279.0,
+              -284.0,
+              -288.0,
+              -286.0,
+              -295.0,
+              -301.0,
+              -284.0,
+              -301.0,
+              -340.0,
+              -281.0,
+              -357.0,
+              -307.0,
+              -283.0,
+              -333.0,
+              -283.0,
+              -308.0,
+              -286.0,
+              -297.0,
+              -335.0,
+              -291.0,
+              -300.0,
+              -366.0,
+              -293.0,
+              -290.0,
+              -317.0,
+              -306.0,
+              -304.0,
+              -314.0,
+              -294.0,
+              -316.0,
+              -380.0,
+              -298.0,
+              -338.0,
+              -315.0,
+              -303.0,
+              -302.0,
+              -325.0,
+              -307.0,
+              -306.0,
+              -323.0,
+              -348.0,
+              -329.0,
+              -312.0,
+              -378.0,
+              -315.0,
+              -381.0,
+              -336.0,
+              -342.0,
+              -350.0,
+              -355.0,
+              -383.0,
+              -383.0,
+              -366.0,
+              -352.0,
+              -383.0,
+              -332.0,
+              -356.0,
+              -359.0,
+              -384.0,
+              -349.0,
+              -360.0
+            ]
+          }
+        },
+        {
+          "id": "T03.5/opt101",
+          "name": "opt101 drift over 60 s",
+          "status": "PASS",
+          "message": "-0.2 counts/min (0.001 % FS/min), sigma 0.49",
+          "criteria": "<= 2 % FS/min",
+          "measured": {
+            "drift_counts_per_min": -0.1984627763397016,
+            "sigma": 0.49250582074841953,
+            "samples": 121,
+            "t_s": [
+              0.022,
+              0.524,
+              1.026,
+              1.526,
+              2.026,
+              2.526,
+              3.026,
+              3.525,
+              4.023,
+              4.527,
+              5.027,
+              5.526,
+              6.027,
+              6.525,
+              7.026,
+              7.527,
+              8.027,
+              8.527,
+              9.022,
+              9.525,
+              10.026,
+              10.524,
+              11.024,
+              11.526,
+              12.024,
+              12.527,
+              13.026,
+              13.527,
+              14.022,
+              14.524,
+              15.026,
+              15.526,
+              16.023,
+              16.525,
+              17.028,
+              17.526,
+              18.028,
+              18.527,
+              19.027,
+              19.525,
+              20.023,
+              20.527,
+              21.026,
+              21.527,
+              22.069,
+              22.526,
+              23.027,
+              23.527,
+              24.028,
+              24.569,
+              25.026,
+              25.537,
+              26.023,
+              26.527,
+              27.028,
+              27.526,
+              28.027,
+              28.526,
+              29.026,
+              29.529,
+              30.027,
+              30.526,
+              31.026,
+              31.527,
+              32.026,
+              32.525,
+              33.027,
+              33.525,
+              34.023,
+              34.527,
+              35.022,
+              35.525,
+              36.027,
+              36.524,
+              37.027,
+              37.525,
+              38.027,
+              38.526,
+              39.024,
+              39.527,
+              40.026,
+              40.64,
+              41.027,
+              41.528,
+              42.026,
+              42.543,
+              43.027,
+              43.526,
+              44.027,
+              44.526,
+              45.023,
+              45.527,
+              46.025,
+              46.526,
+              47.027,
+              47.527,
+              48.026,
+              48.527,
+              49.03,
+              49.527,
+              50.025,
+              50.527,
+              51.028,
+              51.525,
+              52.028,
+              52.524,
+              53.027,
+              53.527,
+              54.026,
+              54.526,
+              55.024,
+              55.524,
+              56.026,
+              56.526,
+              57.024,
+              57.528,
+              58.027,
+              58.527,
+              59.024,
+              59.527,
+              60.027
+            ],
+            "raw": [
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              55.0,
+              56.0,
+              57.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              56.0,
+              57.0,
+              57.0,
+              56.0,
+              56.0,
+              57.0,
+              56.0,
+              57.0,
+              57.0,
+              56.0,
+              56.0,
+              57.0,
+              57.0,
+              57.0,
+              56.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              57.0,
+              57.0,
+              57.0,
+              56.0,
+              56.0,
+              57.0,
+              56.0,
+              57.0,
+              56.0,
+              56.0,
+              57.0,
+              56.0,
+              57.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              56.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              56.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              56.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              57.0,
+              56.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              57.0,
+              57.0,
+              56.0,
+              56.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              57.0,
+              57.0,
+              56.0,
+              56.0,
+              56.0,
+              56.0
+            ]
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T04.1",
+      "name": "Shift-register patterns with CE low",
+      "module": "T04",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 2.3040136670169886,
+      "subs": [
+        {
+          "id": "T04.1/zero",
+          "name": "SR RAW 0x0000",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -283.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/ones",
+          "name": "SR RAW 0xFFFF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -346.0,
+            "opt101_raw": 57.0
+          }
+        },
+        {
+          "id": "T04.1/w1/00",
+          "name": "SR RAW 0x0001",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -376.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/01",
+          "name": "SR RAW 0x0002",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -300.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/02",
+          "name": "SR RAW 0x0004",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -294.0,
+            "opt101_raw": 57.0
+          }
+        },
+        {
+          "id": "T04.1/w1/03",
+          "name": "SR RAW 0x0008",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -373.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/04",
+          "name": "SR RAW 0x0010",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -359.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/05",
+          "name": "SR RAW 0x0020",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -280.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/06",
+          "name": "SR RAW 0x0040",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -316.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/07",
+          "name": "SR RAW 0x0080",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -383.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/08",
+          "name": "SR RAW 0x0100",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -328.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/09",
+          "name": "SR RAW 0x0200",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -281.0,
+            "opt101_raw": 57.0
+          }
+        },
+        {
+          "id": "T04.1/w1/10",
+          "name": "SR RAW 0x0400",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -351.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/11",
+          "name": "SR RAW 0x0800",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -372.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/12",
+          "name": "SR RAW 0x1000",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -292.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/13",
+          "name": "SR RAW 0x2000",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -301.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/14",
+          "name": "SR RAW 0x4000",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -380.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w1/15",
+          "name": "SR RAW 0x8000",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -345.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/00",
+          "name": "SR RAW 0xFFFE",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -280.0,
+            "opt101_raw": 57.0
+          }
+        },
+        {
+          "id": "T04.1/w0/01",
+          "name": "SR RAW 0xFFFD",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -337.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/02",
+          "name": "SR RAW 0xFFFB",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -379.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/03",
+          "name": "SR RAW 0xFFF7",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -304.0,
+            "opt101_raw": 57.0
+          }
+        },
+        {
+          "id": "T04.1/w0/04",
+          "name": "SR RAW 0xFFEF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -293.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/05",
+          "name": "SR RAW 0xFFDF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -375.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/06",
+          "name": "SR RAW 0xFFBF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -358.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/07",
+          "name": "SR RAW 0xFF7F",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -281.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/08",
+          "name": "SR RAW 0xFEFF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -317.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/09",
+          "name": "SR RAW 0xFDFF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -384.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/10",
+          "name": "SR RAW 0xFBFF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -323.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/11",
+          "name": "SR RAW 0xF7FF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -285.0,
+            "opt101_raw": 57.0
+          }
+        },
+        {
+          "id": "T04.1/w0/12",
+          "name": "SR RAW 0xEFFF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -359.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/13",
+          "name": "SR RAW 0xDFFF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -372.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/14",
+          "name": "SR RAW 0xBFFF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -290.0,
+            "opt101_raw": 56.0
+          }
+        },
+        {
+          "id": "T04.1/w0/15",
+          "name": "SR RAW 0x7FFF",
+          "status": "PASS",
+          "message": "echoed, CE low, detectors dark",
+          "criteria": "mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark",
+          "measured": {
+            "ingaas_raw": -302.0,
+            "opt101_raw": 57.0
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T04.2",
+      "name": "Shift-register loopback (optional jumper)",
+      "module": "T04",
+      "kind": "A",
+      "status": "SKIP",
+      "message": "loopback jumper not fitted (this build has no loop-back input (pins.LOOP), plan \u00a76.3); the shift registers are verified optically by T05.3",
+      "duration_s": 0.015448249992914498,
+      "subs": [],
+      "measured": {
+        "fitted": "0",
+        "pass": "0",
+        "bits_ok": "0",
+        "bits_bad": "0",
+        "status": "not_fitted"
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T04.3",
+      "name": "Optical address verification",
+      "module": "T04",
+      "kind": "A",
+      "status": "SKIP",
+      "message": "covered by T05.3 (each hole must light only its own expected response)",
+      "duration_s": 0.013479000015649945,
+      "subs": [],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T05.1",
+      "name": "Rail gating by CE1 / CE2",
+      "module": "T05",
+      "kind": "A",
+      "status": "FAIL",
+      "message": "",
+      "duration_s": 0.4860632909985725,
+      "subs": [
+        {
+          "id": "T05.1/A/h08/ce_low",
+          "name": "Hole 8 selected, CE1 low",
+          "status": "PASS",
+          "message": "opt101 56 (dark 56)",
+          "criteria": "dark",
+          "measured": {}
+        },
+        {
+          "id": "T05.1/A/h08/ce_high",
+          "name": "Hole 8 selected, CE1 high",
+          "status": "PASS",
+          "message": "opt101 206",
+          "criteria": "light above the detection threshold",
+          "measured": {}
+        },
+        {
+          "id": "T05.1/A/h08/wrong_ce",
+          "name": "Hole 8 with CE2 (wrong rail)",
+          "status": "PASS",
+          "message": "ERR code=3 needs exactly one selected hole on this rail",
+          "criteria": "refused (code 3)",
+          "measured": {}
+        },
+        {
+          "id": "T05.1/B/h12/ce_low",
+          "name": "Hole 12 selected, CE2 low",
+          "status": "PASS",
+          "message": "ingaas -328 (dark -331)",
+          "criteria": "dark",
+          "measured": {}
+        },
+        {
+          "id": "T05.1/B/h12/ce_high",
+          "name": "Hole 12 selected, CE2 high",
+          "status": "FAIL",
+          "message": "ingaas -319; no light: RAIL B driver, CE2 or the LED is dead",
+          "criteria": "light above the detection threshold",
+          "measured": {}
+        },
+        {
+          "id": "T05.1/B/h12/wrong_ce",
+          "name": "Hole 12 with CE1 (wrong rail)",
+          "status": "PASS",
+          "message": "ERR code=3 needs exactly one selected hole on this rail",
+          "criteria": "refused (code 3)",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T05.2",
+      "name": "Per-channel response",
+      "module": "T05",
+      "kind": "A",
+      "status": "FAIL",
+      "message": "",
+      "duration_s": 4.07387641700916,
+      "subs": [
+        {
+          "id": "T05.2/h01/ingaas",
+          "name": "Hole 1 (395) on ingaas",
+          "status": "SKIP",
+          "message": "not judged: 395 is outside the ingaas range (judged by opt101); recorded net -3",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": -3,
+            "dark": -334,
+            "lit": -337,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h01/opt101",
+          "name": "Hole 1 (395) on opt101",
+          "status": "PASS",
+          "message": "net +31 (signal); signal as expected",
+          "criteria": "expect signal: signal >= 15",
+          "measured": {
+            "net": 31,
+            "dark": 56,
+            "lit": 87,
+            "expect": "signal",
+            "observed": "signal"
+          }
+        },
+        {
+          "id": "T05.2/h02/ingaas",
+          "name": "Hole 2 (purple) on ingaas",
+          "status": "SKIP",
+          "message": "not judged: purple is outside the ingaas range (judged by opt101); recorded net -2",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": -2,
+            "dark": -333,
+            "lit": -335,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h02/opt101",
+          "name": "Hole 2 (purple) on opt101",
+          "status": "PASS",
+          "message": "net +47 (signal); signal as expected",
+          "criteria": "expect signal: signal >= 15",
+          "measured": {
+            "net": 47,
+            "dark": 57,
+            "lit": 104,
+            "expect": "signal",
+            "observed": "signal"
+          }
+        },
+        {
+          "id": "T05.2/h03/ingaas",
+          "name": "Hole 3 (blue) on ingaas",
+          "status": "SKIP",
+          "message": "not judged: blue is outside the ingaas range (judged by opt101); recorded net -8",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": -8,
+            "dark": -328,
+            "lit": -336,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h03/opt101",
+          "name": "Hole 3 (blue) on opt101",
+          "status": "PASS",
+          "message": "net +31 (signal); signal as expected",
+          "criteria": "expect signal: signal >= 15",
+          "measured": {
+            "net": 31,
+            "dark": 57,
+            "lit": 88,
+            "expect": "signal",
+            "observed": "signal"
+          }
+        },
+        {
+          "id": "T05.2/h04/ingaas",
+          "name": "Hole 4 (green) on ingaas",
+          "status": "SKIP",
+          "message": "not judged: green is outside the ingaas range (judged by opt101); recorded net -6",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": -6,
+            "dark": -329,
+            "lit": -335,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h04/opt101",
+          "name": "Hole 4 (green) on opt101",
+          "status": "PASS",
+          "message": "net +56 (signal); signal as expected",
+          "criteria": "expect signal: signal >= 15",
+          "measured": {
+            "net": 56,
+            "dark": 57,
+            "lit": 113,
+            "expect": "signal",
+            "observed": "signal"
+          }
+        },
+        {
+          "id": "T05.2/h05/ingaas",
+          "name": "Hole 5 (yellow) on ingaas",
+          "status": "SKIP",
+          "message": "not judged: yellow is outside the ingaas range (judged by opt101); recorded net +0",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": 0,
+            "dark": -326,
+            "lit": -326,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h05/opt101",
+          "name": "Hole 5 (yellow) on opt101",
+          "status": "PASS",
+          "message": "net +26 (signal); signal as expected",
+          "criteria": "expect signal: signal >= 15",
+          "measured": {
+            "net": 26,
+            "dark": 57,
+            "lit": 83,
+            "expect": "signal",
+            "observed": "signal"
+          }
+        },
+        {
+          "id": "T05.2/h06/ingaas",
+          "name": "Hole 6 (orange) on ingaas",
+          "status": "SKIP",
+          "message": "not judged: orange is outside the ingaas range (judged by opt101); recorded net +4",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": 4,
+            "dark": -327,
+            "lit": -323,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h06/opt101",
+          "name": "Hole 6 (orange) on opt101",
+          "status": "PASS",
+          "message": "net +23 (signal); signal as expected",
+          "criteria": "expect signal: signal >= 15",
+          "measured": {
+            "net": 23,
+            "dark": 56,
+            "lit": 79,
+            "expect": "signal",
+            "observed": "signal"
+          }
+        },
+        {
+          "id": "T05.2/h07/ingaas",
+          "name": "Hole 7 (red) on ingaas",
+          "status": "SKIP",
+          "message": "not judged: red is outside the ingaas range (judged by opt101); recorded net +11",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": 11,
+            "dark": -330,
+            "lit": -319,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h07/opt101",
+          "name": "Hole 7 (red) on opt101",
+          "status": "PASS",
+          "message": "net +31 (signal); signal as expected",
+          "criteria": "expect signal: signal >= 15",
+          "measured": {
+            "net": 31,
+            "dark": 57,
+            "lit": 88,
+            "expect": "signal",
+            "observed": "signal"
+          }
+        },
+        {
+          "id": "T05.2/h08/ingaas",
+          "name": "Hole 8 (850) on ingaas",
+          "status": "FAIL",
+          "message": "net +23 (none); expected signal, none seen",
+          "criteria": "expect signal: signal >= 265",
+          "measured": {
+            "net": 23,
+            "dark": -328,
+            "lit": -305,
+            "expect": "signal",
+            "observed": "none"
+          }
+        },
+        {
+          "id": "T05.2/h08/opt101",
+          "name": "Hole 8 (850) on opt101",
+          "status": "PASS",
+          "message": "net +167 (signal); signal as expected",
+          "criteria": "expect signal: signal >= 15",
+          "measured": {
+            "net": 167,
+            "dark": 57,
+            "lit": 224,
+            "expect": "signal",
+            "observed": "signal"
+          }
+        },
+        {
+          "id": "T05.2/h09/ingaas",
+          "name": "Hole 9 (940) on ingaas",
+          "status": "FAIL",
+          "message": "net +42 (none); expected signal, none seen",
+          "criteria": "expect signal: signal >= 265",
+          "measured": {
+            "net": 42,
+            "dark": -334,
+            "lit": -292,
+            "expect": "signal",
+            "observed": "none"
+          }
+        },
+        {
+          "id": "T05.2/h09/opt101",
+          "name": "Hole 9 (940) on opt101",
+          "status": "PASS",
+          "message": "net +117 (signal); signal as expected",
+          "criteria": "expect signal: signal >= 15",
+          "measured": {
+            "net": 117,
+            "dark": 57,
+            "lit": 174,
+            "expect": "signal",
+            "observed": "signal"
+          }
+        },
+        {
+          "id": "T05.2/h10/ingaas",
+          "name": "Hole 10 (white) on ingaas",
+          "status": "SKIP",
+          "message": "not judged: white is outside the ingaas range (judged by opt101); recorded net +15",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": 15,
+            "dark": -333,
+            "lit": -318,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h10/opt101",
+          "name": "Hole 10 (white) on opt101",
+          "status": "PASS",
+          "message": "net +53 (signal); signal as expected",
+          "criteria": "expect signal: signal >= 15",
+          "measured": {
+            "net": 53,
+            "dark": 57,
+            "lit": 110,
+            "expect": "signal",
+            "observed": "signal"
+          }
+        },
+        {
+          "id": "T05.2/h11/ingaas",
+          "name": "Hole 11 (pink) on ingaas",
+          "status": "SKIP",
+          "message": "not judged: pink is outside the ingaas range (judged by opt101); recorded net +20",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": 20,
+            "dark": -336,
+            "lit": -316,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h11/opt101",
+          "name": "Hole 11 (pink) on opt101",
+          "status": "PASS",
+          "message": "net +153 (signal); signal as expected",
+          "criteria": "expect signal: signal >= 15",
+          "measured": {
+            "net": 153,
+            "dark": 57,
+            "lit": 210,
+            "expect": "signal",
+            "observed": "signal"
+          }
+        },
+        {
+          "id": "T05.2/h12/ingaas",
+          "name": "Hole 12 (1450) on ingaas",
+          "status": "FAIL",
+          "message": "net +22 (none); expected signal, none seen",
+          "criteria": "expect signal: signal >= 265",
+          "measured": {
+            "net": 22,
+            "dark": -337,
+            "lit": -315,
+            "expect": "signal",
+            "observed": "none"
+          }
+        },
+        {
+          "id": "T05.2/h12/opt101",
+          "name": "Hole 12 (1450) on opt101",
+          "status": "SKIP",
+          "message": "not judged: 1450 is outside the opt101 range (judged by ingaas); recorded net +10",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": 10,
+            "dark": 57,
+            "lit": 67,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h13/ingaas",
+          "name": "Hole 13 (1550) on ingaas",
+          "status": "FAIL",
+          "message": "net +8 (none); expected signal, none seen",
+          "criteria": "expect signal: signal >= 265",
+          "measured": {
+            "net": 8,
+            "dark": -336,
+            "lit": -328,
+            "expect": "signal",
+            "observed": "none"
+          }
+        },
+        {
+          "id": "T05.2/h13/opt101",
+          "name": "Hole 13 (1550) on opt101",
+          "status": "SKIP",
+          "message": "not judged: 1550 is outside the opt101 range (judged by ingaas); recorded net +1",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": 1,
+            "dark": 57,
+            "lit": 58,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h14/ingaas",
+          "name": "Hole 14 (1650) on ingaas",
+          "status": "FAIL",
+          "message": "net +1 (none); expected signal, none seen",
+          "criteria": "expect signal: signal >= 265",
+          "measured": {
+            "net": 1,
+            "dark": -334,
+            "lit": -333,
+            "expect": "signal",
+            "observed": "none"
+          }
+        },
+        {
+          "id": "T05.2/h14/opt101",
+          "name": "Hole 14 (1650) on opt101",
+          "status": "SKIP",
+          "message": "not judged: 1650 is outside the opt101 range (judged by ingaas); recorded net +1",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": 1,
+            "dark": 56,
+            "lit": 57,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h15/ingaas",
+          "name": "Hole 15 (1760) on ingaas",
+          "status": "WARN",
+          "message": "net +1 (none); weak channel below the weak threshold",
+          "criteria": "expect weak: signal >= 265",
+          "measured": {
+            "net": 1,
+            "dark": -332,
+            "lit": -331,
+            "expect": "weak",
+            "observed": "none"
+          }
+        },
+        {
+          "id": "T05.2/h15/opt101",
+          "name": "Hole 15 (1760) on opt101",
+          "status": "SKIP",
+          "message": "not judged: 1760 is outside the opt101 range (judged by ingaas); recorded net +1",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": 1,
+            "dark": 57,
+            "lit": 58,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h16/ingaas",
+          "name": "Hole 16 (1850) on ingaas",
+          "status": "SKIP",
+          "message": "not judged: 1850 is outside the ingaas range (judged by no detector); recorded net +24",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": 24,
+            "dark": -332,
+            "lit": -308,
+            "expect": "not judged"
+          }
+        },
+        {
+          "id": "T05.2/h16/opt101",
+          "name": "Hole 16 (1850) on opt101",
+          "status": "SKIP",
+          "message": "not judged: 1850 is outside the opt101 range (judged by no detector); recorded net +197",
+          "criteria": "out-of-range readings are not judged (channel.judge_out_of_range: false)",
+          "measured": {
+            "net": 197,
+            "dark": 57,
+            "lit": 254,
+            "expect": "not judged"
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T05.3",
+      "name": "Channel address and isolation",
+      "module": "T05",
+      "kind": "A",
+      "status": "FAIL",
+      "message": "",
+      "duration_s": 0.013998709007864818,
+      "subs": [
+        {
+          "id": "T05.3/h01/pattern",
+          "name": "Hole 1 (395) detector pattern",
+          "status": "PASS",
+          "message": "seen by ['opt101'] as expected (ingaas not judged: outside its range)",
+          "criteria": "expected ['opt101']",
+          "measured": {
+            "net_ingaas": -3.0,
+            "net_opt101": 31.0
+          }
+        },
+        {
+          "id": "T05.3/h02/pattern",
+          "name": "Hole 2 (purple) detector pattern",
+          "status": "PASS",
+          "message": "seen by ['opt101'] as expected (ingaas not judged: outside its range)",
+          "criteria": "expected ['opt101']",
+          "measured": {
+            "net_ingaas": -2.0,
+            "net_opt101": 47.0
+          }
+        },
+        {
+          "id": "T05.3/h03/pattern",
+          "name": "Hole 3 (blue) detector pattern",
+          "status": "PASS",
+          "message": "seen by ['opt101'] as expected (ingaas not judged: outside its range)",
+          "criteria": "expected ['opt101']",
+          "measured": {
+            "net_ingaas": -8.0,
+            "net_opt101": 31.0
+          }
+        },
+        {
+          "id": "T05.3/h04/pattern",
+          "name": "Hole 4 (green) detector pattern",
+          "status": "PASS",
+          "message": "seen by ['opt101'] as expected (ingaas not judged: outside its range)",
+          "criteria": "expected ['opt101']",
+          "measured": {
+            "net_ingaas": -6.0,
+            "net_opt101": 56.0
+          }
+        },
+        {
+          "id": "T05.3/h05/pattern",
+          "name": "Hole 5 (yellow) detector pattern",
+          "status": "PASS",
+          "message": "seen by ['opt101'] as expected (ingaas not judged: outside its range)",
+          "criteria": "expected ['opt101']",
+          "measured": {
+            "net_ingaas": 0.0,
+            "net_opt101": 26.0
+          }
+        },
+        {
+          "id": "T05.3/h06/pattern",
+          "name": "Hole 6 (orange) detector pattern",
+          "status": "PASS",
+          "message": "seen by ['opt101'] as expected (ingaas not judged: outside its range)",
+          "criteria": "expected ['opt101']",
+          "measured": {
+            "net_ingaas": 4.0,
+            "net_opt101": 23.0
+          }
+        },
+        {
+          "id": "T05.3/h07/pattern",
+          "name": "Hole 7 (red) detector pattern",
+          "status": "PASS",
+          "message": "seen by ['opt101'] as expected (ingaas not judged: outside its range)",
+          "criteria": "expected ['opt101']",
+          "measured": {
+            "net_ingaas": 11.0,
+            "net_opt101": 31.0
+          }
+        },
+        {
+          "id": "T05.3/h08/pattern",
+          "name": "Hole 8 (850) detector pattern",
+          "status": "FAIL",
+          "message": "no response on ['ingaas']: possible swapped, misrouted or stuck-on channel",
+          "criteria": "expected ['ingaas', 'opt101']",
+          "measured": {
+            "net_ingaas": 23.0,
+            "net_opt101": 167.0
+          }
+        },
+        {
+          "id": "T05.3/h09/pattern",
+          "name": "Hole 9 (940) detector pattern",
+          "status": "FAIL",
+          "message": "no response on ['ingaas']: possible swapped, misrouted or stuck-on channel",
+          "criteria": "expected ['ingaas', 'opt101']",
+          "measured": {
+            "net_ingaas": 42.0,
+            "net_opt101": 117.0
+          }
+        },
+        {
+          "id": "T05.3/h10/pattern",
+          "name": "Hole 10 (white) detector pattern",
+          "status": "PASS",
+          "message": "seen by ['opt101'] as expected (ingaas not judged: outside its range)",
+          "criteria": "expected ['opt101']",
+          "measured": {
+            "net_ingaas": 15.0,
+            "net_opt101": 53.0
+          }
+        },
+        {
+          "id": "T05.3/h11/pattern",
+          "name": "Hole 11 (pink) detector pattern",
+          "status": "PASS",
+          "message": "seen by ['opt101'] as expected (ingaas not judged: outside its range)",
+          "criteria": "expected ['opt101']",
+          "measured": {
+            "net_ingaas": 20.0,
+            "net_opt101": 153.0
+          }
+        },
+        {
+          "id": "T05.3/h12/pattern",
+          "name": "Hole 12 (1450) detector pattern",
+          "status": "FAIL",
+          "message": "no response on ['ingaas']: possible swapped, misrouted or stuck-on channel",
+          "criteria": "expected ['ingaas']",
+          "measured": {
+            "net_ingaas": 22.0,
+            "net_opt101": 10.0
+          }
+        },
+        {
+          "id": "T05.3/h13/pattern",
+          "name": "Hole 13 (1550) detector pattern",
+          "status": "FAIL",
+          "message": "no response on ['ingaas']: possible swapped, misrouted or stuck-on channel",
+          "criteria": "expected ['ingaas']",
+          "measured": {
+            "net_ingaas": 8.0,
+            "net_opt101": 1.0
+          }
+        },
+        {
+          "id": "T05.3/h14/pattern",
+          "name": "Hole 14 (1650) detector pattern",
+          "status": "FAIL",
+          "message": "no response on ['ingaas']: possible swapped, misrouted or stuck-on channel",
+          "criteria": "expected ['ingaas']",
+          "measured": {
+            "net_ingaas": 1.0,
+            "net_opt101": 1.0
+          }
+        },
+        {
+          "id": "T05.3/h15/pattern",
+          "name": "Hole 15 (1760) detector pattern",
+          "status": "WARN",
+          "message": "no response on ['ingaas']: possible swapped, misrouted or stuck-on channel",
+          "criteria": "expected ['ingaas']",
+          "measured": {
+            "net_ingaas": 1.0,
+            "net_opt101": 1.0
+          }
+        },
+        {
+          "id": "T05.3/h16/pattern",
+          "name": "Hole 16 (1850) detector pattern",
+          "status": "PASS",
+          "message": "seen by nothing as expected (ingaas, opt101 not judged: outside its range)",
+          "criteria": "expected none",
+          "measured": {
+            "net_ingaas": 24.0,
+            "net_opt101": 197.0
+          }
+        },
+        {
+          "id": "T05.3/unique",
+          "name": "Signatures unique",
+          "status": "PASS",
+          "message": "no two channels look the same",
+          "criteria": "cosine < 0.98 or amplitude differs by more than 1 %",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "duplicate_groups": [],
+        "matrix": {
+          "1": {
+            "ingaas": -3,
+            "opt101": 31
+          },
+          "2": {
+            "ingaas": -2,
+            "opt101": 47
+          },
+          "3": {
+            "ingaas": -8,
+            "opt101": 31
+          },
+          "4": {
+            "ingaas": -6,
+            "opt101": 56
+          },
+          "5": {
+            "ingaas": 0,
+            "opt101": 26
+          },
+          "6": {
+            "ingaas": 4,
+            "opt101": 23
+          },
+          "7": {
+            "ingaas": 11,
+            "opt101": 31
+          },
+          "8": {
+            "ingaas": 23,
+            "opt101": 167
+          },
+          "9": {
+            "ingaas": 42,
+            "opt101": 117
+          },
+          "10": {
+            "ingaas": 15,
+            "opt101": 53
+          },
+          "11": {
+            "ingaas": 20,
+            "opt101": 153
+          },
+          "12": {
+            "ingaas": 22,
+            "opt101": 10
+          },
+          "13": {
+            "ingaas": 8,
+            "opt101": 1
+          },
+          "14": {
+            "ingaas": 1,
+            "opt101": 1
+          },
+          "15": {
+            "ingaas": 1,
+            "opt101": 1
+          },
+          "16": {
+            "ingaas": 24,
+            "opt101": 197
+          }
+        }
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T05.4",
+      "name": "Off-state return after each MEAS",
+      "module": "T05",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.014134041004581377,
+      "subs": [
+        {
+          "id": "T05.4/h01/ingaas",
+          "name": "Hole 1 ingaas back to dark",
+          "status": "PASS",
+          "message": "-336.2 after OFF vs dark -334",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -336.25,
+            "dark": -334.0
+          }
+        },
+        {
+          "id": "T05.4/h01/opt101",
+          "name": "Hole 1 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.8 after OFF vs dark 56",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.75,
+            "dark": 56.0
+          }
+        },
+        {
+          "id": "T05.4/h02/ingaas",
+          "name": "Hole 2 ingaas back to dark",
+          "status": "PASS",
+          "message": "-335.8 after OFF vs dark -333",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -335.75,
+            "dark": -333.0
+          }
+        },
+        {
+          "id": "T05.4/h02/opt101",
+          "name": "Hole 2 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.5 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.5,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h03/ingaas",
+          "name": "Hole 3 ingaas back to dark",
+          "status": "PASS",
+          "message": "-333.5 after OFF vs dark -328",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -333.5,
+            "dark": -328.0
+          }
+        },
+        {
+          "id": "T05.4/h03/opt101",
+          "name": "Hole 3 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.2 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.25,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h04/ingaas",
+          "name": "Hole 4 ingaas back to dark",
+          "status": "PASS",
+          "message": "-333.0 after OFF vs dark -329",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -333.0,
+            "dark": -329.0
+          }
+        },
+        {
+          "id": "T05.4/h04/opt101",
+          "name": "Hole 4 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.8 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.75,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h05/ingaas",
+          "name": "Hole 5 ingaas back to dark",
+          "status": "PASS",
+          "message": "-331.5 after OFF vs dark -326",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -331.5,
+            "dark": -326.0
+          }
+        },
+        {
+          "id": "T05.4/h05/opt101",
+          "name": "Hole 5 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.5 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.5,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h06/ingaas",
+          "name": "Hole 6 ingaas back to dark",
+          "status": "PASS",
+          "message": "-327.0 after OFF vs dark -327",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -327.0,
+            "dark": -327.0
+          }
+        },
+        {
+          "id": "T05.4/h06/opt101",
+          "name": "Hole 6 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.5 after OFF vs dark 56",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.5,
+            "dark": 56.0
+          }
+        },
+        {
+          "id": "T05.4/h07/ingaas",
+          "name": "Hole 7 ingaas back to dark",
+          "status": "PASS",
+          "message": "-335.2 after OFF vs dark -330",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -335.25,
+            "dark": -330.0
+          }
+        },
+        {
+          "id": "T05.4/h07/opt101",
+          "name": "Hole 7 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.5 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.5,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h08/ingaas",
+          "name": "Hole 8 ingaas back to dark",
+          "status": "PASS",
+          "message": "-336.0 after OFF vs dark -328",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -336.0,
+            "dark": -328.0
+          }
+        },
+        {
+          "id": "T05.4/h08/opt101",
+          "name": "Hole 8 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.5 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.5,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h09/ingaas",
+          "name": "Hole 9 ingaas back to dark",
+          "status": "PASS",
+          "message": "-328.8 after OFF vs dark -334",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -328.75,
+            "dark": -334.0
+          }
+        },
+        {
+          "id": "T05.4/h09/opt101",
+          "name": "Hole 9 opt101 back to dark",
+          "status": "PASS",
+          "message": "57.0 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 57.0,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h10/ingaas",
+          "name": "Hole 10 ingaas back to dark",
+          "status": "PASS",
+          "message": "-328.0 after OFF vs dark -333",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -328.0,
+            "dark": -333.0
+          }
+        },
+        {
+          "id": "T05.4/h10/opt101",
+          "name": "Hole 10 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.5 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.5,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h11/ingaas",
+          "name": "Hole 11 ingaas back to dark",
+          "status": "PASS",
+          "message": "-331.0 after OFF vs dark -336",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -331.0,
+            "dark": -336.0
+          }
+        },
+        {
+          "id": "T05.4/h11/opt101",
+          "name": "Hole 11 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.5 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.5,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h12/ingaas",
+          "name": "Hole 12 ingaas back to dark",
+          "status": "PASS",
+          "message": "-332.0 after OFF vs dark -337",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -332.0,
+            "dark": -337.0
+          }
+        },
+        {
+          "id": "T05.4/h12/opt101",
+          "name": "Hole 12 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.2 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.25,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h13/ingaas",
+          "name": "Hole 13 ingaas back to dark",
+          "status": "PASS",
+          "message": "-335.8 after OFF vs dark -336",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -335.75,
+            "dark": -336.0
+          }
+        },
+        {
+          "id": "T05.4/h13/opt101",
+          "name": "Hole 13 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.5 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.5,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h14/ingaas",
+          "name": "Hole 14 ingaas back to dark",
+          "status": "PASS",
+          "message": "-336.5 after OFF vs dark -334",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -336.5,
+            "dark": -334.0
+          }
+        },
+        {
+          "id": "T05.4/h14/opt101",
+          "name": "Hole 14 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.5 after OFF vs dark 56",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.5,
+            "dark": 56.0
+          }
+        },
+        {
+          "id": "T05.4/h15/ingaas",
+          "name": "Hole 15 ingaas back to dark",
+          "status": "PASS",
+          "message": "-335.8 after OFF vs dark -332",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -335.75,
+            "dark": -332.0
+          }
+        },
+        {
+          "id": "T05.4/h15/opt101",
+          "name": "Hole 15 opt101 back to dark",
+          "status": "PASS",
+          "message": "56.0 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 56.0,
+            "dark": 57.0
+          }
+        },
+        {
+          "id": "T05.4/h16/ingaas",
+          "name": "Hole 16 ingaas back to dark",
+          "status": "PASS",
+          "message": "-335.2 after OFF vs dark -332",
+          "criteria": "within 5 sigma (132.5 counts)",
+          "measured": {
+            "after": -335.25,
+            "dark": -332.0
+          }
+        },
+        {
+          "id": "T05.4/h16/opt101",
+          "name": "Hole 16 opt101 back to dark",
+          "status": "PASS",
+          "message": "57.0 after OFF vs dark 57",
+          "criteria": "within 5 sigma (3.5 counts)",
+          "measured": {
+            "after": 57.0,
+            "dark": 57.0
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T05.5",
+      "name": "Repeatability (interleaved MEAS)",
+      "module": "T05",
+      "kind": "A",
+      "status": "PASS",
+      "message": "not judged (net < 1000 counts or detector unusable): 1/opt101, 2/opt101, 3/opt101, 4/opt101, 5/opt101, 6/opt101, 7/opt101, 8/opt101, 8/ingaas, 9/opt101, 9/ingaas, 10/opt101, 11/opt101, 12/ingaas, 13/ingaas, 14/ingaas, 15/ingaas",
+      "duration_s": 0.013598040997749195,
+      "subs": [],
+      "measured": {
+        "duty_cooldown_s": 0
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T06.1",
+      "name": "OPT101",
+      "module": "T06",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.013662500015925616,
+      "subs": [
+        {
+          "id": "T06.1/dark",
+          "name": "opt101 dark offset",
+          "status": "PASS",
+          "message": "56.3 counts",
+          "criteria": "0 to 800 counts",
+          "measured": {
+            "mean": 56.33
+          }
+        },
+        {
+          "id": "T06.1/h01/visible",
+          "name": "Responds to hole 1 (395)",
+          "status": "PASS",
+          "message": "net +31",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 31
+          }
+        },
+        {
+          "id": "T06.1/h02/visible",
+          "name": "Responds to hole 2 (purple)",
+          "status": "PASS",
+          "message": "net +47",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 47
+          }
+        },
+        {
+          "id": "T06.1/h03/visible",
+          "name": "Responds to hole 3 (blue)",
+          "status": "PASS",
+          "message": "net +31",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 31
+          }
+        },
+        {
+          "id": "T06.1/h04/visible",
+          "name": "Responds to hole 4 (green)",
+          "status": "PASS",
+          "message": "net +56",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 56
+          }
+        },
+        {
+          "id": "T06.1/h05/visible",
+          "name": "Responds to hole 5 (yellow)",
+          "status": "PASS",
+          "message": "net +26",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 26
+          }
+        },
+        {
+          "id": "T06.1/h06/visible",
+          "name": "Responds to hole 6 (orange)",
+          "status": "PASS",
+          "message": "net +23",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 23
+          }
+        },
+        {
+          "id": "T06.1/h07/visible",
+          "name": "Responds to hole 7 (red)",
+          "status": "PASS",
+          "message": "net +31",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 31
+          }
+        },
+        {
+          "id": "T06.1/h10/visible",
+          "name": "Responds to hole 10 (white)",
+          "status": "PASS",
+          "message": "net +53",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 53
+          }
+        },
+        {
+          "id": "T06.1/h11/visible",
+          "name": "Responds to hole 11 (pink)",
+          "status": "PASS",
+          "message": "net +153",
+          "criteria": "no zeros where light is expected",
+          "measured": {
+            "net": 153
+          }
+        },
+        {
+          "id": "T06.1/saturation",
+          "name": "Not saturated",
+          "status": "PASS",
+          "message": "peak 254",
+          "criteria": "< 29000 counts",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "visible_net": {
+          "1": 31,
+          "2": 47,
+          "3": 31,
+          "4": 56,
+          "5": 26,
+          "6": 23,
+          "7": 31,
+          "10": 53,
+          "11": 153
+        }
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T06.2",
+      "name": "InGaAs TIA",
+      "module": "T06",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.013460000016493723,
+      "subs": [
+        {
+          "id": "T06.2/erratic",
+          "name": "Dark signal steady",
+          "status": "PASS",
+          "message": "dark mean -331, sigma 37.5",
+          "criteria": "sigma <= 100 and mean >= -1500",
+          "measured": {
+            "sigma": 37.47
+          }
+        },
+        {
+          "id": "T06.2/dark",
+          "name": "ingaas dark offset",
+          "status": "PASS",
+          "message": "-331.2 counts",
+          "criteria": "-400 to 2000 counts",
+          "measured": {
+            "mean": -331.22
+          }
+        },
+        {
+          "id": "T06.2/polarity/gate",
+          "name": "Polarity gate (hole 8)",
+          "status": "PASS",
+          "message": "net +35",
+          "criteria": "net >= -5 sigma",
+          "measured": {
+            "net": 35
+          }
+        },
+        {
+          "id": "T06.2/h09/polarity",
+          "name": "Hole 9 InGaAs polarity",
+          "status": "PASS",
+          "message": "net +42",
+          "criteria": "net not negative",
+          "measured": {
+            "net": 42
+          }
+        },
+        {
+          "id": "T06.2/h12/polarity",
+          "name": "Hole 12 InGaAs polarity",
+          "status": "PASS",
+          "message": "net +22",
+          "criteria": "net not negative",
+          "measured": {
+            "net": 22
+          }
+        },
+        {
+          "id": "T06.2/h13/polarity",
+          "name": "Hole 13 InGaAs polarity",
+          "status": "PASS",
+          "message": "net +8",
+          "criteria": "net not negative",
+          "measured": {
+            "net": 8
+          }
+        },
+        {
+          "id": "T06.2/h14/polarity",
+          "name": "Hole 14 InGaAs polarity",
+          "status": "PASS",
+          "message": "net +1",
+          "criteria": "net not negative",
+          "measured": {
+            "net": 1
+          }
+        },
+        {
+          "id": "T06.2/saturation",
+          "name": "InGaAs not saturated",
+          "status": "PASS",
+          "message": "no hole saturates",
+          "criteria": "< 27000 counts",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T06.3",
+      "name": "Cross-calibration on the shared holes",
+      "module": "T06",
+      "kind": "A",
+      "status": "FAIL",
+      "message": "",
+      "duration_s": 0.01351729201269336,
+      "subs": [
+        {
+          "id": "T06.3/h08",
+          "name": "Hole 8 seen by both detectors",
+          "status": "FAIL",
+          "message": "no response on ['ingaas']",
+          "criteria": "both above the detection threshold",
+          "measured": {
+            "ratio": 0.1377245508982036,
+            "levels": {
+              "opt101": "signal",
+              "ingaas": "none"
+            }
+          }
+        },
+        {
+          "id": "T06.3/h09",
+          "name": "Hole 9 seen by both detectors",
+          "status": "FAIL",
+          "message": "no response on ['ingaas']",
+          "criteria": "both above the detection threshold",
+          "measured": {
+            "ratio": 0.358974358974359,
+            "levels": {
+              "opt101": "signal",
+              "ingaas": "none"
+            }
+          }
+        }
+      ],
+      "measured": {
+        "ingaas_over_opt101": {}
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T07.1",
+      "name": "Step response and settling time",
+      "module": "T07",
+      "kind": "A",
+      "status": "WARN",
+      "message": "",
+      "duration_s": 56.36962824998773,
+      "subs": [
+        {
+          "id": "T07.1/h03",
+          "name": "Hole 3 (opt101) step response",
+          "status": "PASS",
+          "message": "settled within one sample: t99 <= 1.29 ms (upper bound, limited by the sample interval)",
+          "criteria": "time to 99 % recorded",
+          "measured": {
+            "detector": "opt101",
+            "step": 30.75,
+            "t_settle_ms": 1.293,
+            "tau_ms": null,
+            "within_first_sample": true,
+            "t_us": [
+              3,
+              2537,
+              5084,
+              7618,
+              10204,
+              12746,
+              15286,
+              17829,
+              20368,
+              22911,
+              25451,
+              27995,
+              30534,
+              33078,
+              35617,
+              38161,
+              40703,
+              43243,
+              45785,
+              48325,
+              50868,
+              53408,
+              55951,
+              58490,
+              61034,
+              63573,
+              66117,
+              68656,
+              71243,
+              73780,
+              76315,
+              78861,
+              81396,
+              83942,
+              86477,
+              89024,
+              91558,
+              94105,
+              96640,
+              99178
+            ],
+            "raw": [
+              57,
+              56,
+              57,
+              57,
+              89,
+              90,
+              89,
+              88,
+              88,
+              87,
+              89,
+              89,
+              88,
+              87,
+              87,
+              89,
+              89,
+              89,
+              88,
+              89,
+              86,
+              88,
+              88,
+              87,
+              89,
+              87,
+              87,
+              88,
+              55,
+              58,
+              57,
+              57,
+              56,
+              57,
+              55,
+              56,
+              56,
+              58,
+              57,
+              57
+            ],
+            "on_idx": 4,
+            "off_idx": 28
+          }
+        },
+        {
+          "id": "T07.1/h08",
+          "name": "Hole 8 (opt101) step response",
+          "status": "PASS",
+          "message": "settled within one sample: t99 <= 1.29 ms (upper bound, limited by the sample interval)",
+          "criteria": "time to 99 % recorded",
+          "measured": {
+            "detector": "opt101",
+            "step": 162.0,
+            "t_settle_ms": 1.2905,
+            "tau_ms": null,
+            "within_first_sample": true,
+            "t_us": [
+              3,
+              2548,
+              5083,
+              7629,
+              10210,
+              12754,
+              15293,
+              17837,
+              20377,
+              22920,
+              25462,
+              28003,
+              30545,
+              33085,
+              35627,
+              38167,
+              40711,
+              43250,
+              45794,
+              48333,
+              50877,
+              53419,
+              55960,
+              58502,
+              61042,
+              63585,
+              66124,
+              68667,
+              71250,
+              73797,
+              76331,
+              78870,
+              81404,
+              83951,
+              86488,
+              89023,
+              91569,
+              94103,
+              96650,
+              99184
+            ],
+            "raw": [
+              58,
+              56,
+              55,
+              56,
+              218,
+              214,
+              213,
+              218,
+              213,
+              218,
+              217,
+              209,
+              217,
+              208,
+              219,
+              218,
+              217,
+              215,
+              215,
+              217,
+              219,
+              221,
+              212,
+              216,
+              222,
+              222,
+              217,
+              217,
+              57,
+              56,
+              57,
+              55,
+              55,
+              57,
+              57,
+              59,
+              56,
+              57,
+              57,
+              55
+            ],
+            "on_idx": 4,
+            "off_idx": 28
+          }
+        },
+        {
+          "id": "T07.1/h13",
+          "name": "Hole 13 step response",
+          "status": "WARN",
+          "message": "no step on ingaas (baseline -294, plateau -325)",
+          "criteria": "a step above the detection threshold",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T07.2",
+      "name": "Recommended settle time",
+      "module": "T07",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 1.3197497079963796,
+      "subs": [
+        {
+          "id": "T07.2/settle",
+          "name": "Configured settle_ms is long enough",
+          "status": "PASS",
+          "message": "recommended 2 ms (max 1.29 ms x 1.5), configured 8 ms",
+          "criteria": "recommended <= 8 ms",
+          "measured": {}
+        }
+      ],
+      "measured": {
+        "recommended_settle_ms": 2,
+        "configured_settle_ms": 8
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T07.3",
+      "name": "MEAS timing",
+      "module": "T07",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.34208083400153555,
+      "subs": [
+        {
+          "id": "T07.3/s8n1",
+          "name": "MEAS 3 8 1 on-time",
+          "status": "PASS",
+          "message": "t_on_ms 25",
+          "criteria": "21.3-32.0 ms and <= watchdog 2000 ms",
+          "measured": {
+            "t_on_ms": 25
+          }
+        },
+        {
+          "id": "T07.3/s20n4",
+          "name": "MEAS 3 20 4 on-time",
+          "status": "PASS",
+          "message": "t_on_ms 90",
+          "criteria": "73.1-106.9 ms and <= watchdog 2000 ms",
+          "measured": {
+            "t_on_ms": 90
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T08.1",
+      "name": "SWEEP completes with a valid schema",
+      "module": "T08",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.9341163749922998,
+      "subs": [
+        {
+          "id": "T08.1/records",
+          "name": "16 records, holes 1-16 in order",
+          "status": "PASS",
+          "message": "16 records: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]",
+          "criteria": "holes 1..16",
+          "measured": {}
+        },
+        {
+          "id": "T08.1/schema",
+          "name": "Sweep records parse",
+          "status": "PASS",
+          "message": "all '# M' fields present and integer",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T08.1/duration",
+          "name": "Sweep duration",
+          "status": "PASS",
+          "message": "833 ms (host 920 ms)",
+          "criteria": "<= 2.5 s",
+          "measured": {
+            "dur_ms": 833
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T08.2",
+      "name": "Repeated sweeps",
+      "module": "T08",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 121.71984383297968,
+      "subs": [
+        {
+          "id": "T08.2/dark/ingaas",
+          "name": "ingaas dark stable between sweeps",
+          "status": "PASS",
+          "message": "per-sweep dark means span 4.00 counts",
+          "criteria": "<= 46.84 counts",
+          "measured": {
+            "spread": 4.0
+          }
+        },
+        {
+          "id": "T08.2/dark/opt101",
+          "name": "opt101 dark stable between sweeps",
+          "status": "PASS",
+          "message": "per-sweep dark means span 0.31 counts",
+          "criteria": "<= 1.25 counts",
+          "measured": {
+            "spread": 0.3125
+          }
+        }
+      ],
+      "measured": {
+        "sweeps": [
+          {
+            "1": {
+              "ingaas": 6,
+              "opt101": 25
+            },
+            "2": {
+              "ingaas": -70,
+              "opt101": 52
+            },
+            "3": {
+              "ingaas": -101,
+              "opt101": 31
+            },
+            "4": {
+              "ingaas": -87,
+              "opt101": 57
+            },
+            "5": {
+              "ingaas": -7,
+              "opt101": 26
+            },
+            "6": {
+              "ingaas": 66,
+              "opt101": 22
+            },
+            "7": {
+              "ingaas": 107,
+              "opt101": 31
+            },
+            "8": {
+              "ingaas": 127,
+              "opt101": 164
+            },
+            "9": {
+              "ingaas": 63,
+              "opt101": 103
+            },
+            "10": {
+              "ingaas": -57,
+              "opt101": 30
+            },
+            "11": {
+              "ingaas": -82,
+              "opt101": 155
+            },
+            "12": {
+              "ingaas": -89,
+              "opt101": 11
+            },
+            "13": {
+              "ingaas": -41,
+              "opt101": 2
+            },
+            "14": {
+              "ingaas": 38,
+              "opt101": -1
+            },
+            "15": {
+              "ingaas": 92,
+              "opt101": 3
+            },
+            "16": {
+              "ingaas": 131,
+              "opt101": 196
+            }
+          },
+          {
+            "1": {
+              "ingaas": 72,
+              "opt101": 30
+            },
+            "2": {
+              "ingaas": 103,
+              "opt101": 52
+            },
+            "3": {
+              "ingaas": 74,
+              "opt101": 32
+            },
+            "4": {
+              "ingaas": -5,
+              "opt101": 56
+            },
+            "5": {
+              "ingaas": -65,
+              "opt101": 27
+            },
+            "6": {
+              "ingaas": -93,
+              "opt101": 22
+            },
+            "7": {
+              "ingaas": -77,
+              "opt101": 31
+            },
+            "8": {
+              "ingaas": 26,
+              "opt101": 160
+            },
+            "9": {
+              "ingaas": 97,
+              "opt101": 96
+            },
+            "10": {
+              "ingaas": 119,
+              "opt101": 65
+            },
+            "11": {
+              "ingaas": 105,
+              "opt101": 151
+            },
+            "12": {
+              "ingaas": 37,
+              "opt101": 8
+            },
+            "13": {
+              "ingaas": -54,
+              "opt101": 2
+            },
+            "14": {
+              "ingaas": -97,
+              "opt101": -1
+            },
+            "15": {
+              "ingaas": -94,
+              "opt101": 1
+            },
+            "16": {
+              "ingaas": -6,
+              "opt101": 191
+            }
+          },
+          {
+            "1": {
+              "ingaas": -26,
+              "opt101": 21
+            },
+            "2": {
+              "ingaas": 50,
+              "opt101": 51
+            },
+            "3": {
+              "ingaas": 96,
+              "opt101": 32
+            },
+            "4": {
+              "ingaas": 100,
+              "opt101": 56
+            },
+            "5": {
+              "ingaas": 49,
+              "opt101": 26
+            },
+            "6": {
+              "ingaas": -33,
+              "opt101": 22
+            },
+            "7": {
+              "ingaas": -85,
+              "opt101": 32
+            },
+            "8": {
+              "ingaas": -73,
+              "opt101": 166
+            },
+            "9": {
+              "ingaas": -20,
+              "opt101": 106
+            },
+            "10": {
+              "ingaas": 45,
+              "opt101": 66
+            },
+            "11": {
+              "ingaas": 97,
+              "opt101": 151
+            },
+            "12": {
+              "ingaas": 116,
+              "opt101": 8
+            },
+            "13": {
+              "ingaas": 67,
+              "opt101": 2
+            },
+            "14": {
+              "ingaas": -22,
+              "opt101": -1
+            },
+            "15": {
+              "ingaas": -77,
+              "opt101": 2
+            },
+            "16": {
+              "ingaas": -77,
+              "opt101": 196
+            }
+          },
+          {
+            "1": {
+              "ingaas": -82,
+              "opt101": 27
+            },
+            "2": {
+              "ingaas": -4,
+              "opt101": 52
+            },
+            "3": {
+              "ingaas": 66,
+              "opt101": 32
+            },
+            "4": {
+              "ingaas": 103,
+              "opt101": 57
+            },
+            "5": {
+              "ingaas": 101,
+              "opt101": 26
+            },
+            "6": {
+              "ingaas": 29,
+              "opt101": 22
+            },
+            "7": {
+              "ingaas": -47,
+              "opt101": 30
+            },
+            "8": {
+              "ingaas": -68,
+              "opt101": 161
+            },
+            "9": {
+              "ingaas": -64,
+              "opt101": 98
+            },
+            "10": {
+              "ingaas": -33,
+              "opt101": 57
+            },
+            "11": {
+              "ingaas": 57,
+              "opt101": 152
+            },
+            "12": {
+              "ingaas": 106,
+              "opt101": 9
+            },
+            "13": {
+              "ingaas": 103,
+              "opt101": 2
+            },
+            "14": {
+              "ingaas": 48,
+              "opt101": -1
+            },
+            "15": {
+              "ingaas": -27,
+              "opt101": 2
+            },
+            "16": {
+              "ingaas": -60,
+              "opt101": 191
+            }
+          },
+          {
+            "1": {
+              "ingaas": 106,
+              "opt101": 23
+            },
+            "2": {
+              "ingaas": 90,
+              "opt101": 52
+            },
+            "3": {
+              "ingaas": 17,
+              "opt101": 31
+            },
+            "4": {
+              "ingaas": -55,
+              "opt101": 56
+            },
+            "5": {
+              "ingaas": -90,
+              "opt101": 26
+            },
+            "6": {
+              "ingaas": -90,
+              "opt101": 22
+            },
+            "7": {
+              "ingaas": -26,
+              "opt101": 30
+            },
+            "8": {
+              "ingaas": 77,
+              "opt101": 164
+            },
+            "9": {
+              "ingaas": 127,
+              "opt101": 108
+            },
+            "10": {
+              "ingaas": 90,
+              "opt101": 65
+            },
+            "11": {
+              "ingaas": 60,
+              "opt101": 155
+            },
+            "12": {
+              "ingaas": -25,
+              "opt101": 10
+            },
+            "13": {
+              "ingaas": -85,
+              "opt101": 2
+            },
+            "14": {
+              "ingaas": -103,
+              "opt101": 0
+            },
+            "15": {
+              "ingaas": -55,
+              "opt101": 2
+            },
+            "16": {
+              "ingaas": 51,
+              "opt101": 196
+            }
+          }
+        ]
+      },
+      "artefacts": []
+    },
+    {
+      "id": "T08.3",
+      "name": "Sweep agrees with MEAS",
+      "module": "T08",
+      "kind": "A",
+      "status": "FAIL",
+      "message": "",
+      "duration_s": 1.3194777079916093,
+      "subs": [
+        {
+          "id": "T08.3/h04/opt101",
+          "name": "Hole 4 opt101 sweep vs MEAS",
+          "status": "PASS",
+          "message": "sweep 56 vs MEAS 56 (0.7 %)",
+          "criteria": "within 6 counts (max of 10 %, 5 sigma)",
+          "measured": {
+            "rel": 0.0071428571428571175
+          }
+        },
+        {
+          "id": "T08.3/h08/opt101",
+          "name": "Hole 8 opt101 sweep vs MEAS",
+          "status": "PASS",
+          "message": "sweep 163 vs MEAS 167 (2.4 %)",
+          "criteria": "within 17 counts (max of 10 %, 5 sigma)",
+          "measured": {
+            "rel": 0.023952095808383235
+          }
+        },
+        {
+          "id": "T08.3/h09/opt101",
+          "name": "Hole 9 opt101 sweep vs MEAS",
+          "status": "FAIL",
+          "message": "sweep 102 vs MEAS 117 (12.6 %)",
+          "criteria": "within 12 counts (max of 10 %, 5 sigma)",
+          "measured": {
+            "rel": 0.12649572649572646
+          }
+        },
+        {
+          "id": "T08.3/h10/opt101",
+          "name": "Hole 10 opt101 sweep vs MEAS",
+          "status": "PASS",
+          "message": "sweep 57 vs MEAS 53 (6.8 %)",
+          "criteria": "within 5 counts (max of 10 %, 5 sigma)",
+          "measured": {
+            "rel": 0.06792452830188682
+          }
+        },
+        {
+          "id": "T08.3/h11/opt101",
+          "name": "Hole 11 opt101 sweep vs MEAS",
+          "status": "PASS",
+          "message": "sweep 153 vs MEAS 153 (0.1 %)",
+          "criteria": "within 15 counts (max of 10 %, 5 sigma)",
+          "measured": {
+            "rel": 0.0013071895424835859
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T08.4",
+      "name": "CSV output format",
+      "module": "T08",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.02203825002652593,
+      "subs": [
+        {
+          "id": "T08.4/header",
+          "name": "Header",
+          "status": "PASS",
+          "message": "hole,label,dark_ingaas,dark_opt101,ingaas,opt101,net_ingaas_V,net_opt101_V",
+          "criteria": "hole,label,dark_ingaas,dark_opt101,ingaas,opt101,net_ingaas_V,net_opt101_V",
+          "measured": {}
+        },
+        {
+          "id": "T08.4/rows",
+          "name": "One CRLF-terminated row per hole",
+          "status": "PASS",
+          "message": "16 rows",
+          "criteria": "16 rows, CRLF",
+          "measured": {}
+        },
+        {
+          "id": "T08.4/values",
+          "name": "Rows byte-identical to the original logger's format",
+          "status": "PASS",
+          "message": "all rows identical",
+          "criteria": "same columns, rounding, labels",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T09.1",
+      "name": "Motion arming",
+      "module": "T09",
+      "kind": "M",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 61.05838620799477,
+      "subs": [
+        {
+          "id": "T09.1/unarmed",
+          "name": "MOTOR STEP without ARM is refused",
+          "status": "PASS",
+          "message": "@919 ERR MOTOR code=3 msg=not armed",
+          "criteria": "ERR code=3 (not armed)",
+          "measured": {}
+        },
+        {
+          "id": "T09.1/wrong_token",
+          "name": "ARM with the wrong token is refused",
+          "status": "PASS",
+          "message": "@921 ERR MOTOR code=3 msg=wrong token",
+          "criteria": "ERR code=3",
+          "measured": {}
+        },
+        {
+          "id": "T09.1/armed",
+          "name": "ARM with the INFO token",
+          "status": "PASS",
+          "message": "armed=1 armed_ms=59997",
+          "criteria": "armed=1, armed_ms <= 60000",
+          "measured": {}
+        },
+        {
+          "id": "T09.1/expired",
+          "name": "Arming expires after 60 s",
+          "status": "PASS",
+          "message": "armed=0 failsafe_trips=0",
+          "criteria": "armed=0 without a failsafe",
+          "measured": {}
+        },
+        {
+          "id": "T09.1/after_expiry",
+          "name": "MOTOR STEP after expiry is refused",
+          "status": "PASS",
+          "message": "@957 ERR MOTOR code=3 msg=not armed",
+          "criteria": "ERR code=3 (not armed)",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T09.2",
+      "name": "Each motor moves both ways",
+      "module": "T09",
+      "kind": "M",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 7.166836874996079,
+      "subs": [
+        {
+          "id": "T09.2/1/plus",
+          "name": "Motor 1 +64 half-steps completes",
+          "status": "PASS",
+          "message": "# MOTOR m=1 steps=64 pos=-64 done",
+          "criteria": "'# MOTOR m=1 steps=64 ... done'",
+          "measured": {}
+        },
+        {
+          "id": "T09.2/1/up",
+          "name": "Operator saw motor 1 (RIGHT) move up",
+          "status": "SKIP",
+          "message": "not watched: the run was started without prompts (the step counts are checked)",
+          "criteria": "+steps = up (legacy U direction)",
+          "measured": {}
+        },
+        {
+          "id": "T09.2/1/minus",
+          "name": "Motor 1 -64 half-steps completes",
+          "status": "PASS",
+          "message": "# MOTOR m=1 steps=64 pos=-128 done",
+          "criteria": "'# MOTOR m=1 steps=64 ... done'",
+          "measured": {}
+        },
+        {
+          "id": "T09.2/1/down",
+          "name": "Operator saw motor 1 (RIGHT) move back down",
+          "status": "SKIP",
+          "message": "not watched: the run was started without prompts (the step counts are checked)",
+          "criteria": "returned",
+          "measured": {}
+        },
+        {
+          "id": "T09.2/1/released",
+          "name": "Motor 1 idle, coils released, back at start",
+          "status": "PASS",
+          "message": "motor1=idle pos1=-128",
+          "criteria": "idle, pos1=-128",
+          "measured": {}
+        },
+        {
+          "id": "T09.2/2/plus",
+          "name": "Motor 2 +64 half-steps completes",
+          "status": "PASS",
+          "message": "# MOTOR m=2 steps=64 pos=-64 done",
+          "criteria": "'# MOTOR m=2 steps=64 ... done'",
+          "measured": {}
+        },
+        {
+          "id": "T09.2/2/up",
+          "name": "Operator saw motor 2 (LEFT) move up",
+          "status": "SKIP",
+          "message": "not watched: the run was started without prompts (the step counts are checked)",
+          "criteria": "+steps = up (legacy U direction)",
+          "measured": {}
+        },
+        {
+          "id": "T09.2/2/minus",
+          "name": "Motor 2 -64 half-steps completes",
+          "status": "PASS",
+          "message": "# MOTOR m=2 steps=64 pos=-128 done",
+          "criteria": "'# MOTOR m=2 steps=64 ... done'",
+          "measured": {}
+        },
+        {
+          "id": "T09.2/2/down",
+          "name": "Operator saw motor 2 (LEFT) move back down",
+          "status": "SKIP",
+          "message": "not watched: the run was started without prompts (the step counts are checked)",
+          "criteria": "returned",
+          "measured": {}
+        },
+        {
+          "id": "T09.2/2/released",
+          "name": "Motor 2 idle, coils released, back at start",
+          "status": "PASS",
+          "message": "motor2=idle pos2=-128",
+          "criteria": "idle, pos2=-128",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T09.3",
+      "name": "MOTOR STOP latency",
+      "module": "T09",
+      "kind": "M",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 9.152781499986304,
+      "subs": [
+        {
+          "id": "T09.3/latency",
+          "name": "MOTOR STOP answered",
+          "status": "PASS",
+          "message": "1.8 ms",
+          "criteria": "< 50 ms",
+          "measured": {
+            "latency_ms": 1.7999169940594584
+          }
+        },
+        {
+          "id": "T09.3/stopped",
+          "name": "Motor stopped and stays stopped",
+          "status": "PASS",
+          "message": "moved 46 of 2048 half-steps; motor1=idle",
+          "criteria": "idle, position frozen, move cut short",
+          "measured": {}
+        },
+        {
+          "id": "T09.3/returned",
+          "name": "Motor 1 returned to the start",
+          "status": "PASS",
+          "message": "# MOTOR m=1 steps=46 pos=-2112 done",
+          "criteria": "pos1=-2112",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T09.4",
+      "name": "Detector noise while a motor moves",
+      "module": "T09",
+      "kind": "M",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 4.8154659580031876,
+      "subs": [
+        {
+          "id": "T09.4/during",
+          "name": "Streams taken while the motor was moving",
+          "status": "PASS",
+          "message": "motor still running after both streams",
+          "criteria": "motor1=run",
+          "measured": {}
+        },
+        {
+          "id": "T09.4/ingaas",
+          "name": "ingaas noise during motion",
+          "status": "PASS",
+          "message": "sigma 37.58 moving vs 38.67 at rest (x0.97)",
+          "criteria": "ratio <= 3",
+          "measured": {
+            "ratio": 0.9715892597681729,
+            "sigma_rest": 38.67458343997152,
+            "sigma_moving": 37.57580989628437
+          }
+        },
+        {
+          "id": "T09.4/opt101",
+          "name": "opt101 noise during motion",
+          "status": "PASS",
+          "message": "sigma 0.58 moving vs 0.46 at rest (x0.58)",
+          "criteria": "ratio <= 3",
+          "measured": {
+            "ratio": 0.5819385554072728,
+            "sigma_rest": 0.4593396431851038,
+            "sigma_moving": 0.5819385554072728
+          }
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T09.6",
+      "name": "Full travel, both motors in lockstep",
+      "module": "T09",
+      "kind": "M",
+      "status": "SKIP",
+      "message": "the two sides are not level (M1/right -18496, M2/left -18496): level them with single-motor moves first",
+      "duration_s": 1.3246281250030734,
+      "subs": [],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T09.7",
+      "name": "Detectors while the chamber moves",
+      "module": "T09",
+      "kind": "M",
+      "status": "SKIP",
+      "message": "the two sides are not level (M1/right -18496, M2/left -18496): level them with single-motor moves first",
+      "duration_s": 0.027922292007133365,
+      "subs": [],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T10.1",
+      "name": "Power-up dark state",
+      "module": "T10",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 1.5853515829949174,
+      "subs": [
+        {
+          "id": "T10.1/reset/status",
+          "name": "STATUS safe after RESET",
+          "status": "PASS",
+          "message": "ch=0 ce1=0 ce2=0 mask=0x0000 armed=0",
+          "criteria": "ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle",
+          "measured": {}
+        },
+        {
+          "id": "T10.1/reset/dark",
+          "name": "Detectors dark after RESET",
+          "status": "PASS",
+          "message": "ingaas -334, opt101 56",
+          "criteria": "dark +- k sigma",
+          "measured": {}
+        },
+        {
+          "id": "T10.1/reopen/status",
+          "name": "STATUS safe after a port reopen",
+          "status": "PASS",
+          "message": "ch=0 ce1=0 ce2=0 mask=0x0000 armed=0",
+          "criteria": "ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle",
+          "measured": {}
+        },
+        {
+          "id": "T10.1/reopen/dark",
+          "name": "Detectors dark after a port reopen",
+          "status": "PASS",
+          "message": "ingaas -336, opt101 56",
+          "criteria": "dark +- k sigma",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T10.2",
+      "name": "On-time watchdog",
+      "module": "T10",
+      "kind": "A",
+      "status": "SKIP",
+      "message": "",
+      "duration_s": 0.03960120800184086,
+      "subs": [
+        {
+          "id": "T10.2/A/h03/clamp",
+          "name": "RAIL A watchdog clamp pulse",
+          "status": "SKIP",
+          "message": "refused before transmission (unsupported under approved budgets/capability): refuse before light: conservative bound 2000.0 ms unsupported by budget (request 2000.000 ms exceeds budget 1000.000 ms for hole 3)",
+          "criteria": "",
+          "measured": {}
+        },
+        {
+          "id": "T10.2/B/h09/clamp",
+          "name": "RAIL B watchdog clamp pulse",
+          "status": "SKIP",
+          "message": "refused before transmission (unsupported under approved budgets/capability): refuse before light: conservative bound 5000.0 ms unsupported by budget (request 5000.000 ms exceeds budget 1000.000 ms for hole 9)",
+          "criteria": "",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T10.3",
+      "name": "Comms-loss failsafe",
+      "module": "T10",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 11.150200707983458,
+      "subs": [
+        {
+          "id": "T10.3/event",
+          "name": "'# FAILSAFE' after the comms timeout",
+          "status": "PASS",
+          "message": "# FAILSAFE reason=comms idle_ms=10000",
+          "criteria": "idle_ms 10000-10050",
+          "measured": {}
+        },
+        {
+          "id": "T10.3/status",
+          "name": "Everything off after the failsafe",
+          "status": "PASS",
+          "message": "ch=0 ce1=0 ce2=0 mask=0x0000 armed=0",
+          "criteria": "ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle",
+          "measured": {}
+        },
+        {
+          "id": "T10.3/trips",
+          "name": "Failsafe counted",
+          "status": "PASS",
+          "message": "failsafe_trips=1",
+          "criteria": ">= 1",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T10.4",
+      "name": "Single-channel invariant",
+      "module": "T10",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.13964291699812748,
+      "subs": [
+        {
+          "id": "T10.4/m0000/ce1",
+          "name": "SR RAW 0x0000 then CE 1 1",
+          "status": "PASS",
+          "message": "host refused before write: CE on refused: no single selected hole to reserve duty against; ce1=0 ce2=0",
+          "criteria": "refused (code 3 or host gate), CE stays low",
+          "measured": {}
+        },
+        {
+          "id": "T10.4/m0005/ce1",
+          "name": "SR RAW 0x0005 then CE 1 1",
+          "status": "PASS",
+          "message": "host refused before write: CE on refused: no single selected hole to reserve duty against; ce1=0 ce2=0",
+          "criteria": "refused (code 3 or host gate), CE stays low",
+          "measured": {}
+        },
+        {
+          "id": "T10.4/m0101/ce1",
+          "name": "SR RAW 0x0101 then CE 1 1",
+          "status": "PASS",
+          "message": "host refused before write: CE on refused: no single selected hole to reserve duty against; ce1=0 ce2=0",
+          "criteria": "refused (code 3 or host gate), CE stays low",
+          "measured": {}
+        },
+        {
+          "id": "T10.4/m0101/ce2",
+          "name": "SR RAW 0x0101 then CE 2 1",
+          "status": "PASS",
+          "message": "host refused before write: CE on refused: no single selected hole to reserve duty against; ce1=0 ce2=0",
+          "criteria": "refused (code 3 or host gate), CE stays low",
+          "measured": {}
+        },
+        {
+          "id": "T10.4/m3000/ce2",
+          "name": "SR RAW 0x3000 then CE 2 1",
+          "status": "PASS",
+          "message": "host refused before write: CE on refused: no single selected hole to reserve duty against; ce1=0 ce2=0",
+          "criteria": "refused (code 3 or host gate), CE stays low",
+          "measured": {}
+        },
+        {
+          "id": "T10.4/m1004/ce1",
+          "name": "SR RAW 0x1004 then CE 1 1",
+          "status": "PASS",
+          "message": "host refused before write: CE on refused: no single selected hole to reserve duty against; ce1=0 ce2=0",
+          "criteria": "refused (code 3 or host gate), CE stays low",
+          "measured": {}
+        },
+        {
+          "id": "T10.4/m1004/ce2",
+          "name": "SR RAW 0x1004 then CE 2 1",
+          "status": "PASS",
+          "message": "host refused before write: CE on refused: no single selected hole to reserve duty against; ce1=0 ce2=0",
+          "criteria": "refused (code 3 or host gate), CE stays low",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T10.5",
+      "name": "Motion disarmed after comms loss",
+      "module": "T10",
+      "kind": "A",
+      "status": "PASS",
+      "message": "",
+      "duration_s": 0.01390195800922811,
+      "subs": [
+        {
+          "id": "T10.5/before",
+          "name": "Armed before the silence",
+          "status": "PASS",
+          "message": "armed=1",
+          "criteria": "armed=1",
+          "measured": {}
+        },
+        {
+          "id": "T10.5/after",
+          "name": "Disarmed after the failsafe",
+          "status": "PASS",
+          "message": "armed=0 armed_ms=0",
+          "criteria": "armed=0",
+          "measured": {}
+        }
+      ],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T11.1",
+      "name": "Comparison with the baseline",
+      "module": "T11",
+      "kind": "A",
+      "status": "SKIP",
+      "message": "no baseline given (--baseline <file>); save one with --save-baseline",
+      "duration_s": 0.013925792009104043,
+      "subs": [],
+      "measured": {},
+      "artefacts": []
+    },
+    {
+      "id": "T13.1",
+      "name": "Diagnostic height sweep",
+      "module": "T13",
+      "kind": "M",
+      "status": "ERROR",
+      "message": "OwnershipError: CE on refused: no single selected hole to reserve duty against",
+      "duration_s": 1538.753166917013,
+      "subs": [],
+      "measured": {},
+      "artefacts": []
+    }
+  ],
+  "duty": {
+    "window_s": 60.0,
+    "budget_ms": {
+      "A": 1000.0,
+      "B": 5000.0,
+      "h9": 1000.0
+    },
+    "total_cooldown_s": 349.0441179579648,
+    "cooldowns": [
+      {
+        "hole": 8,
+        "wait_s": 55.84662662498886,
+        "reason": "1-charge set"
+      },
+      {
+        "hole": 1,
+        "wait_s": 57.178094583010534,
+        "reason": "16-charge set"
+      },
+      {
+        "hole": 1,
+        "wait_s": 1.836551583983237,
+        "reason": "16-charge set"
+      },
+      {
+        "hole": 1,
+        "wait_s": 57.03665020799963,
+        "reason": "16-charge set"
+      },
+      {
+        "hole": 1,
+        "wait_s": 1.8763933329901192,
+        "reason": "16-charge set"
+      },
+      {
+        "hole": 1,
+        "wait_s": 57.177754000003915,
+        "reason": "16-charge set"
+      },
+      {
+        "hole": 1,
+        "wait_s": 59.03831829200499,
+        "reason": "16-charge set"
+      },
+      {
+        "hole": 1,
+        "wait_s": 59.053729332983494,
+        "reason": "16-charge set"
+      }
+    ],
+    "over_budget": []
+  },
+  "finished": "2026-11-23T16:58:40-05:00",
+  "verdict": {
+    "verdict": "NOT FUNCTIONAL",
+    "reasons": [
+      "failure in a critical module: T03.2",
+      "failures not tied to a channel: T13.1",
+      "5 failing channels (more than 2): 8, 9, 12, 13, 14"
+    ],
+    "counts": {
+      "PASS": 31,
+      "WARN": 1,
+      "FAIL": 6,
+      "SKIP": 6,
+      "ERROR": 1
+    }
+  }
+}

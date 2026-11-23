@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261123-170350_host</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261123-170350_host</code> on <code>/dev/cu.usbmodem101</code>
+,
+2026-11-23T17:03:50-05:00 to 2026-11-23T17:29:22-05:00</p>
+<div class="verdict" style="background: #d03b3b">NOT FUNCTIONAL</div>
+<ul><li>failures not tied to a channel: T13.1</li></ul>
+
+<table>
+<tr><th>Sample</th><td>empty</td><th>Operator</th><td>owner (answers via Claude session 2026-11-23)</td></tr>
+<tr><th>Firmware</th><td>2.5.2 (proto 1, build 2026-11-17)</td>
+    <th>Config</th><td><code>493718927528</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.11</td>
+    <th>Software</th><td>lio 0.2.0, git <code>f78c6b6877</code> (dirty)</td></tr>
+<tr><th>Results</th><td colspan="3">ERROR 1</td></tr>
+<tr><th>LED duty</th><td colspan="3">524.5 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+<tr><th>Notes</th><td colspan="3">T13.1 rerun after closing-check fix f78c6b6; owner answers: chamber empty+clear, lid closed, earth bond connected</td></tr>
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T13.1">T13.1</a></td><td>Diagnostic height sweep</td>
+<td><span class="badge" style="border-color: #d03b3b">✕ ERROR</span></td>
+<td>OwnershipError: CE on refused: no single selected hole to reserve duty against</td></tr>
+
+</table>
+
+
+
+
+<h2>T13</h2>
+
+<h3 id="T13.1">T13.1 Diagnostic height sweep <span class="badge" style="border-color: #d03b3b">✕ ERROR</span></h3>
+<p class="meta">OwnershipError: CE on refused: no single selected hole to reserve duty against</p>
+
+
+
+</body>
+</html>

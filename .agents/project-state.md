@@ -12,6 +12,15 @@
 - **Data integrity:** historical `test_results/` are tracked on main from `138a963`; only physical `test_results/stage_position.json` stays local/ignored. Acquisitions/reports are immutable; new derived output must be external and source-bound. This publication changes documentation only and performs no new hardware test.
 - No measured SNR improvement or recovered SWIR/1850 chemistry follows from this software or these documents.
 
+## Caller remediation + authorised live tests (23 November 2026, latest)
+
+- Acceptance record: [docs/handoffs/2026-11-23_caller_remediation_acceptance.md](../docs/handoffs/2026-11-23_caller_remediation_acceptance.md). Candidate `8cdfd0f`..`7f080ea` on main.
+- Actual-caller regressions A01–A20, A23, A24 closed with maintained tests (`tests/unit/test_caller_regressions_*.py`); **A21, A22 open**.
+- Offline: ruff/format pass; strict mypy clean on 3.10 and 3.12; unit+sim 969/0/6 (3.12), 960/0/15 (3.10, optional deps absent); coverage gate 98 %.
+- Owner decision: `timing.real_port_admission: cooperative_unproven_acknowledged` (no hardware watchdog on the Nano R4). **Current-rig M1 blocked**; runs record `exposure_bound`.
+- Live (empty chamber, lid closed): catalogue `20261123-162705_host` NOT FUNCTIONAL (InGaAs: T03.2 σ 37.5, weak/absent SWIR); height scan `20261123-173108_scan_quick` COMPLETE, NOT FUNCTIONAL (InGaAs); stationary capture + pause/abort/resume `20261123-175731/180942_scan_protocol` COMPLETE. T09.6/T09.7 SKIP: tracked bottoms not level. Bench steps not run.
+- Dashboard restart procedure: `POST /api/disconnect`, SIGTERM, verify new PID (background jobs ignore SIGINT).
+
 ## Historical commissioning snapshot — 20 November 2026
 
 This section records the earlier commissioning state. It is not the current upgrade qualification or authorization to operate the instrument.

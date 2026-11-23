@@ -1,0 +1,292 @@
+{
+ "run_id": "20261123-175731_scan_protocol",
+ "sample_id": "empty",
+ "mode": "protocol",
+ "status": "COMPLETE",
+ "model": "qualified-v2",
+ "objective": {
+  "name": "primary_swir",
+  "version": "m5-primary-swir-v1",
+  "detector": "ingaas",
+  "target_holes": [
+   12,
+   13,
+   14,
+   15
+  ],
+  "control_holes": [
+   8,
+   9
+  ],
+  "excluded_holes": [
+   16
+  ],
+  "weights": {
+   "12": 2.0,
+   "13": 1.0,
+   "14": 1.0,
+   "15": 1.0
+  },
+  "notes": "h16 excluded from primary-1850; blinds excluded; h12 prioritized"
+ },
+ "coupling": {
+  "opt101": {
+   "model": "unidentified",
+   "detector": "opt101",
+   "C": {
+    "A": null,
+    "B": null
+   },
+   "units": "counts",
+   "reason": "no eligible controls measured",
+   "inferred": [],
+   "controls_used": {
+    "A": [],
+    "B": []
+   },
+   "covariance": {},
+   "support": {},
+   "warnings": []
+  },
+  "ingaas": {
+   "model": "unidentified",
+   "detector": "ingaas",
+   "C": {
+    "A": null,
+    "B": null
+   },
+   "units": "counts",
+   "reason": "no eligible controls measured",
+   "inferred": [],
+   "controls_used": {
+    "A": [],
+    "B": []
+   },
+   "covariance": {},
+   "support": {},
+   "warnings": []
+  }
+ },
+ "sensitivity": {
+  "ingaas": {
+   "detector": "ingaas",
+   "rail": "B",
+   "C_full": 0.0,
+   "exclude_h16": null,
+   "per_exclude": {
+    "exclude_h10": null,
+    "exclude_h11": null,
+    "exclude_h16": null
+   },
+   "exclude_h10_h11_h16": null,
+   "exclude_h10_h11_h16_model": "unidentified",
+   "validated_C": null,
+   "validated_model": "unidentified",
+   "never_zero_when_unidentified": true,
+   "candidates": [
+    10,
+    11,
+    16
+   ],
+   "note": "sensitivity only; alternative C is not calibrated"
+  },
+  "opt101": {
+   "detector": "opt101",
+   "rail": "B",
+   "C_full": -6.0,
+   "exclude_h16": -6.0,
+   "per_exclude": {
+    "exclude_h12": null,
+    "exclude_h13": -6.0,
+    "exclude_h14": -6.0,
+    "exclude_h15": -6.0,
+    "exclude_h16": -6.0
+   },
+   "exclude_h10_h11_h16": -6.0,
+   "exclude_h10_h11_h16_model": "legacy_blind_median",
+   "validated_C": null,
+   "validated_model": "unidentified",
+   "never_zero_when_unidentified": false,
+   "candidates": [
+    12,
+    13,
+    14,
+    15,
+    16
+   ],
+   "note": "sensitivity only; alternative C is not calibrated"
+  }
+ },
+ "estimates": {
+  "ingaas:h08": {
+   "value": 29.0,
+   "kind": "positive",
+   "n_blocks": 3,
+   "se": 0.5773502691896258,
+   "interval": {
+    "low": 26.51586228824967,
+    "high": 31.48413771175033,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     28.0,
+     29.0,
+     30.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h12": {
+   "value": 2.0,
+   "kind": "positive",
+   "n_blocks": 3,
+   "se": 7.505553499465135,
+   "interval": {
+    "low": -30.29379025275429,
+    "high": 34.29379025275429,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     -11.0,
+     15.0,
+     2.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h08": {
+   "value": 154.66666666666666,
+   "kind": "positive",
+   "n_blocks": 3,
+   "se": 1.452966314513558,
+   "interval": {
+    "low": 148.41505718729087,
+    "high": 160.91827614604244,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     152.0,
+     155.0,
+     157.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h12": {
+   "value": -8.0,
+   "kind": "negative",
+   "n_blocks": 3,
+   "se": 2.5166114784235836,
+   "interval": {
+    "low": -18.82810524735806,
+    "high": 2.82810524735806,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     -5.0,
+     -6.0,
+     -13.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  }
+ },
+ "verdict": {
+  "verdict": "UNRESOLVED",
+  "reasons": [
+   "qualified-v2 is offline software product; not bench-qualified",
+   "does not claim SNR or SWIR chemistry improvement"
+  ]
+ },
+ "findings": [],
+ "health": [],
+ "context": {
+  "calibration_id": "gain=1:lsb=0.125:rf=1000000.0:declared:det=ingaas"
+ },
+ "identity": {
+  "source_cube_sha256": "b987810a777ed7455e37dc55965bac1803ffc7336e1925bf35f8ffcf9adffac2",
+  "source_scan_sha256": "1774beb3b8c63f69a1d8e74f83325ec3c851af7cb24dc5f71c5ed56a0f1e59ff",
+  "terminal_seal_sha256": "0ea6c4323d4b9aeeec750a834016146b1fef19c4a7aca6219ecb5e676f5820f5",
+  "calibration_id": "gain=1:lsb=0.125:rf=1000000.0:declared:det=ingaas",
+  "channel_map_sha256": "4937189275280329c81f0a84e8579e90c935e4de655204247ac15d8fa5cd5fd6",
+  "estimator_version": "model:qualified-v2",
+  "coupling_model_version": "m2-coupling-1",
+  "protocol_hash": "869dc1dacec1798fd17c356dc6e0b1f02480f1d2d01e64a3d741d7c0576cb2f7",
+  "reference_sources": [],
+  "numerical_settings": {},
+  "consumed_inputs": {
+   "stream_sha256": {},
+   "raw_bundle_sha256": "98fbe003598976faeb850313c8f512bb57a81ce6b1bcf512283393f4fe5340b7",
+   "analysis_config": {},
+   "config_sha256": "4937189275280329c81f0a84e8579e90c935e4de655204247ac15d8fa5cd5fd6",
+   "model": "qualified-v2",
+   "software": {
+    "package": "lio",
+    "git_commit": "7f080ea82041546f786620b02e979bf6c1f596ea",
+    "dirty": false,
+    "dirty_content_sha256": null
+   }
+  }
+ },
+ "analysis_id": "3ed7c1da95b667a6"
+}

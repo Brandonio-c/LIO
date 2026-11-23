@@ -23,3 +23,16 @@ New local runs may be committed when they are needed for a handoff; do not commi
 **Current independent QA (2026-11-23):** `a0935fb` passes the maintained Python 3.12 checks (918 full unit/simulator passes, 0 failures, 12 skips; 98% protocol/analysis gate), but twelve separate audit-only actual-caller tests fail and further connected contracts remain incomplete. Python 3.10 CI mypy fails. Original M0–M6 are not accepted as complete. See the [independent audit](../docs/research/LIO_V3_RESIDUAL_REMEDIATION_QA_a0935fb_2026-11-23.md), [regression catalogue](../docs/research/LIO_V3_CALLER_REGRESSION_CASES_2026-11-23.md), [current remediation plan](../docs/SENSOR_READINGS_CALLER_REMEDIATION_PLAN.md) and [coding handoff](../docs/handoffs/2026-11-23_caller_remediation_implementation.md).
 
 The archived automatic live run remains NOT FUNCTIONAL; historical scans are not re-qualified as optical PASS. The [residual acceptance handoff](../docs/handoffs/2026-11-23_residual_remediation_acceptance.md) and [D01–D20 closure](../docs/handoffs/2026-11-23_remediation_d01_d20_closure.md) are historical claims. The owner has now authorized implementation and supported live full tests under the new handoff; this documentation publication itself performs none. New evidence must use fresh run paths, preserve existing bytes and keep physical stage state local. No measured SNR or SWIR/1850 chemistry claim follows from software completion.
+
+
+## 23 November 2026 — caller-remediation live acceptance
+
+| Folder | What |
+|---|---|
+| `20261123-162705_host` (+ `20261123-163301_scan_quick`) | Full automatic + motion catalogue on `8cdfd0f`. NOT FUNCTIONAL (InGaAs). T13.1 ERROR at the scan's closing check (fixed in `f78c6b6`). |
+| `20261123-170350_host` (+ `_scan_quick`) | Invalid fix test: ran old code (restart had not taken effect). Kept as recorded. |
+| `20261123-173106_host` (+ `20261123-173108_scan_quick`) | Height scan on `f78c6b6`: COMPLETE, sealed, NOT FUNCTIONAL (InGaAs). |
+| `20261123-175731_scan_protocol`, `20261123-180942_scan_protocol` | Stationary capture; refused-then-resumed; pause/abort/resume. Both COMPLETE. |
+| `derived_caller_acceptance/` | Offline qualified-v2 products and reports for the protocol runs, the protocol files and the HTTP driver log. |
+
+See `docs/handoffs/2026-11-23_caller_remediation_acceptance.md`.
