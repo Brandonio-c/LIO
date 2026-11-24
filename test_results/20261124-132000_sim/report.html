@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIO test report 20261124-132000_sim</title>
+<style>
+  :root { --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --rule:#e4e3df; }
+  body { font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--surface); margin: 2rem auto; max-width: 1100px;
+         padding: 0 1rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--rule); padding-bottom: .2rem;
+       margin-top: 2rem; }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .4rem; }
+  .meta { color: var(--ink2); margin: .2rem 0; }
+  .verdict { display: inline-block; padding: .4rem .8rem; border-radius: 4px; color: #fff;
+             font-weight: 600; margin: .8rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: .4rem 0 1rem; font-size: 13px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { color: var(--ink2); font-weight: 600; }
+  .badge { display: inline-block; min-width: 4.2em; padding: 1px 6px; border-radius: 3px;
+           font-weight: 600; font-size: 12px; color: var(--ink); border: 2px solid; }
+  img { max-width: 100%; border: 1px solid var(--rule); border-radius: 4px; }
+  details > summary { cursor: pointer; }
+  code { font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>LIO test report</h1>
+<p class="meta">Run <code>20261124-132000_sim</code> on <code>sim</code>
+,
+2026-11-24T13:20:00-05:00 to 2026-11-24T13:23:52-05:00</p>
+<div class="verdict" style="background: #0ca30c">FUNCTIONAL</div>
+<ul><li>no failures or warnings</li></ul>
+
+<table>
+<tr><th>Sample</th><td>none-empty-chamber</td><th>Operator</th><td>unknown</td></tr>
+<tr><th>Firmware</th><td>2.5.2 (proto 1, build 2026-11-16)</td>
+    <th>Config</th><td><code>47ac4d162ce9</code> (thresholds provisional)</td></tr>
+<tr><th>Host</th><td>macOS-27.0.1-x86_64-i386-64bit, Python 3.12.11</td>
+    <th>Software</th><td>lio 0.2.0, git <code>e38b248da4</code> (dirty)</td></tr>
+<tr><th>Results</th><td colspan="3">PASS 43, SKIP 5</td></tr>
+<tr><th>LED duty</th><td colspan="3">147.9 s of cool-down waits; 0 over-budget on-time(s)</td></tr>
+
+</table>
+
+<h2>Summary</h2>
+<table>
+<tr><th>Test</th><th>Name</th><th>Status</th><th>Note</th></tr>
+
+<tr><td><a href="#T01.1">T01.1</a></td><td>Python and dependency versions</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T01.2">T01.2</a></td><td>Serial port discovery</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T01.3">T01.3</a></td><td>Configuration loads and is self-consistent</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.1">T02.1</a></td><td>Port open and boot banner</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.2">T02.2</a></td><td>PING round-trip latency</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.3">T02.3</a></td><td>INFO fields, versions and safety limits</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.4">T02.4</a></td><td>Robustness to bad input</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.5">T02.5</a></td><td>Sequence numbers and interleaved events</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T02.6">T02.6</a></td><td>RESET restores the boot state</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.1">T03.1</a></td><td>I2C scan finds the ADS1115</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.2">T03.2</a></td><td>Dark ADC noise, all inputs</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.3">T03.3</a></td><td>Gain sweep on dark inputs</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.4">T03.4</a></td><td>ADC data rate</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T03.5">T03.5</a></td><td>Long-term dark stability</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T04.1">T04.1</a></td><td>Shift-register patterns with CE low</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T04.2">T04.2</a></td><td>Shift-register loopback (optional jumper)</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>loopback jumper not fitted (this build has no loop-back input (pins.LOOP), plan §6.3); the shift registers are verified optically by T05.3</td></tr>
+
+<tr><td><a href="#T04.3">T04.3</a></td><td>Optical address verification</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>covered by T05.3 (each hole must light only its own expected response)</td></tr>
+
+<tr><td><a href="#T04.4">T04.4</a></td><td>Walk test (operator)</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T05.1">T05.1</a></td><td>Rail gating by CE1 / CE2</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T05.2">T05.2</a></td><td>Per-channel response</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T05.3">T05.3</a></td><td>Channel address and isolation</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T05.4">T05.4</a></td><td>Off-state return after each MEAS</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T05.5">T05.5</a></td><td>Repeatability (interleaved MEAS)</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T05.6">T05.6</a></td><td>Driver current with a meter (operator)</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T06.1">T06.1</a></td><td>OPT101</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T06.2">T06.2</a></td><td>InGaAs TIA</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T06.3">T06.3</a></td><td>Cross-calibration on the shared holes</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T06.4">T06.4</a></td><td>Ambient light sensitivity (operator)</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T07.1">T07.1</a></td><td>Step response and settling time</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T07.2">T07.2</a></td><td>Recommended settle time</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T07.3">T07.3</a></td><td>MEAS timing</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T08.1">T08.1</a></td><td>SWEEP completes with a valid schema</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T08.2">T08.2</a></td><td>Repeated sweeps</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T08.3">T08.3</a></td><td>Sweep agrees with MEAS</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T08.4">T08.4</a></td><td>CSV output format</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T09.1">T09.1</a></td><td>Motion arming</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T09.2">T09.2</a></td><td>Each motor moves both ways</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T09.3">T09.3</a></td><td>MOTOR STOP latency</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T09.4">T09.4</a></td><td>Detector noise while a motor moves</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T09.6">T09.6</a></td><td>Full travel, both motors in lockstep</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>travel not measured: mark the top and bottom (Motors tab, or lio stage set-top / mark-bottom), or set thresholds.motion.travel.range_steps</td></tr>
+
+<tr><td><a href="#T09.7">T09.7</a></td><td>Detectors while the chamber moves</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>travel not measured: mark the top and bottom (Motors tab, or lio stage set-top / mark-bottom), or set thresholds.motion.travel.range_steps</td></tr>
+
+<tr><td><a href="#T10.1">T10.1</a></td><td>Power-up dark state</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T10.2">T10.2</a></td><td>On-time watchdog</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T10.3">T10.3</a></td><td>Comms-loss failsafe</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T10.4">T10.4</a></td><td>Single-channel invariant</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T10.5">T10.5</a></td><td>Motion disarmed after comms loss</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td></td></tr>
+
+<tr><td><a href="#T11.1">T11.1</a></td><td>Comparison with the baseline</td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>no baseline given (--baseline &lt;file&gt;); save one with --save-baseline</td></tr>
+
+<tr><td><a href="#T13.1">T13.1</a></td><td>Diagnostic height sweep</td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>quick scan COMPLETE: FUNCTIONAL (20261124-132000_scan_quick)</td></tr>
+
+</table>
+
+<h2>Plots</h2>
+<h3>Per-channel response</h3><img src="plots/channels.png" alt="Per-channel response"><h3>Response matrix</h3><img src="plots/crosstalk.png" alt="Response matrix"><h3>Dark noise</h3><img src="plots/noise.png" alt="Dark noise"><h3>Step responses</h3><img src="plots/settling.png" alt="Step responses"><h3>Repeated sweeps</h3><img src="plots/sweeps.png" alt="Repeated sweeps">
+
+
+
+<h2>T01</h2>
+
+<h3 id="T01.1">T01.1 Python and dependency versions <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>6 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Python version<br><code>T01.1/python</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.12.11</td><td>&gt;= 3.10</td></tr>
+
+<tr><td>pyserial installed<br><code>T01.1/pyserial</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.5</td><td>importable</td></tr>
+
+<tr><td>pyyaml installed<br><code>T01.1/pyyaml</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>6.0.3</td><td>importable</td></tr>
+
+<tr><td>numpy installed<br><code>T01.1/numpy</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2.5.4</td><td>importable</td></tr>
+
+<tr><td>matplotlib installed<br><code>T01.1/matplotlib</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.11.2</td><td>importable</td></tr>
+
+<tr><td>jinja2 installed<br><code>T01.1/jinja2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3.1.6</td><td>importable</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T01.2">T01.2 Serial port discovery <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>1 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Port discovery<br><code>T01.2/discovery</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>simulator target; 3 serial port(s) on this host recorded only</td><td></td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T01.3">T01.3 Configuration loads and is self-consistent <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Config validates<br><code>T01.3/load</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lio_hw.yaml sha256 47ac4d162ce9</td><td></td></tr>
+
+<tr><td>16 holes<br><code>T01.3/holes</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>16 entries</td><td></td></tr>
+
+<tr><td>Rails split A = 1-8, B = 9-16 (as built)<br><code>T01.3/rails</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>A=[1, 2, 3, 4, 5, 6, 7, 8] B=[9, 10, 11, 12, 13, 14, 15, 16]</td><td></td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T02</h2>
+
+<h3 id="T02.1">T02.1 Port open and boot banner <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Boot banner within the timeout<br><code>T02.1/banner</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1.61 s</td><td>&lt;= 3 s</td></tr>
+
+<tr><td>Banner identifies LIO firmware<br><code>T02.1/identity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># BOOT name=lio fw=2.5.2 proto=1 build=2026-11-16 adc_ok=1 hw_wdt=0</td><td>name=lio, fw and proto present</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.2">T02.2 PING round-trip latency <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Every PING answered<br><code>T02.2/answered</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>100/100 answered</td><td>all</td></tr>
+
+<tr><td>p99 round trip<br><code>T02.2/p99</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>median 4.31 ms, p99 4.49 ms, max 4.49 ms</td><td>p99 &lt; 50 ms</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.3">T02.3 INFO fields, versions and safety limits <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>17 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>INFO fields present<br><code>T02.3/fields</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>21 fields</td><td>all protocol-1 INFO fields</td></tr>
+
+<tr><td>Firmware compatible with this host package<br><code>T02.3/version</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>fw 2.5.2 proto 1</td><td>&gt;= 2.0.0, proto 1</td></tr>
+
+<tr><td>settle_ms matches lio_hw.yaml<br><code>T02.3/limit/settle_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>8</td><td>8</td></tr>
+
+<tr><td>wdt_a_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_a_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2000</td><td>2000</td></tr>
+
+<tr><td>wdt_b_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_b_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5000</td><td>5000</td></tr>
+
+<tr><td>wdt_a_cap_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_a_cap_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5000</td><td>5000</td></tr>
+
+<tr><td>wdt_b_cap_ms matches lio_hw.yaml<br><code>T02.3/limit/wdt_b_cap_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>10000</td><td>10000</td></tr>
+
+<tr><td>comms_ms matches lio_hw.yaml<br><code>T02.3/limit/comms_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>10000</td><td>10000</td></tr>
+
+<tr><td>arm_ms matches lio_hw.yaml<br><code>T02.3/limit/arm_ms</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>60000</td><td>60000</td></tr>
+
+<tr><td>step_max matches lio_hw.yaml<br><code>T02.3/limit/step_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2048</td><td>2048</td></tr>
+
+<tr><td>jog_max matches lio_hw.yaml<br><code>T02.3/limit/jog_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2048</td><td>2048</td></tr>
+
+<tr><td>jog_v_max matches lio_hw.yaml<br><code>T02.3/limit/jog_v_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1000</td><td>1000</td></tr>
+
+<tr><td>jog_acc_max matches lio_hw.yaml<br><code>T02.3/limit/jog_acc_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1000</td><td>1000</td></tr>
+
+<tr><td>wake_ms_max matches lio_hw.yaml<br><code>T02.3/limit/wake_ms_max</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>3000</td><td>3000</td></tr>
+
+<tr><td>ADC address matches lio_hw.yaml<br><code>T02.3/adc/addr</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0x48</td><td>0x48</td></tr>
+
+<tr><td>ADC gain matches lio_hw.yaml<br><code>T02.3/adc/gain</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1</td><td>1</td></tr>
+
+<tr><td>ADC rate matches lio_hw.yaml<br><code>T02.3/adc/rate</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>128</td><td>128</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.4">T02.4 Robustness to bad input <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>5 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Unknown command<br><code>T02.4/unknown</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@146 ERR FROBNICATE code=1 msg=unknown command</td><td>ERR code=1</td></tr>
+
+<tr><td>Bad argument<br><code>T02.4/badarg</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@147 ERR MEAS code=2 msg=usage: MEAS &lt;1-16&gt; [settle_ms] [n]</td><td>ERR code=2</td></tr>
+
+<tr><td>Missing argument<br><code>T02.4/missing</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@148 ERR CH code=2 msg=usage: CH &lt;1-16&gt; ON [ms]</td><td>ERR code=2</td></tr>
+
+<tr><td>Line over 64 characters<br><code>T02.4/overflow</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR ? code=6 msg=line too long</td><td>ERR code=6</td></tr>
+
+<tr><td>Garbage bytes, then PING<br><code>T02.4/garbage</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>PING OK</td><td>PING still answered</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.5">T02.5 Sequence numbers and interleaved events <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>6 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>@1 echoed<br><code>T02.5/seq/1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@1 OK PING uptime_ms=2301</td><td>@1 OK PING</td></tr>
+
+<tr><td>@4242 echoed<br><code>T02.5/seq/4242</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@4242 OK PING uptime_ms=2306</td><td>@4242 OK PING</td></tr>
+
+<tr><td>@99999 echoed<br><code>T02.5/seq/99999</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@99999 OK PING uptime_ms=2311</td><td>@99999 OK PING</td></tr>
+
+<tr><td>No @seq, none echoed<br><code>T02.5/noseq</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>OK PING uptime_ms=2315</td><td>OK PING</td></tr>
+
+<tr><td>Response found after interleaved events<br><code>T02.5/stream</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>20 &#39;# S&#39; events then OK</td><td>20 events</td></tr>
+
+<tr><td>Asynchronous &#39;# OFF&#39; does not desynchronise<br><code>T02.5/async</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>10/10 PINGs matched; 1 timer event(s) seen</td><td>all PINGs answered in order, one &#39;# OFF&#39;</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T02.6">T02.6 RESET restores the boot state <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Banner after RESET<br><code>T02.6/banner</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0.06 s</td><td>&lt;= 3 s</td></tr>
+
+<tr><td>STATUS shows the safe state<br><code>T02.6/safe</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ch=0 ce1=0 ce2=0 mask=0x0000 armed=0</td><td>ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle</td></tr>
+
+<tr><td>Settings back to defaults<br><code>T02.6/defaults</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>wdt_a_ms=2000 (was set to 200)</td><td>2000</td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T03</h2>
+
+<h3 id="T03.1">T03.1 I2C scan finds the ADS1115 <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>ADS1115 at 0x48<br><code>T03.1/adc</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>found [&#39;0x48&#39;]</td><td>0x48 acknowledges</td></tr>
+
+<tr><td>I2C lines (SDA, SCL)<br><code>T03.1/bus</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lines idle high with pull-ups, not bridged; 0x48 answers at 400 kHz</td><td>both idle high, rise on external pull-ups, not joined</td></tr>
+
+<tr><td>No unexpected I2C devices<br><code>T03.1/only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>none</td><td>only the ADS1115</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T03.2">T03.2 Dark ADC noise, all inputs <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>4 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>ADS A0 (ingaas) dark noise<br><code>T03.2/a0</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 39.9, sigma 4.17 counts (n=64)</td><td>sigma &lt;= 20 counts</td></tr>
+
+<tr><td>ADS A1 (opt101) dark noise<br><code>T03.2/a1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 200.2, sigma 2.79 counts (n=64)</td><td>sigma &lt;= 20 counts</td></tr>
+
+<tr><td>ADS A2 (unconnected)<br><code>T03.2/a2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>recorded only: mean 1752.6, sigma 67.27</td><td>floating input</td></tr>
+
+<tr><td>ADS A3 (unconnected)<br><code>T03.2/a3</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>recorded only: mean 2180.4, sigma 73.72</td><td>floating input</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T03.3">T03.3 Gain sweep on dark inputs <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>24 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>GAIN 2/3 accepted<br><code>T03.3/ingaas/g2/3/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.1875 mV</td><td>0.1875 mV</td></tr>
+
+<tr><td>GAIN 1 accepted<br><code>T03.3/ingaas/g1/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.125 mV</td><td>0.125 mV</td></tr>
+
+<tr><td>GAIN 2 accepted<br><code>T03.3/ingaas/g2/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.0625 mV</td><td>0.0625 mV</td></tr>
+
+<tr><td>GAIN 4 accepted<br><code>T03.3/ingaas/g4/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.03125 mV</td><td>0.03125 mV</td></tr>
+
+<tr><td>GAIN 8 accepted<br><code>T03.3/ingaas/g8/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.015625 mV</td><td>0.015625 mV</td></tr>
+
+<tr><td>GAIN 16 accepted<br><code>T03.3/ingaas/g16/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.0078125 mV</td><td>0.0078125 mV</td></tr>
+
+<tr><td>ingaas at GAIN 2/3 agrees with GAIN 1<br><code>T03.3/ingaas/g2/3</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>4.97 mV vs 5.11 mV</td><td>within 6.58 mV</td></tr>
+
+<tr><td>ingaas at GAIN 1 agrees with GAIN 1<br><code>T03.3/ingaas/g1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5.11 mV vs 5.11 mV</td><td>within 6.58 mV</td></tr>
+
+<tr><td>ingaas at GAIN 2 agrees with GAIN 1<br><code>T03.3/ingaas/g2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5.13 mV vs 5.11 mV</td><td>within 6.58 mV</td></tr>
+
+<tr><td>ingaas at GAIN 4 agrees with GAIN 1<br><code>T03.3/ingaas/g4</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>4.69 mV vs 5.11 mV</td><td>within 6.58 mV</td></tr>
+
+<tr><td>ingaas at GAIN 8 agrees with GAIN 1<br><code>T03.3/ingaas/g8</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>4.95 mV vs 5.11 mV</td><td>within 6.58 mV</td></tr>
+
+<tr><td>ingaas at GAIN 16 agrees with GAIN 1<br><code>T03.3/ingaas/g16</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5.11 mV vs 5.11 mV</td><td>within 6.76 mV</td></tr>
+
+<tr><td>GAIN 2/3 accepted<br><code>T03.3/opt101/g2/3/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.1875 mV</td><td>0.1875 mV</td></tr>
+
+<tr><td>GAIN 1 accepted<br><code>T03.3/opt101/g1/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.125 mV</td><td>0.125 mV</td></tr>
+
+<tr><td>GAIN 2 accepted<br><code>T03.3/opt101/g2/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.0625 mV</td><td>0.0625 mV</td></tr>
+
+<tr><td>GAIN 4 accepted<br><code>T03.3/opt101/g4/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.03125 mV</td><td>0.03125 mV</td></tr>
+
+<tr><td>GAIN 8 accepted<br><code>T03.3/opt101/g8/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.015625 mV</td><td>0.015625 mV</td></tr>
+
+<tr><td>GAIN 16 accepted<br><code>T03.3/opt101/g16/lsb</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>lsb 0.0078125 mV</td><td>0.0078125 mV</td></tr>
+
+<tr><td>opt101 at GAIN 2/3 agrees with GAIN 1<br><code>T03.3/opt101/g2/3</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>24.96 mV vs 25.05 mV</td><td>within 6.02 mV</td></tr>
+
+<tr><td>opt101 at GAIN 1 agrees with GAIN 1<br><code>T03.3/opt101/g1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>25.05 mV vs 25.05 mV</td><td>within 6.02 mV</td></tr>
+
+<tr><td>opt101 at GAIN 2 agrees with GAIN 1<br><code>T03.3/opt101/g2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>25.13 mV vs 25.05 mV</td><td>within 6.02 mV</td></tr>
+
+<tr><td>opt101 at GAIN 4 agrees with GAIN 1<br><code>T03.3/opt101/g4</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>25.10 mV vs 25.05 mV</td><td>within 6.02 mV</td></tr>
+
+<tr><td>opt101 at GAIN 8 agrees with GAIN 1<br><code>T03.3/opt101/g8</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>25.11 mV vs 25.05 mV</td><td>within 6.02 mV</td></tr>
+
+<tr><td>opt101 at GAIN 16 agrees with GAIN 1<br><code>T03.3/opt101/g16</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>25.09 mV vs 25.05 mV</td><td>within 6.02 mV</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T03.4">T03.4 ADC data rate <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>8 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>8 SPS conversion interval<br><code>T03.4/r8</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>125.200 ms (nominal 125.000 ms, overhead +0.200 ms)</td><td>106.250-145.250 ms</td></tr>
+
+<tr><td>16 SPS conversion interval<br><code>T03.4/r16</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>62.700 ms (nominal 62.500 ms, overhead +0.200 ms)</td><td>53.125-73.375 ms</td></tr>
+
+<tr><td>32 SPS conversion interval<br><code>T03.4/r32</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>31.450 ms (nominal 31.250 ms, overhead +0.200 ms)</td><td>26.562-37.438 ms</td></tr>
+
+<tr><td>64 SPS conversion interval<br><code>T03.4/r64</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>15.825 ms (nominal 15.625 ms, overhead +0.200 ms)</td><td>13.281-19.469 ms</td></tr>
+
+<tr><td>128 SPS conversion interval<br><code>T03.4/r128</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>8.012 ms (nominal 7.812 ms, overhead +0.200 ms)</td><td>6.641-10.484 ms</td></tr>
+
+<tr><td>250 SPS conversion interval<br><code>T03.4/r250</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>4.200 ms (nominal 4.000 ms, overhead +0.200 ms)</td><td>3.400-6.100 ms</td></tr>
+
+<tr><td>475 SPS conversion interval<br><code>T03.4/r475</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>2.305 ms (nominal 2.105 ms, overhead +0.200 ms)</td><td>1.789-3.921 ms</td></tr>
+
+<tr><td>860 SPS conversion interval<br><code>T03.4/r860</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>1.363 ms (nominal 1.163 ms, overhead +0.200 ms)</td><td>0.988-2.837 ms</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T03.5">T03.5 Long-term dark stability <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>ingaas drift over 60 s<br><code>T03.5/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0.1 counts/min (0.000 % FS/min), sigma 4.11</td><td>&lt;= 2 % FS/min</td></tr>
+
+<tr><td>opt101 drift over 60 s<br><code>T03.5/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0.9 counts/min (0.003 % FS/min), sigma 2.33</td><td>&lt;= 2 % FS/min</td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T04</h2>
+
+<h3 id="T04.1">T04.1 Shift-register patterns with CE low <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>34 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>SR RAW 0x0000<br><code>T04.1/zero</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFFFF<br><code>T04.1/ones</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0001<br><code>T04.1/w1/00</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0002<br><code>T04.1/w1/01</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0004<br><code>T04.1/w1/02</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0008<br><code>T04.1/w1/03</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0010<br><code>T04.1/w1/04</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0020<br><code>T04.1/w1/05</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0040<br><code>T04.1/w1/06</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0080<br><code>T04.1/w1/07</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0100<br><code>T04.1/w1/08</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0200<br><code>T04.1/w1/09</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0400<br><code>T04.1/w1/10</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x0800<br><code>T04.1/w1/11</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x1000<br><code>T04.1/w1/12</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x2000<br><code>T04.1/w1/13</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x4000<br><code>T04.1/w1/14</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x8000<br><code>T04.1/w1/15</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFFFE<br><code>T04.1/w0/00</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFFFD<br><code>T04.1/w0/01</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFFFB<br><code>T04.1/w0/02</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFFF7<br><code>T04.1/w0/03</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFFEF<br><code>T04.1/w0/04</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFFDF<br><code>T04.1/w0/05</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFFBF<br><code>T04.1/w0/06</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFF7F<br><code>T04.1/w0/07</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFEFF<br><code>T04.1/w0/08</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFDFF<br><code>T04.1/w0/09</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xFBFF<br><code>T04.1/w0/10</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xF7FF<br><code>T04.1/w0/11</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xEFFF<br><code>T04.1/w0/12</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xDFFF<br><code>T04.1/w0/13</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0xBFFF<br><code>T04.1/w0/14</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+<tr><td>SR RAW 0x7FFF<br><code>T04.1/w0/15</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>echoed, CE low, detectors dark</td><td>mask echoed in reply and STATUS; CE1 = CE2 = 0; detectors at dark</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T04.2">T04.2 Shift-register loopback (optional jumper) <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">loopback jumper not fitted (this build has no loop-back input (pins.LOOP), plan §6.3); the shift registers are verified optically by T05.3</p>
+
+
+<h3 id="T04.3">T04.3 Optical address verification <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">covered by T05.3 (each hole must light only its own expected response)</p>
+
+
+<h3 id="T04.4">T04.4 Walk test (operator) <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Holes 1-11 seen by eye in order<br><code>T04.4/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>confirmed</td><td>operator confirms the order</td></tr>
+
+<tr><td>Holes 8-9 seen through the camera in order<br><code>T04.4/camera</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>confirmed</td><td>operator confirms the order</td></tr>
+
+<tr><td>Holes 12-16<br><code>T04.4/swir</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>n/a: SWIR emitters cannot be seen; covered optically by T05.2/T05.3</td><td></td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T05</h2>
+
+<h3 id="T05.1">T05.1 Rail gating by CE1 / CE2 <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>6 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Hole 8 selected, CE1 low<br><code>T05.1/A/h08/ce_low</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 202 (dark 200)</td><td>dark</td></tr>
+
+<tr><td>Hole 8 selected, CE1 high<br><code>T05.1/A/h08/ce_high</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 2423</td><td>light above the detection threshold</td></tr>
+
+<tr><td>Hole 8 with CE2 (wrong rail)<br><code>T05.1/A/h08/wrong_ce</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail</td><td>refused (code 3)</td></tr>
+
+<tr><td>Hole 12 selected, CE2 low<br><code>T05.1/B/h12/ce_low</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas 38 (dark 40)</td><td>dark</td></tr>
+
+<tr><td>Hole 12 selected, CE2 high<br><code>T05.1/B/h12/ce_high</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas 1512</td><td>light above the detection threshold</td></tr>
+
+<tr><td>Hole 12 with CE1 (wrong rail)<br><code>T05.1/B/h12/wrong_ce</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail</td><td>refused (code 3)</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T05.2">T05.2 Per-channel response <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>32 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Hole 1 (395) on opt101<br><code>T05.2/h01/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +934 (signal); signal as expected</td><td>expect signal: signal &gt;= 20</td></tr>
+
+<tr><td>Hole 2 (purple) on opt101<br><code>T05.2/h02/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +1342 (signal); signal as expected</td><td>expect signal: signal &gt;= 20</td></tr>
+
+<tr><td>Hole 3 (blue) on opt101<br><code>T05.2/h03/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2297 (signal); signal as expected</td><td>expect signal: signal &gt;= 20</td></tr>
+
+<tr><td>Hole 4 (green) on opt101<br><code>T05.2/h04/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +1674 (signal); signal as expected</td><td>expect signal: signal &gt;= 20</td></tr>
+
+<tr><td>Hole 5 (yellow) on opt101<br><code>T05.2/h05/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +1136 (signal); signal as expected</td><td>expect signal: signal &gt;= 20</td></tr>
+
+<tr><td>Hole 6 (orange) on opt101<br><code>T05.2/h06/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2013 (signal); signal as expected</td><td>expect signal: signal &gt;= 20</td></tr>
+
+<tr><td>Hole 7 (red) on opt101<br><code>T05.2/h07/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2806 (signal); signal as expected</td><td>expect signal: signal &gt;= 20</td></tr>
+
+<tr><td>Hole 8 (850) on ingaas<br><code>T05.2/h08/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2019 (signal); signal as expected</td><td>expect signal: signal &gt;= 29</td></tr>
+
+<tr><td>Hole 8 (850) on opt101<br><code>T05.2/h08/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +4460 (signal); signal as expected</td><td>expect signal: signal &gt;= 20</td></tr>
+
+<tr><td>Hole 9 (940) on ingaas<br><code>T05.2/h09/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +5138 (signal); signal as expected</td><td>expect signal: signal &gt;= 29</td></tr>
+
+<tr><td>Hole 9 (940) on opt101<br><code>T05.2/h09/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +4558 (signal); signal as expected</td><td>expect signal: signal &gt;= 20</td></tr>
+
+<tr><td>Hole 10 (white) on opt101<br><code>T05.2/h10/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +1959 (signal); signal as expected</td><td>expect signal: signal &gt;= 20</td></tr>
+
+<tr><td>Hole 11 (pink) on opt101<br><code>T05.2/h11/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +976 (signal); signal as expected</td><td>expect signal: signal &gt;= 20</td></tr>
+
+<tr><td>Hole 12 (1450) on ingaas<br><code>T05.2/h12/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2943 (signal); signal as expected</td><td>expect signal: signal &gt;= 29</td></tr>
+
+<tr><td>Hole 13 (1550) on ingaas<br><code>T05.2/h13/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +3843 (signal); signal as expected</td><td>expect signal: signal &gt;= 29</td></tr>
+
+<tr><td>Hole 14 (1650) on ingaas<br><code>T05.2/h14/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2548 (signal); signal as expected</td><td>expect signal: signal &gt;= 29</td></tr>
+
+<tr><td>Hole 15 (1760) on ingaas<br><code>T05.2/h15/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +54 (signal); signal (weak expected)</td><td>expect weak: signal &gt;= 29</td></tr>
+
+<tr><td>Hole 1 (395) on ingaas<br><code>T05.2/h01/ingaas</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: 395 is outside the ingaas range (judged by opt101); recorded net +2</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 2 (purple) on ingaas<br><code>T05.2/h02/ingaas</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: purple is outside the ingaas range (judged by opt101); recorded net +2</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 3 (blue) on ingaas<br><code>T05.2/h03/ingaas</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: blue is outside the ingaas range (judged by opt101); recorded net -2</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 4 (green) on ingaas<br><code>T05.2/h04/ingaas</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: green is outside the ingaas range (judged by opt101); recorded net -3</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 5 (yellow) on ingaas<br><code>T05.2/h05/ingaas</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: yellow is outside the ingaas range (judged by opt101); recorded net +3</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 6 (orange) on ingaas<br><code>T05.2/h06/ingaas</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: orange is outside the ingaas range (judged by opt101); recorded net +4</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 7 (red) on ingaas<br><code>T05.2/h07/ingaas</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: red is outside the ingaas range (judged by opt101); recorded net +6</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 10 (white) on ingaas<br><code>T05.2/h10/ingaas</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: white is outside the ingaas range (judged by opt101); recorded net +1</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 11 (pink) on ingaas<br><code>T05.2/h11/ingaas</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: pink is outside the ingaas range (judged by opt101); recorded net +0</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 12 (1450) on opt101<br><code>T05.2/h12/opt101</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: 1450 is outside the opt101 range (judged by ingaas); recorded net +1</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 13 (1550) on opt101<br><code>T05.2/h13/opt101</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: 1550 is outside the opt101 range (judged by ingaas); recorded net -2</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 14 (1650) on opt101<br><code>T05.2/h14/opt101</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: 1650 is outside the opt101 range (judged by ingaas); recorded net +1</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 15 (1760) on opt101<br><code>T05.2/h15/opt101</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: 1760 is outside the opt101 range (judged by ingaas); recorded net +2</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 16 (1850) on ingaas<br><code>T05.2/h16/ingaas</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: 1850 is outside the ingaas range (judged by no detector); recorded net +0</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+<tr><td>Hole 16 (1850) on opt101<br><code>T05.2/h16/opt101</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>not judged: 1850 is outside the opt101 range (judged by no detector); recorded net -1</td><td>out-of-range readings are not judged (channel.judge_out_of_range: false)</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T05.3">T05.3 Channel address and isolation <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>17 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Hole 1 (395) detector pattern<br><code>T05.3/h01/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;opt101&#39;] as expected (ingaas not judged: outside its range)</td><td>expected [&#39;opt101&#39;]</td></tr>
+
+<tr><td>Hole 2 (purple) detector pattern<br><code>T05.3/h02/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;opt101&#39;] as expected (ingaas not judged: outside its range)</td><td>expected [&#39;opt101&#39;]</td></tr>
+
+<tr><td>Hole 3 (blue) detector pattern<br><code>T05.3/h03/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;opt101&#39;] as expected (ingaas not judged: outside its range)</td><td>expected [&#39;opt101&#39;]</td></tr>
+
+<tr><td>Hole 4 (green) detector pattern<br><code>T05.3/h04/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;opt101&#39;] as expected (ingaas not judged: outside its range)</td><td>expected [&#39;opt101&#39;]</td></tr>
+
+<tr><td>Hole 5 (yellow) detector pattern<br><code>T05.3/h05/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;opt101&#39;] as expected (ingaas not judged: outside its range)</td><td>expected [&#39;opt101&#39;]</td></tr>
+
+<tr><td>Hole 6 (orange) detector pattern<br><code>T05.3/h06/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;opt101&#39;] as expected (ingaas not judged: outside its range)</td><td>expected [&#39;opt101&#39;]</td></tr>
+
+<tr><td>Hole 7 (red) detector pattern<br><code>T05.3/h07/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;opt101&#39;] as expected (ingaas not judged: outside its range)</td><td>expected [&#39;opt101&#39;]</td></tr>
+
+<tr><td>Hole 8 (850) detector pattern<br><code>T05.3/h08/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;ingaas&#39;, &#39;opt101&#39;] as expected</td><td>expected [&#39;ingaas&#39;, &#39;opt101&#39;]</td></tr>
+
+<tr><td>Hole 9 (940) detector pattern<br><code>T05.3/h09/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;ingaas&#39;, &#39;opt101&#39;] as expected</td><td>expected [&#39;ingaas&#39;, &#39;opt101&#39;]</td></tr>
+
+<tr><td>Hole 10 (white) detector pattern<br><code>T05.3/h10/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;opt101&#39;] as expected (ingaas not judged: outside its range)</td><td>expected [&#39;opt101&#39;]</td></tr>
+
+<tr><td>Hole 11 (pink) detector pattern<br><code>T05.3/h11/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;opt101&#39;] as expected (ingaas not judged: outside its range)</td><td>expected [&#39;opt101&#39;]</td></tr>
+
+<tr><td>Hole 12 (1450) detector pattern<br><code>T05.3/h12/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;ingaas&#39;] as expected (opt101 not judged: outside its range)</td><td>expected [&#39;ingaas&#39;]</td></tr>
+
+<tr><td>Hole 13 (1550) detector pattern<br><code>T05.3/h13/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;ingaas&#39;] as expected (opt101 not judged: outside its range)</td><td>expected [&#39;ingaas&#39;]</td></tr>
+
+<tr><td>Hole 14 (1650) detector pattern<br><code>T05.3/h14/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;ingaas&#39;] as expected (opt101 not judged: outside its range)</td><td>expected [&#39;ingaas&#39;]</td></tr>
+
+<tr><td>Hole 15 (1760) detector pattern<br><code>T05.3/h15/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by [&#39;ingaas&#39;] as expected (opt101 not judged: outside its range)</td><td>expected [&#39;ingaas&#39;]</td></tr>
+
+<tr><td>Hole 16 (1850) detector pattern<br><code>T05.3/h16/pattern</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>seen by nothing as expected (ingaas, opt101 not judged: outside its range)</td><td>expected none</td></tr>
+
+<tr><td>Signatures unique<br><code>T05.3/unique</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>no two channels look the same</td><td>cosine &lt; 0.98 or amplitude differs by more than 1 %</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T05.4">T05.4 Off-state return after each MEAS <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>32 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Hole 1 ingaas back to dark<br><code>T05.4/h01/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>42.0 after OFF vs dark 44</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 1 opt101 back to dark<br><code>T05.4/h01/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>202.8 after OFF vs dark 199</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 2 ingaas back to dark<br><code>T05.4/h02/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>37.5 after OFF vs dark 41</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 2 opt101 back to dark<br><code>T05.4/h02/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>200.5 after OFF vs dark 198</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 3 ingaas back to dark<br><code>T05.4/h03/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>43.0 after OFF vs dark 42</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 3 opt101 back to dark<br><code>T05.4/h03/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>198.8 after OFF vs dark 202</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 4 ingaas back to dark<br><code>T05.4/h04/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>39.8 after OFF vs dark 39</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 4 opt101 back to dark<br><code>T05.4/h04/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>199.0 after OFF vs dark 202</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 5 ingaas back to dark<br><code>T05.4/h05/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>36.5 after OFF vs dark 39</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 5 opt101 back to dark<br><code>T05.4/h05/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>200.0 after OFF vs dark 200</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 6 ingaas back to dark<br><code>T05.4/h06/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>39.2 after OFF vs dark 38</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 6 opt101 back to dark<br><code>T05.4/h06/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>198.8 after OFF vs dark 201</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 7 ingaas back to dark<br><code>T05.4/h07/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>39.8 after OFF vs dark 37</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 7 opt101 back to dark<br><code>T05.4/h07/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>198.8 after OFF vs dark 200</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 8 ingaas back to dark<br><code>T05.4/h08/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>36.0 after OFF vs dark 40</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 8 opt101 back to dark<br><code>T05.4/h08/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>200.8 after OFF vs dark 201</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 9 ingaas back to dark<br><code>T05.4/h09/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>41.8 after OFF vs dark 39</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 9 opt101 back to dark<br><code>T05.4/h09/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>198.8 after OFF vs dark 202</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 10 ingaas back to dark<br><code>T05.4/h10/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>40.8 after OFF vs dark 41</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 10 opt101 back to dark<br><code>T05.4/h10/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>199.8 after OFF vs dark 202</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 11 ingaas back to dark<br><code>T05.4/h11/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>41.5 after OFF vs dark 41</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 11 opt101 back to dark<br><code>T05.4/h11/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>200.0 after OFF vs dark 202</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 12 ingaas back to dark<br><code>T05.4/h12/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>43.5 after OFF vs dark 40</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 12 opt101 back to dark<br><code>T05.4/h12/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>201.5 after OFF vs dark 199</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 13 ingaas back to dark<br><code>T05.4/h13/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>36.8 after OFF vs dark 38</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 13 opt101 back to dark<br><code>T05.4/h13/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>199.2 after OFF vs dark 201</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 14 ingaas back to dark<br><code>T05.4/h14/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>40.2 after OFF vs dark 40</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 14 opt101 back to dark<br><code>T05.4/h14/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>198.5 after OFF vs dark 199</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 15 ingaas back to dark<br><code>T05.4/h15/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>36.0 after OFF vs dark 39</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 15 opt101 back to dark<br><code>T05.4/h15/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>199.2 after OFF vs dark 199</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+<tr><td>Hole 16 ingaas back to dark<br><code>T05.4/h16/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>39.0 after OFF vs dark 41</td><td>within 5 sigma (14.7 counts)</td></tr>
+
+<tr><td>Hole 16 opt101 back to dark<br><code>T05.4/h16/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>200.0 after OFF vs dark 202</td><td>within 5 sigma (9.9 counts)</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T05.5">T05.5 Repeatability (interleaved MEAS) <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>17 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Hole 1 opt101 repeatability, N=10<br><code>T05.5/h01/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +933.6 (95% +931.7..+935.5), SD 2.63, n 10/10; CV 0.3 %; SD 2.63 &lt;= 11.84 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 2 opt101 repeatability, N=10<br><code>T05.5/h02/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +1338.5 (95% +1336.9..+1340.1), SD 2.22, n 10/10; CV 0.2 %; SD 2.22 &lt;= 11.84 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 3 opt101 repeatability, N=10<br><code>T05.5/h03/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2302.6 (95% +2299.1..+2306.1), SD 4.95, n 10/10; CV 0.2 %; SD 4.95 &lt;= 11.84 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 4 opt101 repeatability, N=10<br><code>T05.5/h04/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +1671.3 (95% +1669.4..+1673.2), SD 2.71, n 10/10; CV 0.2 %; SD 2.71 &lt;= 11.84 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 5 opt101 repeatability, N=10<br><code>T05.5/h05/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +1136.6 (95% +1134.8..+1138.4), SD 2.55, n 10/10; CV 0.2 %; SD 2.55 &lt;= 11.84 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 6 opt101 repeatability, N=10<br><code>T05.5/h06/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2007.5 (95% +2004.9..+2010.1), SD 3.57, n 10/10; CV 0.2 %; SD 3.57 &lt;= 11.84 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 7 opt101 repeatability, N=10<br><code>T05.5/h07/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2804.7 (95% +2801.3..+2808.1), SD 4.79, n 10/10; CV 0.2 %; SD 4.79 &lt;= 11.84 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 8 opt101 repeatability, N=10<br><code>T05.5/h08/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +4444.8 (95% +4440.2..+4449.4), SD 6.41, n 10/10; CV 0.1 %; SD 6.41 &lt;= 11.84 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 8 ingaas repeatability, N=10<br><code>T05.5/h08/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2019.0 (95% +2016.1..+2021.9), SD 4.08, n 10/10; CV 0.2 %; SD 4.08 &lt;= 17.69 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 9 opt101 repeatability, N=10<br><code>T05.5/h09/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +4554.6 (95% +4549.2..+4560.0), SD 7.49, n 10/10; CV 0.2 %; SD 7.49 &lt;= 11.84 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 9 ingaas repeatability, N=10<br><code>T05.5/h09/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +5141.0 (95% +5136.4..+5145.6), SD 6.45, n 10/10; CV 0.1 %; SD 6.45 &lt;= 17.69 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 10 opt101 repeatability, N=10<br><code>T05.5/h10/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +1965.6 (95% +1962.3..+1968.9), SD 4.58, n 10/10; CV 0.2 %; SD 4.58 &lt;= 11.84 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 11 opt101 repeatability, N=10<br><code>T05.5/h11/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +981.3 (95% +979.1..+983.5), SD 3.02, n 10/10; CV 0.3 %; SD 3.02 &lt;= 11.84 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 12 ingaas repeatability, N=10<br><code>T05.5/h12/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2945.1 (95% +2941.1..+2949.1), SD 5.53, n 10/10; CV 0.2 %; SD 5.53 &lt;= 17.69 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 13 ingaas repeatability, N=10<br><code>T05.5/h13/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +3839.7 (95% +3835.6..+3843.8), SD 5.74, n 10/10; CV 0.1 %; SD 5.74 &lt;= 17.69 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 14 ingaas repeatability, N=10<br><code>T05.5/h14/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2548.2 (95% +2545.1..+2551.3), SD 4.29, n 10/10; CV 0.2 %; SD 4.29 &lt;= 17.69 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+<tr><td>Hole 15 ingaas repeatability, N=10<br><code>T05.5/h15/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +50.4 (95% +48.5..+52.3), SD 2.72, n 10/10; CV 5.4 %; SD 2.72 &lt;= 17.69 counts</td><td>SD &lt;= 5 counts, every record present</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T05.6">T05.6 Driver current with a meter (operator) <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>RAIL A driver current (hole 4)<br><code>T05.6/A/h04</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>30 mA vs nominal 30 mA (0 % off)</td><td>within 15 % (WARN to 30 %)</td></tr>
+
+<tr><td>RAIL B driver current (hole 10)<br><code>T05.6/B/h10</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>45 mA vs nominal 45 mA (0 % off)</td><td>within 15 % (WARN to 30 %)</td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T06</h2>
+
+<h3 id="T06.1">T06.1 OPT101 <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>11 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>opt101 dark offset<br><code>T06.1/dark</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>200.2 counts</td><td>0 to 800 counts</td></tr>
+
+<tr><td>Responds to hole 1 (395)<br><code>T06.1/h01/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +934</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 2 (purple)<br><code>T06.1/h02/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +1342</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 3 (blue)<br><code>T06.1/h03/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2297</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 4 (green)<br><code>T06.1/h04/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +1674</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 5 (yellow)<br><code>T06.1/h05/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +1136</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 6 (orange)<br><code>T06.1/h06/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2013</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 7 (red)<br><code>T06.1/h07/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2806</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 10 (white)<br><code>T06.1/h10/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +1959</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Responds to hole 11 (pink)<br><code>T06.1/h11/visible</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +976</td><td>no zeros where light is expected</td></tr>
+
+<tr><td>Not saturated<br><code>T06.1/saturation</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>peak 4760</td><td>&lt; 29000 counts</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T06.2">T06.2 InGaAs TIA <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>8 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Dark signal steady<br><code>T06.2/erratic</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>dark mean 40, sigma 4.2</td><td>sigma &lt;= 100 and mean &gt;= -1500</td></tr>
+
+<tr><td>ingaas dark offset<br><code>T06.2/dark</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>39.9 counts</td><td>-400 to 2000 counts</td></tr>
+
+<tr><td>Polarity gate (hole 8)<br><code>T06.2/polarity/gate</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2021</td><td>net &gt;= -5 sigma</td></tr>
+
+<tr><td>Hole 9 InGaAs polarity<br><code>T06.2/h09/polarity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +5138</td><td>net not negative</td></tr>
+
+<tr><td>Hole 12 InGaAs polarity<br><code>T06.2/h12/polarity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2943</td><td>net not negative</td></tr>
+
+<tr><td>Hole 13 InGaAs polarity<br><code>T06.2/h13/polarity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +3843</td><td>net not negative</td></tr>
+
+<tr><td>Hole 14 InGaAs polarity<br><code>T06.2/h14/polarity</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>net +2548</td><td>net not negative</td></tr>
+
+<tr><td>InGaAs not saturated<br><code>T06.2/saturation</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>no hole saturates</td><td>&lt; 27000 counts</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T06.3">T06.3 Cross-calibration on the shared holes <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Hole 8 seen by both detectors<br><code>T06.3/h08</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>InGaAs/OPT101 = 0.453</td><td>both above the detection threshold</td></tr>
+
+<tr><td>Hole 9 seen by both detectors<br><code>T06.3/h09</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>InGaAs/OPT101 = 1.127</td><td>both above the detection threshold</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T06.4">T06.4 Ambient light sensitivity (operator) <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>4 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>ingaas change with the lid open<br><code>T06.4/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>recorded: +300 counts (39 -&gt; 340)</td><td>recorded only (quantifies light-tightness)</td></tr>
+
+<tr><td>ingaas back to dark after closing<br><code>T06.4/ingaas/closed</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>40 vs dark 40</td><td>dark +- k sigma</td></tr>
+
+<tr><td>opt101 change with the lid open<br><code>T06.4/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>recorded: +1500 counts (200 -&gt; 1700)</td><td>recorded only (quantifies light-tightness)</td></tr>
+
+<tr><td>opt101 back to dark after closing<br><code>T06.4/opt101/closed</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>200 vs dark 200</td><td>dark +- k sigma</td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T07</h2>
+
+<h3 id="T07.1">T07.1 Step response and settling time <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Hole 3 (opt101) step response<br><code>T07.1/h03</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>settled within a few samples: t99 &lt;= 2.04 ms (upper bound, limited by the sample interval)</td><td>time to 99 % recorded</td></tr>
+
+<tr><td>Hole 8 (opt101) step response<br><code>T07.1/h08</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>settled within one sample: t99 &lt;= 0.68 ms (upper bound, limited by the sample interval)</td><td>time to 99 % recorded</td></tr>
+
+<tr><td>Hole 13 (ingaas) step response<br><code>T07.1/h13</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>settled within one sample: t99 &lt;= 0.68 ms (upper bound, limited by the sample interval)</td><td>time to 99 % recorded</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T07.2">T07.2 Recommended settle time <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>1 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Configured settle_ms is long enough<br><code>T07.2/settle</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>recommended 4 ms (max 2.04 ms x 1.5), configured 8 ms</td><td>recommended &lt;= 8 ms</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T07.3">T07.3 MEAS timing <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>MEAS 3 8 1 on-time<br><code>T07.3/s8n1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>t_on_ms 24</td><td>21.3-32.0 ms and &lt;= watchdog 2000 ms</td></tr>
+
+<tr><td>MEAS 3 20 4 on-time<br><code>T07.3/s20n4</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>t_on_ms 84</td><td>73.1-106.9 ms and &lt;= watchdog 2000 ms</td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T08</h2>
+
+<h3 id="T08.1">T08.1 SWEEP completes with a valid schema <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>16 records, holes 1-16 in order<br><code>T08.1/records</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>16 records: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]</td><td>holes 1..16</td></tr>
+
+<tr><td>Sweep records parse<br><code>T08.1/schema</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>all &#39;# M&#39; fields present and integer</td><td></td></tr>
+
+<tr><td>Sweep duration<br><code>T08.1/duration</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>769 ms (host 52828 ms)</td><td>&lt;= 2.5 s</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T08.2">T08.2 Repeated sweeps <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>33 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Hole 2 opt101 sweep-to-sweep CV<br><code>T08.2/h02/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 1342, CV 0.39 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 3 opt101 sweep-to-sweep CV<br><code>T08.2/h03/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 2299, CV 0.50 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 4 opt101 sweep-to-sweep CV<br><code>T08.2/h04/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 1678, CV 0.34 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 5 opt101 sweep-to-sweep CV<br><code>T08.2/h05/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 1135, CV 0.44 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 6 opt101 sweep-to-sweep CV<br><code>T08.2/h06/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 2007, CV 0.36 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 7 opt101 sweep-to-sweep CV<br><code>T08.2/h07/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 2807, CV 0.29 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 8 opt101 sweep-to-sweep CV<br><code>T08.2/h08/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 4451, CV 0.24 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 8 ingaas sweep-to-sweep CV<br><code>T08.2/h08/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 2021, CV 0.28 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 9 opt101 sweep-to-sweep CV<br><code>T08.2/h09/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 4552, CV 0.29 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 9 ingaas sweep-to-sweep CV<br><code>T08.2/h09/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 5152, CV 0.29 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 10 opt101 sweep-to-sweep CV<br><code>T08.2/h10/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 1964, CV 0.50 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 12 ingaas sweep-to-sweep CV<br><code>T08.2/h12/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 2945, CV 0.34 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 13 ingaas sweep-to-sweep CV<br><code>T08.2/h13/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 3840, CV 0.30 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 14 ingaas sweep-to-sweep CV<br><code>T08.2/h14/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean 2547, CV 0.48 %</td><td>CV &lt;= 2 %</td></tr>
+
+<tr><td>Hole 1 opt101 SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h01/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +935.2, SD 4.97, range +930..+942; SD 4.97 &lt;= 11.84 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 2 opt101 SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h02/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +1342.2, SD 5.22, range +1336..+1346; SD 5.22 &lt;= 11.84 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 3 opt101 SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h03/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2299.4, SD 11.39, range +2286..+2316; SD 11.39 &lt;= 11.84 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 4 opt101 SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h04/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +1678.4, SD 5.68, range +1670..+1683; SD 5.68 &lt;= 11.84 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 5 opt101 SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h05/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +1135.4, SD 4.98, range +1128..+1142; SD 4.98 &lt;= 11.84 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 6 opt101 SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h06/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2007.4, SD 7.30, range +1999..+2014; SD 7.30 &lt;= 11.84 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 7 opt101 SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h07/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2806.6, SD 8.23, range +2793..+2814; SD 8.23 &lt;= 11.84 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 8 opt101 SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h08/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +4451.2, SD 10.76, range +4434..+4461; SD 10.76 &lt;= 11.84 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 8 ingaas SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h08/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2021.2, SD 5.63, range +2014..+2028; SD 5.63 &lt;= 17.69 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 9 opt101 SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h09/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +4551.6, SD 13.11, range +4541..+4573; CV 0.29 % &lt;= 2 % (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 9 ingaas SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h09/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +5152.2, SD 14.86, range +5138..+5173; SD 14.86 &lt;= 17.69 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 10 opt101 SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h10/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +1963.6, SD 9.74, range +1952..+1975; SD 9.74 &lt;= 11.84 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 11 opt101 SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h11/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +981.2, SD 5.26, range +974..+988; SD 5.26 &lt;= 11.84 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 12 ingaas SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h12/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2945.4, SD 10.11, range +2935..+2961; SD 10.11 &lt;= 17.69 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 13 ingaas SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h13/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +3840.4, SD 11.67, range +3828..+3854; SD 11.67 &lt;= 17.69 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 14 ingaas SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h14/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +2547.2, SD 12.11, range +2536..+2566; SD 12.11 &lt;= 17.69 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>Hole 15 ingaas SWEEP net repeatability over 5 sweeps<br><code>T08.2/net/h15/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>mean +50.2, SD 8.32, range +40..+62; SD 8.32 &lt;= 17.69 counts (SWEEP mode, not MEAS)</td><td>SD &lt;= 5 counts, a record in every sweep</td></tr>
+
+<tr><td>ingaas dark stable between sweeps<br><code>T08.2/dark/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>per-sweep dark means span 2.38 counts</td><td>&lt;= 5.21 counts</td></tr>
+
+<tr><td>opt101 dark stable between sweeps<br><code>T08.2/dark/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>per-sweep dark means span 1.31 counts</td><td>&lt;= 3.49 counts</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T08.3">T08.3 Sweep agrees with MEAS <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>17 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Hole 1 opt101 sweep vs MEAS<br><code>T08.3/h01/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 935 vs MEAS 934 (0.1 %)</td><td>within 93 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 2 opt101 sweep vs MEAS<br><code>T08.3/h02/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 1342 vs MEAS 1342 (0.0 %)</td><td>within 134 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 3 opt101 sweep vs MEAS<br><code>T08.3/h03/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 2299 vs MEAS 2297 (0.1 %)</td><td>within 230 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 4 opt101 sweep vs MEAS<br><code>T08.3/h04/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 1678 vs MEAS 1674 (0.3 %)</td><td>within 167 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 5 opt101 sweep vs MEAS<br><code>T08.3/h05/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 1135 vs MEAS 1136 (0.1 %)</td><td>within 114 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 6 opt101 sweep vs MEAS<br><code>T08.3/h06/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 2007 vs MEAS 2013 (0.3 %)</td><td>within 201 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 7 opt101 sweep vs MEAS<br><code>T08.3/h07/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 2807 vs MEAS 2806 (0.0 %)</td><td>within 281 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 8 opt101 sweep vs MEAS<br><code>T08.3/h08/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 4451 vs MEAS 4460 (0.2 %)</td><td>within 446 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 8 ingaas sweep vs MEAS<br><code>T08.3/h08/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 2021 vs MEAS 2019 (0.1 %)</td><td>within 202 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 9 opt101 sweep vs MEAS<br><code>T08.3/h09/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 4552 vs MEAS 4558 (0.1 %)</td><td>within 456 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 9 ingaas sweep vs MEAS<br><code>T08.3/h09/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 5152 vs MEAS 5138 (0.3 %)</td><td>within 514 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 10 opt101 sweep vs MEAS<br><code>T08.3/h10/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 1964 vs MEAS 1959 (0.2 %)</td><td>within 196 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 11 opt101 sweep vs MEAS<br><code>T08.3/h11/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 981 vs MEAS 976 (0.5 %)</td><td>within 98 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 12 ingaas sweep vs MEAS<br><code>T08.3/h12/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 2945 vs MEAS 2943 (0.1 %)</td><td>within 294 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 13 ingaas sweep vs MEAS<br><code>T08.3/h13/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 3840 vs MEAS 3843 (0.1 %)</td><td>within 384 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 14 ingaas sweep vs MEAS<br><code>T08.3/h14/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 2547 vs MEAS 2548 (0.0 %)</td><td>within 255 counts (max of 10 %, 5 sigma)</td></tr>
+
+<tr><td>Hole 15 ingaas sweep vs MEAS<br><code>T08.3/h15/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sweep 50 vs MEAS 54 (7.0 %)</td><td>within 20 counts (max of 10 %, 5 sigma)</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T08.4">T08.4 CSV output format <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Header<br><code>T08.4/header</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>hole,label,dark_ingaas,dark_opt101,ingaas,opt101,net_ingaas_V,net_opt101_V</td><td>hole,label,dark_ingaas,dark_opt101,ingaas,opt101,net_ingaas_V,net_opt101_V</td></tr>
+
+<tr><td>One CRLF-terminated row per hole<br><code>T08.4/rows</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>16 rows</td><td>16 rows, CRLF</td></tr>
+
+<tr><td>Rows byte-identical to the original logger&#39;s format<br><code>T08.4/values</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>all rows identical</td><td>same columns, rounding, labels</td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T09</h2>
+
+<h3 id="T09.1">T09.1 Motion arming <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>5 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>MOTOR STEP without ARM is refused<br><code>T09.1/unarmed</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@1134 ERR MOTOR code=3 msg=not armed</td><td>ERR code=3 (not armed)</td></tr>
+
+<tr><td>ARM with the wrong token is refused<br><code>T09.1/wrong_token</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@1136 ERR MOTOR code=3 msg=wrong token</td><td>ERR code=3</td></tr>
+
+<tr><td>ARM with the INFO token<br><code>T09.1/armed</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>armed=1 armed_ms=59995</td><td>armed=1, armed_ms &lt;= 60000</td></tr>
+
+<tr><td>Arming expires after 60 s<br><code>T09.1/expired</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>armed=0 failsafe_trips=0</td><td>armed=0 without a failsafe</td></tr>
+
+<tr><td>MOTOR STEP after expiry is refused<br><code>T09.1/after_expiry</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>@1172 ERR MOTOR code=3 msg=not armed</td><td>ERR code=3 (not armed)</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T09.2">T09.2 Each motor moves both ways <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>10 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Motor 1 +64 half-steps completes<br><code>T09.2/1/plus</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># MOTOR m=1 steps=64 pos=64 done</td><td>&#39;# MOTOR m=1 steps=64 ... done&#39;</td></tr>
+
+<tr><td>Operator saw motor 1 (RIGHT) move up<br><code>T09.2/1/up</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>confirmed</td><td>+steps = up (legacy U direction)</td></tr>
+
+<tr><td>Motor 1 -64 half-steps completes<br><code>T09.2/1/minus</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># MOTOR m=1 steps=64 pos=0 done</td><td>&#39;# MOTOR m=1 steps=64 ... done&#39;</td></tr>
+
+<tr><td>Operator saw motor 1 (RIGHT) move back down<br><code>T09.2/1/down</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>confirmed</td><td>returned</td></tr>
+
+<tr><td>Motor 1 idle, coils released, back at start<br><code>T09.2/1/released</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>motor1=idle pos1=0</td><td>idle, pos1=0</td></tr>
+
+<tr><td>Motor 2 +64 half-steps completes<br><code>T09.2/2/plus</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># MOTOR m=2 steps=64 pos=64 done</td><td>&#39;# MOTOR m=2 steps=64 ... done&#39;</td></tr>
+
+<tr><td>Operator saw motor 2 (LEFT) move up<br><code>T09.2/2/up</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>confirmed</td><td>+steps = up (legacy U direction)</td></tr>
+
+<tr><td>Motor 2 -64 half-steps completes<br><code>T09.2/2/minus</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># MOTOR m=2 steps=64 pos=0 done</td><td>&#39;# MOTOR m=2 steps=64 ... done&#39;</td></tr>
+
+<tr><td>Operator saw motor 2 (LEFT) move back down<br><code>T09.2/2/down</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>confirmed</td><td>returned</td></tr>
+
+<tr><td>Motor 2 idle, coils released, back at start<br><code>T09.2/2/released</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>motor2=idle pos2=0</td><td>idle, pos2=0</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T09.3">T09.3 MOTOR STOP latency <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>MOTOR STOP answered<br><code>T09.3/latency</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>5.3 ms</td><td>&lt; 50 ms</td></tr>
+
+<tr><td>Motor stopped and stays stopped<br><code>T09.3/stopped</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>moved 32 of 2048 half-steps; motor1=idle</td><td>idle, position frozen, move cut short</td></tr>
+
+<tr><td>Motor 1 returned to the start<br><code>T09.3/returned</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># MOTOR m=1 steps=32 pos=0 done</td><td>pos1=0</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T09.4">T09.4 Detector noise while a motor moves <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Streams taken while the motor was moving<br><code>T09.4/during</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>motor still running after both streams</td><td>motor1=run</td></tr>
+
+<tr><td>ingaas noise during motion<br><code>T09.4/ingaas</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sigma 3.95 moving vs 4.29 at rest (x0.92)</td><td>ratio &lt;= 3</td></tr>
+
+<tr><td>opt101 noise during motion<br><code>T09.4/opt101</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sigma 2.57 moving vs 2.57 at rest (x1.00)</td><td>ratio &lt;= 3</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T09.6">T09.6 Full travel, both motors in lockstep <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">travel not measured: mark the top and bottom (Motors tab, or lio stage set-top / mark-bottom), or set thresholds.motion.travel.range_steps</p>
+
+
+<h3 id="T09.7">T09.7 Detectors while the chamber moves <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">travel not measured: mark the top and bottom (Motors tab, or lio stage set-top / mark-bottom), or set thresholds.motion.travel.range_steps</p>
+
+
+
+<h2>T10</h2>
+
+<h3 id="T10.1">T10.1 Power-up dark state <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>4 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>STATUS safe after RESET<br><code>T10.1/reset/status</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ch=0 ce1=0 ce2=0 mask=0x0000 armed=0</td><td>ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle</td></tr>
+
+<tr><td>Detectors dark after RESET<br><code>T10.1/reset/dark</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas 40, opt101 199</td><td>dark +- k sigma</td></tr>
+
+<tr><td>STATUS safe after a port reopen<br><code>T10.1/reopen/status</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ch=0 ce1=0 ce2=0 mask=0x0000 armed=0</td><td>ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle</td></tr>
+
+<tr><td>Detectors dark after a port reopen<br><code>T10.1/reopen/dark</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas 37, opt101 198</td><td>dark +- k sigma</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T10.2">T10.2 On-time watchdog <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>8 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>CH 3 ON 60000 clamped to RAIL A limit<br><code>T10.2/A/h03/clamp</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>until_ms=2000 clamped=1</td><td>until_ms=2000 clamped=1</td></tr>
+
+<tr><td>Hole 3 lit before the watchdog<br><code>T10.2/A/h03/lit</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>light seen</td><td>light seen</td></tr>
+
+<tr><td>Light gone after the watchdog limit<br><code>T10.2/A/h03/off</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>dark after 319 ms</td><td>&lt;= 352 ms: limit 300 + tolerance 50 + detector settling 2.0 ms</td></tr>
+
+<tr><td>&#39;# WDT&#39; received<br><code>T10.2/A/h03/event</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># WDT ch=3 on_ms=300 off</td><td>&#39;# WDT&#39; with on_ms &lt;= 350</td></tr>
+
+<tr><td>CH 13 ON 60000 clamped to RAIL B limit<br><code>T10.2/B/h13/clamp</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>until_ms=5000 clamped=1</td><td>until_ms=5000 clamped=1</td></tr>
+
+<tr><td>Hole 13 lit before the watchdog<br><code>T10.2/B/h13/lit</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>light seen</td><td>light seen</td></tr>
+
+<tr><td>Light gone after the watchdog limit<br><code>T10.2/B/h13/off</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>dark after 304 ms</td><td>&lt;= 351 ms: limit 300 + tolerance 50 + detector settling 0.7 ms</td></tr>
+
+<tr><td>&#39;# WDT&#39; received<br><code>T10.2/B/h13/event</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># WDT ch=13 on_ms=300 off</td><td>&#39;# WDT&#39; with on_ms &lt;= 350</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T10.3">T10.3 Comms-loss failsafe <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>3 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>&#39;# FAILSAFE&#39; after the comms timeout<br><code>T10.3/event</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td># FAILSAFE reason=comms idle_ms=10000</td><td>idle_ms 10000-10050</td></tr>
+
+<tr><td>Everything off after the failsafe<br><code>T10.3/status</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ch=0 ce1=0 ce2=0 mask=0x0000 armed=0</td><td>ch=0 ce1=0 ce2=0 mask=0 armed=0, motors idle</td></tr>
+
+<tr><td>Failsafe counted<br><code>T10.3/trips</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>failsafe_trips=1</td><td>&gt;= 1</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T10.4">T10.4 Single-channel invariant <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>7 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>SR RAW 0x0000 then CE 1 1<br><code>T10.4/m0000/ce1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3 or host gate), CE stays low</td></tr>
+
+<tr><td>SR RAW 0x0005 then CE 1 1<br><code>T10.4/m0005/ce1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3 or host gate), CE stays low</td></tr>
+
+<tr><td>SR RAW 0x0101 then CE 1 1<br><code>T10.4/m0101/ce1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3 or host gate), CE stays low</td></tr>
+
+<tr><td>SR RAW 0x0101 then CE 2 1<br><code>T10.4/m0101/ce2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3 or host gate), CE stays low</td></tr>
+
+<tr><td>SR RAW 0x3000 then CE 2 1<br><code>T10.4/m3000/ce2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3 or host gate), CE stays low</td></tr>
+
+<tr><td>SR RAW 0x1004 then CE 1 1<br><code>T10.4/m1004/ce1</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3 or host gate), CE stays low</td></tr>
+
+<tr><td>SR RAW 0x1004 then CE 2 1<br><code>T10.4/m1004/ce2</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ERR code=3 needs exactly one selected hole on this rail; ce1=0 ce2=0</td><td>refused (code 3 or host gate), CE stays low</td></tr>
+
+</table>
+</details>
+
+
+<h3 id="T10.5">T10.5 Motion disarmed after comms loss <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+
+
+<details >
+<summary>2 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>Armed before the silence<br><code>T10.5/before</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>armed=1</td><td>armed=1</td></tr>
+
+<tr><td>Disarmed after the failsafe<br><code>T10.5/after</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>armed=0 armed_ms=0</td><td>armed=0</td></tr>
+
+</table>
+</details>
+
+
+
+<h2>T11</h2>
+
+<h3 id="T11.1">T11.1 Comparison with the baseline <span class="badge" style="border-color: #8a8984">- SKIP</span></h3>
+<p class="meta">no baseline given (--baseline &lt;file&gt;); save one with --save-baseline</p>
+
+
+
+<h2>T13</h2>
+
+<h3 id="T13.1">T13.1 Diagnostic height sweep <span class="badge" style="border-color: #0ca30c">✓ PASS</span></h3>
+<p class="meta">quick scan COMPLETE: FUNCTIONAL (20261124-132000_scan_quick)</p>
+
+<details >
+<summary>109 checks</summary>
+<table>
+<tr><th>Check</th><th>Status</th><th>Result</th><th>Criterion</th></tr>
+
+<tr><td>link and firmware (no unexpected reset, no lost replies)<br><code>T13.1/system/link</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>firmware 2.5.2, no unexpected # BOOT</td><td></td></tr>
+
+<tr><td>ADC / I²C (every reading answered)<br><code>T13.1/system/adc</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>764 readings, no dropout</td><td></td></tr>
+
+<tr><td>addressing (each hole lights its own LED)<br><code>T13.1/system/addressing</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>15 responding holes, all distinct</td><td></td></tr>
+
+<tr><td>RAIL A (driver gates the LEDs)<br><code>T13.1/A/rail</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>8/8 holes respond</td><td></td></tr>
+
+<tr><td>RAIL B (driver gates the LEDs)<br><code>T13.1/B/rail</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>7/8 holes respond</td><td></td></tr>
+
+<tr><td>P4 interlock re-checks<br><code>T13.1/system/interlocks</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>light_while_moving: PASS; single_channel: PASS</td><td></td></tr>
+
+<tr><td>LED duty (RAIL A &lt;= budget per LED per minute)<br><code>T13.1/system/duty</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>max 998 ms of 1000 ms; 3 cool-down waits, 147.88 s in all</td><td></td></tr>
+
+<tr><td>stage tracking (position trusted, soft limits respected)<br><code>T13.1/system/stage</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>position [-16384, -16384], limits respected</td><td></td></tr>
+
+<tr><td>run complete<br><code>T13.1/system/run</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>COMPLETE</td><td></td></tr>
+
+<tr><td>hole 1 (395) on opt101<br><code>T13.1/optics/opt101/h01/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 2750 counts at h -369563, C +0.7, modulation 0.66</td><td>O &gt;= 19.0736 (WARN below), &gt;= 9.53682 (FAIL below)</td></tr>
+
+<tr><td>hole 2 (purple) on opt101<br><code>T13.1/optics/opt101/h02/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 3933 counts at h -369563, C +0.7, modulation 0.66</td><td>O &gt;= 19.0736 (WARN below), &gt;= 9.53682 (FAIL below)</td></tr>
+
+<tr><td>hole 3 (blue) on opt101<br><code>T13.1/optics/opt101/h03/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 6744 counts at h -369563, C +0.7, modulation 0.66</td><td>O &gt;= 19.0736 (WARN below), &gt;= 9.53682 (FAIL below)</td></tr>
+
+<tr><td>hole 4 (green) on opt101<br><code>T13.1/optics/opt101/h04/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 4875 counts at h -369563, C +0.7, modulation 0.66</td><td>O &gt;= 19.0736 (WARN below), &gt;= 9.53682 (FAIL below)</td></tr>
+
+<tr><td>hole 5 (yellow) on opt101<br><code>T13.1/optics/opt101/h05/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 3323 counts at h -319109, C +0.7, modulation 0.66</td><td>O &gt;= 19.0736 (WARN below), &gt;= 9.53682 (FAIL below)</td></tr>
+
+<tr><td>hole 6 (orange) on opt101<br><code>T13.1/optics/opt101/h06/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 5891 counts at h -319109, C +0.7, modulation 0.66</td><td>O &gt;= 19.0736 (WARN below), &gt;= 9.53682 (FAIL below)</td></tr>
+
+<tr><td>hole 7 (red) on opt101<br><code>T13.1/optics/opt101/h07/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 8251 counts at h -319109, C +0.7, modulation 0.66</td><td>O &gt;= 19.0736 (WARN below), &gt;= 9.53682 (FAIL below)</td></tr>
+
+<tr><td>hole 8 (850) on opt101<br><code>T13.1/optics/opt101/h08/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 13095 counts at h -319109, C +0.7, modulation 0.66</td><td>O &gt;= 19.0736 (WARN below), &gt;= 9.53682 (FAIL below)</td></tr>
+
+<tr><td>hole 9 (940) on opt101<br><code>T13.1/optics/opt101/h09/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 13461 counts at h -319109, C +1.0, modulation 0.67</td><td>O &gt;= 19.0736 (WARN below), &gt;= 9.53682 (FAIL below)</td></tr>
+
+<tr><td>hole 10 (white) on opt101<br><code>T13.1/optics/opt101/h10/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 5808 counts at h -319109, C +1.0, modulation 0.66</td><td>O &gt;= 19.0736 (WARN below), &gt;= 9.53682 (FAIL below)</td></tr>
+
+<tr><td>hole 11 (pink) on opt101<br><code>T13.1/optics/opt101/h11/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 2907 counts at h -319109, C +1.0, modulation 0.67</td><td>O &gt;= 19.0736 (WARN below), &gt;= 9.53682 (FAIL below)</td></tr>
+
+<tr><td>hole 12 (1450) seen by opt101?<br><code>T13.1/optics/opt101/h12/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 cannot see 1450 nm; residual +0 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 13 (1550) seen by opt101?<br><code>T13.1/optics/opt101/h13/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 cannot see 1550 nm; residual +1 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 14 (1650) seen by opt101?<br><code>T13.1/optics/opt101/h14/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 cannot see 1650 nm; residual +1 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 15 (1760) seen by opt101?<br><code>T13.1/optics/opt101/h15/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 cannot see 1760 nm; residual +1 counts over C +1.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 16 (1850) seen by opt101?<br><code>T13.1/optics/opt101/h16/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>opt101 cannot see 1850 nm; residual +0 counts over C +1.0</td><td>&lt; 30 counts (WARN); FAIL capped to WARN: no in-range detector for this hole</td></tr>
+
+<tr><td>opt101: signal electrical only (no light)?<br><code>T13.1/optics/opt101/electrical_only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0/11 expected holes show no optical response; coupling small</td><td>FAIL when &gt;= 75% of expected holes have O &lt; 9.53682 while |C| &gt;= 8</td></tr>
+
+<tr><td>opt101: optical throughput (window, alignment)<br><code>T13.1/optics/opt101/throughput</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>median O over 11 expected holes; spread (CV) 56% across holes</td><td>median O &gt;= 60 (WARN below), &gt;= 20 (FAIL below) for empty</td></tr>
+
+<tr><td>hole 1 (395) seen by ingaas?<br><code>T13.1/optics/ingaas/h01/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 395 nm; residual +0 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 2 (purple) seen by ingaas?<br><code>T13.1/optics/ingaas/h02/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 405 nm; residual +1 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 3 (blue) seen by ingaas?<br><code>T13.1/optics/ingaas/h03/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 465 nm; residual +1 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 4 (green) seen by ingaas?<br><code>T13.1/optics/ingaas/h04/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 525 nm; residual +1 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 5 (yellow) seen by ingaas?<br><code>T13.1/optics/ingaas/h05/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 590 nm; residual +1 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 6 (orange) seen by ingaas?<br><code>T13.1/optics/ingaas/h06/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 605 nm; residual +0 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 7 (red) seen by ingaas?<br><code>T13.1/optics/ingaas/h07/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 630 nm; residual +2 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 8 (850) on ingaas<br><code>T13.1/optics/ingaas/h08/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 5950 counts at h -319109, C +2.0, modulation 0.66</td><td>O &gt;= 29.0145 (WARN below), &gt;= 14.5072 (FAIL below)</td></tr>
+
+<tr><td>hole 9 (940) on ingaas<br><code>T13.1/optics/ingaas/h09/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 15175 counts at h -319109, C +2.0, modulation 0.66</td><td>O &gt;= 29.0145 (WARN below), &gt;= 14.5072 (FAIL below)</td></tr>
+
+<tr><td>hole 10 (white) seen by ingaas?<br><code>T13.1/optics/ingaas/h10/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 450 nm; residual +1 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 11 (pink) seen by ingaas?<br><code>T13.1/optics/ingaas/h11/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 450 nm; residual +2 counts over C +2.0</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 12 (1450) on ingaas<br><code>T13.1/optics/ingaas/h12/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 8701 counts at h -319109, C +2.0, modulation 0.67</td><td>O &gt;= 29.0145 (WARN below), &gt;= 14.5072 (FAIL below)</td></tr>
+
+<tr><td>hole 13 (1550) on ingaas<br><code>T13.1/optics/ingaas/h13/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 11357 counts at h -319109, C +2.0, modulation 0.67</td><td>O &gt;= 29.0145 (WARN below), &gt;= 14.5072 (FAIL below)</td></tr>
+
+<tr><td>hole 14 (1650) on ingaas<br><code>T13.1/optics/ingaas/h14/response</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>O 7524 counts at h -319109, C +2.0, modulation 0.67</td><td>O &gt;= 29.0145 (WARN below), &gt;= 14.5072 (FAIL below)</td></tr>
+
+<tr><td>hole 16 (1850) seen by ingaas?<br><code>T13.1/optics/ingaas/h16/plausibility</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>ingaas cannot see 1850 nm; residual +2 counts over C +2.0</td><td>&lt; 30 counts (WARN); FAIL capped to WARN: no in-range detector for this hole</td></tr>
+
+<tr><td>ingaas: signal electrical only (no light)?<br><code>T13.1/optics/ingaas/electrical_only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>0/5 expected holes show no optical response; coupling small</td><td>FAIL when &gt;= 75% of expected holes have O &lt; 14.5072 while |C| &gt;= 8</td></tr>
+
+<tr><td>ingaas: optical throughput (window, alignment)<br><code>T13.1/optics/ingaas/throughput</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>median O over 5 expected holes; spread (CV) 33% across holes</td><td>median O &gt;= 60 (WARN below), &gt;= 20 (FAIL below) for empty</td></tr>
+
+<tr><td>hole 1 (395) intermittent<br><code>T13.1/optics/h01/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 2 (purple) intermittent<br><code>T13.1/optics/h02/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 3 (blue) intermittent<br><code>T13.1/optics/h03/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 4 (green) intermittent<br><code>T13.1/optics/h04/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 5 (yellow) intermittent<br><code>T13.1/optics/h05/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 6 (orange) intermittent<br><code>T13.1/optics/h06/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 7 (red) intermittent<br><code>T13.1/optics/h07/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 8 (850) intermittent<br><code>T13.1/optics/h08/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 9 (940) intermittent<br><code>T13.1/optics/h09/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 10 (white) intermittent<br><code>T13.1/optics/h10/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 11 (pink) intermittent<br><code>T13.1/optics/h11/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 12 (1450) intermittent<br><code>T13.1/optics/h12/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 13 (1550) intermittent<br><code>T13.1/optics/h13/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 14 (1650) intermittent<br><code>T13.1/optics/h14/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 15 (1760) intermittent<br><code>T13.1/optics/h15/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>hole 16 (1850) intermittent<br><code>T13.1/optics/h16/intermittent</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>down and up agree at 8 heights</td><td></td></tr>
+
+<tr><td>optimum height (all holes)<br><code>T13.1/optics/optimum</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-319109 half-steps (-77.91 mm); weakest normalised response there 0.97</td><td></td></tr>
+
+<tr><td>opt101: signal-to-noise at the optimum<br><code>T13.1/optics/opt101/snr</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>weakest hole 1: 61.2 dB (noise sigma 0.298 mV)</td><td>&gt;= 20 dB</td></tr>
+
+<tr><td>opt101: saturation headroom<br><code>T13.1/optics/opt101/headroom</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>highest lit reading 13844 of 29600 counts</td><td>&gt;= 10%</td></tr>
+
+<tr><td>ingaas: signal-to-noise at the optimum<br><code>T13.1/optics/ingaas/snr</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>weakest hole 8: 64.3 dB (noise sigma 0.453 mV)</td><td>&gt;= 20 dB</td></tr>
+
+<tr><td>ingaas: saturation headroom<br><code>T13.1/optics/ingaas/headroom</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>highest lit reading 15427 of 28000 counts</td><td>&gt;= 10%</td></tr>
+
+<tr><td>opt101: electrical coupling (height-invariant, LED on)<br><code>T13.1/elec/opt101/coupling</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>rail A: +0.7 counts (+0.08 mV) inferred, rail B: +1.0 counts (+0.12 mV) from 5 blind holes</td><td>corrected in software below 20 counts (FAIL at or above)</td></tr>
+
+<tr><td>opt101: ground shift (coupling vs rail current)<br><code>T13.1/elec/opt101/ground_shift</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0.022 counts/mA</td><td>corrected in software below 0.08 mV/mA (FAIL at or above)</td></tr>
+
+<tr><td>ingaas: electrical coupling (height-invariant, LED on)<br><code>T13.1/elec/ingaas/coupling</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>rail A: +2.0 counts (+0.25 mV) from 7 blind holes, rail B: +2.0 counts (+0.25 mV) from 3 blind holes</td><td>corrected in software below 20 counts (FAIL at or above)</td></tr>
+
+<tr><td>ingaas: ground shift (coupling vs rail current)<br><code>T13.1/elec/ingaas/ground_shift</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0.051 counts/mA</td><td>corrected in software below 0.08 mV/mA (FAIL at or above)</td></tr>
+
+<tr><td>opt101: dark offset (ADC)<br><code>T13.1/elec/opt101/dark_offset</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+200.1 counts (+25.01 mV); equivalent input current not computed (Rf unsupported or unknown)</td><td>0 to 800 counts (thresholds.dark)</td></tr>
+
+<tr><td>ingaas: dark offset (ADC)<br><code>T13.1/elec/ingaas/dark_offset</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+39.7 counts (+4.96 mV); equivalent input current not computed (InGaAs physical current blocked: input_range=unverified)</td><td>-400 to 2000 counts (thresholds.dark)</td></tr>
+
+<tr><td>opt101: dark drift over the run<br><code>T13.1/elec/opt101/drift</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0.06 ± 0.10 mV/h; P4 - P1 +0.09 mV</td><td>|slope| &lt; 3 mV/h (WARN), &lt; 8 (FAIL)</td></tr>
+
+<tr><td>ingaas: dark drift over the run<br><code>T13.1/elec/ingaas/drift</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0.22 ± 0.17 mV/h (-0.2 nA/h); P4 - P1 +0.17 mV</td><td>|slope| &lt; 3 mV/h (WARN), &lt; 8 (FAIL)</td></tr>
+
+<tr><td>opt101: mains hum (coils off)<br><code>T13.1/elec/opt101/hum</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>60/120/180 Hz: 0.102 / 0.096 / 0.088 mV; 13% of the variance at mains harmonics; broadband sigma 0.298 mV; readings integrate whole mains periods, so it cancels in the measurements</td><td>60 Hz amplitude &lt; 0.3 mV (WARN; not when the readings reject it), &lt; 1 (FAIL); mains fraction &lt; 0.5</td></tr>
+
+<tr><td>ingaas: mains hum (coils off)<br><code>T13.1/elec/ingaas/hum</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>60/120/180 Hz: 0.292 / 0.127 / 0.157 mV; 23% of the variance at mains harmonics; broadband sigma 0.453 mV; readings integrate whole mains periods, so it cancels in the measurements</td><td>60 Hz amplitude &lt; 1 mV (WARN; not when the readings reject it), &lt; 3 (FAIL); mains fraction &lt; 0.5</td></tr>
+
+<tr><td>opt101: coil interference (moving vs coils off)<br><code>T13.1/elec/opt101/coil_emi</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sigma 0.291 mV moving vs 0.298 mV off (measured while moving, S0 D2); judged only when measuring while moving (continuous mode): every other reading is taken with the motors stopped</td><td>ratio &lt; 3 (WARN), &lt; 6 (FAIL)</td></tr>
+
+<tr><td>ingaas: coil interference (moving vs coils off)<br><code>T13.1/elec/ingaas/coil_emi</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>sigma 0.447 mV moving vs 0.453 mV off (measured while moving, S0 D2); judged only when measuring while moving (continuous mode): every other reading is taken with the motors stopped</td><td>ratio &lt; 3 (WARN), &lt; 6 (FAIL)</td></tr>
+
+<tr><td>opt101: select-only coupling (MOSFET on, CE low)<br><code>T13.1/elec/opt101/h16/select_only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>largest on hole 16: -2.6 counts</td><td>&lt; 8 counts (WARN); FAIL capped to WARN (gate coupling, LED off)</td></tr>
+
+<tr><td>ingaas: select-only coupling (MOSFET on, CE low)<br><code>T13.1/elec/ingaas/h06/select_only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>largest on hole 6: -3.9 counts</td><td>&lt; 8 counts (WARN); FAIL capped to WARN (gate coupling, LED off)</td></tr>
+
+<tr><td>opt101: CE-only coupling (driver enabled, no LED)<br><code>T13.1/elec/opt101/ce_only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>CE1: +0.0, CE2: +1.0</td><td>&lt; 8 counts (WARN), &lt; 20 (FAIL)</td></tr>
+
+<tr><td>ingaas: CE-only coupling (driver enabled, no LED)<br><code>T13.1/elec/ingaas/ce_only</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>CE1: +1.0, CE2: -1.0</td><td>&lt; 8 counts (WARN), &lt; 20 (FAIL)</td></tr>
+
+<tr><td>hole 1 dark with only RAIL B enabled<br><code>T13.1/optics/wrong_rail/h01</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+1 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 2 dark with only RAIL B enabled<br><code>T13.1/optics/wrong_rail/h02</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 3 dark with only RAIL B enabled<br><code>T13.1/optics/wrong_rail/h03</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-1 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 4 dark with only RAIL B enabled<br><code>T13.1/optics/wrong_rail/h04</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 5 dark with only RAIL B enabled<br><code>T13.1/optics/wrong_rail/h05</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 6 dark with only RAIL B enabled<br><code>T13.1/optics/wrong_rail/h06</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-1 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 7 dark with only RAIL B enabled<br><code>T13.1/optics/wrong_rail/h07</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 8 dark with only RAIL B enabled<br><code>T13.1/optics/wrong_rail/h08</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0 counts on opt101 with the hole selected and RAIL B enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 9 dark with only RAIL A enabled<br><code>T13.1/optics/wrong_rail/h09</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+2 counts on ingaas with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 10 dark with only RAIL A enabled<br><code>T13.1/optics/wrong_rail/h10</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-1 counts on opt101 with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 11 dark with only RAIL A enabled<br><code>T13.1/optics/wrong_rail/h11</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+1 counts on opt101 with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 12 dark with only RAIL A enabled<br><code>T13.1/optics/wrong_rail/h12</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0 counts on ingaas with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 13 dark with only RAIL A enabled<br><code>T13.1/optics/wrong_rail/h13</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+0 counts on ingaas with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 14 dark with only RAIL A enabled<br><code>T13.1/optics/wrong_rail/h14</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>-2 counts on ingaas with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>hole 15 dark with only RAIL A enabled<br><code>T13.1/optics/wrong_rail/h15</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+2 counts on ingaas with the hole selected and RAIL A enabled</td><td>&lt; 30 counts (WARN), &lt; 80 (FAIL)</td></tr>
+
+<tr><td>opt101: dark vs height (light leak at the shroud)<br><code>T13.1/ambient/opt101/leak</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>dark at the bottom +0.4 counts (+0.05 mV) vs the top; 0.01% of the median signal</td><td>rise &lt; 8 counts (WARN), &lt; 25 (FAIL)</td></tr>
+
+<tr><td>ingaas: dark vs height (light leak at the shroud)<br><code>T13.1/ambient/ingaas/leak</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>dark at the bottom -0.4 counts (-0.05 mV) vs the top</td><td>rise &lt; 8 counts (WARN), &lt; 25 (FAIL)</td></tr>
+
+<tr><td>opt101: room-light flicker (120 Hz)<br><code>T13.1/ambient/opt101/flicker</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>120 Hz amplitude in the dark streams 0.096 mV; readings integrate whole mains periods, so it cancels</td><td>&lt; 0.4 mV (WARN), &lt; 1.2 (FAIL)</td></tr>
+
+<tr><td>ingaas: room-light flicker (120 Hz)<br><code>T13.1/ambient/ingaas/flicker</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>120 Hz amplitude in the dark streams 0.127 mV; readings integrate whole mains periods, so it cancels</td><td>&lt; 0.4 mV (WARN), &lt; 1.2 (FAIL)</td></tr>
+
+<tr><td>travel (top to bottom)<br><code>T13.1/mech/travel</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>tracked range 420017 / 420017 half-steps (M1/right / M2/left) (thresholds.motion.travel.range_steps not set: not compared)</td><td></td></tr>
+
+<tr><td>lockstep (firmware positions level after every move)<br><code>T13.1/mech/lockstep</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>20 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)</td><td></td></tr>
+
+<tr><td>settle time after a move (dark-read convergence)<br><code>T13.1/mech/settle</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>median 588 ms, max 589 ms (mechanical wait 300 ms)</td><td>max - median &lt; 500 ms (WARN), &lt; 1500 (FAIL)</td></tr>
+
+<tr><td>backlash (down vs up response curves)<br><code>T13.1/mech/backlash</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>+126 ± 61 half-steps (+0.031 mm) from 128 readings on 16 channels</td><td>&lt; 600 (WARN), &lt; 1500 (FAIL); not flagged within 3 sigma; not judged when the resolution is worse than 300</td></tr>
+
+<tr><td>step loss (offset growing over the up pass)<br><code>T13.1/mech/step_loss</code></td>
+<td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
+<td>the stage falls behind by -252 ± 136 half-steps over a full upward travel (one side losing steps: about twice that on that side, and a tilt)</td><td>&lt; 400 (WARN), &lt; 1000 (FAIL); not flagged within 3 sigma</td></tr>
+
+<tr><td>stray light<br><code>T13.1/optics/stray</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>needs a black_cup run (with a white_ptfe reference)</td><td></td></tr>
+
+<tr><td>effectiveness vs reference<br><code>T13.1/optics/effectiveness</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>needs a reference (baseline) of the same sample</td><td></td></tr>
+
+<tr><td>lid sensitivity<br><code>T13.1/ambient/lid</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>optional operator step (lid ajar at two heights)</td><td></td></tr>
+
+<tr><td>repeatability at the reference heights<br><code>T13.1/mech/repeatability</code></td>
+<td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
+<td>no repeated reference visits in this mode (full, fine, repeatability have them)</td><td></td></tr>
+
+</table>
+</details>
+
+
+
+</body>
+</html>
