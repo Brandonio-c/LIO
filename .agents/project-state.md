@@ -1,6 +1,15 @@
 # Project state (updated 2026-11-23)
 
-## Current independent sensor-readings QA and implementation scope
+## Current work: practical sensor-suite implementation after functionality audit
+
+- **Current specification:** [practical upgrade plan](../docs/SENSOR_SUITE_PRACTICAL_UPGRADE_PLAN.md) and [coding handoff](../docs/handoffs/2026-11-23_sensor_suite_practical_implementation.md), covering ALL S1–S7, connected production inference and A21/A22. These are implementation requirements, not implemented/accepted behavior.
+- **Independent evidence baseline:** [functionality/usability report](../docs/research/LIO_V3_FUNCTIONALITY_USABILITY_REPORT_2026-11-23.md), code `92bee4a2b3f702b3ba6c294e5ef4d9af716729e4`. Useful diagnostics and exploratory OPT101; reliable mounted SWIR, calibrated quantities and1850nm chemistry unsupported. Height tracking, complete identities/resume and browser operation remain partial.
+- **Test context:** focused independent run63passed (59caller+3protocolCLI+1golden). This is not a full release gate. Final recorded whole-suite971passed/1failed/6skipped includes an unidentified intermittent golden HTTP failure; earlier969/0/6 and Python3.10's960/0/15 are different scopes, and the latter lacked SciPy precision execution.
+- **Current authorization:** documentation publication followed by host implementation and full OFFLINE verification under the new handoff. No new real Device/serial/WAKE/light/motion, firmware/wiring/current change, physical stage-state edit or live-dashboard takeover is authorized by this publication. Historical live permissions below describe older sessions. Do not stall independent software work on owner-deferred bench checks.
+- **Persistent contracts:** D03=ownership, D04=OFF; ORIGINAL M0–M6 unchanged; core gain1, existing limits and cooperative-unproven admission retained; physical M1 still blocked; M7 and A0/Rf/ammeter/optical/reference qualification deferred. Unknown C stays null, h16 stays proxy_unassigned, no software-only SNR/recovered chemistry claim.
+- **Data:** historical tracked runs immutable; external source-bound derived output; test/simulator stage state must be isolated. This commit publishes documentation/evidence only and performs no product implementation or new bench test.
+
+## Historical a0935fb independent audit and remediation scope
 
 - **Audited source:** `a0935fb322e9a42459f577417b0167cfec830bfe`. Read the [independent audit](../docs/research/LIO_V3_RESIDUAL_REMEDIATION_QA_a0935fb_2026-11-23.md), [actual-caller regression catalogue](../docs/research/LIO_V3_CALLER_REGRESSION_CASES_2026-11-23.md), [current remediation plan](../docs/SENSOR_READINGS_CALLER_REMEDIATION_PLAN.md) and [coding handoff](../docs/handoffs/2026-11-23_caller_remediation_implementation.md).
 - **Software acceptance is incomplete:** maintained Python 3.12 checks passed (120 targeted; 918 full unit/simulator passes, 0 failures, 12 skips; 98% protocol/analysis gate), but twelve independent actual-caller acceptance tests failed. Additional budget/resume/operator/eligibility/selection integrations remain incomplete. Exact-candidate Python 3.10 CI mypy failed. These separate audit tests are not included in the maintained-suite totals.
@@ -12,7 +21,7 @@
 - **Data integrity:** historical `test_results/` are tracked on main from `138a963`; only physical `test_results/stage_position.json` stays local/ignored. Acquisitions/reports are immutable; new derived output must be external and source-bound. This publication changes documentation only and performs no new hardware test.
 - No measured SNR improvement or recovered SWIR/1850 chemistry follows from this software or these documents.
 
-## Caller remediation + authorised live tests (23 November 2026, latest)
+## Historical caller remediation + authorised live tests (23 November 2026)
 
 - Acceptance record: [docs/handoffs/2026-11-23_caller_remediation_acceptance.md](../docs/handoffs/2026-11-23_caller_remediation_acceptance.md). Candidate `8cdfd0f`..`7f080ea` on main.
 - Actual-caller regressions A01–A20, A23, A24 closed with maintained tests (`tests/unit/test_caller_regressions_*.py`); **A21, A22 open**.
