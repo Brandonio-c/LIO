@@ -39,6 +39,10 @@ LEGACY_CUBE_FIELDS = (
 IDENTITY_FIELDS = (
     "operation_id", "reading_id", "block_id", "attempt_id", "condition_id", "setting_id",
     "segment", "position_instance_id",
+    # S5 experimental pairing (versioned addition): pair_id joins the same hole and
+    # block across conditions; control_group_id joins holes within one block and
+    # condition (target vs scoped control). Never inferred from sort order.
+    "pair_id", "control_group_id",
 )  # fmt: skip
 
 CUBE_FIELDS = LEGACY_CUBE_FIELDS + IDENTITY_FIELDS

@@ -162,14 +162,14 @@ def analyse(
                                    f"O >= {w_sig:g} (WARN below), >= {f_sig:g} (FAIL below)",
                                    {k: st[k] for k in KEEP}))  # fmt: skip
             elif hole in blind:
-                # a blind channel: anything optical here is a wrong or swapped LED
+                # a nominally blind channel: a response is unassigned (not proof of a wrong LED)
                 r = st["O"]
                 status = grade(r, w_pl, f_pl)
                 optical = st["modulation"] >= mod_min and r >= w_pl
                 if status != Status.PASS and not optical:
                     status = Status.WARN  # large, but flat: hole-specific coupling, not light
-                # Hole 16 (1850 nm): beyond both detectors' range. A silicon response means
-                # the wrong LED is fitted, but there is no spare 1850 nm part yet — WARN only.
+                # Hole 16 (1850 nm): beyond both detectors' range. A silicon response has an
+                # unassigned spectrum (tail/secondary emission/pickup possible) - WARN only.
                 beyond = not ch.expected_detectors
                 if beyond and status == Status.FAIL:
                     status = Status.WARN

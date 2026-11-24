@@ -179,9 +179,22 @@ def test_plausibility_flags_a_visible_hole_on_the_wrong_detector(
 
 def test_dark_offset_and_equivalent_current(cfg: HwConfig, tmp_path: Path) -> None:
     # the rig's steady -21 mV (U5's own offset, 17 Nov) is within the range ...
-    a = analyse(write_run(tmp_path / "rig", cfg, dark={"opt101": 200.0, "ingaas": -168.0}), cfg)
+    run = write_run(tmp_path / "rig", cfg, dark={"opt101": 200.0, "ingaas": -168.0})
+    a = analyse(run, cfg)
     f = a.get("elec/ingaas/dark_offset")
     assert f.status == Status.PASS and f.value == pytest.approx(-21, abs=0.2)
+    # S2: without a verified A0 range and a run-frozen Rf, no current is claimed.
+    assert "i_eq_na" not in f.data and "not computed" in f.detail
+    # With the run's own verified facts the conversion is available.
+    import json as _json
+
+    meta = _json.loads((run / "scan.json").read_text())
+    meta["acquisition_snapshot"] = {
+        "rf": {"ingaas": {"value_ohm": 1e6, "state": "measured", "note": "fixture"}},
+        "input_range": {"ingaas": "verified-in-range"},
+    }
+    (run / "scan.json").write_text(_json.dumps(meta))
+    f = analyse(run, cfg).get("elec/ingaas/dark_offset")
     assert f.data["i_eq_na"] == pytest.approx(21, abs=0.3)
     # ... a real leak (60 nA: -60 mV) is not
     a = analyse(write_run(tmp_path / "leak", cfg, dark={"opt101": 200.0, "ingaas": -480.0}), cfg)

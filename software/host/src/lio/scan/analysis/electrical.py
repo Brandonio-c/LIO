@@ -121,6 +121,25 @@ def _rf_ohm(cfg: HwConfig, det: str) -> float | None:
         return None
 
 
+def _eq_current_eligibility(cube: Cube, cfg: HwConfig, det: str) -> tuple[Any, float | None]:
+    """Quantity gate for a physical input current from the run's FROZEN facts."""
+    from lio.scan.provenance import Quantity, RfProvenance, quantity_eligibility
+
+    snap = cube.meta.get("acquisition_snapshot") if isinstance(cube.meta, dict) else None
+    snap = snap if isinstance(snap, dict) else {}
+    rf_raw = (snap.get("rf") or {}).get(det)
+    rf = None
+    if isinstance(rf_raw, dict):
+        rf = RfProvenance(rf_raw.get("value_ohm"), str(rf_raw.get("state", "unknown")),
+                          str(rf_raw.get("note", "")))  # fmt: skip
+    rng = str((snap.get("input_range") or {}).get(det) or "unverified")
+    elig = quantity_eligibility(
+        Quantity.EQ_CURRENT, detector=det, lsb_mv=mv(1.0), rf=rf,
+        input_range=rng,
+    )  # fmt: skip
+    return elig, (None if rf is None else rf.value_ohm)
+
+
 def dark_offset(cube: Cube, cfg: HwConfig) -> list[Finding]:
     """TIA dark offset and its equivalent input current (the T06 dark ranges)."""
     out = []
@@ -136,12 +155,18 @@ def dark_offset(cube: Cube, cfg: HwConfig) -> list[Finding]:
         st = Status.PASS if lo <= m <= hi else Status.FAIL
         data: dict[str, Any] = {"counts": m, "mv": mv(m), "range_counts": [lo, hi]}
         detail = f"{m:+.1f} counts ({mv(m):+.2f} mV)"
-        rf = _rf_ohm(cfg, det)
-        if rf:
-            i_na = -mv(m) * 1e-3 / rf * 1e9
+        # S2: an input current needs a verified A0 operating range and a known,
+        # run-frozen Rf. Today's config Rf is never substituted into a run, and an
+        # unverified A0 blocks the physical-current label (counts/mV stay valid).
+        elig, rf_used = _eq_current_eligibility(cube, cfg, det)
+        if elig.eligible and rf_used:
+            i_na = -mv(m) * 1e-3 / rf_used * 1e9
             data["i_eq_na"] = i_na
-            detail += f"; equivalent input current {i_na:+.1f} nA (Rf {rf / 1e6:g} MΩ)"
-        out.append(Finding(f"elec/{det}/dark_offset", f"{det}: dark offset / leakage", st,
+            detail += f"; equivalent input current {i_na:+.1f} nA (Rf {rf_used / 1e6:g} MΩ)"
+        else:
+            data["i_eq_unavailable"] = elig.reason
+            detail += f"; equivalent input current not computed ({elig.reason})"
+        out.append(Finding(f"elec/{det}/dark_offset", f"{det}: dark offset (ADC)", st,
                            round(mv(m), 3), "mV", detail,
                            f"{lo:g} to {hi:g} counts (thresholds.dark)", data))  # fmt: skip
     return out

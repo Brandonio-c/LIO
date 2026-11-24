@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import math
 
-from lio.analysis import Settling, recommend_settle_ms, settling, stats
+from lio.analysis import Settling, precision_summary, recommend_settle_ms, settling, stats
 from lio.csvout import SWEEP_HEADER, sweep_csv_text
 from lio.device import Sweep
 from lio.protocol import ProtocolError
@@ -234,6 +234,35 @@ def t08_2(ctx: SuiteContext, rec: Recorder) -> None:
             f"CV <= {cv_max * 100:g} %",
             cv=s.cv,
         )
+    # S1: SWEEP net repeatability per expected hole/detector, judged on absolute
+    # dispersion and kept separate from dark stability (and from MEAS repeats).
+    sd_max = ctx.th.num("repeatability.sweep_sd_max_counts")
+    cv_min_mean = ctx.th.num("repeatability.cv_min_mean_counts")
+    net_summ: dict[str, object] = {}
+    for h in range(1, 17):
+        for d in ctx.cfg.channel(h).expected_detectors:
+            if not ctx.usable(d):
+                continue
+            vals: list[float | None] = []
+            for sw in sweeps:
+                rec_h = [m for m in sw.records if m.hole == h]
+                vals.append(float(rec_h[0].net(d)) if rec_h else None)
+            ps = precision_summary(vals, sd_max=sd_max, cv_max=cv_max, cv_min_mean=cv_min_mean)
+            net_summ[f"{h}/{d}"] = ps
+            if ps["status"] == "insufficient":
+                rec.add(f"net/{hole_id(h)}/{d}", f"Hole {h} {d} SWEEP net repeatability",
+                        Status.SKIP, str(ps["reason"]))  # fmt: skip
+                continue
+            rec.check(
+                f"net/{hole_id(h)}/{d}",
+                f"Hole {h} {d} SWEEP net repeatability over {len(sweeps)} sweeps",
+                ps["status"] == "stable",
+                f"mean {ps['mean']:+.1f}, SD {ps['sd']:.2f}, range {ps['min']:+.0f}.."
+                f"{ps['max']:+.0f}; {ps['reason']} (SWEEP mode, not MEAS)",
+                f"SD <= {sd_max:g} counts, a record in every sweep",
+                sd=ps.get("sd"),
+            )
+    rec.measure(sweep_net_repeatability=net_summ)
     k = ctx.th.num("channel.off_return_sigma")
     for d in DETECTORS:
         means = [stats([float(m.dark(d)) for m in sw.records]).mean for sw in sweeps]

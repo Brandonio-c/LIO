@@ -79,6 +79,26 @@ def list_derived(root: Path | str, run_id: str | None = None) -> list[dict[str, 
     return out
 
 
+def _contrast_rows(c: dict[str, Any]) -> list[dict[str, Any]]:
+    """Flat rows (effect, interval, N, method, reason) for UI/report consumers."""
+    rows: list[dict[str, Any]] = []
+    fam = c.get("family") or {}
+    for name in fam.get("members") or []:
+        est = (c.get("estimates") or {}).get(name)
+        iv = (est or {}).get("interval") or {}
+        rows.append({
+            "contrast": name,
+            "value": None if est is None else est.get("value"),
+            "n": None if est is None else est.get("n_blocks"),
+            "se": None if est is None else est.get("se"),
+            "low": iv.get("low"), "high": iv.get("high"), "level": iv.get("level"),
+            "method": iv.get("method"),
+            "unavailable": (c.get("unavailable") or {}).get(name)
+            or (None if iv.get("available") else iv.get("reason")),
+        })  # fmt: skip
+    return rows
+
+
 def summarize_derived(data: dict[str, Any], *, path: Path | None = None) -> dict[str, Any]:
     """Signed summary for dashboard/CLI: model, coupling, eligibility notes.
 
@@ -113,6 +133,8 @@ def summarize_derived(data: dict[str, Any], *, path: Path | None = None) -> dict
                 for det, c in coupling.items()
             },
             "holes_with_estimates": holes_with_estimates,
+            "contrasts": _contrast_rows(data.get("contrasts") or {}),
+            "physical_qualification": verdict.get("physical_qualification"),
             "eligibility_notes": eligibility_notes,
             "c_sensitivity": data.get("c_sensitivity") or coupling.get("sensitivity"),
         },
@@ -297,6 +319,19 @@ def analyse_model(
                 est = block_drive_response(hole_blocks)
                 hole_estimates[f"{det}:h{hole:02d}"] = est.to_dict()
         obj = primary_swir_objective()
+        # S5: connected paired / shared-control / familywise inference on the
+        # stored identities. Controls only from applicable scoped evidence.
+        from lio.scan.analysis.contrasts import connected_contrasts
+        from lio.scan.analysis.coupling import ControlEvidence, guaranteed_blind_holes
+
+        evidence = [ControlEvidence(**e) for e in analysis_cfg.get("control_evidence") or []]
+        controls = {
+            det: guaranteed_blind_holes(cfg, det, optical_control_evidence=evidence,
+                                        run_id=store.run_id)
+            for det in ("ingaas", "opt101")
+        }  # fmt: skip
+        contrasts = connected_contrasts(list(store.rows()), store.meta, control_holes=controls)
+        available = [k for k, v in contrasts["estimates"].items() if v.get("value") is not None]
         payload = {
             "run_id": store.run_id,
             "sample_id": store.meta.get("sample_id"),
@@ -307,11 +342,17 @@ def analyse_model(
             "coupling": {k: v.to_dict() for k, v in coupling.items()},
             "sensitivity": sens,
             "estimates": hole_estimates,
+            "contrasts": contrasts,
             "verdict": {
-                "verdict": "UNRESOLVED",
+                # Numerical availability, computed - not a physical/optical verdict.
+                "verdict": "NUMERICAL_RESULTS" if available else "UNRESOLVED",
+                "numerical_available": available,
+                "unavailable": contrasts["unavailable"],
+                "physical_qualification": contrasts["physical_qualification"],
                 "reasons": [
-                    "qualified-v2 is offline software product; not bench-qualified",
-                    "does not claim SNR or SWIR chemistry improvement",
+                    f"{len(available)} of {contrasts['family']['size']} declared contrasts "
+                    "have numerical estimates",
+                    "not bench-qualified; no SNR or SWIR chemistry claim",
                 ],
             },
             "findings": [],
@@ -432,6 +473,24 @@ def report_derived(
         "SWIR chemistry improvement. Bench qualification is separate.",
         "",
     ]
+    crow = _contrast_rows(data.get("contrasts") or {})
+    if crow:
+        fam = (data.get("contrasts") or {}).get("family") or {}
+        lines += [
+            f"## Declared contrasts (family {fam.get('size')}, {fam.get('method')}, "
+            f"alpha {fam.get('alpha')}{', POST HOC' if fam.get('post_hoc') else ''})",
+            "",
+            "| Contrast | Effect | N | SE | Interval | Note |",
+            "|---|---|---|---|---|---|",
+        ]
+        for r in crow:
+            iv = (f"{r['low']:+.3g}..{r['high']:+.3g} ({r['method']})"
+                  if r["low"] is not None else "-")  # fmt: skip
+            val = "-" if r["value"] is None else f"{r['value']:+.4g}"
+            se = "-" if r["se"] is None else f"{r['se']:.3g}"
+            lines.append(f"| {r['contrast']} | {val} | {r['n'] or '-'} | {se} | {iv} | "
+                         f"{r['unavailable'] or ''} |")  # fmt: skip
+        lines.append("")
     verdict = data.get("verdict") or {}
     if verdict:
         lines.append(f"**Verdict (model):** {verdict.get('verdict')}")

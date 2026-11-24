@@ -23,6 +23,7 @@ to the next:
 from __future__ import annotations
 
 import json
+import os
 import threading
 from dataclasses import dataclass
 from datetime import datetime
@@ -37,13 +38,47 @@ REPO_ROOT = Path(__file__).resolve().parents[4]
 
 
 def state_path(cfg: Any) -> Path | None:
-    """The position file named by ``stage.state_file`` (None if the config has none)."""
+    """The position file: ``LIO_STAGE_FILE`` if set, else ``stage.state_file``.
+
+    Tests point ``LIO_STAGE_FILE`` at temporary synthetic state (S7); real
+    operation uses the configured physical file.
+    """
+    env = os.environ.get("LIO_STAGE_FILE")
+    if env:
+        return Path(env)
+    return physical_state_path(cfg)
+
+
+def physical_state_path(cfg: Any) -> Path | None:
+    """The configured physical stage file (never redirected)."""
     try:
         rel = str(cfg.section.raw("stage.state_file"))
     except Exception:
         return None
     p = Path(rel)
     return p if p.is_absolute() else REPO_ROOT / p
+
+
+class PhysicalStageWriteError(RuntimeError):
+    """A guarded (test) process tried to write the physical stage-position file."""
+
+
+def _guard_physical_write(path: Path) -> None:
+    """With ``LIO_GUARD_PHYSICAL_STAGE=1`` refuse writes to the real stage file.
+
+    The default physical file is ``test_results/stage_position.json`` (and any
+    ``stage_position.json`` under the repository's ``test_results``)."""
+    if os.environ.get("LIO_GUARD_PHYSICAL_STAGE") != "1":
+        return
+    try:
+        target = path.resolve()
+        phys = (REPO_ROOT / "test_results").resolve()
+    except OSError:
+        return
+    if target.name == "stage_position.json" and phys in target.parents:
+        raise PhysicalStageWriteError(
+            f"refusing to write physical stage state {target} from a guarded (test) process"
+        )
 
 
 def tracker_for(cfg: Any) -> StageTracker | None:
@@ -88,6 +123,7 @@ class StageTracker:
                 "abs": None, "top": None, "bottom": None, "updated": None, "log": []}  # fmt: skip
 
     def _save(self) -> None:
+        _guard_physical_write(self.path)
         self.data["updated"] = _now()
         self.data["log"] = self.data.get("log", [])[-LOG_MAX:]
         self.path.parent.mkdir(parents=True, exist_ok=True)

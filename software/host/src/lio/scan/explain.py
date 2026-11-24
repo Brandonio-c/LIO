@@ -159,13 +159,13 @@ RULES: tuple[Rule, ...] = (
     Rule(
         "optics/*/hNN/plausibility",
         E(
-            "A detector responds, with a height-dependent (optical) signal, to a hole whose "
-            "wavelength it cannot see: the LED in this hole is not the one in the channel map "
-            "(swapped with another hole, or the wrong part).",
-            ("LED",),
-            "Camera check of that hole (visible or not); compare the LED marking with "
-            "docs/OPTICAL_CHANNEL_MAP.md; look for the hole it was swapped with (a response "
-            "missing elsewhere).",
+            "A detector responds to a hole whose nominal wavelength it should not see. This "
+            "does NOT identify a wrong LED: secondary/shorter-wave emission, broadband tails, "
+            "electrical pickup or a swapped part are all possible; the spectrum is unassigned "
+            "(h16 stays a proxy_unassigned feature, never primary 1850 nm).",
+            ("LED", "optical path"),
+            "Compare the LED marking with docs/OPTICAL_CHANNEL_MAP.md and look for a response "
+            "missing elsewhere (a swap). Do not replace a part on this finding alone.",
         ),
     ),
     # ----------------------------------------------------------- optics, detector

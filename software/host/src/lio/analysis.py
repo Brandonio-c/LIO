@@ -328,3 +328,75 @@ def move_duration_s(steps: int, vmax: float, acc: float) -> float:
     if 2 * s_acc >= n:
         return 2 * math.sqrt(n / acc)
     return 2 * vmax / acc + (n - 2 * s_acc) / vmax
+
+
+# 95 % two-sided Student-t quantiles (df 1..30); larger df use 1.96.
+_T95 = (12.706, 4.303, 3.182, 2.776, 2.571, 2.447, 2.365, 2.306, 2.262, 2.228, 2.201, 2.179,
+        2.160, 2.145, 2.131, 2.120, 2.110, 2.101, 2.093, 2.086, 2.080, 2.074, 2.069, 2.064,
+        2.060, 2.056, 2.052, 2.048, 2.045, 2.042)  # fmt: skip
+
+
+def precision_summary(
+    values: Sequence[float | None],
+    *,
+    sd_max: float,
+    cv_max: float,
+    cv_min_mean: float,
+    saturated: bool = False,
+    missing_reasons: Sequence[str] = (),
+) -> dict[str, object]:
+    """Repeatability of fixed-N signed nets at the instrument's real signal level (S1).
+
+    ``values`` are the planned attempts in acquisition order; ``None`` is a
+    missing/dropped record (a genuine 0 or negative net is a value). Precision is
+    judged on absolute dispersion (sample SD <= ``sd_max`` counts). CV is reported
+    only when the mean is resolved (positive, >= ``cv_min_mean`` and > 2 SE);
+    otherwise it is unavailable with a reason, never computed on a near-zero or
+    negative denominator. A stable near-zero result is precise, not a detection.
+
+    ``status``: stable | unstable | dropouts | saturated | insufficient.
+    """
+    obs = [float(v) for v in values if v is not None]
+    out: dict[str, object] = {
+        "n_planned": len(values),
+        "n_observed": len(obs),
+        "dropouts": len(values) - len(obs),
+        "missing_reasons": list(missing_reasons),
+        "values": [None if v is None else float(v) for v in values],
+        "sd_max": sd_max,
+    }
+    if saturated:
+        out.update(status="saturated", reason="saturated reading: precision unavailable")
+        return out
+    if len(obs) < 2:
+        out.update(status="insufficient", reason=f"{len(obs)} observed value(s); need >= 2")
+        return out
+    s = stats(obs)
+    se = s.std / math.sqrt(s.n)
+    t = _T95[s.n - 2] if s.n - 1 <= len(_T95) else 1.96
+    # Order drift: least-squares slope of value vs acquisition index (counts/repeat).
+    idx = [i for i, v in enumerate(values) if v is not None]
+    mi = sum(idx) / len(idx)
+    sxx = sum((i - mi) ** 2 for i in idx)
+    slope = sum((i - mi) * (v - s.mean) for i, v in zip(idx, obs, strict=True)) / sxx
+    resolved = s.mean > 0 and s.mean >= cv_min_mean and s.mean > 2 * se
+    out.update(
+        mean=s.mean, sd=s.std, se=se, ci95=(s.mean - t * se, s.mean + t * se),
+        min=s.min, max=s.max, drift_per_repeat=slope, signal_resolved=resolved,
+    )  # fmt: skip
+    if resolved:
+        out["cv"] = s.std / s.mean
+    else:
+        out["cv"] = None
+        out["cv_reason"] = (
+            "mean not resolved above zero" if s.mean <= 2 * se or s.mean <= 0
+            else f"mean below {cv_min_mean:g} counts: CV not meaningful"
+        )  # fmt: skip
+    if out["dropouts"]:
+        out.update(status="dropouts", reason=f"{out['dropouts']} of {len(values)} records missing")
+    elif s.std > sd_max:
+        out.update(status="unstable", reason=f"SD {s.std:.2f} > {sd_max:g} counts")
+    else:
+        out.update(status="stable", reason=f"SD {s.std:.2f} <= {sd_max:g} counts")
+    _ = cv_max  # CV is reported, not used to pass/fail low-count precision
+    return out

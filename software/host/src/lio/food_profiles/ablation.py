@@ -202,6 +202,7 @@ def grouped_held_out_proxy_ablation(
         if ma is not None:
             ab_scores.append(ma)
     notes.append("metric evaluated on held-out (left-out) group rows only")
+    notes.append("descriptive distance summary: not predictive validation of proxy value")
     if not full_scores:
         notes.append("unavailable: no held-out fold with >=2 rows")
         m_full = m_ab = None
@@ -209,7 +210,8 @@ def grouped_held_out_proxy_ablation(
     else:
         m_full = float(np.mean(full_scores))
         m_ab = float(np.mean(ab_scores)) if ab_scores else None
-        name = f"grouped_held_out_{metric}"
+        # Descriptive only: within-held-group spread, NOT predictive accuracy (A22).
+        name = f"grouped_held_out_descriptive_within_group_{metric}"
         notes.append(f"n_groups={len(uniq)} n_folds={len(full_scores)}")
     return AblationResult(
         feature_ids_full=list(batch.feature_ids),
@@ -222,3 +224,50 @@ def grouped_held_out_proxy_ablation(
         metric_name=name,
         notes=notes,
     )
+
+
+def proxy_predictive_comparison(
+    batch: FeatureBatch,
+    labels: list[str],
+    meta: list[dict[str, Any]],
+    *,
+    target: str = "new-preparation",
+) -> dict[str, Any]:
+    """Predictive value of ``proxy_unassigned`` features on held-out groups (A22).
+
+    Reuses the existing grouped validation (``validate_grouped``: leave-one-group
+    -out, PCA fitted on training groups only, nearest-centroid on the held-out
+    group) for the FULL and the PROXY-REMOVED feature sets on the same rows and
+    therefore the same folds. Reports paired per-fold accuracy and the mean
+    difference. Without proxy columns, labels, >= 2 independent groups or the
+    optional profiles dependencies, predictive value is unavailable.
+    """
+    from lio.food_profiles.validation import validate_grouped
+
+    out: dict[str, Any] = {
+        "estimand": "held-out-group nearest-centroid accuracy, full minus proxy-removed",
+        "notes": ["h16 stays proxy_unassigned; never primary-1850",
+                  "synthetic or single-epoch results are not food-discrimination claims"],
+    }  # fmt: skip
+    if not proxy_unassigned_mask(batch.feature_ids).any():
+        out.update(available=False, reason="no proxy_unassigned features (opt-in not given?)")
+        return out
+    ablated, removed = drop_proxy_unassigned(batch)
+    full = validate_grouped(batch, labels, meta, target=target)  # type: ignore[arg-type]
+    abl = validate_grouped(ablated, labels, meta, target=target)  # type: ignore[arg-type]
+    fa = {d["group"]: d["accuracy"] for d in full.fold_details if "accuracy" in d}
+    fb = {d["group"]: d["accuracy"] for d in abl.fold_details if "accuracy" in d}
+    shared = sorted(set(fa) & set(fb))
+    out["removed"] = removed
+    if not shared:
+        why = f"no comparable folds (full: {full.reason}; ablated: {abl.reason})"
+        out.update(available=False, reason=why)
+        return out
+    diffs = [fa[g] - fb[g] for g in shared]
+    out.update(
+        available=True, folds=shared, n_folds=len(shared),
+        accuracy_full=[fa[g] for g in shared], accuracy_ablated=[fb[g] for g in shared],
+        mean_difference=float(np.mean(diffs)),
+        warnings=sorted(set(full.warnings) | set(abl.warnings)),
+    )  # fmt: skip
+    return out

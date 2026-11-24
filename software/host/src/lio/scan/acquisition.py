@@ -17,6 +17,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
+from lio.buildinfo import loaded_build_identity
 from lio.config import HwConfig
 from lio.scan.calibration import resolve_calibration
 from lio.scan.provenance import (
@@ -755,6 +756,28 @@ def _finalize_protocol(
         store.save_meta()
 
 
+def frozen_inference_family(protocol: ProtocolSpec, alpha: float = 0.05) -> dict[str, Any]:
+    """Detector x hole x contrast family declared from the protocol (S5).
+
+    Condition contrasts (each later condition minus the first, same hole, paired
+    by ``pair_id``) for every target hole and detector, plus target-minus-control
+    contrasts for every non-control hole when control holes are declared. Frozen
+    at run creation; missing or failed members stay in the family.
+    """
+    conds = [c.id for c in protocol.conditions]
+    controls = [int(h) for h in (protocol.allocation or {}).get("control_holes") or []]
+    members: list[str] = []
+    for det in protocol.detectors:
+        for hole in protocol.holes:
+            for c in conds[1:]:
+                members.append(f"{det}:h{hole}:{c}-minus-{conds[0]}")
+            if controls and hole not in controls:
+                for c in conds:  # one control contrast per condition: never pooled
+                    members.append(f"{det}:h{hole}:{c}:minus-control")
+    return {"members": members, "size": len(members), "alpha": alpha,
+            "method": "bonferroni", "frozen": True}  # fmt: skip
+
+
 class RunClock:
     """Persistent elapsed time for a run's wall/cycle limits (D14 / D15 / A17).
 
@@ -889,6 +912,12 @@ def run_protocol(
             "simulated": simulated,
             "acquisition_snapshot": snap.to_dict(),
             "config_sha256": cfg.sha256,
+            "exposure_bound": (
+                str(getattr(device, "exposure_bound", "unknown (device does not report it)"))
+                if device is not None
+                else ("simulated" if simulated else "offline-callback")
+            ),
+            "software": loaded_build_identity(),
             "stationary": True,
             "arms_motors": False,
             "exposure_budget": {
@@ -904,6 +933,8 @@ def run_protocol(
             },
         }
         meta["schedule_sha256"] = content_hash(plan.to_dict()["steps"])
+        # S5: the inference family is frozen BEFORE any confirmation data.
+        meta["inference_family"] = frozen_inference_family(plan.protocol)
         store = ScanStore.create(root, "protocol", meta)
     else:
         raw = store.meta.get("acquisition_snapshot")
@@ -1002,9 +1033,15 @@ def run_protocol(
             if not pause:
                 if control is not None:
                     control.paused = False
+                if _paused_logged["on"]:
+                    _paused_logged["on"] = False
+                    store.event("unpaused", step=None if step is None else step.index)
                 return None
             # D14: pause at verified OFF; no MEAS while paused/prompting.
             _establish_safe_state(device)
+            if not _paused_logged["on"]:
+                _paused_logged["on"] = True
+                store.event("paused", step=None if step is None else step.index)
             if control is not None:
                 control.paused = True
             _progress(step, "paused")
@@ -1106,6 +1143,22 @@ def run_protocol(
                 out[f"net_{det}"] = None
         return out
 
+    # Append-only chronology (S2): each process run is a numbered segment; row
+    # times (t_s) restart per segment, so (segment, step) orders the record.
+    segment_n = len(store.meta.get("segments") or [])
+    segment = f"stationary:s{segment_n}"
+    store.meta.setdefault("segments", []).append(
+        {
+            "segment": segment,
+            "start_step": start_step,
+            "resume": start_step > 0,
+            "started_wall": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "clock": "row t_s is seconds since this segment's start",
+        }
+    )
+    store.event("segment_start", segment=segment, start_step=start_step)
+    _paused_logged = {"on": False}
+
     # The stationary position is unknown (no height): one instance per run, kept
     # across resume, never comparable to another run's unknown position.
     position_instance_id = str(
@@ -1189,8 +1242,10 @@ def run_protocol(
                 "attempt_id": f"s{step.index}:{op_id.rsplit(':', 1)[-1]}",
                 "condition_id": step.condition_id,
                 "setting_id": f"settle{step.settle_ms}:n{step.mains_periods}",
-                "segment": "stationary",
+                "segment": segment,
                 "position_instance_id": position_instance_id,
+                "pair_id": f"{step.phase}:h{step.hole}:b{step.block}",
+                "control_group_id": f"{step.phase}:{step.condition_id}:b{step.block}",
             }
             for det in plan.protocol.detectors:
                 dark = raw.get(f"dark_{det}")
@@ -1287,6 +1342,7 @@ def run_protocol(
                 device.off()
         _persist_exposure()
 
+    store.event("segment_end", segment=segment, status=status, reason=cancel_reason)
     _finalize_protocol(
         store, snap, status=status, cancel_reason=cancel_reason, observations=observations
     )
@@ -1299,6 +1355,83 @@ def run_protocol(
         observations=observations,
         cancel_reason=cancel_reason,
     )
+
+
+def _validate_resume_records(store: ScanStore, plan: ProtocolPlan, start: int) -> None:
+    """Semantic validation of the durable prefix before any resume (S2 / A15).
+
+    Refuses (before any device use) when: an existing terminal seal no longer
+    matches the live bytes/interpretation; the committed steps are not exactly
+    0..start-1; any step lacks or duplicates a detector row; a row's hole, phase,
+    condition, settings or block differs from the frozen step; a step's detector
+    rows do not share ONE reading/operation identity; a reading identity repeats
+    across steps; or rows leave the run's single stationary position instance.
+    A RUNNING crash may legitimately have no seal: it is recorded as an explicit
+    unsealed crash recovery, never silently resealed over a bad seal.
+    """
+    from lio.scan.provenance import verify_store_seal
+
+    if store.meta.get("terminal_source_seal"):
+        ok, why = verify_store_seal(store)
+        if not ok:
+            raise ProtocolError(f"resume refuses: existing terminal seal invalid ({why})")
+    elif start > 0:
+        store.meta.setdefault("recovery", []).append(
+            {
+                "kind": "unsealed_crash_recovery",
+                "validated_steps": start,
+                "note": "no terminal seal; durable rows validated semantically",
+            }
+        )
+    detectors = list(plan.protocol.detectors)
+    pos = store.meta.get("position_instance_id")
+    by_step: dict[int, list[dict[str, str]]] = {}
+    for r in store.rows():
+        try:
+            by_step.setdefault(int(r["step"]), []).append(r)
+        except (KeyError, TypeError, ValueError) as e:
+            raise ProtocolError(f"resume refuses an unreadable durable record: {e}") from e
+    if sorted(by_step) != list(range(start)):
+        raise ProtocolError(
+            f"resume refuses: durable records cover steps {sorted(by_step)} but the run claims "
+            f"0..{start - 1} complete"
+        )
+    seen_readings: set[str] = set()
+    for idx, rows in sorted(by_step.items()):
+        st = plan.steps[idx] if idx < len(plan.steps) else None
+        if st is None:
+            raise ProtocolError(f"resume refuses: step {idx} is not in the frozen schedule")
+        dets = sorted(str(r.get("detector") or "") for r in rows)
+        if dets != sorted(detectors):
+            raise ProtocolError(
+                f"resume refuses: step {idx} has detector rows {dets}, expected exactly "
+                f"{sorted(detectors)}"
+            )
+        want = {
+            "hole": str(st.hole), "phase": st.phase, "condition_id": st.condition_id,
+            "setting_id": f"settle{st.settle_ms}:n{st.mains_periods}",
+            "settle_ms": str(st.settle_ms), "n": str(st.mains_periods),
+            "block_id": f"{st.phase}:{st.condition_id}:h{st.hole}:b{st.block}",
+        }  # fmt: skip
+        readings = set()
+        for r in rows:
+            for k, v in want.items():
+                if str(r.get(k) or "") != v:
+                    raise ProtocolError(
+                        f"resume refuses: step {idx} row {k}={r.get(k)!r} does not match the "
+                        f"frozen schedule ({v!r})"
+                    )
+            if pos and str(r.get("position_instance_id") or "") != str(pos):
+                raise ProtocolError(f"resume refuses: step {idx} left the run's position instance")
+            readings.add(str(r.get("reading_id") or ""))
+        if len(readings) != 1 or "" in readings:
+            raise ProtocolError(
+                f"resume refuses: step {idx} detector rows do not share one reading identity"
+            )
+        rid = next(iter(readings))
+        if rid in seen_readings:
+            raise ProtocolError(f"resume refuses: reading {rid} appears in more than one step")
+        seen_readings.add(rid)
 
 
 def resume_protocol(
@@ -1362,27 +1495,7 @@ def resume_protocol(
     ]
 
     start = int(store.meta.get("completed_step", -1)) + 1
-    # Validate the durable records against the frozen schedule: exactly steps
-    # 0..completed_step, each with the scheduled hole/phase, nothing else.
-    done: dict[int, set[tuple[int, str]]] = {}
-    for r in store.rows():
-        try:
-            idx = int(r["step"])
-            done.setdefault(idx, set()).add((int(r["hole"]), str(r.get("phase") or "")))
-        except (KeyError, TypeError, ValueError) as e:
-            raise ProtocolError(f"resume refuses an unreadable durable record: {e}") from e
-    if sorted(done) != list(range(start)):
-        raise ProtocolError(
-            f"resume refuses: durable records cover steps {sorted(done)} but the run claims "
-            f"0..{start - 1} complete"
-        )
-    for idx, seen in done.items():
-        st = plan.steps[idx] if idx < len(plan.steps) else None
-        if st is None or seen != {(st.hole, st.phase)}:
-            raise ProtocolError(
-                f"resume refuses: durable record for step {idx} {sorted(seen)} does not match "
-                "the frozen schedule"
-            )
+    _validate_resume_records(store, plan, start)
     # Completed-block boundary: if the next step continues a partial condition
     # pair (same block, later condition) after interruption mid-block, reject.
     if start > 0 and start < len(plan.steps):

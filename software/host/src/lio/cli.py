@@ -711,7 +711,9 @@ def cmd_scan(args: argparse.Namespace, cfg: HwConfig) -> int:
             raise CliError(
                 "this mode moves the chamber top: add --allow-motion (and stay with the rig)"
             )
-        if not args.sample and args.scan_command == "run":
+        # Resume keeps the saved run's sample identity; the resume parser has no
+        # --sample (an override could only contradict the frozen run).
+        if args.scan_command == "run" and not getattr(args, "sample", None):
             raise CliError(f"--sample is required: one of {cfg.section.raw('scan.sample_ids')} "
                            "or a food code LIO-F-...")  # fmt: skip
 
@@ -888,7 +890,11 @@ def _scan_protocol_offline(args: argparse.Namespace, cfg: HwConfig) -> int:
         print(f"audit -> {out.get('_path')}")
         return 0
     if args.scan_command == "analyse":
-        out = analyse_model(folder, cfg, model=model, derived_out=derived)
+        acfg: dict[str, Any] = {}
+        ev = getattr(args, "control_evidence", None)
+        if ev:
+            acfg["control_evidence"] = json.loads(Path(ev).read_text(encoding="utf-8"))
+        out = analyse_model(folder, cfg, model=model, derived_out=derived, analysis_config=acfg)
         print(f"model={out.get('model')} analysis_id={out.get('analysis_id')}")
         print(f"analysis -> {out.get('_path')}")
         return 0
@@ -1149,6 +1155,9 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--model", choices=["legacy", "qualified-v2"], default=None,
                    help="with --derived-out: write versioned product there")  # fmt: skip
     c.add_argument("--derived-out", help="derived analysis root (offline; leaves run folder raw)")
+    c.add_argument("--control-evidence", help="JSON list of scoped control-evidence records "
+                   "(hole, detector, source_run_id, load_id, condition_id, setting_id, "
+                   "calibration_id, assembly_epoch, method); none = C stays null")  # fmt: skip
     c.add_argument("--rewrite-legacy", action="store_true",
                    help="explicitly overwrite an existing in-run analysis.json (legacy "
                    "migration); without it an existing product is never rewritten")  # fmt: skip

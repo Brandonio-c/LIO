@@ -361,8 +361,10 @@ def _start_at_bottom(ctx: SuiteContext, tr: dict[str, float]) -> None:
         d1, d2 = bot[0] - a[0], bot[1] - a[1]
         if d1 != d2:
             raise Skip(
-                f"the two sides are not level (M1/right {a[0]}, M2/left {a[1]}): level them "
-                "with single-motor moves first"
+                f"the tracked distances to the two marked bottoms differ (M1/right {d1:+d}, "
+                f"M2/left {d2:+d} half-steps; counters {a[0]}/{a[1]}). This compares the "
+                "recorded bottom marks, not a measured tilt: verify level and the marks "
+                "physically before any single-motor move"
             )
         if d1:
             ok, msg = _lockstep(ctx, d1)

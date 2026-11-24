@@ -461,11 +461,24 @@ class DutyJournal:
         if not charges:
             return 0.0
         now = self.mono_now() if now is None else now
+        per_key: dict[str, float] = {}
         for hole, on_ms in charges:
             budget = self.budget_for(hole)
             if on_ms > budget + 1e-9:
                 raise DutyBudgetError(
                     f"request {on_ms:.3f} ms exceeds budget {budget:.3f} ms for hole {hole}"
+                )
+            key = self.rail_of(hole)
+            per_key[key] = per_key.get(key, 0.0) + float(on_ms)
+        # A set whose same-budget charges sum beyond the budget can never fit, even
+        # after a full cooldown: refuse as infeasible rather than "wait 0 s".
+        for key, total in per_key.items():
+            budget = float(self.budget_ms[key])
+            if total > budget + 1e-9:
+                raise DutyBudgetError(
+                    f"infeasible: this operation needs {total:.0f} ms on {key} in one go, more "
+                    f"than its {budget:.0f} ms per {self.window_s:g} s budget (reduce integration "
+                    "or holes)"
                 )
         cool = self._data.get("cooldown_until_mono")
         cool_wait = 0.0

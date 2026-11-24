@@ -112,7 +112,10 @@ def cmd_list(args: argparse.Namespace) -> int:
 def cmd_build(args: argparse.Namespace) -> int:
     root = Path(args.results_dir)
     ds = load_dataset(root, args.dataset)
-    batch = build_feature_batch(root, ds, args.recipe, reference_run_id=args.reference)
+    batch = build_feature_batch(
+        root, ds, args.recipe, reference_run_id=args.reference,
+        include_proxy_h16=bool(getattr(args, "include_proxy_h16", False)),
+    )  # fmt: skip
     out = (
         Path(args.out)
         if args.out
@@ -236,7 +239,18 @@ def cmd_compare(args: argparse.Namespace) -> int:
 def cmd_validate(args: argparse.Namespace) -> int:
     root = Path(args.results_dir)
     ds = load_dataset(root, args.dataset)
-    batch = build_feature_batch(root, ds, args.recipe)
+    batch = build_feature_batch(
+        root, ds, args.recipe, include_proxy_h16=bool(getattr(args, "include_proxy_h16", False))
+    )
+    labels, meta = _labels_and_groups(root, ds, batch)
+    from lio.food_profiles.validation import validate_grouped
+
+    result = validate_grouped(batch, labels, meta, target=args.target)
+    _print(result.to_jsonable())
+    return 0 if result.available else 2
+
+
+def _labels_and_groups(root: Path, ds: Any, batch: Any) -> tuple[list[str], list[dict[str, Any]]]:
     labels: list[str] = []
     meta: list[dict[str, Any]] = []
     # Expand annotations onto aggregated rows via preparation / run
@@ -263,11 +277,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
                 "food_label": food,
             }
         )
-    from lio.food_profiles.validation import validate_grouped
-
-    result = validate_grouped(batch, labels, meta, target=args.target)
-    _print(result.to_jsonable())
-    return 0 if result.available else 2
+    return labels, meta
 
 
 def cmd_effects(args: argparse.Namespace) -> int:
@@ -415,14 +425,19 @@ def cmd_fixtures(args: argparse.Namespace) -> int:
 
 def cmd_ablate(args: argparse.Namespace) -> int:
     """Held-out ablation of ``proxy_unassigned:`` (h16) features."""
-    from lio.food_profiles.ablation import held_out_proxy_ablation
+    from lio.food_profiles.ablation import held_out_proxy_ablation, proxy_predictive_comparison
     from lio.food_profiles.pipeline import build_feature_batch
 
+    if not getattr(args, "include_proxy_h16", False):
+        raise SystemExit("ablate needs the explicit --include-proxy-h16 opt-in")
     root = Path(args.results_dir)
     ds = load_dataset(root, args.dataset)
-    batch = build_feature_batch(root, ds, args.recipe, reference_run_id=args.reference)
+    batch = build_feature_batch(root, ds, args.recipe, reference_run_id=args.reference,
+                                include_proxy_h16=True)  # fmt: skip
     result = held_out_proxy_ablation(batch, metric=args.metric)
-    _print(result.to_dict())
+    labels, meta = _labels_and_groups(root, ds, batch)
+    _print({"descriptive": result.to_dict(),
+            "predictive": proxy_predictive_comparison(batch, labels, meta)})  # fmt: skip
     return 0
 
 
@@ -497,6 +512,11 @@ def build_profiles_parser(sub: Any, *, fn: Any = None) -> None:
     c.add_argument("--recipe", default="amplitude_raw")
     c.add_argument("--reference", default=None)
     c.add_argument("--out", default=None)
+    c.add_argument(
+        "--include-proxy-h16",
+        action="store_true",
+        help="explicit opt-in: h16 as proxy_unassigned, never primary 1850",
+    )
     c.set_defaults(profiles_fn=cmd_build)
 
     c = ss.add_parser("fit", help="fit pca|functional-pca|umap|tsne", parents=[common])
@@ -532,6 +552,11 @@ def build_profiles_parser(sub: Any, *, fn: Any = None) -> None:
         "--target",
         default="new-preparation",
         choices=["new-preparation", "new-lot", "new-day", "new-food"],
+    )
+    c.add_argument(
+        "--include-proxy-h16",
+        action="store_true",
+        help="explicit opt-in: h16 as proxy_unassigned, never primary 1850",
     )
     c.set_defaults(profiles_fn=cmd_validate)
 
@@ -582,6 +607,11 @@ def build_profiles_parser(sub: Any, *, fn: Any = None) -> None:
     c.add_argument("--recipe", default="amplitude_raw")
     c.add_argument("--reference", default=None)
     c.add_argument("--metric", default="mean_pairwise_distance")
+    c.add_argument(
+        "--include-proxy-h16",
+        action="store_true",
+        help="explicit opt-in: h16 as proxy_unassigned, never primary 1850",
+    )
     c.set_defaults(profiles_fn=cmd_ablate)
 
     c = ss.add_parser(

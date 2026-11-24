@@ -189,6 +189,7 @@ class ScanExecutor:
         self._boots0 = dev.unexpected_boots
         self._emi_pending = False
         self._t_start = 0.0
+        self._attempt = 0
         self._rows: list[dict[str, Any]] = []
         self._moves = 0
         self._unlevel: list[list[int]] = []
@@ -205,6 +206,15 @@ class ScanExecutor:
     def run(self, *, resume: bool = False) -> str:
         """Execute the plan (or the rest of it); returns COMPLETE or INCOMPLETE."""
         self._t_start = self.dev.now()
+        # One attempt/segment per executor invocation; resume starts a new one.
+        self._attempt = len(self.store.meta.get("segments") or [])
+        self.store.meta.setdefault("segments", []).append(
+            {
+                "segment": f"height:s{self._attempt}",
+                "resume": resume,
+                "clock": "row t_s is seconds since this segment's start",
+            }
+        )
         start = int(self.store.meta.get("completed_step", -1)) + 1 if resume else 0
         try:
             t0 = self.dev.now()
@@ -524,7 +534,37 @@ class ScanExecutor:
             "rep": st.rep,
             "t_s": round(self.dev.now() - self._t_start, 3),
             "net_mv": net_mv,
+            **self._identity(st, h, kw),
             **kw,
+        }
+
+    def _identity(self, st: Step, height: Any, kw: dict[str, Any]) -> dict[str, Any]:
+        """Shared reading identities for NEW height rows (S2).
+
+        Consecutive rows of the same step/hole/state with different detectors come
+        from one physical operation (the producers loop over DETECTORS per record)
+        and share one operation/reading id; a repeated detector starts a new one.
+        """
+        det = str(kw.get("detector") or "")
+        key = (st.index, kw.get("hole"), kw.get("state"))
+        last = getattr(self, "_op_last", None)
+        if last is None or last[0] != key or det in last[1]:
+            self._op_seq = getattr(self, "_op_seq", 0) + 1
+            dets: set[str] = set()
+            last = (key, dets, f"{self.store.run_id}:op:{self._attempt}:{self._op_seq}")
+            self._op_last = last
+        last[1].add(det)
+        settle = kw.get("settle_ms")
+        n = kw.get("n")
+        return {
+            "operation_id": last[2],
+            "reading_id": last[2],
+            "block_id": f"{st.phase}:{st.direction}:r{st.rep}:h{kw.get('hole')}:hs{height}",
+            "attempt_id": f"s{st.index}:a{self._attempt}",
+            "condition_id": str(kw.get("state") or ""),
+            "setting_id": None if settle is None and n is None else f"settle{settle}:n{n}",
+            "segment": f"height:s{self._attempt}",
+            "position_instance_id": f"{self.store.run_id}:hs{height}",
         }
 
     def _dark_frame(self, st: Step, *, label: str = "dark") -> dict[str, float]:

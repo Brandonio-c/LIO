@@ -1478,6 +1478,17 @@ class Session:
             self.protocol_job.control.beat()
         return {"ok": True, "running": self.scanning}
 
+    def _build_status(self) -> dict[str, Any]:
+        """Loaded build (fixed at startup) plus a cached disk-change check (S7)."""
+        from lio.buildinfo import deployment_changed, loaded_build_identity
+
+        now = time.monotonic()
+        cache = getattr(self, "_deploy_cache", None)
+        if cache is None or now - cache[0] > 10.0:
+            cache = (now, deployment_changed())
+            self._deploy_cache = cache
+        return {"loaded": loaded_build_identity(), "deployment": cache[1]}
+
     def protocol_answer_checkpoint(self, occurrence_id: str, confirmed: bool) -> dict[str, Any]:
         """Fresh linked answer for one protocol checkpoint occurrence (D13/D19)."""
         if not isinstance(confirmed, bool):
@@ -1655,7 +1666,8 @@ class Session:
                         "elapsed_s": round(time.time() - job["current"]["t0"], 1),
                     }
             return {
-                "version": self.version,
+                "version": self.version,  # UI refresh token, NOT a software version
+                "build": self._build_status(),
                 "connected": self.connected,
                 "target": self.target,
                 "is_sim": self.sim is not None,

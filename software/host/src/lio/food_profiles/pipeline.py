@@ -37,6 +37,7 @@ def build_feature_batch(
     reference_run_id: str | None = None,
     aggregate: bool = True,
     fingerprint_height_hs: float | None = None,
+    include_proxy_h16: bool = False,
 ) -> FeatureBatch:
     if isinstance(recipe, str):
         recipe = BUILTIN_RECIPES[recipe]
@@ -68,7 +69,13 @@ def build_feature_batch(
             ann = dataset.annotations.get(rid) or {}
             prep = ann.get("preparation_id") or run.meta.get("preparation_id")
             batches.append(
-                extract_run_vector(run, recipe, reference=reference, preparation_id=prep)
+                extract_run_vector(
+                    run,
+                    recipe,
+                    reference=reference,
+                    preparation_id=prep,
+                    include_proxy_h16=include_proxy_h16,
+                )
             )
         # Align schemas: intersect feature_ids (handles slight map differences)
         if len(batches) > 1:

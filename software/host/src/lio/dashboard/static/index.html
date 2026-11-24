@@ -1178,7 +1178,8 @@ window.addEventListener("hashchange", () => showView(location.hash.slice(1)));
 /* ------------------------------------------------------------------ scan */
 let SC = null, scanReady = false, hbWorker = null, hbOn = false;
 const SCAN_FIELDS = [
-  ["sweep_n", "Samples per reading", 1, 16, 1], ["optical_settle_ms", "Optical settle (ms)", 0, 100, 1],
+  ["mains_periods", "Mains periods per reading (mains integration on)", 1, 16, 1],
+  ["sweep_n", "Conversions per reading (mains integration off)", 1, 16, 1], ["optical_settle_ms", "Optical settle (ms)", 0, 100, 1],
   ["settle_ms_mech", "Mechanical settle (ms)", 0, 5000, 50], ["dark_n", "Dark samples", 1, 64, 1],
   ["hum_every_k", "Hum record every k heights", 1, 50, 1], ["hum_bursts", "Hum bursts (48 samples)", 1, 64, 1],
   ["long_dark_s", "Long dark record (s)", 0, 600, 5], ["jog_speed", "Move speed (half-steps/s)", 100, 1000, 50],
@@ -1201,6 +1202,10 @@ function scanSetup() {
   $("scan-settings").innerHTML = SCAN_FIELDS.map(([k, label, lo, hi, step]) =>
     `<label class="field">${esc(label)}<input type="number" data-k="${k}" min="${lo}" max="${hi}" step="${step}" value="${sc.settings[k]}"></label>`).join("")
     + `<label class="check" style="align-self:end"><input type="checkbox" data-k="abort_on_saturation" ${sc.settings.abort_on_saturation ? "checked" : ""}><span>Abort on saturation</span></label>`;
+  // S3: only the setting that the acquisition will actually use is editable.
+  const mainsOn = Number(sc.settings.mains_hz || 0) > 0;
+  const off = document.querySelector(`[data-k="${mainsOn ? "sweep_n" : "mains_periods"}"]`);
+  if (off) { off.disabled = true; off.title = mainsOn ? `ignored: each reading integrates ${sc.settings.mains_periods} whole ${sc.settings.mains_hz} Hz periods` : "ignored: mains integration is off"; }
   $("scan-drive").innerHTML = driveText();
   $("scan-preview").onclick = scanPreview;
   $("scan-mode").onchange = () => { $("scan-plan").textContent = "Preview the plan to see the heights, duration and LED duty."; };
@@ -1284,7 +1289,15 @@ async function scanStart() {
   await scanAct("/api/scan/start", { mode: $("scan-mode").value, sample_id: scanSample(), overrides: scanOverrides(),
     heartbeat: $("scan-hb-on").checked, motion_confirmed: bench, sim_operator: $("scan-simop").checked });
 }
-function scanResume(run) {
+function scanResume(run, mode) {
+  // S3: a saved PROTOCOL run resumes through the protocol caller (its own frozen
+  // schedule); a height scan through the height caller. Never cross them.
+  if (mode === "protocol") {
+    if (!(S && S.is_sim) && !$("scan-bench").checked) { toast("Tick the set-up box first (lid closed, sample in place): the LEDs will light.", 7000); return; }
+    scanAct("/api/scan/protocol/start", { resume: run, protocol: {}, sample_id: "", allow_light: true,
+      operator_checkpoint_flag: true, heartbeat: $("scan-hb-on").checked, timeout_s: 90 });
+    return;
+  }
   if (!(S && S.is_sim) && !$("scan-bench").checked) { toast("Tick the set-up box first (chamber clear, lid closed, sample in place): the top will move.", 7000); return; }
   scanAct("/api/scan/start", { resume: run, heartbeat: $("scan-hb-on").checked, motion_confirmed: $("scan-bench").checked, sim_operator: $("scan-simop").checked });
 }
@@ -1391,8 +1404,8 @@ function scanRender() {
       <td>${badge(x.status === "COMPLETE" ? "PASS" : x.status === "RUNNING" ? "SKIP" : "WARN", x.status)}${x.aborts.length ? `<br><span class="muted">${esc(x.aborts[x.aborts.length - 1])}</span>` : ""}</td>
       <td>${x.completed}/${x.steps}</td>
       <td>${x.report ? `<a href="${esc(x.report)}" target="_blank" rel="noopener">report</a>` : ""}
-      ${x.status === "INCOMPLETE" && connected && !running ? ` <button class="btn small" data-resume="${esc(x.run_id)}">Resume</button>` : ""}</td></tr>`).join("") + "</table>";
-  document.querySelectorAll("[data-resume]").forEach((b) => b.onclick = () => scanResume(b.dataset.resume));
+      ${x.status === "INCOMPLETE" && connected && !running ? ` <button class="btn small" data-resume="${esc(x.run_id)}" data-mode="${esc(x.mode)}">Resume</button>` : ""}</td></tr>`).join("") + "</table>";
+  document.querySelectorAll("[data-resume]").forEach((b) => b.onclick = () => scanResume(b.dataset.resume, b.dataset.mode));
 }
 async function scanPoll() {
   if (!STATIC || !STATIC.scan) return;

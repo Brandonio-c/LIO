@@ -373,7 +373,11 @@ thresholds:
   repeatability:
     repeats: 10
     cv_max: 0.02
-    min_net_counts: 1000
+    min_net_counts: 1000          # legacy precision-1 prefilter (historical results only)
+    # precision-2 (S1, PROVISIONAL): judged on absolute dispersion at real signal levels.
+    sd_max_counts: 5.0            # T05.5 MEAS repeats: sample SD limit (counts)
+    sweep_sd_max_counts: 5.0      # T08.2 SWEEP net repeats: sample SD limit (counts)
+    cv_min_mean_counts: 20        # CV reported only for resolved means at least this large
   settling:
     fraction: 0.99
     holes: [3, 8, 13]

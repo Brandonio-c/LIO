@@ -60,6 +60,16 @@ class ScanSettings:
             if k not in names:
                 raise PlanError(f"unknown scan setting {k!r}; known: {', '.join(sorted(names))}")
             src[k] = v
+        # S3: an override that the acquisition would ignore is refused, not silently
+        # recorded: with mains integration each reading uses mains_periods.
+        mains_on = float(src.get("mains_hz") or 0) > 0
+        if mains_on and "sweep_n" in (overrides or {}):
+            raise PlanError(
+                "sweep_n has no effect while mains integration is on (mains_hz > 0); "
+                "set mains_periods instead"
+            )
+        if not mains_on and "mains_periods" in (overrides or {}):
+            raise PlanError("mains_periods has no effect while mains integration is off")
         out: dict[str, Any] = {}
         for k, v in src.items():
             default = getattr(cls, k)

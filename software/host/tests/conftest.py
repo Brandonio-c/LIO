@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -30,3 +31,23 @@ def pytest_addoption(parser: pytest.Parser) -> None:
 def cfg(request: pytest.FixtureRequest) -> HwConfig:
     path = request.config.getoption("--lio-config")
     return load_config(Path(path) if path else None)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _isolate_stage_and_state(tmp_path_factory: pytest.TempPathFactory) -> Any:
+    """S7: every test process uses synthetic stage/journal state and may not write
+    the physical ``test_results/stage_position.json`` (guarded, not restored)."""
+    import os
+
+    root = tmp_path_factory.mktemp("lio_isolated_state")
+    saved = {k: os.environ.get(k) for k in
+             ("LIO_STAGE_FILE", "LIO_GUARD_PHYSICAL_STAGE", "LIO_STATE_ROOT")}  # fmt: skip
+    os.environ["LIO_STAGE_FILE"] = str(root / "stage_position.json")
+    os.environ["LIO_GUARD_PHYSICAL_STAGE"] = "1"
+    os.environ.setdefault("LIO_STATE_ROOT", str(root / "state"))
+    yield
+    for k, v in saved.items():
+        if v is None:
+            os.environ.pop(k, None)
+        else:
+            os.environ[k] = v

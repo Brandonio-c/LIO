@@ -126,6 +126,7 @@ def start(
     receive a terminal source seal on finish/abort. Historical folders without
     those fields stay untouched.
     """
+    from lio.buildinfo import loaded_build_identity
     from lio.scan.provenance import content_hash, read_info_gain, snapshot_from_hw_config
 
     info = dev.info(refresh=True)
@@ -159,7 +160,9 @@ def start(
                 raise
         else:
             info = dev.info(refresh=True)
-            mains_hz_applied = float(info.values.get("mains", requested_hz))
+            if "mains" not in info.values:  # never fill a missing readback (D06)
+                raise PlanError("mains readback missing after ADC CFG MAINS")
+            mains_hz_applied = float(info.as_int("mains"))
             if int(mains_hz_applied) != requested_hz:
                 raise PlanError(f"mains readback {mains_hz_applied} ≠ requested {requested_hz}")
     plan_dict = plan.to_dict()
@@ -189,6 +192,9 @@ def start(
         "plan": plan_dict,
         "stage": dev.stage.summary() if dev.stage is not None else None,
         "acquisition_snapshot": snap.to_dict(),
+        # S2/S7: how LED on-time is bounded, and the code that actually ran.
+        "exposure_bound": dev.exposure_bound,
+        "software": loaded_build_identity(),
     }
     store = ScanStore.create(root, plan.mode, meta)
     ex = ScanExecutor(dev, cfg, plan, store, operator, sample_id=sample_id,

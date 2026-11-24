@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import math
+from typing import cast
 
-from lio.analysis import duplicate_signatures, off_returned, saturated, stats
+from lio.analysis import duplicate_signatures, off_returned, precision_summary, saturated
 from lio.device import DeviceError
 from lio.protocol import ErrCode
 from lio.results import Status
@@ -307,46 +308,77 @@ def t05_4(ctx: SuiteContext, rec: Recorder) -> None:
 
 @register("T05.5", "Repeatability (interleaved MEAS)")
 def t05_5(ctx: SuiteContext, rec: Recorder) -> None:
-    chans = ctx.channels()
+    """Fixed-N low-count precision, frozen before acquisition (S1, rule set precision-2).
+
+    Every expected hole x detector pair on a usable detector is selected BEFORE any
+    repeat (no first-reading prefilter), measured ``repeats`` times interleaved
+    under the shared duty gate. Every attempt is kept: signed nets, dark/lit and
+    missing records with reasons. Judgement is absolute dispersion (SD counts);
+    CV only where the mean is resolved; zero evaluated channels is SKIP.
+    """
     repeats = ctx.th.integer("repeatability.repeats")
+    sd_max = ctx.th.num("repeatability.sd_max_counts")
     cv_max = ctx.th.num("repeatability.cv_max")
-    min_net = ctx.th.num("repeatability.min_net_counts")
+    cv_min_mean = ctx.th.num("repeatability.cv_min_mean_counts")
     n = ctx.th.integer("channel.meas_n")
-    judged: list[tuple[int, str]] = []
-    for hole, data in chans.items():
-        for det in ctx.cfg.channel(hole).expected_detectors:
-            if not ctx.usable(det):
-                continue
-            if data.meas.net(det) >= min_net:
-                judged.append((hole, det))
-    holes = sorted({h for h, _ in judged})
-    nets: dict[tuple[int, str], list[float]] = {k: [] for k in judged}
-    for _ in range(repeats):  # interleaved: spreads the heating, respects the duty budget
-        for hole in holes:
-            m = ctx.meas(hole, n=n)
-            for det in DETECTORS:
-                if (hole, det) in nets:
-                    nets[(hole, det)].append(float(m.net(det)))
-    for (hole, det), values in nets.items():
-        s = stats(values)
-        rec.check(
-            f"{hole_id(hole)}/{det}",
-            f"Hole {hole} {det} CV over {repeats}",
-            s.cv <= cv_max,
-            f"mean {s.mean:.0f}, CV {s.cv * 100:.2f} %",
-            f"CV <= {cv_max * 100:g} %",
-            mean=s.mean,
-            cv=s.cv,
-        )
-    skipped = [
-        f"{h}/{d}"
-        for h in chans
-        for d in ctx.cfg.channel(h).expected_detectors
-        if (h, d) not in nets
+    sat = {d: float(ctx.cfg.detectors[d].saturation_counts) for d in DETECTORS}
+    pairs = [
+        (h, d) for h in range(1, 17) for d in ctx.cfg.channel(h).expected_detectors if ctx.usable(d)
     ]
-    if skipped:
-        rec.note(
-            f"not judged (net < {min_net:g} counts or detector unusable): {', '.join(skipped)}"
+    holes = sorted({h for h, _ in pairs})
+    raw: dict[tuple[int, str], list[float | None]] = {k: [] for k in pairs}
+    lits: dict[tuple[int, str], list[float]] = {k: [] for k in pairs}
+    why: dict[tuple[int, str], list[str]] = {k: [] for k in pairs}
+    rec.measure(precision_rules="precision-2", planned={"repeats": repeats, "n": n,
+                "pairs": [f"{h}/{d}" for h, d in pairs], "order": "interleaved"})  # fmt: skip
+    for r in range(repeats):  # interleaved: spreads the heating, respects the duty budget
+        for hole in holes:
+            try:
+                m = ctx.meas(hole, n=n)
+            except Exception as e:  # keep the attempt as a missing record
+                for d in DETECTORS:
+                    if (hole, d) in raw:
+                        raw[(hole, d)].append(None)
+                        why[(hole, d)].append(f"repeat {r}: {type(e).__name__}: {e}")
+                continue
+            for d in DETECTORS:
+                if (hole, d) in raw:
+                    raw[(hole, d)].append(float(m.net(d)))
+                    lits[(hole, d)].append(float(m.lit(d)))
+    evaluated = 0
+    summaries = {}
+    for (hole, det), values in raw.items():
+        ps = precision_summary(
+            values, sd_max=sd_max, cv_max=cv_max, cv_min_mean=cv_min_mean,
+            saturated=any(v >= sat[det] for v in lits[(hole, det)]),
+            missing_reasons=why[(hole, det)],
+        )  # fmt: skip
+        summaries[f"{hole}/{det}"] = ps
+        sub, name = f"{hole_id(hole)}/{det}", f"Hole {hole} {det} repeatability, N={repeats}"
+        status = str(ps["status"])
+        if status in ("saturated", "insufficient"):
+            rec.add(sub, name, Status.SKIP, str(ps["reason"]), f"SD <= {sd_max:g} counts",
+                    summary=ps)  # fmt: skip
+            continue
+        evaluated += 1
+        sig = (
+            f"CV {float(ps['cv']) * 100:.1f} %"  # type: ignore[arg-type]
+            if ps.get("cv") is not None
+            else f"no CV ({ps.get('cv_reason')})"
         )
+        lo, hi = cast("tuple[float, float]", ps["ci95"])
+        rec.check(
+            sub,
+            name,
+            status == "stable",
+            f"mean {ps['mean']:+.1f} (95% {lo:+.1f}..{hi:+.1f}), SD {ps['sd']:.2f}, "
+            f"n {ps['n_observed']}/{ps['n_planned']}; {sig}; {ps['reason']}",
+            f"SD <= {sd_max:g} counts, every record present",
+            summary=ps,
+        )
+    rec.measure(repeats=summaries)
+    if evaluated == 0:
+        rec.skip("no channel could be evaluated for precision (none usable, all saturated or "
+                 "too few records): not a precision PASS")  # fmt: skip
     if ctx.dev.duty is not None:
         rec.measure(duty_cooldown_s=ctx.dev.duty.total_cooldown_s)
