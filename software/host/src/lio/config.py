@@ -163,15 +163,27 @@ class HwConfig:
         return {int(h): float(v) for h, v in raw.items()}
 
     def duty_budgets_ms(self) -> dict[str, float]:
-        """LED duty budgets keyed by :meth:`duty_key`: one per rail plus per-hole caps."""
+        """LED duty budgets keyed by :meth:`duty_key`: one per LED (hole).
+
+        The limit protects each over-driven LED (only one LED is lit at a time, so
+        the rail driver's load does not depend on which). Value: the hole's own
+        cap (``duty.max_on_ms_per_hole``) or its rail's per-LED value
+        (``duty.max_on_ms_per_channel``). Owner 2026-11-24; matches the approved
+        M0 DutyTracker semantics (history per hole).
+        """
         sec = self.section
-        out = {r: sec.num(f"duty.max_on_ms_per_channel.{r}") for r in ("A", "B")}
-        out.update({f"h{h}": v for h, v in self._hole_duty_ms().items()})
+        per_rail = {r: sec.num(f"duty.max_on_ms_per_channel.{r}") for r in ("A", "B")}
+        caps = self._hole_duty_ms()
+        out: dict[str, float] = {
+            f"h{c.hole}": caps.get(c.hole, per_rail[c.rail]) for c in self.channels
+        }
+        # "A"/"B": the per-LED value on that rail, for reports (never a charge key).
+        out.update(per_rail)
         return out
 
     def duty_key(self, hole: int) -> str:
-        """Budget key for ``hole``: its own cap (``duty.max_on_ms_per_hole``) or its rail."""
-        return f"h{hole}" if hole in self._hole_duty_ms() else self.channel(hole).rail
+        """Budget key for ``hole``: always the LED itself (``h<hole>``)."""
+        return f"h{hole}"
 
     def duty_budget_ms(self, hole: int) -> float:
         return self.duty_budgets_ms()[self.duty_key(hole)]

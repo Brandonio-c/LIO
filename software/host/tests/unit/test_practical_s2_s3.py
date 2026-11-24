@@ -112,17 +112,30 @@ def test_height_mains_periods_change_actual_sweep(cfg: HwConfig, tmp_path: Path)
     assert ScanStore.open(s2.folder).meta["plan"]["settings"]["mains_periods"] == 2
 
 
-def test_height_infeasible_integration_refused_before_light(cfg: HwConfig, tmp_path: Path) -> None:
-    """3+ periods x 8 RAIL A holes cannot fit 1000 ms/min under conservative SWEEP
-    charges: refused before any SWEEP is sent, never 'wait 0 s', abort recorded."""
-    from lio.ownership import DutyBudgetError
+def test_height_8_periods_now_fits_per_led_budgets(cfg: HwConfig, tmp_path: Path) -> None:
+    """Per-LED duty (owner 2026-11-24): 8 periods x 8 RAIL A holes no longer share one
+    1000 ms/min rail budget; each LED carries only its own conservative charge."""
+    store, _sent, _plan = _electrical(cfg, tmp_path, 8)
+    assert store.meta["status"] == "COMPLETE"
+    assert not any("infeasible" in (a.get("reason") or "") for a in store.meta.get("aborts", []))
+    assert any(r.get("state") == "lit" for r in store.rows())
 
+
+def test_infeasible_same_led_charge_set_is_refused(tmp_path: Path) -> None:
+    """A charge set that exceeds ONE LED's budget is still refused as infeasible."""
+    from lio.ownership import DutyBudgetError, DutyJournal
+
+    j = DutyJournal.for_rig(
+        "infeasible-led",
+        state_root=tmp_path,
+        window_s=60.0,
+        budget_ms={f"h{h}": 1000.0 for h in range(1, 17)},
+        rail_of=lambda h: f"h{h}",
+        synthetic=True,
+    )
     with pytest.raises(DutyBudgetError, match="infeasible"):
-        _electrical(cfg, tmp_path, 8)
-    runs = list((tmp_path / "runs").iterdir())
-    meta = ScanStore.open(runs[0]).meta
-    assert meta["aborts"] and "infeasible" in meta["aborts"][-1]["reason"]
-    assert not any(r for r in ScanStore.open(runs[0]).rows() if r.get("state") == "lit")
+        j.wait_needed_many([(3, 600.0), (3, 600.0)])
+    assert j.wait_needed_many([(3, 600.0), (4, 600.0)]) == 0.0
 
 
 def test_protocol_mains_periods_2_to_8_change_meas(cfg: HwConfig, tmp_path: Path) -> None:

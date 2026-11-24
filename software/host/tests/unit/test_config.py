@@ -33,9 +33,11 @@ class TestShippedConfig:
         assert cfg.rail_b_first == 9
 
     def test_duty_budgets(self, cfg: HwConfig) -> None:
-        # hole 9 (940 nm, rated 20 mA) sits on RAIL B but keeps RAIL A's budget
-        assert cfg.duty_key(9) == "h9" and cfg.duty_budget_ms(9) == 1000
-        assert cfg.duty_key(8) == "A" and cfg.duty_key(12) == "B"
+        # Per LED (owner 2026-11-24): every hole has its own budget key.
+        assert [cfg.duty_key(h) for h in (1, 8, 9, 12)] == ["h1", "h8", "h9", "h12"]
+        # hole 9 (940 nm, rated 20 mA) sits on RAIL B but keeps RAIL A's per-LED value
+        assert cfg.duty_budget_ms(9) == 1000
+        assert cfg.duty_budget_ms(1) == cfg.duty_budget_ms(8) == cfg.duty_budgets_ms()["A"] == 1000
         assert cfg.duty_budget_ms(12) == cfg.duty_budgets_ms()["B"] == 5000
 
     def test_detector_coverage(self, cfg: HwConfig) -> None:

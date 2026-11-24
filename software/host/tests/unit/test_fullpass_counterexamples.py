@@ -129,7 +129,7 @@ def test_ce03_undersized_reservation_vs_active_wdt_refuses_or_lowers(cfg, tmp_pa
     assert ok is False
     assert reason
 
-    budgets = {"A": 5000.0, "B": 10000.0}
+    budgets = {f"h{h}": (5000.0 if h <= 8 else 10000.0) for h in range(1, 17)}
     with _sim_dev(cfg, tmp_path, name="ce03", budget_ms=budgets) as dev:
         info = dev.info(refresh=True)
         assert int(info.as_int("wdt_a_ms")) >= 2000

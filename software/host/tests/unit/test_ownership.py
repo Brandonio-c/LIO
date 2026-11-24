@@ -128,7 +128,7 @@ def test_journal_fsync_failure_blocks_light(
         "fsync-fail-rig",
         state_root=tmp_path,
         window_s=60.0,
-        budget_ms={"A": 1000.0, "B": 5000.0, "h9": 1000.0},
+        budget_ms=cfg.duty_budgets_ms(),
         rail_of=cfg.duty_key,
         synthetic=True,
     )

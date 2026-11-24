@@ -148,6 +148,9 @@ motors:
 # Host-side LED duty budget (plan §6 T05.5): RAIL A LEDs run above rating.
 duty:
   window_s: 60
+  # Per LED (owner 2026-11-24): each LED has its own rolling budget; LEDs on the
+  # same rail do NOT share it (only one LED is lit at a time; the limit protects
+  # the over-driven LED). Values below are per LED on that rail.
   max_on_ms_per_channel:
     A: 1000
     B: 5000
@@ -295,9 +298,17 @@ dashboard:
   jog_deadman_s: 0
   # LEDs tab, diagnostic ring: lights the holes one at a time around the ring. The
   # step time is raised automatically so no hole exceeds its duty budget (duty:).
-  # Holding one hole (click / twin Hold) is solid-on: on-time = that rail's watchdog
-  # cap, renewed until Stop — no intentional flicker. Cycling the ring still uses
-  # ring_on_ms below between holes.
+  # Clicking one hole (or twin Hold) gives ONE flash of click_flash_ms (capped at that
+  # rail's watchdog cap; the firmware watchdog ends it), then off; click again to end
+  # it early. Cycling the ring still uses ring_on_ms below between holes.
+  click_flash_ms: 5000       # one click = one flash this long (owner, 2026-11-24)
+  # owner_acknowledged (owner, 2026-11-24): a click flash may exceed that LED's rolling
+  # duty budget (RAIL A LEDs / hole 9: 1 s per minute) ONCE, only when that LED has
+  # had no light in the last 60 s; its full charge is recorded, so only THAT LED then
+  # rests until it leaves the window (other LEDs are unaffected). Anything else (e.g.
+  # budgeted): the flash is cut to fit the budget. Scans, tests, protocols and the
+  # ring are never affected.
+  click_flash_over_budget: owner_acknowledged
   ring_on_ms: 100            # default on-time per hole when cycling the ring
   ring_on_ms_min: 10
   ring_on_ms_max: 10000      # allows solid hold up to RAIL B's watchdog cap

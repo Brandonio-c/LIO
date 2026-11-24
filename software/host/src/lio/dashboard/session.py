@@ -626,7 +626,7 @@ class Session:
         return self._manual(go)
 
     def led_hold(self, hole: int) -> dict[str, Any]:
-        """Toggle solid-on for one hole (rail watchdog window, renewed until stop)."""
+        """Toggle one click flash for a hole (``dashboard.click_flash_ms``, then off)."""
         if not 1 <= hole <= 16:
             raise Refused(f"hole must be 1-16, got {hole}")
         with self._lock:
@@ -635,15 +635,15 @@ class Session:
             self.ring_stop()
             self.log(f"hold hole {hole}: off")
             return {"action": "hold", "hole": hole, "on": False}
-        # on_ms is overridden to the rail watchdog cap inside ring_start for a
-        # one-hole hold when the duty budget is off (the operator default).
+        # A one-hole "hold" is ONE click flash (dashboard.click_flash_ms, watchdog
+        # bounded) when the ring duty budget is off (the operator default).
         out = self.ring_start(
             self.cfg.section.integer("dashboard.ring_on_ms"),
             0,
             include_unfitted=False,
             holes=[hole],
         )
-        self.log(f"hold hole {hole}: solid on ({out.get('on_ms')} ms window, renewing)")
+        self.log(f"hold hole {hole}: flash on for {out.get('on_ms')} ms")
         return {**out, "action": "hold", "hole": hole, "on": True}
 
     def wake(self) -> dict[str, Any]:
@@ -933,18 +933,37 @@ class Session:
         by_duty = on_ms * window_ms / (budget * len(holes))
         return math.ceil(max(by_duty, gap))
 
-    def _solid_hold_on_ms(self, hole: int) -> int:
-        """Raise watchdog for solid renewals; on-time capped to the duty budget (M1).
+    @property
+    def _click_flash_over_budget(self) -> bool:
+        """Owner acknowledged that ONE click flash may exceed the rolling budget."""
+        try:
+            v = self.cfg.section.raw("dashboard.click_flash_over_budget")
+        except Exception:
+            return False
+        return bool(v == "owner_acknowledged")
 
-        Continuous solid light beyond the rolling budget is no longer allowed via
-        ``budget=False``. Renewals reserve within WDT and the per-hole/rail budget.
+    def _wdt_cap_ms(self, hole: int) -> int:
+        return int(self.cfg.limits[f"wdt_{self.cfg.channel(hole).rail.lower()}_cap_ms"])
+
+    def _solid_hold_on_ms(self, hole: int) -> int:
+        """Set the watchdog for ONE click flash and return its length (ms).
+
+        Length = ``dashboard.click_flash_ms`` capped at the rail watchdog cap (the
+        firmware ends the flash there). Without the owner acknowledgement it is
+        also cut to the hole's duty budget so the conservative bound (== active
+        watchdog) fits. No renewals: the LED goes off after one window.
         """
         rail = self.cfg.channel(hole).rail  # "A" or "B"
         key = rail.lower()
-        cap = int(self.cfg.limits[f"wdt_{key}_cap_ms"])
+        cap = self._wdt_cap_ms(hole)
         hi = self.cfg.section.integer("dashboard.ring_on_ms_max")
-        duty_cap = int(self.cfg.duty_budget_ms(hole))
-        ms = min(cap, hi, duty_cap)
+        try:
+            flash = int(self.cfg.section.integer("dashboard.click_flash_ms"))
+        except Exception:
+            flash = cap
+        ms = min(cap, hi, flash)
+        if not self._click_flash_over_budget:
+            ms = min(ms, int(self.cfg.duty_budget_ms(hole)))
         dev = self._device()
         info = dev.info()
         if self._ring_wdt_restore is None:
@@ -955,6 +974,57 @@ class Session:
         if info.as_int(f"wdt_{key}_ms") != ms:
             dev.wdt_cfg(rail, ms)
         return ms
+
+    def _refuse_if_flash_must_wait(self, hole: int) -> None:
+        """Say how long to wait instead of blocking the request while cooling."""
+        dev = self._device()
+        j = getattr(dev, "journal", None)
+        if j is None:
+            return
+        cap = self._wdt_cap_ms(hole)
+        try:
+            flash = min(cap, int(self.cfg.section.integer("dashboard.click_flash_ms")))
+        except Exception:
+            flash = cap
+        if self._click_flash_over_budget and flash > j.budget_for(hole):
+            wait = j.window_clear_wait(hole)
+        else:
+            wait = j.wait_needed(hole, min(flash, j.budget_for(hole)))
+        if wait > 0:
+            raise Refused(
+                f"hole {hole} is resting (LED duty limit): it can flash again in "
+                f"{math.ceil(wait)} s"
+            )
+
+    def _ring_flash_once(self, ring: dict[str, Any]) -> None:
+        """One click flash: light, wait for its window (or Stop), then off."""
+        hole = ring["holes"][0]
+        dev = self.dev
+        if dev is None:
+            return
+        owner_max = float(self._wdt_cap_ms(hole)) if self._click_flash_over_budget else None
+        with self._dev_lock:
+            with self._lock:
+                if self._ring is not ring:
+                    return
+            until = dev.ch_on(hole, None, owner_flash_max_ms=owner_max)
+            t0 = dev.now()
+        with self._lock:
+            ring.update(state="lit", cooling_s=0.0, hole=hole)
+        end = t0 + until / 1000.0
+        while (left := end - dev.now()) > 0:
+            with self._lock:
+                if self._ring is not ring:
+                    return  # ring_stop turned it off
+            self._ring_wait(dev, min(0.05, left))
+        with self._lock:
+            if self._ring is not ring:
+                return
+            self._ring = None
+        with self._dev_lock:
+            dev.off()
+        self._restore_ring_wdt()
+        self.log(f"flash hole {hole}: {until} ms, then off")
 
     def _restore_ring_wdt(self) -> None:
         restore, self._ring_wdt_restore = self._ring_wdt_restore, None
@@ -1002,7 +1072,12 @@ class Session:
         if self._jog is not None:
             raise Busy("the motors are running continuously: stop them first")
         solid = len(holes) == 1 and not self._ring_budget
+        with self._lock:
+            current = self._ring
+        if current is not None and (solid or current.get("solid")):
+            self.ring_stop()  # a click flash never morphs in place: end it first
         if solid:
+            self._refuse_if_flash_must_wait(holes[0])
             on_ms = self._solid_hold_on_ms(holes[0])
         elif self._ring_wdt_restore is not None:
             # Switched from a solid hold back to a multi-hole ring: restore WDT.
@@ -1043,12 +1118,18 @@ class Session:
                         if cur != need:
                             self.dev.wdt_cfg(rail, need)
         kind = "solid hold" if solid else "LED ring"
-        self.log(f"{kind} started: {on_ms} ms on, renew/step every {step} ms, holes {holes}")
+        self.log(
+            f"click flash started: {on_ms} ms on, hole {holes[0]}"
+            if solid
+            else f"{kind} started: {on_ms} ms on, step every {step} ms, holes {holes}"
+        )
+        with self._lock:
+            started = self._ring_view()  # a short flash may already be over on return
         self._ring_thread = threading.Thread(
             target=self._ring_loop, args=(ring,), name="lio-ring", daemon=True
         )
         self._ring_thread.start()
-        return self.ring_status()
+        return started
 
     def ring_stop(self) -> dict[str, Any]:
         with self._lock:
@@ -1096,6 +1177,9 @@ class Session:
     def _ring_loop(self, ring: dict[str, Any]) -> None:
         i = 0
         try:
+            if ring.get("solid"):
+                self._ring_flash_once(ring)
+                return
             while True:
                 with self._lock:
                     if self._ring is not ring:

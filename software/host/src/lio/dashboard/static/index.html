@@ -582,7 +582,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
     <h2>LED ring (diagnostic)</h2>
     <p class="note" style="margin:6px 0 0">Lights the holes one at a time, clockwise from hole 1, round and round until you press Stop. Use it to check from the chamber which LEDs really light.
       One hole at a time, always<span id="ring-budget"></span>. Motors and the other LED tools are locked while it runs.<br>
-      <strong>Click a hole</strong> to hold just that one <strong>solid on</strong> (full rail watchdog window, renewed until you stop — no flicker). Click it again (or Stop / All off) to end; click another hole to switch.</p>
+      <strong>Click a hole</strong> to light just that one for <strong>about 5 s</strong>, then it turns itself off (the LEDs run above their rating, so that one LED then rests for about a minute before it can flash again; every other LED can flash straight away). Click it again (or Stop / All off) to end early; click another hole to switch.</p>
     <div class="row" style="margin-top:12px">
       <label class="field">On-time per hole (ms)
         <input id="ring-on" type="number" step="10" style="width:110px"></label>
@@ -971,7 +971,7 @@ function renderDetails() {
     const holding = !!(R && R.active && R.holes && R.holes.length === 1 && R.holes[0] === h.hole);
     actions = `<div class="row"><button class="btn small" ${canUse ? "" : "disabled"} onclick="measure(${h.hole})">Measure</button>
       <button class="btn small${holding ? " primary" : ""}" ${canUse ? "" : "disabled"} onclick="holdLed(${h.hole})">${holding ? "Holding — click to off" : "Hold solid"}</button>
-      <span class="note">${canUse ? "Measure = one dark/lit sample · Hold = solid on until you turn it off" : S.connected ? "busy: a run is using the device" : "connect first"}</span></div>`;
+      <span class="note">${canUse ? "Measure = one dark/lit sample · Hold = light it for about 5 s" : S.connected ? "busy: a run is using the device" : "connect first"}</span></div>`;
     const m = S.manual; if (m && m.action === "measure" && m.hole === h.hole)
       actions += `<div class="meas">${["opt101", "ingaas"].map((d) => `<span><span class="dot" style="background:var(--${d})"></span>${d === "opt101" ? "OPT101" : "InGaAs"}: dark <span class="num">${m.dark[d]}</span>, lit <span class="num">${m.lit[d]}</span>, net <strong class="num">${m.net[d] > 0 ? "+" : ""}${m.net[d]}</strong> (${(m.net[d] * m.lsb_mv).toFixed(1)} mV)</span>`).join("")}</div>`;
   } else {
@@ -987,7 +987,7 @@ async function measure(h) { await act("/api/measure", { hole: h }); }
 async function holdLed(h) {
   try {
     const out = await api("/api/flash", { hole: h });
-    toast(out.on ? `hole ${h} solid on` : `hole ${h} off`, 2500);
+    toast(out.on ? `hole ${h} on for ${Math.round((out.on_ms || 0) / 1000)} s` : `hole ${h} off`, 2500);
   } catch (e) { toast(e.message, 7000); }
   await ringPoll(); poll(true);
 }
@@ -1566,7 +1566,7 @@ async function ringMinUpdate() {
     $("ring-min").textContent = ringHeld()
       ? (STATIC.ring.duty_budget
         ? `Holding hole ${ringHeld()}: at ${on} ms on it can flash at most once every ${(min_step_ms / 1000).toFixed(1)} s (duty budget).`
-        : `Holding hole ${ringHeld()} solid: full rail watchdog window, renewed until Stop (on-time field applies to Start ring only).`)
+        : `Hole ${ringHeld()}: one flash of about 5 s, then off (on-time field applies to Start ring only).`)
       : `Fastest allowed at ${on} ms on: one hole every ${min_step_ms} ms (a full lap in ${(n * min_step_ms / 1000).toFixed(1)} s).`;
   } catch (e) { /* not connected yet */ }
 }
@@ -1608,7 +1608,7 @@ function renderRing() {
   const ch = active && ringCh().find((c) => c.hole === R.hole);
   $("ring-c1").textContent = active && ch ? `Hole ${ch.hole}` : "–";
   $("ring-c2").textContent = active && ch ? `${ch.label}${ch.nm ? "" : ""} · ${seeHow(ch.nm)}` : "";
-  $("ring-state").textContent = !on ? ((S && S.error) ? `Not connected: ${S.error} (System tab → Connect)` : "Not connected: connect on the System tab") : !active ? "Stopped" : R.state === "cooling" ? `${held ? "Holding" : "Cooling"} hole ${R.hole}: dark for ${R.cooling_s} s more (duty budget)` : held ? `Holding hole ${held} solid` : `Running: hole ${R.hole} lit`;
+  $("ring-state").textContent = !on ? ((S && S.error) ? `Not connected: ${S.error} (System tab → Connect)` : "Not connected: connect on the System tab") : !active ? "Stopped" : R.state === "cooling" ? `${held ? "Holding" : "Cooling"} hole ${R.hole}: dark for ${R.cooling_s} s more (duty budget)` : held ? `Hole ${held} on (about 5 s, then off)` : `Running: hole ${R.hole} lit`;
   $("ring-detail").textContent = held
     ? (R.solid
       ? `Solid on · ${R.on_ms} ms watchdog window, renewed · renew ${R.laps + 1}. Click it again (or Stop) to off.`

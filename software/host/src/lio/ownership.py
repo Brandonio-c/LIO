@@ -606,6 +606,56 @@ class DutyJournal:
         self._persist()
         return provisional
 
+    def window_clear_wait(self, hole: int, now: float | None = None) -> float:
+        """Seconds until ``hole``'s budget key has no exposure left in the window."""
+        now = self.mono_now() if now is None else now
+        key = self.rail_of(hole)
+        wait = 0.0
+        for span in self._data.get("history", {}).get(key, []):
+            wait = max(wait, float(span["t1"]) + self.window_s - now)
+        cool = self._data.get("cooldown_until_mono")
+        if cool is not None:
+            wait = max(wait, float(cool) - now)
+        return max(0.0, wait)
+
+    def reserve_owner_flash(self, hole: int, on_ms: float, *, max_ms: float) -> Reservation:
+        """Reserve ONE owner-acknowledged manual flash that may exceed the rolling budget.
+
+        Dashboard click-to-flash only (``dashboard.click_flash_over_budget:
+        owner_acknowledged``). Admitted only when nothing is pending, no
+        cooldown/uncertain recovery is active and the hole's budget key has had
+        no exposure in the last window; ``on_ms`` (the watchdog-bounded charge)
+        must not exceed ``max_ms``. The full charge is reserved and committed as
+        usual, so every later request on that key waits until it leaves the
+        window: at most one such flash per window + flash length.
+        """
+        if self._pending_items():
+            raise DutyBudgetError(
+                "cannot reserve while another pending set exists; commit or abort first"
+            )
+        self._clear_uncertain_if_cooled()
+        if on_ms > max_ms + 1e-9:
+            raise DutyBudgetError(
+                f"owner flash {on_ms:.0f} ms exceeds its {max_ms:.0f} ms limit for hole {hole}"
+            )
+        now = self.mono_now()
+        if self.used_ms(hole, now) > 0.0 or self.window_clear_wait(hole, now) > 0.0:
+            raise DutyBudgetError(
+                f"owner flash on hole {hole} needs a clear duty window: wait "
+                f"{self.window_clear_wait(hole, now):.0f} s"
+            )
+        res = Reservation(
+            id=uuid.uuid4().hex,
+            hole=int(hole),
+            on_ms=float(on_ms),
+            rail_key=self.rail_of(hole),
+            reserved_at_mono=now,
+            owner_generation=self.owner_generation,
+        )
+        self._data["pending"] = {**self._reservation_dict(res), "owner_flash": True}
+        self._persist()
+        return res
+
     def commit(self, reservation: Reservation, *, t_on: float, t_off: float) -> None:
         if reservation.owner_generation != self.owner_generation:
             raise OwnershipError(

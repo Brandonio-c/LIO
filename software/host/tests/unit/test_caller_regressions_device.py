@@ -135,9 +135,14 @@ def journal_json(dev: LIODevice) -> dict:
 
 
 def charged_ms(dev: LIODevice, key: str) -> float:
-    """Total retained/committed charge for a rail key in the durable journal."""
-    spans = (journal_json(dev).get("history") or {}).get(key, [])
-    return sum((float(s["t1"]) - float(s["t0"])) * 1000.0 for s in spans)
+    """Total retained/committed charge in the durable journal.
+
+    ``key`` is a per-LED key (``h3``) or a rail name, which sums that rail's LEDs
+    (duty budgets are per LED since 2026-11-24).
+    """
+    hist = journal_json(dev).get("history") or {}
+    keys = [f"h{h}" for h in dev.cfg.rail_holes(key)] if key in ("A", "B") else [key]
+    return sum((float(s["t1"]) - float(s["t0"])) * 1000.0 for k in keys for s in hist.get(k, []))
 
 
 # ------------------------------------------------------------------ A01 / D01
@@ -525,3 +530,79 @@ def test_meas_err_busy_releases_only_when_verified_dark(
         assert (j["uncertain"] is False) is released
         if not released:
             assert any("ERR code 3" in r["reason"] for r in j.get("uncertain_reasons", []))
+
+
+# ------------------------------------------------- owner click flash (2026-11-24)
+
+
+def test_owner_flash_journal_requires_clear_window_and_records_full_charge(
+    tmp_path: Path,
+) -> None:
+    from lio.ownership import DutyJournal
+
+    clock = {"t": 1000.0}
+    j = DutyJournal.for_rig(
+        "synthetic-flash",
+        state_root=tmp_path,
+        window_s=60.0,
+        budget_ms={"A": 1000.0, "B": 5000.0},
+        rail_of=lambda h: "A" if h <= 8 else "B",
+        path=tmp_path / "j.json",
+        mono_now=lambda: clock["t"],
+    )
+    # The normal path refuses a 5 s charge on RAIL A outright.
+    with pytest.raises(DutyBudgetError, match="exceeds budget"):
+        j.reserve(3, 5000.0)
+    with pytest.raises(DutyBudgetError, match="limit"):
+        j.reserve_owner_flash(3, 5001.0, max_ms=5000.0)
+    res = j.reserve_owner_flash(3, 5000.0, max_ms=5000.0)
+    assert json.loads((tmp_path / "j.json").read_text())["pending"]["owner_flash"] is True
+    j.commit(res, t_on=clock["t"], t_off=clock["t"] + 5.0)
+    clock["t"] += 5.0
+    # Over budget now: normal light waits for the flash to leave the window ...
+    assert j.wait_needed(1, 92.0) == pytest.approx(60.0, abs=0.01)
+    # ... and a second owner flash needs a fully clear window.
+    with pytest.raises(DutyBudgetError, match="clear duty window: wait 60 s"):
+        j.reserve_owner_flash(5, 5000.0, max_ms=5000.0)
+    # RAIL B is a separate key and is unaffected.
+    assert j.wait_needed(12, 92.0) == 0.0
+    clock["t"] += 60.0
+    assert j.window_clear_wait(3) == 0.0
+    j.commit(j.reserve_owner_flash(5, 5000.0, max_ms=5000.0), t_on=clock["t"], t_off=clock["t"] + 1)
+
+
+def test_owner_flash_journal_refused_while_pending_or_cooling(tmp_path: Path) -> None:
+    from lio.ownership import DutyJournal
+
+    clock = {"t": 1000.0}
+    j = DutyJournal.for_rig(
+        "synthetic-flash2",
+        state_root=tmp_path,
+        window_s=60.0,
+        budget_ms={"A": 1000.0, "B": 5000.0},
+        rail_of=lambda h: "A" if h <= 8 else "B",
+        path=tmp_path / "j.json",
+        mono_now=lambda: clock["t"],
+    )
+    j.reserve(12, 100.0)
+    with pytest.raises(DutyBudgetError, match="pending"):
+        j.reserve_owner_flash(3, 5000.0, max_ms=5000.0)
+
+
+def test_ch_on_over_budget_needs_owner_flash_on_real_port(cfg: HwConfig, tmp_path: Path) -> None:
+    with opened(cfg, tmp_path) as (dev, _t, _sim):
+        dev.wdt_cfg("A", 5000)
+        # Without the owner flash the 5 s window is refused before light.
+        with pytest.raises(DutyBudgetError, match="refuse before light"):
+            dev.ch_on(1, None)
+        until = dev.ch_on(1, None, owner_flash_max_ms=5000.0)
+        assert until == 5000
+        dev.off()
+        assert charged_ms(dev, "A") > 0.0
+        # The SAME LED must rest until its window is clear (per-LED budgets) ...
+        with pytest.raises(DutyBudgetError, match="clear duty window"):
+            dev.ch_on(1, None, owner_flash_max_ms=5000.0)
+        # ... but another LED on the same rail can flash straight away.
+        assert dev.ch_on(2, None, owner_flash_max_ms=5000.0) == 5000
+        dev.off()
+        assert charged_ms(dev, "h1") > 0.0 and charged_ms(dev, "h2") > 0.0

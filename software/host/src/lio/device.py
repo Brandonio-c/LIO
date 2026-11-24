@@ -47,6 +47,7 @@ from lio.stage import StageError, StageTracker
 from lio.timing_capability import (
     DEFAULT_TIMING_CAPABILITY,
     conservative_pulse_bound_ms,
+    quantize_wdt_ms,
     validate_reported_on_ms,
 )
 from lio.transport import SerialTransport, SimTransport, Transport
@@ -1065,12 +1066,25 @@ class LIODevice:
             return f"reserved hole {hole} but STATUS selects {sel or 'none/several'}"
         return ""
 
-    def ch_on(self, hole: int, ms: int | None = None, *, budget: bool = True) -> int:
+    def ch_on(
+        self,
+        hole: int,
+        ms: int | None = None,
+        *,
+        budget: bool = True,
+        owner_flash_max_ms: float | None = None,
+    ) -> int:
         """Light one hole; returns the firmware's (possibly clamped) on-time in ms.
 
         Real hardware always goes through the duty journal (M1): ``budget=False``
         is not an escape hatch. Simulation without a journal may still skip.
         The firmware watchdog still ends the flash.
+
+        ``owner_flash_max_ms`` (dashboard click-to-flash only, owner-acknowledged
+        in config): a single watchdog-bounded flash whose charge exceeds the
+        hole's rolling budget is admitted through
+        :meth:`DutyJournal.reserve_owner_flash` (clear window required, full
+        charge recorded). Within-budget flashes still take the normal gate.
         """
         rail = self.cfg.channel(hole).rail
         default_wdt = int(self.cfg.wdt_ms(rail))
@@ -1091,8 +1105,19 @@ class LIODevice:
             nominal = float(current_wdt)
         else:
             nominal = float(ms + 1)
-        bound = self._conservative_bound_for_hole(hole, nominal_on_ms=nominal)
-        if budget:
+        over = (
+            owner_flash_max_ms is not None
+            and self.journal is not None
+            and budget
+            and quantize_wdt_ms(nominal, capability=self._timing) > self.journal.budget_for(hole)
+        )
+        bound = self._conservative_bound_for_hole(
+            hole, nominal_on_ms=nominal, check_budget=not over
+        )
+        if over:
+            assert owner_flash_max_ms is not None
+            self._owner_flash_gate(hole, bound, owner_flash_max_ms)
+        elif budget:
             self._duty_gate(hole, bound)
         cmd = f"CH {hole} ON" + (f" {ms}" if ms is not None else "")
         try:
@@ -1464,6 +1489,7 @@ class LIODevice:
         nominal_on_ms: float | None = None,
         may_raise_wdt: bool = True,
         energized_rail: str | None = None,
+        check_budget: bool = True,
     ) -> float:
         """Conservative pulse bound (D05).
 
@@ -1518,7 +1544,7 @@ class LIODevice:
         if refuse:
             raise DutyBudgetError(f"refuse before light: {refuse}")
         use_bound = float(bound)
-        if self.journal is not None:
+        if self.journal is not None and check_budget:
             try:
                 self.journal.wait_needed(hole, use_bound, self.now())
             except DutyBudgetError as e:
@@ -1575,6 +1601,15 @@ class LIODevice:
         rejected before any transport write. Window-full cases wait, then reserve.
         """
         self._duty_gate_many([(hole, on_ms)])
+
+    def _owner_flash_gate(self, hole: int, on_ms: float, max_ms: float) -> None:
+        """Reserve one owner-acknowledged over-budget manual flash (see ``ch_on``)."""
+        if self._light_blocked:
+            raise OwnershipError(f"light blocked until a verified OFF: {self._light_blocked}")
+        self._require_real_port_timing()
+        self.last_charge_ms = float(on_ms)
+        assert self.journal is not None
+        self._pending_reservations = [self.journal.reserve_owner_flash(hole, on_ms, max_ms=max_ms)]
 
     def _duty_gate_many(self, charges: list[tuple[int, float]]) -> None:
         if not charges:

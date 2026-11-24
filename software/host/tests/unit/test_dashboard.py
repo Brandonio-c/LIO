@@ -756,34 +756,68 @@ class TestHoldOneHole:
         session.ring_stop()
         assert session.sim is not None and not session.sim._light_since
 
-    def test_without_budget_a_held_hole_is_solid_on(self, session: Session) -> None:
+    def test_without_budget_a_click_is_one_flash_then_off(self, session: Session) -> None:
         assert not session.cfg.section.raw("dashboard.ring_duty_budget")
+        assert session.cfg.section.raw("dashboard.click_flash_over_budget") == "owner_acknowledged"
         session.connect("sim")
-        # M1: solid hold renews within the rail duty budget (not a budget=False WDT bypass).
+        # Owner 2026-11-24: one click = one watchdog-bounded flash (5 s), then off.
         out = session.ring_start(100, 0, include_unfitted=False, holes=[7])
-        duty_a = int(session.cfg.duty_budget_ms(7))
         assert out["solid"] is True
-        assert out["on_ms"] == out["step_ms"] == out["min_step_ms"] == duty_a
+        assert out["on_ms"] == min(
+            int(session.cfg.section.integer("dashboard.click_flash_ms")),
+            int(session.cfg.limits["wdt_a_cap_ms"]),
+        )
 
-        def relit() -> bool:
-            assert session.sim is not None and len(session.sim._light_since) <= 1
-            return bool(session.ring_status().get("laps", 0) >= 2)
+        def ended() -> bool:
+            return session.ring_status() == {"active": False}
 
-        wait_for(relit, timeout=60)
-        session.ring_stop()
+        wait_for(ended, timeout=60)
         assert session.sim is not None and not session.sim._light_since
-        # Watchdog restored to the boot default after solid hold.
         assert session.dev is not None
+        lit = {e.fields.as_int("ch") for _, e in session.dev.events if e.name in ("OFF", "WDT")}
+        assert lit <= {7}
+        # Watchdog restored to the boot default after the flash.
         assert session.dev.info().as_int("wdt_a_ms") == session.cfg.limits["wdt_a_ms"]
 
-    def test_led_hold_toggles_solid(self, session: Session) -> None:
+    def test_led_hold_toggles_one_flash(
+        self, session: Session, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
         session.connect("sim")
+
+        def lit_until_stopped(ring: dict) -> None:  # the virtual clock ends 5 s at once
+            deadline = time.monotonic() + 10
+            while session._ring is ring and time.monotonic() < deadline:
+                time.sleep(0.01)
+
+        monkeypatch.setattr(session, "_ring_flash_once", lit_until_stopped)
         on = session.led_hold(10)
         assert on["on"] and on["solid"] and on["holes"] == [10]
-        assert on["on_ms"] == int(session.cfg.duty_budget_ms(10))
+        assert on["on_ms"] == 5000
         off = session.led_hold(10)
         assert off == {"action": "hold", "hole": 10, "on": False}
         assert session.ring_status() == {"active": False}
+
+    def test_click_switches_hole_by_ending_the_first(self, session: Session) -> None:
+        session.connect("sim")
+        session.led_hold(10)
+        out = session.led_hold(11)
+        assert out["holes"] == [11] and out["on"]
+        session.ring_stop()
+        assert session.sim is not None and not session.sim._light_since
+
+    def test_without_owner_ack_a_click_flash_fits_the_budget(
+        self, cfg: HwConfig, tmp_path: Path
+    ) -> None:
+        data = copy.deepcopy(cfg.data)
+        data["dashboard"]["click_flash_over_budget"] = "budgeted"
+        s = Session(parse_config(data, cfg.path), tmp_path / "results")
+        try:
+            s.connect("sim")
+            out = s.ring_start(100, 0, include_unfitted=False, holes=[7])
+            assert out["on_ms"] == int(s.cfg.duty_budget_ms(7))
+            s.ring_stop()
+        finally:
+            s.shutdown(timeout_s=30)
 
     def test_bad_hole_is_refused(self, session: Session) -> None:
         session.connect("sim")
