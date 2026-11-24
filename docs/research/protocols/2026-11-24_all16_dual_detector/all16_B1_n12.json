@@ -1,0 +1,77 @@
+{
+  "id": "all16_both_detectors_B1_n12",
+  "version": "1",
+  "schema": 1,
+  "kind": "stationary_targeted",
+  "sample": {
+    "sample_id": "black_flat_reference_B1",
+    "declared": true
+  },
+  "assembly": {
+    "tray": "current tray; fixed reference backing and registration",
+    "lid": "closed for every acquisition",
+    "notes": "PREPARED, NOT RUN. Record actual material, backing, surface plane and placement ID. Both detectors, head position, wiring and drive remain unchanged. Owner-reported Rf2M/approximately30mA remain unmeasured declarations. No blocker is claimed."
+  },
+  "holes": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "detectors": [
+    "ingaas",
+    "opt101"
+  ],
+  "position_policy": "current_position",
+  "gain": "1",
+  "conditions": [
+    {
+      "id": "target",
+      "label": "black flat reference, placement B1, same top surface plane",
+      "settle_ms": 8,
+      "mains_periods": 2,
+      "optical_block": false
+    }
+  ],
+  "blocks": {
+    "n_production": 12,
+    "n_pilot": 0,
+    "n_production_min": 12,
+    "n_production_max": 12
+  },
+  "budgets": {
+    "max_wall_s": 3600,
+    "max_cycle_s": 3600,
+    "max_total_on_ms": 24000
+  },
+  "allocation": {
+    "policy": "equal_fixed",
+    "control_holes": []
+  },
+  "inference": {
+    "split": "fixed_n",
+    "pilot_is_confirmation": false
+  },
+  "estimator": {
+    "name": "fixed_n_block",
+    "version": "m3",
+    "coupling_model": "validated_control"
+  },
+  "operator_checkpoints": [
+    "With LEDs OFF and motors disarmed, confirm actual black material and fresh placement B1; target top surface/backing/registration match the declared reference plane; head and BOTH detector mounts, wiring and LED currents are unchanged; chamber is closed. All16 holes including h16 are in this diagnostic run; h16 remains spectrally unassigned. Is this exact state ready?"
+  ],
+  "notes": "OWNER REQUEST: ALL16 LEDs, BOTH detectors. FixedN12/hole, individual managed MEAS, no adaptive stopping or spectral eligibility filtering of raw rows. Run order W1,B1,W2,B2, with actual confirmations. Neither detector/head moves. Preserve the existing physical-device ownership and persistent duty journal, rolling limits and cooperative-unproven admission. Never clear history or bypass a refusal. Single-condition family=0 is expected; compare the 32 hole/detector target effects using a separately frozen session family. Repeated readings are technical repeats, not independent preparations. ABAB does not cancel linear drift. All out-of-band readings remain diagnostic; h15 is cutoff-sensitive; h16 is proxy_unassigned, never primary1850 chemistry. C stays null without control evidence. No optical block was performed. If matched black card is unavailable BEFORE acquisition, collect W1/W2 only and leave black/target contrasts explicitly unavailable.",
+  "objective": "channel_health_diagnostic"
+}

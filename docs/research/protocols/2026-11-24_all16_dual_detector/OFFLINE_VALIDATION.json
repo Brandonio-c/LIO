@@ -1,0 +1,60 @@
+{
+  "status": "OFFLINE_VALIDATED_NOT_RUN",
+  "hardware_guard_calls": [],
+  "protocols": [
+    {
+      "file": "all16_W1_n12.json",
+      "protocol_sha256": "74464e0b0928b9223ed480d3b406ca9b5878b3b51383ba942ea2c11164102894",
+      "physical_MEAS_operations": 192,
+      "expected_detector_rows": 384,
+      "nominal_total_on_ms": 15871.999999999998,
+      "normal_reservations_ms_at_92ms": 17664,
+      "total_on_cap_ms": 24000,
+      "wall_cycle_cap_s": 3600,
+      "offline_CLI_exit": 0,
+      "offline_ETA_not_live_admission_s": 25.472
+    },
+    {
+      "file": "all16_B1_n12.json",
+      "protocol_sha256": "fdee1e03a37f9e232a5fa88a877732adcc8e4718a4b788af18803871c0b5b7e8",
+      "physical_MEAS_operations": 192,
+      "expected_detector_rows": 384,
+      "nominal_total_on_ms": 15871.999999999998,
+      "normal_reservations_ms_at_92ms": 17664,
+      "total_on_cap_ms": 24000,
+      "wall_cycle_cap_s": 3600,
+      "offline_CLI_exit": 0,
+      "offline_ETA_not_live_admission_s": 25.472
+    },
+    {
+      "file": "all16_W2_n12.json",
+      "protocol_sha256": "7358eeecffb311f3cabd15cf647d6957e5a5227c9ab16241c2e0f76e49cf7a43",
+      "physical_MEAS_operations": 192,
+      "expected_detector_rows": 384,
+      "nominal_total_on_ms": 15871.999999999998,
+      "normal_reservations_ms_at_92ms": 17664,
+      "total_on_cap_ms": 24000,
+      "wall_cycle_cap_s": 3600,
+      "offline_CLI_exit": 0,
+      "offline_ETA_not_live_admission_s": 25.472
+    },
+    {
+      "file": "all16_B2_n12.json",
+      "protocol_sha256": "72ad7e42d0be42716cbd63bf7be55353889370b5cf2570f6bc18e9dcd8ccc071",
+      "physical_MEAS_operations": 192,
+      "expected_detector_rows": 384,
+      "nominal_total_on_ms": 15871.999999999998,
+      "normal_reservations_ms_at_92ms": 17664,
+      "total_on_cap_ms": 24000,
+      "wall_cycle_cap_s": 3600,
+      "offline_CLI_exit": 0,
+      "offline_ETA_not_live_admission_s": 25.472
+    }
+  ],
+  "source_sha256_unchanged": {
+    "software/config/lio_hw.yaml": "b6d5b598cc7a6a7eddcaa72a038b25d67d8172b4caf2fbe3046dcb2e4110242e",
+    "software/host/src/lio/scan/acquisition.py": "b0cd0b23512bc892c545863e749eead0bde7f4c24fc114e06019c20338e2ff8e",
+    "software/host/src/lio/device.py": "60c574cd13ffcf06701b2a9180033d1f468c3cac6879584c717ecdec510a5c53",
+    "software/host/src/lio/ownership.py": "8ca52fabbd949b0445e74ee3d0d3216ccad51cc034e07fdb79548ed0c4c4c62e"
+  }
+}
