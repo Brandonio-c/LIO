@@ -247,7 +247,11 @@ def t08_2(ctx: SuiteContext, rec: Recorder) -> None:
             for sw in sweeps:
                 rec_h = [m for m in sw.records if m.hole == h]
                 vals.append(float(rec_h[0].net(d)) if rec_h else None)
-            ps = precision_summary(vals, sd_max=sd_max, cv_max=cv_max, cv_min_mean=cv_min_mean)
+            ps = precision_summary(
+                vals, sd_max=sd_max, cv_max=cv_max, cv_min_mean=cv_min_mean,
+                noise_floor=ctx.th.num("repeatability.noise_floor_sigma") * math.sqrt(2.0)
+                * ctx.dark().sigma(d),
+            )  # fmt: skip
             net_summ[f"{h}/{d}"] = ps
             if ps["status"] == "insufficient":
                 rec.add(f"net/{hole_id(h)}/{d}", f"Hole {h} {d} SWEEP net repeatability",

@@ -344,6 +344,7 @@ def precision_summary(
     cv_min_mean: float,
     saturated: bool = False,
     missing_reasons: Sequence[str] = (),
+    noise_floor: float = 0.0,
 ) -> dict[str, object]:
     """Repeatability of fixed-N signed nets at the instrument's real signal level (S1).
 
@@ -394,9 +395,19 @@ def precision_summary(
         )  # fmt: skip
     if out["dropouts"]:
         out.update(status="dropouts", reason=f"{out['dropouts']} of {len(values)} records missing")
-    elif s.std > sd_max:
-        out.update(status="unstable", reason=f"SD {s.std:.2f} > {sd_max:g} counts")
     else:
-        out.update(status="stable", reason=f"SD {s.std:.2f} <= {sd_max:g} counts")
-    _ = cv_max  # CV is reported, not used to pass/fail low-count precision
+        # Low counts: absolute dispersion, never below what the measured dark
+        # noise of a lit-dark net explains (noise_floor). Resolved large signals:
+        # also stable when the relative spread is within cv_max (proportional noise).
+        limit = max(sd_max, noise_floor)
+        out["sd_limit"] = limit
+        out["sd_limit_basis"] = f"max({sd_max:g} counts, dark-noise floor {noise_floor:.2f})"
+        cv = out.get("cv")
+        if s.std <= limit:
+            out.update(status="stable", reason=f"SD {s.std:.2f} <= {limit:.2f} counts")
+        elif isinstance(cv, float) and cv <= cv_max:
+            out.update(status="stable", reason=f"CV {cv * 100:.2f} % <= {cv_max * 100:g} %")
+        else:
+            out.update(status="unstable", reason=f"SD {s.std:.2f} > {limit:.2f} counts"
+                       + ("" if cv is None else f" and CV > {cv_max * 100:g} %"))  # fmt: skip
     return out

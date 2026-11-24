@@ -320,6 +320,7 @@ def t05_5(ctx: SuiteContext, rec: Recorder) -> None:
     sd_max = ctx.th.num("repeatability.sd_max_counts")
     cv_max = ctx.th.num("repeatability.cv_max")
     cv_min_mean = ctx.th.num("repeatability.cv_min_mean_counts")
+    k_sig = ctx.th.num("repeatability.noise_floor_sigma")
     n = ctx.th.integer("channel.meas_n")
     sat = {d: float(ctx.cfg.detectors[d].saturation_counts) for d in DETECTORS}
     pairs = [
@@ -352,6 +353,7 @@ def t05_5(ctx: SuiteContext, rec: Recorder) -> None:
             values, sd_max=sd_max, cv_max=cv_max, cv_min_mean=cv_min_mean,
             saturated=any(v >= sat[det] for v in lits[(hole, det)]),
             missing_reasons=why[(hole, det)],
+            noise_floor=k_sig * math.sqrt(2.0) * ctx.dark().sigma(det),
         )  # fmt: skip
         summaries[f"{hole}/{det}"] = ps
         sub, name = f"{hole_id(hole)}/{det}", f"Hole {hole} {det} repeatability, N={repeats}"

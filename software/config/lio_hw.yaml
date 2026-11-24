@@ -378,6 +378,7 @@ thresholds:
     sd_max_counts: 5.0            # T05.5 MEAS repeats: sample SD limit (counts)
     sweep_sd_max_counts: 5.0      # T08.2 SWEEP net repeats: sample SD limit (counts)
     cv_min_mean_counts: 20        # CV reported only for resolved means at least this large
+    noise_floor_sigma: 3          # SD limit never below 3 x sqrt(2) x measured dark sigma (lit-dark net)
   settling:
     fraction: 0.99
     holes: [3, 8, 13]

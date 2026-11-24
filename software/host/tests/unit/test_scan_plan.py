@@ -61,14 +61,17 @@ def test_static_mode_needs_no_limits(cfg: HwConfig) -> None:
 
 
 def test_overrides_are_typed_and_checked(cfg: HwConfig) -> None:
-    s = ScanSettings.from_config(cfg, {"sweep_n": "4", "abort_on_saturation": "false"})
+    # sweep_n only applies with mains integration off (S3: ignored settings refused)
+    s = ScanSettings.from_config(
+        cfg, {"mains_hz": 0, "sweep_n": "4", "abort_on_saturation": "false"}
+    )
     assert s.sweep_n == 4 and s.abort_on_saturation is False
     assert ScanSettings.from_config(cfg).sweep_n == 2  # the default (S0 D5)
     assert ScanSettings.from_config(cfg).heartbeat_timeout_s == 90
     with pytest.raises(PlanError, match="unknown"):
         ScanSettings.from_config(cfg, {"nonsense": 1})
     with pytest.raises(PlanError, match="bad value"):
-        ScanSettings.from_config(cfg, {"sweep_n": "many"})
+        ScanSettings.from_config(cfg, {"mains_hz": 0, "sweep_n": "many"})
     with pytest.raises(PlanError, match="unknown mode"):
         _plan(cfg, "nope")
 

@@ -297,3 +297,30 @@ def test_physical_stage_write_is_guarded(tmp_path: Path) -> None:
     assert (phys.read_bytes() if phys.exists() else None) == before
     ok = StageTracker(tmp_path / "stage_position.json")
     ok.set_top((0, 0))  # synthetic state still works
+
+
+def test_dashboard_requests_do_not_pay_analysis_imports(cfg: HwConfig, tmp_path: Path) -> None:
+    """S7 diagnosis: first analysis-route request must not import SciPy in-handler."""
+    import sys
+    import time
+    import urllib.request
+
+    from lio.dashboard.server import DashboardServer
+    from lio.dashboard.session import Session
+
+    srv = DashboardServer(Session(cfg, tmp_path), "127.0.0.1", 0)
+    assert "lio.scan.derived" in sys.modules and "lio.scan.acquisition" in sys.modules
+    srv.serve_in_thread()
+    try:
+        (tmp_path / "derived").mkdir()
+        req = urllib.request.Request(
+            srv.url + f"api/scan/derived?derived_out={tmp_path / 'derived'}"
+        )
+        req.add_header("X-LIO-Token", srv.token)
+        t0 = time.monotonic()
+        with urllib.request.urlopen(req, timeout=10) as r:
+            assert r.status == 200
+        assert time.monotonic() - t0 < 1.0
+    finally:
+        srv.shutdown()
+        srv.server_close()

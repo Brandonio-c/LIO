@@ -73,9 +73,11 @@ def session(scfg: HwConfig, tmp_path: Path) -> Iterator[Session]:
 
 
 def test_plan_preview(session: Session) -> None:
-    p = session.scan_plan("tiny", {"sweep_n": 4})
+    p = session.scan_plan("tiny", {"mains_periods": 1})
     assert p["mode"] == "tiny" and p["steps"] == 1 + 4 + 3 + 1
-    assert p["settings"]["sweep_n"] == 4 and p["eta_s"] > 0 and "LED duty" in p["summary"]
+    assert p["settings"]["mains_periods"] == 1 and p["eta_s"] > 0 and "LED duty" in p["summary"]
+    with pytest.raises(Exception, match="no effect"):  # ignored in mains mode: refused
+        session.scan_plan("tiny", {"sweep_n": 4})
     with pytest.raises(Refused):
         session.scan_plan("nope")
     st = session.static_info()["scan"]
@@ -156,8 +158,8 @@ def test_http_api(scfg: HwConfig, tmp_path: Path) -> None:
     srv.serve_in_thread()
     try:
         assert call(srv, "/api/connect", {"target": "sim"})[0] == 200
-        status, p = call(srv, "/api/scan/plan", {"mode": "tiny", "overrides": {"sweep_n": 3}})
-        assert status == 200 and p["settings"]["sweep_n"] == 3
+        status, p = call(srv, "/api/scan/plan", {"mode": "tiny", "overrides": {"mains_periods": 1}})
+        assert status == 200 and p["settings"]["mains_periods"] == 1
         assert call(srv, "/api/scan/plan", {"mode": "tiny", "overrides": [1]})[0] == 400
         status, out = call(srv, "/api/scan/start", {"mode": "tiny", "sample_id": "empty",
                                                      "heartbeat": True})  # fmt: skip

@@ -68,6 +68,16 @@ def page_html(token: str) -> str:
     return text.replace("__LIO_TOKEN__", token)
 
 
+def _warm_imports() -> None:
+    """Import the analysis stack BEFORE serving (S7 diagnosis of the intermittent
+    HTTP timeout). The first request to a plan/derived/numerical route used to
+    import ``lio.scan.derived`` -> ``scipy.stats`` inside the handler: about 2 s
+    on an idle machine and above the 10 s client timeout under coverage tracing
+    and parallel load. Paying it at startup keeps request latency bounded."""
+    import lio.scan.acquisition
+    import lio.scan.derived  # noqa: F401
+
+
 class DashboardServer(ThreadingHTTPServer):
     daemon_threads = True
 
@@ -75,6 +85,7 @@ class DashboardServer(ThreadingHTTPServer):
         self.session = session
         self.foods = foods
         self.token = secrets.token_urlsafe(24)
+        _warm_imports()
         super().__init__((host, port), _Handler)
 
     @property

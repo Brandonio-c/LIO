@@ -252,6 +252,9 @@ def proxy_predictive_comparison(
     if not proxy_unassigned_mask(batch.feature_ids).any():
         out.update(available=False, reason="no proxy_unassigned features (opt-in not given?)")
         return out
+    if len({str(x) for x in labels}) < 2:
+        out.update(available=False, reason="need >= 2 label classes for a predictive estimand")
+        return out
     ablated, removed = drop_proxy_unassigned(batch)
     full = validate_grouped(batch, labels, meta, target=target)  # type: ignore[arg-type]
     abl = validate_grouped(ablated, labels, meta, target=target)  # type: ignore[arg-type]

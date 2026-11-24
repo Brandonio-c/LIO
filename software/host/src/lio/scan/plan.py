@@ -63,12 +63,19 @@ class ScanSettings:
         # S3: an override that the acquisition would ignore is refused, not silently
         # recorded: with mains integration each reading uses mains_periods.
         mains_on = float(src.get("mains_hz") or 0) > 0
-        if mains_on and "sweep_n" in (overrides or {}):
+        ov = overrides or {}
+        # Refuse a CHANGED value that the acquisition would ignore; an unchanged
+        # echo of the configured value (older callers send every field) is harmless.
+        if mains_on and "sweep_n" in ov and int(ov["sweep_n"]) != int(sec.get("sweep_n", 2)):
             raise PlanError(
                 "sweep_n has no effect while mains integration is on (mains_hz > 0); "
                 "set mains_periods instead"
             )
-        if not mains_on and "mains_periods" in (overrides or {}):
+        if (
+            not mains_on
+            and "mains_periods" in ov
+            and int(ov["mains_periods"]) != int(sec.get("mains_periods", 2))
+        ):
             raise PlanError("mains_periods has no effect while mains integration is off")
         out: dict[str, Any] = {}
         for k, v in src.items():
