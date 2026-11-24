@@ -1,0 +1,74 @@
+{
+ "id": "bench_h8_h12_diffuse_v1",
+ "version": "1",
+ "schema": 1,
+ "kind": "stationary_targeted",
+ "sample": {
+  "sample_id": "DIFFUSE_TBD",
+  "declared": true
+ },
+ "assembly": {
+  "tray": "as found",
+  "lid": "closed",
+  "notes": "detectors, head position, wiring, LED currents and optics unchanged; target: diffuse reference (owner-described)"
+ },
+ "holes": [
+  8,
+  12
+ ],
+ "detectors": [
+  "ingaas",
+  "opt101"
+ ],
+ "position_policy": "current_position",
+ "gain": "1",
+ "conditions": [
+  {
+   "id": "blocked",
+   "label": "optical blocker in place",
+   "settle_ms": 8,
+   "mains_periods": 2,
+   "optical_block": true,
+   "checkpoint": "LEDs are OFF. Insert the optical blocker in its marked position (sensors, wiring and target untouched), close the chamber. Confirm the blocker is IN and the chamber is closed."
+  },
+  {
+   "id": "unblocked",
+   "label": "optical blocker removed",
+   "settle_ms": 8,
+   "mains_periods": 2,
+   "optical_block": false,
+   "checkpoint": "LEDs are OFF. Remove the optical blocker (sensors, wiring and target untouched), close the chamber. Confirm the blocker is OUT and the chamber is closed."
+  }
+ ],
+ "blocks": {
+  "n_production": 6,
+  "n_pilot": 0,
+  "n_production_min": 6,
+  "n_production_max": 6
+ },
+ "budgets": {
+  "max_wall_s": 5400,
+  "max_cycle_s": 0,
+  "max_total_on_ms": 6000
+ },
+ "allocation": {
+  "policy": "equal_fixed",
+  "control_holes": [],
+  "target_weights": {
+   "8": 1.0,
+   "12": 1.0
+  }
+ },
+ "inference": {
+  "split": "fixed_n",
+  "pilot_is_confirmation": false
+ },
+ "estimator": {
+  "name": "fixed_n_block",
+  "version": "m3",
+  "coupling_model": "validated_control"
+ },
+ "operator_checkpoints": [],
+ "objective": "primary_swir",
+ "notes": "bench 2026-11-24: six blocked/unblocked pairs per hole; h8 is a response monitor, not a validated control; primary = h12 InGaAs D on the diffuse reference"
+}

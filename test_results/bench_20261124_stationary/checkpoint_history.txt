@@ -1,0 +1,5 @@
+01:39:11 state1 ON: owner answered 'Yes, lights ON'
+01:39:48 state2 OFF: owner answered 'Yes, lights OFF'
+01:40:22 state3 ON: owner answered 'Yes, lights ON'
+01:41:21 runB start checkpoint: owner answered 'Yes, confirmed' (paper in place, lid closed)
+01:44:11 runC start checkpoint: owner answered 'Yes, confirmed' (black cup in place of paper, lid closed)

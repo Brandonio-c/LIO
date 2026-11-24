@@ -1,0 +1,67 @@
+{
+ "id": "bench_h8_h12_white_paper_v1",
+ "version": "1",
+ "schema": 1,
+ "kind": "stationary_targeted",
+ "sample": {
+  "sample_id": "white_paper_on_tray",
+  "declared": true
+ },
+ "assembly": {
+  "tray": "V3 tray in place",
+  "lid": "closed",
+  "notes": "target: white printer paper fully covering the tray sample plane. Detectors, head position, wiring, LED currents and optics unchanged. Owner-declared: Rf 2 MOhm fitted (YAML 1 MOhm), LED rails ~30 mA (YAML B 45 mA); unmeasured."
+ },
+ "holes": [
+  8,
+  12
+ ],
+ "detectors": [
+  "ingaas",
+  "opt101"
+ ],
+ "position_policy": "current_position",
+ "gain": "1",
+ "conditions": [
+  {
+   "id": "target",
+   "label": "white printer paper fully covering the tray sample plane",
+   "settle_ms": 8,
+   "mains_periods": 2,
+   "optical_block": false
+  }
+ ],
+ "blocks": {
+  "n_production": 12,
+  "n_pilot": 0,
+  "n_production_min": 12,
+  "n_production_max": 12
+ },
+ "budgets": {
+  "max_wall_s": 1800,
+  "max_cycle_s": 0,
+  "max_total_on_ms": 6000
+ },
+ "allocation": {
+  "policy": "equal_fixed",
+  "control_holes": [],
+  "target_weights": {
+   "8": 1.0,
+   "12": 1.0
+  }
+ },
+ "inference": {
+  "split": "fixed_n",
+  "pilot_is_confirmation": false
+ },
+ "estimator": {
+  "name": "fixed_n_block",
+  "version": "m3",
+  "coupling_model": "validated_control"
+ },
+ "operator_checkpoints": [
+  "LEDs are OFF. Confirm: white printer paper on the tray covers the sample plane, nothing else changed, chamber lid closed."
+ ],
+ "objective": "primary_swir",
+ "notes": "bench 2026-11-24 revised design (owner: no blocker available): 12 fixed readings per hole, h8 before h12; target dependence vs black cup is exploratory; h8 is a response monitor, not a control"
+}

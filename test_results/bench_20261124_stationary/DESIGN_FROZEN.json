@@ -1,0 +1,40 @@
+{
+ "frozen_at": "2026-11-24T01:37:26-0500",
+ "owner_answers": {
+  "chamber": "tray + white printer paper covering sample plane, lid closed",
+  "blocker": "none available (owner: 'i cant')",
+  "black_target": "black cup (different surface plane)",
+  "design": "owner approved revised design: ambient ON/OFF/ON; white paper run; black cup run"
+ },
+ "ambient": {
+  "states": [
+   "ON",
+   "OFF",
+   "ON"
+  ],
+  "records_per_state": 3,
+  "samples_per_detector": 64,
+  "light": "none"
+ },
+ "runs": {
+  "settings": "gain 1, settle 8 ms, 60 Hz mains integration 2 periods (if admitted and read back)",
+  "n_per_hole": 12,
+  "holes": [
+   8,
+   12
+  ],
+  "detectors": [
+   "ingaas",
+   "opt101"
+  ],
+  "order": "all h8 then all h12",
+  "caps": {
+   "max_wall_s": 1800,
+   "max_total_on_ms": 6000
+  }
+ },
+ "primary": "h12 InGaAs net (lit-dark) on white paper: mean, SD, SE, 95% interval, fixed N=12",
+ "secondary_exploratory": "white minus black-cup difference per hole/detector (cross-run; not familywise-protected; drift/order and different surface plane are confounds)",
+ "family": "within-run qualified-v2 frozen family; blocked/unblocked D not measurable (no blocker)",
+ "stopping": "no stopping when positive, no reruns for PASS, no clipping"
+}
