@@ -1,0 +1,37 @@
+2026-11-24 02:22:53 setup: owner answered matched black card=yes, white=printer paper on tray, rig unchanged (AskUserQuestion)
+2026-11-24 02:24:11 W1 start checkpoint: owner answered 'Yes, W1 ready' (AskUserQuestion) -> 'y' delivered once to W1 run
+2026-11-24 02:36:05 B1 start checkpoint: owner did NOT confirm. Owner said the white card was not in the chamber during W1 run 20261124-022255_scan_protocol and asked to rerun W1 -> 'n' delivered to B1 run (declined; no light)
+2026-11-24 02:37:24 W1 retry start checkpoint: owner answered 'Yes, W1 ready' -> 'y' delivered once. Owner states first W1 run 20261124-022255_scan_protocol actually had the BLACK CUP on the sample plane (no white target)
+2026-11-24 12:07:38 stale B1 run 20261124-024754 (waiting at checkpoint since 02:47; owner disconnected rig overnight, never confirmed) -> 'a' (abort) delivered by agent: NOT an owner confirmation; no light
+2026-11-24 12:09:47 owner: rig was disconnected overnight and reconnected this morning; asked to rerun given new ambient light, 'either way continue'. Agent decision: restart full W1,B1,W2,B2 today.
+2026-11-24 12:09:47 board enumerated as usbmodem1101; owner (AskUserQuestion) moved USB back to the original port; verified /dev/cu.usbmodem101, USB serial 3501131C36313236805733344B573230 (same Nano R4). No fresh journal created.
+2026-11-24 12:21:28 morning W1 start checkpoint: owner answered 'Yes, W1 ready' -> 'y' delivered once
+2026-11-24 12:47:20 morning B1 checkpoint: owner did NOT confirm. Owner reports RIG CHANGE after morning W1: moved wires at the top while fitting the top-plate mounting bracket (rest of top part not yet fitted) and puttied in the LEDs; asked to rerun W1 to check all LEDs still work -> 'n' delivered (declined, no light)
+2026-11-24 12:48:30 owner: rig final for now (no changes until all four done); only wires/bracket/putty changed, detectors/head/currents/pots untouched. Restarting W1,B1,W2,B2 on rig state R2.
+2026-11-24 12:48:47 R2 W1 start checkpoint: owner answered 'Yes, W1 ready' -> 'y' delivered once
+2026-11-24 12:59:42 R2 W1 20261124-124834 COMPLETE. Agent finding: h12 erratic on both detectors (InGaAs 8.6 sd29.4; OPT101 -38.8 sd25.8, below dark) vs R1 70.8/14.2; darks normal -> electrical disturbance on h12 drive suspected. Paused before B1; asking owner.
+2026-11-24 13:59:23 owner: checked, all visible LEDs seen lit (dashboard click flash); asked to rerun the diagnostic for all LEDs incl. non-visible. Code changed since R2 W1: click flash + per-LED duty keys (dashboard pid 92700). Port released via /api/disconnect.
+2026-11-24 14:00:11 R3 W1 diagnostic start checkpoint: owner answered 'Yes, W1 ready' -> 'y' delivered once
+2026-11-24 14:10:10 R3 W1 diagnostic 20261124-135925 COMPLETE (actual 16128 ms, uncertain 0, 605 s).
+2026-11-24 14:18:28 owner: wiggled h14 wires; asked to check h14 again. Agent created diagnostic protocol swir_check_h9_h12_h15_n12.json (holes 9,12-15, N=12, same settings); offline plan OK (60 steps).
+2026-11-24 14:19:12 swir check 1 start checkpoint: owner answered 'Yes, ready' -> 'y' delivered once
+2026-11-24 14:22:32 owner: 'run another check on all of them' -> all16 W1 protocol diagnostic rerun
+2026-11-24 14:23:20 all16 diagnostic R4 start checkpoint: owner answered 'Yes, ready' -> 'y' delivered once
+2026-11-24 14:47:40 owner: 'run another check now' -> all16 W1 protocol diagnostic rerun (R5)
+2026-11-24 15:49:50 all16 diagnostic R5 start checkpoint: owner answered 'Ready, nothing touched' (unchanged repeat) -> 'y' delivered once
+2026-11-24 15:50:15 R5 run 20261124-144744 INCOMPLETE max_wall_s before light (owner answered 62 min after start; wall cap 3600 s counts checkpoint wait). Relaunching as R5b.
+2026-11-24 15:50:51 R5b start checkpoint: owner answered 'Ready, nothing touched' -> 'y' delivered once
+2026-11-24 16:05:40 owner: start full sequence; top part is now fitted (rig state R5). Launching family W1 (FW1).
+2026-11-24 16:06:34 FAMILY W1 start checkpoint: owner answered 'Yes, W1 ready' (fresh white placement, top on) -> 'y' delivered once
+2026-11-24 16:17:49 FAMILY W1 20261124-160543 COMPLETE but h16 intermittent (0..1128 within run) after top fitted; owner chose: fix h16, restart at W1. This W1 is superseded (kept).
+2026-11-24 16:19:41 owner: 'check again' after h16 rework -> all16 diagnostic (R6 check)
+2026-11-24 16:19:58 R6 check start checkpoint: owner answered 'Yes, ready' -> 'y' delivered once
+2026-11-24 16:29:49 R6 check 20261124-161944 COMPLETE: h16 steady. Starting matched family on R6: launching W1 (F2W1).
+2026-11-24 16:30:22 FAMILY(R6) W1 start checkpoint: owner answered 'Yes, W1 ready' (fresh white placement) -> 'y' delivered once
+2026-11-24 16:40:03 FAMILY(R6) W1 20261124-162954 COMPLETE (all channels match R6 check). Launching B1.
+2026-11-24 16:41:57 FAMILY(R6) B1 start checkpoint: owner answered 'Yes, B1 ready' (flat black card, matched plane) -> 'y' delivered once
+2026-11-24 16:51:33 FAMILY(R6) B1 20261124-164006_scan_protocol finished. Launching W2.
+2026-11-24 16:54:53 FAMILY(R6) W2 start checkpoint: owner answered 'Yes, W2 ready' (white reseated) -> 'y' delivered once
+2026-11-24 17:04:27 FAMILY(R6) W2 20261124-165136_scan_protocol finished. Launching B2.
+2026-11-24 17:08:03 FAMILY(R6) B2 start checkpoint: owner answered 'Yes, B2 ready' (black card reseated) -> 'y' delivered once
+2026-11-24 17:17:36 FAMILY(R6) B2 20261124-170431_scan_protocol finished. Sequence done.

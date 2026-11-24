@@ -1,0 +1,82 @@
+{
+ "20261124-022255_scan_protocol": {
+  "protocol": "all16_W1_n12.json",
+  "status": "COMPLETE (sealed)",
+  "valid_as": "NOT W1. Owner-stated actual target: black cup (the earlier non-matched-plane black cup), no white paper. Excluded from the W/B family; reported separately as exploratory black-cup all-16 diagnostic. Recorded sample_id 'white_flat_reference_W1' is WRONG and left unedited (immutable run)."
+ },
+ "20261124-023438_scan_protocol": {
+  "protocol": "all16_B1_n12.json",
+  "status": "INCOMPLETE checkpoint_refused, no light",
+  "valid_as": "refusal record; owner declined because W1 had to be repeated"
+ },
+ "20261124-023620_scan_protocol": {
+  "protocol": "all16_W1_n12.json",
+  "status": "COMPLETE (sealed)",
+  "valid_as": "White paper placement, night session (02:36-02:47). Owner then disconnected the rig overnight (power-cycle). Superseded as W1 of the matched family by the same-day morning sequence; retained and reported as an extra night-session white placement."
+ },
+ "20261124-024754_scan_protocol": {
+  "protocol": "all16_B1_n12.json",
+  "status": "left RUNNING, no cube, no seal, no light",
+  "valid_as": "stale checkpoint never answered by owner; owner unplugged the rig overnight; agent sent 'a' at 12:07 which raised an uncaught operator Abort (software finding: abort at checkpoint does not finalise the run) and safe_off failed on the vanished port, marking the usbmodem101 journal uncertain"
+ },
+ "_session_decision": "Morning session restarts the full W1,B1,W2,B2 sequence after the overnight power-cycle so that target is not confounded with day/power-cycle; owner said rerun / continue either way.",
+ "20261124-120951_scan_protocol": {
+  "protocol": "all16_W1_n12.json",
+  "status": "COMPLETE (sealed)",
+  "valid_as": "White paper, morning, rig state R1 (after overnight power-cycle, BEFORE owner's bracket/putty/wire change). Pre-change baseline; not part of the final matched family."
+ },
+ "20261124-123151_scan_protocol": {
+  "protocol": "all16_B1_n12.json",
+  "status": "INCOMPLETE checkpoint_refused, no light",
+  "valid_as": "refusal record; owner changed rig (bracket, LED putty, wires moved)"
+ },
+ "_rig_states": {
+  "R0": "night 24 Nov 02:xx (as h8/h12 bench)",
+  "R1": "morning after overnight power-cycle/reconnect, owner says unchanged",
+  "R2": "after ~12:32: top-plate mounting bracket fitted (rest of top not fitted), LEDs puttied, top wires moved; owner says detectors/head/LED currents/pots untouched; owner declares R2 final for the full W1,B1,W2,B2 sequence",
+  "R3": "after ~13:55: owner checked LEDs/wiring (visible LEDs seen lit via dashboard click flash); host software changed (click flash, per-LED duty keys; lio_hw.yaml dashboard+duty comments/keys)",
+  "R4": "after ~14:15: owner wiggled LED wires (h14); nothing touched between 14:22 and 15:50 runs",
+  "R5": "after the 15:50 run: owner fitted the top part (full top now on). Final matched W1,B1,W2,B2 family runs on R5.",
+  "R6": "after ~16:17: owner reworked h16 connection with top fitted; final state for the matched W1,B1,W2,B2 family"
+ },
+ "20261124-124834_scan_protocol": {
+  "protocol": "all16_W1_n12.json",
+  "status": "COMPLETE (sealed)",
+  "valid_as": "White paper, rig state R2 (after bracket/putty/wire change). h12 erratic on both detectors (electrical disturbance suspected). Diagnostic only."
+ },
+ "20261124-135925_scan_protocol": {
+  "protocol": "all16_W1_n12.json",
+  "status": "COMPLETE (sealed)",
+  "valid_as": "White paper, rig state R3 (owner checked wiring/visible LEDs; software now per-LED duty + click flash). Owner-requested all-LED diagnostic. h12 recovered (InGaAs 81.0 sd4.3)."
+ },
+ "20261124-141830_scan_protocol": {
+  "protocol": "swir_check_h9_h12_h15_n12.json",
+  "status": "COMPLETE (sealed)",
+  "valid_as": "targeted diagnostic h9,h12-h15 after owner wiggled h14 wires"
+ },
+ "20261124-142237_scan_protocol": {
+  "protocol": "all16_W1_n12.json",
+  "status": "COMPLETE (sealed)",
+  "valid_as": "all-16 diagnostic after h14 wire wiggle (state R4); paper not reseated since 13:59"
+ },
+ "20261124-144744_scan_protocol": {
+  "protocol": "all16_W1_n12.json",
+  "status": "INCOMPLETE max_wall_s, no light",
+  "valid_as": "owner answered checkpoint 62 min after start; wall cap counts checkpoint wait"
+ },
+ "20261124-155019_scan_protocol": {
+  "protocol": "all16_W1_n12.json",
+  "status": "COMPLETE (sealed)",
+  "valid_as": "untouched repeat of 14:22 run (owner: nothing touched); drift/stability reference, state R4"
+ },
+ "20261124-160543_scan_protocol": {
+  "protocol": "all16_W1_n12.json",
+  "status": "COMPLETE (sealed)",
+  "valid_as": "white W1 on R5 (top on); h16 intermittent (owner then reworked h16). Superseded; diagnostic only."
+ },
+ "20261124-161944_scan_protocol": {
+  "protocol": "all16_W1_n12.json",
+  "status": "COMPLETE (sealed)",
+  "valid_as": "all-16 check after owner reworked h16 (state R6, top on): h16 steady; diagnostic only"
+ }
+}

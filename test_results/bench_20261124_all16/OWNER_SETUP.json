@@ -1,0 +1,14 @@
+{
+ "recorded_at": "2026-11-24T07:22:53Z",
+ "source_commit": "e38b248da4cffd66f1bd90163ada72806b9b6171",
+ "owner_answers": {
+  "matched_black_card": "Yes, matched black card (flat, same footprint/orientation/top plane as white)",
+  "white_target": "Printer paper on tray (white printer paper covering the sample plane, as in the 24 Nov h8/h12 bench)",
+  "rig_state": "Yes, unchanged since the h8/h12 bench (head, both detector mounts, wiring, LED currents)"
+ },
+ "fallback_used": false,
+ "owner_declared_unmeasured": {"Rf": "2 MOhm fitted (YAML 1 MOhm)", "rail_current": "~30 mA both rails (YAML A 30 mA, B 45 mA)"},
+ "admission": "cooperative_unproven_acknowledged (no hang bound claimed); hw_wdt=0",
+ "optical_blocker": "none used or claimed",
+ "port_owner": "dashboard pid 94402 already disconnected via /api/disconnect in the earlier bench; process left running; /api/state connected=false; no other port holder (lsof)"
+}

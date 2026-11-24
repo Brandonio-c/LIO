@@ -1,0 +1,2 @@
+protocol all16_both_detectors_B2_n12 v1  192 steps  on≈15872 ms  eta≈0.4 min  stationary (no motors)
+plan -> test_results/bench_20261124_all16/protocols/all16_B2_plan.json

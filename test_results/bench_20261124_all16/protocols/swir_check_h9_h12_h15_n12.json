@@ -1,0 +1,66 @@
+{
+  "id": "swir_check_h9_h12_h15_white_n12",
+  "version": "1",
+  "schema": 1,
+  "kind": "stationary_targeted",
+  "sample": {
+    "sample_id": "white_paper_swir_check",
+    "declared": true
+  },
+  "assembly": {
+    "tray": "current tray; fixed reference backing and registration",
+    "lid": "closed for every acquisition",
+    "notes": "Diagnostic. Detectors/head/currents unchanged; owner moved h14 wires."
+  },
+  "holes": [
+    9,
+    12,
+    13,
+    14,
+    15
+  ],
+  "detectors": [
+    "ingaas",
+    "opt101"
+  ],
+  "position_policy": "current_position",
+  "gain": "1",
+  "conditions": [
+    {
+      "id": "target",
+      "label": "white paper, unchanged placement, after owner wiggled h14 wires",
+      "settle_ms": 8,
+      "mains_periods": 2,
+      "optical_block": false
+    }
+  ],
+  "blocks": {
+    "n_production": 12,
+    "n_pilot": 0,
+    "n_production_min": 12,
+    "n_production_max": 12
+  },
+  "budgets": {
+    "max_wall_s": 3600,
+    "max_cycle_s": 3600,
+    "max_total_on_ms": 24000
+  },
+  "allocation": {
+    "policy": "equal_fixed",
+    "control_holes": []
+  },
+  "inference": {
+    "split": "fixed_n",
+    "pilot_is_confirmation": false
+  },
+  "estimator": {
+    "name": "fixed_n_block",
+    "version": "m3",
+    "coupling_model": "validated_control"
+  },
+  "operator_checkpoints": [
+    "With LEDs OFF and motors disarmed, confirm white paper still covers the sample plane, head/both detector mounts/LED currents unchanged (only h14 wires moved), chamber closed. Targeted check of holes 9,12,13,14,15 on both detectors. Ready?"
+  ],
+  "notes": "Owner-requested targeted LED check after h14 wiring was disturbed (2026-11-24). Diagnostic only; not part of the W/B family. Same settings as all16 protocols (N=12, gain 1, settle 8 ms, 2 mains periods).",
+  "objective": "channel_health_diagnostic"
+}

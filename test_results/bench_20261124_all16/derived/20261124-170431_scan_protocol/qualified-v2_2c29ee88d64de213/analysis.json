@@ -1,0 +1,1525 @@
+{
+ "run_id": "20261124-170431_scan_protocol",
+ "sample_id": "black_flat_reference_B2",
+ "mode": "protocol",
+ "status": "COMPLETE",
+ "model": "qualified-v2",
+ "objective": {
+  "name": "primary_swir",
+  "version": "m5-primary-swir-v1",
+  "detector": "ingaas",
+  "target_holes": [
+   12,
+   13,
+   14,
+   15
+  ],
+  "control_holes": [
+   8,
+   9
+  ],
+  "excluded_holes": [
+   16
+  ],
+  "weights": {
+   "12": 2.0,
+   "13": 1.0,
+   "14": 1.0,
+   "15": 1.0
+  },
+  "notes": "h16 excluded from primary-1850; blinds excluded; h12 prioritized"
+ },
+ "coupling": {
+  "opt101": {
+   "model": "unidentified",
+   "detector": "opt101",
+   "C": {
+    "A": null,
+    "B": null
+   },
+   "units": "counts",
+   "reason": "no eligible controls measured",
+   "inferred": [],
+   "controls_used": {
+    "A": [],
+    "B": []
+   },
+   "covariance": {},
+   "support": {},
+   "warnings": []
+  },
+  "ingaas": {
+   "model": "unidentified",
+   "detector": "ingaas",
+   "C": {
+    "A": null,
+    "B": null
+   },
+   "units": "counts",
+   "reason": "no eligible controls measured",
+   "inferred": [],
+   "controls_used": {
+    "A": [],
+    "B": []
+   },
+   "covariance": {},
+   "support": {},
+   "warnings": []
+  }
+ },
+ "sensitivity": {
+  "ingaas": {
+   "detector": "ingaas",
+   "rail": "B",
+   "C_full": 12.0,
+   "exclude_h16": 9.0,
+   "per_exclude": {
+    "exclude_h10": 30.5,
+    "exclude_h11": 26.5,
+    "exclude_h16": 9.0
+   },
+   "exclude_h10_h11_h16": null,
+   "exclude_h10_h11_h16_model": "unidentified",
+   "validated_C": null,
+   "validated_model": "unidentified",
+   "never_zero_when_unidentified": true,
+   "candidates": [
+    10,
+    11,
+    16
+   ],
+   "note": "sensitivity only; alternative C is not calibrated"
+  },
+  "opt101": {
+   "detector": "opt101",
+   "rail": "B",
+   "C_full": 2.0,
+   "exclude_h16": 2.0,
+   "per_exclude": {
+    "exclude_h12": 2.0,
+    "exclude_h13": 8.5,
+    "exclude_h14": 8.5,
+    "exclude_h15": 8.5,
+    "exclude_h16": 2.0
+   },
+   "exclude_h10_h11_h16": 2.0,
+   "exclude_h10_h11_h16_model": "legacy_blind_median",
+   "validated_C": null,
+   "validated_model": "unidentified",
+   "never_zero_when_unidentified": false,
+   "candidates": [
+    12,
+    13,
+    14,
+    15,
+    16
+   ],
+   "note": "sensitivity only; alternative C is not calibrated"
+  }
+ },
+ "estimates": {
+  "ingaas:h01": {
+   "value": 0.6666666666666666,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.22473328748774735,
+   "interval": {
+    "low": 0.17203203592752675,
+    "high": 1.1613012974058066,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     0.0,
+     1.0,
+     0.0,
+     2.0,
+     2.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     1.0,
+     1.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h02": {
+   "value": 0.75,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.32856437033638547,
+   "interval": {
+    "low": 0.026834696754762133,
+    "high": 1.4731653032452379,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     1.0,
+     2.0,
+     1.0,
+     -1.0,
+     2.0,
+     2.0,
+     0.0,
+     0.0,
+     0.0,
+     2.0,
+     -1.0,
+     1.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h03": {
+   "value": -0.25,
+   "kind": "negative",
+   "n_blocks": 12,
+   "se": 0.3916747259003201,
+   "interval": {
+    "low": -1.1120702592895648,
+    "high": 0.6120702592895648,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     0.0,
+     -2.0,
+     1.0,
+     1.0,
+     2.0,
+     0.0,
+     1.0,
+     -1.0,
+     -1.0,
+     -2.0,
+     0.0,
+     -2.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h04": {
+   "value": 1.6666666666666667,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.30977345909486176,
+   "interval": {
+    "low": 0.9848598802086217,
+    "high": 2.348473453124712,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     2.0,
+     1.0,
+     0.0,
+     1.0,
+     0.0,
+     2.0,
+     3.0,
+     1.0,
+     3.0,
+     2.0,
+     2.0,
+     3.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h05": {
+   "value": 5.083333333333333,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.4680445027619239,
+   "interval": {
+    "low": 4.053174328491869,
+    "high": 6.113492338174797,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     3.0,
+     6.0,
+     3.0,
+     3.0,
+     5.0,
+     6.0,
+     8.0,
+     5.0,
+     4.0,
+     5.0,
+     6.0,
+     7.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h06": {
+   "value": 5.083333333333333,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.3361622383686938,
+   "interval": {
+    "low": 4.34344523530065,
+    "high": 5.823221431366016,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     4.0,
+     7.0,
+     4.0,
+     6.0,
+     4.0,
+     6.0,
+     6.0,
+     6.0,
+     4.0,
+     6.0,
+     4.0,
+     4.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h07": {
+   "value": 5.0,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.5640760748177662,
+   "interval": {
+    "low": 3.7584769301633556,
+    "high": 6.241523069836644,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     4.0,
+     8.0,
+     8.0,
+     3.0,
+     7.0,
+     5.0,
+     3.0,
+     2.0,
+     5.0,
+     6.0,
+     5.0,
+     4.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h08": {
+   "value": 32.25,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.46261771638703114,
+   "interval": {
+    "low": 31.231785271436664,
+    "high": 33.268214728563336,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     34.0,
+     34.0,
+     33.0,
+     32.0,
+     29.0,
+     34.0,
+     32.0,
+     33.0,
+     32.0,
+     33.0,
+     30.0,
+     31.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h09": {
+   "value": 41.083333333333336,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.5288399731220373,
+   "interval": {
+    "low": 39.91936440042847,
+    "high": 42.2473022662382,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     42.0,
+     39.0,
+     43.0,
+     38.0,
+     40.0,
+     42.0,
+     41.0,
+     43.0,
+     40.0,
+     39.0,
+     43.0,
+     43.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h10": {
+   "value": 3.5,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.468718433280546,
+   "interval": {
+    "low": 2.468357684088115,
+    "high": 4.531642315911885,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     3.0,
+     3.0,
+     4.0,
+     4.0,
+     7.0,
+     5.0,
+     2.0,
+     2.0,
+     3.0,
+     5.0,
+     1.0,
+     3.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h11": {
+   "value": 12.416666666666666,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.39806983804301976,
+   "interval": {
+    "low": 11.540520860453897,
+    "high": 13.292812472879435,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     11.0,
+     13.0,
+     12.0,
+     12.0,
+     15.0,
+     11.0,
+     12.0,
+     13.0,
+     12.0,
+     11.0,
+     12.0,
+     15.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h12": {
+   "value": 23.583333333333332,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.2599047999758855,
+   "interval": {
+    "low": 23.011286725549823,
+    "high": 24.15537994111684,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     24.0,
+     24.0,
+     24.0,
+     22.0,
+     24.0,
+     24.0,
+     24.0,
+     22.0,
+     23.0,
+     23.0,
+     24.0,
+     25.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h13": {
+   "value": 3.3333333333333335,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.30977345909486176,
+   "interval": {
+    "low": 2.6515265468752887,
+    "high": 4.015140119791378,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     3.0,
+     4.0,
+     5.0,
+     4.0,
+     4.0,
+     2.0,
+     2.0,
+     4.0,
+     4.0,
+     2.0,
+     4.0,
+     2.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h14": {
+   "value": 2.5,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.3370999312316211,
+   "interval": {
+    "low": 1.7580480538912902,
+    "high": 3.24195194610871,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     4.0,
+     3.0,
+     3.0,
+     2.0,
+     3.0,
+     1.0,
+     4.0,
+     4.0,
+     2.0,
+     2.0,
+     1.0,
+     1.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h15": {
+   "value": 20.0,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.3892494720807615,
+   "interval": {
+    "low": 19.14326768837674,
+    "high": 20.85673231162326,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     21.0,
+     21.0,
+     19.0,
+     20.0,
+     22.0,
+     22.0,
+     20.0,
+     19.0,
+     18.0,
+     20.0,
+     20.0,
+     18.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "ingaas:h16": {
+   "value": 47.666666666666664,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.30977345909486176,
+   "interval": {
+    "low": 46.98485988020862,
+    "high": 48.34847345312471,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     46.0,
+     49.0,
+     48.0,
+     48.0,
+     48.0,
+     47.0,
+     49.0,
+     48.0,
+     47.0,
+     46.0,
+     49.0,
+     47.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h01": {
+   "value": 80.91666666666667,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.19299604852813634,
+   "interval": {
+    "low": 80.49188522789991,
+    "high": 81.34144810543343,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     81.0,
+     81.0,
+     81.0,
+     81.0,
+     82.0,
+     81.0,
+     81.0,
+     81.0,
+     80.0,
+     80.0,
+     80.0,
+     82.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h02": {
+   "value": 51.916666666666664,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.1486470975026408,
+   "interval": {
+    "low": 51.58949661097266,
+    "high": 52.24383672236067,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     52.0,
+     51.0,
+     52.0,
+     52.0,
+     52.0,
+     52.0,
+     51.0,
+     52.0,
+     52.0,
+     52.0,
+     52.0,
+     53.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h03": {
+   "value": 41.416666666666664,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.19299604852813632,
+   "interval": {
+    "low": 40.991885227899914,
+    "high": 41.841448105433415,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     42.0,
+     41.0,
+     41.0,
+     42.0,
+     42.0,
+     42.0,
+     41.0,
+     40.0,
+     41.0,
+     42.0,
+     41.0,
+     42.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h04": {
+   "value": 64.91666666666667,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.1486470975026408,
+   "interval": {
+    "low": 64.58949661097266,
+    "high": 65.24383672236068,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     65.0,
+     65.0,
+     66.0,
+     65.0,
+     64.0,
+     64.0,
+     65.0,
+     65.0,
+     65.0,
+     65.0,
+     65.0,
+     65.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h05": {
+   "value": 23.916666666666668,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.570198441444961,
+   "interval": {
+    "low": 22.66166835873893,
+    "high": 25.171664974594407,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     25.0,
+     27.0,
+     23.0,
+     25.0,
+     26.0,
+     26.0,
+     22.0,
+     22.0,
+     23.0,
+     22.0,
+     21.0,
+     25.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h06": {
+   "value": 19.916666666666668,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.2875795893348835,
+   "interval": {
+    "low": 19.283708258195343,
+    "high": 20.549625075137993,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     21.0,
+     21.0,
+     19.0,
+     20.0,
+     20.0,
+     18.0,
+     20.0,
+     20.0,
+     19.0,
+     21.0,
+     19.0,
+     21.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h07": {
+   "value": 30.583333333333332,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.48395988647528604,
+   "interval": {
+    "low": 29.518144805121594,
+    "high": 31.64852186154507,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     31.0,
+     31.0,
+     29.0,
+     33.0,
+     31.0,
+     27.0,
+     31.0,
+     31.0,
+     31.0,
+     29.0,
+     33.0,
+     30.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h08": {
+   "value": 192.83333333333334,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 1.1986945761405141,
+   "interval": {
+    "low": 190.19502435976574,
+    "high": 195.47164230690095,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     184.0,
+     190.0,
+     196.0,
+     193.0,
+     194.0,
+     194.0,
+     196.0,
+     195.0,
+     198.0,
+     194.0,
+     194.0,
+     186.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h09": {
+   "value": 145.66666666666666,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.9795896894087646,
+   "interval": {
+    "low": 143.51060429729918,
+    "high": 147.82272903603413,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     143.0,
+     145.0,
+     147.0,
+     147.0,
+     147.0,
+     148.0,
+     147.0,
+     146.0,
+     147.0,
+     146.0,
+     149.0,
+     136.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h10": {
+   "value": 91.0,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.21320071635561044,
+   "interval": {
+    "low": 90.5307483871804,
+    "high": 91.4692516128196,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     92.0,
+     92.0,
+     91.0,
+     91.0,
+     90.0,
+     92.0,
+     90.0,
+     91.0,
+     91.0,
+     90.0,
+     91.0,
+     91.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h11": {
+   "value": 190.91666666666666,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.19299604852813632,
+   "interval": {
+    "low": 190.4918852278999,
+    "high": 191.34144810543341,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     191.0,
+     192.0,
+     191.0,
+     191.0,
+     190.0,
+     190.0,
+     191.0,
+     191.0,
+     191.0,
+     190.0,
+     192.0,
+     191.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h12": {
+   "value": 15.333333333333334,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.2247332874877474,
+   "interval": {
+    "low": 14.838698702594193,
+    "high": 15.827967964072474,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     15.0,
+     15.0,
+     15.0,
+     16.0,
+     15.0,
+     15.0,
+     16.0,
+     14.0,
+     16.0,
+     15.0,
+     15.0,
+     17.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h13": {
+   "value": 1.75,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.17943514064131835,
+   "interval": {
+    "low": 1.3550659182495022,
+    "high": 2.144934081750498,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     1.0,
+     2.0,
+     3.0,
+     2.0,
+     1.0,
+     1.0,
+     2.0,
+     2.0,
+     1.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h14": {
+   "value": 1.6666666666666667,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.1421338109037403,
+   "interval": {
+    "low": 1.353832258120263,
+    "high": 1.9795010752130704,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     2.0,
+     2.0,
+     1.0,
+     2.0,
+     1.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     1.0,
+     1.0,
+     2.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h15": {
+   "value": 1.9166666666666667,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.1486470975026408,
+   "interval": {
+    "low": 1.5894966109726594,
+    "high": 2.243836722360674,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     2.0,
+     2.0,
+     1.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     3.0,
+     1.0,
+     2.0,
+     2.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  },
+  "opt101:h16": {
+   "value": 382.6666666666667,
+   "kind": "positive",
+   "n_blocks": 12,
+   "se": 0.30977345909486176,
+   "interval": {
+    "low": 381.98485988020866,
+    "high": 383.3484734531247,
+    "level": 0.95,
+    "method": "student-t",
+    "available": true,
+    "reason": null
+   },
+   "units": "counts",
+   "assumptions": [
+    "fixed-position independent blocks",
+    "no height/direction/condition pooling",
+    "no stop-when-positive",
+    "pilot excluded from production confirmation",
+    "independent-normal blocks",
+    "fixed-N paired lit/dark per block",
+    "no stop-when-positive"
+   ],
+   "extras": {
+    "block_diffs": [
+     380.0,
+     384.0,
+     383.0,
+     383.0,
+     384.0,
+     383.0,
+     383.0,
+     382.0,
+     382.0,
+     383.0,
+     383.0,
+     382.0
+    ],
+    "includes_pilot": false,
+    "n_excluded_pilot": 0
+   }
+  }
+ },
+ "contrasts": {
+  "family": {
+   "members": [],
+   "size": 0,
+   "alpha": 0.05,
+   "method": "bonferroni",
+   "frozen": true,
+   "post_hoc": false
+  },
+  "estimates": {},
+  "unavailable": {},
+  "covariance_of_means": {},
+  "conditions": [
+   "target"
+  ],
+  "evidence_origin": "recorded",
+  "physical_qualification": "not established (A0/Rf/optical/reference deferred)"
+ },
+ "verdict": {
+  "verdict": "UNRESOLVED",
+  "numerical_available": [],
+  "unavailable": {},
+  "physical_qualification": "not established (A0/Rf/optical/reference deferred)",
+  "reasons": [
+   "0 of 0 declared contrasts have numerical estimates",
+   "not bench-qualified; no SNR or SWIR chemistry claim"
+  ]
+ },
+ "findings": [],
+ "health": [],
+ "context": {
+  "calibration_id": "gain=1:lsb=0.125:rf=1000000.0:declared:det=ingaas"
+ },
+ "identity": {
+  "source_cube_sha256": "cb871f524261aec9916b006e71bf5d7694711c58a3dc11bb93fd6b688739bb13",
+  "source_scan_sha256": "58bd9989171bce07dc080bb9664f58ef4a30ae3e66ac3bca62c509deaf910e50",
+  "terminal_seal_sha256": "0804e75a8d16f2eea9f65632945bfd8898eb74238d107a62f0d6075c4a0e8f48",
+  "calibration_id": "gain=1:lsb=0.125:rf=1000000.0:declared:det=ingaas",
+  "channel_map_sha256": "ea6c8a3fbe3347fd1052bfe05af550dd226a6f7e332db182857078ddb7276672",
+  "estimator_version": "model:qualified-v2",
+  "coupling_model_version": "m2-coupling-1",
+  "protocol_hash": "9a4943cddfaf86025424d8a826978236b57bd0c367f2dd5120f2984439b8e67d",
+  "reference_sources": [],
+  "numerical_settings": {},
+  "consumed_inputs": {
+   "stream_sha256": {},
+   "raw_bundle_sha256": "9f8d603ca84e73c648ead83d9f7510b68fc8d384fecfcd6fec0594fe654fc505",
+   "analysis_config": {},
+   "config_sha256": "ea6c8a3fbe3347fd1052bfe05af550dd226a6f7e332db182857078ddb7276672",
+   "model": "qualified-v2",
+   "software": {
+    "package": "lio",
+    "git_commit": "e38b248da4cffd66f1bd90163ada72806b9b6171",
+    "dirty": false,
+    "dirty_content_sha256": null
+   }
+  }
+ },
+ "analysis_id": "2c29ee88d64de213"
+}

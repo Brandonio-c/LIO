@@ -1,0 +1,90 @@
+{
+  "kind": "session_manifest_NOT_a_CLI_protocol",
+  "status": "PREPARED_NOT_RUN_ON_HARDWARE",
+  "owner_scope": "all16 LEDs and both detectors; stationary, unchanged head/sensors/current",
+  "reviewed_software_commit": "fdcee9d77aa0288e0f453a95b3c2c7894cd913b3",
+  "run_order": [
+    "all16_W1_n12.json",
+    "all16_B1_n12.json",
+    "all16_W2_n12.json",
+    "all16_B2_n12.json"
+  ],
+  "N_technical_per_hole_per_placement": 12,
+  "holes": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "detectors": [
+    "ingaas",
+    "opt101"
+  ],
+  "four_run_totals": {
+    "physical_MEAS_operations": 768,
+    "detector_rows": 1536,
+    "nominal_on_ms": 63488,
+    "normal_reserved_ms": 70656,
+    "sum_experiment_on_caps_ms": 96000
+  },
+  "comparison": "mean of W1/W2 placement means minus mean of B1/B2 placement means",
+  "external_inference_family": {
+    "size": 32,
+    "alpha": 0.05,
+    "members": [
+      "h1/ingaas:white-minus-black",
+      "h1/opt101:white-minus-black",
+      "h2/ingaas:white-minus-black",
+      "h2/opt101:white-minus-black",
+      "h3/ingaas:white-minus-black",
+      "h3/opt101:white-minus-black",
+      "h4/ingaas:white-minus-black",
+      "h4/opt101:white-minus-black",
+      "h5/ingaas:white-minus-black",
+      "h5/opt101:white-minus-black",
+      "h6/ingaas:white-minus-black",
+      "h6/opt101:white-minus-black",
+      "h7/ingaas:white-minus-black",
+      "h7/opt101:white-minus-black",
+      "h8/ingaas:white-minus-black",
+      "h8/opt101:white-minus-black",
+      "h9/ingaas:white-minus-black",
+      "h9/opt101:white-minus-black",
+      "h10/ingaas:white-minus-black",
+      "h10/opt101:white-minus-black",
+      "h11/ingaas:white-minus-black",
+      "h11/opt101:white-minus-black",
+      "h12/ingaas:white-minus-black",
+      "h12/opt101:white-minus-black",
+      "h13/ingaas:white-minus-black",
+      "h13/opt101:white-minus-black",
+      "h14/ingaas:white-minus-black",
+      "h14/opt101:white-minus-black",
+      "h15/ingaas:white-minus-black",
+      "h15/opt101:white-minus-black",
+      "h16/ingaas:white-minus-black",
+      "h16/opt101:white-minus-black"
+    ]
+  },
+  "analysis_limits": [
+    "Two placements per target, not24 independent target preparations",
+    "ABAB does not cancel linear drift; show run means/timestamps and flag disagreement",
+    "No optical blocker; unknown coupling stays null",
+    "No detectable response does not prove LED failure or incorrect source identity",
+    "h16 unassigned proxy; h15 cutoff-sensitive; no out-of-band primary chemistry",
+    "If black reference is unavailable before collection, W1/W2 only; contrasts unavailable"
+  ],
+  "live_execution": "Only the owner's bench machine has the USB board; no live execution here"
+}
