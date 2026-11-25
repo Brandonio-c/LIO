@@ -67,6 +67,7 @@ The MTPD1346D-100 is broadband: the manufacturer's current datasheet specifies 6
 ## Mechanical notes
 
 - Nominal seats are sized for 5 mm LED bodies (`led_body_d = 5`), with a flange counterbore and tilt toward the sample. Purchased h13/h14 D4 and h15 C1 parts are **3 mm packages**; verify adapters, flange retention and lens recess. The nominal R3 keeper exit (4.2 mm) is larger than the D4 flange (about 3.75 mm), so a standard keeper alone does not positively locate/retain that flange. This is a CAD/package comparison, not an as-built measurement.
+- Owner clarification (25 November 2026): the 1550/1650 emitting faces sit inside the actual chamber. Do not infer that they are buried behind the deck from nominal CAD/package dimensions. If clear of the surrounding plastic, LED-well clipping is a lower-priority explanation; package size alone does not demonstrate optical loss.
 - h12 is a narrow 20°-full-angle source; h13/h14 are very wide-angle D4 parts (PDF 120° versus catalog 240°, convention unresolved). Both aim and obstruction of broad emission by a recess can matter; do not model every SWIR LED as a narrow 5 mm source.
 - Through-hole metal-can parts (TO-46/TO-39) don't fit the 5 mm seats and need adapted seats.
 

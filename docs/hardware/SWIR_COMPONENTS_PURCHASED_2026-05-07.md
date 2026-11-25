@@ -66,12 +66,14 @@ In the unmodified R3 CAD (`CAD/V3/LIO_V3_R3_Print_Set/LIO_V3_R3_master.scad`), t
 
 These are **nominal CAD/package comparisons**, not measurements of today's assembled seats. Putty, inserts and prior modifications may change the fit. The C1 is also a 3 mm package and needs its own measured fit. The D4 parts have milliwatt-class typical power at 20 mA, so “rated for 100 mA” does not imply they must be driven at 100 mA to function.
 
-The practical next check is whether the actual 3 mm emitting surfaces are exposed toward the sample and held reproducibly, while keeping both detectors fixed. If an adapter is needed, design a package-specific locating/height adapter after measuring the stack; an opaque printed sleeve does **not** collimate light and can make obscuration worse. A permanent detector move is not established as the remedy by these part identities.
+**Owner clarification, 25 November 2026:** “the 1550/1650 emitting faces sit down inside the actual chamber itself.” Treat the faces as reported to be on the chamber side, rather than assuming they are buried behind the deck. This is an owner observation; no protrusion, sample distance or ray clearance was measured. If the faces clear the surrounding plastic, the recessed-LED-well explanation should be deprioritised. The 3 mm package size alone does not imply optical loss. Wide emission, illumination/receiver-view overlap and the InGaAs collection aperture remain candidates; the broad beam specification alone does not establish the cause or a loss factor. This LED-face clarification does not establish the detector's own field of view.
+
+The next optical question is how much light reaches the sample area viewed by the InGaAs at the actual sample plane, while keeping both detectors fixed. Check package-specific locating hardware only if mechanical registration is inadequate; do not recommend exposing already-exposed faces as the default remedy. If an adapter is needed, design a package-specific locating/height adapter after measuring the stack; an opaque printed sleeve does **not** collimate light and can make obscuration worse. A permanent detector move is not established as the remedy by these part identities.
 
 ## Information still needed
 
 1. The **1850 nm LED's exact purchased manufacturer part number/product link**.
-2. Confirmation that these four purchased emitters are still the parts fitted at h12–h15 after bench replacements, plus a close-up or measured recess showing how the 3 mm h13/h14 packages sit in the head.
+2. Confirmation that these four purchased emitters remain fitted at h12–h15 after bench replacements. The owner has clarified that the h13/h14 emitting faces sit inside the chamber; a later optical survey would record their orientation, exposed position and sample-plane distance rather than assume a recess.
 3. For quantitative optical modelling: D4 angular convention and C1 1720/1760 discrepancy clarified by the supplier/lot documentation; actual current, emitted output, detector input range and assembly geometry remain unmeasured. Owner-deferred checks remain deferred.
 
 This documentation does not change Rf/current configuration, authorise bench work or claim measured SNR improvement, calibrated reflectance/photocurrent, SWIR chemistry or recovered 1850 nm measurement.
