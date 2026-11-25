@@ -129,6 +129,15 @@ class Control:
     abort_reason: str | None = None
     pause_requested: bool = False
     paused: bool = False
+    # Realignment while paused (owner 2026-11-25): the operator asks for the device,
+    # the executor hands it over (``realigning``) and touches nothing until the
+    # request is withdrawn; ``lend``/``reclaim`` release/retake the caller's device
+    # lock so the Motors tab can drive the motors meanwhile.
+    realign_requested: bool = False
+    realigning: bool = False
+    realign_note: str = ""
+    lend: Callable[[], None] | None = field(default=None, repr=False)
+    reclaim: Callable[[], None] | None = field(default=None, repr=False)
     progress: dict[str, Any] = field(default_factory=dict)
     clock: Callable[[], float] = time.monotonic  # the browser beats in wall-clock time
     _last_beat: float | None = None
@@ -146,6 +155,11 @@ class Control:
         with self._lock:
             self.pause_requested = on
 
+    def request_realign(self, on: bool = True) -> None:
+        """Ask for (``True``) or give back (``False``) the device during a pause."""
+        with self._lock:
+            self.realign_requested = on
+
     def heartbeat_ok(self) -> bool:
         if not self.heartbeat_required:
             return True
@@ -153,6 +167,37 @@ class Control:
             if self._last_beat is None:  # counted from the first check
                 self._last_beat = self.clock()
             return self.clock() - self._last_beat <= self.timeout_s
+
+
+def realign_problem(dev: Any, *, require_tracked: bool = True) -> str:
+    """Why acquisition cannot continue after a realignment ('' when it can).
+
+    Motors stopped, no LED lit, and the tracked stage valid and level (equal
+    positions on both sides: the operator levelled them and pressed Set top).
+    ``require_tracked=False`` (between whole-system tests) accepts an untracked
+    stage: T13.1 then skips itself; a tracked stage must still be valid and level.
+    """
+    try:
+        st = dev.status()
+    except Exception as e:
+        return f"cannot read the board: {e}"
+    if st.as_str("motor1") == "run" or st.as_str("motor2") == "run":
+        return "a motor is still moving: stop it, then press Done realigning again"
+    if st.as_int("ch") != 0:
+        return "an LED is on: press All off, then Done realigning again"
+    stage = dev.stage
+    if stage is None or not stage.known or stage.abs is None:
+        if not require_tracked:
+            return ""
+        return "the stage position is not tracked: set the top, then Done realigning"
+    if not stage.valid:
+        return "the stage position is not trusted: set the top again, then Done realigning"
+    if stage.abs[0] != stage.abs[1]:
+        return (
+            f"the two sides are not level (right {stage.abs[0]}, left {stage.abs[1]}): "
+            "level them, drive to the top and press Set top, then Done realigning"
+        )
+    return ""
 
 
 def _version(s: str) -> tuple[int, ...]:
@@ -190,6 +235,7 @@ class ScanExecutor:
         self._emi_pending = False
         self._t_start = 0.0
         self._attempt = 0
+        self._realign_epoch = int(store.meta.get("realign_epoch", 0) or 0)
         self._rows: list[dict[str, Any]] = []
         self._moves = 0
         self._unlevel: list[list[int]] = []
@@ -323,6 +369,10 @@ class ScanExecutor:
             if self.control.abort_reason:
                 self.control.paused = False
                 raise ScanAbort(self.control.abort_reason)
+            if self.control.realign_requested:
+                self._lend_for_realign()
+                last_status = self.dev.now()
+                continue
             self.dev.sleep(0.5)
             if self.dev.now() - last_status > 5:
                 self.dev.status()  # keep the link alive
@@ -330,6 +380,64 @@ class ScanExecutor:
                 self._check_link()
         self.control.paused = False
         self.store.event("continue")
+
+    def _lend_for_realign(self) -> None:
+        """Hand the device to the operator (Motors tab) until they give it back.
+
+        The executor sends nothing while lent. On return it checks the motors are
+        stopped and the tracked stage is valid and level (the operator levelled the
+        sides and pressed Set top); then every later reading belongs to a new
+        segment with its own position instances, because the physical heights may
+        have changed. If the check fails the run stays paused and says why.
+        """
+        c = self.control
+        self.store.event("realign_start")
+        self._progress(None, "realigning", reason="device lent to the Motors tab")
+        c.realigning = True
+        if c.lend is not None:
+            c.lend()
+        try:
+            while c.realign_requested and not c.abort_reason:
+                time.sleep(0.1)  # real time: the device is not ours to touch
+        finally:
+            if c.reclaim is not None:
+                c.reclaim()
+            c.realigning = False
+        if c.abort_reason:
+            return  # the pause loop raises ScanAbort
+        problem = self._realign_problem()
+        if problem:
+            c.realign_note = problem
+            c.pause_requested = True  # stay paused until it is fixed
+            self.store.event("realign_refused", reason=problem)
+            self._progress(None, "paused", reason=f"after realignment: {problem}")
+            return
+        c.realign_note = ""
+        a = self.dev.stage.abs if self.dev.stage is not None else None
+        self._realign_epoch += 1
+        self.store.meta["realign_epoch"] = self._realign_epoch
+        self._attempt = len(self.store.meta.get("segments") or [])
+        self.store.meta.setdefault("segments", []).append(
+            {
+                "segment": f"height:s{self._attempt}",
+                "resume": False,
+                "realigned": True,
+                "realign_epoch": self._realign_epoch,
+                "clock": "row t_s is seconds since this segment's start",
+            }
+        )
+        self._t_start = self.dev.now()
+        self.store.event(
+            "realign_end",
+            epoch=self._realign_epoch,
+            stage_abs=list(a) if a is not None else None,
+            segment=f"height:s{self._attempt}",
+        )
+        self._progress(None, "paused", reason="realigned: press Continue")
+
+    def _realign_problem(self) -> str:
+        """Why the run cannot continue after a realignment ('' when it can)."""
+        return realign_problem(self.dev)
 
     def _preflight(self, *, resume: bool) -> None:
         """P0: anything wrong here aborts before any motion."""
@@ -564,7 +672,9 @@ class ScanExecutor:
             "condition_id": str(kw.get("state") or ""),
             "setting_id": None if settle is None and n is None else f"settle{settle}:n{n}",
             "segment": f"height:s{self._attempt}",
-            "position_instance_id": f"{self.store.run_id}:hs{height}",
+            # After a realignment the same height label is a new physical instance.
+            "position_instance_id": f"{self.store.run_id}:hs{height}"
+            + (f":r{self._realign_epoch}" if self._realign_epoch else ""),
         }
 
     def _dark_frame(self, st: Step, *, label: str = "dark") -> dict[str, float]:

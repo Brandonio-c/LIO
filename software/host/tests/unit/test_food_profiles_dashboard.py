@@ -54,3 +54,21 @@ def test_profiles_api_without_foods(cfg: HwConfig, tmp_path: Path) -> None:
         server.shutdown()
         server.server_close()
         session.shutdown()
+
+
+def test_runs_are_labelled_from_the_food_library() -> None:
+    """Owner 2026-11-25: a scan whose sample is a food code shows the food's name."""
+    from lio.dashboard.scan_explorer import label_run
+
+    names = {"LIO-F-00001": "Citrucel orange"}
+    food = label_run({"sample_id": "LIO-F-00001", "mode": "fine"}, names)
+    assert food["kind"] == "food" and food["food_label"] == "Citrucel orange"
+    assert food["sample_code"] == "LIO-F-00001"
+    assert label_run({"sample_id": "LIO-F-00009", "mode": "full"}, names)["food_label"] == (
+        "LIO-F-00009"
+    )  # not in the library: the code, never "unknown"
+    ref = label_run({"sample_id": "empty", "mode": "quick"}, names)
+    assert ref["kind"] == "reference" and ref["food_label"] == "empty chamber"
+    assert label_run({"sample_id": "empty", "mode": "protocol"}, names)["kind"] == "protocol"
+    own = label_run({"sample_id": "LIO-F-00001", "food_label": "Citrucel (lot 2)"}, names)
+    assert own["food_label"] == "Citrucel (lot 2)"  # a recorded label wins

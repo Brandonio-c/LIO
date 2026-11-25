@@ -98,15 +98,35 @@ def channel_stats(curve: Curve, c: float) -> dict[str, Any]:
     }
 
 
-def signal_floors(cfg: HwConfig, elec: dict[str, Any]) -> dict[str, tuple[float, float]]:
+def samples_per_reading(meta: dict[str, Any]) -> float:
+    """Raw ADC samples averaged into one scan reading (1 when not mains-integrated)."""
+    if not (meta.get("capabilities") or {}).get("mains_rejection"):
+        return 1.0
+    st = (meta.get("plan") or {}).get("settings") or {}
+    hz = float(st.get("mains_hz") or 0)
+    periods = float(st.get("mains_periods") or 0)
+    pre = meta.get("adc_preflight") or [{}]
+    rate = float((pre[-1] if isinstance(pre, list) and pre else {}).get("rate_sps") or 0)
+    if hz <= 0 or periods <= 0 or rate <= 0:
+        return 1.0
+    return max(1.0, periods * rate / hz)
+
+
+def signal_floors(
+    cfg: HwConfig, elec: dict[str, Any], meta: dict[str, Any] | None = None
+) -> dict[str, tuple[float, float]]:
     """[WARN, FAIL] for "this hole gives light", per detector: the configured counts, or
-    8 / 4 times the detector's own dark noise if that is larger (a noisy detector's
-    flat curve must not pass for light)."""
+    8 / 4 times the noise of one net reading if that is larger (a noisy detector's flat
+    curve must not pass for light). The dark-stream sigma is per raw sample; a
+    mains-integrated reading averages ``samples_per_reading`` of them, and a net is a
+    difference of two readings (owner calibration 2026-11-25)."""
     w, f = pair(cfg, "optics.min_signal_counts")
+    k = samples_per_reading(meta or {})
+    scale = math.sqrt(2.0 / k) if k > 1 else 1.0
     out = {}
     for det in DETECTORS:
         sp = (elec.get("spectra") or {}).get(det) or {}
-        sig = float(sp.get("sigma_counts", 0.0))
+        sig = float(sp.get("sigma_counts", 0.0)) * scale
         out[det] = (max(w, 8 * sig), max(f, 4 * sig))
     return out
 
@@ -122,7 +142,7 @@ def analyse(
     stats: dict[str, dict[int, dict[str, Any]]] = {d: {} for d in DETECTORS}
     coup = elec["coupling"]
     judged = _judged(cube, cfg)
-    floors = signal_floors(cfg, elec)
+    floors = signal_floors(cfg, elec, cube.meta)
     w_pl, f_pl = pair(cfg, "optics.plausibility_counts")
     mod_min = float(health(cfg, "optics.modulation_min"))
     if not cube.mask(state="lit", phase="P2").any():
@@ -344,7 +364,7 @@ def _snr_headroom(cube: Cube, cfg: HwConfig, stats: dict[str, dict[int, dict[str
         exp = _expected(cfg, det, stats[det])
         if sp and exp:
             sig = max(float(sp["sigma_counts"]), 0.5)
-            f_sig = signal_floors(cfg, elec)[det][1]
+            f_sig = signal_floors(cfg, elec, cube.meta)[det][1]
             live = [h for h in exp if stats[det][h]["O"] >= f_sig]  # dead holes: see response
             snr = {h: 20 * math.log10(stats[det][h]["O"] / sig) for h in live}
             if not snr:

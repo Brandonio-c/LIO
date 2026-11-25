@@ -6,6 +6,7 @@ is exercised too.
 
 from __future__ import annotations
 
+import copy
 import math
 from pathlib import Path
 from typing import Any
@@ -13,7 +14,7 @@ from typing import Any
 import numpy as np
 import pytest
 
-from lio.config import HwConfig
+from lio.config import HwConfig, parse_config
 from lio.results import Status
 from lio.scan.analysis import analyse, electrical, optics, system, trend
 from lio.scan.analysis.data import Cube, Finding
@@ -135,6 +136,18 @@ def test_burst_fit_recovers_mains_amplitude() -> None:
 def test_blind_holes(cfg: HwConfig) -> None:
     assert electrical.blind_holes(cfg, "ingaas") == [1, 2, 3, 4, 5, 6, 7, 10, 11, 16]
     assert electrical.blind_holes(cfg, "opt101") == [12, 13, 14, 15, 16]
+
+
+@pytest.fixture
+def cfg(cfg: HwConfig) -> HwConfig:
+    """These synthetic runs model h13/h14 as strong InGaAs channels (the expectation
+    before the 2026-11-25 owner calibration made them expected-weak); the algorithms
+    under test (optimum, coupling, comparison, baseline) are independent of that."""
+    data = copy.deepcopy(cfg.data)
+    for ch in data["channels"]:
+        if int(ch["hole"]) in (13, 14):
+            ch["expect"] = {"ingaas": "signal"}
+    return parse_config(data, cfg.path)
 
 
 def test_healthy_synthetic_run_passes(cfg: HwConfig, tmp_path: Path) -> None:

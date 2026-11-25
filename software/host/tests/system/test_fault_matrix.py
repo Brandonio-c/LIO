@@ -73,14 +73,16 @@ MATRIX = (
     Row("stuck_on:13", "T05.3", "T05.3/h13/unique"),
     Row("stuck_on:13", "T05.3", "T05.3/B/stuck_via_10", unfitted=(10, 11)),
     Row("dead_channel:3", "T05.2", "T05.2/h03/opt101"),
-    Row("dead_channel:13", "T05.2", "T05.2/h13/ingaas"),
+    # h13/h14 are expected-weak, limited channels since 2026-11-25: absence only WARNs.
+    Row("dead_channel:13", "T05.2", "T05.2/h13/ingaas", Status.WARN),
+    Row("dead_channel:12", "T05.2", "T05.2/h12/ingaas"),
     # Caught at hole 8 (blue LED: no InGaAs signal where one is expected). Hole 3 now
     # lights 850 nm, which the OPT101 also sees; the InGaAs is not judged on hole 3
     # (channel.judge_out_of_range: false), so hole 3 alone no longer shows the swap.
     Row("swapped:3,8", "T05.3", "T05.3/h08/pattern"),
-    Row("swapped:3,13", "T05.2", "T05.2/h13/ingaas"),
+    Row("swapped:3,12", "T05.2", "T05.2/h12/ingaas"),
     Row("rail_a_dead", "T05.1", "T05.1/A/h08/ce_high"),
-    Row("rail_b_dead", "T05.1", "T05.1/B/h12/ce_high"),
+    Row("rail_b_dead", "T05.1", "T05.1/B/h11/ce_high"),
     Row("ce_inverted", "T04.1", "T04.1/w1/07"),
     Row("ce_inverted", "T05.1", "T05.1/A/h08/ce_low"),
     Row("reversed_ingaas", "T06.2", "T06.2/polarity/gate"),
@@ -185,7 +187,8 @@ SCAN_MATRIX = (
     # Short matrix fixtures cannot meet drift_min_span_s (300 s): see
     # test_scan_drift_*_long_dark for ≥300 s healthy/fault controls.
     ScanRow("leakage_drift:10", "elec/ingaas/drift", part="U5 pin-2 node", status=Status.SKIP),
-    ScanRow("mains_hum:8", "elec/ingaas/hum", part="earth bond"),
+    # Integrated readings cancel mains hum and 120 Hz flicker: reported, graded WARN.
+    ScanRow("mains_hum:8", "elec/ingaas/hum", Status.WARN, part="earth bond"),
     # judged in continuous mode only (stop-measure-move readings never see it)
     ScanRow("coil_emi", "elec/ingaas/coil_emi", part="motor wiring", mode="matrix_cont"),
     ScanRow("coil_emi", "elec/opt101/coil_emi", part="motor wiring", mode="matrix_cont"),
@@ -220,7 +223,7 @@ SCAN_MATRIX = (
     # S4: ambient, mechanics, the run itself
     ScanRow("ambient_leak:-20000", "ambient/opt101/leak", part="shroud"),
     ScanRow("ambient_leak:-20000", "ambient/ingaas/leak", part="shroud"),
-    ScanRow("room_flicker", "ambient/opt101/flicker", part="lid"),
+    ScanRow("room_flicker", "ambient/opt101/flicker", Status.WARN, part="lid"),
     ScanRow("backlash:2000", "mech/backlash", part="5-6 mm couplers"),
     ScanRow("step_loss:2,4200", "mech/step_loss", part="M2"),
     ScanRow("mid_run_boot:120", "system/link", incomplete=True, part="5 V supply"),
@@ -236,7 +239,9 @@ def scan_cfg(cfg: HwConfig) -> HwConfig:
     data["sim"]["height"].update(travel_hs=40000, peak_hs=-30000, width_hs=9000,
                                  peak_shift_hs=250, ambient_leak_scale_hs=6000)  # fmt: skip
     data["thresholds"]["motion"]["travel"]["range_steps"] = 40000
-    data["scan"].update(long_dark_s=4, hum_bursts=5)
+    # Short simulated runs (< drift_min_span_s): keep the move speed these fixtures were
+    # sized for; the shipped scan default became 300 half-steps/s on 2026-11-25.
+    data["scan"].update(long_dark_s=4, hum_bursts=5, jog_speed=500)
     data["scan"]["modes"]["matrix_cont"] = {"heights": 0, "up": 0, "return_top": True,
                                             "repeats": 1, "ref_heights": 0, "continuous": True,
                                             "label": "matrix, continuous"}  # fmt: skip

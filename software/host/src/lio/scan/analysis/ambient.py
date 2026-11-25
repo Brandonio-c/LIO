@@ -61,6 +61,11 @@ def mains_rejected_meta(meta: dict[str, Any]) -> bool:
     return bool((meta.get("capabilities") or {}).get("mains_rejection"))
 
 
+def _soften(st: Status) -> Status:
+    """Integrated readings cancel 120 Hz: WARN -> PASS, FAIL -> WARN."""
+    return {Status.WARN: Status.PASS, Status.FAIL: Status.WARN}.get(st, st)
+
+
 def flicker(cfg: HwConfig, spectra: dict[str, Any], meta: dict[str, Any]) -> list[Finding]:
     out = []
     for det in DETECTORS:
@@ -74,7 +79,7 @@ def flicker(cfg: HwConfig, spectra: dict[str, Any], meta: dict[str, Any]) -> lis
         rejected = mains_rejected_meta(meta)
         out.append(Finding(
             f"ambient/{det}/flicker", f"{det}: room-light flicker (120 Hz)",
-            Status.PASS if rejected and grade(a, w, f) == Status.WARN else grade(a, w, f),
+            _soften(grade(a, w, f)) if rejected else grade(a, w, f),
             round(a, 4), "mV", f"120 Hz amplitude in the dark streams {a:.3f} mV"
             + ("; readings integrate whole mains periods, so it cancels" if rejected else ""),
             f"< {w:g} mV (WARN), < {f:g} (FAIL)",

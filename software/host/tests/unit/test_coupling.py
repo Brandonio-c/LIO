@@ -97,6 +97,17 @@ def test_h12_o_sensitivity_nov23(cfg) -> None:
     folder = RESULTS / "20261123-003133_scan_quick"
     if not (folder / "cube.csv.gz").exists():
         pytest.skip("missing cube")
+    import copy
+
+    from lio.config import parse_config
+
+    # Judge h13/h14 as signal holes, as the 23 Nov analysis did (expected-weak since
+    # the 2026-11-25 owner calibration, which skips their response findings).
+    data = copy.deepcopy(cfg.data)
+    for ch in data["channels"]:
+        if int(ch["hole"]) in (13, 14):
+            ch["expect"] = {"ingaas": "signal"}
+    cfg = parse_config(data, cfg.path)
     from lio.scan.analysis import optics
 
     cube = Cube.open(folder)
@@ -118,3 +129,19 @@ def test_h12_o_sensitivity_nov23(cfg) -> None:
     for hid in ("optics/ingaas/h13/response", "optics/ingaas/h14/response"):
         f = next(x for x in findings if x.id == hid)
         assert float(f.data["O"]) + 6.0 < 0
+
+
+def test_light_returning_blind_holes_do_not_inflate_coupling(cfg) -> None:
+    """Owner 2026-11-25: Citrucel reflects h11/h16 onto the InGaAs (height-dependent
+    light). Those blind holes are excluded, so rail B C is not inflated (+44 -> +13)."""
+    folder = RESULTS / "20261125-141952_scan_fine"
+    if not (folder / "cube.csv.gz").exists():
+        pytest.skip("missing cube")
+    from lio.scan.analysis import electrical
+
+    cube = Cube.open(folder)
+    ctx, _ = electrical.coupling(cube, cfg)
+    assert ctx["ingaas"]["optical_blind"] == [11, 16]
+    assert ctx["ingaas"]["C"]["B"] == pytest.approx(13.0)
+    legacy, _ = electrical.coupling(cube, cfg, exclude_optical=False)
+    assert legacy["ingaas"]["C"]["B"] == pytest.approx(44.0)  # the documented old method

@@ -10,7 +10,15 @@ from lio.device import DeviceError
 from lio.protocol import ErrCode
 from lio.results import Status
 from lio.suite.core import DETECTORS, Recorder, SuiteContext, hole_id, register, skip_unusable
-from lio.suite.judge import judge, never_fail_absence, observed_pattern, out_of_range
+from lio.suite.judge import (
+    absence_unresolved,
+    classify,
+    judge,
+    never_fail_absence,
+    observed_pattern,
+    out_of_range,
+    unstable_is_warn,
+)
 
 U2_HOLES = range(9, 17)  # bits 8-15: the U2 byte (LIO-ELEC-001 §5.2)
 
@@ -23,7 +31,10 @@ def t05_1(ctx: SuiteContext, rec: Recorder) -> None:
     ctx.require_adc()
     dev = ctx.dev
     n = ctx.th.integer("channel.meas_n")
-    cases = (("A", 1, 2, 8, "opt101"), ("B", 2, 1, 12, "ingaas"))
+    # RAIL B gating is judged on hole 11 (pink) with the OPT101: a strong RAIL B source in
+    # any chamber. Hole 12 on the InGaAs returned too little light from an empty chamber
+    # to prove the CE line (owner calibration 2026-11-25).
+    cases = (("A", 1, 2, 8, "opt101"), ("B", 2, 1, 11, "opt101"))
     for rail, ce, other_ce, hole, det in cases:
         pre = f"{rail}/{hole_id(hole)}"
         if skip_unusable(ctx, rec, det, pre, f"RAIL {rail} gating"):
@@ -160,10 +171,23 @@ def t05_3(ctx: SuiteContext, rec: Recorder) -> None:
         ignored = sorted(d for d in dets if out_of_range(ctx, hole, d))
         unexpected = sorted(observed - expected)
         missing = sorted(expected - observed)
+        # A detector whose reading cannot resolve this channel is "not resolved", not missing.
+        unresolved = [
+            d
+            for d in missing
+            if absence_unresolved(ctx, classify(ctx, d, nets[d], n, expect=ch.expect_for(d)))
+        ]
+        missing = [d for d in missing if d not in unresolved]
         if not unexpected and not missing:
             status, msg = Status.PASS, f"seen by {sorted(observed) or 'nothing'} as expected"
             if ignored:
                 msg += f" ({', '.join(ignored)} not judged: outside its range)"
+            if unresolved:
+                status = Status.WARN
+                msg += (
+                    f"; {unresolved} not resolved by this reading (detection limit above "
+                    "the channel's level; T13.1 judges it)"
+                )
         else:
             parts = []
             if unexpected:
@@ -376,6 +400,7 @@ def t05_5(ctx: SuiteContext, rec: Recorder) -> None:
             f"mean {ps['mean']:+.1f} (95% {lo:+.1f}..{hi:+.1f}), SD {ps['sd']:.2f}, "
             f"n {ps['n_observed']}/{ps['n_planned']}; {sig}; {ps['reason']}",
             f"SD <= {sd_max:g} counts, every record present",
+            warn=unstable_is_warn(ctx),
             summary=ps,
         )
     rec.measure(repeats=summaries)

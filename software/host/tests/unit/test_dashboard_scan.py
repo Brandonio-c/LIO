@@ -176,3 +176,100 @@ def test_http_api(scfg: HwConfig, tmp_path: Path) -> None:
         srv.shutdown()
         srv.server_close()
         s.shutdown(timeout_s=30)
+
+
+# ------------------------------------------- pause + realign (owner 2026-11-25)
+
+
+def _motors_idle(session: Session) -> bool:
+    m = session.motor_status()
+    return bool(m.get("motors")) and all(v["state"] != "run" for v in m["motors"].values())
+
+
+def test_paused_scan_lends_motors_for_realignment(session: Session) -> None:
+    lim = session.cfg.limits
+    rpm = min(60, int(lim["rpm_max"]))
+    session.scan_start("tiny", "empty", heartbeat=False)
+    wait_for(lambda: (session.scan_job is not None
+                      and session.scan_job.progress.get("done", 0) >= 2))  # fmt: skip
+    with pytest.raises(Refused, match="pause the run first"):
+        session.realign(True)
+    session.scan_pause(True)
+    wait_for(lambda: session.scan_job is not None and session.scan_job.control.paused)
+    with pytest.raises(Busy):
+        session.motor_move("1", "up", 10, rpm)  # paused but not lent: still locked
+    out = session.realign(True)
+    assert out["realigning"] and session.device_lent
+    assert session.scan_view()["job"]["realigning"] is True
+    # The Motors tab now works: tilt one side.
+    session.motor_arm()
+    session.motor_move("1", "up", 40, rpm)
+    wait_for(lambda: _motors_idle(session))
+    out = session.realign(False)
+    assert not out["realigning"] and "not level" in out["note"]
+    job = session.scan_job
+    assert job is not None and job.control.paused  # stays paused until fixed
+    with pytest.raises(Refused, match="cannot continue yet"):
+        session.scan_pause(False)
+    # Realign again and level the sides; the run accepts it.
+    session.realign(True)
+    session.motor_arm()
+    session.motor_move("1", "down", 40, rpm)
+    wait_for(lambda: _motors_idle(session))
+    out = session.realign(False)
+    assert out["note"] == "" and not session.device_lent
+    with pytest.raises(Busy):
+        session.motor_move("1", "up", 10, rpm)  # the run owns the device again
+    session.scan_pause(False)
+    wait_for(lambda: not session.scanning)
+    res = session.scan_view()["job"]["result"]
+    assert res["status"] == "COMPLETE"
+    folder = session.results_root / res["run_id"]
+    meta = json.loads((folder / "scan.json").read_text())
+    kinds = [e["kind"] for e in meta["events"]]
+    assert kinds.count("realign_start") == 2 and "realign_refused" in kinds
+    assert kinds.count("realign_end") == 1 and meta["realign_epoch"] == 1
+    segs = meta["segments"]
+    assert segs[-1]["realigned"] is True and segs[-1]["segment"] == "height:s1"
+    import csv
+    import gzip
+
+    with gzip.open(folder / "cube.csv.gz", "rt", newline="") as f:
+        rows = list(csv.DictReader(f))
+    after = [r for r in rows if r["segment"] == "height:s1"]
+    before = [r for r in rows if r["segment"] == "height:s0"]
+    assert after and before
+    assert all(r["position_instance_id"].endswith(":r1") for r in after)
+    assert not any(r["position_instance_id"].endswith(":r1") for r in before)
+
+
+def test_abort_while_lent_ends_the_scan_safely(session: Session) -> None:
+    session.scan_start("tiny", "empty", heartbeat=False)
+    wait_for(lambda: (session.scan_job is not None
+                      and session.scan_job.progress.get("done", 0) >= 1))  # fmt: skip
+    session.scan_pause(True)
+    wait_for(lambda: session.scan_job is not None and session.scan_job.control.paused)
+    session.realign(True)
+    assert session.device_lent
+    session.scan_abort("test abort while realigning")
+    wait_for(lambda: not session.scanning)
+    assert not session.device_lent
+    assert session.scan_view()["runs"][0]["status"] == "INCOMPLETE"
+    assert session.sim is not None and not session.sim._light_since
+
+
+def test_whole_system_run_pauses_between_tests_and_lends_motors(session: Session) -> None:
+    session.start(["link", "T05.2"])
+    session.suite_pause(True)
+    c = session._suite_control
+    assert c is not None
+    wait_for(lambda: c.paused or not session.running)
+    assert session.running, "the run finished before the pause took effect"
+    assert session.snapshot()["run_control"]["paused"] is True
+    session.realign(True)
+    assert session.device_lent and session.motor_status().get("motors")
+    out = session.realign(False)
+    assert out["note"] == "" and not session.device_lent
+    session.suite_pause(False)
+    wait_for(lambda: not session.running)
+    assert session.last_run is not None and not session.last_run.get("stopped")

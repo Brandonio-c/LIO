@@ -132,8 +132,11 @@ channels:
   - {hole: 10, label: "white",  wavelength_nm: 450,  rail: B, fitted: true,  expect: {opt101: signal}}   # broadband: 450 nm peak + 550-600 nm phosphor
   - {hole: 11, label: "pink",   wavelength_nm: 450,  rail: B, fitted: true,  expect: {opt101: signal}}   # broadband: 450 nm peak + ~610 nm phosphor
   - {hole: 12, label: "1450",   wavelength_nm: 1450, rail: B, fitted: true,  expect: {ingaas: signal}}
-  - {hole: 13, label: "1550",   wavelength_nm: 1550, rail: B, fitted: true,  expect: {ingaas: signal}}
-  - {hole: 14, label: "1650",   wavelength_nm: 1650, rail: B, fitted: true,  expect: {ingaas: signal}}
+  # 13/14: very wide-angle 3 mm D4 parts (120-240 deg): little of their light reaches the
+  # sample spot the InGaAs sees; 24 Nov bench: 4-6 counts on white paper, resolved but
+  # tiny. Owner calibration 2026-11-25: expected weak, absence WARNs (verdict.limited_holes).
+  - {hole: 13, label: "1550",   wavelength_nm: 1550, rail: B, fitted: true,  expect: {ingaas: weak}}
+  - {hole: 14, label: "1650",   wavelength_nm: 1650, rail: B, fitted: true,  expect: {ingaas: weak}}
   - {hole: 15, label: "1760",   wavelength_nm: 1760, rail: B, fitted: true,  expect: {ingaas: weak}}
   - {hole: 16, label: "1850",   wavelength_nm: 1850, rail: B, fitted: true,  expect: {}}   # beyond both detectors: absence never FAIL; wrong-LED response is WARN only
 
@@ -206,7 +209,10 @@ scan:
     lead_screw: "M6 x 1.0 threaded rod, 304 stainless steel, 255 mm (10 in), x4"
     coupler: "5 mm to 6 mm shaft coupler, aluminium alloy, 25 mm long, 20 mm diameter"
     motors: "28BYJ-48 5 V stepper (64:1 gearbox), ULN2003 driver boards, x2"
-  jog_speed: 500               # half-steps/s between heights (the speed the travel was jogged at)
+  # half-steps/s between heights. Owner 2026-11-25: 500 -> 300. Two scans on 25 Nov lost
+  # alignment while the tracked counts stayed level on every move (one motor missed steps
+  # under load, mostly when lifting); the 28BYJ-48 has much more torque when slower.
+  jog_speed: 300
   settle_ms_mech: 300          # after a move, before the dark frame
   dark_agree_sigma: 3          # two dark reads must agree within this many sigma ...
   dark_agree_tries: 5          # ... trying this many times
@@ -336,6 +342,10 @@ thresholds:
   adc:
     dark_samples: 64
     dark_sigma_max_counts: 20
+    # Owner calibration 2026-11-25: raw dark sigma between the limit above and this level is a
+    # WARN. The InGaAs raw noise (25-37 counts since 23 Nov) is ~99 % mains hum, which the
+    # mains-integrated scan/protocol readings cancel (24 Nov bench: repeats SD 1-2 counts).
+    dark_sigma_fail_counts: {opt101: 20, ingaas: 50}
     rate_tolerance_frac: 0.15
     stability_duration_s: 60
     stability_rate_hz: 2
@@ -361,6 +371,11 @@ thresholds:
     detect_min_counts: 15         # rig 17 Nov: noise 0.3-3 counts, weakest lit holes 20-40 (was 50, set on the sim)
     weak_sigma: 3
     weak_min_counts: 6
+    # Owner calibration 2026-11-25: a reading whose weak-signal threshold is above this
+    # cannot tell a weak channel from a dead one (raw InGaAs MEAS here: sigma_net ~17 ->
+    # threshold ~52-175 counts, while an empty chamber returns 5-40). Such an absence is a
+    # WARN "not resolved"; T13.1's integrated scan and the baseline judge the channel.
+    unresolvable_limit_counts: 40
     none_max_sigma: 10           # unfitted/expected-none: net beyond this is "unexpected signal"
     none_min_counts: 50
     # false: each hole is judged only by the detector(s) its `expect` names (OPT101 for the
@@ -390,6 +405,9 @@ thresholds:
     sweep_sd_max_counts: 5.0      # T08.2 SWEEP net repeats: sample SD limit (counts)
     cv_min_mean_counts: 20        # CV reported only for resolved means at least this large
     noise_floor_sigma: 3          # SD limit never below 3 x sqrt(2) x measured dark sigma (lit-dark net)
+    # Owner 2026-11-25: excess dispersion (T05.5 MEAS, T08.2 SWEEP) is a quality WARN; the
+    # channel still responds. "fail" restores the stricter rule.
+    unstable_status: warn
   settling:
     fraction: 0.99
     holes: [3, 8, 13]
@@ -429,7 +447,10 @@ thresholds:
     # move together. No limit switches exist: the operator puts the top at its lowest
     # position before the run and measures the travel once (jog bottom -> top).
     travel:
-      range_steps: 0             # bottom -> top, half-steps; 0 = not measured yet: tests skip
+      # bottom -> top, half-steps; 0 = not measured: fallback only when the stage is NOT
+      # tracked (simulator/tests). The rig is tracked: its marks (331073 both sides, set
+      # 2026-11-25) live in test_results/stage_position.json, not here.
+      range_steps: 0
       margin_steps: 16384        # fallback when travel is not tracked; match stage.top_margin_steps
       jog_speed: 500             # half-steps/s for long moves: one continuous jog of both motors
       renew_steps: 1024          # renew the jog this often (its bound is 2048 half-steps)
@@ -460,7 +481,7 @@ thresholds:
     dark_shift_sigma: 10
   verdict:
     max_channel_fails: 2
-    limited_holes: [15, 16]
+    limited_holes: [13, 14, 15, 16]   # 13/14 added 2026-11-25 (wide-angle SWIR, weak by design)
 
 # Simulator physics (lio.sim). Not used against real hardware.
 sim:

@@ -229,7 +229,8 @@ def legacy_blind_median(cube: Cube, cfg: HwConfig) -> dict[str, CouplingResult]:
     C=0; that behaviour is preserved here under ``model=legacy_blind_median``
     with an explicit warning. New analyses should call ``estimate_coupling``.
     """
-    ctx, _findings = electrical.coupling(cube, cfg)
+    # The legacy model is the documented blind median over every blind hole (§12 table).
+    ctx, _findings = electrical.coupling(cube, cfg, exclude_optical=False)
     out: dict[str, CouplingResult] = {}
     for det in DETECTORS:
         raw = ctx.get(det) or {}

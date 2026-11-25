@@ -62,8 +62,10 @@ def t13_1(ctx: SuiteContext, rec: Recorder) -> None:
         plan = scan.plan_for(cfg, mode, dev.stage, dev.stage_top_margin())
     except scan.PlanError as e:
         raise Skip(str(e)) from e
+    # The dashboard passes its run Control so Pause / Realign reach this sweep.
+    control = ctx.cache.get("scan_control")
     store, _ = scan.start(dev, cfg, plan, root, ctx.operator, sample_id=sample,
-                               sim=ctx.sim is not None)  # fmt: skip
+                               sim=ctx.sim is not None, control=control)  # fmt: skip
     a = analyse(store.folder, cfg)
     out = scan_report.write(store.folder, cfg)
     rec.artefact(str(out["html"]))

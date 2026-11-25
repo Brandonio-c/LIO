@@ -10,6 +10,7 @@ from lio.device import Sweep
 from lio.protocol import ProtocolError
 from lio.results import Status
 from lio.suite.core import DETECTORS, Recorder, Skip, SuiteContext, hole_id, register
+from lio.suite.judge import unstable_is_warn
 
 # ------------------------------------------------------------------------ T07
 
@@ -264,6 +265,7 @@ def t08_2(ctx: SuiteContext, rec: Recorder) -> None:
                 f"mean {ps['mean']:+.1f}, SD {ps['sd']:.2f}, range {ps['min']:+.0f}.."
                 f"{ps['max']:+.0f}; {ps['reason']} (SWEEP mode, not MEAS)",
                 f"SD <= {sd_max:g} counts, a record in every sweep",
+                warn=unstable_is_warn(ctx),
                 sd=ps.get("sd"),
             )
     rec.measure(sweep_net_repeatability=net_summ)

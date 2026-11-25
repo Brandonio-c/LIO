@@ -5,7 +5,7 @@ from __future__ import annotations
 from lio.analysis import Level, polarity_reversed, saturated
 from lio.results import Status
 from lio.suite.core import Recorder, Skip, SuiteContext, hole_id, register, skip_unusable
-from lio.suite.judge import classify
+from lio.suite.judge import absence_unresolved, classify
 
 REVERSED_ADVICE = (
     "the InGaAs photodiode is reversed: swap its two leads at the TIA input (anode <-> "
@@ -159,12 +159,16 @@ def t06_3(ctx: SuiteContext, rec: Recorder) -> None:
     ratios: dict[int, float] = {}
     for h in shared:
         m = chans[h].meas
-        levels = {
-            d: classify(ctx, d, m.net(d), n, expect=Level.SIGNAL).level
-            for d in ("opt101", "ingaas")
+        dets_ = {
+            d: classify(ctx, d, m.net(d), n, expect=Level.SIGNAL) for d in ("opt101", "ingaas")
         }
+        levels = {d: x.level for d, x in dets_.items()}
         both_signal = all(lv == Level.SIGNAL for lv in levels.values())
         both_seen = all(lv != Level.NONE for lv in levels.values())
+        # A detector that cannot resolve this level here is "not resolved", not dark.
+        unresolved = [
+            d for d, x in dets_.items() if x.level == Level.NONE and absence_unresolved(ctx, x)
+        ]
         ratio = m.net("ingaas") / m.net("opt101") if m.net("opt101") else float("nan")
         if both_signal:
             ratios[h] = ratio
@@ -182,14 +186,20 @@ def t06_3(ctx: SuiteContext, rec: Recorder) -> None:
         else:
             missing = [d for d, lv in levels.items() if lv == Level.NONE]
             msg = f"no response on {missing}"
-        # FAIL only when a detector is dark; weak cross-cal → WARN.
+            if missing and set(missing) <= set(unresolved):
+                msg = (
+                    f"{missing} not resolved by this reading (detection limit above the "
+                    "channel's level; T13.1 judges it)"
+                )
+        # FAIL only when a detector is dark; weak or unresolved cross-cal -> WARN.
+        missing_dark = [d for d, lv in levels.items() if lv == Level.NONE and d not in unresolved]
         rec.check(
             f"{hole_id(h)}",
             f"Hole {h} seen by both detectors",
             both_signal,
             msg,
             "both above the detection threshold",
-            warn=both_seen and not both_signal,
+            warn=(both_seen and not both_signal) or (not both_seen and not missing_dark),
             ratio=ratio,
             levels=levels,
         )

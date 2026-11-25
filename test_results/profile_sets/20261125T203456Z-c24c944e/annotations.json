@@ -1,0 +1,92 @@
+{
+  "20261125-141952_scan_fine": {
+    "run_id": "20261125-141952_scan_fine",
+    "food_label": "Citrucel orange",
+    "product_id": "LIO-F-00001",
+    "parent_material_id": null,
+    "lot_id": null,
+    "preparation_id": null,
+    "repeat_type": null,
+    "notes": "kind=food; label from the food library"
+  },
+  "20261125-130035_scan_quick": {
+    "run_id": "20261125-130035_scan_quick",
+    "food_label": "empty chamber",
+    "product_id": null,
+    "parent_material_id": null,
+    "lot_id": null,
+    "preparation_id": null,
+    "repeat_type": null,
+    "notes": "kind=reference; label from the food library"
+  },
+  "20261123-173108_scan_quick": {
+    "run_id": "20261123-173108_scan_quick",
+    "food_label": "empty chamber",
+    "product_id": null,
+    "parent_material_id": null,
+    "lot_id": null,
+    "preparation_id": null,
+    "repeat_type": null,
+    "notes": "kind=reference; label from the food library"
+  },
+  "20261123-003133_scan_quick": {
+    "run_id": "20261123-003133_scan_quick",
+    "food_label": "empty chamber",
+    "product_id": null,
+    "parent_material_id": null,
+    "lot_id": null,
+    "preparation_id": null,
+    "repeat_type": null,
+    "notes": "kind=reference; label from the food library"
+  },
+  "20261120-012619_scan_quick": {
+    "run_id": "20261120-012619_scan_quick",
+    "food_label": "empty chamber",
+    "product_id": null,
+    "parent_material_id": null,
+    "lot_id": null,
+    "preparation_id": null,
+    "repeat_type": null,
+    "notes": "kind=reference; label from the food library"
+  },
+  "20261119-171756_scan_full": {
+    "run_id": "20261119-171756_scan_full",
+    "food_label": "black reference (cup)",
+    "product_id": null,
+    "parent_material_id": null,
+    "lot_id": null,
+    "preparation_id": null,
+    "repeat_type": null,
+    "notes": "kind=reference; label from the food library"
+  },
+  "20261119-152512_scan_quick": {
+    "run_id": "20261119-152512_scan_quick",
+    "food_label": "black reference (cup)",
+    "product_id": null,
+    "parent_material_id": null,
+    "lot_id": null,
+    "preparation_id": null,
+    "repeat_type": null,
+    "notes": "kind=reference; label from the food library"
+  },
+  "20261116-220635_scan_quick": {
+    "run_id": "20261116-220635_scan_quick",
+    "food_label": "black reference (cup)",
+    "product_id": null,
+    "parent_material_id": null,
+    "lot_id": null,
+    "preparation_id": null,
+    "repeat_type": null,
+    "notes": "kind=reference; label from the food library"
+  },
+  "20261116-202110_scan_quick": {
+    "run_id": "20261116-202110_scan_quick",
+    "food_label": "empty chamber",
+    "product_id": null,
+    "parent_material_id": null,
+    "lot_id": null,
+    "preparation_id": null,
+    "repeat_type": null,
+    "notes": "kind=reference; label from the food library"
+  }
+}

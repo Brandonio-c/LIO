@@ -154,6 +154,10 @@ class Session:
         self.scan_job: ScanJob | None = None  # the Scan tab's diagnostic sweep
         self.protocol_job: Any | None = None  # targeted stationary protocol (M6)
         self._stop = threading.Event()
+        # Pause / realign for whole-system runs (owner 2026-11-25). One Control per
+        # run: the run loop pauses between tests on it, and T13.1's height sweep
+        # uses it, so Pause and Realign reach the scan inside the suite too.
+        self._suite_control: scan.Control | None = None
         self.catalogue = catalogue()
         self._state_path = results_root / STATE_FILE
         self.restore_board("hardware")
@@ -178,6 +182,129 @@ class Session:
     def running(self) -> bool:
         suite = self._thread is not None and self._thread.is_alive()
         return suite or self.scanning
+
+    @property
+    def device_lent(self) -> bool:
+        """A paused run has handed the device to the Motors tab for realignment."""
+        return any(c.realigning for c in self._run_controls())
+
+    def _run_controls(self) -> list[scan.Control]:
+        out: list[scan.Control] = []
+        if self.scan_job is not None and self.scan_job.alive:
+            out.append(self.scan_job.control)
+        if self._suite_control is not None and self._thread is not None and self._thread.is_alive():
+            out.append(self._suite_control)
+        return out
+
+    def _lendable_control(self) -> scan.Control:
+        """Control of the run whose device can be lent: a height scan or a suite run."""
+        if self.protocol_job is not None and self.protocol_job.alive:
+            raise Refused("a stationary protocol run does not move the motors: abort it to realign")
+        controls = self._run_controls()
+        if not controls:
+            raise Refused("no run is in progress")
+        return controls[0]
+
+    def lend_hooks(self, control: scan.Control) -> scan.Control:
+        """Let ``control`` hand the device lock to the Motors tab while it is paused."""
+        lock = self._dev_lock
+
+        def reclaim() -> None:
+            lock.acquire()
+
+        control.lend = lock.release
+        control.reclaim = reclaim
+        return control
+
+    def realign(self, on: bool) -> dict[str, Any]:
+        """Hand the device to the Motors tab during a pause (on) or give it back (off).
+
+        On: the run must be paused (Pause first). Off: refused while a motor jog is
+        running; the run itself then checks the motors are stopped and the stage is
+        valid and level before it will continue (it stays paused and says why).
+        """
+        c = self._lendable_control()
+        if on:
+            if not (c.paused or c.pause_requested):
+                raise Refused("pause the run first, then realign")
+            c.request_realign(True)
+            self.log("realign requested: the run hands the motors to the Motors tab")
+            deadline = time.monotonic() + 30.0
+            while not c.realigning and time.monotonic() < deadline:
+                if c.abort_reason or not self._run_controls():
+                    break
+                time.sleep(0.05)
+            self._changed()
+            return {"realigning": c.realigning, "note": c.realign_note}
+        if self._jog is not None:
+            raise Refused("a motor is still running: press STOP first, then Done realigning")
+        c.request_realign(False)
+        self.log("realign done: the run takes the motors back and checks the stage")
+        deadline = time.monotonic() + 30.0
+        while c.realigning and time.monotonic() < deadline:
+            time.sleep(0.05)
+        # The run's own check is the authority; give it a moment to record a refusal.
+        time.sleep(0.2)
+        self._changed()
+        return {"realigning": c.realigning, "note": c.realign_note}
+
+    def suite_pause(self, on: bool) -> None:
+        """Pause a whole-system run between tests (or inside T13.1's sweep)."""
+        c = self._suite_control
+        if c is None or self._thread is None or not self._thread.is_alive():
+            raise Refused("no test run is in progress")
+        if not on:
+            self._refuse_continue_while(c)
+        c.pause(on)
+        self.log("run pause requested" if on else "run continue requested")
+        self._changed()
+
+    @staticmethod
+    def _refuse_continue_while(c: scan.Control) -> None:
+        """Continue is refused while the device is lent or the realign check failed."""
+        if c.realigning or c.realign_requested:
+            raise Refused("press Done realigning first")
+        if c.realign_note:
+            raise Refused(f"cannot continue yet: {c.realign_note} (Realign motors again)")
+
+    def _suite_wait_if_paused(self, c: scan.Control) -> None:
+        """Between tests: hold while paused; lend the device for realignment."""
+        if not c.pause_requested:
+            return
+        c.paused = True
+        with self._lock:
+            if self.job is not None:
+                self.job["paused"] = True
+        self.log("run paused between tests")
+        self._changed()
+        while c.pause_requested and not self._stop.is_set():
+            if c.realign_requested:
+                c.realigning = True
+                self._dev_lock.release()  # the Motors tab may use the device now
+                self._changed()
+                try:
+                    while c.realign_requested and not self._stop.is_set():
+                        time.sleep(0.1)
+                finally:
+                    self._dev_lock.acquire()
+                    c.realigning = False
+                problem = (
+                    ""
+                    if self._stop.is_set()
+                    else scan.realign_problem(self._device(), require_tracked=False)
+                )
+                c.realign_note = problem
+                self.log(f"realign check: {problem}" if problem else "realigned: press Continue")
+                self._changed()
+                continue
+            time.sleep(0.1)
+        c.paused = False
+        with self._lock:
+            if self.job is not None:
+                self.job["paused"] = False
+        if not self._stop.is_set():
+            self.log("run continued")
+        self._changed()
 
     @property
     def scanning(self) -> bool:
@@ -392,6 +519,8 @@ class Session:
             )
             self._stop.clear()
             dev.clear_cancel()
+            self._suite_control = self.lend_hooks(scan.Control())
+            ctx.cache["scan_control"] = self._suite_control
             self.job = {
                 "ids": ids,
                 "done": [],
@@ -399,6 +528,7 @@ class Session:
                 "started": time.time(),
                 "modules": modules,
                 "stopping": False,
+                "paused": False,
             }
             self._thread = threading.Thread(
                 target=self._run,
@@ -417,11 +547,17 @@ class Session:
                 return
             self.job["stopping"] = True
             self._stop.set()
+            if self._suite_control is not None:
+                self._suite_control.abort("operator stop (dashboard)")
+                self._suite_control.request_realign(False)
             if self.dev is not None:
                 self.dev.request_cancel()
             if self.prompt is not None:
                 self.prompt.aborted = True
                 self.prompt.done.set()
+        if self._jog is not None:  # a realignment jog must not outlive the run
+            with contextlib.suppress(Exception):
+                self.jog_stop("run stopped")
         self.log("stop requested: finishing safely")
 
     def _run(self, ctx: SuiteContext, ids: list[str], meta: dict[str, str], save: bool) -> None:
@@ -433,6 +569,8 @@ class Session:
                 record = new_record(ctx, {k: v for k, v in meta.items() if v})
                 self.log(f"run {record.run_id}: {len(ids)} tests on {ctx.target}")
                 for tid in ids:
+                    if self._suite_control is not None:
+                        self._suite_wait_if_paused(self._suite_control)
                     if self._stop.is_set():
                         break
                     t: TestDef = REGISTRY[tid]
@@ -694,8 +832,8 @@ class Session:
     ) -> dict[str, Any]:
         """Run ``fn`` on the device outside a test run (like the manual tools)."""
         dev = self._device()
-        if self.running:
-            raise Busy("a run is using the device")
+        if self.running and not self.device_lent:
+            raise Busy("a run is using the device (pause it and press Realign motors)")
         got = (
             self._dev_lock.acquire(timeout=wait_s)
             if wait_s > 0
@@ -1347,6 +1485,46 @@ class Session:
             f"results cleared ({self.board_kind}); earlier reports stay in {self.results_root}"
         )
 
+    def regrade_last(self) -> dict[str, Any]:
+        """Judge the latest whole-system run again under the current thresholds.
+
+        Writes a NEW run (``<now>_regrade_of_<run>``) from the saved measurements (see
+        :mod:`lio.regrade`); the original stays untouched. The board then shows it.
+        """
+        from lio.regrade import changed_summary, latest_hardware_run, regrade_record
+
+        if self.running:
+            raise Busy("a run is in progress")
+        if self.board_kind != "hardware":
+            raise Refused("re-grading applies to hardware runs")
+        src = None
+        last_id = str((self.last_run or {}).get("run_id", ""))
+        if last_id.endswith("_host") and "_regrade_of_" not in last_id:
+            src = self.results_root / last_id
+        src = (
+            src
+            if src is not None and (src / "results.json").exists()
+            else (latest_hardware_run(self.results_root))
+        )
+        if src is None:
+            raise Refused("no saved whole-system hardware run to re-grade")
+        from lio.report import write_run
+
+        record, changes = regrade_record(RunRecord.load(src / "results.json"), self.cfg)
+        folder = self.results_root / record.run_id
+        write_run(record, folder, cfg=self.cfg, meas_log=None)
+        self.log(
+            f"re-graded {src.name} under the current thresholds -> {record.run_id}: "
+            f"{record.verdict['verdict']} (changed: {changed_summary(changes)})"
+        )
+        self.restore_board(self.board_kind)
+        return {
+            "run_id": record.run_id,
+            "from": src.name,
+            "verdict": record.verdict,
+            "changed": changes,
+        }
+
     # ------------------------------------------------------ persistence
 
     def _read_state(self) -> dict[str, Any]:
@@ -1533,7 +1711,10 @@ class Session:
             self.log("protocol pause requested" if on else "protocol continue requested")
             self._changed()
             return
-        self._scan().control.pause(on)
+        job = self._scan()
+        if not on:
+            self._refuse_continue_while(job.control)
+        job.control.pause(on)
         self.log("scan pause requested" if on else "scan continue requested")
         self._changed()
 
@@ -1547,6 +1728,9 @@ class Session:
             return
         job = self._scan()
         job.control.abort(reason)
+        if self._jog is not None:  # a realignment jog must not outlive the run
+            with contextlib.suppress(Exception):
+                self.jog_stop("scan aborted")
         with self._lock:
             self._stop.set()
             if self.prompt is not None:
@@ -1734,6 +1918,18 @@ class Session:
 
     # --------------------------------------------------------- snapshot
 
+    @staticmethod
+    def _control_view(c: scan.Control | None) -> dict[str, Any] | None:
+        if c is None:
+            return None
+        return {
+            "paused": c.paused,
+            "pause_requested": c.pause_requested,
+            "realign_requested": c.realign_requested,
+            "realigning": c.realigning,
+            "realign_note": c.realign_note,
+        }
+
     def snapshot(self) -> dict[str, Any]:
         with self._lock:
             order = {t.id: i for i, t in enumerate(self.catalogue)}
@@ -1758,6 +1954,8 @@ class Session:
                 "faults": self.sim.faults.active if self.sim is not None else [],
                 "firmware": self.firmware,
                 "running": self.running,
+                "device_lent": self.device_lent,
+                "run_control": self._control_view(self._suite_control) if job is not None else None,
                 "job": job,
                 "prompt": self.prompt.public() if self.prompt is not None else None,
                 "last_run": self.last_run,

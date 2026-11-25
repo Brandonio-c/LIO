@@ -6,6 +6,7 @@ import itertools
 import math
 
 from lio.analysis import linear_slope, stats
+from lio.config import ConfigError
 from lio.results import Status
 from lio.suite.core import DETECTORS, Recorder, Skip, SuiteContext, register
 
@@ -157,12 +158,27 @@ def t03_2(ctx: SuiteContext, rec: Recorder) -> None:
     for det in DETECTORS:
         s = dark.by_detector[det]
         ch = ctx.adc_channel(det)
-        rec.check(
+        # Owner calibration 2026-11-25: between the limit and the per-detector FAIL level
+        # the raw noise is a WARN (InGaAs: mostly mains hum, which the integrated scan and
+        # protocol readings cancel). Absent key: FAIL above the limit (old rule).
+        try:
+            fail_at = float(ctx.th.num(f"adc.dark_sigma_fail_counts.{det}"))
+        except ConfigError:
+            fail_at = sigma_max
+        if s.std <= sigma_max:
+            status = Status.PASS
+        elif s.std <= fail_at:
+            status = Status.WARN
+        else:
+            status = Status.FAIL
+        rec.add(
             f"a{ch}",
             f"ADS A{ch} ({det}) dark noise",
-            s.std <= sigma_max,
-            f"mean {s.mean:.1f}, sigma {s.std:.2f} counts (n={s.n})",
-            f"sigma <= {sigma_max:g} counts",
+            status,
+            f"mean {s.mean:.1f}, sigma {s.std:.2f} counts (n={s.n})"
+            + ("; raw (non-integrated) noise above the limit" if status == Status.WARN else ""),
+            f"sigma <= {sigma_max:g} counts"
+            + (f" (WARN up to {fail_at:g})" if fail_at > sigma_max else ""),
             mean=s.mean,
             sigma=s.std,
         )

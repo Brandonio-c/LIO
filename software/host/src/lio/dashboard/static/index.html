@@ -476,9 +476,10 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
     <div class="card" id="run-card">
       <h2>Run tests</h2>
       <div id="progress-box" class="hidden" style="display:grid;gap:6px;margin-bottom:12px">
-        <div class="row" style="justify-content:space-between"><strong id="progress-text"></strong><button id="btn-stop" class="btn small danger">Stop</button></div>
+        <div class="row" style="justify-content:space-between"><strong id="progress-text"></strong><span class="row" style="gap:6px"><button id="btn-run-pause" class="btn small">Pause</button><button id="btn-run-realign" class="btn small hidden">Realign motors</button><button id="btn-stop" class="btn small danger">Stop</button></span></div>
         <div class="progress"><div id="progress-bar" style="width:0"></div></div>
         <div id="progress-now" class="ink2"></div>
+        <div id="progress-realign" class="note hidden"></div>
       </div>
       <div class="row" style="gap:8px;margin-bottom:10px">
         <button id="btn-all" class="btn primary">Run whole system</button>
@@ -496,7 +497,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
         <label class="field">Operator<input id="operator" type="text" placeholder="your name"></label>
         <label class="field" style="flex:1">Notes<input id="notes" type="text" placeholder="optional"></label>
       </div>
-      <div class="row" style="margin-top:10px"><button id="btn-clear" class="btn small">Clear results</button><span class="note">The board keeps the latest result of each test, across sessions, until you clear it.</span></div>
+      <div class="row" style="margin-top:10px"><button id="btn-clear" class="btn small">Clear results</button><button id="btn-regrade" class="btn small" title="Judge the latest whole-system run again under the current thresholds, from its saved measurements (writes a new, labelled run; the original is kept)">Re-grade last run</button><span class="note">The board keeps the latest result of each test, across sessions, until you clear it.</span></div>
     </div>
   </section>
 
@@ -562,6 +563,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
       </div>
     </div>
     <div id="mot-msg" class="note" style="margin-top:10px"></div>
+    <div id="mot-lent" class="note hidden" style="margin-top:10px"><b>A paused run has lent you the motors.</b> Level the two sides (move one motor), drive to the top and press <b>Set top here</b>, then <button id="mot-realign-done" class="btn small">Done realigning</button> and Continue the run. Readings after this are saved as a new segment.</div>
     <h3 style="margin-top:14px">Chamber top position (tracked)</h3>
     <div class="row" style="align-items:flex-start;gap:16px">
       <div id="stage-info" class="note" style="flex:1;line-height:1.6">–</div>
@@ -638,6 +640,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
       <span style="flex:1"></span>
       <button id="scan-start" class="btn primary">Start scan</button>
       <button id="scan-pause" class="btn">Pause</button>
+      <button id="scan-realign" class="btn hidden">Realign motors</button>
       <button id="scan-abort" class="btn danger">■ Abort</button>
     </div>
     <details style="margin-top:10px"><summary>Settings for this run <span class="muted">(defaults from lio_hw.yaml, scan:)</span></summary>
@@ -674,18 +677,18 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
       <button class="btn" id="pf-refresh">Refresh</button>
     </div>
     <div class="row" style="margin-top:12px;gap:12px;align-items:flex-end">
-      <label class="field">Saved run <select id="pf-run" style="min-width:220px"></select></label>
+      <label class="field">Saved scan <select id="pf-run" style="min-width:340px"></select></label>
       <label class="field">Detector <select id="pf-det"><option value="opt101">OPT101</option><option value="ingaas">InGaAs</option></select></label>
       <button class="btn primary" id="pf-load">Explore</button>
-      <button class="btn" id="pf-init-ds">Init dataset from listed runs</button>
+      <button class="btn" id="pf-init-ds" title="Snapshot every complete height scan, labelled with its food (or reference), for model fitting">Make dataset from these scans</button>
     </div>
     <div id="pf-banner" class="note" style="margin-top:10px"></div>
     <div class="scan-hm" style="margin-top:12px">
-      <div><div class="ink2" style="font-size:13px">Heatmap (mean net; blinds grey)</div><canvas id="pf-hm" width="560" height="300" aria-label="profile heatmap"></canvas></div>
-      <div><div class="ink2" style="font-size:13px">Curve (hole <input id="pf-hole" type="number" min="1" max="16" value="5" style="width:3rem">)</div><canvas id="pf-curve" width="560" height="300" aria-label="profile curve"></canvas></div>
+      <div><div class="ink2" style="font-size:13px">Every hole vs head height (mean net counts; click a row to plot it)</div><canvas id="pf-hm" width="560" height="380" style="height:380px" aria-label="profile heatmap"></canvas></div>
+      <div><div class="ink2" style="font-size:13px">One hole vs height: <select id="pf-hole"></select></div><canvas id="pf-curve" width="560" height="380" style="height:380px" aria-label="profile curve"></canvas></div>
     </div>
-    <h3 style="margin-top:14px">Findings / streams</h3>
-    <pre id="pf-meta" class="mono" style="white-space:pre-wrap;max-height:220px;overflow:auto">Select a run.</pre>
+    <h3 style="margin-top:14px">Findings</h3>
+    <div id="pf-meta" class="note">Choose a scan and press Explore.</div>
     <h3 style="margin-top:14px">Food Map gallery</h3>
     <div id="pf-gallery" class="note">Init a dataset to list foods / preparations.</div>
     <p class="note">CLI: <span class="mono">lio profiles explore FOLDER</span> · <span class="mono">lio profiles fit DATASET --method pca</span> · dashboard <span class="mono">--no-food-library</span></p>
@@ -1042,10 +1045,38 @@ function renderProgress() {
   const j = S.job, box = $("progress-box");
   box.classList.toggle("hidden", !j);
   if (!j) return;
-  const n = j.ids.length, d = j.done.length;
-  $("progress-text").textContent = j.stopping ? "Stopping safely…" : `Running ${d + (j.current ? 1 : 0)} of ${n}`;
+  const n = j.ids.length, d = j.done.length, rc = S.run_control || {};
+  const pausing = !!(rc.pause_requested || rc.paused), paused = !!rc.paused;
+  $("progress-text").textContent = j.stopping ? "Stopping safely…"
+    : rc.realigning ? `Paused for realignment (${d} of ${n} done)`
+    : paused ? `Paused (${d} of ${n} done)`
+    : pausing ? `Pausing at the next safe point… (${d} of ${n})`
+    : `Running ${d + (j.current ? 1 : 0)} of ${n}`;
+  $("btn-run-pause").textContent = pausing ? "Continue" : "Pause";
+  $("btn-run-pause").disabled = !!j.stopping || !!rc.realigning;
+  $("btn-run-realign").classList.toggle("hidden", !(paused || rc.realigning));
+  $("btn-run-realign").textContent = rc.realigning ? "Done realigning" : "Realign motors";
+  realignNote($("progress-realign"), rc);
   $("progress-bar").style.width = `${100 * d / n}%`;
   $("progress-now").innerHTML = j.current ? `${esc(j.current.id)} ${esc(j.current.name)} <span class="muted num">· ${j.current.elapsed_s.toFixed(0)} s</span>` : "";
+}
+function realignNote(el, c) {
+  const msg = c && c.realigning
+    ? "Motors tab unlocked: level the two sides, drive to the top and press Set top here, then press Done realigning."
+    : c && c.realign_note ? `Cannot continue yet: ${c.realign_note}`
+    : c && c.paused ? "Paused safely. Realign motors hands the motors to the Motors tab; Continue carries on."
+    : "";
+  el.textContent = msg;
+  el.classList.toggle("hidden", !msg);
+}
+async function realignAct(on) {
+  try {
+    const out = await api("/api/realign", { on });
+    if (on && out.realigning) { toast("Motors tab unlocked for realignment", 4000); }
+    if (!on && out.note) { toast(`Cannot continue yet: ${out.note}`, 9000); }
+    else if (!on) { toast("Realigned: press Continue", 4000); }
+  } catch (e) { toast(e.message, 8000); }
+  poll(true); if (typeof scanPoll === "function") scanPoll();
 }
 function renderHeader() {
   const on = S.connected;
@@ -1060,6 +1091,7 @@ function renderHeader() {
   document.querySelectorAll(".sim-only").forEach((e) => e.classList.toggle("hidden", !S.is_sim));
   $("btn-all").disabled = !on || S.running;
   $("btn-clear").disabled = S.running;
+  $("btn-regrade").disabled = S.running;
   $("btn-disconnect").disabled = S.running;
   if (S.error) { toast(S.error, 8000); }
 }
@@ -1119,7 +1151,17 @@ $("motion-yes").onclick = () => { $("motion-overlay").classList.remove("open"); 
 $("motion-no").onclick = () => { $("motion-overlay").classList.remove("open"); pendingRun = null; };
 $("btn-all").onclick = () => startRun([], { save_baseline: $("opt-save").checked });
 $("btn-stop").onclick = () => act("/api/stop", {}, "stopping after the safe point");
+$("btn-run-pause").onclick = () => { const rc = S && S.run_control || {}; act("/api/run/pause", { on: !(rc.pause_requested || rc.paused) }, rc.pause_requested || rc.paused ? "continuing" : "pausing at the next safe point"); };
+$("btn-run-realign").onclick = () => realignAct(!(S && S.run_control && S.run_control.realigning));
+$("mot-realign-done").onclick = () => realignAct(false);
 $("btn-off").onclick = () => act("/api/off", {}, S && S.running ? "stopping the run safely" : "LEDs off, motors stopped");
+$("btn-regrade").onclick = async () => {
+  try {
+    const out = await api("/api/regrade", {});
+    toast(`Re-graded ${out.from}: ${out.verdict.verdict}`, 6000);
+  } catch (e) { toast(e.message, 8000); }
+  poll(true);
+};
 $("btn-clear").onclick = () => { if (confirm("Start the board afresh? Earlier reports stay in test_results/ but no longer count.")) act("/api/clear", {}); };
 $("btn-wake").onclick = async () => {
   toast("holding the motor coils for 3 s to wake bank A… (nothing moves)", 4000);
@@ -1210,6 +1252,7 @@ function scanSetup() {
   $("scan-preview").onclick = scanPreview;
   $("scan-mode").onchange = () => { $("scan-plan").textContent = "Preview the plan to see the heights, duration and LED duty."; };
   $("scan-start").onclick = scanStart;
+  $("scan-realign").onclick = () => realignAct(!(SC && SC.job && SC.job.realigning));
   $("scan-pause").onclick = () => scanAct("/api/scan/pause", { on: !(SC && ((SC.job && (SC.job.pause_requested || SC.job.paused)) || (SC.protocol_job && (SC.protocol_job.pause_requested || SC.protocol_job.paused)))) });
   $("scan-abort").onclick = () => { if (confirm("Abort the scan/protocol? Everything is turned off and the motors released; the run can be resumed later.")) scanAct("/api/scan/abort"); };
   if ($("proto-preview")) $("proto-preview").onclick = protoPreview;
@@ -1369,6 +1412,10 @@ function scanRender() {
   $("scan-abort").disabled = !running;
   const pauseSrc = (pjob && pjob.alive) ? pjob : job;
   $("scan-pause").textContent = pauseSrc && (pauseSrc.pause_requested || pauseSrc.paused) ? "Continue" : "Pause";
+  const heightJob = job && job.running && !(pjob && pjob.alive) ? job : null;
+  $("scan-realign").classList.toggle("hidden", !(heightJob && (heightJob.paused || heightJob.realigning)));
+  $("scan-realign").textContent = heightJob && heightJob.realigning ? "Done realigning" : "Realign motors";
+  $("scan-pause").disabled = !running || !!(heightJob && heightJob.realigning);
   heartbeat(running && (job && job.heartbeat || pjob), job ? Math.round(job.timeout_s) : 90);
   if (pjob && pjob.alive && $("proto-plan")) {
     const pp = pjob.progress || {};
@@ -1460,7 +1507,7 @@ $("stage-top").onclick = () => { if (confirm("Is the chamber top at its highest 
 $("stage-bottom").onclick = () => { if (confirm("Is the chamber top at its lowest safe position now, level on both sides?")) motorAct("/api/stage/mark_bottom"); };
 function renderStage() {
   const st = M && M.connected ? M.stage : null, box = $("stage-info");
-  const busy = !(M && M.connected && M.motors) || (S && S.running) || Object.values((M && M.motors) || {}).some((x) => x.state === "run");
+  const busy = !(M && M.connected && M.motors) || (S && S.running && !S.device_lent) || Object.values((M && M.motors) || {}).some((x) => x.state === "run");
   $("stage-top").disabled = busy || !st; $("stage-bottom").disabled = busy || !(st && st.known);
   const canGo = !busy && st && st.known && st.valid !== false;
   $("stage-goto-top").disabled = !(canGo && st.top); $("stage-goto-bottom").disabled = !(canGo && st.bottom);
@@ -1483,7 +1530,8 @@ async function motorPoll() {
 }
 function renderMotors() {
   renderStage();
-  const on = !!(M && M.connected && M.motors), running = !!(S && S.running);
+  const on = !!(M && M.connected && M.motors), running = !!(S && S.running && !S.device_lent);
+  $("mot-lent").classList.toggle("hidden", !(S && S.device_lent));
   const armed = on && M.armed, lit = on && M.lit > 0;
   const arm = $("mot-arm");
   arm.className = "badge " + (armed ? "s-PASS" : "s-SKIP");
@@ -2339,14 +2387,52 @@ function dbTabScans(s) {
       <div id="db-scan-banner" style="flex:1;display:grid;gap:6px"></div>
       <label class="field" style="grid-auto-flow:column;align-items:center;gap:6px">Sweeps
         <input type="number" id="db-repeats" min="1" max="${DB.status ? DB.status.repeats_max : 10}" value="${DB.status ? DB.status.repeats_default : 3}" style="width:60px"></label>
-      <button class="btn primary" id="db-scan">${DB.scanning ? "Scanning…" : "Run LIO scan"}</button>
+      <button class="btn primary" id="db-scan" title="Quick: a few readings of all 16 holes where the head is now (no motion)">${DB.scanning ? "Scanning…" : "Run LIO scan"}</button>
     </div>
+    <div class="row" style="margin-top:8px;align-items:center">
+      <label class="field" style="grid-auto-flow:column;align-items:center;gap:6px">Full scan
+        <select id="db-full-mode">${dbFullModes()}</select></label>
+      <button class="btn" id="db-full-scan" title="The LED head travels up and down through the chamber, measuring every hole at each height (the Scan tab shows the progress)">Run full LIO scan (head moves)</button>
+      <span class="note">Quick scan = readings at the current height · Full scan = height sweep, saved as a scan run for this food</span>
+    </div>
+    <div id="db-full-runs" class="note" style="margin-top:6px"></div>
     ${s.scans.length ? `<div class="scan-list">${s.scans.map((c) => `<button class="scan-chip ${DB.scan && DB.scan.uuid === c.uuid ? "on" : ""}" data-scan="${esc(c.uuid)}">${esc(fmtDate(c.created_at))}<span class="k k-${esc(c.kind)}">${c.kind === "sim" ? "SIM" : "HW"}</span><div class="note">${c.repeats} sweep${c.repeats > 1 ? "s" : ""} · fw ${esc(c.firmware || "?")}</div></button>`).join("")}</div>`
       : `<div class="inspect-empty" style="min-height:160px">Not scanned yet. Put the item in the chamber, close it, then press Run LIO scan.</div>`}
     <div id="db-scan-view"></div>`;
   body.querySelectorAll("[data-scan]").forEach((b) => b.onclick = () => dbSelect(s.sample_code, b.dataset.scan));
   $("db-scan").onclick = dbRunScan;
-  dbBanner(); dbRenderScan();
+  $("db-full-scan").onclick = () => dbRunFullScan(s.sample_code);
+  dbBanner(); dbRenderScan(); dbFullRuns(s.sample_code);
+}
+
+function dbFullModes() {
+  const modes = (STATIC && STATIC.scan && STATIC.scan.modes) || [];
+  const moving = modes.filter((m) => !["electrical", "repeatability"].includes(m.key));
+  return moving.map((m) => `<option value="${esc(m.key)}" ${m.key === "full" ? "selected" : ""}>${esc(m.key)} — ${esc(m.label)}</option>`).join("");
+}
+
+async function dbRunFullScan(code) {
+  const mode = $("db-full-mode").value;
+  const sim = S && S.is_sim;
+  if (!sim && !confirm(`Run a full LIO scan (${mode}) on ${code}?\n\nThe LED head will travel up and down. Confirm ALL of these are true:\n• the chamber is clear apart from the sample\n• the lid is closed\n• the earth bond is connected\n• ${code} is in place`)) return;
+  try {
+    await api("/api/scan/start", { mode, sample_id: code, heartbeat: true, motion_confirmed: !sim, sim_operator: true });
+    toast(`full scan (${mode}) started on ${code}: follow it on the Scan tab`, 6000);
+    showView("scan"); if (typeof scanPoll === "function") scanPoll(); poll(true);
+  } catch (e) { toast(e.message, 9000); }
+}
+
+async function dbFullRuns(code) {
+  const box = $("db-full-runs"); if (!box) return;
+  try {
+    const v = await api("/api/scan");
+    const runs = (v.runs || []).filter((r) => r.sample_id === code);
+    box.innerHTML = runs.length
+      ? "Full scans of this food: " + runs.map((r) => r.report
+          ? `<a href="${esc(r.report)}" target="_blank">${esc(r.run_id)}</a> (${esc(r.mode)}, ${esc(r.status)})`
+          : `${esc(r.run_id)} (${esc(r.mode)}, ${esc(r.status)})`).join(" · ")
+      : "No full (moving) scans of this food on this computer yet.";
+  } catch (e) { box.textContent = ""; }
 }
 
 function dbBanner() {
@@ -2359,6 +2445,7 @@ function dbBanner() {
   if (S && S.running) msgs.push(["warn", "A test run is using the device: scan when it finishes."]);
   b.innerHTML = msgs.map(([k, m]) => `<div class="banner ${k}">${m}</div>`).join("");
   const btn = $("db-scan"); if (btn) btn.disabled = DB.scanning || !(S && S.connected) || (S && S.running);
+  const full = $("db-full-scan"); if (full) full.disabled = DB.scanning || !(S && S.connected) || (S && S.running);
 }
 
 async function dbRunScan() {
@@ -2599,47 +2686,99 @@ async function dbShow() {
 }
 
 /* -------------------------------------------------------------- profiles */
-const PF = { runs: [], ds: null };
+const PF = { runs: [], ds: null, run: null, hole: 8 };
+const PF_KIND = { food: "Food scans", reference: "References (empty / white / black)", protocol: "Stationary protocols", other: "Other" };
+function pfMmPerHs() {
+  const sc = STATIC && STATIC.scan;
+  return sc && sc.lead_mm_per_rev && sc.half_steps_per_rev ? sc.lead_mm_per_rev / sc.half_steps_per_rev : null;
+}
+function pfWhen(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return isNaN(d) ? String(iso).slice(0, 16) : d.toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+}
+function pfRunLabel(x) {
+  const what = x.kind === "food" ? `${x.food_label} (${x.sample_code})` : x.food_label;
+  return `${pfWhen(x.started)} · ${what} · ${x.mode || "?"}${x.status && x.status !== "COMPLETE" ? " · " + x.status : ""}${x.synthetic ? " [SIM]" : ""}`;
+}
+function pfHoleOptions() {
+  const ch = (STATIC && STATIC.ring && STATIC.ring.channels) || [];
+  const opts = [];
+  for (let h = 1; h <= 16; h++) {
+    const c = ch.find((k) => +k.hole === h);
+    const lab = c ? `${c.label}${c.nm && String(c.label) !== String(c.nm) ? " · " + c.nm + " nm" : ""}` : "";
+    opts.push(`<option value="${h}" ${h === PF.hole ? "selected" : ""}>h${h} ${esc(lab)}</option>`);
+  }
+  $("pf-hole").innerHTML = opts.join("");
+}
 async function pfRefresh() {
   const r = await api("/api/profiles/runs");
   PF.runs = r.runs || [];
-  const sel = $("pf-run");
-  sel.innerHTML = PF.runs.map((x) => `<option value="${esc(x.run_id)}">${esc(x.run_id)}${x.synthetic ? " [SYN]" : ""}</option>`).join("")
+  const sel = $("pf-run"), keep = sel.value;
+  const groups = {};
+  PF.runs.forEach((x) => (groups[x.kind] = groups[x.kind] || []).push(x));
+  sel.innerHTML = ["food", "reference", "other", "protocol"].filter((k) => groups[k])
+    .map((k) => `<optgroup label="${esc(PF_KIND[k])}">${groups[k].map((x) =>
+      `<option value="${esc(x.run_id)}">${esc(pfRunLabel(x))}</option>`).join("")}</optgroup>`).join("")
     || `<option value="">(no saved scans)</option>`;
-  $("pf-banner").textContent = `${PF.runs.length} run(s); ${ (r.datasets || []).length } dataset(s). Offline; does not call analyse().`;
-  if ((r.datasets || []).length) {
-    PF.ds = r.datasets[0].dataset_id;
-    try {
-      const g = await api("/api/profiles/gallery/" + encodeURIComponent(PF.ds));
-      $("pf-gallery").innerHTML = Object.keys(g.foods || {}).map((f) =>
-        `<div><b>${esc(f)}</b>: ${(g.foods[f] || []).map((x) => esc(x.run_id)).join(", ")}</div>`).join("") || "empty";
-    } catch (e) { $("pf-gallery").textContent = e.message; }
-  }
+  if (keep && PF.runs.some((x) => x.run_id === keep)) sel.value = keep;
+  pfHoleOptions();
+  const nf = (groups.food || []).length, nr = (groups.reference || []).length;
+  $("pf-banner").textContent = `${PF.runs.length} saved scans: ${nf} food, ${nr} reference, ${(groups.protocol || []).length} protocol. ${(r.datasets || []).length} dataset(s).`;
+  const ds = [...(r.datasets || [])].sort((a, b) => String(b.created || "").localeCompare(String(a.created || "")))[0];
+  if (!ds) { $("pf-gallery").textContent = "No dataset yet: press Make dataset from these scans."; return; }
+  PF.ds = ds.dataset_id;
+  try {
+    const g = await api("/api/profiles/gallery/" + encodeURIComponent(PF.ds));
+    const byId = Object.fromEntries(PF.runs.map((x) => [x.run_id, x]));
+    $("pf-gallery").innerHTML = `<div class="muted">Dataset ${esc(PF.ds)}</div>` + Object.keys(g.foods || {}).sort().map((f) =>
+      `<div style="margin-top:4px"><b>${esc(f)}</b>: ${(g.foods[f] || []).map((x) => {
+        const m = byId[x.run_id];
+        return `<a href="#" data-pfrun="${esc(x.run_id)}">${esc(m ? pfWhen(m.started) + " · " + (m.mode || "") : x.run_id)}</a>`;
+      }).join(" · ")}</div>`).join("") || "empty";
+    document.querySelectorAll("[data-pfrun]").forEach((a) => a.onclick = (e) => {
+      e.preventDefault(); $("pf-run").value = a.dataset.pfrun; pfLoad().catch((er) => toast(er.message));
+    });
+  } catch (e) { $("pf-gallery").textContent = e.message; }
 }
 function pfDrawHeatmap(canvas, payload) {
-  if (window.LIOProfiles) return window.LIOProfiles.drawHeatmap(canvas, payload);
-  const ctx = canvas.getContext("2d"); ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillText("heatmap", 10, 20);
+  if (window.LIOProfiles) return window.LIOProfiles.drawHeatmap(canvas, payload, {
+    mmPerHs: pfMmPerHs(), selectedHole: PF.hole,
+    onPickHole: (h) => { PF.hole = h; $("pf-hole").value = String(h); pfLoad().catch(() => {}); },
+  });
 }
-function pfDrawCurve(canvas, payload) {
-  if (window.LIOProfiles) return window.LIOProfiles.drawCurve(canvas, payload);
+function pfDrawCurve(canvas, payload, title) {
+  if (window.LIOProfiles) return window.LIOProfiles.drawCurve(canvas, payload, { mmPerHs: pfMmPerHs(), title });
+}
+function pfFindings(f, sum) {
+  if (!f || !f.findings || !f.findings.length)
+    return `<span class="muted">No saved analysis for this scan${f && f.reason ? " (" + esc(f.reason) + ")" : ""}.</span>`;
+  const order = { FAIL: 0, ERROR: 0, WARN: 1, PASS: 2, SKIP: 3 };
+  const rows = [...f.findings].sort((a, b) => (order[a.status] ?? 4) - (order[b.status] ?? 4));
+  const bad = rows.filter((x) => x.status !== "PASS" && x.status !== "SKIP");
+  const v = f.verdict ? `<div><b>Verdict: ${esc(f.verdict.verdict || "")}</b> <span class="muted">${esc((f.verdict.reasons || []).join("; "))}</span></div>` : "";
+  const row = (x) => `<tr><td><span class="badge s-${esc(x.status)}">${esc(x.status)}</span></td><td>${esc(x.title || x.id)}<div class="muted mono" style="font-size:11px">${esc(x.id)}</div></td><td>${esc(x.detail || "")}</td></tr>`;
+  return v + `<table class="comptab" style="margin-top:6px"><tr><th></th><th>Check</th><th>Detail</th></tr>${bad.map(row).join("")}</table>`
+    + `<details style="margin-top:6px"><summary>${rows.length - bad.length} passed / skipped checks</summary><table class="comptab">${rows.filter((x) => !bad.includes(x)).map(row).join("")}</table></details>`
+    + `<div class="muted" style="margin-top:6px">${sum.n_rows} readings · mode ${esc(sum.mode || "?")} · ${esc(sum.status || "")}${sum.synthetic ? " · SIMULATED" : ""}${f.available ? "" : " · analysis not reusable: " + esc(f.reason || "")}</div>`;
 }
 async function pfLoad() {
-  const run = $("pf-run").value; if (!run) return toast("no run");
+  const run = $("pf-run").value; if (!run) return toast("no saved scan selected");
   const det = $("pf-det").value;
-  const hole = +$("pf-hole").value || 5;
+  PF.hole = +$("pf-hole").value || PF.hole;
+  const enc = encodeURIComponent(run);
   const [sum, hm, curve, findings] = await Promise.all([
-    api("/api/profiles/run/" + encodeURIComponent(run)),
-    api("/api/profiles/run/" + encodeURIComponent(run) + "/heatmap?detector=" + encodeURIComponent(det)),
-    api("/api/profiles/run/" + encodeURIComponent(run) + "/curve?detector=" + encodeURIComponent(det) + "&hole=" + hole),
-    api("/api/profiles/run/" + encodeURIComponent(run) + "/findings"),
+    api("/api/profiles/run/" + enc),
+    api("/api/profiles/run/" + enc + "/heatmap?detector=" + encodeURIComponent(det)),
+    api("/api/profiles/run/" + enc + "/curve?detector=" + encodeURIComponent(det) + "&hole=" + PF.hole),
+    api("/api/profiles/run/" + enc + "/findings"),
   ]);
+  const meta = PF.runs.find((x) => x.run_id === run);
+  const c = (hm.channels || {})[String(PF.hole)] || {};
   pfDrawHeatmap($("pf-hm"), hm);
-  pfDrawCurve($("pf-curve"), curve);
-  $("pf-meta").textContent = JSON.stringify({
-    summary: sum, findings_available: findings.available, findings_reason: findings.reason,
-    streams: sum.streams, channel_map_verified: sum.channel_map_verified, synthetic: sum.synthetic,
-  }, null, 2);
+  pfDrawCurve($("pf-curve"), curve,
+    `h${PF.hole} ${c.label || ""}${c.wavelength_nm ? " (" + c.wavelength_nm + " nm)" : ""} on ${det === "ingaas" ? "InGaAs" : "OPT101"}${meta ? " · " + meta.food_label : ""}`);
+  $("pf-meta").innerHTML = pfFindings(findings, sum);
 }
 function pfSetup() {
   if (!$("pf-refresh")) return;
@@ -2648,11 +2787,15 @@ function pfSetup() {
   $("pf-init-ds").onclick = async () => {
     try {
       const out = await api("/api/profiles/init", { runs: PF.runs.map((x) => x.run_id) });
-      PF.ds = out.dataset_id; toast("dataset " + out.dataset_id); await pfRefresh();
-    } catch (e) { toast(e.message); }
+      PF.ds = out.dataset_id;
+      toast(`Dataset ${out.dataset_id}: ${out.n_runs} scans — foods: ${(out.foods || []).join(", ") || "none"}; ${out.references} reference scans`, 9000);
+      await pfRefresh();
+    } catch (e) { toast(e.message, 8000); }
   };
   $("pf-hole").onchange = () => pfLoad().catch(() => {});
   $("pf-det").onchange = () => pfLoad().catch(() => {});
+  $("pf-run").onchange = () => pfLoad().catch(() => {});
+  window.addEventListener("resize", () => { if (view === "profiles" && $("pf-run").value) pfLoad().catch(() => {}); });
 }
 
 (async function init() {

@@ -19,7 +19,7 @@ import numpy as np
 
 from lio.config import HwConfig
 from lio.results import Status
-from lio.scan.analysis.data import DETECTORS, Array, Cube, Finding, grade, mv, pair
+from lio.scan.analysis.data import DETECTORS, Array, Cube, Finding, grade, health, mv, pair
 
 MAINS_HZ = (60.0, 120.0, 180.0)
 
@@ -45,9 +45,40 @@ def mains_rejected(cube: Cube) -> bool:
     return bool((cube.meta.get("capabilities") or {}).get("mains_rejection"))
 
 
-def coupling(cube: Cube, cfg: HwConfig) -> tuple[dict[str, dict[str, Any]], list[Finding]]:
+def _optical_blind(cube: Cube, cfg: HwConfig, det: str, blind: list[int]) -> dict[int, float]:
+    """Blind holes whose signal on ``det`` varies with height (real light, e.g. a sample
+    reflecting a "blind" LED), with the minimum of each smoothed curve.
+
+    Electrical coupling is height-invariant; a curve whose span is at least the
+    plausibility WARN level and a ``modulation_min`` fraction of its peak is light
+    (the same test as the optics plausibility finding). Owner 2026-11-25.
+    """
+    from lio.scan.analysis.optics import smooth  # local: optics imports this module
+
+    try:
+        w_pl, _ = pair(cfg, "optics.plausibility_counts")
+        mod_min = float(health(cfg, "optics.modulation_min"))
+    except Exception:  # older configs: keep every blind hole
+        return {}
+    out: dict[int, float] = {}
+    for h in blind:
+        cur = cube.curve(h, det)
+        if len(cur) < 3:
+            continue
+        sm = smooth(cur.h, cur.net)
+        lo, hi = float(np.min(sm)), float(np.max(sm))
+        span = hi - lo
+        if span >= w_pl and span / max(abs(hi), 1e-9) >= mod_min:
+            out[h] = lo
+    return out
+
+
+def coupling(
+    cube: Cube, cfg: HwConfig, *, exclude_optical: bool = True
+) -> tuple[dict[str, dict[str, Any]], list[Finding]]:
     """C per detector and rail from the blind channels; the coupling and ground-shift
-    findings."""
+    findings. ``exclude_optical=False`` reproduces the documented legacy blind median
+    (every blind hole, even one that returns light)."""
     ctx: dict[str, dict[str, Any]] = {}
     out: list[Finding] = []
     w_c, f_c = pair(cfg, "coupling_counts")
@@ -57,12 +88,23 @@ def coupling(cube: Cube, cfg: HwConfig) -> tuple[dict[str, dict[str, Any]], list
         per_rail: dict[str, float] = {}
         n_rail: dict[str, int] = {}
         blind = blind_holes(cfg, det)
+        optical = _optical_blind(cube, cfg, det, blind) if exclude_optical else {}
+        bounded: list[str] = []
         for rail in ("A", "B"):
-            hs = [h for h in blind if cfg.channel(h).rail == rail]
+            hs = [h for h in blind if cfg.channel(h).rail == rail and h not in optical]
             m = np.isin(holes, hs)
             if m.sum():
                 per_rail[rail] = float(np.median(net[m]))
                 n_rail[rail] = len(hs)
+                continue
+            # Every blind hole of this rail returns real light (a sample can reflect a
+            # "blind" LED onto the detector): coupling is height-invariant and light is
+            # >= 0, so the lowest point of their smoothed curves bounds C from above.
+            lows = [v for h, v in optical.items() if cfg.channel(h).rail == rail]
+            if lows:
+                per_rail[rail] = float(min(lows))
+                n_rail[rail] = len(lows)
+                bounded.append(rail)
         inferred: list[str] = []
         if len(per_rail) == 1:  # scale by the rail current
             (r0, c0), r1 = next(iter(per_rail.items())), "B" if "A" in per_rail else "A"
@@ -73,7 +115,13 @@ def coupling(cube: Cube, cfg: HwConfig) -> tuple[dict[str, dict[str, Any]], list
             out.append(Finding(f"elec/{det}/coupling", f"{det}: electrical coupling", Status.SKIP,
                                detail="no blind channels measured"))  # fmt: skip
             continue
-        ctx[det] = {"C": per_rail, "inferred": inferred, "blind": blind}
+        ctx[det] = {
+            "C": per_rail,
+            "inferred": inferred,
+            "blind": blind,
+            "optical_blind": sorted(optical),
+            "bounded": bounded,
+        }
         worst = max(abs(v) for r, v in per_rail.items() if r not in inferred)
         # subtracted from every hole of its rail (optics: O = S - C), so it costs nothing
         # below the FAIL limit; beyond it the coupling itself points at a wiring fault
@@ -82,10 +130,15 @@ def coupling(cube: Cube, cfg: HwConfig) -> tuple[dict[str, dict[str, Any]], list
             f"elec/{det}/coupling", f"{det}: electrical coupling (height-invariant, LED on)", st,
             round(worst, 1), "counts",
             ", ".join(f"rail {r}: {v:+.1f} counts ({mv(v):+.2f} mV)"
-                      + (" inferred" if r in inferred else f" from {n_rail[r]} blind holes")
-                      for r, v in sorted(per_rail.items())),
+                      + (" inferred" if r in inferred
+                         else f" upper bound from the minimum of {n_rail[r]} blind holes that "
+                         "return light" if r in bounded
+                         else f" from {n_rail[r]} blind holes")
+                      for r, v in sorted(per_rail.items()))
+            + (f"; blind holes returning light (excluded): {sorted(optical)}" if optical else ""),
             f"corrected in software below {f_c:g} counts (FAIL at or above)",
-            {"C_counts": per_rail, "blind_holes": blind, "inferred": inferred},
+            {"C_counts": per_rail, "blind_holes": blind, "inferred": inferred,
+             "optical_blind_holes": sorted(optical), "bounded_rails": bounded},
         ))  # fmt: skip
         # ground shift: C proportional to the rail current (through the origin)
         meas = [(rail_current(cfg, r), v) for r, v in per_rail.items() if r not in inferred]
@@ -294,8 +347,10 @@ def hum(cube: Cube, cfg: HwConfig) -> tuple[dict[str, Any], list[Finding]]:
         if st == Status.PASS and frac > fw and a60 > w / 4:
             st = Status.WARN
         rejected = mains_rejected(cube)
-        if rejected and st == Status.WARN:
-            st = Status.PASS  # integrated over whole mains periods: cancels in the readings
+        if rejected:
+            # Integrated over whole mains periods: it cancels in the readings. Still
+            # reported (a WARN when large) as it marks a grounding/shielding issue.
+            st = {Status.WARN: Status.PASS, Status.FAIL: Status.WARN}.get(st, st)
         out.append(Finding(
             f"elec/{det}/hum", f"{det}: mains hum (coils off)", st, round(a60, 4), "mV",
             "60/120/180 Hz: "

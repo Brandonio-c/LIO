@@ -68,10 +68,50 @@ def out_of_range(ctx: SuiteContext, hole: int, det: str) -> bool:
     return ch.fitted and not strict and ch.expect_for(det) == Level.NONE
 
 
+def unresolvable_limit(ctx: SuiteContext) -> float | None:
+    """Detection limit (counts) above which a missing signal is "not resolved", not FAIL.
+
+    ``channel.unresolvable_limit_counts`` (owner calibration 2026-11-25): a reading whose
+    detection threshold is this high cannot tell a weak channel from a dead one (the
+    raw, non-integrated InGaAs MEAS: sigma_net ~17 counts -> limit ~175 counts, while an
+    empty chamber returns 5-40 counts). Absent key: every absence is judged (old rule).
+    """
+    try:
+        return float(ctx.th.num("channel.unresolvable_limit_counts"))
+    except ConfigError:
+        return None
+
+
+def unstable_is_warn(ctx: SuiteContext) -> bool:
+    """``repeatability.unstable_status: warn`` (owner 2026-11-25): excess dispersion in
+    T05.5 / T08.2 is a quality WARN (the channel still responds), not a FAIL."""
+    try:
+        return str(ctx.th.raw("repeatability.unstable_status")) == "warn"
+    except ConfigError:
+        return False
+
+
+def absence_unresolved(ctx: SuiteContext, detection: Detection) -> bool:
+    lim = unresolvable_limit(ctx)
+    return lim is not None and detection.weak_threshold > lim
+
+
 def judge(ctx: SuiteContext, hole: int, det: str, net: float, n: int) -> Judgement:
     expect = ctx.cfg.channel(hole).expect_for(det)
     detection = classify(ctx, det, net, n, expect=expect)
     verdict = judge_expectation(expect, detection, never_fail_absence=never_fail_absence(ctx, hole))
+    if (
+        verdict.status == "FAIL"
+        and expect != Level.NONE
+        and detection.level == Level.NONE
+        and absence_unresolved(ctx, detection)
+    ):
+        verdict = Verdict(
+            "WARN",
+            f"not resolved by this reading: detection limit {detection.weak_threshold:.0f} "
+            f"counts (noise sigma {detection.sigma:.1f}); the integrated height scan (T13.1) "
+            "and the baseline judge this channel",
+        )
     return Judgement(hole, det, expect, detection, verdict)
 
 

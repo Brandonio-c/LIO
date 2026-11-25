@@ -18,7 +18,7 @@ from lio import __version__
 from lio.config import HwConfig
 from lio.device import LIODevice
 from lio.operator import Operator
-from lio.scan.executor import Control, ScanAbort, ScanExecutor
+from lio.scan.executor import Control, ScanAbort, ScanExecutor, realign_problem
 from lio.scan.plan import PlanError, ScanPlan, ScanSettings, build
 from lio.scan.store import ScanStore
 from lio.stage import StageTracker
@@ -33,6 +33,7 @@ __all__ = [
     "ScanStore",
     "build",
     "plan_for",
+    "realign_problem",
     "resume",
     "sim_run",
     "sim_stage",

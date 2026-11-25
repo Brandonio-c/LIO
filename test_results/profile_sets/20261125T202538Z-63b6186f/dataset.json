@@ -1,0 +1,108 @@
+{
+  "dataset_id": "20261125T202538Z-63b6186f",
+  "results_root": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results",
+  "run_ids": [
+    "20261125-141952_scan_fine",
+    "20261125-130035_scan_quick",
+    "20261123-180942_scan_protocol",
+    "20261123-175731_scan_protocol",
+    "20261123-173108_scan_quick",
+    "20261123-170352_scan_quick",
+    "20261123-163301_scan_quick",
+    "20261123-003133_scan_quick",
+    "20261120-012619_scan_quick",
+    "20261119-171756_scan_full",
+    "20261119-152512_scan_quick",
+    "20261117-153234_scan_quick",
+    "20261116-220635_scan_quick",
+    "20261116-202110_scan_quick"
+  ],
+  "run_hashes": {
+    "20261125-141952_scan_fine": {
+      "scan": "f065ea97afbb3447f5a918135d051e2856cdf8f6ec6a44fece239ec0becf6a78",
+      "cube": "32ca197f19b4d5f2c8647994e93e417b6b262554879b4bf46e84d8f77abef221",
+      "folder": "20261125-141952_scan_fine",
+      "analysis": "00dbb984c837e50a8662e47a01eaf81af9ca5e33fc796fd31a6f6ed9933a6396"
+    },
+    "20261125-130035_scan_quick": {
+      "scan": "89f85ce8c5c6bcac786fcec330916114b09b5fb57bf31dc8ccd0769ab7e00053",
+      "cube": "f266ac12eb4ef4a26c407ffa7cee5b5896ce00146b4aeb2c0450dcc091784633",
+      "folder": "20261125-130035_scan_quick",
+      "analysis": "c5de4e0afd18cc9a10949fd5bf312429bbfac7623d915d2c346d7dfdb30465d3"
+    },
+    "20261123-180942_scan_protocol": {
+      "scan": "785b85d80186ff957d408b9474c39e5870cc717645bb0a046f019ad8cabc44ea",
+      "cube": "f8d0a42816a599190f9493d4e9bb03ec5b7652938257f792144b8a22509b6d86",
+      "folder": "20261123-180942_scan_protocol"
+    },
+    "20261123-175731_scan_protocol": {
+      "scan": "1774beb3b8c63f69a1d8e74f83325ec3c851af7cb24dc5f71c5ed56a0f1e59ff",
+      "cube": "b987810a777ed7455e37dc55965bac1803ffc7336e1925bf35f8ffcf9adffac2",
+      "folder": "20261123-175731_scan_protocol"
+    },
+    "20261123-173108_scan_quick": {
+      "scan": "0e8c9e9437fbb827aff76275ee5f4df4f2b05acd229c50ded00faeff28d17679",
+      "cube": "fa19242ae03129e0db53f5d5a717c2c3de61db6c548ff8171dbb2cdea825fe8c",
+      "folder": "20261123-173108_scan_quick",
+      "analysis": "a66aa5fb87fc8472df24508a8e564ba6c99539eced725462dded5b8c3fbd8acf"
+    },
+    "20261123-170352_scan_quick": {
+      "scan": "ca8f3e022325eec57fdb07380f605fbe477bf368697245a8307178a28db8ef54",
+      "cube": "0fb187a0c2a6b1925b5ce82cc1b33a9b3148fecada57ecd42a26ddcda13a4f39",
+      "folder": "20261123-170352_scan_quick"
+    },
+    "20261123-163301_scan_quick": {
+      "scan": "3d67a909381f18044d84bd5d12240371e1ba251a69f16b972990577b2326a058",
+      "cube": "0a888fa627ddaac5f8a7ef3618f19da25ff72bf78cf388a6b84b556004787d8e",
+      "folder": "20261123-163301_scan_quick"
+    },
+    "20261123-003133_scan_quick": {
+      "scan": "cfd0e85c7e1176ea92900be06b74d0c0486baed8f5c2723294db1e3bffc98196",
+      "cube": "b5dd99b9a3eb549b7e5e1e567fbcf08a064a29b17bbe41cc26c87b602914cb84",
+      "folder": "20261123-003133_scan_quick",
+      "analysis": "484d802a15653f90f072579b00d729af322dda098f7fa7e1c192dff2a74db255"
+    },
+    "20261120-012619_scan_quick": {
+      "scan": "9e755e655c863129179af50ba902f194260e36adea7ee58721c9a93deda64146",
+      "cube": "54e00f76045c42b13af5687a41a2678b49bd1fbf155b480bec284bbdb6d627ac",
+      "folder": "20261120-012619_scan_quick",
+      "analysis": "858526b592d8b1c8f95cb6c86ccd451df497afeba742e3b32850bcd7859c9f8c"
+    },
+    "20261119-171756_scan_full": {
+      "scan": "78286d3088fa2d4db5e93170fe636a88e104aa9cb0c16c9100043f3ffbfd84d4",
+      "cube": "ca478afe1d2bbc1b565d847b4c290d422530195b2a3dacf0daeac94bd38092a7",
+      "folder": "20261119-171756_scan_full",
+      "analysis": "9ef06e6fad75b91e768e1504e89f679a8f4b45df8f108da13d447ffff081f9a3"
+    },
+    "20261119-152512_scan_quick": {
+      "scan": "b0247a08416f9fdefaa472c341704aaf00455b98f52a7cb20f32d040b47eef67",
+      "cube": "d22811fad12e1afa62009ca42a3afc42d085440f2f2c2a0e5ffcb157649db4fb",
+      "folder": "20261119-152512_scan_quick",
+      "analysis": "655a88f822c80b4c246eab66a365e40d215ffd670d2b2208fef0a2c7405f06ab"
+    },
+    "20261117-153234_scan_quick": {
+      "scan": "8b90abd3dad6aee490131bf72a55120f5659c4eab6370ea42e748bdf2033cb41",
+      "cube": "df00d7f9996e3bf3b97d7dacf8d91be83d1b28f96c8dd427c1c9ea154cfe7159",
+      "folder": "20261117-153234_scan_quick",
+      "analysis": "089c0473a3b6ba187941b048082b55d14765de3e9e9e4c03103454023cc35c60"
+    },
+    "20261116-220635_scan_quick": {
+      "scan": "c49a45842326038d950888f7a7e45265259837441a87669965887ca7a0ba0aa6",
+      "cube": "d974e0f89084bb18b54304135c67e05183df05736381cc328ede1fc72648e71d",
+      "folder": "20261116-220635_scan_quick",
+      "analysis": "5a87a8fa9b3f2f2d7ed3baedd3a5bde359b0e6339e09f71ba152ae729a40d4a2"
+    },
+    "20261116-202110_scan_quick": {
+      "scan": "951022ab5ad690619bf14736b5c2be842364a6a721e2e07898d0b5c65e63f62c",
+      "cube": "897fbb30c5261fe1635e54eb6b65c10748676014961e8833a7e032596d0dc111",
+      "folder": "20261116-202110_scan_quick",
+      "analysis": "b78a25195421b802e35528a5980fca424ffce8d1d4c39e7585564d2b898e227a"
+    }
+  },
+  "annotations": {},
+  "created": "2026-11-25T20:25:38+00:00",
+  "schema": 1,
+  "package_version": "0.1.0",
+  "synthetic": false,
+  "notes": "dashboard-created"
+}

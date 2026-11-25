@@ -302,7 +302,7 @@ class _Handler(BaseHTTPRequestHandler):
         root = self.server.session.results_root
         try:
             if path == "runs":
-                return self._json(finite_json(ex.api_list_runs(root)))
+                return self._json(finite_json(ex.api_list_runs(root, self._food_names())))
             if path.startswith("run/"):
                 rest = path[len("run/") :]
                 parts = rest.split("/")
@@ -340,8 +340,30 @@ class _Handler(BaseHTTPRequestHandler):
         if path == "init":
             runs = b.get("runs")
             run_ids = [str(x) for x in runs] if isinstance(runs, list) else None
-            return self._json(finite_json(ex.api_init_dataset(root, run_ids)))
+            try:
+                out = ex.api_init_dataset(root, run_ids, self._food_names())
+            except FileNotFoundError as e:
+                raise Refused(str(e)) from e
+            return self._json(finite_json(out))
         raise Refused(f"unknown profiles POST: {path}")
+
+    def _food_names(self) -> dict[str, str]:
+        """Food-library code -> product name ("LIO-F-00001" -> "Citrucel orange")."""
+        f = self.server.foods
+        if f is None:
+            return {}
+        try:
+            rows = f.lib.samples("", sort="newest") + f.lib.samples("", archived=True)
+        except Exception:  # labels are a convenience; never break the view
+            return {}
+        out: dict[str, str] = {}
+        for r in rows:
+            code = str(r.get("sample_code") or "")
+            name = str(r.get("name") or "").strip()
+            brand = str(r.get("brand") or "").strip()
+            if code:
+                out[code] = " ".join(x for x in (brand, name) if x) or code
+        return out
 
     # -------------------------------------------------------------- foods
 
@@ -614,6 +636,10 @@ class _Handler(BaseHTTPRequestHandler):
                 )
             elif path == "/api/scan/pause":
                 s.scan_pause(bool(b.get("on", True)))
+            elif path == "/api/realign":
+                return self._json(s.realign(bool(b.get("on", True))))
+            elif path == "/api/run/pause":
+                s.suite_pause(bool(b.get("on", True)))
             elif path == "/api/scan/abort":
                 s.scan_abort()
             elif path == "/api/scan/beat":
@@ -679,6 +705,8 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._json(s.motor_release())
             elif path == "/api/off":
                 s.all_off()
+            elif path == "/api/regrade":
+                return self._json(s.regrade_last())
             elif path == "/api/clear":
                 s.clear_results()
             elif path == "/api/load":

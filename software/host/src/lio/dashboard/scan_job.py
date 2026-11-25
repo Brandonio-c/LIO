@@ -42,7 +42,9 @@ class ScanJob:
         self.plan = plan
         self.sample_id = sample_id
         self.operator = operator
-        self.control = Control(heartbeat_required=heartbeat, timeout_s=timeout_s)
+        self.control = session.lend_hooks(
+            Control(heartbeat_required=heartbeat, timeout_s=timeout_s)
+        )
         self.control.beat()
         self.progress: dict[str, Any] = {"status": "starting", "done": 0, "of": len(plan.steps)}
         self.grid: dict[str, dict[int, list[list[float]]]] = {"opt101": {}, "ingaas": {}}
@@ -166,6 +168,9 @@ class ScanJob:
                 "running": self.alive,
                 "paused": self.control.paused,
                 "pause_requested": self.control.pause_requested,
+                "realign_requested": self.control.realign_requested,
+                "realigning": self.control.realigning,
+                "realign_note": self.control.realign_note,
                 "heartbeat": self.control.heartbeat_required,
                 "timeout_s": self.control.timeout_s,
                 "progress": dict(self.progress),

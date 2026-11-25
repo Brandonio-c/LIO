@@ -7,6 +7,7 @@ unmocked. Synthetic results exercise the software path only.
 
 from __future__ import annotations
 
+import copy
 import json
 import re
 from collections import defaultdict
@@ -15,7 +16,7 @@ from pathlib import Path
 import pytest
 
 from lio.analysis import precision_summary
-from lio.config import HwConfig, load_config
+from lio.config import HwConfig, load_config, parse_config
 from lio.device import LIODevice
 from lio.operator import SimOperator
 from lio.results import Status
@@ -34,7 +35,13 @@ UNSTABLE = [50, 90, 10, 70, 30, 85, 15, 60, 40, 55]
 
 @pytest.fixture()
 def cfg() -> HwConfig:
-    return load_config(CFG)
+    """The strict precision rule (``repeatability.unstable_status: fail``): these
+    fixtures check that dispersion is detected; the shipped owner setting only
+    changes its grade to WARN (test_shipped_unstable_is_warn)."""
+    base = load_config(CFG)
+    data = copy.deepcopy(base.data)
+    data["thresholds"]["repeatability"]["unstable_status"] = "fail"
+    return parse_config(data, base.path)
 
 
 class Fixture(SimTransport):
@@ -161,3 +168,13 @@ def test_precision_summary_distinguishes_states() -> None:
     assert precision_summary([50.0, 51.0], saturated=True, **kw)["status"] == "saturated"
     neg = precision_summary([-5.0, -5.0, -6.0], **kw)
     assert neg["status"] == "stable" and neg["cv"] is None
+
+
+def test_shipped_unstable_is_warn() -> None:
+    """Owner 2026-11-25: the shipped config grades excess dispersion as WARN."""
+    from lio.suite.judge import unstable_is_warn
+
+    cfg = load_config(CFG)
+    assert cfg.thresholds.raw("repeatability.unstable_status") == "warn"
+    ctx = type("Ctx", (), {"th": cfg.thresholds})()
+    assert unstable_is_warn(ctx)  # type: ignore[arg-type]
