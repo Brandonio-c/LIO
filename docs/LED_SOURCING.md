@@ -1,6 +1,14 @@
 # LIO V3 — LED Sourcing Notes
 
-These are leaded (through-hole) emitters researched as replacements for the SMD parts that couldn't be mounted.
+## Confirmed SWIR purchases (recorded 25 November 2026)
+
+The owner supplied DigiKey purchase confirmations dated **7 May 2026** for h12 **Quelighting QLIR01MXGM**, h13 **Marktech MTE5115D4**, h14 **Marktech MTE5116D4**, h15 **Marktech MTE2117C1**, and detector **MTPD1346D-100**. See [the purchase record](hardware/SWIR_COMPONENTS_PURCHASED_2026-05-07.md) for exact DigiKey numbers, source links, test conditions and uncertainties. h16's exact purchased source remains unknown.
+
+**Important:** h13/h14 are very wide-angle **3 mm D4** emitters. Narrow-beam Roithner/Marktech alternatives and example optical budgets from earlier research are not the purchased-part specifications. Package fit and exposure in the nominal 5 mm seats must be checked before attributing their weak return to detector position. The D4 angle convention, h15 wavelength discrepancy and fitted-part confirmation remain open.
+
+## Earlier sourcing candidates (not purchase confirmation)
+
+The following are leaded (through-hole) emitters researched as replacements for the SMD parts that could not be mounted. An entry here is not proof that the item was bought or fitted; use the confirmed record above for h12–h15.
 
 > Links and prices come from research in late October / early November 2026. Check stock, lead time and the datasheet before ordering. On DigiKey, "Manufacturer Standard Lead Time" applies only when stock is zero. The **In Stock** quantity is what decides delivery.
 
@@ -30,5 +38,6 @@ These are leaded (through-hole) emitters researched as replacements for the SMD 
 ## Electrical notes
 
 - Measure each emitter's forward voltage with the meter's diode mode before use.
-- RAIL A runs at the LD06AJSA's 30 mA minimum and RAIL B at about 45 mA. Set RAIL B at or below the lowest maximum rating among the SWIR LEDs fitted.
+- Historical intended settings were RAIL A 30 mA and RAIL B about 45 mA. The owner later declared approximately 30 mA on both rails; that remains unmeasured and YAML still records B 45 mA. Preserve existing operating/duty restrictions. Purchased-part maximum currents are not proposed new drive settings.
 - 300 nm parts need about 6.5 V or more, so they need a separate boost rail (for example an MT3608 set to about 9 V) and a hardware interlock.
+

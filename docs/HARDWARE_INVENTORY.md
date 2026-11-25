@@ -1,6 +1,6 @@
 # LIO V3 — Hardware Inventory
 
-Status as of 2 November 2026. "In build" means it is on the breadboard prototype.
+General inventory status as of 2 November 2026; SWIR purchase identities added 25 November 2026. "In build" means it is recorded on the breadboard prototype. See the [confirmed 7 May 2026 SWIR purchase record](hardware/SWIR_COMPONENTS_PURCHASED_2026-05-07.md) for exact part numbers, datasheets, package-fit implications and unresolved catalog discrepancies.
 
 ## Electronics
 
@@ -13,7 +13,7 @@ Status as of 2 November 2026. "In build" means it is on the breadboard prototype
 | LD06AJSA constant-current LED driver module (2.8–6 V, 30–1500 mA) | 10 | 2 | DRV1 (RAIL A), DRV2 (RAIL B) |
 | ADS1115 16-bit I²C ADC breakout | 1 | 1 | U3 |
 | OPT101 module (CJMCU-101) | 1 | 1 | U4, detector 1 |
-| MTPD1346D-100 InGaAs photodiode (TO-46) | 1 | 1 | D1, detector 2 |
+| MTPD1346D-100 InGaAs photodiode (TO-46) | 1 | 1 | D1, detector 2; DigiKey 1125-1326-ND; purchase confirmed 7 May 2026. Manufacturer response 600–1750 nm (catalog says 800–1750); not a 1300 nm-only detector |
 | Resistor assortment (¼ W) | many | 220 Ω ×16, 10 kΩ ×19, 1 MΩ ×1 | |
 | Capacitor assortment (10 pF–100 nF) | many | 100 nF ×6, 10 pF ×1 | No values above 100 nF on hand |
 | ULN2003 boards + 28BYJ-48 steppers | 2 + 2 | 2 + 2 | Existing chamber drive |
@@ -33,10 +33,16 @@ Status as of 2 November 2026. "In build" means it is on the breadboard prototype
 | Blue, green, yellow, orange, red | 5 mm | 3–7 | |
 | 850 nm IR | 5 mm (Chanzon, 100-pack) | 8 | 1.4–1.6 V, 20 mA |
 | 940 nm IR | 5 mm (Chanzon, 100-pack) | 9 | 1.2–1.5 V, 20 mA |
-| 1450, 1550, 1650, 1760, 1850 nm | through-hole | 12–16 | Confirm current ratings from datasheets |
+| 1450 nm — Quelighting **QLIR01MXGM** | 5 mm radial | 12 | DigiKey 3970-QLIR01MXGM-ND; 20° full angle; purchase confirmed 7 May 2026 |
+| 1550 nm — Marktech **MTE5115D4** | 3 mm plastic radial | 13 | DigiKey 1125-1485-ND; very broad angle (PDF 120° / catalog 240°, convention unresolved); purchase confirmed 7 May 2026 |
+| 1650 nm — Marktech **MTE5116D4** | 3 mm plastic radial | 14 | DigiKey 1125-1489-ND; same angle discrepancy; purchase confirmed 7 May 2026 |
+| Nominal 1760 nm — Marktech **MTE2117C1** | 3 mm plastic radial | 15 | DigiKey 1125-MTE2117C1-ND; 50° full angle; PDF also says 1720 nm; purchase confirmed 7 May 2026 |
+| Nominal 1850 nm — part number unknown | through-hole | 16 | Purchase identity still needed; `proxy_unassigned`, never primary-1850 evidence |
 | White, pink | 5 mm | — | Broadband; optional for holes 10–11 (on RAIL A) |
 | 300 nm UVB, QLUV07EYGE (3535 SMD, 6.5 V / 30 mA) | SMD | — | Removed. Needs boost and interlock |
 | 400, 900, 1000, 1100, 1200, 1300 nm | SMD | — | Removed (hand-mounting failed) |
+
+**SWIR provenance:** the owner supplied purchase confirmations; intended hole assignments follow the existing wavelength map and still need fitted-part confirmation after replacements. The 3 mm D4/C1 parts need package-specific seating in the nominal 5 mm head. Source ratings and typical output test currents are in the linked purchase record; absolute maxima are not operating recommendations. Existing current and duty limits are unchanged.
 
 ## Tools
 
@@ -64,3 +70,4 @@ Status as of 2 November 2026. "In build" means it is on the breadboard prototype
 | MT3608 boost converter + TO-39 300 nm emitter + lid microswitch | A future UVC channel with a hardware interlock |
 | Mechanical limit switches | Chamber end-of-travel protection |
 | 100 nF–10 µF bulk capacitors, 16-pin DIP sockets | Nice to have |
+
