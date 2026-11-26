@@ -1,0 +1,592 @@
+# LIO V3 hardware description for the host software and test suite.
+#
+# The ONLY place hardware constants and test thresholds live (plan §5.4).
+# Sources: electronics/data/*.csv, LIO-ELEC-001 Rev A, docs/OPTICAL_CHANNEL_MAP.md,
+# software/firmware/lio_firmware/config.h.
+#
+# Every threshold is marked `provisional: true` until it has been calibrated
+# from real data (M6) and a saved baseline.
+
+schema_version: 1
+
+firmware:
+  name: lio
+  proto: 1
+  min_version: "2.0.0"      # host accepts fw >= min_version and < next major
+  # Mirrors config.h; test T02.3 checks these against INFO.
+  limits:
+    settle_ms: 8
+    settle_ms_max: 500
+    meas_n_max: 64
+    wdt_a_ms: 2000
+    wdt_a_cap_ms: 5000
+    wdt_b_ms: 5000
+    wdt_b_cap_ms: 10000
+    wdt_min_ms: 50
+    comms_ms: 10000
+    arm_ms: 60000
+    step_max: 2048
+    rpm_default: 5
+    rpm_max: 15
+    step_acc: 250              # half-steps/s^2 for MOTOR STEP moves
+    half_steps_per_rev: 4096
+    jog_max: 2048
+    jog_v_min: 50
+    jog_v_max: 1000
+    jog_acc_min: 25
+    jog_acc_max: 1000
+    jog_va_default: 200
+    jog_vs_default: 500
+    jog_acc_default: 250
+    wake_ms_default: 1000      # POWER WAKE: coils held (no steps) to wake power bank A
+    wake_ms_max: 3000
+    line_max: 64
+    stream_buf_n: 48           # ADC STREAM with n <= this samples at the full ADC rate
+
+link:
+  baud: 115200
+  boot_timeout_s: 3.0        # T02.1: banner must arrive within this after open
+  response_timeout_s: 2.0    # default per-command timeout (long commands add their own)
+  i2c_scan_timeout_s: 6.0    # 126 addresses x 25 ms I2C timeout (stuck bus) + margin
+  # USB-serial chips seen on Nano boards (VID, PID, label) for port discovery (T01.2)
+  usb_ids:
+    - [0x1A86, 0x7523, "CH340"]
+    - [0x1A86, 0x5523, "CH341"]
+    - [0x0403, 0x6001, "FTDI FT232R"]
+    - [0x2341, 0x0074, "Arduino Nano R4 (native USB)"]
+    - [0x2341, 0x0043, "ATmega16U2 (Uno R3)"]
+    - [0x2341, 0x0001, "ATmega16U2"]
+
+# Documentation copy of electronics/data/nano_pinmap.csv (T01.3 cross-check).
+pins:
+  DATA: A0
+  CLOCK: A1
+  LATCH: A2
+  CE1: A3
+  CE2: D10
+  # I2C runs in software on D11/D12 rather than on the hardware I2C pins (A4/A5),
+  # whose condition is unconfirmed. 4.7k pull-ups to +5 V on both.
+  SDA: D11
+  SCL: D12
+  LOOP: null         # the optional U2 pin 9 jumper (plan §6.3) had D11; not available
+  M1: [D2, D3, D4, D5]
+  M2: [D6, D7, D8, D9]
+  spare: [A4, A5, A6, A7]  # A6/A7 analog input only; A4/A5 unconfirmed
+
+adc:
+  address: 0x48
+  gain: "1"                  # ±4.096 V
+  rate_sps: 128
+  full_scale_counts: 32767
+  lsb_mv:                    # per PGA gain setting
+    "2/3": 0.1875
+    "1": 0.125
+    "2": 0.0625
+    "4": 0.03125
+    "8": 0.015625
+    "16": 0.0078125
+  rates_sps: [8, 16, 32, 64, 128, 250, 475, 860]
+  channels:                  # ADS1115 input -> what is wired to it
+    0: ingaas
+    1: opt101
+    2: unconnected
+    3: unconnected
+
+detectors:
+  opt101:
+    adc_channel: 1
+    range_nm: [300, 1100]
+    saturation_counts: 29600   # ≈3.7 V on GAIN_ONE
+  ingaas:
+    adc_channel: 0
+    range_nm: [800, 1750]
+    saturation_counts: 28000   # TIA ≈+3.5 V on ±5 V
+    rf_ohm: 1.0e6
+
+rails:
+  # As built: RAIL A = holes 1-8 (U1, red/black leads), RAIL B = holes 9-16 (U2,
+  # yellow/white leads). Firmware >= 2.5.2 reports its split as INFO rail_b_first.
+  # current_ma = intended pot setting; led_rating_ma = 5 mm LED absolute rating;
+  # safe_max_ma = hard stop for `lio drive-tune` (firmware cannot clamp the pot).
+  # tune_hole = sacrificial visible LED for pot adjustment (green / white).
+  A: {driver: DRV1, ce: CE1, holes: [1, 2, 3, 4, 5, 6, 7, 8], current_ma: 30, led_rating_ma: 20, safe_max_ma: 30, tune_hole: 4}
+  B: {driver: DRV2, ce: CE2, holes: [9, 10, 11, 12, 13, 14, 15, 16], current_ma: 45, led_rating_ma: 20, safe_max_ma: 50, tune_hole: 11}  # pink; white (10) often first to die
+
+# Channel map (docs/OPTICAL_CHANNEL_MAP.md). `expect` gives, per detector,
+# signal | weak | none. Detectors not listed are expected to see nothing.
+# fitted: false means no emitter is installed: lighting it must give no signal on
+# any detector. All 16 holes are fitted. Holes 10-11 are broadband 5 mm LEDs
+# (white, pink: blue die + phosphor), listed at their 450 nm blue peak. Hole 2 is
+# a purple ~405 nm LED (label "purple"). Holes 1-7, 10 and 11 confirmed lit by eye
+# on 2026-11-10.
+channels:
+  - {hole: 1,  label: "395",    wavelength_nm: 395,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 2,  label: "purple", wavelength_nm: 405,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 3,  label: "blue",   wavelength_nm: 465,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 4,  label: "green",  wavelength_nm: 525,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 5,  label: "yellow", wavelength_nm: 590,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 6,  label: "orange", wavelength_nm: 605,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 7,  label: "red",    wavelength_nm: 630,  rail: A, fitted: true,  expect: {opt101: signal}}
+  - {hole: 8,  label: "850",    wavelength_nm: 850,  rail: A, fitted: true,  expect: {opt101: signal, ingaas: signal}}
+  - {hole: 9,  label: "940",    wavelength_nm: 940,  rail: B, fitted: true,  expect: {opt101: signal, ingaas: signal}}
+  - {hole: 10, label: "white",  wavelength_nm: 450,  rail: B, fitted: true,  expect: {opt101: signal}}   # broadband: 450 nm peak + 550-600 nm phosphor
+  - {hole: 11, label: "pink",   wavelength_nm: 450,  rail: B, fitted: true,  expect: {opt101: signal}}   # broadband: 450 nm peak + ~610 nm phosphor
+  - {hole: 12, label: "1450",   wavelength_nm: 1450, rail: B, fitted: true,  expect: {ingaas: signal}}
+  # 13/14: very wide-angle 3 mm D4 parts (120-240 deg): little of their light reaches the
+  # sample spot the InGaAs sees; 24 Nov bench: 4-6 counts on white paper, resolved but
+  # tiny. Owner calibration 2026-11-25: expected weak, absence WARNs (verdict.limited_holes).
+  - {hole: 13, label: "1550",   wavelength_nm: 1550, rail: B, fitted: true,  expect: {ingaas: weak}}
+  - {hole: 14, label: "1650",   wavelength_nm: 1650, rail: B, fitted: true,  expect: {ingaas: weak}}
+  - {hole: 15, label: "1760",   wavelength_nm: 1760, rail: B, fitted: true,  expect: {ingaas: weak}}
+  - {hole: 16, label: "1850",   wavelength_nm: 1850, rail: B, fitted: true,  expect: {}}   # beyond both detectors: absence never FAIL; wrong-LED response is WARN only
+
+# Motors (approved M0 answer 8): +steps = the legacy sketch's U direction (up).
+motors:
+  # As built (operator view looking at the chamber): M1 is on the physical right,
+  # M2 on the physical left. Names must match the Motors tab / twin labels.
+  1: {name: right, pins: [D2, D3, D4, D5]}
+  2: {name: left, pins: [D6, D7, D8, D9]}
+  positive: up
+
+# Host-side LED duty budget (plan §6 T05.5): RAIL A LEDs run above rating.
+duty:
+  window_s: 60
+  # Per LED (owner 2026-11-24): each LED has its own rolling budget; LEDs on the
+  # same rail do NOT share it (only one LED is lit at a time; the limit protects
+  # the over-driven LED). Values below are per LED on that rail.
+  max_on_ms_per_channel:
+    A: 1000
+    B: 5000
+  # Per-hole caps that override the rail budget. Hole 9's 940 nm LED is rated
+  # 20 mA but sits on RAIL B (45 mA), so it gets RAIL A's overdrive budget.
+  max_on_ms_per_hole:
+    9: 1000
+
+# LED exposure bound on a REAL port (M1 / D05). The board's LED watchdog is
+# cooperative (checked by service() in the firmware loop) and this Nano R4 build
+# has no hardware watchdog (INFO hw_wdt=0), so a firmware hang has no proven
+# on-time bound. Default 'refuse': every emission on a real port is refused.
+# 'cooperative_unproven_acknowledged' = the owner accepts the cooperative watchdog
+# WITHOUT a proven hang bound (owner decision 2026-11-23). Runs then record
+# exposure_bound=cooperative_unproven and current-rig M1 stays blocked. This adds
+# no timing margin and changes no duty, watchdog or current limit.
+timing:
+  real_port_admission: cooperative_unproven_acknowledged
+
+# Power bank A alone powers the +5 V bus (ADS1115, LEDs, shift registers, motor
+# boards) and switches itself off when the load is small. The host wakes it with
+# POWER WAKE (both motors' coils held, no steps, ~0.5 A) when the port opens,
+# before each test and before manual measurements. Bank B (-5 V, TL072 only)
+# cannot be woken from software: use its always-on mode or a dummy load.
+power:
+  wake: true                 # false: never send POWER WAKE
+  wake_ms: 1000              # how long the coils are held
+  settle_ms: 300             # then wait for the bus and the ADS1115 to come up
+  interval_s: 20             # wake again only when this long since the last wake
+
+# Chamber-top position, kept across sessions (lio.stage; the firmware's counters restart
+# at every connection). Positions are half-steps from the top of travel (top = 0).
+# "Top" = highest LIGHT-TIGHT height (sleeves still overlapping). Raising past that
+# separates the telescoping seal and lets ambient light into the chamber.
+stage:
+  state_file: test_results/stage_position.json   # relative to the repository root
+  # Keep this far below the marked top (M6×1.0: 4096 half-steps = 1.0 mm). 4 mm of
+  # keep-out so a slightly optimistic "Set top" still cannot open the light seal.
+  top_margin_steps: 16384
+  jog_stop_margin_steps: 32   # a continuous jog stops this far before a limit (+ its run-on)
+
+# Diagnostic height sweep (docs/DIAGNOSTIC_SWEEP_PLAN.md, LIO-SW-SCAN-001). Every value
+# here can also be overridden per run (lio scan run --set key=value, or the dashboard).
+# Heights are absolute, half-steps from the top of travel (lio.stage: top = 0, down < 0).
+scan:
+  default_mode: quick
+  suite_mode: quick            # T13 in the catalogue (lio selftest --allow-motion, dashboard)
+  # The mechanics, for mm output: M6 coarse threaded rod (1.0 mm pitch), 304 stainless,
+  # 255 mm long, driven directly through a 5-6 mm aluminium shaft coupler (25 x 20 mm),
+  # so one output turn (4096 half-steps) is 1.0 mm of travel.
+  lead_mm_per_rev: 1.0
+  hardware:
+    lead_screw: "M6 x 1.0 threaded rod, 304 stainless steel, 255 mm (10 in), x4"
+    coupler: "5 mm to 6 mm shaft coupler, aluminium alloy, 25 mm long, 20 mm diameter"
+    motors: "28BYJ-48 5 V stepper (64:1 gearbox), ULN2003 driver boards, x2"
+  # half-steps/s between heights. Owner 2026-11-25: 500 -> 300. Two scans on 25 Nov lost
+  # alignment while the tracked counts stayed level on every move (one motor missed steps
+  # under load, mostly when lifting); the 28BYJ-48 has much more torque when slower.
+  jog_speed: 300
+  settle_ms_mech: 300          # after a move, before the dark frame
+  dark_agree_sigma: 3          # two dark reads must agree within this many sigma ...
+  dark_agree_tries: 5          # ... trying this many times
+  dark_n: 8                    # samples per dark frame, each input
+  optical_settle_ms: 8         # SWEEP settle
+  sweep_n: 2                   # SWEEP samples per reading (on-time ~47 ms per LED)
+  mains_hz: 60                 # fw >= 2.5.1: each reading integrates whole mains periods (hum cancels); 0 = off
+  mains_periods: 2             # periods per reading in that mode (on-time ~80 ms per LED; rig: InGaAs sd 1.9 -> 0.9 counts)
+  hum_every_k: 4               # hum record (coils off) every k-th height, coil EMI on the next move
+  hum_bursts: 17               # 48-sample buffered bursts at the fastest rate (~0.12 s each)
+  long_dark_s: 30              # P1: dark record at 8 SPS on each input
+  ref_offset_steps: 4096       # repeatability: move away by this much and come back
+  arm_renew_s: 40
+  heartbeat_timeout_s: 90      # dashboard operator-present heartbeat; pause when it is missing
+  abort_on_saturation: true
+  sample_ids: [empty, white_ptfe, black_cup, food]
+  sample_aliases: {none-empty-chamber: empty}   # suite sample ids (metadata.defaults) -> scan ids
+  # Health thresholds for the scan analysis (plan §6). ALL PROVISIONAL: set from the
+  # simulator's healthy/faulted runs, to be calibrated on the rig at commissioning (S7).
+  # Pairs are [WARN, FAIL]. The dark offset uses thresholds.dark (shared with T06).
+  health:
+    provisional: true
+    coupling_counts: [8, 20]          # |C| on blind channels (LED on, light invisible)
+    ground_shift_mv_per_ma: [0.03, 0.08]
+    drift_mv_per_h: {opt101: [3, 8], ingaas: [3, 8]}
+    drift_min_span_s: 300            # shorter runs: drift not judged (SKIP)
+    hum_mv: {opt101: [0.3, 1.0], ingaas: [1.0, 3.0]}   # 60 Hz amplitude, coils off
+    hum_fraction_warn: 0.5            # mains share of the dark-noise variance
+    noise_floor_counts: {opt101: 1.0, ingaas: 1.0}   # sigma floor for the EMI ratio
+    coil_emi_ratio: [3, 6]            # sigma moving / sigma coils off
+    addressing_match_frac: 0.01       # two holes this alike at every height: same LED (WARN)
+    optics:
+      judged_samples: [empty, white_ptfe]   # absolute levels are judged only for these
+      min_signal_counts: [15, 6]      # O on a hole its detector should see (rig 2026-11-16: weakest working OPT101 hole ~22)
+      plausibility_counts: [30, 80]   # residual on a hole its detector cannot see
+      intermittent_frac: 0.1          # down vs up at one height, both detectors (or 5 x noise floor): an electrical event
+      modulation_min: 0.15            # (max - min) / O below this: flat, not light
+      throughput_counts:              # median O over expected holes: a floor (sim healthy ~5800 / ~8500)
+        empty: {opt101: [60, 20], ingaas: [60, 20]}      # rig 2026-11-16: OPT101 median ~100; partial losses: vs baseline
+        white_ptfe: {opt101: [100, 30], ingaas: [100, 30]}   # to set from the first white-tile run
+      snr_db_min: 20
+      headroom_pct_min: 10
+      stray_pct: [0.6, 1.0]           # black_cup vs white_ptfe: height-invariant part, % of the white optimum (sim healthy 0.2)
+      effectiveness_ratio: [0.8, 0.5] # O / O_reference (baseline)
+    ambient:
+      leak_counts: {opt101: [8, 25], ingaas: [8, 25]}   # dark rise at the bottom vs the top
+      flicker_mv: {opt101: [0.4, 1.2], ingaas: [0.4, 1.2]}  # 120 Hz in the dark streams
+    mech:
+      backlash_hs: [600, 1500]        # 0.15 / 0.37 mm (M6 x 1.0): nut + coupler + gearbox
+      step_loss_hs: [400, 1000]       # height lost over a full upward travel
+      # Spread of repeated visits. Analysis caps FAIL→WARN on V3 (loose stage);
+      # the second number is still the "would fail" line in the report.
+      repeatability_hs: [300, 800]
+      travel_tol_hs: 256
+      settle_extra_ms: [500, 1500]    # dark-agreement time beyond settle_ms_mech
+    trend:
+      ratio_change: [0.10, 0.25]      # per-hole O vs the previous baseline (as T11)
+      min_counts: 100                 # channels weaker than this are not compared
+      control_min_baselines: 5
+  # Modes. heights: points down the travel (top and bottom included). up: points measured on
+  # the way back up (0: none; "same": every down height). return_top: end at the top (P4 at the
+  # top). repeats: readings at each reference height (ref_heights of them), approached from
+  # both directions. extra_near_optimum: points added around the optimum after the down pass.
+  # static: no motion at all (measure here). continuous: measure while moving (MOTOR LIGHT 1).
+  modes:
+    quick_down:   {heights: 9,  up: 0,  return_top: false, repeats: 1, ref_heights: 0, label: "routine, ends at the bottom (~17 min)"}
+    quick:        {heights: 9,  up: same, return_top: true, repeats: 1, ref_heights: 0, label: "routine, back to the top, measured both ways (~31 min)"}
+    full:         {heights: 33, up: 9,  return_top: true, repeats: 2, ref_heights: 5, label: "commissioning, after rewiring (~44 min)"}
+    fine:         {heights: 33, up: 9,  return_top: true, repeats: 3, ref_heights: 5, extra_near_optimum: 16, label: "optical characterisation (~52 min)"}
+    repeatability: {heights: 0, up: 0, return_top: true, repeats: 5, ref_heights: 5, label: "mechanical repeatability and backlash only (~47 min)"}
+    electrical:   {heights: 0, up: 0, return_top: false, repeats: 1, ref_heights: 0, static: true, label: "electrical health here, no motion (~2 min)"}
+    continuous:   {heights: 0, up: 0, return_top: true, repeats: 1, ref_heights: 0, continuous: true, label: "dynamic: measure while moving (MOTOR LIGHT 1), down and back up (~30 min)"}
+
+# lio dashboard: the local web page that runs the tests (docs/TESTING.md §3).
+dashboard:
+  host: 127.0.0.1            # local only: the page can light LEDs and move motors
+  port: 8765
+  poll_ms: 700               # how often the page asks for updates
+  flash_ms: 500              # legacy timed pulse (tests / meter); UI Hold is solid-on
+  wake_button_ms: 3000       # "Wake bank A": hold the motor coils this long (no steps)
+  # Motors tab, continuous jog: the firmware stops any jog after firmware.limits.jog_max
+  # half-steps, so the dashboard re-sends it while the button stays latched.
+  jog_refresh_steps: 1024    # re-send after this many half-steps (must be < jog_max)
+  jog_check_ms: 200          # how often the jog is checked
+  # Stop if the page has not checked in for this long; 0 = off: a run continues until
+  # STOP / All off / Disconnect or the dashboard exits, even if the page is closed or
+  # the browser is in the background. Browsers slow hidden pages' timers, so a
+  # non-zero value stops runs whenever the tab is hidden or the screen sleeps.
+  jog_deadman_s: 0
+  # LEDs tab, diagnostic ring: lights the holes one at a time around the ring. The
+  # step time is raised automatically so no hole exceeds its duty budget (duty:).
+  # Clicking one hole (or twin Hold) gives ONE flash of click_flash_ms (capped at that
+  # rail's watchdog cap; the firmware watchdog ends it), then off; click again to end
+  # it early. Cycling the ring still uses ring_on_ms below between holes.
+  click_flash_ms: 5000       # one click = one flash this long (owner, 2026-11-24)
+  # owner_acknowledged (owner, 2026-11-24): a click flash may exceed that LED's rolling
+  # duty budget (RAIL A LEDs / hole 9: 1 s per minute) ONCE, only when that LED has
+  # had no light in the last 60 s; its full charge is recorded, so only THAT LED then
+  # rests until it leaves the window (other LEDs are unaffected). Anything else (e.g.
+  # budgeted): the flash is cut to fit the budget. Scans, tests, protocols and the
+  # ring are never affected.
+  click_flash_over_budget: owner_acknowledged
+  ring_on_ms: 100            # default on-time per hole when cycling the ring
+  ring_on_ms_min: 10
+  ring_on_ms_max: 10000      # allows solid hold up to RAIL B's watchdog cap
+  ring_gap_ms: 20            # dark time at least, between one hole and the next (ring only)
+  # true: the ring and hold respect duty: (RAIL A 1 s per LED per minute) and wait
+  # between flashes. false (operator, 2026-11-10): no cool-down on this tab; each
+  # flash is still cut off by the firmware watchdog (firmware.limits.wdt_*_ms) and
+  # only one hole is ever lit. Test runs always keep the duty budget.
+  ring_duty_budget: false
+
+run_metadata:
+  required: [sample_id]
+  defaults:
+    sample_id: none-empty-chamber
+    operator: unknown
+
+# Polarity gate (approved M0 #6): hole used for the first InGaAs-lit check.
+polarity_gate_hole: 8
+
+thresholds:
+  provisional: true          # all values below are provisional until M6 calibration
+  link:
+    ping_count: 100
+    ping_p99_ms: 50
+  adc:
+    dark_samples: 64
+    dark_sigma_max_counts: 20
+    # Owner calibration 2026-11-25: raw dark sigma between the limit above and this level is a
+    # WARN. The InGaAs raw noise (25-37 counts since 23 Nov) is ~99 % mains hum, which the
+    # mains-integrated scan/protocol readings cancel (24 Nov bench: repeats SD 1-2 counts).
+    dark_sigma_fail_counts: {opt101: 20, ingaas: 50}
+    rate_tolerance_frac: 0.15
+    stability_duration_s: 60
+    stability_rate_hz: 2
+    drift_warn_pct_fs_per_min: 2.0
+    gain_consistency_mv: 5.0     # dark mV must agree across gains within this (plus 3 sigma)
+    # T03.4: single-shot conversions also include the I2C transactions, which
+    # add a fixed overhead per sample (a large fraction at 860 SPS). The
+    # software I2C bus (about 170 kHz) needs roughly 1 ms per sample: start,
+    # poll and read. Provisional until measured on the hardware.
+    conv_overhead_max_ms: 1.5
+    rate_check_duration_s: 0.25  # samples per rate = rate x this (8 to stream_buf_n)
+  dark:
+    opt101_counts: [0, 800]      # ≈0-100 mV
+    # Rig 2026-11-17: a steady -21 mV (-168 counts) traced to U5 itself (TL072 offset or input
+    # leakage; pin 2 lifted off the board, D1 out: unchanged). It is subtracted in every
+    # measurement; -50 mV leaves room for it and still catches a real leak (sim leakage:60).
+    ingaas_counts: [-400, 2000]  # small offset expected; strongly negative -> fault
+    erratic_sigma_factor: 5.0    # dark sigma > factor x T03 limit -> erratic (missing -5 V?)
+    negative_rail_counts: -1500  # dark mean below this: output pinned at the negative clamp
+  channel:
+    meas_n: 4
+    detect_sigma: 10
+    detect_min_counts: 15         # rig 17 Nov: noise 0.3-3 counts, weakest lit holes 20-40 (was 50, set on the sim)
+    weak_sigma: 3
+    weak_min_counts: 6
+    # Owner calibration 2026-11-25: a reading whose weak-signal threshold is above this
+    # cannot tell a weak channel from a dead one (raw InGaAs MEAS here: sigma_net ~17 ->
+    # threshold ~52-175 counts, while an empty chamber returns 5-40). Such an absence is a
+    # WARN "not resolved"; T13.1's integrated scan and the baseline judge the channel.
+    unresolvable_limit_counts: 40
+    none_max_sigma: 10           # unfitted/expected-none: net beyond this is "unexpected signal"
+    none_min_counts: 50
+    # false: each hole is judged only by the detector(s) its `expect` names (OPT101 for the
+    # visible holes, InGaAs for the infrared ones). A reading on a detector outside its
+    # range is recorded, not judged. true: an unlisted detector must show no light, which
+    # also catches electrical crosstalk (an LED's current shifting the other detector).
+    judge_out_of_range: false
+    polarity_sigma: -5           # InGaAs net below this x sigma on an InGaAs hole -> reversed
+    off_return_sigma: 5
+    off_return_min_counts: 4      # dark band never tighter than this (very quiet detectors drift ~1 count)
+    signature_similarity: 0.98   # cosine similarity above which two channels "look the same"
+    signature_min_counts: 200    # only compare signatures with this much total signal
+    # Identical = same LED, same current: equal within noise, not just similar.
+    # With two detectors the visible holes all point the same way (OPT101 only),
+    # so only amplitude separates them and a pair can match by coincidence.
+    signature_amplitude_frac: 0.01
+    duplicate_fail_group: 3      # groups this large FAIL; a matching pair only WARNs
+  saturation:
+    ingaas_counts: 27000
+    opt101_counts: 29000
+  repeatability:
+    repeats: 10
+    cv_max: 0.02
+    min_net_counts: 1000          # legacy precision-1 prefilter (historical results only)
+    # precision-2 (S1, PROVISIONAL): judged on absolute dispersion at real signal levels.
+    sd_max_counts: 5.0            # T05.5 MEAS repeats: sample SD limit (counts)
+    sweep_sd_max_counts: 5.0      # T08.2 SWEEP net repeats: sample SD limit (counts)
+    cv_min_mean_counts: 20        # CV reported only for resolved means at least this large
+    noise_floor_sigma: 3          # SD limit never below 3 x sqrt(2) x measured dark sigma (lit-dark net)
+    # Owner 2026-11-25: excess dispersion (T05.5 MEAS, T08.2 SWEEP) is a quality WARN; the
+    # channel still responds. "fail" restores the stricter rule.
+    unstable_status: warn
+  settling:
+    fraction: 0.99
+    holes: [3, 8, 13]
+    stream_rate_sps: 860
+    pre_samples: 4
+    on_samples: 24
+    post_samples: 12
+    margin_factor: 1.5
+    meas_points: [[8, 1], [20, 4]]   # T07.3: (settle_ms, n) pairs timed on settling.holes[0]
+    meas_slack_ms: 3                 # T07.3: firmware bookkeeping on top of settle + conversions
+  sweep:
+    max_duration_s: 2.5
+    repeats: 5
+    agreement_frac: 0.10         # T08.3: sweep vs MEAS agreement (relative)
+    agreement_sigma: 5           # ... or within this many sigma of the combined noise
+    agreement_min_counts: 50
+  watchdog:
+    tolerance_ms: 50
+    request_ms: 60000            # T10.2: asks for far longer than any rail allows
+    test_ms: 300                 # T10.2: watchdog lowered to this while timing the cut-off
+    holes: [3, 13]               # one per rail
+  safety:
+    failsafe_margin_s: 1.0       # T10.3: silence = comms timeout + this
+    # T10.4: masks with zero or several holes selected; CE must be refused on each rail
+    multi_masks: [0x0000, 0x0005, 0x0101, 0x3000, 0x1004]
+  motion:
+    test_steps: 64
+    test_rpm: 3
+    stop_latency_ms: 50
+    stop_after_s: 0.5            # T09.3: let the long move run this long, then MOTOR STOP
+    done_margin_s: 2.0           # extra time allowed for a move's '# MOTOR ... done'
+    emi_sigma_ratio_warn: 3.0
+    emi_samples: 48              # T09.4: dark stream during the move (buffered: <= stream_buf_n)
+    emi_steps: 256               # T09.4: ~2 s at test_rpm, longer than the streams (~22 degrees)
+    emi_interval_ms: 5
+    # T09.6 / T09.7: the chamber top's full travel. Both motors lift it, so they always
+    # move together. No limit switches exist: the operator puts the top at its lowest
+    # position before the run and measures the travel once (jog bottom -> top).
+    travel:
+      # bottom -> top, half-steps; 0 = not measured: fallback only when the stage is NOT
+      # tracked (simulator/tests). The rig is tracked: its marks (331073 both sides, set
+      # 2026-11-25) live in test_results/stage_position.json, not here.
+      range_steps: 0
+      margin_steps: 16384        # fallback when travel is not tracked; match stage.top_margin_steps
+      jog_speed: 500             # half-steps/s for long moves: one continuous jog of both motors
+      renew_steps: 1024          # renew the jog this often (its bound is 2048 half-steps)
+      rearm_s: 40                # re-arm while moving (an arm lasts 60 s; MOTOR LIGHT needs it)
+      poll_s: 0.1                # position check interval while moving without measurements
+      stop_extra_steps: 64       # stop the jog this much earlier than speed x poll_s x 3, then step exactly
+      rpm: 7                     # ~478 half-steps/s: the speed the full travel was jogged at
+      ref_holes: [8, 13]         # T09.6: measured at the bottom, the top and back at the bottom
+      return_tol_frac: 0.15      # T09.6: back at the bottom, readings within this of the first
+      moved_min_frac: 0.10       # T09.6: top vs bottom must differ by this much on a ref hole
+      scan_holes: [1, 4, 7, 8, 10, 11, 12, 13, 14]   # T09.7: measured while moving
+      scan_settle_ms: 8
+      scan_n: 2
+  interactive:
+    walk_ms: 400                 # T04.4: each hole lit this long
+    visible_max_nm: 700          # T04.4: seen by eye below this
+    camera_max_nm: 1000          # T04.4: seen by a phone camera up to this; beyond: n/a
+    meter_holes: {A: 4, B: 10}   # T05.6 / drive-tune: green + white (easy to replace)
+    # RAIL A flashes are capped by its duty budget (1 s per minute), not the plan's 2 s
+    meter_flash_ms: {A: 1000, B: 2000}
+    meter_attempts: 5
+    current_warn_frac: 0.15      # T05.6: |measured - nominal| / nominal
+    current_fail_frac: 0.30
+  baseline:                      # T11.1: drift against a saved baseline
+    drift_warn_frac: 0.10
+    drift_fail_frac: 0.25
+    min_counts: 100              # channels weaker than this in the baseline are not compared
+    dark_shift_sigma: 10
+  verdict:
+    max_channel_fails: 2
+    limited_holes: [13, 14, 15, 16]   # 13/14 added 2026-11-25 (wide-angle SWIR, weak by design)
+
+# Simulator physics (lio.sim). Not used against real hardware.
+sim:
+  seed: 1234
+  boot_s: 1.6                    # time from port open (DTR reset) to banner
+  bank_awake_s: 60               # fault bank_a_asleep: bank A stays on this long after a wake
+  link_latency_s: 0.0005         # one-way USB latency per line
+  i2c_overhead_s: 0.0002         # per ADS1115 conversion
+  ambient_counts: {opt101: 0, ingaas: 0}          # chamber closed
+  ambient_open_counts: {opt101: 1500, ingaas: 300}  # T06.4, chamber open
+  dark_offset_counts: {opt101: 200, ingaas: 40}
+  dark_sigma_counts: {opt101: 2.5, ingaas: 4.0}
+  lit_noise_frac: 0.003          # multiplicative noise on the lit signal
+  counts_per_uA: 8000            # 1 MΩ TIA = 1 V/µA; 0.125 mV/count at GAIN_ONE
+  tau_ms: {opt101: 0.2, ingaas: 0.01}
+  slow_settle_tau_ms: 15.0
+  noisy_adc_sigma_counts: 80
+  no_neg_rail: {mean_counts: 9000, sigma_counts: 2500}
+  opt101_no_feedback_counts: 29600
+  reversed_clamp_counts: -2400   # ≈ -0.3 V: ADS1115 input diode clamp behind 10 kΩ
+  comms_drop_every: 7            # comms_drop fault: every Nth output line is lost
+  motor_rate_hs: 1024            # used only for the simulated position/time model
+  # Emitter optical power reaching the detector (µW) and forward voltage (V).
+  # Powers are chosen so that no two healthy channels have the same signature.
+  # Vf decides how current splits when a MOSFET is stuck on (lowest Vf wins).
+  emitters:
+    1:  {power_uw: 0.6,  vf: 3.3}
+    2:  {power_uw: 0.8,  vf: 3.2}
+    3:  {power_uw: 1.0,  vf: 3.0}
+    4:  {power_uw: 0.6,  vf: 3.0}
+    5:  {power_uw: 0.35, vf: 2.0}
+    6:  {power_uw: 0.6,  vf: 2.0}
+    7:  {power_uw: 0.8,  vf: 1.9}
+    8:  {power_uw: 1.0,  vf: 1.45}
+    9:  {power_uw: 1.2,  vf: 1.3}
+    10: {power_uw: 0.9,  vf: 3.0}
+    11: {power_uw: 0.45, vf: 3.1}
+    12: {power_uw: 0.4,  vf: 1.0}
+    13: {power_uw: 0.5,  vf: 0.95}
+    14: {power_uw: 0.35, vf: 0.9}
+    15: {power_uw: 0.05, vf: 0.85}
+    16: {power_uw: 0.1,  vf: 0.85}
+  # Height model for the diagnostic sweep (LIO-SW-SCAN-001 §9). Heights are half-steps
+  # from the top of travel (top = 0, down < 0); the optical shape is relative to the top,
+  # so every older test (run at the top) sees the same signals as before.
+  height:
+    start_hs: 0                  # stage height at power-on
+    travel_hs: 420017
+    sample: empty                # empty | white_ptfe | black_cup | food (tests can change it)
+    peak_hs: -330000             # optical response peaks here (the sample is at the bottom)
+    width_hs: 90000
+    floor: 0.33                  # far from the peak, relative to the peak
+    peak_shift_hs: 2500          # hole n peaks at peak_hs + (n - 8.5) x this
+    sample_reflectance: {empty: 1.0, white_ptfe: 1.5, black_cup: 0.05, food: 0.9}
+    stray_frac: 0.01             # LED light reaching a detector not via the sample
+    rail_current_ma: {A: 30, B: 45}
+    coupling_counts_per_ma: {opt101: 0.02, ingaas: 0.05}   # healthy LED-current coupling
+    pd_disconnected_counts_per_ma: 2.0                     # ~70-90 counts, as on 15 Nov
+    hum_mv: {opt101: 0.01, ingaas: 0.25}                   # 60 Hz (+ 0.3 x 180 Hz), earthed
+    coil_sigma_counts: {opt101: 0.3, ingaas: 0.6}          # while a motor moves
+    coil_emi_sigma_counts: 25
+    ambient_leak_counts: {opt101: 400, ingaas: 60}         # at full leak
+    ambient_leak_scale_hs: 60000
+    flicker_counts: {opt101: 30, ingaas: 6}
+  # Responsivity (A/W) vs wavelength (nm), linearly interpolated, 0 outside.
+  responsivity:
+    opt101: [[300, 0.05], [400, 0.20], [450, 0.27], [500, 0.32], [550, 0.37], [650, 0.45],
+             [750, 0.52], [850, 0.55], [900, 0.55], [950, 0.45], [1000, 0.30], [1050, 0.12],
+             [1100, 0.02], [1150, 0.0]]
+    ingaas: [[750, 0.0], [800, 0.05], [900, 0.45], [1000, 0.65], [1300, 0.85], [1550, 0.95],
+             [1650, 0.90], [1700, 0.60], [1750, 0.15], [1800, 0.0]]
+
+# Food library (dashboard → Database tab) and the phone intake app.
+# Each physical item gets a sample code (LIO-F-00001), its barcode photo, the
+# manufacturer data looked up from the barcode, and its LIO spectral scans.
+foods:
+  dir: data/foods            # SQLite database + photos, relative to the repo root (gitignored)
+  # The phone app listens on the LAN so phones on the same Wi-Fi can reach it.
+  # It serves ONLY the food intake (no LEDs, motors or tests) and needs the
+  # pairing key shown as a QR code on the Database tab.
+  phone_enabled: true
+  phone_host: 0.0.0.0
+  phone_port: 8766
+  # Reach the phone app through a Cloudflare quick tunnel: an outbound HTTPS link, so it
+  # works with a VPN that blocks the local network, and over cellular. The address is
+  # public but every request needs the pairing key; it changes each time the dashboard
+  # starts (re-scan the QR code). Needs `brew install cloudflared`. none = local network only.
+  tunnel: cloudflare
+  cloudflared_path: ""       # empty = find it on PATH or in /opt/homebrew/bin
+  online_lookup: true        # look products up by barcode (Open Food Facts, then USDA)
+  lookup_timeout_s: 10
+  openfoodfacts_url: "https://world.openfoodfacts.org/api/v2/product/{code}.json"
+  usda_url: "https://api.nal.usda.gov/fdc/v1/foods/search"
+  # api.data.gov key. Put a personal key in <dir>/usda_api_key.txt (gitignored) or
+  # $LIO_USDA_API_KEY, never here: this file is in git. DEMO_KEY is the rate-limited fallback.
+  usda_api_key: DEMO_KEY
+  user_agent: "LIO-V3-food-library/0.1"
+  photo_max_px: 2000         # stored photos are downscaled to this (longest side)
+  # Last-resort ingredient search on the web (after USDA, NIH DSLD, FDA labels and Open Food
+  # Facts): search, fetch the pages, cut out their ingredient lists, and show each with its
+  # link for the user to confirm. Nothing from the web is saved without confirmation.
+  web_search:
+    brave_api_key: ""        # better: data/foods/brave_api_key.txt or $LIO_BRAVE_API_KEY (free tier)
+    keyless: true            # without a key, use the public Bing/Brave results pages
+    pages: 8                 # result pages fetched per search
+    timeout_s: 10
+  scan_repeats: 3            # sweeps per spectral scan (averaged per hole; all kept raw)
+  scan_repeats_max: 10

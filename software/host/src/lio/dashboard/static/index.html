@@ -437,6 +437,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
   <button id="btn-disconnect" class="btn small hidden">Disconnect</button>
   <button id="btn-off" class="btn danger hidden" title="Stops a run safely, or turns every LED off and stops the motors">■ All off / Stop</button>
 </header>
+<div id="cfg-banner" class="banner warn hidden" style="margin:8px 16px 0"></div>
 
 <main>
   <!-- connect -->
@@ -788,7 +789,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
 const TOKEN = "__LIO_TOKEN__";
 const ICON = { PASS: "✓", WARN: "!", FAIL: "✕", ERROR: "×", SKIP: "–", NOT_RUN: "○" };
 const LABEL = { PASS: "PASS", WARN: "WARN", FAIL: "FAIL", ERROR: "ERROR", SKIP: "SKIP", NOT_RUN: "not run" };
-const VERDICT_ICON = { FUNCTIONAL: "✓", DEGRADED: "!", "NOT FUNCTIONAL": "✕", NOT_RUN: "○" };
+const VERDICT_ICON = { FUNCTIONAL: "✓", DEGRADED: "!", "NOT FUNCTIONAL": "✕", NOT_RUN: "○", "NOT JUDGED": "○" };
 const FILL = { PASS: "var(--good)", WARN: "var(--warning)", FAIL: "var(--critical)", ERROR: "var(--critical)",
                SKIP: "var(--muted)", NOT_RUN: "var(--surface-2)" };
 const ON_FILL = { WARN: "#0b0b0b", NOT_RUN: "var(--ink-2)" };
@@ -1080,6 +1081,12 @@ async function realignAct(on) {
 }
 function renderHeader() {
   const on = S.connected;
+  const b = S.build || {}, cf = b.config || {}, dep = b.deployment || {};
+  const msgs = [];
+  if (cf.changed) msgs.push(`<b>lio_hw.yaml changed on disk</b> since this dashboard started (loaded ${esc(cf.loaded_sha256)}, now ${esc(cf.disk_sha256)}): restart the dashboard before starting new scans, or they will record the old settings. Resuming an earlier run is still checked setting by setting.`);
+  if (dep.changed) msgs.push("<b>The software on disk changed</b> since this dashboard started: restart it to run the new code.");
+  $("cfg-banner").innerHTML = msgs.join("<br>");
+  $("cfg-banner").classList.toggle("hidden", !msgs.length);
   $("conn").classList.toggle("on", on);
   $("conn-text").textContent = on ? `${S.is_sim ? "simulator" : S.target} · fw ${S.firmware.fw || "?"}${S.faults.length ? " · faults: " + S.faults.join(", ") : ""}` : "not connected";
   $("btn-disconnect").classList.toggle("hidden", !on);
@@ -1439,7 +1446,7 @@ function scanRender() {
   for (const det of ["opt101", "ingaas"]) drawHeat(det, job);
   const r = job && job.result;
   $("scan-result").innerHTML = !r ? "" : `<h3 style="margin-top:14px">Result</h3>
-    <div class="row">${badge(r.verdict.verdict === "FUNCTIONAL" ? "PASS" : r.verdict.verdict === "DEGRADED" ? "WARN" : "FAIL", r.verdict.verdict)}
+    <div class="row">${badge(r.verdict.verdict === "FUNCTIONAL" ? "PASS" : r.verdict.verdict === "DEGRADED" ? "WARN" : r.verdict.verdict === "NOT JUDGED" ? "SKIP" : "FAIL", r.verdict.verdict)}
     <span class="note">${esc((r.verdict.reasons || []).join("; "))}</span>
     <a class="btn small" href="${esc(r.report)}" target="_blank" rel="noopener">Open the report</a></div>
     ${(r.flagged || []).map((f) => `<div class="scan-find">${badge(f.status)} <b>${esc(f.title)}</b> <code>${esc(f.id)}</code>
@@ -1448,7 +1455,7 @@ function scanRender() {
   const runs = SC.runs || [];
   $("scan-runs").innerHTML = !runs.length ? "No scans yet." : `<table class="runs"><tr><th>Run</th><th>Mode</th><th>Sample</th><th>Status</th><th>Steps</th><th></th></tr>`
     + runs.map((x) => `<tr><td><code>${esc(x.run_id)}</code>${x.simulated ? ' <span class="muted">sim</span>' : ""}</td><td>${esc(x.mode)}</td><td>${esc(x.sample_id)}</td>
-      <td>${badge(x.status === "COMPLETE" ? "PASS" : x.status === "RUNNING" ? "SKIP" : "WARN", x.status)}${x.aborts.length ? `<br><span class="muted">${esc(x.aborts[x.aborts.length - 1])}</span>` : ""}</td>
+      <td>${badge(x.status === "COMPLETE" ? "PASS" : x.status === "RUNNING" ? "SKIP" : "WARN", x.status)}${x.aborts.length && x.status !== "RUNNING" ? `<br><span class="muted">last stop: ${esc(x.aborts[x.aborts.length - 1])}</span>` : ""}</td>
       <td>${x.completed}/${x.steps}</td>
       <td>${x.report ? `<a href="${esc(x.report)}" target="_blank" rel="noopener">report</a>` : ""}
       ${x.status === "INCOMPLETE" && connected && !running ? ` <button class="btn small" data-resume="${esc(x.run_id)}" data-mode="${esc(x.mode)}">Resume</button>` : ""}</td></tr>`).join("") + "</table>";

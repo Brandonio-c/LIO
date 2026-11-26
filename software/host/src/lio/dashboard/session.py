@@ -122,6 +122,10 @@ class Session:
         transport_factory: Callable[[str], Transport] | None = None,
     ) -> None:
         self.cfg = cfg
+        with contextlib.suppress(Exception):  # archive the loaded config (resume comparisons)
+            from lio.config_snapshots import save_snapshot
+
+            save_snapshot(cfg)
         self.results_root = results_root
         self._transport_factory = transport_factory
         self._lock = threading.RLock()  # protects the fields below
@@ -1753,9 +1757,31 @@ class Session:
         now = time.monotonic()
         cache = getattr(self, "_deploy_cache", None)
         if cache is None or now - cache[0] > 10.0:
-            cache = (now, deployment_changed())
+            cache = (now, deployment_changed(), self._config_on_disk())
             self._deploy_cache = cache
-        return {"loaded": loaded_build_identity(), "deployment": cache[1]}
+        return {"loaded": loaded_build_identity(), "deployment": cache[1], "config": cache[2]}
+
+    def _config_on_disk(self) -> dict[str, Any]:
+        """Is lio_hw.yaml on disk still the config this dashboard loaded? (owner 2026-11-26)
+
+        New runs record the LOADED config; an edit without a restart means a run's record
+        and the file disagree. Resumes compare the two through the snapshot archive.
+        """
+        import hashlib
+
+        try:
+            disk = hashlib.sha256(Path(self.cfg.path).read_bytes()).hexdigest()
+        except OSError:
+            disk = ""
+        loaded = self.cfg.sha256
+        changed = bool(loaded) and bool(disk) and disk != loaded
+        if changed and not getattr(self, "_cfg_change_logged", False):
+            self._cfg_change_logged = True
+            self.log(
+                "lio_hw.yaml changed on disk since this dashboard started: restart it before "
+                "starting new scans (they would record the old settings)"
+            )
+        return {"loaded_sha256": loaded[:16], "disk_sha256": disk[:16], "changed": changed}
 
     def protocol_answer_checkpoint(self, occurrence_id: str, confirmed: bool) -> dict[str, Any]:
         """Fresh linked answer for one protocol checkpoint occurrence (D13/D19)."""

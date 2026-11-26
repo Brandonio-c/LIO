@@ -1,15 +1,33 @@
 {
  "run_id": "20261126-004824_scan_fine",
- "status": "INCOMPLETE",
+ "status": "COMPLETE",
  "started": "2026-11-26T00:48:24-05:00",
- "finished": null,
- "completed_step": -1,
+ "finished": "2026-11-26T02:05:40-05:00",
+ "completed_step": 88,
  "events": [
   {
    "at": "2026-11-26T00:48:24-05:00",
    "kind": "start",
    "mode": "fine",
    "sample_id": "LIO-F-00003"
+  },
+  {
+   "at": "2026-11-26T01:02:41-05:00",
+   "kind": "resume_config_changed",
+   "from_sha256": "245a335d5346f5a8e6ed3a4edd0d8f5e133e4323a8ab573a7b50bfef3a848941",
+   "to_sha256": "8e03af89eb64cd7830b38ae8efeee29a387aa5bbc080d44b3ad8a75b989f8877",
+   "non_acquisition_changes": [
+    "thresholds.motion.travel.range_steps"
+   ]
+  },
+  {
+   "at": "2026-11-26T01:02:41-05:00",
+   "kind": "resume",
+   "from_step": 0
+  },
+  {
+   "at": "2026-11-26T02:05:40-05:00",
+   "kind": "complete"
   }
  ],
  "aborts": [
@@ -37,7 +55,11 @@
   "scan_sample": true
  },
  "phases": {
-  "P0": 0.053
+  "P0": 0.155,
+  "P1": 76.202,
+  "P2": 1333.308,
+  "P3": 2364.898,
+  "P4": 3.793
  },
  "streams": [
   {
@@ -73,6 +95,398 @@
    "detector": "ingaas",
    "height_hs": -16384,
    "rate_setting": 8
+  },
+  {
+   "name": "s000_coils_off_opt101",
+   "file": "streams/s000_coils_off_opt101.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "s000_coils_off_ingaas",
+   "file": "streams/s000_coils_off_ingaas.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "long_dark_opt101",
+   "file": "streams/long_dark_opt101.npz",
+   "state": "dark",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 8
+  },
+  {
+   "name": "long_dark_ingaas",
+   "file": "streams/long_dark_ingaas.npz",
+   "state": "dark",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 8
+  },
+  {
+   "name": "s001_coils_off_opt101",
+   "file": "streams/s001_coils_off_opt101.npz",
+   "step": 1,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "s001_coils_off_ingaas",
+   "file": "streams/s001_coils_off_ingaas.npz",
+   "step": 1,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_10_opt101",
+   "file": "streams/emi_10_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -1,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_11_ingaas",
+   "file": "streams/emi_11_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -1,
+   "rate_setting": 860
+  },
+  {
+   "name": "s005_coils_off_opt101",
+   "file": "streams/s005_coils_off_opt101.npz",
+   "step": 5,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -55720,
+   "rate_setting": 860
+  },
+  {
+   "name": "s005_coils_off_ingaas",
+   "file": "streams/s005_coils_off_ingaas.npz",
+   "step": 5,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -55720,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_14_opt101",
+   "file": "streams/emi_14_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -39337,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_15_ingaas",
+   "file": "streams/emi_15_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -39337,
+   "rate_setting": 860
+  },
+  {
+   "name": "s009_coils_off_opt101",
+   "file": "streams/s009_coils_off_opt101.npz",
+   "step": 9,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -95056,
+   "rate_setting": 860
+  },
+  {
+   "name": "s009_coils_off_ingaas",
+   "file": "streams/s009_coils_off_ingaas.npz",
+   "step": 9,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -95056,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_18_opt101",
+   "file": "streams/emi_18_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -78673,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_19_ingaas",
+   "file": "streams/emi_19_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -78673,
+   "rate_setting": 860
+  },
+  {
+   "name": "s013_coils_off_opt101",
+   "file": "streams/s013_coils_off_opt101.npz",
+   "step": 13,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -134392,
+   "rate_setting": 860
+  },
+  {
+   "name": "s013_coils_off_ingaas",
+   "file": "streams/s013_coils_off_ingaas.npz",
+   "step": 13,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -134392,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_22_opt101",
+   "file": "streams/emi_22_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -118009,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_23_ingaas",
+   "file": "streams/emi_23_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -118009,
+   "rate_setting": 860
+  },
+  {
+   "name": "s017_coils_off_opt101",
+   "file": "streams/s017_coils_off_opt101.npz",
+   "step": 17,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -173728,
+   "rate_setting": 860
+  },
+  {
+   "name": "s017_coils_off_ingaas",
+   "file": "streams/s017_coils_off_ingaas.npz",
+   "step": 17,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -173728,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_26_opt101",
+   "file": "streams/emi_26_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -157345,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_27_ingaas",
+   "file": "streams/emi_27_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -157345,
+   "rate_setting": 860
+  },
+  {
+   "name": "s021_coils_off_opt101",
+   "file": "streams/s021_coils_off_opt101.npz",
+   "step": 21,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -213065,
+   "rate_setting": 860
+  },
+  {
+   "name": "s021_coils_off_ingaas",
+   "file": "streams/s021_coils_off_ingaas.npz",
+   "step": 21,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -213065,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_30_opt101",
+   "file": "streams/emi_30_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -196682,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_31_ingaas",
+   "file": "streams/emi_31_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -196682,
+   "rate_setting": 860
+  },
+  {
+   "name": "s025_coils_off_opt101",
+   "file": "streams/s025_coils_off_opt101.npz",
+   "step": 25,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -252401,
+   "rate_setting": 860
+  },
+  {
+   "name": "s025_coils_off_ingaas",
+   "file": "streams/s025_coils_off_ingaas.npz",
+   "step": 25,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -252401,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_34_opt101",
+   "file": "streams/emi_34_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -236018,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_35_ingaas",
+   "file": "streams/emi_35_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -236018,
+   "rate_setting": 860
+  },
+  {
+   "name": "s029_coils_off_opt101",
+   "file": "streams/s029_coils_off_opt101.npz",
+   "step": 29,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -291737,
+   "rate_setting": 860
+  },
+  {
+   "name": "s029_coils_off_ingaas",
+   "file": "streams/s029_coils_off_ingaas.npz",
+   "step": 29,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -291737,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_38_opt101",
+   "file": "streams/emi_38_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -275354,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_39_ingaas",
+   "file": "streams/emi_39_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -275354,
+   "rate_setting": 860
+  },
+  {
+   "name": "s033_coils_off_opt101",
+   "file": "streams/s033_coils_off_opt101.npz",
+   "step": 33,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -331073,
+   "rate_setting": 860
+  },
+  {
+   "name": "s033_coils_off_ingaas",
+   "file": "streams/s033_coils_off_ingaas.npz",
+   "step": 33,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -331073,
+   "rate_setting": 860
+  },
+  {
+   "name": "s050_coils_off_opt101",
+   "file": "streams/s050_coils_off_opt101.npz",
+   "step": 50,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -291737,
+   "rate_setting": 860
+  },
+  {
+   "name": "s050_coils_off_ingaas",
+   "file": "streams/s050_coils_off_ingaas.npz",
+   "step": 50,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -291737,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_44_opt101",
+   "file": "streams/emi_44_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -275352,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_45_ingaas",
+   "file": "streams/emi_45_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -275352,
+   "rate_setting": 860
+  },
+  {
+   "name": "s072_coils_off_opt101",
+   "file": "streams/s072_coils_off_opt101.npz",
+   "step": 72,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -134392,
+   "rate_setting": 860
+  },
+  {
+   "name": "s072_coils_off_ingaas",
+   "file": "streams/s072_coils_off_ingaas.npz",
+   "step": 72,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -134392,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_48_opt101",
+   "file": "streams/emi_48_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -118007,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_49_ingaas",
+   "file": "streams/emi_49_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -118007,
+   "rate_setting": 860
   }
  ],
  "mode": "fine",
@@ -1261,11 +1675,23 @@
    "segment": "height:s2",
    "resume": true,
    "clock": "row t_s is seconds since this segment's start"
+  },
+  {
+   "segment": "height:s3",
+   "resume": true,
+   "clock": "row t_s is seconds since this segment's start"
   }
  ],
  "adc_preflight": [
   {
    "resume": false,
+   "gain": "1",
+   "rate_sps": 128,
+   "mains_hz": 60,
+   "source": "INFO readback"
+  },
+  {
+   "resume": true,
    "gain": "1",
    "rate_sps": 128,
    "mains_hz": 60,
@@ -1285,13 +1711,13 @@
  "health": {
   "unexpected_boots": 0,
   "duty": {
-   "max_rail_a_ms_per_min": 0.0,
+   "max_rail_a_ms_per_min": 644.0,
    "budget_a_ms": 1000.0,
    "over_budget": [],
    "cooldown_s": 0,
    "cooldowns": 0
   },
-  "moves": 0,
+  "moves": 120,
   "unlevel": [],
   "stage_end": {
    "known": true,
@@ -1309,7 +1735,7 @@
     -331073,
     -331073
    ],
-   "updated": "2026-11-26T00:52:21-05:00",
+   "updated": "2026-11-26T02:05:39-05:00",
    "file": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/stage_position.json",
    "range": [
     331073,
@@ -1327,14 +1753,523 @@
  },
  "terminal_source_seal": {
   "manifest_hash": "25cd58d7bec503227223a60cc7af79ca6c56df8ba9cd384e38759cc095cf74fa",
-  "raw_sha256": "032aaeb9458c2f75d784e2d64163d6b3fc5fb84ccf0f6fb536c84d169c9d033c",
-  "terminal_meta_sha256": "87e6d25c47c209ba322d967d8d180951c43821690685a0455ada8008702361d3",
-  "combined_sha256": "cf144ebc5cc034e7939264402487a6267d04c4af5e0384605b9a7ecc0d60f85a",
-  "revision": "partial",
-  "status": "INCOMPLETE"
+  "raw_sha256": "a67d45b06b98cd7c86fa5a3f1f421a5d45088132df587076bfd2a07579c1ea7a",
+  "terminal_meta_sha256": "c0c7f4dfde40719f3ac0c2dc710131924a6f770d8f8f29c6ba4144aae46d90e8",
+  "combined_sha256": "9e6b940a0df378cf2cb24a735bb4aaf2cc080467921daefd49a9ad21489fbeca",
+  "revision": "complete",
+  "status": "COMPLETE"
  },
  "terminal_source_seal_inputs": {
-  "status": "INCOMPLETE",
-  "cancel_reason": "cannot resume: lio_hw.yaml changed since the run started"
+  "status": "COMPLETE",
+  "cancel_reason": null
+ },
+ "rows": 3296,
+ "target_selection": {
+  "objective": {
+   "name": "primary_swir",
+   "version": "m5-primary-swir-v1",
+   "detector": "ingaas",
+   "target_holes": [
+    12,
+    13,
+    14,
+    15
+   ],
+   "control_holes": [
+    8,
+    9
+   ],
+   "excluded_holes": [
+    16
+   ],
+   "weights": {
+    "12": 2.0,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0
+   },
+   "notes": "h16 excluded from primary-1850; blinds excluded; h12 prioritized"
+  },
+  "status": "selected",
+  "frozen_height_hs": -331073.0,
+  "scores": [
+   {
+    "height_hs": -331073.0,
+    "score": 201.0,
+    "per_hole": {
+     "12": 154.0,
+     "13": 5.0,
+     "14": 6.0,
+     "15": 36.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -321239.0,
+    "score": 192.0,
+    "per_hole": {
+     "12": 146.0,
+     "13": 6.0,
+     "14": 3.0,
+     "15": 37.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -311405.0,
+    "score": 188.0,
+    "per_hole": {
+     "12": 142.0,
+     "13": 5.0,
+     "14": 5.0,
+     "15": 36.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -301571.0,
+    "score": 177.0,
+    "per_hole": {
+     "12": 134.0,
+     "13": 5.0,
+     "14": 2.0,
+     "15": 36.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -291737.0,
+    "score": 172.0,
+    "per_hole": {
+     "12": 130.0,
+     "13": 5.0,
+     "14": 3.0,
+     "15": 34.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -281903.0,
+    "score": 168.0,
+    "per_hole": {
+     "12": 124.0,
+     "13": 5.0,
+     "14": 5.0,
+     "15": 34.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -272069.0,
+    "score": 160.0,
+    "per_hole": {
+     "12": 118.0,
+     "13": 6.0,
+     "14": 3.0,
+     "15": 33.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -262235.0,
+    "score": 154.0,
+    "per_hole": {
+     "12": 114.0,
+     "13": 5.0,
+     "14": 3.0,
+     "15": 32.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -252401.0,
+    "score": 152.0,
+    "per_hole": {
+     "12": 112.0,
+     "13": 4.0,
+     "14": 4.0,
+     "15": 32.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -242567.0,
+    "score": 141.0,
+    "per_hole": {
+     "12": 102.0,
+     "13": 6.0,
+     "14": 3.0,
+     "15": 30.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -232733.0,
+    "score": 141.0,
+    "per_hole": {
+     "12": 104.0,
+     "13": 4.0,
+     "14": 2.0,
+     "15": 31.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -222899.0,
+    "score": 133.0,
+    "per_hole": {
+     "12": 98.0,
+     "13": 4.0,
+     "14": 1.0,
+     "15": 30.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -213065.0,
+    "score": 128.0,
+    "per_hole": {
+     "12": 90.0,
+     "13": 6.0,
+     "14": 3.0,
+     "15": 29.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -203231.0,
+    "score": 123.0,
+    "per_hole": {
+     "12": 88.0,
+     "13": 5.0,
+     "14": 2.0,
+     "15": 28.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -193397.0,
+    "score": 119.0,
+    "per_hole": {
+     "12": 86.0,
+     "13": 3.0,
+     "14": 4.0,
+     "15": 26.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -183563.0,
+    "score": 119.0,
+    "per_hole": {
+     "12": 86.0,
+     "13": 3.0,
+     "14": 2.0,
+     "15": 28.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -173728.0,
+    "score": 116.0,
+    "per_hole": {
+     "12": 82.0,
+     "13": 5.0,
+     "14": 2.0,
+     "15": 27.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -163894.0,
+    "score": 110.0,
+    "per_hole": {
+     "12": 78.0,
+     "13": 3.0,
+     "14": 4.0,
+     "15": 25.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -154060.0,
+    "score": 108.0,
+    "per_hole": {
+     "12": 76.0,
+     "13": 3.0,
+     "14": 4.0,
+     "15": 25.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -144226.0,
+    "score": 103.0,
+    "per_hole": {
+     "12": 74.0,
+     "13": 3.0,
+     "14": 2.0,
+     "15": 24.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -134392.0,
+    "score": 100.0,
+    "per_hole": {
+     "12": 68.0,
+     "13": 5.0,
+     "14": 2.0,
+     "15": 25.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -124558.0,
+    "score": 96.0,
+    "per_hole": {
+     "12": 64.0,
+     "13": 5.0,
+     "14": 2.0,
+     "15": 25.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -114724.0,
+    "score": 95.0,
+    "per_hole": {
+     "12": 64.0,
+     "13": 4.0,
+     "14": 2.0,
+     "15": 25.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -104890.0,
+    "score": 93.0,
+    "per_hole": {
+     "12": 62.0,
+     "13": 4.0,
+     "14": 4.0,
+     "15": 23.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -95056.0,
+    "score": 89.0,
+    "per_hole": {
+     "12": 58.0,
+     "13": 4.0,
+     "14": 2.0,
+     "15": 25.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -85222.0,
+    "score": 91.0,
+    "per_hole": {
+     "12": 60.0,
+     "13": 4.0,
+     "14": 4.0,
+     "15": 23.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -75388.0,
+    "score": 84.0,
+    "per_hole": {
+     "12": 54.0,
+     "13": 4.0,
+     "14": 4.0,
+     "15": 22.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -65554.0,
+    "score": 81.0,
+    "per_hole": {
+     "12": 54.0,
+     "13": 2.0,
+     "14": 4.0,
+     "15": 21.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -55720.0,
+    "score": 82.0,
+    "per_hole": {
+     "12": 50.0,
+     "13": 4.0,
+     "14": 3.0,
+     "15": 25.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -45886.0,
+    "score": 81.0,
+    "per_hole": {
+     "12": 52.0,
+     "13": 2.0,
+     "14": 4.0,
+     "15": 23.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -36052.0,
+    "score": 76.0,
+    "per_hole": {
+     "12": 50.0,
+     "13": 2.0,
+     "14": 3.0,
+     "15": 21.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -26218.0,
+    "score": 77.0,
+    "per_hole": {
+     "12": 48.0,
+     "13": 2.0,
+     "14": 4.0,
+     "15": 23.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -16384.0,
+    "score": 76.0,
+    "per_hole": {
+     "12": 48.0,
+     "13": 2.0,
+     "14": 4.0,
+     "15": 22.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   }
+  ],
+  "scout_source_hash": null,
+  "candidate_grid": [
+   -331073.0,
+   -321239.0,
+   -311405.0,
+   -301571.0,
+   -291737.0,
+   -281903.0,
+   -272069.0,
+   -262235.0,
+   -252401.0,
+   -242567.0,
+   -232733.0,
+   -222899.0,
+   -213065.0,
+   -203231.0,
+   -193397.0,
+   -183563.0,
+   -173728.0,
+   -163894.0,
+   -154060.0,
+   -144226.0,
+   -134392.0,
+   -124558.0,
+   -114724.0,
+   -104890.0,
+   -95056.0,
+   -85222.0,
+   -75388.0,
+   -65554.0,
+   -55720.0,
+   -45886.0,
+   -36052.0,
+   -26218.0,
+   -16384.0
+  ],
+  "predicted_precision": {
+   "best_score": 201.0,
+   "per_hole": {
+    "12": 154.0,
+    "13": 5.0,
+    "14": 6.0,
+    "15": 36.0
+   }
+  },
+  "exclusions": [
+   "excluded hole 16",
+   "h16 not eligible for primary-1850 / primary_swir"
+  ],
+  "detail": "frozen height -331073.0",
+  "confirmation_disjoint": true,
+  "selection_id": "e6cfdc14a7e39d152883efa50e87a589cd2bc1d3e00bb216d44763b70b984360",
+  "consumed_by": [
+   "planner",
+   "fine_placement",
+   "report",
+   "ui"
+  ]
+ },
+ "target_selection_id": "e6cfdc14a7e39d152883efa50e87a589cd2bc1d3e00bb216d44763b70b984360",
+ "extra_heights": [
+  -330766,
+  -330151,
+  -329536,
+  -328922,
+  -328307,
+  -327693,
+  -327078,
+  -326463,
+  -325849,
+  -325234,
+  -324619,
+  -324005,
+  -323390,
+  -322776,
+  -322161,
+  -321546
+ ],
+ "interlocks": {
+  "light_while_moving": "PASS",
+  "single_channel": "SKIP: host refused before transmission (CE on refused: no single selected hole to reserve duty against); firmware interlock not exercised"
  }
 }

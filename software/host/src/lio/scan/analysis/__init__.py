@@ -75,6 +75,21 @@ class Analysis:
         return "\n".join(lines)
 
 
+NOT_JUDGED = "NOT JUDGED"
+
+
+def measured_heights(cube: Any) -> int:
+    """Number of distinct heights with a lit reading in the height passes (P2/P3)."""
+    import numpy as np
+
+    try:
+        m = cube.mask(state="lit") & np.isin(cube.str["phase"], ["P2", "P3"])
+        h = cube.num["height_hs"][m]
+    except Exception:
+        return 0
+    return len(np.unique(h[~np.isnan(h)]))
+
+
 def analyse(
     folder: Path,
     cfg: HwConfig,
@@ -109,6 +124,17 @@ def analyse(
     a.explanations = {k: e.to_dict() for k, e in explain_all(a.findings).items()}
     a.health = system.health_table(a.findings)
     a.verdict = system.verdict(cfg, a.findings)
+    if not measured_heights(cube):
+        # Stopped before any height was measured (e.g. refused at the first check):
+        # there is nothing to judge, so never report FUNCTIONAL (owner 2026-11-26).
+        why = "; ".join(str(x.get("reason", "")) for x in (cube.meta.get("aborts") or [])[-1:])
+        a.verdict = {
+            "verdict": NOT_JUDGED,
+            "reasons": [
+                "the run stopped before measuring any height" + (f": {why}" if why else "")
+            ],
+            "modules": a.verdict.get("modules", {}),
+        }
     if write:
         (Path(folder) / "analysis.json").write_text(
             json.dumps(a.to_dict(), indent=1, default=float) + "\n"

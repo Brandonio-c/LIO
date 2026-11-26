@@ -462,8 +462,18 @@ class ScanExecutor:
             was = meta.get("firmware", {}).get("fw")
             if was != fw:
                 raise ScanAbort(f"cannot resume: firmware changed ({was} -> {fw})")
-            if meta.get("config_sha256") != self.cfg.sha256:
-                raise ScanAbort("cannot resume: lio_hw.yaml changed since the run started")
+            from lio.config_snapshots import resume_config_check
+
+            ok, why, allowed = resume_config_check(self.cfg, str(meta.get("config_sha256") or ""))
+            if not ok:
+                raise ScanAbort(f"cannot resume: {why}")
+            if allowed:  # recorded, so the resumed segment's settings are on file
+                self.store.event(
+                    "resume_config_changed",
+                    from_sha256=meta.get("config_sha256"),
+                    to_sha256=self.cfg.sha256,
+                    non_acquisition_changes=allowed,
+                )
             # CE05: gain must still match frozen snapshot before any light.
             from lio.scan.provenance import read_info_gain
 

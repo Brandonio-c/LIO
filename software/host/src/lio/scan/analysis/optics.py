@@ -191,7 +191,11 @@ def analyse(
                 # Hole 16 (1850 nm): beyond both detectors' range. A silicon response has an
                 # unassigned spectrum (tail/secondary emission/pickup possible) - WARN only.
                 beyond = not ch.expected_detectors
-                if beyond and status == Status.FAIL:
+                # Broadband LEDs (white / pink: blue die + phosphor) emit a red/NIR tail the
+                # InGaAs genuinely sees; a bright sample reflects it (owner 2026-11-26: whey
+                # scan, h11 +121 counts). Unassigned light, not a fault: WARN at most.
+                broadband = (ch.label or "").lower() in ("white", "pink")
+                if (beyond or broadband) and status == Status.FAIL:
                     status = Status.WARN
                 out.append(Finding(
                     f"{fid}/plausibility", f"hole {hole} ({ch.label}) seen by {det}?", status,

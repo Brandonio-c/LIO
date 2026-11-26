@@ -9,6 +9,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import platform
 from collections.abc import Callable
 from pathlib import Path
@@ -128,6 +129,10 @@ def start(
     those fields stay untouched.
     """
     from lio.buildinfo import loaded_build_identity
+    from lio.config_snapshots import save_snapshot
+
+    with contextlib.suppress(Exception):  # the run's config, kept so a resume can compare
+        save_snapshot(cfg)
     from lio.scan.provenance import content_hash, read_info_gain, snapshot_from_hw_config
 
     info = dev.info(refresh=True)

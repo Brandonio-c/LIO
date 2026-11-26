@@ -25,7 +25,7 @@ from lio import scan
 from lio.operator import Operator, PreflightOperator, SimOperator
 from lio.results import RunRecord, overall_verdict
 from lio.scan import report as scan_report
-from lio.scan.analysis import analyse
+from lio.scan.analysis import NOT_JUDGED, analyse
 from lio.scan.executor import Control
 from lio.suite.checks.t13_scan import scan_result
 
@@ -92,8 +92,13 @@ class ScanJob:
             scan_report.write(store.folder, s.cfg)
             res = scan_result(a, store.folder)
             self._save_record(store, res, status)
+            judged = a.verdict.get("verdict") != NOT_JUDGED
+            if not judged:
+                s.log(f"scan {store.folder.name}: nothing measured, not judged; the twin keeps "
+                      "its previous height-scan result")  # fmt: skip
             with s._lock:
-                s.board[res.id] = res
+                if judged:
+                    s.board[res.id] = res
                 s.provenance[res.id] = {"run_id": store.folder.name,
                                         "started": str(store.meta.get("started", ""))}  # fmt: skip
                 s.last_run = {
