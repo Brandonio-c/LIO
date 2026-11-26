@@ -1312,6 +1312,22 @@ class LIODevice:
         word = {"ce_only": "CE_ONLY", "wrong_rail": "WRONG_RAIL"}[state]
         on_ms = float(settle_ms + 2 * self._mean_ms_fw(n) + 10)
         energized_n = arg
+        if state == "ce_only":
+            # The firmware refuses unless the energized rail's WDT covers the on-time. An
+            # earlier short reading may have lowered it to its own need (e.g. 90 ms):
+            # raise it, verified, like MEAS/WRONG_RAIL do (26 Nov: two scans refused).
+            from lio.timing_capability import rail_wdt_cap_ms
+
+            rail = "A" if int(arg) == 1 else "B"
+            need = quantize_wdt_ms(on_ms, capability=self._timing)
+            cap = rail_wdt_cap_ms(rail, capability=self._timing)
+            if need > cap:
+                raise DutyBudgetError(
+                    f"refuse: CE-only on-time {need} ms exceeds rail {rail} cap {cap} ms"
+                )
+            wdt = int(self.info().as_int(f"wdt_{rail.lower()}_ms"))
+            if wdt < need:
+                self._set_wdt_verified(rail, int(need))
         if state == "wrong_rail":
             hole_rail = self.cfg.channel(arg).rail
             energized = "B" if hole_rail == "A" else "A"

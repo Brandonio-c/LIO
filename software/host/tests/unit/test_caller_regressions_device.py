@@ -606,3 +606,22 @@ def test_ch_on_over_budget_needs_owner_flash_on_real_port(cfg: HwConfig, tmp_pat
         assert dev.ch_on(2, None, owner_flash_max_ms=5000.0) == 5000
         dev.off()
         assert charged_ms(dev, "h1") > 0.0 and charged_ms(dev, "h2") > 0.0
+
+
+# ------------------------------------- CE-only after a lowered watchdog (2026-11-26)
+
+
+def test_ce_only_raises_a_lowered_watchdog(cfg: HwConfig, tmp_path: Path) -> None:
+    """Two scans on 26 Nov were refused at their first coupling check: an earlier quick
+    reading had lowered both rail watchdogs to 90 ms (its own need), and DBG STATE
+    CE_ONLY with mains integration needs ~92 ms. The host must raise the rail WDT to
+    cover the check, as it does for MEAS and WRONG_RAIL."""
+    with opened(cfg, tmp_path) as (dev, _t, _sim):
+        dev.adc_mains(60)
+        dev.wdt_cfg("A", 90)
+        dev.wdt_cfg("B", 90)
+        for rail in (1, 2):
+            f = dev.dbg_state("ce_only", rail, 8, 2)
+            assert f.as_str("state") == "ce_only"
+        info = dev.info(refresh=True)
+        assert info.as_int("wdt_a_ms") >= 92 and info.as_int("wdt_b_ms") >= 92

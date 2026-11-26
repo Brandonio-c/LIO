@@ -273,3 +273,14 @@ def test_whole_system_run_pauses_between_tests_and_lends_motors(session: Session
     session.suite_pause(False)
     wait_for(lambda: not session.running)
     assert session.last_run is not None and not session.last_run.get("stopped")
+
+
+def test_scan_after_a_quick_reading_is_not_refused(session: Session) -> None:
+    """26 Nov: a quick reading (Measure / Database scan) lowered the rail watchdogs to its
+    own need; the next height scan was refused at its first coupling check."""
+    session.measure(8)
+    session.measure(12)
+    session.scan_start("tiny", "empty", heartbeat=False)
+    wait_for(lambda: not session.scanning)
+    res = session.scan_view()["job"]["result"]
+    assert res is not None and res["status"] == "COMPLETE", session.scan_view()["job"]

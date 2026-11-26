@@ -1,0 +1,614 @@
+{
+ "run_id": "20261126-004656_scan_full",
+ "sample_id": "LIO-F-00003",
+ "mode": "full",
+ "status": "INCOMPLETE",
+ "verdict": {
+  "verdict": "FUNCTIONAL",
+  "reasons": [
+   "warnings: T13.T06, T13.T13"
+  ],
+  "modules": {
+   "T02": "PASS",
+   "T03": "PASS",
+   "T04": "SKIP",
+   "T06": "WARN",
+   "T09": "PASS",
+   "T10": "PASS",
+   "T13": "WARN"
+  }
+ },
+ "health": [
+  {
+   "key": "link",
+   "title": "Link / firmware",
+   "parts": "Nano R4, USB, firmware",
+   "health": "OK",
+   "reason": "1 checks pass",
+   "findings": [
+    "system/link"
+   ]
+  },
+  {
+   "key": "adc",
+   "title": "ADC / I\u00b2C",
+   "parts": "ADS1115, software I\u00b2C D11/D12",
+   "health": "OK",
+   "reason": "1 checks pass",
+   "findings": [
+    "system/adc"
+   ]
+  },
+  {
+   "key": "shift_registers",
+   "title": "Shift registers",
+   "parts": "U1, U2",
+   "health": "n/a",
+   "reason": "not measured: no optical response to compare",
+   "findings": [
+    "system/addressing"
+   ]
+  },
+  {
+   "key": "drivers",
+   "title": "LED drivers / rails",
+   "parts": "DRV1 (RAIL A), DRV2 (RAIL B)",
+   "health": "n/a",
+   "reason": "not measured: ",
+   "findings": []
+  },
+  {
+   "key": "channels",
+   "title": "LED / MOSFET channels",
+   "parts": "LED1-16, Q1-16",
+   "health": "n/a",
+   "reason": "not measured: ",
+   "findings": []
+  },
+  {
+   "key": "opt101",
+   "title": "OPT101",
+   "parts": "OPT101 (A1)",
+   "health": "n/a",
+   "reason": "not measured: no blind channels measured; no dark frames; needs hum records, coils off and moving; no select-only readings; under 5 min of dark frames: too short for a drift estimate",
+   "findings": [
+    "elec/opt101/coupling",
+    "elec/opt101/dark_offset",
+    "elec/opt101/drift",
+    "elec/opt101/coil_emi",
+    "elec/opt101/select_only"
+   ]
+  },
+  {
+   "key": "ingaas",
+   "title": "InGaAs TIA",
+   "parts": "D1, U5, Rf, Cf (A0)",
+   "health": "n/a",
+   "reason": "not measured: no blind channels measured; no dark frames; needs hum records, coils off and moving; no select-only readings; under 5 min of dark frames: too short for a drift estimate",
+   "findings": [
+    "elec/ingaas/coupling",
+    "elec/ingaas/dark_offset",
+    "elec/ingaas/drift",
+    "elec/ingaas/coil_emi",
+    "elec/ingaas/select_only"
+   ]
+  },
+  {
+   "key": "motors",
+   "title": "Motors / lead screws",
+   "parts": "M1, M2, ULN2003, couplers, M6 rods",
+   "health": "OK",
+   "reason": "2 checks pass",
+   "findings": [
+    "mech/home_sensors",
+    "mech/travel",
+    "mech/lockstep",
+    "mech/settle",
+    "mech/backlash",
+    "mech/step_loss",
+    "mech/repeatability"
+   ]
+  },
+  {
+   "key": "stage",
+   "title": "Stage tracking",
+   "parts": "lio.stage, soft limits",
+   "health": "OK",
+   "reason": "1 checks pass",
+   "findings": [
+    "system/stage"
+   ]
+  },
+  {
+   "key": "safety",
+   "title": "Safety",
+   "parts": "interlocks, duty budget",
+   "health": "OK",
+   "reason": "1 checks pass",
+   "findings": [
+    "system/interlocks",
+    "system/duty"
+   ]
+  },
+  {
+   "key": "power",
+   "title": "Power / earthing",
+   "parts": "supplies, GND, earth bond",
+   "health": "WATCH",
+   "reason": "elec/ingaas/hum: 60/120/180 Hz: 8.841 / 0.105 / 0.830 mV; 100% of the variance at mains harmonics; broadband sigma 0.383 mV; readings integrate whole mains periods, so it cancels in the measurements",
+   "findings": [
+    "elec/opt101/hum",
+    "elec/ingaas/hum",
+    "elec/rails"
+   ]
+  },
+  {
+   "key": "optical_path",
+   "title": "Optical path / ambient",
+   "parts": "window, shroud, lid, sample",
+   "health": "OK",
+   "reason": "2 checks pass",
+   "findings": [
+    "optics/curves",
+    "ambient/opt101/leak",
+    "ambient/ingaas/leak",
+    "ambient/opt101/flicker",
+    "ambient/ingaas/flicker",
+    "ambient/lid",
+    "trend/control"
+   ]
+  },
+  {
+   "key": "run",
+   "title": "Run",
+   "parts": "the scan itself",
+   "health": "WATCH",
+   "reason": "system/run: INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog",
+   "findings": [
+    "system/run"
+   ]
+  }
+ ],
+ "findings": [
+  {
+   "id": "system/link",
+   "title": "link and firmware (no unexpected reset, no lost replies)",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "unexpected boots",
+   "detail": "firmware 2.5.2, no unexpected # BOOT",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/adc",
+   "title": "ADC / I\u00b2C (every reading answered)",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "readings",
+   "detail": "0 readings, no dropout",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/addressing",
+   "title": "addressing (each hole distinct)",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no optical response to compare",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/interlocks",
+   "title": "P4 interlock re-checks",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "P4 not reached",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/duty",
+   "title": "LED duty (RAIL A <= budget per LED per minute)",
+   "status": "PASS",
+   "value": 270.0,
+   "unit": "ms/min",
+   "detail": "max 270 ms of 1000 ms; 0 cool-down waits, 0 s in all",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/stage",
+   "title": "stage tracking (position trusted, soft limits respected)",
+   "status": "PASS",
+   "value": null,
+   "unit": "",
+   "detail": "position [-16384, -16384], limits respected",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "system/run",
+   "title": "run complete",
+   "status": "WARN",
+   "value": null,
+   "unit": "",
+   "detail": "INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog",
+   "criteria": "",
+   "data": {},
+   "explanation": {
+    "cause": "The run did not complete: metrics needing the missing steps are SKIP.",
+    "parts": [
+     "run"
+    ],
+    "check": "See the abort reason; 'lio scan resume <run>' carries on from the next step."
+   }
+  },
+  {
+   "id": "optics/curves",
+   "title": "response curves vs height",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no down pass in this mode (no height data)",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/opt101/coupling",
+   "title": "opt101: electrical coupling",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no blind channels measured",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/ingaas/coupling",
+   "title": "ingaas: electrical coupling",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no blind channels measured",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/opt101/dark_offset",
+   "title": "opt101: dark offset",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no dark frames",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/ingaas/dark_offset",
+   "title": "ingaas: dark offset",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no dark frames",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/opt101/drift",
+   "title": "opt101: dark drift",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "under 5 min of dark frames: too short for a drift estimate",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/ingaas/drift",
+   "title": "ingaas: dark drift",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "under 5 min of dark frames: too short for a drift estimate",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/opt101/hum",
+   "title": "opt101: mains hum (coils off)",
+   "status": "PASS",
+   "value": 0.033,
+   "unit": "mV",
+   "detail": "60/120/180 Hz: 0.033 / 0.032 / 0.041 mV; 13% of the variance at mains harmonics; broadband sigma 0.109 mV; readings integrate whole mains periods, so it cancels in the measurements",
+   "criteria": "60 Hz amplitude < 0.3 mV (WARN; not when the readings reject it), < 1 (FAIL); mains fraction < 0.5",
+   "data": {
+    "amp_counts": {
+     "60": 0.2638448451255581,
+     "120": 0.2531651617565396,
+     "180": 0.3290992520260327
+    },
+    "mains_fraction": 0.13030856060328685,
+    "sigma_counts": 0.8691887647437145,
+    "bursts": 17
+   }
+  },
+  {
+   "id": "elec/ingaas/hum",
+   "title": "ingaas: mains hum (coils off)",
+   "status": "WARN",
+   "value": 8.8411,
+   "unit": "mV",
+   "detail": "60/120/180 Hz: 8.841 / 0.105 / 0.830 mV; 100% of the variance at mains harmonics; broadband sigma 0.383 mV; readings integrate whole mains periods, so it cancels in the measurements",
+   "criteria": "60 Hz amplitude < 1 mV (WARN; not when the readings reject it), < 3 (FAIL); mains fraction < 0.5",
+   "data": {
+    "amp_counts": {
+     "60": 70.72905738727223,
+     "120": 0.8369405095081356,
+     "180": 6.6375297405722735
+    },
+    "mains_fraction": 0.9990577498585556,
+    "sigma_counts": 3.062486849759738,
+    "bursts": 17
+   },
+   "explanation": {
+    "cause": "Mains hum on the detector output: a missing earth bond or leakage from a charger.",
+    "parts": [
+     "earth bond",
+     "chargers",
+     "GND"
+    ],
+    "check": "Check the earth bond (circuit GND to mains earth); unplug the laptop charger and repeat."
+   }
+  },
+  {
+   "id": "elec/opt101/coil_emi",
+   "title": "opt101: coil interference",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "needs hum records, coils off and moving",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/ingaas/coil_emi",
+   "title": "ingaas: coil interference",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "needs hum records, coils off and moving",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/opt101/select_only",
+   "title": "opt101: select-only coupling",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no select-only readings",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/ingaas/select_only",
+   "title": "ingaas: select-only coupling",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no select-only readings",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "elec/rails",
+   "title": "supply rails and ground (A2/A3)",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "A2/A3 not wired for rail and ground monitoring",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "mech/home_sensors",
+   "title": "home sensors",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no home sensors fitted",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "ambient/opt101/leak",
+   "title": "opt101: dark vs height (light leak)",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "needs dark frames at 4+ heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "ambient/ingaas/leak",
+   "title": "ingaas: dark vs height (light leak)",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "needs dark frames at 4+ heights",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "ambient/opt101/flicker",
+   "title": "opt101: room-light flicker (120 Hz)",
+   "status": "PASS",
+   "value": 0.0316,
+   "unit": "mV",
+   "detail": "120 Hz amplitude in the dark streams 0.032 mV; readings integrate whole mains periods, so it cancels",
+   "criteria": "< 0.4 mV (WARN), < 1.2 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "ambient/ingaas/flicker",
+   "title": "ingaas: room-light flicker (120 Hz)",
+   "status": "PASS",
+   "value": 0.1046,
+   "unit": "mV",
+   "detail": "120 Hz amplitude in the dark streams 0.105 mV; readings integrate whole mains periods, so it cancels",
+   "criteria": "< 0.4 mV (WARN), < 1.2 (FAIL)",
+   "data": {}
+  },
+  {
+   "id": "ambient/lid",
+   "title": "lid sensitivity",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "optional operator step (lid ajar at two heights)",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "mech/travel",
+   "title": "travel (top to bottom)",
+   "status": "PASS",
+   "value": 331073.0,
+   "unit": "half-steps",
+   "detail": "tracked range 331073 / 331073 half-steps (M1/right / M2/left)",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "mech/lockstep",
+   "title": "lockstep (firmware positions level after every move)",
+   "status": "PASS",
+   "value": 0.0,
+   "unit": "moves",
+   "detail": "1 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "mech/settle",
+   "title": "settle time after a move",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no settle records",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "mech/backlash",
+   "title": "backlash",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no down-pass reference curves (static or continuous mode, or no strong channel)",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "mech/step_loss",
+   "title": "step loss",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no down-pass reference curves (static or continuous mode, or no strong channel)",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "mech/repeatability",
+   "title": "repeatability",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "no down-pass reference curves (static or continuous mode, or no strong channel)",
+   "criteria": "",
+   "data": {}
+  },
+  {
+   "id": "trend/control",
+   "title": "control charts vs baselines",
+   "status": "SKIP",
+   "value": null,
+   "unit": "",
+   "detail": "needs 5 baselines of LIO-F-00003 (have 0)",
+   "criteria": "",
+   "data": {}
+  }
+ ],
+ "context": {
+  "electrical": {
+   "coupling": {
+    "opt101": {
+     "C": {
+      "A": 0.0,
+      "B": 0.0
+     },
+     "inferred": [
+      "A",
+      "B"
+     ]
+    },
+    "ingaas": {
+     "C": {
+      "A": 0.0,
+      "B": 0.0
+     },
+     "inferred": [
+      "A",
+      "B"
+     ]
+    }
+   },
+   "spectra": {
+    "opt101": {
+     "amp_counts": {
+      "60": 0.2638448451255581,
+      "120": 0.2531651617565396,
+      "180": 0.3290992520260327
+     },
+     "mains_fraction": 0.13030856060328685,
+     "sigma_counts": 0.8691887647437145,
+     "bursts": 17
+    },
+    "ingaas": {
+     "amp_counts": {
+      "60": 70.72905738727223,
+      "120": 0.8369405095081356,
+      "180": 6.6375297405722735
+     },
+     "mains_fraction": 0.9990577498585556,
+     "sigma_counts": 3.062486849759738,
+     "bursts": 17
+    }
+   }
+  },
+  "optics": {
+   "channels": {
+    "opt101": {},
+    "ingaas": {}
+   },
+   "floors": {
+    "opt101": [
+     15.0,
+     6.0
+    ],
+    "ingaas": [
+     16.773931296763433,
+     8.386965648381716
+    ]
+   }
+  },
+  "reference": null,
+  "incomplete_note": "run INCOMPLETE: metrics computed from the steps completed"
+ }
+}
