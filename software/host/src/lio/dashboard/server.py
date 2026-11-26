@@ -347,6 +347,22 @@ class _Handler(BaseHTTPRequestHandler):
             return self._json(finite_json(out))
         raise Refused(f"unknown profiles POST: {path}")
 
+    def _full_scans(self) -> dict[str, dict[str, int]]:
+        """Food code -> number of full height scans (complete / other) in test_results."""
+        from lio.food_profiles.runs import discover_runs
+
+        out: dict[str, dict[str, int]] = {}
+        try:
+            runs = discover_runs(self.server.session.results_root)
+        except OSError:
+            return out
+        for r in runs:
+            sid = str(r.get("sample_id") or "")
+            if sid.startswith("LIO-F-") and r.get("mode") != "protocol":
+                c = out.setdefault(sid, {"complete": 0, "other": 0})
+                c["complete" if r.get("status") == "COMPLETE" else "other"] += 1
+        return out
+
     def _food_names(self) -> dict[str, str]:
         """Food-library code -> product name ("LIO-F-00001" -> "Citrucel orange")."""
         f = self.server.foods
@@ -435,7 +451,10 @@ class _Handler(BaseHTTPRequestHandler):
                 )
             return self._json(
                 {
-                    "counts": f.lib.counts(),
+                    "counts": {
+                        **f.lib.counts(),
+                        "full_scans": sum(c["complete"] for c in self._full_scans().values()),
+                    },
                     "decoder": f.intake.can_decode(),
                     "online_lookup": f.lib.lookup is not None,
                     "usda_key": (
@@ -452,19 +471,32 @@ class _Handler(BaseHTTPRequestHandler):
                 }
             )
         if path == "samples":
-            return self._json(
-                {
-                    "samples": f.lib.samples(
-                        arg("q"),
-                        archived=arg("archived") == "1",
-                        scanned=arg("scanned"),
-                        found=arg("found"),
-                        ingredients=arg("ingredients"),
-                        source=arg("source"),
-                        sort=arg("sort") or "newest",
-                    )
-                }
+            # Quick readings live in the library; full height scans are run folders whose
+            # sample is the food code. Count both (owner 2026-11-26: whey showed 0 scans).
+            sort = arg("sort") or "newest"
+            rows = f.lib.samples(
+                arg("q"),
+                archived=arg("archived") == "1",
+                scanned="",
+                found=arg("found"),
+                ingredients=arg("ingredients"),
+                source=arg("source"),
+                sort="newest" if sort == "scans" else sort,
             )
+            full = self._full_scans()
+            for r in rows:
+                c = full.get(str(r.get("sample_code") or ""), {})
+                r["n_full_scans"] = c.get("complete", 0)
+                r["n_full_incomplete"] = c.get("other", 0)
+                r["n_all_scans"] = int(r.get("n_scans") or 0) + r["n_full_scans"]
+            want = arg("scanned")
+            if want == "yes":
+                rows = [r for r in rows if r["n_all_scans"] > 0]
+            elif want == "no":
+                rows = [r for r in rows if r["n_all_scans"] == 0]
+            if sort == "scans":
+                rows.sort(key=lambda r: -int(r["n_all_scans"]))
+            return self._json({"samples": rows})
         if path == "sample":
             return self._json(f.lib.sample(arg("code"), raw=arg("raw") == "1"))
         if path == "scan":

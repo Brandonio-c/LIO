@@ -702,7 +702,7 @@ table.ingr tr.conflict td { background: color-mix(in srgb, var(--warning) 14%, t
       <div class="stat-row">
         <div class="stat"><div class="v" id="db-n-samples">–</div><div class="l">samples</div></div>
         <div class="stat"><div class="v" id="db-n-products">–</div><div class="l">products</div></div>
-        <div class="stat"><div class="v" id="db-n-scans">–</div><div class="l">LIO scans</div></div>
+        <div class="stat"><div class="v" id="db-n-scans">–</div><div class="l">LIO scans (quick + full)</div></div>
         <div class="stat"><div class="v" id="db-n-archived">–</div><div class="l">archived</div></div>
       </div>
       <div class="chips" id="db-chips"></div>
@@ -1777,7 +1777,7 @@ async function dbStatus() {
   DB.status = st;
   const c = st.counts;
   $("db-n-samples").textContent = c.samples; $("db-n-products").textContent = c.products;
-  $("db-n-scans").textContent = c.scans; $("db-n-archived").textContent = c.archived;
+  $("db-n-scans").textContent = `${c.scans} + ${c.full_scans ?? 0}`; $("db-n-archived").textContent = c.archived;
   $("db-path").textContent = st.db_path;
   const chip = (ok, text, title = "") => `<span class="chip ${ok === true ? "ok" : ok === false ? "warn" : ""}" title="${esc(title)}"><span class="d"></span>${esc(text)}</span>`;
   $("db-chips").innerHTML = [
@@ -1880,7 +1880,7 @@ function dbRenderList() {
       ${img ? `<img src="${foodSrc(img)}" alt="">` : `<div class="ph"></div>`}
       <div style="min-width:0"><div class="t1">${esc(s.name || "Unknown product")}</div>
         <div class="t2"><span class="code">${esc(s.sample_code)}</span>${inCmp ? `<span class="cmp-dot" style="background:${SERIES[DB.cmpSlot[s.sample_code]]}"></span>` : ""} · ${esc(s.brand || s.scanned_text)}${s.found ? "" : " · no data"}${s.has_ingredients ? "" : ` · <span style="color:var(--critical)">no ingredients</span>`}</div></div>
-      <div class="meta"><div><span class="n">${s.n_scans}</span> scan${s.n_scans === 1 ? "" : "s"}</div><div>${esc(fmtDay(s.created_at))}</div></div></div>`;
+      <div class="meta"><div title="quick readings (Run LIO scan) · full height scans (Run full LIO scan)"><span class="n">${s.n_scans}</span> quick · <span class="n">${s.n_full_scans ?? 0}</span> full</div><div>${esc(fmtDay(s.created_at))}</div></div></div>`;
   }).join("") : `<div class="list-empty">${dbFiltered() ? "Nothing matches." : "No samples yet.<br>Add one above, or scan with the phone app."}</div>`;
   document.querySelectorAll("#db-list .srow").forEach((row) => {
     const code = row.dataset.code, cb = row.querySelector("input");
