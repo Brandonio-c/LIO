@@ -1,0 +1,1373 @@
+{
+ "runs": {
+  "empty": "20261125-130035_scan_quick",
+  "citrucel": "20261125-141952_scan_fine",
+  "whey": "20261125-172501_scan_fine",
+  "whey_b": "20261125-160648_scan_fine"
+ },
+ "lowest_height_hs": {
+  "empty": -286884.0,
+  "citrucel": -259552.0,
+  "whey": -331073.0,
+  "whey_b": -50023.0
+ },
+ "common_low_hs": -259552.0,
+ "grid_hs": [
+  -38932.799999999996,
+  -90843.2,
+  -142753.6,
+  -194664.0,
+  -233596.80000000002,
+  -259552.0
+ ],
+ "grid_mm": [
+  -9.505078124999999,
+  -22.178515625,
+  -34.851953125,
+  -47.525390625,
+  -57.030468750000004,
+  -63.3671875
+ ],
+ "channels": {
+  "h1/opt101": {
+   "label": "395",
+   "empty": {
+    "at_grid": [
+     83.92,
+     95.63,
+     121.27,
+     148.86,
+     168.77,
+     184.02
+    ],
+    "revisit_sd_low": 1.414,
+    "revisit_df_low": 1,
+    "own_max": 201.0,
+    "drift_p1_p4": [
+     84.0,
+     74.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     56.93,
+     66.6,
+     79.26,
+     94.69,
+     106.96,
+     117.0
+    ],
+    "revisit_sd_low": 0.707,
+    "revisit_df_low": 1,
+    "own_max": 118.0,
+    "drift_p1_p4": [
+     52.0,
+     51.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     90.0,
+     104.86,
+     127.33,
+     150.9,
+     176.53,
+     192.36
+    ],
+    "revisit_sd_low": 0.898,
+    "revisit_df_low": 6,
+    "own_max": 242.0,
+    "drift_p1_p4": [
+     81.0,
+     79.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     84.94,
+     88.0,
+     88.0,
+     88.0,
+     88.0,
+     88.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 91.0
+   }
+  },
+  "h2/opt101": {
+   "label": "405",
+   "empty": {
+    "at_grid": [
+     44.17,
+     44.81,
+     55.53,
+     68.45,
+     78.82,
+     87.26
+    ],
+    "revisit_sd_low": 7.071,
+    "revisit_df_low": 1,
+    "own_max": 101.0,
+    "drift_p1_p4": [
+     54.0,
+     39.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     49.97,
+     59.6,
+     72.84,
+     90.84,
+     108.92,
+     121.0
+    ],
+    "revisit_sd_low": 0.0,
+    "revisit_df_low": 1,
+    "own_max": 121.0,
+    "drift_p1_p4": [
+     45.0,
+     41.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     68.0,
+     84.0,
+     105.63,
+     130.9,
+     160.79,
+     182.64
+    ],
+    "revisit_sd_low": 1.972,
+    "revisit_df_low": 6,
+    "own_max": 248.0,
+    "drift_p1_p4": [
+     61.0,
+     59.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     65.56,
+     70.0,
+     70.0,
+     70.0,
+     70.0,
+     70.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 74.0
+   }
+  },
+  "h3/opt101": {
+   "label": "465",
+   "empty": {
+    "at_grid": [
+     34.67,
+     33.81,
+     39.21,
+     47.5,
+     54.47,
+     60.32
+    ],
+    "revisit_sd_low": 3.536,
+    "revisit_df_low": 1,
+    "own_max": 68.0,
+    "drift_p1_p4": [
+     42.0,
+     32.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     38.93,
+     43.0,
+     51.31,
+     60.46,
+     70.38,
+     78.0
+    ],
+    "revisit_sd_low": 0.707,
+    "revisit_df_low": 1,
+    "own_max": 78.0,
+    "drift_p1_p4": [
+     35.0,
+     35.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     75.29,
+     90.14,
+     110.4,
+     138.9,
+     168.61,
+     192.14
+    ],
+    "revisit_sd_low": 0.553,
+    "revisit_df_low": 6,
+    "own_max": 273.0,
+    "drift_p1_p4": [
+     69.0,
+     69.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     72.21,
+     76.0,
+     76.0,
+     76.0,
+     76.0,
+     76.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 76.0
+   }
+  },
+  "h4/opt101": {
+   "label": "525",
+   "empty": {
+    "at_grid": [
+     49.33,
+     46.31,
+     54.29,
+     66.18,
+     76.88,
+     87.05
+    ],
+    "revisit_sd_low": 7.778,
+    "revisit_df_low": 1,
+    "own_max": 102.0,
+    "drift_p1_p4": [
+     66.0,
+     46.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     81.93,
+     94.4,
+     111.98,
+     134.38,
+     155.34,
+     171.0
+    ],
+    "revisit_sd_low": 0.0,
+    "revisit_df_low": 1,
+    "own_max": 173.0,
+    "drift_p1_p4": [
+     75.0,
+     72.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     167.88,
+     202.0,
+     245.88,
+     306.67,
+     361.23,
+     402.18
+    ],
+    "revisit_sd_low": 1.0,
+    "revisit_df_low": 6,
+    "own_max": 536.0,
+    "drift_p1_p4": [
+     155.0,
+     152.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     162.15,
+     169.0,
+     169.0,
+     169.0,
+     169.0,
+     169.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 172.0
+   }
+  },
+  "h5/opt101": {
+   "label": "590",
+   "empty": {
+    "at_grid": [
+     -3.16,
+     2.23,
+     17.06,
+     16.64,
+     21.0,
+     21.0
+    ],
+    "revisit_sd_low": 8.485,
+    "revisit_df_low": 1,
+    "own_max": 21.0,
+    "drift_p1_p4": [
+     -19.0,
+     -21.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     31.87,
+     50.22,
+     62.14,
+     69.16,
+     87.35,
+     99.0
+    ],
+    "revisit_sd_low": 7.071,
+    "revisit_df_low": 1,
+    "own_max": 109.0,
+    "drift_p1_p4": [
+     15.0,
+     -10.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     57.17,
+     67.0,
+     80.07,
+     96.52,
+     113.35,
+     123.59
+    ],
+    "revisit_sd_low": 1.323,
+    "revisit_df_low": 6,
+    "own_max": 169.0,
+    "drift_p1_p4": [
+     55.0,
+     54.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     56.49,
+     59.0,
+     59.0,
+     59.0,
+     59.0,
+     59.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 60.0
+   }
+  },
+  "h6/opt101": {
+   "label": "605",
+   "empty": {
+    "at_grid": [
+     14.83,
+     12.71,
+     16.24,
+     16.59,
+     15.71,
+     17.34
+    ],
+    "revisit_sd_low": 1.414,
+    "revisit_df_low": 1,
+    "own_max": 23.0,
+    "drift_p1_p4": [
+     19.0,
+     15.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     35.93,
+     41.0,
+     47.17,
+     53.69,
+     65.51,
+     69.0
+    ],
+    "revisit_sd_low": 0.0,
+    "revisit_df_low": 1,
+    "own_max": 73.0,
+    "drift_p1_p4": [
+     34.0,
+     30.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     40.0,
+     46.57,
+     54.63,
+     63.26,
+     76.35,
+     83.64
+    ],
+    "revisit_sd_low": 0.687,
+    "revisit_df_low": 6,
+    "own_max": 113.0,
+    "drift_p1_p4": [
+     40.0,
+     39.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     40.8,
+     41.0,
+     41.0,
+     41.0,
+     41.0,
+     41.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 43.0
+   }
+  },
+  "h7/opt101": {
+   "label": "630",
+   "empty": {
+    "at_grid": [
+     46.5,
+     44.7,
+     53.98,
+     38.09,
+     46.7,
+     48.62
+    ],
+    "revisit_sd_low": 9.899,
+    "revisit_df_low": 1,
+    "own_max": 57.0,
+    "drift_p1_p4": [
+     41.0,
+     36.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     100.1,
+     109.17,
+     132.74,
+     150.77,
+     173.47,
+     187.0
+    ],
+    "revisit_sd_low": 3.536,
+    "revisit_df_low": 1,
+    "own_max": 193.0,
+    "drift_p1_p4": [
+     101.0,
+     97.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     96.46,
+     112.43,
+     130.48,
+     156.64,
+     178.61,
+     196.95
+    ],
+    "revisit_sd_low": 0.816,
+    "revisit_df_low": 6,
+    "own_max": 254.0,
+    "drift_p1_p4": [
+     91.0,
+     92.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     97.86,
+     99.0,
+     99.0,
+     99.0,
+     99.0,
+     99.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 103.0
+   }
+  },
+  "h8/opt101": {
+   "label": "850",
+   "empty": {
+    "at_grid": [
+     141.08,
+     123.82,
+     141.85,
+     156.86,
+     172.56,
+     187.81
+    ],
+    "revisit_sd_low": 0.707,
+    "revisit_df_low": 1,
+    "own_max": 206.0,
+    "drift_p1_p4": [
+     179.0,
+     157.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     523.07,
+     627.99,
+     732.83,
+     877.29,
+     1045.6,
+     1173.0
+    ],
+    "revisit_sd_low": 4.95,
+    "revisit_df_low": 1,
+    "own_max": 1173.0,
+    "drift_p1_p4": [
+     506.0,
+     500.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     637.03,
+     758.15,
+     909.98,
+     1114.28,
+     1309.18,
+     1471.08
+    ],
+    "revisit_sd_low": 1.572,
+    "revisit_df_low": 6,
+    "own_max": 2006.0,
+    "drift_p1_p4": [
+     597.0,
+     611.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     637.73,
+     663.0,
+     663.0,
+     663.0,
+     663.0,
+     663.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 669.0
+   }
+  },
+  "h9/opt101": {
+   "label": "940",
+   "empty": {
+    "at_grid": [
+     114.83,
+     101.8,
+     105.58,
+     117.68,
+     128.59,
+     139.05
+    ],
+    "revisit_sd_low": 7.778,
+    "revisit_df_low": 1,
+    "own_max": 154.0,
+    "drift_p1_p4": [
+     145.0,
+     119.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     440.74,
+     496.19,
+     584.86,
+     691.61,
+     793.06,
+     877.0
+    ],
+    "revisit_sd_low": 2.121,
+    "revisit_df_low": 1,
+    "own_max": 877.0,
+    "drift_p1_p4": [
+     414.0,
+     394.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     510.15,
+     604.0,
+     711.63,
+     849.48,
+     979.34,
+     1080.09
+    ],
+    "revisit_sd_low": 1.213,
+    "revisit_df_low": 6,
+    "own_max": 1393.0,
+    "drift_p1_p4": [
+     486.0,
+     487.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     509.18,
+     529.0,
+     529.0,
+     529.0,
+     529.0,
+     529.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 533.0
+   }
+  },
+  "h10/opt101": {
+   "label": "white",
+   "empty": {
+    "at_grid": [
+     79.41,
+     69.5,
+     70.24,
+     76.23,
+     82.26,
+     88.11
+    ],
+    "revisit_sd_low": 5.657,
+    "revisit_df_low": 1,
+    "own_max": 97.0,
+    "drift_p1_p4": [
+     94.0,
+     80.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     155.93,
+     175.6,
+     204.2,
+     238.07,
+     271.88,
+     300.0
+    ],
+    "revisit_sd_low": 2.121,
+    "revisit_df_low": 1,
+    "own_max": 300.0,
+    "drift_p1_p4": [
+     149.0,
+     143.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     213.93,
+     253.57,
+     297.5,
+     355.16,
+     406.58,
+     452.09
+    ],
+    "revisit_sd_low": 0.373,
+    "revisit_df_low": 6,
+    "own_max": 583.0,
+    "drift_p1_p4": [
+     205.0,
+     206.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     215.24,
+     223.0,
+     223.0,
+     223.0,
+     223.0,
+     223.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 226.0
+   }
+  },
+  "h11/opt101": {
+   "label": "pink",
+   "empty": {
+    "at_grid": [
+     198.67,
+     192.61,
+     197.95,
+     212.91,
+     229.21,
+     243.41
+    ],
+    "revisit_sd_low": 4.243,
+    "revisit_df_low": 1,
+    "own_max": 262.0,
+    "drift_p1_p4": [
+     195.0,
+     199.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     445.77,
+     517.19,
+     607.4,
+     716.91,
+     822.82,
+     911.0
+    ],
+    "revisit_sd_low": 4.95,
+    "revisit_df_low": 1,
+    "own_max": 911.0,
+    "drift_p1_p4": [
+     421.0,
+     417.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     527.32,
+     627.29,
+     742.81,
+     891.35,
+     1026.86,
+     1139.31
+    ],
+    "revisit_sd_low": 0.799,
+    "revisit_df_low": 6,
+    "own_max": 1478.0,
+    "drift_p1_p4": [
+     499.0,
+     504.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     528.95,
+     549.0,
+     549.0,
+     549.0,
+     549.0,
+     549.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 553.0
+   }
+  },
+  "h16/opt101": {
+   "label": "1850*",
+   "empty": {
+    "at_grid": [
+     406.59,
+     447.1,
+     521.87,
+     602.77,
+     523.5,
+     443.0
+    ],
+    "revisit_sd_low": 508.41,
+    "revisit_df_low": 1,
+    "own_max": 791.0,
+    "drift_p1_p4": [
+     394.0,
+     377.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     713.28,
+     818.57,
+     658.03,
+     1153.9,
+     1325.45,
+     1464.0
+    ],
+    "revisit_sd_low": 2.828,
+    "revisit_df_low": 1,
+    "own_max": 1464.0,
+    "drift_p1_p4": [
+     1.0,
+     640.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     822.05,
+     951.43,
+     1129.98,
+     1358.96,
+     1577.09,
+     1738.77
+    ],
+    "revisit_sd_low": 0.799,
+    "revisit_df_low": 6,
+    "own_max": 2246.0,
+    "drift_p1_p4": [
+     761.0,
+     0.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     789.92,
+     818.0,
+     818.0,
+     818.0,
+     818.0,
+     818.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 835.0
+   }
+  },
+  "h8/ingaas": {
+   "label": "850",
+   "empty": {
+    "at_grid": [
+     22.34,
+     26.5,
+     29.08,
+     32.59,
+     32.77,
+     35.17
+    ],
+    "revisit_sd_low": 2.121,
+    "revisit_df_low": 1,
+    "own_max": 38.0,
+    "drift_p1_p4": [
+     15.0,
+     16.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     68.23,
+     92.4,
+     113.58,
+     137.77,
+     158.09,
+     182.0
+    ],
+    "revisit_sd_low": 5.657,
+    "revisit_df_low": 1,
+    "own_max": 182.0,
+    "drift_p1_p4": [
+     71.0,
+     76.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     96.05,
+     116.43,
+     142.95,
+     176.9,
+     209.88,
+     232.54
+    ],
+    "revisit_sd_low": 1.384,
+    "revisit_df_low": 6,
+    "own_max": 329.0,
+    "drift_p1_p4": [
+     89.0,
+     89.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     95.18,
+     99.0,
+     99.0,
+     99.0,
+     99.0,
+     99.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 102.0
+   }
+  },
+  "h9/ingaas": {
+   "label": "940",
+   "empty": {
+    "at_grid": [
+     33.42,
+     30.6,
+     32.11,
+     38.04,
+     43.29,
+     44.72
+    ],
+    "revisit_sd_low": 2.828,
+    "revisit_df_low": 1,
+    "own_max": 52.0,
+    "drift_p1_p4": [
+     44.0,
+     33.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     112.87,
+     128.8,
+     154.38,
+     185.77,
+     213.92,
+     237.0
+    ],
+    "revisit_sd_low": 1.414,
+    "revisit_df_low": 1,
+    "own_max": 237.0,
+    "drift_p1_p4": [
+     108.0,
+     100.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     132.88,
+     159.43,
+     190.03,
+     227.42,
+     264.97,
+     294.0
+    ],
+    "revisit_sd_low": 0.943,
+    "revisit_df_low": 6,
+    "own_max": 391.0,
+    "drift_p1_p4": [
+     127.0,
+     126.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     131.41,
+     132.0,
+     132.0,
+     132.0,
+     132.0,
+     132.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 141.0
+   }
+  },
+  "h11/ingaas": {
+   "label": "pink",
+   "empty": {
+    "at_grid": [
+     14.0,
+     14.4,
+     15.47,
+     16.05,
+     16.86,
+     16.96
+    ],
+    "revisit_sd_low": 2.828,
+    "revisit_df_low": 1,
+    "own_max": 21.0,
+    "drift_p1_p4": [
+     12.0,
+     14.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     40.0,
+     46.6,
+     57.35,
+     69.15,
+     80.96,
+     89.0
+    ],
+    "revisit_sd_low": 0.707,
+    "revisit_df_low": 1,
+    "own_max": 92.0,
+    "drift_p1_p4": [
+     37.0,
+     37.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     46.0,
+     56.43,
+     67.4,
+     82.26,
+     95.26,
+     105.77
+    ],
+    "revisit_sd_low": 1.0,
+    "revisit_df_low": 6,
+    "own_max": 142.0,
+    "drift_p1_p4": [
+     41.0,
+     42.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     45.04,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 50.0
+   }
+  },
+  "h12/ingaas": {
+   "label": "1450",
+   "empty": {
+    "at_grid": [
+     17.5,
+     20.2,
+     20.26,
+     22.77,
+     23.92,
+     25.36
+    ],
+    "revisit_sd_low": 0.707,
+    "revisit_df_low": 1,
+    "own_max": 29.0,
+    "drift_p1_p4": [
+     16.0,
+     17.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     22.93,
+     26.0,
+     31.84,
+     38.54,
+     43.17,
+     45.0
+    ],
+    "revisit_sd_low": 0.0,
+    "revisit_df_low": 1,
+    "own_max": 48.0,
+    "drift_p1_p4": [
+     19.0,
+     21.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     47.71,
+     55.29,
+     66.55,
+     78.39,
+     88.35,
+     99.18
+    ],
+    "revisit_sd_low": 2.115,
+    "revisit_df_low": 6,
+    "own_max": 129.0,
+    "drift_p1_p4": [
+     47.0,
+     46.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     50.59,
+     53.0,
+     53.0,
+     53.0,
+     53.0,
+     53.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 55.0
+   }
+  },
+  "h13/ingaas": {
+   "label": "1550",
+   "empty": {
+    "at_grid": [
+     3.0,
+     3.2,
+     3.26,
+     3.64,
+     4.21,
+     4.4
+    ],
+    "revisit_sd_low": 0.707,
+    "revisit_df_low": 1,
+    "own_max": 4.5,
+    "drift_p1_p4": [
+     4.0,
+     1.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     2.03,
+     4.0,
+     2.91,
+     2.23,
+     3.79,
+     3.0
+    ],
+    "revisit_sd_low": 0.707,
+    "revisit_df_low": 1,
+    "own_max": 8.0,
+    "drift_p1_p4": [
+     2.0,
+     4.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     4.71,
+     4.71,
+     5.93,
+     6.26,
+     7.09,
+     7.0
+    ],
+    "revisit_sd_low": 1.374,
+    "revisit_df_low": 6,
+    "own_max": 11.0,
+    "drift_p1_p4": [
+     2.0,
+     3.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     4.27,
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 8.0
+   }
+  },
+  "h14/ingaas": {
+   "label": "1650",
+   "empty": {
+    "at_grid": [
+     2.58,
+     2.6,
+     3.37,
+     3.23,
+     3.14,
+     3.81
+    ],
+    "revisit_sd_low": 0.0,
+    "revisit_df_low": 1,
+    "own_max": 4.0,
+    "drift_p1_p4": [
+     3.0,
+     3.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     3.9,
+     2.0,
+     4.31,
+     1.61,
+     2.42,
+     5.0
+    ],
+    "revisit_sd_low": 0.0,
+    "revisit_df_low": 1,
+    "own_max": 5.0,
+    "drift_p1_p4": [
+     1.0,
+     2.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     3.29,
+     3.57,
+     2.15,
+     4.74,
+     3.09,
+     -3.0
+    ],
+    "revisit_sd_low": 0.898,
+    "revisit_df_low": 6,
+    "own_max": 7.0,
+    "drift_p1_p4": [
+     4.0,
+     5.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     2.31,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 6.0
+   }
+  },
+  "h15/ingaas": {
+   "label": "1760",
+   "empty": {
+    "at_grid": [
+     22.33,
+     23.7,
+     24.13,
+     25.77,
+     27.14,
+     27.81
+    ],
+    "revisit_sd_low": 2.828,
+    "revisit_df_low": 1,
+    "own_max": 28.0,
+    "drift_p1_p4": [
+     22.0,
+     22.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     22.03,
+     22.6,
+     23.63,
+     23.92,
+     27.21,
+     24.0
+    ],
+    "revisit_sd_low": 0.707,
+    "revisit_df_low": 1,
+    "own_max": 33.0,
+    "drift_p1_p4": [
+     22.0,
+     21.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     26.0,
+     27.71,
+     30.93,
+     35.61,
+     40.18,
+     44.45
+    ],
+    "revisit_sd_low": 1.972,
+    "revisit_df_low": 6,
+    "own_max": 55.0,
+    "drift_p1_p4": [
+     24.0,
+     26.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     25.49,
+     26.0,
+     26.0,
+     26.0,
+     26.0,
+     26.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 28.0
+   }
+  },
+  "h16/ingaas": {
+   "label": "1850*",
+   "empty": {
+    "at_grid": [
+     54.92,
+     62.62,
+     74.9,
+     86.41,
+     73.27,
+     59.9
+    ],
+    "revisit_sd_low": 68.589,
+    "revisit_df_low": 1,
+    "own_max": 108.0,
+    "drift_p1_p4": [
+     50.0,
+     49.0
+    ]
+   },
+   "citrucel": {
+    "at_grid": [
+     97.93,
+     116.8,
+     96.58,
+     173.84,
+     199.92,
+     223.0
+    ],
+    "revisit_sd_low": 0.0,
+    "revisit_df_low": 1,
+    "own_max": 224.0,
+    "drift_p1_p4": [
+     0.0,
+     89.0
+    ]
+   },
+   "whey": {
+    "at_grid": [
+     116.29,
+     138.0,
+     169.1,
+     205.03,
+     240.88,
+     266.68
+    ],
+    "revisit_sd_low": 1.155,
+    "revisit_df_low": 6,
+    "own_max": 363.0,
+    "drift_p1_p4": [
+     106.0,
+     0.0
+    ]
+   },
+   "whey_b": {
+    "at_grid": [
+     110.84,
+     115.0,
+     115.0,
+     115.0,
+     115.0,
+     115.0
+    ],
+    "revisit_sd_low": NaN,
+    "revisit_df_low": 0,
+    "own_max": 118.0
+   }
+  }
+ }
+}
