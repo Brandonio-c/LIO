@@ -49,7 +49,7 @@ mode <strong>fine</strong>, sample <strong>LIO-F-00003</strong>,
 <tr><th>Motors</th><td>28BYJ-48 5 V stepper (64:1 gearbox), ULN2003 driver boards, x2</td><th>Plan</th>
     <td>89 steps, 33 heights down,
         ETA 70 min</td></tr>
-<tr><th>Aborts</th><td colspan="3">device refused: &#39;DBG STATE CE_ONLY 1 8 2&#39; -&gt; ERR code=3 (refused): on-time exceeds watchdog</td></tr>
+<tr><th>Aborts</th><td colspan="3">device refused: &#39;DBG STATE CE_ONLY 1 8 2&#39; -&gt; ERR code=3 (refused): on-time exceeds watchdog; cannot resume: lio_hw.yaml changed since the run started; cannot resume: lio_hw.yaml changed since the run started</td></tr>
 </table>
 
 <h2>Subsystem health</h2>
@@ -78,11 +78,11 @@ mode <strong>fine</strong>, sample <strong>LIO-F-00003</strong>,
 
 <tr><td>OPT101</td><td>OPT101 (A1)</td>
 <td><span class="badge" style="border-color: #8a8984">- n/a</span></td>
-<td>not measured: no blind channels measured; no dark frames; needs hum records, coils off and moving; no select-only readings; under 5 min of dark frames: too short for a drift estimate</td></tr>
+<td>not measured: under 5 min of dark frames: too short for a drift estimate; no blind channels measured; no select-only readings; needs hum records, coils off and moving; no dark frames</td></tr>
 
 <tr><td>InGaAs TIA</td><td>D1, U5, Rf, Cf (A0)</td>
 <td><span class="badge" style="border-color: #8a8984">- n/a</span></td>
-<td>not measured: no blind channels measured; no dark frames; needs hum records, coils off and moving; no select-only readings; under 5 min of dark frames: too short for a drift estimate</td></tr>
+<td>not measured: under 5 min of dark frames: too short for a drift estimate; no blind channels measured; no select-only readings; needs hum records, coils off and moving; no dark frames</td></tr>
 
 <tr><td>Motors / lead screws</td><td>M1, M2, ULN2003, couplers, M6 rods</td>
 <td><span class="badge" style="border-color: #0ca30c">✓ OK</span></td>
@@ -106,7 +106,7 @@ mode <strong>fine</strong>, sample <strong>LIO-F-00003</strong>,
 
 <tr><td>Run</td><td>the scan itself</td>
 <td><span class="badge" style="border-color: #fab219">! WATCH</span></td>
-<td>system/run: INCOMPLETE: device refused: &#39;DBG STATE CE_ONLY 1 8 2&#39; -&gt; ERR code=3 (refused): on-time exceeds watchdog</td></tr>
+<td>system/run: INCOMPLETE: device refused: &#39;DBG STATE CE_ONLY 1 8 2&#39; -&gt; ERR code=3 (refused): on-time exceeds watchdog; cannot resume: lio_hw.yaml changed since the run started; cannot resume: lio_hw.yaml changed since the run started</td></tr>
 
 </table>
 
@@ -116,7 +116,7 @@ mode <strong>fine</strong>, sample <strong>LIO-F-00003</strong>,
 <div class="card">
 <div><span class="badge" style="border-color: #fab219">! WARN</span>
 <strong>run complete</strong> <code>system/run</code></div>
-<div class="meta">INCOMPLETE: device refused: &#39;DBG STATE CE_ONLY 1 8 2&#39; -&gt; ERR code=3 (refused): on-time exceeds watchdog</div>
+<div class="meta">INCOMPLETE: device refused: &#39;DBG STATE CE_ONLY 1 8 2&#39; -&gt; ERR code=3 (refused): on-time exceeds watchdog; cannot resume: lio_hw.yaml changed since the run started; cannot resume: lio_hw.yaml changed since the run started</div>
 <dl>
 <dt>Why</dt><dd>The run did not complete: metrics needing the missing steps are SKIP.</dd>
 <dt>Parts</dt><dd>run</dd>
@@ -167,8 +167,8 @@ mode <strong>fine</strong>, sample <strong>LIO-F-00003</strong>,
 
 <tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
 <td>LED duty (RAIL A &lt;= budget per LED per minute)<br><code>system/duty</code></td>
-<td>270 ms/min</td>
-<td>max 270 ms of 1000 ms; 0 cool-down waits, 0 s in all</td><td></td></tr>
+<td>0 ms/min</td>
+<td>max 0 ms of 1000 ms; 0 cool-down waits, 0 s in all</td><td></td></tr>
 
 <tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
 <td>stage tracking (position trusted, soft limits respected)<br><code>system/stage</code></td>
@@ -178,7 +178,7 @@ mode <strong>fine</strong>, sample <strong>LIO-F-00003</strong>,
 <tr><td><span class="badge" style="border-color: #fab219">! WARN</span></td>
 <td>run complete<br><code>system/run</code></td>
 <td></td>
-<td>INCOMPLETE: device refused: &#39;DBG STATE CE_ONLY 1 8 2&#39; -&gt; ERR code=3 (refused): on-time exceeds watchdog</td><td></td></tr>
+<td>INCOMPLETE: device refused: &#39;DBG STATE CE_ONLY 1 8 2&#39; -&gt; ERR code=3 (refused): on-time exceeds watchdog; cannot resume: lio_hw.yaml changed since the run started; cannot resume: lio_hw.yaml changed since the run started</td><td></td></tr>
 
 </table>
 
@@ -276,12 +276,12 @@ mode <strong>fine</strong>, sample <strong>LIO-F-00003</strong>,
 <tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
 <td>travel (top to bottom)<br><code>mech/travel</code></td>
 <td>331073 half-steps</td>
-<td>tracked range 331073 / 331073 half-steps (M1/right / M2/left)</td><td></td></tr>
+<td>tracked range 331073 / 331073 half-steps (M1/right / M2/left) (thresholds.motion.travel.range_steps not set: not compared)</td><td></td></tr>
 
 <tr><td><span class="badge" style="border-color: #0ca30c">✓ PASS</span></td>
 <td>lockstep (firmware positions level after every move)<br><code>mech/lockstep</code></td>
 <td>0 moves</td>
-<td>1 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)</td><td></td></tr>
+<td>0 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)</td><td></td></tr>
 
 <tr><td><span class="badge" style="border-color: #8a8984">- SKIP</span></td>
 <td>settle time after a move<br><code>mech/settle</code></td>

@@ -17,6 +17,16 @@
    "at": "2026-11-26T00:49:34-05:00",
    "reason": "device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog",
    "step": 0
+  },
+  {
+   "at": "2026-11-26T00:54:06-05:00",
+   "reason": "cannot resume: lio_hw.yaml changed since the run started",
+   "step": 0
+  },
+  {
+   "at": "2026-11-26T00:54:29-05:00",
+   "reason": "cannot resume: lio_hw.yaml changed since the run started",
+   "step": 0
   }
  ],
  "answers": {
@@ -1241,6 +1251,16 @@
    "segment": "height:s0",
    "resume": false,
    "clock": "row t_s is seconds since this segment's start"
+  },
+  {
+   "segment": "height:s1",
+   "resume": true,
+   "clock": "row t_s is seconds since this segment's start"
+  },
+  {
+   "segment": "height:s2",
+   "resume": true,
+   "clock": "row t_s is seconds since this segment's start"
   }
  ],
  "adc_preflight": [
@@ -1265,13 +1285,13 @@
  "health": {
   "unexpected_boots": 0,
   "duty": {
-   "max_rail_a_ms_per_min": 270.0,
+   "max_rail_a_ms_per_min": 0.0,
    "budget_a_ms": 1000.0,
    "over_budget": [],
    "cooldown_s": 0,
    "cooldowns": 0
   },
-  "moves": 1,
+  "moves": 0,
   "unlevel": [],
   "stage_end": {
    "known": true,
@@ -1289,7 +1309,7 @@
     -331073,
     -331073
    ],
-   "updated": "2026-11-26T00:46:04-05:00",
+   "updated": "2026-11-26T00:52:21-05:00",
    "file": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/stage_position.json",
    "range": [
     331073,
@@ -1308,13 +1328,13 @@
  "terminal_source_seal": {
   "manifest_hash": "25cd58d7bec503227223a60cc7af79ca6c56df8ba9cd384e38759cc095cf74fa",
   "raw_sha256": "032aaeb9458c2f75d784e2d64163d6b3fc5fb84ccf0f6fb536c84d169c9d033c",
-  "terminal_meta_sha256": "99f1f6b93b6cabfc1298367dea6a848ec62749299b5211457a72a1607fe14af9",
-  "combined_sha256": "acd56b403b92e76598fead627d64349135e192383af32d499f30425b56a53036",
+  "terminal_meta_sha256": "87e6d25c47c209ba322d967d8d180951c43821690685a0455ada8008702361d3",
+  "combined_sha256": "cf144ebc5cc034e7939264402487a6267d04c4af5e0384605b9a7ecc0d60f85a",
   "revision": "partial",
   "status": "INCOMPLETE"
  },
  "terminal_source_seal_inputs": {
   "status": "INCOMPLETE",
-  "cancel_reason": "device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog"
+  "cancel_reason": "cannot resume: lio_hw.yaml changed since the run started"
  }
 }

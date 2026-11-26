@@ -28,12 +28,12 @@
     "mains": "0",
     "rail_b_first": "9",
     "light_in_motion": "0",
-    "arm_token": "0x094B",
+    "arm_token": "0xF765",
     "hw_wdt": "0"
   },
   "config": {
     "path": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
-    "sha256": "245a335d5346f5a8e6ed3a4edd0d8f5e133e4323a8ab573a7b50bfef3a848941",
+    "sha256": "8e03af89eb64cd7830b38ae8efeee29a387aa5bbc080d44b3ad8a75b989f8877",
     "provisional": true
   },
   "metadata": {
@@ -95,10 +95,10 @@
           "id": "T13.1/system/duty",
           "name": "LED duty (RAIL A <= budget per LED per minute)",
           "status": "PASS",
-          "message": "max 270 ms of 1000 ms; 0 cool-down waits, 0 s in all",
+          "message": "max 0 ms of 1000 ms; 0 cool-down waits, 0 s in all",
           "criteria": "",
           "measured": {
-            "value": 270.0,
+            "value": 0.0,
             "unit": "ms/min"
           }
         },
@@ -114,7 +114,7 @@
           "id": "T13.1/system/run",
           "name": "run complete",
           "status": "WARN",
-          "message": "INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog | why: The run did not complete: metrics needing the missing steps are SKIP. | parts: run",
+          "message": "INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog; cannot resume: lio_hw.yaml changed since the run started; cannot resume: lio_hw.yaml changed since the run started | why: The run did not complete: metrics needing the missing steps are SKIP. | parts: run",
           "criteria": "",
           "measured": {}
         },
@@ -278,7 +278,7 @@
           "id": "T13.1/mech/travel",
           "name": "travel (top to bottom)",
           "status": "PASS",
-          "message": "tracked range 331073 / 331073 half-steps (M1/right / M2/left)",
+          "message": "tracked range 331073 / 331073 half-steps (M1/right / M2/left) (thresholds.motion.travel.range_steps not set: not compared)",
           "criteria": "",
           "measured": {
             "value": 331073.0,
@@ -289,7 +289,7 @@
           "id": "T13.1/mech/lockstep",
           "name": "lockstep (firmware positions level after every move)",
           "status": "PASS",
-          "message": "1 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)",
+          "message": "0 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)",
           "criteria": "",
           "measured": {
             "value": 0.0,
@@ -364,7 +364,7 @@
     }
   ],
   "duty": {},
-  "finished": "2026-11-26T00:49:34-05:00",
+  "finished": "2026-11-26T00:54:29-05:00",
   "verdict": {
     "verdict": "FUNCTIONAL",
     "reasons": [

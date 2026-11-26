@@ -70,7 +70,7 @@
    "title": "OPT101",
    "parts": "OPT101 (A1)",
    "health": "n/a",
-   "reason": "not measured: no blind channels measured; no dark frames; needs hum records, coils off and moving; no select-only readings; under 5 min of dark frames: too short for a drift estimate",
+   "reason": "not measured: under 5 min of dark frames: too short for a drift estimate; no blind channels measured; no select-only readings; needs hum records, coils off and moving; no dark frames",
    "findings": [
     "elec/opt101/coupling",
     "elec/opt101/dark_offset",
@@ -84,7 +84,7 @@
    "title": "InGaAs TIA",
    "parts": "D1, U5, Rf, Cf (A0)",
    "health": "n/a",
-   "reason": "not measured: no blind channels measured; no dark frames; needs hum records, coils off and moving; no select-only readings; under 5 min of dark frames: too short for a drift estimate",
+   "reason": "not measured: under 5 min of dark frames: too short for a drift estimate; no blind channels measured; no select-only readings; needs hum records, coils off and moving; no dark frames",
    "findings": [
     "elec/ingaas/coupling",
     "elec/ingaas/dark_offset",
@@ -163,7 +163,7 @@
    "title": "Run",
    "parts": "the scan itself",
    "health": "WATCH",
-   "reason": "system/run: INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog",
+   "reason": "system/run: INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog; cannot resume: lio_hw.yaml changed since the run started; cannot resume: lio_hw.yaml changed since the run started",
    "findings": [
     "system/run"
    ]
@@ -214,9 +214,9 @@
    "id": "system/duty",
    "title": "LED duty (RAIL A <= budget per LED per minute)",
    "status": "PASS",
-   "value": 270.0,
+   "value": 0.0,
    "unit": "ms/min",
-   "detail": "max 270 ms of 1000 ms; 0 cool-down waits, 0 s in all",
+   "detail": "max 0 ms of 1000 ms; 0 cool-down waits, 0 s in all",
    "criteria": "",
    "data": {}
   },
@@ -236,7 +236,7 @@
    "status": "WARN",
    "value": null,
    "unit": "",
-   "detail": "INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog",
+   "detail": "INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog; cannot resume: lio_hw.yaml changed since the run started; cannot resume: lio_hw.yaml changed since the run started",
    "criteria": "",
    "data": {},
    "explanation": {
@@ -480,7 +480,7 @@
    "status": "PASS",
    "value": 331073.0,
    "unit": "half-steps",
-   "detail": "tracked range 331073 / 331073 half-steps (M1/right / M2/left)",
+   "detail": "tracked range 331073 / 331073 half-steps (M1/right / M2/left) (thresholds.motion.travel.range_steps not set: not compared)",
    "criteria": "",
    "data": {}
   },
@@ -490,7 +490,7 @@
    "status": "PASS",
    "value": 0.0,
    "unit": "moves",
-   "detail": "1 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)",
+   "detail": "0 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss)",
    "criteria": "",
    "data": {}
   },

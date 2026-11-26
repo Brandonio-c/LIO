@@ -15,20 +15,20 @@ Mode **fine**, sample **LIO-F-00003**, status **INCOMPLETE**
 | Shift registers | U1, U2 | - n/a | not measured: no optical response to compare |
 | LED drivers / rails | DRV1 (RAIL A), DRV2 (RAIL B) | - n/a | not measured:  |
 | LED / MOSFET channels | LED1-16, Q1-16 | - n/a | not measured:  |
-| OPT101 | OPT101 (A1) | - n/a | not measured: no blind channels measured; no dark frames; needs hum records, coils off and moving; no select-only readings; under 5 min of dark frames: too short for a drift estimate |
-| InGaAs TIA | D1, U5, Rf, Cf (A0) | - n/a | not measured: no blind channels measured; no dark frames; needs hum records, coils off and moving; no select-only readings; under 5 min of dark frames: too short for a drift estimate |
+| OPT101 | OPT101 (A1) | - n/a | not measured: under 5 min of dark frames: too short for a drift estimate; no blind channels measured; no select-only readings; needs hum records, coils off and moving; no dark frames |
+| InGaAs TIA | D1, U5, Rf, Cf (A0) | - n/a | not measured: under 5 min of dark frames: too short for a drift estimate; no blind channels measured; no select-only readings; needs hum records, coils off and moving; no dark frames |
 | Motors / lead screws | M1, M2, ULN2003, couplers, M6 rods | ✓ OK | 2 checks pass |
 | Stage tracking | lio.stage, soft limits | ✓ OK | 1 checks pass |
 | Safety | interlocks, duty budget | ✓ OK | 1 checks pass |
 | Power / earthing | supplies, GND, earth bond | ! WATCH | elec/ingaas/hum: 60/120/180 Hz: 8.634 / 0.134 / 0.827 mV; 100% of the variance at mains harmonics; broadband sigma 0.354 mV; readings integrate whole mains periods, so it cancels in the measurements |
 | Optical path / ambient | window, shroud, lid, sample | ✓ OK | 2 checks pass |
-| Run | the scan itself | ! WATCH | system/run: INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog |
+| Run | the scan itself | ! WATCH | system/run: INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog; cannot resume: lio_hw.yaml changed since the run started; cannot resume: lio_hw.yaml changed since the run started |
 
 ## Findings to act on
 
 ### ! WARN `system/run`: run complete
 
-INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog
+INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog; cannot resume: lio_hw.yaml changed since the run started; cannot resume: lio_hw.yaml changed since the run started
 
 - **Why:** The run did not complete: metrics needing the missing steps are SKIP.
 - **Parts:** run
@@ -54,9 +54,9 @@ INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): o
 | ✓ PASS | `system/adc` | 0 readings | 0 readings, no dropout |  |
 | - SKIP | `system/addressing` |  | no optical response to compare |  |
 | - SKIP | `system/interlocks` |  | P4 not reached |  |
-| ✓ PASS | `system/duty` | 270 ms/min | max 270 ms of 1000 ms; 0 cool-down waits, 0 s in all |  |
+| ✓ PASS | `system/duty` | 0 ms/min | max 0 ms of 1000 ms; 0 cool-down waits, 0 s in all |  |
 | ✓ PASS | `system/stage` |  | position [-16384, -16384], limits respected |  |
-| ! WARN | `system/run` |  | INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog |  |
+| ! WARN | `system/run` |  | INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): on-time exceeds watchdog; cannot resume: lio_hw.yaml changed since the run started; cannot resume: lio_hw.yaml changed since the run started |  |
 
 ## Optics
 
@@ -87,8 +87,8 @@ INCOMPLETE: device refused: 'DBG STATE CE_ONLY 1 8 2' -> ERR code=3 (refused): o
 | Status | Metric | Value | Result | Criterion |
 |---|---|---|---|---|
 | - SKIP | `mech/home_sensors` |  | no home sensors fitted |  |
-| ✓ PASS | `mech/travel` | 331073 half-steps | tracked range 331073 / 331073 half-steps (M1/right / M2/left) |  |
-| ✓ PASS | `mech/lockstep` | 0 moves | 1 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss) |  |
+| ✓ PASS | `mech/travel` | 331073 half-steps | tracked range 331073 / 331073 half-steps (M1/right / M2/left) (thresholds.motion.travel.range_steps not set: not compared) |  |
+| ✓ PASS | `mech/lockstep` | 0 moves | 0 moves; 0 ended with the two sides at different positions (without home sensors only the commanded steps are seen: a side losing steps shows as mech/step_loss) |  |
 | - SKIP | `mech/settle` |  | no settle records |  |
 | - SKIP | `mech/backlash` |  | no down-pass reference curves (static or continuous mode, or no strong channel) |  |
 | - SKIP | `mech/step_loss` |  | no down-pass reference curves (static or continuous mode, or no strong channel) |  |
