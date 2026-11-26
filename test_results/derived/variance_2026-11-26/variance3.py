@@ -46,7 +46,7 @@ def main() -> None:
     }
     # pairwise distances between foods (and vs empty) at each matched height
     pairs = {}
-    for a, b in itertools.combinations(FOODS + ("empty",), 2):
+    for a, b in itertools.combinations((*FOODS, "empty"), 2):
         ds = [v1.shape_distance(v1.vec_at(cur[a], h), v1.vec_at(cur[b], h))[0] for h in hs]
         pairs[f"{a}|{b}"] = {
             "per_height": [round(x, 4) for x in ds],
@@ -56,7 +56,7 @@ def main() -> None:
     res["pairs"] = pairs
     # within-material
     within = {}
-    for k in FOODS + ("empty",):
+    for k in (*FOODS, "empty"):
         within[f"{k} start vs end (P1/P4)"] = round(
             v1.shape_distance(v1.vec_phase(data[k], "P1"), v1.vec_phase(data[k], "P4"))[0], 4
         )
@@ -80,14 +80,14 @@ def main() -> None:
     res["within"] = within
     # fingerprints relative to OPT101 850 nm at the common low height
     fp = {}
-    for k in ("empty",) + FOODS:
+    for k in ("empty", *FOODS):
         vv = v1.vec_at(cur[k], low)
         fp[k] = {c: round(x / vv["h8/opt101"], 4) for c, x in vv.items()}
     res["fingerprint_rel_h8"] = fp
     # PCA of brightness-removed log fingerprints: 3 foods x 5 heights (+ empty)
     chans = list(fp["citrucel"])
     rows, labels = [], []
-    for k in FOODS + ("empty",):
+    for k in (*FOODS, "empty"):
         for h in hs:
             vv = v1.vec_at(cur[k], h)
             x = np.array([math.log(max(vv[c], 1.0)) for c in chans])

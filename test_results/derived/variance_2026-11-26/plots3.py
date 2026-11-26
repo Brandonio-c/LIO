@@ -84,7 +84,7 @@ def fingerprints() -> None:
     ax.text(
         5,
         1.15,
-        "h5–h7: unstable in the\nRub run, see text",
+        "h5-h7: unstable in the\nRub run, see text",
         ha="center",
         va="bottom",
         color=MUTED,
@@ -109,7 +109,7 @@ def fingerprints() -> None:
 
 
 def distances() -> None:
-    p, wo, wi = r["pairs"], r["without_h5_h7"], r["within"]
+    wo, wi = r["without_h5_h7"], r["within"]
     items = [
         ("between", "Whey vs Barbecue Rub", wo["pairs"]["whey|rub"]),
         ("between", "Citrucel vs Barbecue Rub", wo["pairs"]["citrucel|rub"]),
@@ -129,7 +129,7 @@ def distances() -> None:
         ax.text(v + 0.008, y, f"{v:.3f}", va="center", color=INK, fontsize=9)
     ax.set_yticks(ys)
     ax.set_yticklabels([i[1] for i in items])
-    ax.set_xlabel("shape distance (RMS log-ratio per channel, brightness removed; h5–h7 excluded)")
+    ax.set_xlabel("shape distance (RMS log-ratio per channel, brightness removed; h5-h7 excluded)")
     ax.set_xlim(0, 0.72)
     ax.grid(axis="x", color=GRID, linewidth=0.6)
     ax.set_axisbelow(True)
