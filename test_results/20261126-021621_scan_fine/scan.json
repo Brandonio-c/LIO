@@ -3,7 +3,7 @@
  "status": "RUNNING",
  "started": "2026-11-26T02:16:21-05:00",
  "finished": null,
- "completed_step": -1,
+ "completed_step": 2,
  "events": [
   {
    "at": "2026-11-26T02:16:21-05:00",
@@ -21,9 +21,80 @@
   "scan_sample": true
  },
  "phases": {
-  "P0": 0.084
+  "P0": 0.084,
+  "P1": 134.789,
+  "P2": 9.507
  },
- "streams": [],
+ "streams": [
+  {
+   "name": "s000_coils_off_opt101",
+   "file": "streams/s000_coils_off_opt101.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "s000_coils_off_ingaas",
+   "file": "streams/s000_coils_off_ingaas.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "long_dark_opt101",
+   "file": "streams/long_dark_opt101.npz",
+   "state": "dark",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 8
+  },
+  {
+   "name": "long_dark_ingaas",
+   "file": "streams/long_dark_ingaas.npz",
+   "state": "dark",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 8
+  },
+  {
+   "name": "s001_coils_off_opt101",
+   "file": "streams/s001_coils_off_opt101.npz",
+   "step": 1,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "s001_coils_off_ingaas",
+   "file": "streams/s001_coils_off_ingaas.npz",
+   "step": 1,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_6_opt101",
+   "file": "streams/emi_6_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -16385,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_7_ingaas",
+   "file": "streams/emi_7_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -16385,
+   "rate_setting": 860
+  }
+ ],
  "mode": "fine",
  "sample_id": "LIO-F-00004",
  "simulated": false,
@@ -1220,5 +1291,6 @@
  "skipped_checks": {
   "rail_monitor": "A2/A3 not wired for rail and ground monitoring",
   "home_sensors": "no home sensors fitted"
- }
+ },
+ "rows": 180
 }
