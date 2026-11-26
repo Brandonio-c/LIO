@@ -1,0 +1,485 @@
+{
+ "objective": {
+  "name": "primary_swir",
+  "version": "m5-primary-swir-v1",
+  "detector": "ingaas",
+  "target_holes": [
+   12,
+   13,
+   14,
+   15
+  ],
+  "control_holes": [
+   8,
+   9
+  ],
+  "excluded_holes": [
+   16
+  ],
+  "weights": {
+   "12": 2.0,
+   "13": 1.0,
+   "14": 1.0,
+   "15": 1.0
+  },
+  "notes": "h16 excluded from primary-1850; blinds excluded; h12 prioritized"
+ },
+ "status": "selected",
+ "frozen_height_hs": -297301.0,
+ "scores": [
+  {
+   "height_hs": -297301.0,
+   "score": 113.0,
+   "per_hole": {
+    "12": 76.0,
+    "13": 3.0,
+    "14": 4.0,
+    "15": 30.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -288522.0,
+   "score": 110.0,
+   "per_hole": {
+    "12": 70.0,
+    "13": 5.0,
+    "14": 3.0,
+    "15": 32.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -279744.0,
+   "score": 104.0,
+   "per_hole": {
+    "12": 68.0,
+    "13": 5.0,
+    "14": 2.0,
+    "15": 29.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -270965.0,
+   "score": 99.0,
+   "per_hole": {
+    "12": 62.0,
+    "13": 4.0,
+    "14": 4.0,
+    "15": 29.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -262186.0,
+   "score": 98.0,
+   "per_hole": {
+    "12": 64.0,
+    "13": 3.0,
+    "14": 2.0,
+    "15": 29.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -253408.0,
+   "score": 95.0,
+   "per_hole": {
+    "12": 62.0,
+    "13": 3.0,
+    "14": 3.0,
+    "15": 27.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -244629.0,
+   "score": 97.0,
+   "per_hole": {
+    "12": 62.0,
+    "13": 3.0,
+    "14": 2.0,
+    "15": 30.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -235850.0,
+   "score": 94.0,
+   "per_hole": {
+    "12": 58.0,
+    "13": 4.0,
+    "14": 3.0,
+    "15": 29.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -227072.0,
+   "score": 88.0,
+   "per_hole": {
+    "12": 58.0,
+    "13": 2.0,
+    "14": 2.0,
+    "15": 26.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -218293.0,
+   "score": 81.0,
+   "per_hole": {
+    "12": 50.0,
+    "13": 3.0,
+    "14": 3.0,
+    "15": 25.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -209514.0,
+   "score": 89.0,
+   "per_hole": {
+    "12": 56.0,
+    "13": 4.0,
+    "14": 4.0,
+    "15": 25.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -200736.0,
+   "score": 86.0,
+   "per_hole": {
+    "12": 56.0,
+    "13": 2.0,
+    "14": 4.0,
+    "15": 24.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -191957.0,
+   "score": 80.0,
+   "per_hole": {
+    "12": 50.0,
+    "13": 3.0,
+    "14": 3.0,
+    "15": 24.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -183178.0,
+   "score": 78.0,
+   "per_hole": {
+    "12": 48.0,
+    "13": 3.0,
+    "14": 2.0,
+    "15": 25.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -174400.0,
+   "score": 80.0,
+   "per_hole": {
+    "12": 50.0,
+    "13": 3.0,
+    "14": 5.0,
+    "15": 22.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -165621.0,
+   "score": 74.0,
+   "per_hole": {
+    "12": 46.0,
+    "13": 2.0,
+    "14": 3.0,
+    "15": 23.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -156842.0,
+   "score": 73.0,
+   "per_hole": {
+    "12": 44.0,
+    "13": 3.0,
+    "14": 1.0,
+    "15": 25.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -148064.0,
+   "score": 79.0,
+   "per_hole": {
+    "12": 48.0,
+    "13": 3.0,
+    "14": 5.0,
+    "15": 23.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -139285.0,
+   "score": 72.0,
+   "per_hole": {
+    "12": 44.0,
+    "13": 2.0,
+    "14": 3.0,
+    "15": 23.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -130507.0,
+   "score": 68.0,
+   "per_hole": {
+    "12": 40.0,
+    "13": 4.0,
+    "14": 3.0,
+    "15": 21.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -121728.0,
+   "score": 65.0,
+   "per_hole": {
+    "12": 36.0,
+    "13": 3.0,
+    "14": 3.0,
+    "15": 23.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -112949.0,
+   "score": 63.0,
+   "per_hole": {
+    "12": 36.0,
+    "13": 3.0,
+    "14": 2.0,
+    "15": 22.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -104171.0,
+   "score": 65.0,
+   "per_hole": {
+    "12": 36.0,
+    "13": 3.0,
+    "14": 3.0,
+    "15": 23.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -95392.0,
+   "score": 62.0,
+   "per_hole": {
+    "12": 36.0,
+    "13": 2.0,
+    "14": 3.0,
+    "15": 21.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -86613.0,
+   "score": 58.0,
+   "per_hole": {
+    "12": 32.0,
+    "13": 3.0,
+    "14": 1.0,
+    "15": 22.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -77835.0,
+   "score": 63.0,
+   "per_hole": {
+    "12": 36.0,
+    "13": 3.0,
+    "14": 4.0,
+    "15": 20.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -69056.0,
+   "score": 59.0,
+   "per_hole": {
+    "12": 34.0,
+    "13": 2.0,
+    "14": 0.0,
+    "15": 23.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -60277.0,
+   "score": 62.0,
+   "per_hole": {
+    "12": 34.0,
+    "13": 4.0,
+    "14": 4.0,
+    "15": 20.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -51499.0,
+   "score": 59.0,
+   "per_hole": {
+    "12": 34.0,
+    "13": 3.0,
+    "14": 1.0,
+    "15": 21.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -42720.0,
+   "score": 62.0,
+   "per_hole": {
+    "12": 34.0,
+    "13": 4.0,
+    "14": 4.0,
+    "15": 20.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -33941.0,
+   "score": 60.0,
+   "per_hole": {
+    "12": 32.0,
+    "13": 4.0,
+    "14": 3.0,
+    "15": 21.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -25163.0,
+   "score": 57.0,
+   "per_hole": {
+    "12": 30.0,
+    "13": 3.0,
+    "14": 3.0,
+    "15": 21.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  },
+  {
+   "height_hs": -16384.0,
+   "score": 60.0,
+   "per_hole": {
+    "12": 30.0,
+    "13": 3.0,
+    "14": 5.0,
+    "15": 22.0
+   },
+   "eligible": true,
+   "reason": "ok"
+  }
+ ],
+ "scout_source_hash": null,
+ "candidate_grid": [
+  -297301.0,
+  -288522.0,
+  -279744.0,
+  -270965.0,
+  -262186.0,
+  -253408.0,
+  -244629.0,
+  -235850.0,
+  -227072.0,
+  -218293.0,
+  -209514.0,
+  -200736.0,
+  -191957.0,
+  -183178.0,
+  -174400.0,
+  -165621.0,
+  -156842.0,
+  -148064.0,
+  -139285.0,
+  -130507.0,
+  -121728.0,
+  -112949.0,
+  -104171.0,
+  -95392.0,
+  -86613.0,
+  -77835.0,
+  -69056.0,
+  -60277.0,
+  -51499.0,
+  -42720.0,
+  -33941.0,
+  -25163.0,
+  -16384.0
+ ],
+ "predicted_precision": {
+  "best_score": 113.0,
+  "per_hole": {
+   "12": 76.0,
+   "13": 3.0,
+   "14": 4.0,
+   "15": 30.0
+  }
+ },
+ "exclusions": [
+  "excluded hole 16",
+  "h16 not eligible for primary-1850 / primary_swir"
+ ],
+ "detail": "frozen height -297301.0",
+ "confirmation_disjoint": true,
+ "selection_id": "1b2272008567e91b9991edb238cd76f7b9537ea2a2987cac24c7aeec71678a00",
+ "consumed_by": [
+  "planner",
+  "fine_placement",
+  "report",
+  "ui"
+ ]
+}
