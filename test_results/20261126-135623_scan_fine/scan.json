@@ -1,0 +1,2228 @@
+{
+ "run_id": "20261126-135623_scan_fine",
+ "status": "COMPLETE",
+ "started": "2026-11-26T13:56:23-05:00",
+ "finished": "2026-11-26T14:57:56-05:00",
+ "completed_step": 88,
+ "events": [
+  {
+   "at": "2026-11-26T13:56:23-05:00",
+   "kind": "start",
+   "mode": "fine",
+   "sample_id": "LIO-F-00008"
+  },
+  {
+   "at": "2026-11-26T13:56:39-05:00",
+   "kind": "resume",
+   "from_step": 0
+  },
+  {
+   "at": "2026-11-26T14:57:56-05:00",
+   "kind": "complete"
+  }
+ ],
+ "aborts": [
+  {
+   "at": "2026-11-26T13:56:23-05:00",
+   "reason": "unexpected error: RuntimeError: the two sides are not level (M1/right 5473, M2/left 15970)",
+   "step": 0
+  }
+ ],
+ "answers": {
+  "sample_id": "LIO-F-00008",
+  "chamber_clear": true,
+  "scan_lid_closed": true,
+  "scan_earth_bond": true,
+  "scan_sample": true
+ },
+ "phases": {
+  "P0": 0.107,
+  "P1": 134.6,
+  "P2": 1252.787,
+  "P3": 2285.477,
+  "P4": 3.796
+ },
+ "streams": [
+  {
+   "name": "s000_coils_off_opt101",
+   "file": "streams/s000_coils_off_opt101.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "s000_coils_off_ingaas",
+   "file": "streams/s000_coils_off_ingaas.npz",
+   "step": 0,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "long_dark_opt101",
+   "file": "streams/long_dark_opt101.npz",
+   "state": "dark",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 8
+  },
+  {
+   "name": "long_dark_ingaas",
+   "file": "streams/long_dark_ingaas.npz",
+   "state": "dark",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 8
+  },
+  {
+   "name": "s001_coils_off_opt101",
+   "file": "streams/s001_coils_off_opt101.npz",
+   "step": 1,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "s001_coils_off_ingaas",
+   "file": "streams/s001_coils_off_ingaas.npz",
+   "step": 1,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -16384,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_6_opt101",
+   "file": "streams/emi_6_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -26700,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_7_ingaas",
+   "file": "streams/emi_7_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -26700,
+   "rate_setting": 860
+  },
+  {
+   "name": "s005_coils_off_opt101",
+   "file": "streams/s005_coils_off_opt101.npz",
+   "step": 5,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -52778,
+   "rate_setting": 860
+  },
+  {
+   "name": "s005_coils_off_ingaas",
+   "file": "streams/s005_coils_off_ingaas.npz",
+   "step": 5,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -52778,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_10_opt101",
+   "file": "streams/emi_10_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -63094,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_11_ingaas",
+   "file": "streams/emi_11_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -63094,
+   "rate_setting": 860
+  },
+  {
+   "name": "s009_coils_off_opt101",
+   "file": "streams/s009_coils_off_opt101.npz",
+   "step": 9,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -89172,
+   "rate_setting": 860
+  },
+  {
+   "name": "s009_coils_off_ingaas",
+   "file": "streams/s009_coils_off_ingaas.npz",
+   "step": 9,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -89172,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_14_opt101",
+   "file": "streams/emi_14_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -99488,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_15_ingaas",
+   "file": "streams/emi_15_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -99488,
+   "rate_setting": 860
+  },
+  {
+   "name": "s013_coils_off_opt101",
+   "file": "streams/s013_coils_off_opt101.npz",
+   "step": 13,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -125567,
+   "rate_setting": 860
+  },
+  {
+   "name": "s013_coils_off_ingaas",
+   "file": "streams/s013_coils_off_ingaas.npz",
+   "step": 13,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -125567,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_18_opt101",
+   "file": "streams/emi_18_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -135884,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_19_ingaas",
+   "file": "streams/emi_19_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -135884,
+   "rate_setting": 860
+  },
+  {
+   "name": "s017_coils_off_opt101",
+   "file": "streams/s017_coils_off_opt101.npz",
+   "step": 17,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -161961,
+   "rate_setting": 860
+  },
+  {
+   "name": "s017_coils_off_ingaas",
+   "file": "streams/s017_coils_off_ingaas.npz",
+   "step": 17,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -161961,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_22_opt101",
+   "file": "streams/emi_22_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -172278,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_23_ingaas",
+   "file": "streams/emi_23_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -172278,
+   "rate_setting": 860
+  },
+  {
+   "name": "s021_coils_off_opt101",
+   "file": "streams/s021_coils_off_opt101.npz",
+   "step": 21,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -198355,
+   "rate_setting": 860
+  },
+  {
+   "name": "s021_coils_off_ingaas",
+   "file": "streams/s021_coils_off_ingaas.npz",
+   "step": 21,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -198355,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_26_opt101",
+   "file": "streams/emi_26_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -208672,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_27_ingaas",
+   "file": "streams/emi_27_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -208672,
+   "rate_setting": 860
+  },
+  {
+   "name": "s025_coils_off_opt101",
+   "file": "streams/s025_coils_off_opt101.npz",
+   "step": 25,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -234750,
+   "rate_setting": 860
+  },
+  {
+   "name": "s025_coils_off_ingaas",
+   "file": "streams/s025_coils_off_ingaas.npz",
+   "step": 25,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -234750,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_30_opt101",
+   "file": "streams/emi_30_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -245066,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_31_ingaas",
+   "file": "streams/emi_31_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -245066,
+   "rate_setting": 860
+  },
+  {
+   "name": "s029_coils_off_opt101",
+   "file": "streams/s029_coils_off_opt101.npz",
+   "step": 29,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -271144,
+   "rate_setting": 860
+  },
+  {
+   "name": "s029_coils_off_ingaas",
+   "file": "streams/s029_coils_off_ingaas.npz",
+   "step": 29,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -271144,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_34_opt101",
+   "file": "streams/emi_34_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -281460,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_35_ingaas",
+   "file": "streams/emi_35_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -281460,
+   "rate_setting": 860
+  },
+  {
+   "name": "s033_coils_off_opt101",
+   "file": "streams/s033_coils_off_opt101.npz",
+   "step": 33,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -307538,
+   "rate_setting": 860
+  },
+  {
+   "name": "s033_coils_off_ingaas",
+   "file": "streams/s033_coils_off_ingaas.npz",
+   "step": 33,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -307538,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_38_opt101",
+   "file": "streams/emi_38_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -317852,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_39_ingaas",
+   "file": "streams/emi_39_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -317852,
+   "rate_setting": 860
+  },
+  {
+   "name": "s050_coils_off_opt101",
+   "file": "streams/s050_coils_off_opt101.npz",
+   "step": 50,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -271144,
+   "rate_setting": 860
+  },
+  {
+   "name": "s050_coils_off_ingaas",
+   "file": "streams/s050_coils_off_ingaas.npz",
+   "step": 50,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -271144,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_42_opt101",
+   "file": "streams/emi_42_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -281458,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_43_ingaas",
+   "file": "streams/emi_43_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -281458,
+   "rate_setting": 860
+  },
+  {
+   "name": "s072_coils_off_opt101",
+   "file": "streams/s072_coils_off_opt101.npz",
+   "step": 72,
+   "state": "coils_off",
+   "detector": "opt101",
+   "height_hs": -125567,
+   "rate_setting": 860
+  },
+  {
+   "name": "s072_coils_off_ingaas",
+   "file": "streams/s072_coils_off_ingaas.npz",
+   "step": 72,
+   "state": "coils_off",
+   "detector": "ingaas",
+   "height_hs": -125567,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_46_opt101",
+   "file": "streams/emi_46_opt101.npz",
+   "state": "coils_moving",
+   "detector": "opt101",
+   "height_hs": -135882,
+   "rate_setting": 860
+  },
+  {
+   "name": "emi_47_ingaas",
+   "file": "streams/emi_47_ingaas.npz",
+   "state": "coils_moving",
+   "detector": "ingaas",
+   "height_hs": -135882,
+   "rate_setting": 860
+  }
+ ],
+ "mode": "fine",
+ "sample_id": "LIO-F-00008",
+ "simulated": false,
+ "host": {
+  "lio": "0.2.0",
+  "python": "3.12.11"
+ },
+ "firmware": {
+  "fw": "2.5.2",
+  "proto": "1",
+  "build": "2026-11-17",
+  "adc_addr": "0x48",
+  "adc_ok": "1",
+  "gain": "1",
+  "rate": "128",
+  "settle_ms": "8",
+  "wdt_a_ms": "90",
+  "wdt_b_ms": "90",
+  "wdt_a_cap_ms": "5000",
+  "wdt_b_cap_ms": "10000",
+  "comms_ms": "10000",
+  "arm_ms": "60000",
+  "step_max": "2048",
+  "jog_max": "2048",
+  "jog_v_max": "1000",
+  "jog_acc_max": "1000",
+  "wake_ms_max": "3000",
+  "motion_armed": "0",
+  "debug_states": "1",
+  "mains": "60",
+  "rail_b_first": "9",
+  "light_in_motion": "0",
+  "arm_token": "0x0045",
+  "hw_wdt": "0"
+ },
+ "config_sha256": "8e03af89eb64cd7830b38ae8efeee29a387aa5bbc080d44b3ad8a75b989f8877",
+ "plan": {
+  "mode": "fine",
+  "label": "optical characterisation (~52 min)",
+  "top": -16384,
+  "bottom": -307538,
+  "settings": {
+   "jog_speed": 300,
+   "settle_ms_mech": 300,
+   "dark_agree_sigma": 3.0,
+   "dark_agree_tries": 5,
+   "dark_n": 8,
+   "optical_settle_ms": 8,
+   "sweep_n": 2,
+   "hum_every_k": 4,
+   "hum_bursts": 17,
+   "long_dark_s": 30.0,
+   "ref_offset_steps": 4096,
+   "arm_renew_s": 40.0,
+   "heartbeat_timeout_s": 90.0,
+   "abort_on_saturation": true,
+   "lead_mm_per_rev": 1.0,
+   "mains_hz": 60,
+   "mains_periods": 2
+  },
+  "steps": [
+   {
+    "index": 0,
+    "phase": "P1",
+    "kind": "static",
+    "height": -16384,
+    "direction": "none",
+    "rep": 0,
+    "hum": false,
+    "label": "electrical characterisation (no motion)"
+   },
+   {
+    "index": 1,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -16384,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 2,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -25483,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 3,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -34581,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 4,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -43680,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 5,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -52778,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 6,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -61877,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 7,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -70975,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 8,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -80074,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 9,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -89172,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 10,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -98271,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 11,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -107370,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 12,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -116468,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 13,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -125567,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 14,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -134665,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 15,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -143764,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 16,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -152862,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 17,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -161961,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 18,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -171060,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 19,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -180158,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 20,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -189257,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 21,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -198355,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 22,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -207454,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 23,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -216552,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 24,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -225651,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 25,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -234750,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 26,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -243848,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 27,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -252947,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 28,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -262045,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 29,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -271144,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 30,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -280242,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 31,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -289341,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 32,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -298439,
+    "direction": "down",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 33,
+    "phase": "P2",
+    "kind": "measure",
+    "height": -307538,
+    "direction": "down",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 34,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 35,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 1,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 36,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 2,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 37,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 3,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 38,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 4,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 39,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 5,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 40,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 6,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 41,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 7,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 42,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 8,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 43,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 9,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 44,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 10,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 45,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 11,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 46,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 12,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 47,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 13,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 48,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 14,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 49,
+    "phase": "P3",
+    "kind": "extra",
+    "height": -307538,
+    "direction": "up",
+    "rep": 15,
+    "hum": false,
+    "label": "around the optimum (after the down pass)"
+   },
+   {
+    "index": 50,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -271144,
+    "direction": "up",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 51,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -259012,
+    "direction": "down",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 52,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -259012,
+    "direction": "up",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 53,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -259012,
+    "direction": "down",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 54,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -259012,
+    "direction": "up",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 55,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -259012,
+    "direction": "down",
+    "rep": 3,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 56,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -259012,
+    "direction": "up",
+    "rep": 3,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 57,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -234750,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 58,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -210487,
+    "direction": "down",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 59,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -210487,
+    "direction": "up",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 60,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -210487,
+    "direction": "down",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 61,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -210487,
+    "direction": "up",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 62,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -210487,
+    "direction": "down",
+    "rep": 3,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 63,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -210487,
+    "direction": "up",
+    "rep": 3,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 64,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -198355,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 65,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -161961,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 66,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -161961,
+    "direction": "down",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 67,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -161961,
+    "direction": "up",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 68,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -161961,
+    "direction": "down",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 69,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -161961,
+    "direction": "up",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 70,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -161961,
+    "direction": "down",
+    "rep": 3,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 71,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -161961,
+    "direction": "up",
+    "rep": 3,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 72,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -125567,
+    "direction": "up",
+    "rep": 0,
+    "hum": true,
+    "label": ""
+   },
+   {
+    "index": 73,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -113435,
+    "direction": "down",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 74,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -113435,
+    "direction": "up",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 75,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -113435,
+    "direction": "down",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 76,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -113435,
+    "direction": "up",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 77,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -113435,
+    "direction": "down",
+    "rep": 3,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 78,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -113435,
+    "direction": "up",
+    "rep": 3,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 79,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -89172,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 80,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -64910,
+    "direction": "down",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 81,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -64910,
+    "direction": "up",
+    "rep": 1,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 82,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -64910,
+    "direction": "down",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 83,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -64910,
+    "direction": "up",
+    "rep": 2,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 84,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -64910,
+    "direction": "down",
+    "rep": 3,
+    "hum": false,
+    "label": "repeatability, from above"
+   },
+   {
+    "index": 85,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -64910,
+    "direction": "up",
+    "rep": 3,
+    "hum": false,
+    "label": "repeatability, from below"
+   },
+   {
+    "index": 86,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -52778,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 87,
+    "phase": "P3",
+    "kind": "measure",
+    "height": -16384,
+    "direction": "up",
+    "rep": 0,
+    "hum": false,
+    "label": ""
+   },
+   {
+    "index": 88,
+    "phase": "P4",
+    "kind": "closing",
+    "height": -16384,
+    "direction": "none",
+    "rep": 0,
+    "hum": false,
+    "label": "closing checks at the top"
+   }
+  ],
+  "heights_down": [
+   -16384,
+   -25483,
+   -34581,
+   -43680,
+   -52778,
+   -61877,
+   -70975,
+   -80074,
+   -89172,
+   -98271,
+   -107370,
+   -116468,
+   -125567,
+   -134665,
+   -143764,
+   -152862,
+   -161961,
+   -171060,
+   -180158,
+   -189257,
+   -198355,
+   -207454,
+   -216552,
+   -225651,
+   -234750,
+   -243848,
+   -252947,
+   -262045,
+   -271144,
+   -280242,
+   -289341,
+   -298439,
+   -307538
+  ],
+  "heights_up": [
+   -271144,
+   -234750,
+   -198355,
+   -161961,
+   -125567,
+   -89172,
+   -52778,
+   -16384
+  ],
+  "ref_heights": [
+   -64910,
+   -113435,
+   -161961,
+   -210487,
+   -259012
+  ],
+  "repeats": 3,
+  "extra_near_optimum": 16,
+  "static": false,
+  "continuous": false,
+  "return_top": true,
+  "eta_s": 4056.5924029933144,
+  "eta_parts": {
+   "P0": 30.0,
+   "P1": 71.69813333333335,
+   "P2": 1229.3974735573283,
+   "P3": 2702.8514627693194,
+   "P4": 22.645333333333383
+  },
+  "duty": {
+   "on_ms_per_sweep": 82.7,
+   "max_on_ms_per_min_A": 248.0,
+   "budget_A": 1000.0,
+   "waits_s": 0.0
+  }
+ },
+ "stage": {
+  "known": true,
+  "valid": true,
+  "invalid_reason": null,
+  "abs": [
+   5473,
+   15970
+  ],
+  "top": [
+   0,
+   0
+  ],
+  "bottom": [
+   -310936,
+   -307538
+  ],
+  "updated": "2026-11-26T13:51:23-05:00",
+  "file": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/stage_position.json",
+  "range": [
+   310936,
+   307538
+  ],
+  "below_top": [
+   -5473,
+   -15970
+  ],
+  "above_bottom": [
+   316409,
+   323508
+  ]
+ },
+ "acquisition_snapshot": {
+  "acquisition_version": "m0-height-scan",
+  "adc": {
+   "configured_rate_sps": null,
+   "detector_order": [
+    "opt101",
+    "ingaas"
+   ],
+   "effective_mode": "mains",
+   "fsr_v": 4.096,
+   "gain": "1",
+   "lsb_mv": 0.125,
+   "mains_hz": 60.0,
+   "mains_periods": 2,
+   "mux_map": {},
+   "settle_ms": 8.0
+  },
+  "assembly": {},
+  "channel_map_sha256": "8c6b8dd9d36be11b6f4ec8b5fbc8fc483841a2ea8745d3bd41fff94beff6fe78",
+  "channel_map_snapshot": {
+   "holes": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+   ],
+   "source": "config"
+  },
+  "config_sha256": "8e03af89eb64cd7830b38ae8efeee29a387aa5bbc080d44b3ad8a75b989f8877",
+  "config_snapshot": {
+   "path": "/Users/coleloughbc/Documents/VSCode-Local/LIO/software/config/lio_hw.yaml",
+   "sha256": "8e03af89eb64cd7830b38ae8efeee29a387aa5bbc080d44b3ad8a75b989f8877"
+  },
+  "input_range": {
+   "ingaas": "unverified",
+   "opt101": "unverified"
+  },
+  "planned": {
+   "heights_down": [
+    -16384,
+    -25483,
+    -34581,
+    -43680,
+    -52778,
+    -61877,
+    -70975,
+    -80074,
+    -89172,
+    -98271,
+    -107370,
+    -116468,
+    -125567,
+    -134665,
+    -143764,
+    -152862,
+    -161961,
+    -171060,
+    -180158,
+    -189257,
+    -198355,
+    -207454,
+    -216552,
+    -225651,
+    -234750,
+    -243848,
+    -252947,
+    -262045,
+    -271144,
+    -280242,
+    -289341,
+    -298439,
+    -307538
+   ],
+   "mode": "fine",
+   "n_steps": 89
+  },
+  "processing_version": "m0",
+  "protocol_hash": "a405a304bb6f18100f34a6a6df7ea966a53f0dbd8d26c1cae0625dd5748dee41",
+  "rail_current": {},
+  "rf": {
+   "ingaas": {
+    "note": "config",
+    "state": "declared",
+    "value_ohm": 1000000.0
+   },
+   "opt101": {
+    "note": "rf_ohm missing",
+    "state": "unknown",
+    "value_ohm": null
+   }
+  },
+  "rig_identity": "host",
+  "schema_version": 1,
+  "simulated": false
+ },
+ "exposure_bound": "cooperative_unproven",
+ "software": {
+  "loaded_source_sha256": "b51c7b11c11af9dbc52f139503446f9b391b4f245394dd407b642070edba2abf",
+  "git_commit_at_start": "e7a64c0ead15520638e8654ee80c21a8c6f1458d",
+  "host_package_dirty_at_start": true,
+  "pid": 14896,
+  "started": "2026-11-26T02:11:28-0500",
+  "note": "identity of the code loaded at process start, not of the disk now"
+ },
+ "segments": [
+  {
+   "segment": "height:s0",
+   "resume": false,
+   "clock": "row t_s is seconds since this segment's start"
+  },
+  {
+   "segment": "height:s1",
+   "resume": true,
+   "clock": "row t_s is seconds since this segment's start"
+  }
+ ],
+ "adc_preflight": [
+  {
+   "resume": false,
+   "gain": "1",
+   "rate_sps": 128,
+   "mains_hz": 60,
+   "source": "INFO readback"
+  },
+  {
+   "resume": true,
+   "gain": "1",
+   "rate_sps": 128,
+   "mains_hz": 60,
+   "source": "INFO readback"
+  }
+ ],
+ "capabilities": {
+  "coupling_states": true,
+  "mains_rejection": true,
+  "rail_monitor": false,
+  "home_sensors": false
+ },
+ "skipped_checks": {
+  "rail_monitor": "A2/A3 not wired for rail and ground monitoring",
+  "home_sensors": "no home sensors fitted"
+ },
+ "terminal_source_seal": {
+  "manifest_hash": "1cdbdaa56449bdff67de81da726fe4f0e840cfc92a7008f41ad621a7cf0e6069",
+  "raw_sha256": "9742fd35e6cfd0fb482c4a66abee77fc124e9e14e0c0d9c6fefdc7932469b1f2",
+  "terminal_meta_sha256": "ace3b25cce345fdc667eb372672cb3ced5b3b385e7e242bae73d6c696c707e32",
+  "combined_sha256": "c28863dfa75a3b9cf9b2c45e2a0b9922f6ba585b531ef962670288ed6c4089c6",
+  "revision": "complete",
+  "status": "COMPLETE"
+ },
+ "terminal_source_seal_inputs": {
+  "status": "COMPLETE",
+  "cancel_reason": null
+ },
+ "rows": 3296,
+ "target_selection": {
+  "objective": {
+   "name": "primary_swir",
+   "version": "m5-primary-swir-v1",
+   "detector": "ingaas",
+   "target_holes": [
+    12,
+    13,
+    14,
+    15
+   ],
+   "control_holes": [
+    8,
+    9
+   ],
+   "excluded_holes": [
+    16
+   ],
+   "weights": {
+    "12": 2.0,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0
+   },
+   "notes": "h16 excluded from primary-1850; blinds excluded; h12 prioritized"
+  },
+  "status": "selected",
+  "frozen_height_hs": -289341.0,
+  "scores": [
+   {
+    "height_hs": -307538.0,
+    "score": 79.0,
+    "per_hole": {
+     "12": 50.0,
+     "13": 3.0,
+     "14": 0.0,
+     "15": 26.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -298439.0,
+    "score": 79.0,
+    "per_hole": {
+     "12": 50.0,
+     "13": 1.0,
+     "14": 4.0,
+     "15": 24.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -289341.0,
+    "score": 80.0,
+    "per_hole": {
+     "12": 48.0,
+     "13": 2.0,
+     "14": 3.0,
+     "15": 27.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -280242.0,
+    "score": 76.0,
+    "per_hole": {
+     "12": 46.0,
+     "13": 3.0,
+     "14": 2.0,
+     "15": 25.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -271144.0,
+    "score": 76.0,
+    "per_hole": {
+     "12": 46.0,
+     "13": 2.0,
+     "14": 3.0,
+     "15": 25.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -262045.0,
+    "score": 69.0,
+    "per_hole": {
+     "12": 40.0,
+     "13": 2.0,
+     "14": 4.0,
+     "15": 23.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -252947.0,
+    "score": 68.0,
+    "per_hole": {
+     "12": 40.0,
+     "13": 3.0,
+     "14": 2.0,
+     "15": 23.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -243848.0,
+    "score": 67.0,
+    "per_hole": {
+     "12": 40.0,
+     "13": 3.0,
+     "14": 1.0,
+     "15": 23.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -234750.0,
+    "score": 69.0,
+    "per_hole": {
+     "12": 40.0,
+     "13": 3.0,
+     "14": 1.0,
+     "15": 25.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -225651.0,
+    "score": 66.0,
+    "per_hole": {
+     "12": 38.0,
+     "13": 3.0,
+     "14": 2.0,
+     "15": 23.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -216552.0,
+    "score": 65.0,
+    "per_hole": {
+     "12": 38.0,
+     "13": 3.0,
+     "14": 1.0,
+     "15": 23.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -207454.0,
+    "score": 60.0,
+    "per_hole": {
+     "12": 34.0,
+     "13": 3.0,
+     "14": 3.0,
+     "15": 20.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -198355.0,
+    "score": 64.0,
+    "per_hole": {
+     "12": 36.0,
+     "13": 2.0,
+     "14": 4.0,
+     "15": 22.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -189257.0,
+    "score": 57.0,
+    "per_hole": {
+     "12": 32.0,
+     "13": 2.0,
+     "14": 3.0,
+     "15": 20.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -180158.0,
+    "score": 57.0,
+    "per_hole": {
+     "12": 32.0,
+     "13": 3.0,
+     "14": 1.0,
+     "15": 21.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -171060.0,
+    "score": 58.0,
+    "per_hole": {
+     "12": 30.0,
+     "13": 6.0,
+     "14": 3.0,
+     "15": 19.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -161961.0,
+    "score": 56.0,
+    "per_hole": {
+     "12": 30.0,
+     "13": 2.0,
+     "14": 3.0,
+     "15": 21.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -152862.0,
+    "score": 59.0,
+    "per_hole": {
+     "12": 34.0,
+     "13": 2.0,
+     "14": 2.0,
+     "15": 21.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -143764.0,
+    "score": 57.0,
+    "per_hole": {
+     "12": 32.0,
+     "13": 3.0,
+     "14": 3.0,
+     "15": 19.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -134665.0,
+    "score": 57.0,
+    "per_hole": {
+     "12": 32.0,
+     "13": 3.0,
+     "14": 2.0,
+     "15": 20.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -125567.0,
+    "score": 53.0,
+    "per_hole": {
+     "12": 28.0,
+     "13": 3.0,
+     "14": 4.0,
+     "15": 18.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -116468.0,
+    "score": 57.0,
+    "per_hole": {
+     "12": 32.0,
+     "13": 2.0,
+     "14": 2.0,
+     "15": 21.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -107370.0,
+    "score": 53.0,
+    "per_hole": {
+     "12": 28.0,
+     "13": 3.0,
+     "14": 2.0,
+     "15": 20.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -98271.0,
+    "score": 53.0,
+    "per_hole": {
+     "12": 30.0,
+     "13": 2.0,
+     "14": 1.0,
+     "15": 20.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -89172.0,
+    "score": 54.0,
+    "per_hole": {
+     "12": 28.0,
+     "13": 3.0,
+     "14": 2.0,
+     "15": 21.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -80074.0,
+    "score": 51.0,
+    "per_hole": {
+     "12": 26.0,
+     "13": 4.0,
+     "14": 2.0,
+     "15": 19.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -70975.0,
+    "score": 48.0,
+    "per_hole": {
+     "12": 26.0,
+     "13": 1.0,
+     "14": 1.0,
+     "15": 20.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -61877.0,
+    "score": 48.0,
+    "per_hole": {
+     "12": 24.0,
+     "13": 2.0,
+     "14": 3.0,
+     "15": 19.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -52778.0,
+    "score": 48.0,
+    "per_hole": {
+     "12": 24.0,
+     "13": 3.0,
+     "14": 3.0,
+     "15": 18.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -43680.0,
+    "score": 48.0,
+    "per_hole": {
+     "12": 26.0,
+     "13": 2.0,
+     "14": 1.0,
+     "15": 19.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -34581.0,
+    "score": 52.0,
+    "per_hole": {
+     "12": 26.0,
+     "13": 3.0,
+     "14": 3.0,
+     "15": 20.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -25483.0,
+    "score": 49.0,
+    "per_hole": {
+     "12": 24.0,
+     "13": 3.0,
+     "14": 3.0,
+     "15": 19.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   },
+   {
+    "height_hs": -16384.0,
+    "score": 50.0,
+    "per_hole": {
+     "12": 24.0,
+     "13": 3.0,
+     "14": 3.0,
+     "15": 20.0
+    },
+    "eligible": true,
+    "reason": "ok"
+   }
+  ],
+  "scout_source_hash": null,
+  "candidate_grid": [
+   -307538.0,
+   -298439.0,
+   -289341.0,
+   -280242.0,
+   -271144.0,
+   -262045.0,
+   -252947.0,
+   -243848.0,
+   -234750.0,
+   -225651.0,
+   -216552.0,
+   -207454.0,
+   -198355.0,
+   -189257.0,
+   -180158.0,
+   -171060.0,
+   -161961.0,
+   -152862.0,
+   -143764.0,
+   -134665.0,
+   -125567.0,
+   -116468.0,
+   -107370.0,
+   -98271.0,
+   -89172.0,
+   -80074.0,
+   -70975.0,
+   -61877.0,
+   -52778.0,
+   -43680.0,
+   -34581.0,
+   -25483.0,
+   -16384.0
+  ],
+  "predicted_precision": {
+   "best_score": 80.0,
+   "per_hole": {
+    "12": 48.0,
+    "13": 2.0,
+    "14": 3.0,
+    "15": 27.0
+   }
+  },
+  "exclusions": [
+   "excluded hole 16",
+   "h16 not eligible for primary-1850 / primary_swir"
+  ],
+  "detail": "frozen height -289341.0",
+  "confirmation_disjoint": true,
+  "selection_id": "f8c64925364d1a2036323a57e7ecca342786a4ba2df46593c4dfe40ebbf25814",
+  "consumed_by": [
+   "planner",
+   "fine_placement",
+   "report",
+   "ui"
+  ]
+ },
+ "target_selection_id": "f8c64925364d1a2036323a57e7ecca342786a4ba2df46593c4dfe40ebbf25814",
+ "extra_heights": [
+  -297871,
+  -296734,
+  -295597,
+  -294459,
+  -293322,
+  -292184,
+  -291047,
+  -289910,
+  -288772,
+  -287635,
+  -286498,
+  -285360,
+  -284223,
+  -283085,
+  -281948,
+  -280811
+ ],
+ "interlocks": {
+  "light_while_moving": "PASS",
+  "single_channel": "SKIP: host refused before transmission (CE on refused: no single selected hole to reserve duty against); firmware interlock not exercised"
+ },
+ "health": {
+  "unexpected_boots": 0,
+  "duty": {
+   "max_rail_a_ms_per_min": 644.0,
+   "budget_a_ms": 1000.0,
+   "over_budget": [],
+   "cooldown_s": 0,
+   "cooldowns": 0
+  },
+  "moves": 120,
+  "unlevel": [],
+  "stage_end": {
+   "known": true,
+   "valid": true,
+   "invalid_reason": null,
+   "abs": [
+    -16384,
+    -16384
+   ],
+   "top": [
+    0,
+    0
+   ],
+   "bottom": [
+    -316409,
+    -323508
+   ],
+   "updated": "2026-11-26T14:57:56-05:00",
+   "file": "/Users/coleloughbc/Documents/VSCode-Local/LIO/test_results/stage_position.json",
+   "range": [
+    316409,
+    323508
+   ],
+   "below_top": [
+    16384,
+    16384
+   ],
+   "above_bottom": [
+    300025,
+    307124
+   ]
+  }
+ }
+}
